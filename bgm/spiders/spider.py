@@ -1,15 +1,14 @@
 import scrapy
 import re
 from bgm.items import BgmUser
-from bgm.util import Record
-from datetime import date
+from bgm.util import Record parsedate getnextpage
 
 class recordspider(scrapy.Spider):
     name = "record"
     
     def __init__(self, max_id = 300000):
         self.start_url = ["http://chii.in/user/"+str(i+1) for i in xrange(max_id)]
-        self.anime=[]
+        self.temp=[]
 
 
     def parse(self, response):
@@ -19,11 +18,32 @@ class recordspider(scrapy.Spider):
         itm["uid"] = int(userid)
         itm["name"] = username
         d = response.xpath(".//*[@id='user_home']/div[1]/div[2]/p[2]/text()").extract()[0].split(' ')[0]
-        itm["joindate"] = date(int(d.split('-')[0]), int(d.split('-')[1]), int(d.split('-')[2]))
+        itm["joindate"] = parsedate(d)
 
         if len(response.xpath(".//*[@id='anime']")):
             yield scrapy.Request("http://chii.in/anime/list/"+username, callback = self.merge)
-            itm["anime"]=self.anime
+            itm["anime"]=self.temp
+            self.temp=[]
+
+        if len(response.xpath(".//*[@id='game']")):
+            yield scrapy.Request("http://chii.in/game/list/"+username, callback = self.merge)
+            itm["game"]=self.temp
+            self.temp=[]
+
+        if len(response.xpath(".//*[@id='book']")):
+            yield scrapy.Request("http://chii.in/book/list/"+username, callback = self.merge)
+            itm["book"]=self.temp
+            self.temp=[]
+
+        if len(response.xpath(".//*[@id='music']")):
+            yield scrapy.Request("http://chii.in/music/list/"+username, callback = self.merge)
+            itm["music"]=self.temp
+            self.temp=[]
+
+        if len(response.xpath(".//*[@id='drama']")):
+            yield scrapy.Request("http://chii.in/drama/list/"+username, callback = self.merge)
+            itm["drama"]=self.temp
+            self.temp=[]
 
     def merge(self, response):
         head = response.xpath(".//*[@id='header']/div/ul[2]/li/a[@href]").extract() # a list of links
@@ -65,4 +85,38 @@ class recordspider(scrapy.Spider):
                 yield request
 
     def parse_recorder(self, response):
-        
+        tp = response.meta["type"]
+        cnt = response.meta["count"]
+
+        items = response.xpath(".//*[@id='browserItemList']/li")
+        for item in items:
+            if !cnt: break
+
+            item_id = int(re.match(r"item_(\d+)",item.xpath("./@id").extract()[0]).group(1))
+            item_date = parsedate(item.xpath("./div/p[@class='collectInfo']/span[@class='tip_j']/text()").extract()[0])
+            item_state = tp
+            if !len(item.xpath("./div/p[@class='collectInfo']/span[@class='tip']"))
+                item_tags = item.xpath("./div/p[@class='collectInfo']/span[@class='tip']/text()").extract()[0].split(u' ')[1:-1]
+            else:
+                item_tags=None
+
+            try_match = re.match(r'sstars(\d+) starsinfo', item.xpath("./div/p[@class='collectInfo']/span[1]/@class").extract()[0])
+            if try_match:
+                item_rate = try_match.group(1)
+            else:
+                item_rate = None
+
+            if item.xpath("./div/p[@class='collectInfo']/div"):
+                item_comment = item.xpath(".//*[@id='comment_box']/div/div/div[1]/text()").extract()[0]
+            else:
+                item_comment = None
+
+            self.temp.append(BgmUser(item_id, item_date, item_state, item_rate, item_comment, item_tags))
+
+        if !cnt:
+            request = scrapy.Request(getnextpage(response.url),callback = self.parse_recorder)
+            request.meta["type"]=tp
+            request.meta["count"]=cnt
+            yield request
+        else:
+            yield self.temp

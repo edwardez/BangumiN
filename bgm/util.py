@@ -8,17 +8,17 @@ class Record:
         self.savedate = savedate
         self.state = state
 
-        if !rate:
+        if not rate:
             self.rate = 0
         else:
             self.rate = rate
 
-        if !comment:
+        if not comment:
             self.comment = u""
         else:
             self.comment = comment
 
-        if !tags:
+        if not tags:
             self.tags = []
         else:
             self.tags = tags

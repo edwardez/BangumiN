@@ -1,19 +1,19 @@
 import scrapy
 import re
 from bgm.items import BgmUser
-from bgm.util import Record parsedate getnextpage
+from bgm.util import Record,parsedate,getnextpage
 
 class recordspider(scrapy.Spider):
     name = "record"
     
     def __init__(self, max_id = 300000):
-        self.start_url = ["http://chii.in/user/"+str(i+1) for i in xrange(max_id)]
+        self.start_urls = ["http://chii.in/user/"+str(i+1) for i in xrange(int(max_id))]
         self.temp=[]
 
 
     def parse(self, response):
         username = response.url.split('/')[-1]
-        userid = request.url.split('/')[-1]
+        userid = response.meta['redirect_urls'][0].split('/')[-1]
         itm = BgmUser()
         itm["uid"] = int(userid)
         itm["name"] = username
@@ -45,38 +45,40 @@ class recordspider(scrapy.Spider):
             itm["drama"]=self.temp
             self.temp=[]
 
+        yield itm
+
     def merge(self, response):
         head = response.xpath(".//*[@id='header']/div/ul[2]/li/a[@href]").extract() # a list of links
         for link in head:
-            if re.search("wish"):
+            if re.search(r"wish",link):
                 num = int(re.search(r"(\d+)",link).group(1))
                 follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
                 request = scrapy.Request(follow, callback = self.parse_recorder)
                 request.meta["type"]="wish"
                 request.meta["count"]=num
                 yield request
-            elif re.search("collect"):
+            elif re.search(r"collect",link):
                 num = int(re.search(r"(\d+)",link).group(1))
                 follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
                 request = scrapy.Request(follow, callback = self.parse_recorder)
                 request.meta["type"]="collect"
                 request.meta["count"]=num
                 yield request
-            elif re.search("do"):
+            elif re.search(r"do",link):
                 num = int(re.search(r"(\d+)",link).group(1))
                 follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
                 request = scrapy.Request(follow, callback = self.parse_recorder)
                 request.meta["type"]="do"
                 request.meta["count"]=num
                 yield request
-            elif re.search("on_hold"):
+            elif re.search(r"on_hold",link):
                 num = int(re.search(r"(\d+)",link).group(1))
                 follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
                 request = scrapy.Request(follow, callback = self.parse_recorder)
                 request.meta["type"]="on_hold"
                 request.meta["count"]=num
                 yield request
-            else re.search("dropped"):
+            elif re.search(r"dropped",link):
                 num = int(re.search(r"(\d+)",link).group(1))
                 follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
                 request = scrapy.Request(follow, callback = self.parse_recorder)
@@ -90,12 +92,12 @@ class recordspider(scrapy.Spider):
 
         items = response.xpath(".//*[@id='browserItemList']/li")
         for item in items:
-            if !cnt: break
+            if not cnt: break
 
             item_id = int(re.match(r"item_(\d+)",item.xpath("./@id").extract()[0]).group(1))
             item_date = parsedate(item.xpath("./div/p[@class='collectInfo']/span[@class='tip_j']/text()").extract()[0])
             item_state = tp
-            if !len(item.xpath("./div/p[@class='collectInfo']/span[@class='tip']"))
+            if item.xpath("./div/p[@class='collectInfo']/span[@class='tip']"):
                 item_tags = item.xpath("./div/p[@class='collectInfo']/span[@class='tip']/text()").extract()[0].split(u' ')[1:-1]
             else:
                 item_tags=None
@@ -111,12 +113,11 @@ class recordspider(scrapy.Spider):
             else:
                 item_comment = None
 
-            self.temp.append(BgmUser(item_id, item_date, item_state, item_rate, item_comment, item_tags))
+            self.temp.append(Record(item_id, item_date, item_state, item_rate, item_comment, item_tags))
+            --cnt
 
-        if !cnt:
+        if not cnt:
             request = scrapy.Request(getnextpage(response.url),callback = self.parse_recorder)
             request.meta["type"]=tp
             request.meta["count"]=cnt
             yield request
-        else:
-            yield self.temp

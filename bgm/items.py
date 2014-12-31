@@ -12,10 +12,17 @@ class BgmUser(scrapy.Item):
     uid = scrapy.Field()
     name = scrapy.Field()
     joindate = scrapy.Field()
-    anime = scrapy.Field()
-    game = scrapy.Field()
-    book = scrapy.Field()
-    music = scrapy.Field()
-    drama = scrapy.Field()
+
+class WatchRecord(scrapy.Item):
+    ## First five items are required.
+    name = scrapy.Field()
+    typ = scrapy.Field()
+    iid = scrapy.Field()
+    state = scrapy.Field()
+    date = scrapy.Field()
+    ## Following three are optional.
+    rate = scrapy.Field()
+    comment = scrapy.Field()
+    tags = scrapy.Field()
 
 

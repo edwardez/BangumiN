@@ -18,3 +18,8 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 ITEM_PIPELINES = {
     'bgm.pipelines.BgmPipeline': 300,
 }
+
+MYSQL_HOST = 'localhost'
+MYSQL_DBNAME = 'bgm'
+MYSQL_USER = 'bgmer'
+MYSQL_PASSWD = ''

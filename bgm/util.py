@@ -3,7 +3,7 @@ from urlparse import urlparse
 
 def parsedate(bgmdate):
     "2013-1-1 to isostandard"
-    return date(int(bgmdate.split('-')[0]), int(bgmdate.split('-')[1]), int(bgmdate.split('-')[2])).isoformat()
+    return date(int(bgmdate.split('-')[0]), int(bgmdate.split('-')[1]), int(bgmdate.split('-')[2]))
 
 def getnextpage(url):
     tp = url.split("=")

@@ -87,8 +87,8 @@ class BgmPipeline(object):
                 update record
                 set tags = %s
                 where name = %s and typ = %s and iid = %s
-                """, (item["tags"].__str__, item["name"], item["typ"], str(item["iid"])))
-       
+                """, (u' '.join(item["tags"]), item["name"], item["typ"], str(item["iid"])))
+
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
         # do nothing, just log

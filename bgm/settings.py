@@ -8,7 +8,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'bgm'
+BOT_NAME = 'bgmSpider'
 
 SPIDER_MODULES = ['bgm.spiders']
 NEWSPIDER_MODULE = 'bgm.spiders'
@@ -22,4 +22,6 @@ ITEM_PIPELINES = {
 MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'bgm'
 MYSQL_USER = 'bgmer'
-MYSQL_PASSWD = ''
+MYSQL_PASSWD = 'sai'
+
+DOWNLOAD_DELAY = 0.25

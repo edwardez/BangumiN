@@ -6,16 +6,23 @@ from bgm.util import parsedate,getnextpage
 class recordspider(scrapy.Spider):
     name = "record"
     
-    def __init__(self, max_id = 300000):
-        self.start_urls = ["http://chii.in/user/"+str(i+1) for i in xrange(int(max_id))]
+    def __init__(self, min_id = 1, max_id = 300001):
+        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(min_id),int(max_id))]
 
     def parse(self, response):
         username = response.url.split('/')[-1]
-        userid = response.meta['redirect_urls'][0].split('/')[-1]
+        if not 'redirect_urls' in response.meta:
+            userid = username
+        else:
+            userid = response.meta['redirect_urls'][0].split('/')[-1]
         itm = BgmUser()
         itm["uid"] = int(userid)
         itm["name"] = username
-        d = response.xpath(".//*[@id='user_home']/div[1]/div[2]/p[2]/text()").extract()[0].split(' ')[0]
+        cd = response.xpath(".//*[@id='user_home']/div[1]/div[2]/p[2]/text()")
+        if cd:
+            d = cd.extract()[0].split(' ')[0]
+        else:
+            return
         itm["joindate"] = parsedate(d)
         yield itm
 

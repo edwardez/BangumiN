@@ -55,3 +55,4 @@ target/
 
 # Other test outputs
 *.jl
+*.sql

@@ -88,8 +88,8 @@ class recordspider(scrapy.Spider):
             else:
                 item_rate = None
 
-            if item.xpath("./div/p[@class='collectInfo']/div"):
-                item_comment = item.xpath(".//*[@id='comment_box']/div/div/div[1]/text()").extract()[0]
+            if item.xpath("./div/div[@id='comment_box']"):
+                item_comment = item.xpath("./div/div[@id='comment_box']/div/div/div[1]/text()").extract()[0]
             else:
                 item_comment = None
 

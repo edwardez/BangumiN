@@ -6,8 +6,13 @@ from bgm.util import parsedate,getnextpage
 class recordspider(scrapy.Spider):
     name = "record"
     
-    def __init__(self, min_id = 1, max_id = 300001):
-        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(min_id),int(max_id))]
+    def __init__(self, *args, **kwargs):
+        super(recordspider, self).__init__(*args, **kwargs) 
+        if not hasattr(self, 'id_max'):
+            self.id_max=300001
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         username = response.url.split('/')[-1]
@@ -38,8 +43,8 @@ class recordspider(scrapy.Spider):
         if len(response.xpath(".//*[@id='music']")):
             yield scrapy.Request("http://chii.in/music/list/"+username, callback = self.merge)
 
-        if len(response.xpath(".//*[@id='drama']")):
-            yield scrapy.Request("http://chii.in/drama/list/"+username, callback = self.merge)
+        if len(response.xpath(".//*[@id='real']")):
+            yield scrapy.Request("http://chii.in/real/list/"+username, callback = self.merge)
 
         
 

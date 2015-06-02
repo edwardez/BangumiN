@@ -7,13 +7,7 @@
 
 import scrapy
 
-
-class BgmUser(scrapy.Item):
-    uid = scrapy.Field()
-    name = scrapy.Field()
-    joindate = scrapy.Field()
-
-class WatchRecord(scrapy.Item):
+class Record(scrapy.Item):
     ## First five items are required.
     name = scrapy.Field()
     typ = scrapy.Field()
@@ -25,4 +19,15 @@ class WatchRecord(scrapy.Item):
     comment = scrapy.Field()
     tags = scrapy.Field()
 
+class Index(scrapy.Item):
+    indexid = scrapy.Field()
+    creator = scrapy.Field()
+    favourite = scrapy.Field()
+    date = scrapy.Field()
+    items = scrapy.Field()
 
+class Friend(scrapy.Item):
+    """This item keeps a directed relationship that user is following his/her friend."""
+    user = scrapy.Field()
+    friend = scrapy.Field()
+    # No date information

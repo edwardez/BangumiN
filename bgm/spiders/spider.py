@@ -1,35 +1,42 @@
 import scrapy
 import re
-from bgm.items import BgmUser,WatchRecord
+from bgm.items import Record, Index, Friends
 from bgm.util import parsedate,getnextpage
 
-class recordspider(scrapy.Spider):
-    name = "record"
-    
+
+class IndexSpider(scrapy.Spider):
+    name='index'
     def __init__(self, *args, **kwargs):
-        super(recordspider, self).__init__(*args, **kwargs) 
+        super(recordspider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
-            self.id_max=300001
+            self.id_max=20000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/index/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+
+    def parse(self, response):
+        if len(response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a"))==0:
+            return
+        indexid = response.url.split('/')[-1]
+        creator = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a/@href").extract()[0].split('/')[-1]
+        td = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/span/span[1]/text()").extract()[0]
+        date = parsedate(td.split(' ')[0])
+        favourite = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/span/span[2]/text()").extract()[0]
+        items = response.xpath(".//*[@id='columnSubjectBrowserA']/ul/li/@id").extract()
+        items = [int(itm.split('_')[-1]) for itm in items]
+
+class RecordSpider(scrapy.Spider):
+    name='record'
+    def __init__(self, *args, **kwargs):
+        super(recordspider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=300000
         if not hasattr(self, 'id_min'):
             self.id_min=1
         self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         username = response.url.split('/')[-1]
-        if not 'redirect_urls' in response.meta:
-            userid = username
-        else:
-            userid = response.meta['redirect_urls'][0].split('/')[-1]
-        itm = BgmUser()
-        itm["uid"] = int(userid)
-        itm["name"] = username
-        cd = response.xpath(".//*[@id='user_home']/div[1]/div[2]/p[2]/text()")
-        if cd:
-            d = cd.extract()[0].split(' ')[0]
-        else:
-            return
-        itm["joindate"] = parsedate(d)
-        yield itm
 
         if len(response.xpath(".//*[@id='anime']")):
             yield scrapy.Request("http://chii.in/anime/list/"+username, callback = self.merge)
@@ -46,31 +53,12 @@ class recordspider(scrapy.Spider):
         if len(response.xpath(".//*[@id='real']")):
             yield scrapy.Request("http://chii.in/real/list/"+username, callback = self.merge)
 
-        
+
 
     def merge(self, response):
-        head = response.xpath(".//*[@id='header']/div/ul[2]/li/a[@href]").extract() # a list of links
-        for link in head:
-            if re.search(r"wish",link):
-                follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
-                request = scrapy.Request(follow, callback = self.parse_recorder)
-                yield request
-            elif re.search(r"collect",link):
-                follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
-                request = scrapy.Request(follow, callback = self.parse_recorder)
-                yield request
-            elif re.search(r"do",link):
-                follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
-                request = scrapy.Request(follow, callback = self.parse_recorder)
-                yield request
-            elif re.search(r"on_hold",link):
-                follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
-                request = scrapy.Request(follow, callback = self.parse_recorder)
-                yield request
-            elif re.search(r"dropped",link):
-                follow = "http://chii.in"+str(re.search(r'href="([/-_\w]+)"',link).group(1))
-                request = scrapy.Request(follow, callback = self.parse_recorder)
-                yield request
+        followlinks = response.xpath(".//*[@id='headerProfile']/div/div[2]/ul//@href").extract() # a list of links
+        for link in followlinks:
+            yield scrapy.Request(u"http://chii.in"+link, callback = self.parse_recorder)
 
     def parse_recorder(self, response):
         name = response.url.split('/')[-2]
@@ -79,7 +67,6 @@ class recordspider(scrapy.Spider):
 
         items = response.xpath(".//*[@id='browserItemList']/li")
         for item in items:
-
             item_id = int(re.match(r"item_(\d+)",item.xpath("./@id").extract()[0]).group(1))
             item_date = parsedate(item.xpath("./div/p[@class='collectInfo']/span[@class='tip_j']/text()").extract()[0])
             if item.xpath("./div/p[@class='collectInfo']/span[@class='tip']"):
@@ -98,7 +85,7 @@ class recordspider(scrapy.Spider):
             else:
                 item_comment = None
 
-            watchRecord = WatchRecord(name=name,typ=tp,state=state,iid=item_id,date=item_date)
+            watchRecord = Record(name=name,typ=tp,state=state,iid=item_id,date=item_date)
             if item_tags:
                 watchRecord["tags"]=item_tags
             if item_rate:
@@ -110,3 +97,11 @@ class recordspider(scrapy.Spider):
         if len(items)==24:
             request = scrapy.Request(getnextpage(response.url),callback = self.parse_recorder)
             yield request
+
+class FriendsSpider(scrapy.Spider):
+    name='friends'
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def parse(self, response):
+        pass

@@ -7,8 +7,9 @@
 from scrapy import log
 from scrapy.exceptions import DropItem
 from twisted.enterprise import adbapi
+import json
 
-class BgmPipeline(object):
+class RecordPipeline(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
 
@@ -38,15 +39,15 @@ class BgmPipeline(object):
 
     def _do_upsert(self, conn, item, spider):
         """Perform an insert or update."""
-        if item.__class__.__name__=='BgmUser':
-            conn.execute("""
-            insert into users (uid, name, joindate)
-            values (%s, %s, %s)
-            """, (item["uid"], item["name"], item["joindate"].isoformat()))
+        #if item.__class__.__name__=='BgmUser':
+        #    conn.execute("""
+        #    insert into users (uid, name, joindate)
+        #    values (%s, %s, %s)
+        #    """, (item["uid"], item["name"], item["joindate"].isoformat()))
 
-            spider.log("Item stored in db: %s\n" % (item["name"]))
+        #    spider.log("Item stored in db: %s\n" % (item["name"]))
 
-        elif item.__class__.__name__=='WatchRecord':
+        #elif item.__class__.__name__=='WatchRecord':
 
             conn.execute("insert into record (name, typ, iid, state, adddate, rate, comment, tags) values (\"%s\", \"%s\", %s, \"%s\", \"%s\", %s, %s, %s)" \
             %(item["name"], item["typ"], str(item["iid"]), item["state"], item["date"].isoformat(), self._getrate(item), self._getcomment(item), self._gettags(item)))
@@ -73,3 +74,13 @@ class BgmPipeline(object):
             return "NULL"
         else:
             return '\"'+item["comment"]+'\"'
+
+class IndexPipeline(object):
+    """Index should be recorded in a json file."""
+    def __init__(self):
+        self.file = open('items.jl', 'wb')
+
+    def process_item(self, item, spider):
+        line = json.dumps(dict(item)) + "\n"
+        self.file.write(line)
+        return item

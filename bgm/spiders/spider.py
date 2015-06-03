@@ -1,6 +1,6 @@
 import scrapy
 import re
-from bgm.items import Record, Index, Friends
+from bgm.items import Record, Index, Friend
 from bgm.util import parsedate,getnextpage
 
 
@@ -24,6 +24,7 @@ class IndexSpider(scrapy.Spider):
         favourite = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/span/span[2]/text()").extract()[0]
         items = response.xpath(".//*[@id='columnSubjectBrowserA']/ul/li/@id").extract()
         items = [int(itm.split('_')[-1]) for itm in items]
+        yield Index(indexid=indexid, creator=creator, favourite=favourite, date=date, items=items)
 
 class RecordSpider(scrapy.Spider):
     name='record'
@@ -101,7 +102,15 @@ class RecordSpider(scrapy.Spider):
 class FriendsSpider(scrapy.Spider):
     name='friends'
     def __init__(self, *args, **kwargs):
-        pass
+        super(recordspider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=300000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/user/"+str(i)+"/friends" for i in xrange(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
-        pass
+        user - response.url.split('/')[-2]
+        lst = response.xpath(".//*[@id='memberUserList']/li//@href").extract()
+        for itm in lst:
+            yield Friend(user = user, friend = itm.split('/')[-1])

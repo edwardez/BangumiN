@@ -7,11 +7,18 @@
 
 import scrapy
 
+class User(scrapy.Item):
+    name = scrapy.Field()
+    uid = scrapy.Field()
+    date = scrapy.Field()
+    prohibited = scrapy.Field()
+
+
 class Record(scrapy.Item):
     ## First five items are required.
     name = scrapy.Field()
     typ = scrapy.Field()
-    iid = scrapy.Field()
+    iid = scrapy.Field() #name and id together forms primary key.
     state = scrapy.Field()
     date = scrapy.Field()
     ## Following three are optional.

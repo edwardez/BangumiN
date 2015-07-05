@@ -1,7 +1,39 @@
 import scrapy
 import re
 from bgm.items import Record, Index, Friend
-from bgm.util import parsedate,getnextpage
+from bgm.util import parsedate,getnextpage, blockstr
+
+class UserSpider(Scrapy.Spider):
+    name='user'
+    def __init__(self, *args, **kwargs):
+        super(recordspider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=300000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+
+    def parse(self, response):
+        user = response.url.split('/')[-1]
+        if not 'redirect_urls' in response.meta:
+            uid = user
+        else:
+            uid = response.meta['redirect_urls'][0].split('/')[-1]
+        date = response.xpath(".//*[@id='user_home']/div[@class='user_box clearit']/ul/li[1]/span[2]/text()").extract()[0].split(' ')[0]
+        date = parsedate(date)
+
+        #Is blocked?
+        if len(response.xpath(".//*[@id='anime']"))==0 and \
+        len(response.xpath(".//*[@id='game']"))==0 and\
+        len(response.xpath(".//*[@id='book']"))==0 and\
+        len(response.xpath(".//*[@id='music']"))==0 and\
+        len(response.xpath(".//*[@id='real']"))==0:
+            nowatchrecord=True;
+        else: nowatchrecord=False;
+        prohibited = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/a/text()")\
+        .extract()[0]==blockstr and nowatchrecord
+        yield User(name=user, uid=uid, date=date, prohibited=prohibited)
+
 
 
 class IndexSpider(scrapy.Spider):

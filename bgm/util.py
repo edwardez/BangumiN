@@ -11,3 +11,5 @@ def getnextpage(url):
         return tp[0]+'='+str(int(tp[1])+1)
     else:
         return tp[0]+'?page=2'
+
+blockstr = u'[\u5df2\u5c01\u7981]'

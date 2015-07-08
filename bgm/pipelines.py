@@ -10,7 +10,7 @@ from twisted.enterprise import adbapi
 from scrapy import signals
 from scrapy.contrib.exporter import JsonLinesItemExporter
 
-class RecordPipeline(object):
+class MySQLPipeline(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
 
@@ -40,18 +40,22 @@ class RecordPipeline(object):
 
     def _do_upsert(self, conn, item, spider):
         """Perform an insert or update."""
-        #if item.__class__.__name__=='BgmUser':
-        #    conn.execute("""
-        #    insert into users (uid, name, joindate)
-        #    values (%s, %s, %s)
-        #    """, (item["uid"], item["name"], item["joindate"].isoformat()))
+        if item.__class__.__name__=='User':
+            if not item['prohibited']:
+                conn.execute("""
+                insert into users (uid, name, joindate)
+                values (%s, %s, %s)
+                """, (item["uid"], item["name"], item["date"].isoformat()))
 
-        #    spider.log("Item stored in db: %s\n" % (item["name"]))
+        # spider.log("Item stored in db: %s\n" % (item["name"]))
 
-        #elif item.__class__.__name__=='WatchRecord':
+        elif item.__class__.__name__=='Record':
 
-            conn.execute("insert into record (name, typ, iid, state, adddate, rate, comment, tags) values (\"%s\", \"%s\", %s, \"%s\", \"%s\", %s, %s, %s)" \
-            %(item["name"], item["typ"], str(item["iid"]), item["state"], item["date"].isoformat(), self._getrate(item), self._getcomment(item), self._gettags(item)))
+            conn.execute("insert into record (name, typ, iid, state, adddate, \
+            rate, comment, tags) values (\"%s\", \"%s\", %s, \"%s\", \"%s\", \
+            %s, %s, %s)"%(item["name"], item["typ"], str(item["iid"]),\
+            item["state"], item["date"].isoformat(), self._getrate(item), \
+            self._getcomment(item), self._gettags(item)))
 
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
@@ -77,13 +81,13 @@ class RecordPipeline(object):
             return '\"'+item["comment"]+'\"'
 
 
-class IndexPipeline(object):
+class JsonPipeline(object):
     """Index should be recorded in a json file."""
     def __init__(self):
         self.files = {}
 
-     @classmethod
-     def from_crawler(cls, crawler):
+    @classmethod
+    def from_crawler(cls, crawler):
          pipeline = cls()
          crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
          crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
@@ -101,6 +105,6 @@ class IndexPipeline(object):
         file.close()
 
     def process_item(self, item, spider):
-        if item.__class__.__name__=='Index':
+        if item.__class__.__name__=='Index' or item.__class__.__name__=='Friend':
             self.exporter.export_item(item)
         return item

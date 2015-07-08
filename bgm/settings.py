@@ -16,7 +16,8 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'bgm (+http://www.yourdomain.com)'
 ITEM_PIPELINES = {
-    #'bgm.pipelines.BgmPipeline': 300,
+    'bgm.pipelines.MySQLPipeline': 300,
+    'bgm.pipelines.JsonPipeline': 400,
 }
 
 MYSQL_HOST = 'localhost'

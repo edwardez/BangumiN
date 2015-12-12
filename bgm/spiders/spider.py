@@ -1,7 +1,8 @@
 import scrapy
 import re
-from bgm.items import Record, Index, Friend, User
+from bgm.items import Record, Index, Friend, User, SubjectInfo
 from bgm.util import parsedate,getnextpage, blockstr
+from scrapy.http import Request
 
 class UserSpider(scrapy.Spider):
     name='user'
@@ -77,7 +78,7 @@ class RecordSpider(scrapy.Spider):
         self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
-        if len(response.xpath(".//*[@id='headerProfile']"))==0:
+        if not response.xpath(".//*[@id='headerProfile']"):
             return
         username = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/small/text()").extract()[0][1:]
         username = str(username)
@@ -125,18 +126,11 @@ class RecordSpider(scrapy.Spider):
             else:
                 item_rate = None
 
-            if item.xpath("./div/div[@id='comment_box']"):
-                item_comment = item.xpath("./div/div[@id='comment_box']/div/div/div[1]/text()").extract()[0]
-            else:
-                item_comment = None
-
             watchRecord = Record(name=name,typ=tp,state=state,iid=item_id,date=item_date)
             if item_tags:
                 watchRecord["tags"]=item_tags
             if item_rate:
                 watchRecord["rate"]=item_rate
-            if item_comment:
-                watchRecord["comment"]=item_comment
             yield watchRecord
 
         if len(items)==24:
@@ -145,6 +139,7 @@ class RecordSpider(scrapy.Spider):
 
 class FriendsSpider(scrapy.Spider):
     name='friends'
+    handle_httpstatus_list = [302]
     def __init__(self, *args, **kwargs):
         super(FriendsSpider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
@@ -158,3 +153,38 @@ class FriendsSpider(scrapy.Spider):
         lst = response.xpath(".//*[@id='memberUserList']/li//@href").extract()
         for itm in lst:
             yield Friend(user = user, friend = str(itm.split('/')[-1]))
+
+class SubjectInfoSpider(scrapy.Spider):
+    name="subjectinfo"
+    def __init__(self, *args, **kwargs):
+        super(SubjectInfoSpider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=200000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+
+    def make_requests_from_url(self, url):
+        rtn = Request(url)
+        rtn.meta['dont_redirect']=True
+        return rtn;
+
+    def parse(self, response):
+        subject_id = int(response.url.split('/')[-1])
+        if not response.xpath(".//*[@id='headerSubject']"):
+            return
+        if response.xpath(".//div[@class='tipIntro']"):
+            label = False
+        typestring = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
+        typestring = typestring.split(' ')[1];
+
+        infobox = [itm.extract()[:-2] for itm in response.xpath(".//div[@class='infobox']//span/text()")]
+        infobox = set(infobox)
+
+        relations = [itm.extract() for itm in response.xpath(".//ul[@class='browserCoverMedium clearit']/li[@class='sep']/span/text()")]
+        relations = set(relations)
+
+        yield SubjectInfo(subjectid=subject_id,
+                          subjecttype=typestring,
+                          infobox=infobox,
+                          relations=relations)

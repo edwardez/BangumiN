@@ -23,7 +23,6 @@ class Record(scrapy.Item):
     date = scrapy.Field()
     ## Following three are optional.
     rate = scrapy.Field()
-    comment = scrapy.Field()
     tags = scrapy.Field()
 
 class Index(scrapy.Item):
@@ -38,3 +37,10 @@ class Friend(scrapy.Item):
     user = scrapy.Field()
     friend = scrapy.Field()
     # No date information
+
+class SubjectInfo(scrapy.Item):
+    """This is not the final subject item. It is intended to collect infobox terms and types of relationships"""
+    subjectid = scrapy.Field()
+    subjecttype = scrapy.Field()
+    infobox = scrapy.Field()
+    relations = scrapy.Field()

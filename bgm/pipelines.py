@@ -9,6 +9,7 @@ from scrapy.exceptions import DropItem
 from twisted.enterprise import adbapi
 from scrapy import signals
 from scrapy.contrib.exporter import JsonLinesItemExporter
+import cPickle
 
 class MySQLPipeline(object):
     def __init__(self, dbpool):
@@ -28,15 +29,18 @@ class MySQLPipeline(object):
         return cls(dbpool)# cls is the name of the class
 
     def process_item(self, item, spider):
-        # run db query in the thread pool
-        d = self.dbpool.runInteraction(self._do_upsert, item, spider)# a derefer
-        d.addErrback(self._handle_error, item, spider)
-        # at the end return the item in case of success or failure
-        d.addBoth(lambda _: item)
-        # return the deferred instead the item. This makes the engine to
-        # process next item (according to CONCURRENT_ITEMS setting) after this
-        # operation (deferred) has finished.
-        return d
+        if spider.name=='user' or spider.name=='record':
+            # run db query in the thread pool
+            d = self.dbpool.runInteraction(self._do_upsert, item, spider)# a derefer
+            d.addErrback(self._handle_error, item, spider)
+            # at the end return the item in case of success or failure
+            d.addBoth(lambda _: item)
+            # return the deferred instead the item. This makes the engine to
+            # process next item (according to CONCURRENT_ITEMS setting) after this
+            # operation (deferred) has finished.
+            return d
+        else:
+            return item
 
     def _do_upsert(self, conn, item, spider):
         """Perform an insert or update."""
@@ -94,17 +98,53 @@ class JsonPipeline(object):
          return pipeline
 
     def spider_opened(self, spider):
-        file = open('%s.json' % spider.name, 'wb')
-        self.files[spider] = file
-        self.exporter = JsonLinesItemExporter(file)
-        self.exporter.start_exporting()
+        if spider.name=='friends' or spider.name=='index':
+            file = open('%s.json' % spider.name, 'wb')
+            self.files[spider] = file
+            self.exporter = JsonLinesItemExporter(file)
+            self.exporter.start_exporting()
 
     def spider_closed(self, spider):
-        self.exporter.finish_exporting()
-        file = self.files.pop(spider)
-        file.close()
+        if spider.name=='friends' or spider.name=='index':
+            self.exporter.finish_exporting()
+            file = self.files.pop(spider)
+            file.close()
 
     def process_item(self, item, spider):
-        if item.__class__.__name__=='Index' or item.__class__.__name__=='Friend':
+        if spider.name=='friends' or spider.name=='index':
             self.exporter.export_item(item)
+        return item
+
+
+class SubjectInfoPipeline(object):
+    """We do the statistical staff here."""
+    def __init__(self):
+        self.subjectinfo = {"Anime":{}, "Book":{}, "Music":{}, "Game":{}, "Real":{}};
+        self.relations = {};
+
+    @classmethod
+    def from_crawler(cls, crawler):
+         pipeline = cls()
+         crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+         return pipeline
+
+    def spider_closed(self, spider):
+        if spider.name=='subjectinfo':
+            with open("subjectinfo.pkl", "wb") as fw:
+                cPickle.dump(self.subjectinfo, fw)
+                cPickle.dump(self.relations, fw)
+
+    def process_item(self, item, spider):
+        if spider.name=='subjectinfo':
+            tp = item['subjecttype']
+            for staff in item['infobox']:
+                if staff in self.subjectinfo[tp].keys():
+                    self.subjectinfo[tp][staff]+=1
+                else:
+                    self.subjectinfo[tp][staff]=1
+            for rela in item['relations']:
+                if rela in self.relations.keys():
+                    self.relations[rela]+=1
+                else:
+                    self.relations[rela]=1
         return item

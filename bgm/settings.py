@@ -18,7 +18,16 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 ITEM_PIPELINES = {
     'bgm.pipelines.MySQLPipeline': 300,
     'bgm.pipelines.JsonPipeline': 400,
+    'bgm.pipelines.SubjectInfoPipeline': 500
 }
+
+#DOWNLOADER_MIDDLEWARES = {
+#    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None
+#}
+
+#REDIRECT_ENABLED = True
+
+#LOG_FILE = '/var/log/scrapy/scrapy.log'
 
 MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'bgm'

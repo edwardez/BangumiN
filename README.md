@@ -12,11 +12,11 @@ You should set up mysql first. All the information were stored in mysql. You sho
 
 ```sql
 CREATE TABLE `users` (
-  `uid` int(9) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `joindate` date NOT NULL,
-  PRIMARY KEY (`name`),
-)
+  `uid` INTEGER(9) NOT NULL,
+  `name` VARCHAR(30) NOT NULL,
+  `joindate` DATE NOT NULL,
+  PRIMARY KEY (`name`)
+);
 
 CREATE TABLE `record` (
   `name` varchar(100) NOT NULL,
@@ -25,9 +25,8 @@ CREATE TABLE `record` (
   `state` varchar(7) NOT NULL,
   `adddate` date NOT NULL,
   `rate` int(2) DEFAULT NULL,
-  `comment` text,
   `tags` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`name`,`iid`),
+  PRIMARY KEY (`name`,`iid`)
 )
 ```
 
@@ -35,37 +34,28 @@ Then you deploy your spider to aws EC2. Don't forget to open 6800 port for [scra
 
 Then follow the following steps:
 
-1. Go to [Miniconda](http://conda.pydata.org/miniconda.html) to download the latest Miniconda to your VPS.
-
+1. Go to [Miniconda](http://conda.pydata.org/miniconda.html) to download the latest Miniconda to your VPS.  
 2. Create an environment for scrapy. In this case, we name it "scrapyenv":
-
 ```
 conda create -n scrapyenv python
 source activate scrapyenv
-```
-
+```  
 3. Install the prerequisites for scrapyd:
-
 ```
 conda install lxml
 pip install scrapyd
 pip install mysql-python
 pip install service_identity
-```
-
+```  
 4. Run scrapyd:
-
 ```
 sudo touch /var/log/scrapyd.log
 sudo chown ec2-user:ec2-user /var/log/scrapyd.log
 scrapyd --logfile=/var/log/scrapyd.log &
-```
-
-At this time, you can check http://votre.site:6800/ to see if scrapyd presents you a web interface.
-
-5. Then on your local machine, you have to package your project to upload it to your scrapyd server. You have to `pip install scrapyd-client` to help you package and upload. For this part, you can refer to [here](https://github.com/scrapy/scrapyd-client).
-
-6. Execute `curl http://votre.site:6800/schedule.json -d project=bgm -d spider=the-spider-you-want`
+```  
+At this time, you can check http://votre.site:6800/ to see if scrapyd presents you a web interface.  
+5. Then on your local machine, you have to package your project to upload it to your scrapyd server. You have to `pip install scrapyd-client` to help you package and upload. For this part, you can refer to [here](https://github.com/scrapy/scrapyd-client).  
+6. Execute `curl http://votre.site:6800/schedule.json -d project=bgm -d spider=the-spider-you-want`  
 
 ## License
 

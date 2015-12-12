@@ -57,3 +57,5 @@ target/
 # Other test outputs
 *.jl
 *.sql
+*.json
+*.pkl

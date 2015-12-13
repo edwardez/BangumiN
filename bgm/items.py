@@ -42,5 +42,16 @@ class SubjectInfo(scrapy.Item):
     """This is not the final subject item. It is intended to collect infobox terms and types of relationships"""
     subjectid = scrapy.Field()
     subjecttype = scrapy.Field()
-    infobox = scrapy.Field()
+    infobox = scrapy.Field()subjectid = int(response.url.split('/')[-1])
     relations = scrapy.Field()
+
+class Subject(scrapy.Item):
+    subjectid = scrapy.Field()
+    subjecttype = scrapy.Field()
+    subjectname = scrapy.Field()
+    # The following are all optional
+    rank = scrapy.Field()
+    date = scrapy.Field()
+    staff = scrapy.Field() #map
+    relations = scrapy.Field() #map
+    tags = scrapy.Field() #map

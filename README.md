@@ -11,6 +11,9 @@ Currently, bangumi spider can scrape user information, users' item record (their
 You should set up mysql first. All the information were stored in mysql. You should create two tables named “users” and “record”:
 
 ```sql
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `record`;
+
 CREATE TABLE `users` (
   `uid` INTEGER(9) NOT NULL,
   `name` VARCHAR(30) NOT NULL,
@@ -25,9 +28,8 @@ CREATE TABLE `record` (
   `state` varchar(7) NOT NULL,
   `adddate` date NOT NULL,
   `rate` int(2) DEFAULT NULL,
-  `tags` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`name`,`iid`)
-)
+);
 ```
 
 Then you deploy your spider to aws EC2. Don't forget to open 6800 port for [scrapyd](http://scrapyd.readthedocs.org/en/latest/), the scrapy on the production environment.

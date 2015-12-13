@@ -56,10 +56,9 @@ class MySQLPipeline(object):
         elif item.__class__.__name__=='Record':
 
             conn.execute("insert into record (name, typ, iid, state, adddate, \
-            rate, comment, tags) values (\"%s\", \"%s\", %s, \"%s\", \"%s\", \
-            %s, %s, %s)"%(item["name"], item["typ"], str(item["iid"]),\
-            item["state"], item["date"].isoformat(), self._getrate(item), \
-            self._getcomment(item), self._gettags(item)))
+            rate) values (\"%s\", \"%s\", %s, \"%s\", \"%s\", \
+            %s)"%(item["name"], item["typ"], str(item["iid"]),\
+            item["state"], item["date"].isoformat(), self._getrate(item)))
 
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
@@ -98,20 +97,22 @@ class JsonPipeline(object):
          return pipeline
 
     def spider_opened(self, spider):
-        if spider.name=='friends' or spider.name=='index':
+        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
             file = open('%s.json' % spider.name, 'wb')
             self.files[spider] = file
             self.exporter = JsonLinesItemExporter(file)
+            if spider.name=='record':
+                self.exporter.fields_to_export = ['name','iid','tags']
             self.exporter.start_exporting()
 
     def spider_closed(self, spider):
-        if spider.name=='friends' or spider.name=='index':
+        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
             self.exporter.finish_exporting()
             file = self.files.pop(spider)
             file.close()
 
     def process_item(self, item, spider):
-        if spider.name=='friends' or spider.name=='index':
+        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
             self.exporter.export_item(item)
         return item
 

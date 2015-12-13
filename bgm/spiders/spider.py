@@ -174,7 +174,7 @@ class SubjectInfoSpider(scrapy.Spider):
         if not response.xpath(".//*[@id='headerSubject']"):
             return
         if response.xpath(".//div[@class='tipIntro']"):
-            label = False
+            return
         typestring = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
         typestring = typestring.split(' ')[1];
 
@@ -188,3 +188,36 @@ class SubjectInfoSpider(scrapy.Spider):
                           subjecttype=typestring,
                           infobox=infobox,
                           relations=relations)
+
+class SubjectSpider(scrapy.Spider):
+    name="subject"
+    def __init__(self, *args, **kwargs):
+        super(SubjectSpider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=200000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+
+    def make_requests_from_url(self, url):
+        rtn = Request(url)
+        rtn.meta['dont_redirect']=True
+        return rtn;
+
+    def parse(self, response):
+        subjectid = int(response.url.split('/')[-1])
+        if not response.xpath(".//*[@id='headerSubject']"):
+            return
+        if response.xpath(".//div[@class='tipIntro']"):
+            return
+
+        subjecttype = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
+        subjecttype = subjecttype.split(' ')[1].lower();
+
+        subjectname = response.xpath(".//*[@id='headerSubject']/h1/a/attribute::title").extract()[0]
+
+        rank = response.xpath(".//div[@class='global_score']/div/small[2]/text()")[0]
+        if rank==u'--':
+            rank=None;
+        else:
+            rank = int(rank[1:])

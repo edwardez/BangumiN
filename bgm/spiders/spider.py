@@ -221,3 +221,28 @@ class SubjectSpider(scrapy.Spider):
             rank=None;
         else:
             rank = int(rank[1:])
+        votenum = int(response.xpath(".//*[@id='ChartWarpper']/div/small/span/text()").extract()[0])
+
+        tplst = [itm.split('/')[-1] for itm in response.xpath(".//*[@id='columnSubjectHomeA']/div[3]/span/a/@href").extract()]
+        favcount = [0]*5; j=1;
+        for i in xrange(5):
+            if not tplst or tplst[0]!=statestr[i]:
+                favcount[i]=0;
+            else:
+                tmpstr = response.xpath(".//*[@id='columnSubjectHomeA']/div[3]/span/a["+str(j)+"]/text()").extract()[0]
+                mtch = re.match(ur"^(\d+)", tmpstr);
+                favcount[i] = int(mtch.group());
+                j+=1
+                tplst = tplst[1:]
+
+        infokey = [itm[:-2] for itm in response.xpath(".//div[@class='infobox']//li/span/text()").extract()]
+        infoval = response.xpath(".//div[@class='infobox']//li")
+        infobox = dict(zip(infokey, infoval))
+        date = None
+        for datekey in datestr:
+            if datekey in infobox.keys():
+                date = parsedate(infobox[datekey].xpath('text()').extract()[0]) #may be none
+                if date is not None:
+                    continue;
+                else: break;
+        

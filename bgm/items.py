@@ -55,6 +55,6 @@ class Subject(scrapy.Item):
     favcount = scrapy.Field()
     date = scrapy.Field()
 
-    staff = scrapy.Field() #map
+    staff = scrapy.Field() # feature list!
     relations = scrapy.Field() #map
     tags = scrapy.Field() #map

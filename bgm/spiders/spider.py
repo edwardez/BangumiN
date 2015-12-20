@@ -1,8 +1,9 @@
 import scrapy
 import re
-from bgm.items import Record, Index, Friend, User, SubjectInfo
-from bgm.util import parsedate,getnextpage, blockstr
+from bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
+from bgm.util import *
 from scrapy.http import Request
+
 
 class UserSpider(scrapy.Spider):
     name='user'
@@ -215,8 +216,10 @@ class SubjectSpider(scrapy.Spider):
         subjecttype = subjecttype.split(' ')[1].lower();
 
         subjectname = response.xpath(".//*[@id='headerSubject']/h1/a/attribute::title").extract()[0]
+        if not subjectname:
+            subjectname = response.xpath(".//*[@id='headerSubject']/h1/a/text()").extract()[0]
 
-        rank = response.xpath(".//div[@class='global_score']/div/small[2]/text()")[0]
+        rank = response.xpath(".//div[@class='global_score']/div/small[2]/text()").extract()[0]
         if rank==u'--':
             rank=None;
         else:
@@ -237,12 +240,65 @@ class SubjectSpider(scrapy.Spider):
 
         infokey = [itm[:-2] for itm in response.xpath(".//div[@class='infobox']//li/span/text()").extract()]
         infoval = response.xpath(".//div[@class='infobox']//li")
-        infobox = dict(zip(infokey, infoval))
+        infobox = dict()
+        for key,val in zip(infokey, infoval):
+            if key in infobox:
+                infobox[key].append(val);
+            else:
+                infobox[key]=[val]
+
         date = None
         for datekey in datestr:
-            if datekey in infobox.keys():
-                date = parsedate(infobox[datekey].xpath('text()').extract()[0]) #may be none
+            if datekey in infobox:
+                date = parsedate(infobox[datekey][0].xpath('text()').extract()[0]) #may be none
                 if date is not None:
                     continue;
                 else: break;
-        
+
+        staff = []
+        for f in featurelist:
+            idx = []
+            for itm in f:
+                if itm in infobox:
+                    path = infobox[itm] # a list of selectors
+                    # extract all links
+                    for sel in path:
+                        # each sel contains multiple links
+                        if sel.xpath("a"):
+                            idx+=[int(ref.split('/')[-1]) for ref in
+                                  sel.xpath("a/@href").extract()]
+            staff.append(idx)
+
+        relateditms = \
+        response.xpath(".//ul[@class='browserCoverMedium clearit']/li")
+        relations = [None]*len(relationlist)
+        for itm in relateditms:
+            if itm.xpath("@class"):
+                idx = relationlist.index(itm.xpath("span/text()").extract()[0])
+                relations[idx]=[int(itm.xpath("a[@class='title']/@href").
+                                extract()[0].split('/')[-1])]
+            else:
+                relations[idx].append(int(itm.xpath("a[@class='title']/@href").
+                                      extract()[0].split('/')[-1]))
+        brouche = response.xpath(".//ul[@class='browserCoverSmall clearit']/li")
+        if brouche:
+            relations[-1]=[int(itm.split('/')[-1]) for itm in
+                           brouche.xpath("a/@href").extract()]
+        for i in xrange(len(relations)):
+            if relations[i] is None: relations[i]=[]
+
+        tagbox = response.xpath(".//div[@class='subject_tag_section']/div")
+        tagname = tagbox.xpath("a/text()").extract()
+        tagval = [int(itm) for itm in tagbox.xpath("small").re("\d+")]
+        tags = dict(zip(tagname,tagval))
+
+        yield Subject(subjectid=subjectid,
+                      subjecttype=subjecttype,
+                      subjectname=subjectname,
+                      rank=rank,
+                      votenum=votenum,
+                      favcount=favcount,
+                      date=date,
+                      staff=staff,
+                      relations=relations,
+                      tags=tags)

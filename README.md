@@ -13,6 +13,7 @@ You should set up mysql first. All the information were stored in mysql. You sho
 ```sql
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `record`;
+DROP TABLE IF EXISTS `subject`;
 
 CREATE TABLE `users` (
   `uid` INTEGER(9) NOT NULL,
@@ -29,6 +30,17 @@ CREATE TABLE `record` (
   `adddate` date NOT NULL,
   `rate` int(2) DEFAULT NULL,
   PRIMARY KEY (`name`,`iid`)
+);
+
+CREATE TABLE `subject` (
+  `id` INTEGER NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `type` VARCHAR(5) NOT NULL,
+  `date` DATE NULL DEFAULT NULL,
+  `rank` INTEGER NULL DEFAULT NULL,
+  `favnum` INTEGER NOT NULL DEFAULT 0,
+  `votenum` INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 );
 ```
 

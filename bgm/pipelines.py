@@ -29,7 +29,8 @@ class MySQLPipeline(object):
         return cls(dbpool)# cls is the name of the class
 
     def process_item(self, item, spider):
-        if spider.name=='user' or spider.name=='record':
+        if spider.name=='user' or spider.name=='record' or \
+        spider.name=='subject':
             # run db query in the thread pool
             d = self.dbpool.runInteraction(self._do_upsert, item, spider)# a derefer
             d.addErrback(self._handle_error, item, spider)
@@ -60,6 +61,13 @@ class MySQLPipeline(object):
             %s)"%(item["name"], item["typ"], str(item["iid"]),\
             item["state"], item["date"].isoformat(), self._getrate(item)))
 
+        elif item.__class__.__name__=='Subject':
+            conn.execute("insert into subject (id, name, type, date, rank, \
+            votenum, favnum) values (\"%s\", \"%s\", \"%s\", \"%s\", %s, \
+            \"%s\", \"%s\")"%(item['subjectid'], item['subjectname'],
+            item['subjecttype'], self._getdate(item), self._getrank(item),
+            str(item['votenum']), str(sum(item['favcount'])) ))
+
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
         # do nothing, just log
@@ -76,6 +84,18 @@ class MySQLPipeline(object):
             return "NULL"
         else:
             return str(item["rate"])
+
+    def _getrank(self, item):
+        if item["rank"] is None:
+            return "NULL"
+        else:
+            return str(item["rank"])
+
+    def _getdate(self, item):
+        if item["date"] is None:
+            return "NULL"
+        else:
+            return item["date"].date().isoformat()
 
     def _getcomment(self, item):
         if not "comment" in item:
@@ -97,22 +117,28 @@ class JsonPipeline(object):
          return pipeline
 
     def spider_opened(self, spider):
-        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
+        if spider.name=='friends' or spider.name=='index' or \
+           spider.name=='record' or spider.name=='subject':
             file = open('%s.json' % spider.name, 'wb')
             self.files[spider] = file
             self.exporter = JsonLinesItemExporter(file)
             if spider.name=='record':
                 self.exporter.fields_to_export = ['name','iid','tags']
+            elif spider.name=='subject':
+                self.exporter.fields_to_export = ['subjectid','staff',
+                'relations','tags']
             self.exporter.start_exporting()
 
     def spider_closed(self, spider):
-        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
+        if spider.name=='friends' or spider.name=='index' \
+           or spider.name=='record' or spider.name=='subject':
             self.exporter.finish_exporting()
             file = self.files.pop(spider)
             file.close()
 
     def process_item(self, item, spider):
-        if spider.name=='friends' or spider.name=='index' or spider.name=='record':
+        if spider.name=='friends' or spider.name=='index' or \
+        spider.name=='record' or spider.name=='subject':
             self.exporter.export_item(item)
         return item
 
@@ -120,7 +146,8 @@ class JsonPipeline(object):
 class SubjectInfoPipeline(object):
     """We do the statistical staff here."""
     def __init__(self):
-        self.subjectinfo = {"Anime":{}, "Book":{}, "Music":{}, "Game":{}, "Real":{}};
+        self.subjectinfo = {"Anime":{}, "Book":{}, "Music":{}, "Game":{},
+                            "Real":{}};
         self.relations = {};
 
     @classmethod

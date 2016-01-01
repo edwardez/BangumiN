@@ -93,7 +93,7 @@ def parsedate(bgmdate):
             days = int(mt.groups()[20])
         else:
             month = 2
-            days = int(mt.groups()[27])
+            days = int(mt.groups()[26])
         dt = datetime.datetime(year, month, days)
     elif mt.groups()[29] is not None:
         year = int(mt.groups()[30])

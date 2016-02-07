@@ -6,7 +6,7 @@ from scrapy.http import Request
 
 
 class UserSpider(scrapy.Spider):
-    name='user'
+    name = 'user'
     def __init__(self, *args, **kwargs):
         super(UserSpider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
@@ -27,7 +27,7 @@ class UserSpider(scrapy.Spider):
         date = response.xpath(".//*[@id='user_home']/div[@class='user_box clearit']/ul/li[1]/span[2]/text()").extract()[0].split(' ')[0]
         date = parsedate(date)
 
-        #Is blocked?
+        # Is blocked?
         if len(response.xpath(".//*[@id='anime']"))==0 and \
         len(response.xpath(".//*[@id='game']"))==0 and\
         len(response.xpath(".//*[@id='book']"))==0 and\
@@ -38,8 +38,6 @@ class UserSpider(scrapy.Spider):
         prohibited = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/a/text()")\
         .extract()[0]==blockstr and nowatchrecord
         yield User(name=user, uid=uid, date=date, prohibited=prohibited)
-
-
 
 class IndexSpider(scrapy.Spider):
     name='index'
@@ -250,7 +248,10 @@ class SubjectSpider(scrapy.Spider):
         date = None
         for datekey in datestr:
             if datekey in infobox:
-                date = parsedate(infobox[datekey][0].xpath('text()').extract()[0]) #may be none
+                try:
+                    date = parsedate(infobox[datekey][0].xpath('text()').extract()[0]) #may be none
+                except:
+                    date = None;
                 if date is not None:
                     continue;
                 else: break;
@@ -269,8 +270,7 @@ class SubjectSpider(scrapy.Spider):
                                   sel.xpath("a/@href").extract()]
             staff.append(idx)
 
-        relateditms = \
-        response.xpath(".//ul[@class='browserCoverMedium clearit']/li")
+        relateditms = response.xpath(".//ul[@class='browserCoverMedium clearit']/li")
         relations = [None]*len(relationlist)
         for itm in relateditms:
             if itm.xpath("@class"):

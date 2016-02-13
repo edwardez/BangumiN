@@ -37,7 +37,9 @@ class UserSpider(scrapy.Spider):
         else: nowatchrecord=False;
         prohibited = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/a/text()")\
         .extract()[0]==blockstr and nowatchrecord
-        yield User(name=user, uid=uid, date=date, prohibited=prohibited)
+        if prohibited:
+            return;
+        yield User(name=user, uid=uid, date=date)
 
 class IndexSpider(scrapy.Spider):
     name='index'
@@ -200,15 +202,22 @@ class SubjectSpider(scrapy.Spider):
 
     def make_requests_from_url(self, url):
         rtn = Request(url)
-        rtn.meta['dont_redirect']=True
+        # rtn.meta['dont_redirect']=True
         return rtn;
 
     def parse(self, response):
         subjectid = int(response.url.split('/')[-1])
         if not response.xpath(".//*[@id='headerSubject']"):
             return
+
         if response.xpath(".//div[@class='tipIntro']"):
-            return
+            return;
+
+        if 'redirect_urls' in response.meta:
+            authenticid = int(response.meta['redirect_urls'][0].split('/')[-1])
+            authenticid, subjectid = subjectid, authenticid
+        else:
+            authenticid = None;
 
         subjecttype = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
         subjecttype = subjecttype.split(' ')[1].lower();
@@ -252,9 +261,9 @@ class SubjectSpider(scrapy.Spider):
                     date = parsedate(infobox[datekey][0].xpath('text()').extract()[0]) #may be none
                 except:
                     date = None;
-                if date is not None:
-                    continue;
-                else: break;
+            if date is None:
+                continue;
+            else: break;
 
         staff = []
         for f in featurelist:
@@ -295,6 +304,7 @@ class SubjectSpider(scrapy.Spider):
         yield Subject(subjectid=subjectid,
                       subjecttype=subjecttype,
                       subjectname=subjectname,
+                      authenticid=authenticid,
                       rank=rank,
                       votenum=votenum,
                       favcount=favcount,

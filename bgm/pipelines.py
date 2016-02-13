@@ -46,11 +46,10 @@ class MySQLPipeline(object):
     def _do_upsert(self, conn, item, spider):
         """Perform an insert or update."""
         if item.__class__.__name__=='User':
-            if not item['prohibited']:
-                conn.execute("""
-                insert into users (uid, name, joindate)
-                values (%s, %s, %s)
-                """, (item["uid"], item["name"], item["date"].isoformat()))
+            conn.execute("""
+            insert into users (uid, name, joindate)
+            values (%s, %s, %s)
+            """, (item["uid"], item["name"], item["date"].isoformat()))
 
         # spider.log("Item stored in db: %s\n" % (item["name"]))
 
@@ -62,10 +61,11 @@ class MySQLPipeline(object):
             item["state"], item["date"].isoformat(), self._getrate(item)))
 
         elif item.__class__.__name__=='Subject':
-            conn.execute("insert into subject (id, name, type, date, rank, \
-            votenum, favnum) values (\"%s\", \"%s\", \"%s\", \"%s\", %s, \
-            \"%s\", \"%s\")"%(item['subjectid'], item['subjectname'],
-            item['subjecttype'], self._getdate(item), self._getrank(item),
+            conn.execute("insert into subject (id, name, type, redid, \
+            date, rank, votenum, favnum) values (\"%s\", \"%s\", \"%s\",\
+            %s, \"%s\", %s, \"%s\", \"%s\")"%(item['subjectid'],
+            item['subjectname'], item['subjecttype'], self._getauthenticid(item),
+            self._getdate(item), self._getrank(item),
             str(item['votenum']), str(sum(item['favcount'])) ))
 
     def _handle_error(self, failure, item, spider):
@@ -103,6 +103,11 @@ class MySQLPipeline(object):
         else:
             return '\"'+item["comment"]+'\"'
 
+    def _getauthenticid(self, item):
+        if item['authenticid'] is None:
+            return "NULL"
+        else:
+            return str(item['authenticid'])
 
 class JsonPipeline(object):
     """Index should be recorded in a json file."""

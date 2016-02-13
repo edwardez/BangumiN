@@ -30,7 +30,7 @@ ITEM_PIPELINES = {
 #LOG_FILE = '/var/log/scrapy/scrapy.log'
 
 MYSQL_HOST = 'localhost'
-MYSQL_DBNAME = 'bgm'
+MYSQL_DBNAME = 'bgmtest'
 MYSQL_USER = 'bgmer'
 MYSQL_PASSWD = 'sai'
 

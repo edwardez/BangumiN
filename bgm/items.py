@@ -11,7 +11,6 @@ class User(scrapy.Item):
     name = scrapy.Field()
     uid = scrapy.Field()
     date = scrapy.Field()
-    prohibited = scrapy.Field()
 
 
 class Record(scrapy.Item):
@@ -49,6 +48,7 @@ class Subject(scrapy.Item):
     subjectid = scrapy.Field()
     subjecttype = scrapy.Field()
     subjectname = scrapy.Field()
+    authenticid = scrapy.Field() # may be None
     # The following are all optional
     rank = scrapy.Field()
     votenum = scrapy.Field()

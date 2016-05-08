@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'bgm (+http://www.yourdomain.com)'
 ITEM_PIPELINES = {
-    'bgm.pipelines.MySQLPipeline': 300,
+    'bgm.pipelines.UserPipeline': 300,
     'bgm.pipelines.JsonPipeline': 400,
     'bgm.pipelines.SubjectInfoPipeline': 500
 }
@@ -30,8 +30,9 @@ ITEM_PIPELINES = {
 #LOG_FILE = '/var/log/scrapy/scrapy.log'
 
 MYSQL_HOST = 'localhost'
-MYSQL_DBNAME = 'bgmtest'
+MYSQL_DBNAME = 'bgm'
 MYSQL_USER = 'bgmer'
 MYSQL_PASSWD = 'sai'
+MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
 
 DOWNLOAD_DELAY = 0.25

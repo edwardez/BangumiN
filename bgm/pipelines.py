@@ -10,6 +10,8 @@ from twisted.enterprise import adbapi
 from scrapy import signals
 from scrapy.contrib.exporter import JsonLinesItemExporter
 import cPickle
+import codecs
+
 
 class MySQLPipeline(object):
     def __init__(self, dbpool):
@@ -108,6 +110,91 @@ class MySQLPipeline(object):
             return "NULL"
         else:
             return str(item['authenticid'])
+
+class UserPipeline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
+        self.files = {}
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        dbargs = dict(
+            host=crawler.settings.get('MYSQL_HOST'),
+            db=crawler.settings.get('MYSQL_DBNAME'),
+            user=crawler.settings.get('MYSQL_USER'),
+            passwd=crawler.settings.get('MYSQL_PASSWD'),
+            charset='utf8',
+            use_unicode=True,
+            unix_socket=crawler.settings.get("MYSQL_SOCKET")
+        )
+        dbpool = adbapi.ConnectionPool('MySQLdb', **dbargs) # dbpool is a pool
+        pipeline = cls(dbpool)
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def process_item(self, item, spider):
+        if spider.name=='user':
+            # run db query in the thread pool
+            d = self.dbpool.runInteraction(self._do_upsert, item, spider)# a derefer
+            d.addErrback(self._handle_error, item, spider)
+            # at the end return the item in case of success or failure
+            d.addBoth(lambda _: item)
+            # return the deferred instead the item. This makes the engine to
+            # process next item (according to CONCURRENT_ITEMS setting) after this
+            # operation (deferred) has finished.
+            return d
+        else:
+            return item
+
+    def spider_opened(self, spider):
+        if spider.name=='user':
+            file = codecs.open('user.json', 'wb', encoding="utf-8")
+            self.files[spider] = file
+            self.exporter = JsonLinesItemExporter(file, encoding="utf-8")
+            self.exporter.start_exporting()
+
+    def spider_closed(self, spider):
+        if spider.name=='user':
+            self.exporter.finish_exporting()
+            file = self.files.pop(spider)
+            file.close()
+
+
+    def _do_upsert(self, conn, item, spider):
+        """
+        This function performs a check of whether user is recorded in the db
+        If yes, update the last_active and nickname if necessary.
+        If no, record this in the delta file in json.
+        """
+        conn.execute("""
+        select 1 from users where name=%s
+        """, (item["name"],))
+        rtn = conn.fetchone()
+
+        if rtn:
+            if rtn[1]!=item['nickname'] or rtn[4]!=item['activedate'].date().\
+            isoformat():
+                conn.execute("""
+                update users set nickname=%s, activedate=%s where name=%s
+                """, (self._null_processor(item['nickname']),
+                item['activedate'].date().isoformat(),
+                item['name']))
+        else:
+            self.exporter.export_item(item)
+
+
+    def _handle_error(self, failure, item, spider):
+        """Handle occurred on db interaction."""
+        # do nothing, just log
+        log.err(failure)
+
+    def _null_processor(self, s):
+        if not s:
+            return "NULL"
+        else:
+            return s
+
 
 class JsonPipeline(object):
     """Index should be recorded in a json file."""

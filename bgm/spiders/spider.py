@@ -3,6 +3,7 @@ import re
 from bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
 from bgm.util import *
 from scrapy.http import Request
+import datetime
 
 
 class UserSpider(scrapy.Spider):
@@ -19,13 +20,7 @@ class UserSpider(scrapy.Spider):
         if len(response.xpath(".//*[@id='headerProfile']"))==0:
             return
         user = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/small/text()").extract()[0][1:]
-        user = str(user)
-        if not 'redirect_urls' in response.meta:
-            uid = int(user)
-        else:
-            uid = int(response.meta['redirect_urls'][0].split('/')[-1])
-        date = response.xpath(".//*[@id='user_home']/div[@class='user_box clearit']/ul/li[1]/span[2]/text()").extract()[0].split(' ')[0]
-        date = parsedate(date)
+        nickname = response.xpath(".//*[@class='headerContainer']//*[@class='inner']/a/text()").extract()[0]
 
         # Is blocked?
         if len(response.xpath(".//*[@id='anime']"))==0 and \
@@ -35,11 +30,23 @@ class UserSpider(scrapy.Spider):
         len(response.xpath(".//*[@id='real']"))==0:
             nowatchrecord=True;
         else: nowatchrecord=False;
-        prohibited = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/a/text()")\
-        .extract()[0]==blockstr and nowatchrecord
+        prohibited = nickname==blockstr and nowatchrecord
         if prohibited:
             return;
-        yield User(name=user, uid=uid, date=date)
+
+        if not 'redirect_urls' in response.meta:
+            uid = int(user)
+        else:
+            uid = int(response.meta['redirect_urls'][0].split('/')[-1])
+        date = response.xpath(".//*[@id='user_home']/div[@class='user_box clearit']/ul/li[1]/span[2]/text()").extract()[0].split(' ')[0]
+        date = parsedate(date)
+        last_timestamp = response.xpath(".//*[@id='columnB']/div[1]/div/ul/li[1]/small[2]/text()").extract()[0].split()
+        if last_timestamp[-1]==u'ago':
+            last_active = datetime.date.today()
+        else:
+            last_active = parsedate(last_timestamp[0])
+
+        yield User(name=user, nickname=nickname, uid=uid, joindate=date, activedate=last_active)
 
 class IndexSpider(scrapy.Spider):
     name='index'

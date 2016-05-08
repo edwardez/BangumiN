@@ -9,8 +9,10 @@ import scrapy
 
 class User(scrapy.Item):
     name = scrapy.Field()
+    nickname = scrapy.Field()
     uid = scrapy.Field()
-    date = scrapy.Field()
+    joindate = scrapy.Field()
+    activedate = scrapy.Field()
 
 
 class Record(scrapy.Item):

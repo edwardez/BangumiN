@@ -168,17 +168,16 @@ class UserPipeline(object):
         If no, record this in the delta file in json.
         """
         conn.execute("""
-        select 1 from users where name=%s
+        select * from users where name=%s
         """, (item["name"],))
         rtn = conn.fetchone()
 
         if rtn:
-            if rtn[1]!=item['nickname'] or rtn[4]!=item['activedate'].date().\
-            isoformat():
+            if rtn[1]!=item['nickname'] or rtn[4]!=item['activedate']:
                 conn.execute("""
                 update users set nickname=%s, activedate=%s where name=%s
                 """, (self._null_processor(item['nickname']),
-                item['activedate'].date().isoformat(),
+                item['activedate'].isoformat(),
                 item['name']))
         else:
             self.exporter.export_item(item)

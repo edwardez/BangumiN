@@ -16,10 +16,13 @@ DROP TABLE IF EXISTS `record`;
 DROP TABLE IF EXISTS `subject`;
 
 CREATE TABLE `users` (
-  `uid` INTEGER(9) NOT NULL,
-  `name` VARCHAR(30) NOT NULL,
-  `joindate` DATE NOT NULL,
-  PRIMARY KEY (`name`)
+  `name` varchar(50) NOT NULL,
+  `nickname` varchar(50) DEFAULT NULL,
+  `uid` int(11) NOT NULL,
+  `joindate` date NOT NULL,
+  `activedate` date DEFAULT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name_idx` (`name`)
 );
 
 CREATE TABLE `record` (

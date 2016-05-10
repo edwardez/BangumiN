@@ -59,6 +59,10 @@ target/
 *.sql
 *.json
 *.pkl
+*.tsv
 
 # jupyter
 *.ipynb*
+
+# pycharm
+.idea

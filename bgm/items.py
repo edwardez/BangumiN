@@ -21,7 +21,7 @@ class Record(scrapy.Item):
     typ = scrapy.Field()
     iid = scrapy.Field() #name and id together forms primary key.
     state = scrapy.Field()
-    date = scrapy.Field()
+    adddate = scrapy.Field()
     ## Following three are optional.
     rate = scrapy.Field()
     tags = scrapy.Field()
@@ -54,7 +54,7 @@ class Subject(scrapy.Item):
     # The following are all optional
     rank = scrapy.Field()
     votenum = scrapy.Field()
-    favcount = scrapy.Field()
+    favnum = scrapy.Field()
     date = scrapy.Field()
 
     staff = scrapy.Field() # feature list!

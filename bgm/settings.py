@@ -17,8 +17,7 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 #USER_AGENT = 'bgm (+http://www.yourdomain.com)'
 ITEM_PIPELINES = {
     'bgm.pipelines.UserPipeline': 300,
-    'bgm.pipelines.JsonPipeline': 400,
-    'bgm.pipelines.SubjectInfoPipeline': 500
+    'bgm.pipelines.RecordPipeline': 400,
 }
 
 #DOWNLOADER_MIDDLEWARES = {

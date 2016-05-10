@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import scrapy
 import re
 from bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
@@ -79,11 +81,20 @@ class RecordSpider(scrapy.Spider):
     name='record'
     def __init__(self, *args, **kwargs):
         super(RecordSpider, self).__init__(*args, **kwargs)
-        if not hasattr(self, 'id_max'):
-            self.id_max=300000
-        if not hasattr(self, 'id_min'):
-            self.id_min=1
-        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        if hasattr(self, 'userlist'):
+            userlist = []
+            with open("self.userlist", 'r') as fr:
+                while True:
+                    l = fr.readline().strip()
+                    if not l: break;
+                    userlist.append(l)
+            self.start_urls = ["http://chii.in/user/"+i for i in userlist]
+        else:
+            if not hasattr(self, 'id_max'):
+                self.id_max=300000
+            if not hasattr(self, 'id_min'):
+                self.id_min=1
+            self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         if not response.xpath(".//*[@id='headerProfile']"):
@@ -134,7 +145,7 @@ class RecordSpider(scrapy.Spider):
             else:
                 item_rate = None
 
-            watchRecord = Record(name=name,typ=tp,state=state,iid=item_id,date=item_date)
+            watchRecord = Record(name=name,typ=tp,state=state,iid=item_id,adddate=item_date)
             if item_tags:
                 watchRecord["tags"]=item_tags
             if item_rate:
@@ -222,9 +233,8 @@ class SubjectSpider(scrapy.Spider):
 
         if 'redirect_urls' in response.meta:
             authenticid = int(response.meta['redirect_urls'][0].split('/')[-1])
-            authenticid, subjectid = subjectid, authenticid
         else:
-            authenticid = None;
+            authenticid = subjectid;
 
         subjecttype = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
         subjecttype = subjecttype.split(' ')[1].lower();
@@ -256,10 +266,9 @@ class SubjectSpider(scrapy.Spider):
         infoval = response.xpath(".//div[@class='infobox']//li")
         infobox = dict()
         for key,val in zip(infokey, infoval):
-            if key in infobox:
-                infobox[key].append(val);
-            else:
-                infobox[key]=[val]
+            if val.xpath("a"):
+                infobox[key]=[int(ref.split('/')[-1]) for ref in
+                      val.xpath("a/@href").extract()]
 
         date = None
         for datekey in datestr:
@@ -272,36 +281,20 @@ class SubjectSpider(scrapy.Spider):
                 continue;
             else: break;
 
-        staff = []
-        for f in featurelist:
-            idx = []
-            for itm in f:
-                if itm in infobox:
-                    path = infobox[itm] # a list of selectors
-                    # extract all links
-                    for sel in path:
-                        # each sel contains multiple links
-                        if sel.xpath("a"):
-                            idx+=[int(ref.split('/')[-1]) for ref in
-                                  sel.xpath("a/@href").extract()]
-            staff.append(idx)
-
         relateditms = response.xpath(".//ul[@class='browserCoverMedium clearit']/li")
-        relations = [None]*len(relationlist)
+        relations = dict()
         for itm in relateditms:
             if itm.xpath("@class"):
-                idx = relationlist.index(itm.xpath("span/text()").extract()[0])
-                relations[idx]=[int(itm.xpath("a[@class='title']/@href").
+                relationtype = itm.xpath("span/text()").extract()[0]
+                relations[relationtype]=[int(itm.xpath("a[@class='title']/@href").
                                 extract()[0].split('/')[-1])]
             else:
-                relations[idx].append(int(itm.xpath("a[@class='title']/@href").
+                relations[relationtype].append(int(itm.xpath("a[@class='title']/@href").
                                       extract()[0].split('/')[-1]))
         brouche = response.xpath(".//ul[@class='browserCoverSmall clearit']/li")
         if brouche:
-            relations[-1]=[int(itm.split('/')[-1]) for itm in
+            relations[u'单行本']=[int(itm.split('/')[-1]) for itm in
                            brouche.xpath("a/@href").extract()]
-        for i in xrange(len(relations)):
-            if relations[i] is None: relations[i]=[]
 
         tagbox = response.xpath(".//div[@class='subject_tag_section']/div")
         tagname = tagbox.xpath("a/text()").extract()

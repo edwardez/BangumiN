@@ -11,6 +11,7 @@ from scrapy import signals
 from scrapy.contrib.exporter import JsonLinesItemExporter
 import cPickle
 import codecs
+import datetime
 
 
 class MySQLPipeline(object):
@@ -115,6 +116,7 @@ class UserPipeline(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
         self.files = {}
+        self.deltauser = []
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -159,7 +161,10 @@ class UserPipeline(object):
             self.exporter.finish_exporting()
             file = self.files.pop(spider)
             file.close()
-
+            if self.deltauser:
+                with open("deltauser-"+datetime.date.today().isoformat()+".tsv", 'w') as fw:
+                    for n in self.deltauser:
+                        fw.write("%s\n"%(n,))
 
     def _do_upsert(self, conn, item, spider):
         """
@@ -176,9 +181,92 @@ class UserPipeline(object):
             if rtn[1]!=item['nickname'] or rtn[4]!=item['activedate']:
                 conn.execute("""
                 update users set nickname=%s, activedate=%s where name=%s
-                """, (self._null_processor(item['nickname']),
+                """, (self._str_null_processor(item['nickname']),
                 item['activedate'].isoformat(),
                 item['name']))
+                self.deltauser.append(item['name'])
+        else:
+            self.exporter.export_item(item)
+            self.deltauser.append(item['name'])
+
+
+    def _handle_error(self, failure, item, spider):
+        """Handle occurred on db interaction."""
+        # do nothing, just log
+        log.err(failure)
+
+    def _str_null_processor(self, s):
+        if not s:
+            return "NULL"
+        else:
+            return s
+
+class RecordPipeline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
+        self.files = {}
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        dbargs = dict(
+            host=crawler.settings.get('MYSQL_HOST'),
+            db=crawler.settings.get('MYSQL_DBNAME'),
+            user=crawler.settings.get('MYSQL_USER'),
+            passwd=crawler.settings.get('MYSQL_PASSWD'),
+            charset='utf8',
+            use_unicode=True,
+            unix_socket=crawler.settings.get("MYSQL_SOCKET")
+        )
+        dbpool = adbapi.ConnectionPool('MySQLdb', **dbargs) # dbpool is a pool
+        pipeline = cls(dbpool)
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def process_item(self, item, spider):
+        if spider.name=='record':
+            d = self.dbpool.runInteraction(self._do_upsert, item, spider)
+            d.addErrback(self._handle_error, item, spider)
+            d.addBoth(lambda _: item)
+            return d
+        else:
+            return item
+
+    def spider_opened(self, spider):
+        if spider.name=='record':
+            file = codecs.open('record.json', 'wb', encoding="utf-8")
+            self.files[spider] = file
+            self.exporter = JsonLinesItemExporter(file, encoding="utf-8")
+            self.exporter.start_exporting()
+
+    def spider_closed(self, spider):
+        if spider.name=='record':
+            self.exporter.finish_exporting()
+            file = self.files.pop(spider)
+            file.close()
+
+    def _do_upsert(self, conn, item, spider):
+        """
+        This function performs a check of whether user is recorded in the db
+        If yes, update the last_active and nickname if necessary.
+        If no, record this in the delta file in json.
+        """
+        conn.execute("""
+        select * from record where name=%s and iid=%s
+        """, (item['name'],item['iid']))
+        rtn = conn.fetchone()
+
+        if rtn:
+            if rtn[4]!=item['adddate']:
+                conn.execute("""
+                update record set state=%s, adddate=%s, rate=%s, tags=%s
+                where name=%s and iid=%s
+                """, (item['state'],
+                item['adddate'].isoformat(),
+                self._digit_null_processor(item['rate']),
+                self._str_null_processor(item['tags']),
+                item['name'],
+                item['iid']))
         else:
             self.exporter.export_item(item)
 
@@ -188,11 +276,17 @@ class UserPipeline(object):
         # do nothing, just log
         log.err(failure)
 
-    def _null_processor(self, s):
+    def _str_null_processor(self, s):
         if not s:
             return "NULL"
         else:
             return s
+
+    def _digit_null_processor(self, num):
+        if not num:
+            return "NULL"
+        else:
+            return str(num)
 
 
 class JsonPipeline(object):

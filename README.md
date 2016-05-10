@@ -26,14 +26,17 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `record` (
-  `name` varchar(100) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `typ` varchar(5) NOT NULL,
-  `iid` int(9) NOT NULL,
+  `iid` int(11) NOT NULL,
   `state` varchar(7) NOT NULL,
   `adddate` date NOT NULL,
   `rate` int(2) DEFAULT NULL,
-  PRIMARY KEY (`name`,`iid`)
-);
+  `tags` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`name`,`iid`),
+  KEY `name_idx` (`name`),
+  KEY `iid_idx` (`iid`)
+)
 
 CREATE TABLE `subject` (
   `id` INTEGER NOT NULL,

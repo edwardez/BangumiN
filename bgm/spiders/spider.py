@@ -83,7 +83,7 @@ class RecordSpider(scrapy.Spider):
         super(RecordSpider, self).__init__(*args, **kwargs)
         if hasattr(self, 'userlist'):
             userlist = []
-            with open("self.userlist", 'r') as fr:
+            with open(self.userlist, 'r') as fr:
                 while True:
                     l = fr.readline().strip()
                     if not l: break;

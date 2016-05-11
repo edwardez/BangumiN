@@ -205,6 +205,7 @@ class RecordPipeline(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
         self.files = {}
+        self.deltaitems = set()
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -244,6 +245,11 @@ class RecordPipeline(object):
             self.exporter.finish_exporting()
             file = self.files.pop(spider)
             file.close()
+            deltaitems = list(self.deltaitems)
+            if deltaitems:
+                with open("deltaitem-"+datetime.date.today().isoformat()+".tsv", 'w') as fw:
+                    for n in deltaitems:
+                        fw.write("%s\n"%(n,))
 
     def _do_upsert(self, conn, item, spider):
         """
@@ -267,8 +273,10 @@ class RecordPipeline(object):
                 self._str_null_processor(item['tags']),
                 item['name'],
                 item['iid']))
+                self.deltaitems.add(item['iid'])
         else:
             self.exporter.export_item(item)
+            self.deltaitems.add(item['iid'])
 
 
     def _handle_error(self, failure, item, spider):

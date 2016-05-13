@@ -177,11 +177,20 @@ class SubjectInfoSpider(scrapy.Spider):
     name="subjectinfo"
     def __init__(self, *args, **kwargs):
         super(SubjectInfoSpider, self).__init__(*args, **kwargs)
-        if not hasattr(self, 'id_max'):
-            self.id_max=200000
-        if not hasattr(self, 'id_min'):
-            self.id_min=1
-        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        if hasattr(self, 'itemlist'):
+            itemlist = []
+            with open(self.itemlist, 'r') as fr:
+                while True:
+                    l = fr.readline().strip()
+                    if not l: break;
+                    itemlist.append(l)
+            self.start_urls = ["http://chii.in/subject/"+i for i in itemlist]
+        else:
+            if not hasattr(self, 'id_max'):
+                self.id_max=200000
+            if not hasattr(self, 'id_min'):
+                self.id_min=1
+            self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def make_requests_from_url(self, url):
         rtn = Request(url)
@@ -224,7 +233,7 @@ class SubjectSpider(scrapy.Spider):
         return rtn;
 
     def parse(self, response):
-        subjectid = int(response.url.split('/')[-1])
+        subjectid = int(response.url.split('/')[-1]) # trueid
         if not response.xpath(".//*[@id='headerSubject']"):
             return
 
@@ -234,7 +243,7 @@ class SubjectSpider(scrapy.Spider):
         if 'redirect_urls' in response.meta:
             authenticid = int(response.meta['redirect_urls'][0].split('/')[-1])
         else:
-            authenticid = subjectid;
+            authenticid = subjectid; # id
 
         subjecttype = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
         subjecttype = subjecttype.split(' ')[1].lower();
@@ -272,9 +281,10 @@ class SubjectSpider(scrapy.Spider):
 
         date = None
         for datekey in datestr:
-            if datekey in infobox:
+            if datekey in infokey:
+                idx = infokey.index(datekey)
                 try:
-                    date = parsedate(infobox[datekey][0].xpath('text()').extract()[0]) #may be none
+                    date = parsedate(infoval[idx].xpath('text()').extract()[0]) #may be none
                 except:
                     date = None;
             if date is None:
@@ -307,8 +317,8 @@ class SubjectSpider(scrapy.Spider):
                       authenticid=authenticid,
                       rank=rank,
                       votenum=votenum,
-                      favcount=favcount,
+                      favnum=favcount,
                       date=date,
-                      staff=staff,
+                      staff=infobox,
                       relations=relations,
                       tags=tags)

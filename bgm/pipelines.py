@@ -297,43 +297,102 @@ class RecordPipeline(object):
             return str(num)
 
 
-class JsonPipeline(object):
-    """Index should be recorded in a json file."""
-    def __init__(self):
+class SubjectPipeline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
         self.files = {}
 
     @classmethod
     def from_crawler(cls, crawler):
-         pipeline = cls()
-         crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
-         crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
-         return pipeline
+        dbargs = dict(
+            host=crawler.settings.get('MYSQL_HOST'),
+            db=crawler.settings.get('MYSQL_DBNAME'),
+            user=crawler.settings.get('MYSQL_USER'),
+            passwd=crawler.settings.get('MYSQL_PASSWD'),
+            charset='utf8',
+            use_unicode=True,
+            unix_socket=crawler.settings.get("MYSQL_SOCKET")
+        )
+        dbpool = adbapi.ConnectionPool('MySQLdb', **dbargs) # dbpool is a pool
+        pipeline = cls(dbpool)
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def process_item(self, item, spider):
+        if spider.name=='subject':
+            d = self.dbpool.runInteraction(self._do_upsert, item, spider)
+            d.addErrback(self._handle_error, item, spider)
+            d.addBoth(lambda _: item)
+            return d
+        else:
+            return item
 
     def spider_opened(self, spider):
-        if spider.name=='friends' or spider.name=='index' or \
-           spider.name=='record' or spider.name=='subject':
-            file = open('%s.json' % spider.name, 'wb')
+        if spider.name=='subject':
+            file = codecs.open('subject.json', 'wb', encoding="utf-8")
             self.files[spider] = file
-            self.exporter = JsonLinesItemExporter(file)
-            if spider.name=='record':
-                self.exporter.fields_to_export = ['name','iid','tags']
-            elif spider.name=='subject':
-                self.exporter.fields_to_export = ['subjectid','staff',
-                'relations','tags']
+            self.exporter = JsonLinesItemExporter(file, encoding="utf-8")
+            self.exporter.fields_to_export = ['subjectid', 'subjecttype',
+            'subjectname', 'authenticid', 'rank', 'votenum', 'favnum', 'date']
             self.exporter.start_exporting()
 
     def spider_closed(self, spider):
-        if spider.name=='friends' or spider.name=='index' \
-           or spider.name=='record' or spider.name=='subject':
+        if spider.name=='subject':
             self.exporter.finish_exporting()
             file = self.files.pop(spider)
             file.close()
 
-    def process_item(self, item, spider):
-        if spider.name=='friends' or spider.name=='index' or \
-        spider.name=='record' or spider.name=='subject':
+    def _do_upsert(self, conn, item, spider):
+        """
+        This function performs a check of whether user is recorded in the db
+        If yes, update the last_active and nickname if necessary.
+        If no, record this in the delta file in json.
+        """
+        conn.execute("""
+        select * from subject where id=%s
+        """, (item['authenticid'],))
+        rtn = conn.fetchone()
+
+        if rtn:
+            conn.execute("""
+            update subject
+            set trueid=%s, name=%s, type=%s, date=%s, rank=%s, favnum=%s, votenum=%s
+            where id=%s
+            """, (item['subjectid'],
+            self._str_null_processor(item['subjectname']),
+            item['subjecttype'],
+            self._date_null_processor(item['date']),
+            self._digit_null_processor(item['rank']),
+            sum(item['favnum']),
+            item['votenum'],
+            item['authenticid']))
+        else:
             self.exporter.export_item(item)
-        return item
+
+
+    def _handle_error(self, failure, item, spider):
+        """Handle occurred on db interaction."""
+        # do nothing, just log
+        log.err(failure)
+
+    def _str_null_processor(self, s):
+        if not s:
+            return "NULL"
+        else:
+            return s
+
+    def _digit_null_processor(self, num):
+        if not num:
+            return "NULL"
+        else:
+            return str(num)
+
+    def _date_null_processor(self, dt):
+        if not dt:
+            return None
+        else:
+            return dt.isoformat()
 
 
 class SubjectInfoPipeline(object):

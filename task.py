@@ -36,11 +36,29 @@ class Record(Base):
     state = Column(String(7), nullable = False)
     adddate = Column(Date, nullable = False)
     rate = Column(Integer)
-    rate = Column(String(500))
+    tags = Column(String(500))
 
     def __repr__(self):
         return "<Record(name=%s, iid=%s, typ=%s, state=%s)>"% (self.name,
         self.iid, self.typ, self.state)
+
+class Subject(Base):
+    __tablename__ = 'subject'
+
+    id = Column(Integer, primary_key=True, index=True)
+    trueid = Column(Integer, nullable=False)
+    name = Column(String(50))
+    type = Column(String(5), nullable=False)
+    date = Column(Date)
+    rank = Column(Integer)
+    favnum = Column(Integer, nullable=False, default=0)
+    votenum = Column(Integer, nullable=False, default=0)
+
+    def __repr__(self):
+        return "<Subject(name=%s, id=%s, trueid=%s, type=%s)>"% (self.name,
+        self.id, self.trueid, self.type)
+
+
 
 engine = create_engine("mysql+mysqldb://" + MYSQL_USER + ":" + MYSQL_PASSWD + "@" +
                        MYSQL_HOST + "/" + MYSQL_DBNAME +
@@ -87,11 +105,37 @@ def store_record():
                 session.commit()
     session.commit()
 
+def store_subject():
+    with open("subject.json", 'rb') as fr:
+        cnt=0
+        while True:
+            rec = fr.readline().strip()
+            cnt+=1
+            if not rec: break;
+
+            subject = json.loads(rec)
+
+            subject_instance = Subject(id = subject['authenticid'],
+                                      trueid = subject['subjectid'],
+                                      name = subject['subjectname'],
+                                      type = subject['subjecttype'],
+                                      date = subject['date'],
+                                      rank = subject['rank'],
+                                      favnum = sum(subject['favnum']),
+                                      votenum = subject['votenum']
+            )
+            session.add(subject_instance)
+            if cnt%10000==0:
+                session.commit()
+    session.commit()
+
 def run():
     if sys.argv[1]=='users':
         store_users()
     elif sys.argv[1]=='record':
         store_record()
+    elif sys.argv[1]=='subject':
+        store_subject()
 
 if __name__=='__main__':
     run()

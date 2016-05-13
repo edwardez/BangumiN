@@ -39,15 +39,16 @@ CREATE TABLE `record` (
 )
 
 CREATE TABLE `subject` (
-  `id` INTEGER NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `type` VARCHAR(5) NOT NULL,
-  `redid` INTEGER DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `rank` INTEGER NULL DEFAULT NULL,
-  `favnum` INTEGER NOT NULL DEFAULT 0,
-  `votenum` INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL,
+  `trueid` int(11) NOT NULL,
+  `name` varchar(50),
+  `type` varchar(5) NOT NULL,
+  `date` date NULL DEFAULT NULL,
+  `rank` int(2) NULL DEFAULT NULL,
+  `favnum` int(11) NOT NULL DEFAULT 0,
+  `votenum` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `id_idx` (`id`)
 );
 ```
 

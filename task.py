@@ -89,8 +89,10 @@ def store_users():
 def store_record():
     with open("record.json", 'rb') as fr:
         cnt=0
+        backup = []
         while True:
             rec = fr.readline().strip()
+            backup.append(rec)
             cnt+=1
             if not rec: break;
 
@@ -102,8 +104,29 @@ def store_record():
                                     adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
             session.add(record_instance)
             if cnt%10000==0:
+                try_commit_record(session, backup)
+                backup=[]
+    try_commit_record(session, backup)
+
+def try_commit_record(session, backup):
+    try:
+        session.commit()
+    except:
+        session.rollback()
+        for rec in backup:
+            record = json.loads(rec)
+            tags = record.get('tags',None)
+            if tags:
+                tags = u" ".join(tags)
+
+            record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
+                                    adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
+            session.add(record_instance)
+            try:
                 session.commit()
-    session.commit()
+            except:
+                session.rollback()
+
 
 def store_subject():
     with open("subject.json", 'rb') as fr:

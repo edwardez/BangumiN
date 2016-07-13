@@ -176,21 +176,12 @@ class FriendsSpider(scrapy.Spider):
 class SubjectInfoSpider(scrapy.Spider):
     name="subjectinfo"
     def __init__(self, *args, **kwargs):
-        super(SubjectInfoSpider, self).__init__(*args, **kwargs)
-        if hasattr(self, 'itemlist'):
-            itemlist = []
-            with open(self.itemlist, 'r') as fr:
-                while True:
-                    l = fr.readline().strip()
-                    if not l: break;
-                    itemlist.append(l)
-            self.start_urls = ["http://chii.in/subject/"+i for i in itemlist]
-        else:
-            if not hasattr(self, 'id_max'):
-                self.id_max=200000
-            if not hasattr(self, 'id_min'):
-                self.id_min=1
-            self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        super(SubjectSpider, self).__init__(*args, **kwargs)
+        if not hasattr(self, 'id_max'):
+            self.id_max=200000
+        if not hasattr(self, 'id_min'):
+            self.id_min=1
+        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
 
     def make_requests_from_url(self, url):
         rtn = Request(url)
@@ -220,12 +211,22 @@ class SubjectInfoSpider(scrapy.Spider):
 class SubjectSpider(scrapy.Spider):
     name="subject"
     def __init__(self, *args, **kwargs):
-        super(SubjectSpider, self).__init__(*args, **kwargs)
-        if not hasattr(self, 'id_max'):
-            self.id_max=200000
-        if not hasattr(self, 'id_min'):
-            self.id_min=1
-        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        super(SubjectInfoSpider, self).__init__(*args, **kwargs)
+        if hasattr(self, 'itemlist'):
+            itemlist = []
+            with open(self.itemlist, 'r') as fr:
+                while True:
+                    l = fr.readline().strip()
+                    if not l: break;
+                    itemlist.append(l)
+            self.start_urls = ["http://chii.in/subject/"+i for i in itemlist]
+        else:
+            if not hasattr(self, 'id_max'):
+                self.id_max=200000
+            if not hasattr(self, 'id_min'):
+                self.id_min=1
+            self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+    
 
     def make_requests_from_url(self, url):
         rtn = Request(url)

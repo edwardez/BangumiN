@@ -176,7 +176,7 @@ class FriendsSpider(scrapy.Spider):
 class SubjectInfoSpider(scrapy.Spider):
     name="subjectinfo"
     def __init__(self, *args, **kwargs):
-        super(SubjectSpider, self).__init__(*args, **kwargs)
+        super(SubjectInfoSpider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
             self.id_max=200000
         if not hasattr(self, 'id_min'):
@@ -211,7 +211,7 @@ class SubjectInfoSpider(scrapy.Spider):
 class SubjectSpider(scrapy.Spider):
     name="subject"
     def __init__(self, *args, **kwargs):
-        super(SubjectInfoSpider, self).__init__(*args, **kwargs)
+        super(SubjectSpider, self).__init__(*args, **kwargs)
         if hasattr(self, 'itemlist'):
             itemlist = []
             with open(self.itemlist, 'r') as fr:

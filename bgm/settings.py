@@ -16,10 +16,13 @@ NEWSPIDER_MODULE = 'bgm.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'bgm (+http://www.yourdomain.com)'
 ITEM_PIPELINES = {
-    'bgm.pipelines.UserPipeline': 300,
-    'bgm.pipelines.RecordPipeline': 400,
-    'bgm.pipelines.SubjectPipeline': 500
+    #'bgm.pipelines.UserPipeline': 300,
+    #'bgm.pipelines.RecordPipeline': 400,
+    #'bgm.pipelines.SubjectPipeline': 500
+    'bgm.pipelines.TsvPipeline':300
 }
+
+FEED_FORMAT='csv'
 
 #DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None

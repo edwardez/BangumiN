@@ -320,6 +320,6 @@ class SubjectSpider(scrapy.Spider):
                       votenum=votenum,
                       favnum=favcount,
                       date=date,
-                      staff=infobox,
+                      #staff=infobox,
                       relations=relations,
                       tags=tags)

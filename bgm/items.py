@@ -7,6 +7,11 @@
 
 import scrapy
 
+class DictField(scrapy.item.Field):
+    def serializer(self, value):
+        return ";".join(":".join([k, v]) for k, v in value.iteritems())
+        
+
 class User(scrapy.Item):
     name = scrapy.Field()
     nickname = scrapy.Field()
@@ -55,8 +60,11 @@ class Subject(scrapy.Item):
     rank = scrapy.Field()
     votenum = scrapy.Field()
     favnum = scrapy.Field()
+    favnum['serializer'] = lambda x: u";".join(unicode(x))
     date = scrapy.Field()
 
-    staff = scrapy.Field() # feature list!
+    #staff = scrapy.Field() # feature list!
     relations = scrapy.Field() #map
+    relations['serializer'] = lambda x: u";".join(u":".join([k, v]) for k, v in x.iteritems())
     tags = scrapy.Field() #map
+    tags['serializer'] = lambda x: u";".join(u":".join([k, unicode(v)]) for k, v in x.iteritems())

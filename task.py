@@ -30,9 +30,9 @@ class User(Base):
 class Record(Base):
     __tablename__ = 'record'
 
-    name = Column(String(50), primary_key=True, index=True)
+    name = Column(String(50), primary_key=True)#, index=True)
     typ = Column(String(5), nullable = False)
-    iid = Column(Integer, primary_key=True, index=True)
+    iid = Column(Integer, primary_key=True)#, index=True)
     state = Column(String(7), nullable = False)
     adddate = Column(Date, nullable = False)
     rate = Column(Integer)
@@ -103,7 +103,7 @@ def store_record():
             record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
                                     adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
             session.add(record_instance)
-            if cnt%10000==0:
+            if cnt%100000==0:
                 try_commit_record(session, backup)
                 backup=[]
     try_commit_record(session, backup)
@@ -113,7 +113,11 @@ def try_commit_record(session, backup):
         session.commit()
     except:
         session.rollback()
-        for rec in backup:
+
+        if len(backup)<=1: return;
+
+        h = len(backup)/2
+        for rec in backup[:h]:
             record = json.loads(rec)
             tags = record.get('tags',None)
             if tags:
@@ -122,10 +126,18 @@ def try_commit_record(session, backup):
             record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
                                     adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
             session.add(record_instance)
-            try:
-                session.commit()
-            except:
-                session.rollback()
+        try_commit_record(session, backup[:h])
+
+        for rec in backup[h:]:
+            record = json.loads(rec)
+            tags = record.get('tags',None)
+            if tags:
+                tags = u" ".join(tags)
+
+            record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
+                                    adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
+            session.add(record_instance)
+        try_commit_record(session, backup[h:])
 
 
 def store_subject():

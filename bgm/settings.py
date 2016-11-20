@@ -22,7 +22,6 @@ ITEM_PIPELINES = {
     'bgm.pipelines.TsvPipeline':300
 }
 
-FEED_FORMAT='csv'
 
 #DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None
@@ -39,3 +38,12 @@ MYSQL_PASSWD = 'sai'
 MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
 
 DOWNLOAD_DELAY = 0.25
+
+########################################
+# The following settings are only applicable to Ronnie Wang's spider setting
+# Because Ronnie only uses Azure for storage.
+UPLOAD_TO_AZURE_STORAGE = False
+AZURE_ACCOUNT_NAME = "ikely"  # this is the subdomain to https://*.blob.core.windows.net/
+AZURE_ACCOUNT_KEY = "youguess"
+AZURE_CONTAINER = 'ahh'   # the name of the container (you should have already created it)
+########################################

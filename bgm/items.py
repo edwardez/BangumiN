@@ -60,7 +60,6 @@ class Subject(scrapy.Item):
     rank = scrapy.Field()
     votenum = scrapy.Field()
     favnum = scrapy.Field()
-    favnum['serializer'] = lambda x: u";".join(unicode(x))
     date = scrapy.Field()
 
     #staff = scrapy.Field() # feature list!

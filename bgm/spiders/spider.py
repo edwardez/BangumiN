@@ -13,7 +13,7 @@ class UserSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(UserSpider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
-            self.id_max=300000
+            self.id_max=400000
         if not hasattr(self, 'id_min'):
             self.id_min=1
         self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
@@ -25,15 +25,7 @@ class UserSpider(scrapy.Spider):
         nickname = response.xpath(".//*[@class='headerContainer']//*[@class='inner']/a/text()").extract()[0]
 
         # Is blocked?
-        if len(response.xpath(".//*[@id='anime']"))==0 and \
-        len(response.xpath(".//*[@id='game']"))==0 and\
-        len(response.xpath(".//*[@id='book']"))==0 and\
-        len(response.xpath(".//*[@id='music']"))==0 and\
-        len(response.xpath(".//*[@id='real']"))==0:
-            nowatchrecord=True;
-        else: nowatchrecord=False;
-        prohibited = nickname==blockstr and nowatchrecord
-        if prohibited:
+        if len(response.xpath("//ul[@class='timeline']/li"))==0:
             return;
 
         if not 'redirect_urls' in response.meta:
@@ -162,7 +154,7 @@ class FriendsSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(FriendsSpider, self).__init__(*args, **kwargs)
         if not hasattr(self, 'id_max'):
-            self.id_max=300000
+            self.id_max=400000
         if not hasattr(self, 'id_min'):
             self.id_min=1
         self.start_urls = ["http://chii.in/user/"+str(i)+"/friends" for i in xrange(int(self.id_min),int(self.id_max))]
@@ -237,9 +229,12 @@ class SubjectSpider(scrapy.Spider):
         subjectid = int(response.url.split('/')[-1]) # trueid
         if not response.xpath(".//*[@id='headerSubject']"):
             return
-
-        if response.xpath(".//div[@class='tipIntro']"):
-            return;
+        
+        # This is used to filter those locked items
+        # However, considering that current Bangumi ranking list does not exclude blocked items,
+        # we include them in our spider.
+        #if response.xpath(".//div[@class='tipIntro']"):
+        #    return;
 
         if 'redirect_urls' in response.meta:
             authenticid = int(response.meta['redirect_urls'][0].split('/')[-1])

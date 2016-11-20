@@ -12,6 +12,9 @@ from scrapy.contrib.exporter import JsonLinesItemExporter, CsvItemExporter
 import cPickle
 import codecs
 import datetime
+import os
+from azure.storage.blob import BlockBlobService, ContentSettings
+from settings import *
 
 
 class MySQLPipeline(object):
@@ -441,7 +444,7 @@ class TsvPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        file = open(spider.name+'-'+datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")+'.tsv', 
+        file = open(spider.name+'-'+datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")+'.tsv*', 
                            'wb')
         self.files[spider] = file
 
@@ -461,7 +464,18 @@ class TsvPipeline(object):
     def spider_closed(self, spider):
         self.exporter.finish_exporting()
         file = self.files.pop(spider)
+        filename = file.name
+        newname = filename[:-5]+'-'+datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")+'.tsv'
         file.close()
+        os.rename(filename, newname)
+        if UPLOAD_TO_AZURE_STORAGE:
+            block_blob_service = BlockBlobService(account_name=AZURE_ACCOUNT_NAME, account_key=AZURE_ACCOUNT_KEY)
+            block_blob_service.create_blob_from_path(AZURE_CONTAINER,
+                                                    newname,
+                                                    newname,
+                                                    content_settings=ContentSettings(content_type='text/tab-separated-values')
+                                                            )
+                                                            
 
     def process_item(self, item, spider):
         self.exporter.export_item(item)

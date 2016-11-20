@@ -8,6 +8,14 @@ Currently, bangumi spider can scrape user information, users' item record (their
 
 ## How to set up the spider?
 
+### If you want to store data in the format of TSV
+
+Currently, we added the support to scrape the data in the format of TSV. No prerequisites are required to store in TSV. Just follow the steps described in MySQL guide.
+
+Besides, we have added the functionality to upload data to Azure Blob storage after the scrape of data. You just have provide you Azure account name, container name and access key. One must set up his/her own container (by Azure protal or other methods) before open up this functionality.
+
+### If you want to store data in MySQL
+
 You should set up mysql first. All the information were stored in mysql. You should create two tables named “users” and “record”:
 
 ```sql

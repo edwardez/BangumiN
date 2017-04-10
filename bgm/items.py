@@ -23,6 +23,7 @@ class User(scrapy.Item):
 class Record(scrapy.Item):
     ## First five items are required.
     name = scrapy.Field()
+    uid = scrapy.Field()
     typ = scrapy.Field()
     iid = scrapy.Field() #name and id together forms primary key.
     state = scrapy.Field()

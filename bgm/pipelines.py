@@ -13,8 +13,10 @@ import cPickle
 import codecs
 import datetime
 import os
-from azure.storage.blob import BlockBlobService, ContentSettings
 from settings import *
+if UPLOAD_TO_AZURE_STORAGE:
+    from azure.storage.blob import BlockBlobService, ContentSettings
+
 
 
 class MySQLPipeline(object):
@@ -454,7 +456,7 @@ class TsvPipeline(object):
         elif spider.name=='subject':
             self.exporter.fields_to_export = ['subjectid', 'authenticid', 'subjectname', 'subjecttype', 'rank', 'date', 'votenum', 'favnum', 'tags']
         elif spider.name=='record':
-            self.exporter.fields_to_export = ['name', 'iid', 'typ', 'state', 'adddate', 'rate', 'tags']
+            self.exporter.fields_to_export = ['name', 'uid', 'iid', 'typ', 'state', 'adddate', 'rate', 'tags']
         elif spider.name=='index':
             self.exporter.fields_to_export = ['indexid', 'creator', 'favourite', 'date', 'items']
         elif spider.name=='friends':

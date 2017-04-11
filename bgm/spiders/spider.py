@@ -74,7 +74,7 @@ class RecordSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(RecordSpider, self).__init__(*args, **kwargs)
         if hasattr(self, 'type'):
-            tplst = [itm.trim().lower() for itm in self.type.split(',')]
+            tplst = [itm.strip().lower() for itm in self.type.split(',')]
         else:
             tplst = ['anime', 'book', 'music', 'game', 'real']
         if hasattr(self, 'userlist'):
@@ -84,13 +84,13 @@ class RecordSpider(scrapy.Spider):
                     l = fr.readline().strip()
                     if not l: break;
                     userlist.append(l)
-            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, i, st) for i in userlist for tp in tplst]
+            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, i) for i in userlist for tp in tplst]
         else:
             if not hasattr(self, 'id_max'):
                 self.id_max=400000
             if not hasattr(self, 'id_min'):
                 self.id_min=1
-            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, str(i), st) for i in xrange(int(self.id_min),int(self.id_max)) for tp in tplst]
+            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, str(i)) for i in xrange(int(self.id_min),int(self.id_max)) for tp in tplst]
 
     def parse(self, response):
         username = response.url.split('/')[-1]

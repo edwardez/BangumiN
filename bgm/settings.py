@@ -21,7 +21,7 @@ ITEM_PIPELINES = {
     #'bgm.pipelines.SubjectPipeline': 500
     'bgm.pipelines.TsvPipeline':300
 }
-
+RETRY_TIMES = 10
 
 #DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None

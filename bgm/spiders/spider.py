@@ -228,9 +228,9 @@ class SubjectSpider(scrapy.Spider):
         #    return;
 
         if 'redirect_urls' in response.meta:
-            authenticid = int(response.meta['redirect_urls'][0].split('/')[-1])
+            order = int(response.meta['redirect_urls'][0].split('/')[-1])
         else:
-            authenticid = subjectid; # id
+            order = subjectid; # id
 
         subjecttype = response.xpath(".//div[@class='global_score']/div/small[1]/text()").extract()[0]
         subjecttype = subjecttype.split(' ')[1].lower();
@@ -301,10 +301,10 @@ class SubjectSpider(scrapy.Spider):
         yield Subject(subjectid=subjectid,
                       subjecttype=subjecttype,
                       subjectname=subjectname,
-                      authenticid=authenticid,
+                      order=order,
                       rank=rank,
                       votenum=votenum,
-                      favnum=favcount,
+                      favnum=';'.join([str(itm) for itm in favcount]),
                       date=date,
                       #staff=infobox,
                       relations=relations,

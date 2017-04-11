@@ -56,7 +56,7 @@ class Subject(scrapy.Item):
     subjectid = scrapy.Field()
     subjecttype = scrapy.Field()
     subjectname = scrapy.Field()
-    authenticid = scrapy.Field() # may be None
+    order = scrapy.Field() # may be None
     # The following are all optional
     rank = scrapy.Field()
     votenum = scrapy.Field()

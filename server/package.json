@@ -1,0 +1,28 @@
+{
+  "name": "bangumin-server",
+  "version": "0.0.0",
+  "description": "server for bangumin",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "devstart": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "edward",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "csurf": "^1.9.0",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "express-validator": "^5.0.3",
+    "jasmine": "^3.1.0",
+    "mongoose": "^5.0.9",
+    "winston": "^3.0.0-rc2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.1"
+  }
+}

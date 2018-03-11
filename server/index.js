@@ -1,1 +1,3 @@
-console.log(process.env)
+const config = require('./config');
+
+const app = require('./app');

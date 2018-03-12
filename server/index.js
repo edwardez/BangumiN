@@ -1,3 +1,3 @@
-const config = require('./config');
+require('./config');
+require('./app');
 
-const app = require('./app');

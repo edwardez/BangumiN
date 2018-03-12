@@ -1,5 +1,16 @@
 const joi = require('joi');
 const winston = require('winston');
+const path = require('path');
+const fs = require('fs');
+
+const {
+  combine, timestamp, printf, splat, json,
+} = winston.format;
+
+// create logs folder if it doesn't exist
+if (!fs.existsSync('logs')) {
+  fs.mkdirSync('logs');
+}
 
 const envVarsSchema = joi.object({
   LOGGER_LEVEL: joi.string()
@@ -26,9 +37,37 @@ const config = {
   },
 };
 
-winston.level = config.logger.level;
-if (!config.logger.enabled) {
-  winston.remove(winston.transports.Console);
-}
 
+const myFormat = printf(info => `${info.timestamp} ${info.level}: ${info.message}`);
+
+winston.configure({
+  format: combine(
+    splat(),
+    timestamp(),
+    myFormat,
+    json(),
+  ),
+  level: config.logger.level,
+  transports: [
+    //
+    // - Write to all logs with level `info` and below to `combined.log`
+    // - Write all logs error (and below) to `error.log`.
+    // TODO: write log file according to path in .env
+    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/error.log`), level: 'error' }),
+    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/combined.log`) }),
+    new winston.transports.Console({
+      prettyPrint(object) {
+        return JSON.stringify(object);
+      },
+      colorize: true,
+    }),
+  ],
+  exitOnError: false,
+});
+
+winston.exceptions.handle(new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/exceptions.log`) }));
+
+if (!config.logger.enabled) {
+  winston.clear(); // Remove all transports
+}
 module.exports = config;

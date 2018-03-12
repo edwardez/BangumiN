@@ -1,0 +1,10 @@
+{
+  "/api/bangumi": {
+    "target": "https://api.bgm.tv",
+    "secure": false,
+    "pathRewrite": {
+      "^/api/bangumi": ""
+    },
+    "changeOrigin": true
+  }
+}

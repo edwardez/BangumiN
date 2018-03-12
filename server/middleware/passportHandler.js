@@ -3,6 +3,7 @@ const OAuth2Strategy = require('passport-oauth2').Strategy;
 const config = require('../config/components/passport');
 const request = require('request');
 
+
 // oauth strategy for bangumi
 const bangumiOauth = new OAuth2Strategy(
   {
@@ -13,9 +14,7 @@ const bangumiOauth = new OAuth2Strategy(
     callbackURL: config.passport.oauth.bangumi.callbackURL,
     state: true, // set state to true to mitigate CSRF attack
   },
-  ((accessToken, refreshToken, profile, done) => {
-    done(null, profile);
-  }),
+  ((accessToken, refreshToken, profile, done) => done(null, profile)),
 );
 
 // implement userProfile function to retrieve user profile from server
@@ -57,7 +56,7 @@ function authenticationMiddleware() {
     if (req.isAuthenticated()) {
       return next();
     }
-    return res.redirect('/');
+    return res.redirect('/login');
   };
 }
 passport.authenticationMiddleware = authenticationMiddleware;

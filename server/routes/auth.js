@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const logger = require('winston');
-const config = require('../config/components/passport');
-
+const csrf = require('csurf');
 
 router.get(
   '/bangumi',
@@ -16,25 +15,24 @@ router.get(
     failureRedirect: '/failed',
     session: true,
   }),
-  (req, res, next) => {
-    if (!req.user) {
-      return res.send(401, 'User Not Authenticated');
-    }
-    logger.debug(req.user);
-
-    // Successful authentication, redirect home.
-    req.auth = {
-      id: req.user.user_id,
-    };
-
-    return next();
+  (req, res) => {
+    res.redirect('/');
   },
 );
 
+const csrfProtection = csrf({ cookie: true });
+router.get('/json', csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
+
+router.post('/json', csrfProtection, (req, res) => {
+  res.json({ a: 2 });
+});
 
 router.get('/me', passport.authenticationMiddleware(), (req, res) => {
-  logger.debug(req.user);
-  logger.debug(res);
+  logger.debug('%o', req.user);
+  res.send('success!');
 });
 
 

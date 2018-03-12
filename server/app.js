@@ -2,33 +2,36 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const csrf = require('csurf');
+const helmet = require('helmet');
 const config = require('./config');
 const expressSession = require('express-session');
 const passport = require('./middleware/passportHandler');
+const logger = require('winston');
 
 const auth = require('./routes/auth');
 
 const app = express();
+app.listen(config.server.port, config.server.host);
+
 
 // enable cors
 const corsOption = {
-  origin: true,
+  origin: config.frontEndUrl,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  exposedHeaders: ['x-auth-token'],
 };
 
 app.use(cors(corsOption));
 
-const csrfProtection = csrf({ cookie: true });
+// TODO: enable csrf in the future
 
 
 // rest API requirements
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(expressSession({
   secret: config.passport.secret.session,
@@ -36,9 +39,11 @@ app.use(expressSession({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    domain: config.server,
   },
 }));
+
+// security setup
+app.use(helmet());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -46,8 +51,21 @@ app.use(passport.session());
 app.use('/auth', auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
-require('./middleware/errorHandler');
+const logErrors = function logErrors(err, req, res, next) {
+  logger.error('%o', err.stack);
+  next(err);
+};
 
-app.listen(config.server.port, config.server.host);
+
+// error handler, send stacktrace only during development
+// eslint-disable-next-line no-unused-vars
+const generalErrorHandler = function errorHandler(err, req, res, next) {
+  res.status(500);
+  res.send('internal error');
+};
+
+app.use(logErrors);
+app.use(generalErrorHandler);
 
 module.exports = app;
+

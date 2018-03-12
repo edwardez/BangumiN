@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const {
-  combine, timestamp, printf, splat, json,
+  combine, timestamp, splat,
 } = winston.format;
 
 // create logs folder if it doesn't exist
@@ -37,15 +37,12 @@ const config = {
   },
 };
 
-
-const myFormat = printf(info => `${info.timestamp} ${info.level}: ${info.message}`);
-
 winston.configure({
   format: combine(
+    winston.format.colorize({ all: true }),
     splat(),
     timestamp(),
-    myFormat,
-    json(),
+    winston.format.simple(),
   ),
   level: config.logger.level,
   transports: [
@@ -53,19 +50,18 @@ winston.configure({
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
     // TODO: write log file according to path in .env
-    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/error.log`), level: 'error' }),
-    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/combined.log`) }),
+    // TODO: improve log conf
+    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/error.log`), level: 'error', eol: '\r\n' }),
+    new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/combined.log`), eol: '\r\n' }),
     new winston.transports.Console({
-      prettyPrint(object) {
-        return JSON.stringify(object);
-      },
-      colorize: true,
     }),
   ],
-  exitOnError: false,
+  // exitOnError: true,
 });
 
-winston.exceptions.handle(new winston.transports.File({ filename: path.normalize(`${__dirname}/../../logs/exceptions.log`) }));
+// winston.exceptions.handle(new winston.transports.File({
+// filename: path.normalize(`${__dirname}/../../logs/exceptions.log`), eol: '\r\n' }));
+
 
 if (!config.logger.enabled) {
   winston.clear(); // Remove all transports

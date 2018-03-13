@@ -10,15 +10,22 @@ import { environment } from '../environments/environment';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import { LoginBangumiComponent } from './auth/login-bangumi/login-bangumi.component';
+import { DashboardComponent } from './home/dashboard/dashboard.component';
+import {AppGuard} from './app.guard';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginBangumiComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -28,7 +35,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [AppGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

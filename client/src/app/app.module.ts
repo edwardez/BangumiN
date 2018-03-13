@@ -15,16 +15,27 @@ import { LoginBangumiComponent } from './auth/login-bangumi/login-bangumi.compon
 import { DashboardComponent } from './home/dashboard/dashboard.component';
 import {AppGuard} from './app.guard';
 
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import { NavComponent } from './common/nav/nav.component';
+import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginBangumiComponent,
     DashboardComponent,
+    NavComponent,
+    ActivateBangumiComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MatCardModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
     FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {

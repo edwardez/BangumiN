@@ -4,7 +4,7 @@
   "description": "server for bangumin",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "NODE_ENV=production node .",
     "start-dev": "NODE_ENV=development nodemon .",
     "start-prod": "NODE_ENV=production npm start",
     "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.spec.js' --reporter nyan",

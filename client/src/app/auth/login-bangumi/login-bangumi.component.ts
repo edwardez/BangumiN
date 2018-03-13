@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-login-bangumi',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-bangumi.component.scss']
 })
 export class LoginBangumiComponent implements OnInit {
+
+  bangumi_oauth_redirect = `${environment.BACKEND_OAUTH_REDIRECT}/bangumi`;
 
   constructor() { }
 

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const logger = require('winston');
 const csrf = require('csurf');
+const config = require('../config');
 
 router.get(
   '/bangumi',
@@ -16,7 +17,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect('/');
+    res.redirect(`${config.frontEndUrl}/auth/bangumi`);
   },
 );
 

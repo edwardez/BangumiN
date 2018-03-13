@@ -11,7 +11,7 @@ const logger = require('winston');
 const auth = require('./routes/auth');
 
 const app = express();
-app.listen(config.server.port, config.server.host);
+const server = app.listen(config.server.port, config.server.host);
 
 
 // enable cors
@@ -48,7 +48,7 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', auth);
+app.use('/oauth', auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err, req, res, next) {
@@ -67,5 +67,5 @@ const generalErrorHandler = function errorHandler(err, req, res, next) {
 app.use(logErrors);
 app.use(generalErrorHandler);
 
-module.exports = app;
+module.exports = server;
 

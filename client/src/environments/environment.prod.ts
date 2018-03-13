@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  BANGUMI_API: '/proxy/api/bangumi',
+  BACKEND_API: '/api'
 };

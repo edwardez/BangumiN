@@ -1,9 +1,9 @@
 {
-  "/api/bangumi": {
+  "/proxy/api/bangumi": {
     "target": "https://api.bgm.tv",
     "secure": false,
     "pathRewrite": {
-      "^/api/bangumi": ""
+      "^/proxy/api/bangumi": ""
     },
     "changeOrigin": true
   }

@@ -6,6 +6,8 @@
 export const environment = {
   production: false,
   BANGUMI_API_URL: '/proxy/api/bangumi',
-  BACKEND_API: '/api',
-  BACKEND_OAUTH_REDIRECT: 'http://localhost:3000/oauth'
+  BANGUMI_OAUTH_URL: '/proxy/oauth/bangumi',
+  BACKEND_API_URL: 'http://localhost:3000/api',
+  BACKEND_AUTH_URL: 'http://localhost:3000/auth',
+  BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth'
 };

@@ -25,7 +25,7 @@ const generateToken = function generateToken(req, res, next) {
 
 const sendToken = function sendToken(req, res, next) {
   res.header('x-auth-token', req.token);
-  res.status(200).send(req.auth);
+  res.status(200).json(req.auth);
   next();
 };
 

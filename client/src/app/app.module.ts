@@ -19,6 +19,9 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import { NavComponent } from './common/nav/nav.component';
 import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
+import {AuthenticationService} from './shared/services/auth.service';
+import {TokenStorage} from './shared/services/token-storage.service';
+import {AUTH_SERVICE, PROTECTED_FALLBACK_PAGE_URI, PUBLIC_FALLBACK_PAGE_URI} from 'ngx-auth';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,16 @@ import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [AppGuard],
+  providers: [AppGuard,
+    AuthenticationService,
+    TokenStorage,
+    { provide: PROTECTED_FALLBACK_PAGE_URI, useValue: '/' },
+    { provide: PUBLIC_FALLBACK_PAGE_URI, useValue: '/login' },
+    {
+      provide: AUTH_SERVICE,
+      deps: [ AuthenticationService ],
+      useFactory: factory
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
@@ -54,4 +66,8 @@ export class AppModule { }
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
+}
+
+export function factory(authenticationService: AuthenticationService) {
+  return authenticationService;
 }

@@ -8,7 +8,7 @@ import {environment} from '../../../environments/environment';
 })
 export class LoginBangumiComponent implements OnInit {
 
-  bangumi_oauth_redirect = `${environment.BACKEND_OAUTH_REDIRECT}/bangumi`;
+  bangumi_oauth_redirect = `${environment.BACKEND_OAUTH_REDIRECT_URL}/bangumi`;
 
   constructor() { }
 

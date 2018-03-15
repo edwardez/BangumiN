@@ -6,8 +6,9 @@ const helmet = require('helmet');
 const config = require('./config');
 const expressSession = require('express-session');
 const passport = require('./middleware/passportHandler');
-const logger = require('winston');
+const logger = require('./utils/logger')(module);
 
+const oauth = require('./routes/oauth');
 const auth = require('./routes/auth');
 
 const app = express();
@@ -19,6 +20,7 @@ const corsOption = {
   origin: config.frontEndUrl,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
+  exposedHeaders: ['x-auth-token'],
 };
 
 app.use(cors(corsOption));
@@ -39,6 +41,7 @@ app.use(expressSession({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
+
   },
 }));
 
@@ -48,7 +51,8 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/oauth', auth);
+app.use('/oauth', oauth);
+app.use('/auth', auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err, req, res, next) {

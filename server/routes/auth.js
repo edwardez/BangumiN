@@ -1,39 +1,52 @@
 const router = require('express').Router();
 const passport = require('passport');
-const logger = require('winston');
+const logger = require('../utils/logger')(module);
 const csrf = require('csurf');
 const config = require('../config');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
+const joi = require('joi');
 
-router.get(
-  '/bangumi',
-  passport.authenticate('bangumi-oauth'),
-);
+const createToken = function createToken(auth) {
+  return jwt.sign(
+    {
+      id: auth.id,
+    }, config.passport.secret.jwt,
+    {
+      expiresIn: 60 * 120,
+    },
+  );
+};
 
+const generateToken = function generateToken(req, res, next) {
+  req.token = createToken(req.auth);
+  next();
+};
 
-router.get(
-  '/bangumi/callback',
-  passport.authenticate('bangumi-oauth', {
-    failureRedirect: '/failed',
-    session: true,
-  }),
-  (req, res) => {
-    res.redirect(`${config.frontEndUrl}/auth/bangumi`);
+const sendToken = function sendToken(req, res, next) {
+  res.header('x-auth-token', req.token);
+  res.status(200).send(req.auth);
+  next();
+};
+
+const authenticate = expressJwt({
+  secret: config.passport.secret.jwt,
+  requestProperty: 'auth',
+  getToken(req) {
+    if (req.headers['x-auth-token']) {
+      return req.headers['x-auth-token'];
+    }
+    return null;
   },
-);
-
-const csrfProtection = csrf({ cookie: true });
-router.get('/json', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
 });
 
 
-router.post('/json', csrfProtection, (req, res) => {
-  res.json({ a: 2 });
-});
-
-router.get('/me', passport.authenticationMiddleware(), (req, res) => {
-  logger.debug('%o', req.user);
-  res.send('success!');
+router.post('/jwt/token/', (req, res, next) => {
+  passport.getUserProfile(req.body.accessToken).then((userProfile) => {
+    logger.info('%o', userProfile);
+  }).catch((error) => {
+    logger.error(error);
+  });
 });
 
 

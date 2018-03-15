@@ -1,9 +1,6 @@
 const joi = require('joi');
 const winston = require('winston');
 
-const fs = require('fs');
-
-
 const envVarsSchema = joi.object({
   LOGGER_LEVEL: joi.string()
     .allow(['error', 'warn', 'info', 'verbose', 'debug', 'silly'])

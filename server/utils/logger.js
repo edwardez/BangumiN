@@ -14,8 +14,7 @@ const {
 } = winston.format;
 
 // for some reason winston will escape new line in formatter, convert then to new line again here
-const myFormat = printf(info => `${info.timestamp}  [${info.label}] ${info.level}: ${info.message.split(
-  '\\n').join('\n')}`);
+const myFormat = printf(info => `${info.timestamp}  [${info.label}] ${info.level}: ${info.message.split('\\n').join('\n')}`);
 
 
 // Return the last folder name in the path and the calling

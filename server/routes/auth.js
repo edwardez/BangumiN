@@ -43,11 +43,23 @@ const authenticate = expressJwt({
 
 router.post('/jwt/token/', (req, res, next) => {
   passport.getUserProfile(req.body.accessToken).then((userProfile) => {
-    logger.info('%o', userProfile);
+    if (userProfile === undefined) {
+      return res.status(401).json({
+        error: 'user_not_valid',
+        error_description: 'Cannot verify user identity.',
+      });
+    }
+
+
+    req.auth = {
+      id: userProfile.user_id,
+    };
+    return next();
   }).catch((error) => {
     logger.error(error);
   });
-});
+}, generateToken, sendToken);
+
 
 
 module.exports = router;

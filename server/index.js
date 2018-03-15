@@ -1,1 +1,4 @@
-console.log(process.env)
+require('./config');
+const server = require('./app');
+
+module.exports = server;

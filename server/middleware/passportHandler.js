@@ -54,7 +54,7 @@ bangumiOauth.userProfile = function userProfile(accessToken, done) {
  * @param clientId oauth client id
  * @returns {*}
  */
-function verifyProfile(userProfile, clientId) {
+function verifyAccessToken(userProfile, clientId) {
   const profileSchema = joi.object({
     access_token: joi.string().required(),
     user_id: joi.required(),
@@ -86,7 +86,7 @@ passport.getUserProfile = async function getUserProfile(accessToken) {
 
   try {
     response = await requestPromise.post(`${config.passport.oauth.bangumi.tokenStatusURL}?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`);
-    data = verifyProfile(JSON.parse(response), config.passport.oauth.bangumi.clientID);
+    data = verifyAccessToken(JSON.parse(response), config.passport.oauth.bangumi.clientID);
   } catch (err) {
     logger.error('Response cannot be parsed or verified: %o', response);
     logger.error(err);

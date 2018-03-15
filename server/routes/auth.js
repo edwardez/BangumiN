@@ -61,5 +61,4 @@ router.post('/jwt/token/', (req, res, next) => {
 }, generateToken, sendToken);
 
 
-
 module.exports = router;

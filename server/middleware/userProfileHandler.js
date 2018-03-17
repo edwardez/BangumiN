@@ -29,6 +29,17 @@ function verifyAccessToken(userProfile, clientId) {
   return profileVars;
 }
 
+/**
+ * an async method that will get user profile from bangumi oauth api
+ * this method will return next(error) if:
+ * 1. json cannot be parsed
+ * 2. verifyAccessToken throws error
+ * 3. any other errors that might be caught
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
 const getUserProfile = async function getUserProfile(req, res, next) {
   const { accessToken } = req.body;
   req.bangumin = req.bangumin || {};

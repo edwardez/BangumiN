@@ -35,13 +35,15 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
+// jwt is used to authenticate user but session is still required by passport-oauth2
 app.use(expressSession({
   secret: config.passport.secret.session,
+  name: 'sessionId',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-
+    name: 'sessionId',
   },
 }));
 
@@ -64,8 +66,9 @@ const logErrors = function logErrors(err, req, res, next) {
 // error handler, send stacktrace only during development
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = function errorHandler(err, req, res, next) {
-  res.status(500);
-  res.send('internal error');
+  res
+    .status(res.statusCode === 200 ? 500 : res.statusCode)
+    .json({ error: err.code, error_description: err.message });
 };
 
 app.use(logErrors);

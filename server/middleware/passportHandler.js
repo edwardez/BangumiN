@@ -43,7 +43,6 @@ bangumiOauth.userProfile = function userProfile(accessToken, done) {
 };
 
 
-
 passport.use('bangumi-oauth', bangumiOauth);
 
 passport.serializeUser((user, done) => {

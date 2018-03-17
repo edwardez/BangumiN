@@ -9,7 +9,7 @@ const getUserProfile = require('../middleware/userProfileHandler');
 const { CustomError } = require('../middleware/errorHandler');
 const asyncHandler = require('express-async-handler');
 
-
+// generate a jwt token
 const createToken = function createToken(auth) {
   return jwt.sign(
     {
@@ -21,17 +21,20 @@ const createToken = function createToken(auth) {
   );
 };
 
+// retrieve id from req.auth and pass it to createToken()
 const generateToken = function generateToken(req, res, next) {
   req.token = createToken(req.auth);
   next();
 };
 
+// send jwt auth token in header back to client
 const sendToken = function sendToken(req, res, next) {
   res.header('x-auth-token', req.token);
   res.status(200).json(req.auth);
   next();
 };
 
+// authenticate user using jwt token
 const authenticate = expressJwt({
   secret: config.passport.secret.jwt,
   requestProperty: 'auth',
@@ -43,7 +46,11 @@ const authenticate = expressJwt({
   },
 });
 
-
+/**
+ * a route that will authenticate user identity and issue a new jwt token in header
+ * the authentication will be done by checking whether bangumi can verify user identity
+ * with the provided access token
+ */
 router.post('/jwt/token/', asyncHandler(getUserProfile), (req, res, next) => {
   req.auth = {
     id: req.bangumin.userProfile.user_id,

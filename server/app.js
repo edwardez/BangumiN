@@ -20,7 +20,6 @@ const corsOption = {
   origin: config.frontEndUrl,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  exposedHeaders: ['x-auth-token'],
 };
 
 app.use(cors(corsOption));
@@ -55,7 +54,6 @@ app.use(passport.session());
 
 app.use('/oauth', oauth);
 app.use('/auth', auth);
-
 
 
 // define error-handling middleware last, after other app.use() & routes calls;

@@ -29,7 +29,7 @@ const generateToken = function generateToken(req, res, next) {
 
 // send jwt auth token in header back to client
 const sendToken = function sendToken(req, res, next) {
-  res.header('x-auth-token', req.token);
+  res.header('Authorization', `Bearer ${req.token}`);
   res.status(200).json(req.auth);
   next();
 };
@@ -39,8 +39,8 @@ const authenticate = expressJwt({
   secret: config.passport.secret.jwt,
   requestProperty: 'auth',
   getToken(req) {
-    if (req.headers['x-auth-token']) {
-      return req.headers['x-auth-token'];
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1];
     }
     return null;
   },

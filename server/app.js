@@ -20,6 +20,7 @@ const corsOption = {
   origin: config.frontEndUrl,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
+  exposedHeaders: ['Authorization'],
 };
 
 app.use(cors(corsOption));

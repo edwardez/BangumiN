@@ -137,7 +137,7 @@ export class AuthenticationService {
         tap( response => {
           // save access token to local storage
           // const token = x.headers.get('x-auth-token');
-          const jwtToken = response.headers.get('authorization');
+          const jwtToken = response.headers.get('Authorization');
           if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
             this.tokenStorage.setJwtToken(jwtToken.split(' ')[1]);
           }

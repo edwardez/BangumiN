@@ -16,7 +16,7 @@ import { DashboardComponent } from './home/dashboard/dashboard.component';
 import {AppGuard} from './app.guard';
 
 import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule, MatIconModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu';
 import { NavComponent } from './common/nav/nav.component';
 import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
@@ -25,6 +25,8 @@ import {TokenStorage} from './shared/services/token-storage.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SidenavService} from './shared/services/sidenav.service';
+import { SideNavComponent } from './common/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     DashboardComponent,
     NavComponent,
     ActivateBangumiComponent,
+    SideNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatSidenavModule,
     MatMenuModule,
     MatIconModule,
+    MatListModule,
     FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {
@@ -68,6 +72,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   providers: [AppGuard,
     AuthenticationService,
     TokenStorage,
+    SidenavService
     ],
   bootstrap: [AppComponent]
 })

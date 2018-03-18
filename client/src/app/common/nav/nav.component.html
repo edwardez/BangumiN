@@ -1,5 +1,6 @@
 <div>
-  <mat-toolbar color="primary" class="fixed-header mat-elevation-z6">
+  <mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar">
+    <button mat-icon-button (click)="toggleSidenav()"><mat-icon>menu</mat-icon></button>
     <div>Bangumin</div>
     <div fxFlex="1 1 auto"></div>
     <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
@@ -10,11 +11,7 @@
 </div>
 
 
-<mat-menu #menu="matMenu" class="mma">
-
-
-  <i class="market-nav-arrow"></i>
-
+<mat-menu #menu="matMenu">
   <button mat-menu-item>
     <span>Settings</span>
   </button>

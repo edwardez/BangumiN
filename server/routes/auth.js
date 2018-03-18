@@ -56,14 +56,10 @@ router.post('/jwt/token/', asyncHandler(getUserProfile), (req, res, next) => {
     id: req.bangumin.userProfile.user_id,
   };
 
-  if (!req.auth.id) return next(new CustomError('user_not_exist', 'Cannot find user from bangumi database'));
+  if (req.auth.id === undefined) return next(new CustomError('user_not_exist', 'Cannot find user from bangumi database'));
 
   return next();
 }, generateToken, sendToken);
 
-
-router.get('/me/', (req, res, next) => {
-  res.json({ status: 'good!' });
-});
 
 module.exports = router;

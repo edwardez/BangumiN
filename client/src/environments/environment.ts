@@ -9,5 +9,7 @@ export const environment = {
   BANGUMI_OAUTH_URL: '/proxy/oauth/bangumi',
   BACKEND_API_URL: 'http://localhost:3000/api',
   BACKEND_AUTH_URL: 'http://localhost:3000/auth',
-  BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth'
+  BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
+  whitelistedDomains: ['localhost:3000'],
+  blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/g],
 };

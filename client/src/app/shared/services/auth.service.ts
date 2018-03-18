@@ -2,7 +2,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {AuthService} from 'ngx-auth';
 import {TokenStorage} from './token-storage.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -28,7 +27,7 @@ interface BangumiUserStatus {
 
 
 @Injectable()
-export class AuthenticationService implements AuthService {
+export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private tokenStorage: TokenStorage) {
@@ -138,9 +137,9 @@ export class AuthenticationService implements AuthService {
         tap( response => {
           // save access token to local storage
           // const token = x.headers.get('x-auth-token');
-          const jwtToken = response.headers.get('x-auth-token');
-          if (jwtToken) {
-            this.tokenStorage.setJwtToken(jwtToken);
+          const jwtToken = response.headers.get('authorization');
+          if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
+            this.tokenStorage.setJwtToken(jwtToken.split(' ')[1]);
           }
           this.tokenStorage.setAccessToken(accessToken);
         }),

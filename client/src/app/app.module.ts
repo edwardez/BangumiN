@@ -21,7 +21,8 @@ import { NavComponent } from './common/nav/nav.component';
 import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {AuthenticationService} from './shared/services/auth.service';
 import {TokenStorage} from './shared/services/token-storage.service';
-import {AUTH_SERVICE, PROTECTED_FALLBACK_PAGE_URI, PUBLIC_FALLBACK_PAGE_URI} from 'ngx-auth';
+import {JwtModule} from '@auth0/angular-jwt';
+import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,15 @@ import {AUTH_SERVICE, PROTECTED_FALLBACK_PAGE_URI, PUBLIC_FALLBACK_PAGE_URI} fro
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: environment.whitelistedDomains,
+        blacklistedRoutes: environment.blacklistedRoutes,
+      }
+    }),
+    InterceptorsModule.forRoot(),
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
@@ -46,19 +56,14 @@ import {AUTH_SERVICE, PROTECTED_FALLBACK_PAGE_URI, PUBLIC_FALLBACK_PAGE_URI} fro
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    }),
+    }
+      ),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [AppGuard,
     AuthenticationService,
     TokenStorage,
-    { provide: PROTECTED_FALLBACK_PAGE_URI, useValue: '/' },
-    { provide: PUBLIC_FALLBACK_PAGE_URI, useValue: '/login' },
-    {
-      provide: AUTH_SERVICE,
-      deps: [ AuthenticationService ],
-      useFactory: factory
-    }],
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
@@ -68,6 +73,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
-export function factory(authenticationService: AuthenticationService) {
-  return authenticationService;
+export function tokenGetter() {
+  return localStorage.getItem('jwtToken');
 }

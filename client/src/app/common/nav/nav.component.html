@@ -1,5 +1,24 @@
 <div>
   <mat-toolbar color="primary" class="fixed-header mat-elevation-z6">
+    <div>Bangumin</div>
+    <div fxFlex="1 1 auto"></div>
+    <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
+      <span class="helper-vertical-align-img"></span><img src={{imgSrc}}>
+    </a>
 
   </mat-toolbar>
 </div>
+
+
+<mat-menu #menu="matMenu" class="mma">
+
+
+  <i class="market-nav-arrow"></i>
+
+  <button mat-menu-item>
+    <span>Settings</span>
+  </button>
+  <button mat-menu-item>
+    <span>Sign out</span>
+  </button>
+</mat-menu>

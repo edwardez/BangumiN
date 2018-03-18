@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
+  imgSrc = 'http://lain.bgm.tv/pic/user/l/000/00/00/1.jpg?r=1391790456';
+
   constructor() { }
 
   ngOnInit() {

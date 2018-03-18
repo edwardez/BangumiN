@@ -1,0 +1,19 @@
+img {
+  max-height: 80%;
+  min-height: 80%;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.helper-mat-toolbar-item {
+  height: inherit;
+}
+.helper-vertical-align-img {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.helper-cursor-pointer {
+  cursor: pointer;
+}

@@ -16,13 +16,15 @@ import { DashboardComponent } from './home/dashboard/dashboard.component';
 import {AppGuard} from './app.guard';
 
 import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatIconModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import {MatMenuModule} from '@angular/material/menu';
 import { NavComponent } from './common/nav/nav.component';
 import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {AuthenticationService} from './shared/services/auth.service';
 import {TokenStorage} from './shared/services/token-storage.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {InterceptorsModule} from './shared/interceptors/interceptors.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
 
@@ -49,6 +52,8 @@ import {InterceptorsModule} from './shared/interceptors/interceptors.module';
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
+    MatMenuModule,
+    MatIconModule,
     FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {

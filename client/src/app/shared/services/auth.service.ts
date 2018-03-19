@@ -6,8 +6,11 @@ import {TokenStorage} from './token-storage.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import {environment} from '../../../environments/environment';
-import {map, catchError, tap} from 'rxjs/operators';
+import {map, catchError, tap, switchMap} from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
+import {Subject} from 'rxjs/Subject';
+import {BangumiUser} from '../models/BangumiUser';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 
@@ -28,6 +31,9 @@ interface BangumiUserStatus {
 
 @Injectable()
 export class AuthenticationService {
+
+  userSubject: Subject<BangumiUser> = new BehaviorSubject<BangumiUser>(null);
+  BANGUMI_API_URL = environment.BANGUMI_API_URL;
 
   constructor(private http: HttpClient,
               private tokenStorage: TokenStorage) {
@@ -134,14 +140,18 @@ export class AuthenticationService {
       {accessToken: accessToken},
       {observe: 'response' } )
       .pipe(
+        switchMap( response => this.http.get(`${this.BANGUMI_API_URL}/user/${response.body.user_id}`), (outer, inner) => {
+          return {'authDetails': outer, 'bangumiUserInfo': inner};
+        }),
         tap( response => {
+          const {authDetails, bangumiUserInfo} = response;
           // save access token to local storage
-          // const token = x.headers.get('x-auth-token');
-          const jwtToken = response.headers.get('Authorization');
+          const jwtToken = authDetails.headers.get('Authorization');
           if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
             this.tokenStorage.setJwtToken(jwtToken.split(' ')[1]);
           }
           this.tokenStorage.setAccessToken(accessToken);
+          this.userSubject.next(new BangumiUser().deserialize(bangumiUserInfo));
         }),
       ).catch((err) => {
         return Observable.throw(err);

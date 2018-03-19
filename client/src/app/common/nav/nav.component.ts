@@ -1,5 +1,7 @@
 import {Component, ContentChildren, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
+import {AuthenticationService} from '../../shared/services/auth.service';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'app-nav',
@@ -7,12 +9,19 @@ import {SidenavService} from '../../shared/services/sidenav.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  imgSrc = 'http://lain.bgm.tv/pic/user/l/000/00/00/1.jpg?r=1391790456';
+  imgSrc = 'https://lain.bgm.tv/pic/user/l/icon.jpg';
 
-  constructor(private sidenavService: SidenavService) { }
+  constructor(private sidenavService: SidenavService,
+              private authService: AuthenticationService) { }
 
   ngOnInit() {
+
+    this.authService.userSubject.filter(user => !!user).subscribe( user => {
+      this.imgSrc = user.avatar;
+
+    });
   }
+
 
   toggleSidenav() {
     this.sidenavService

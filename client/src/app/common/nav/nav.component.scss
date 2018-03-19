@@ -1,3 +1,4 @@
+
 img {
   max-height: 80%;
   min-height: 80%;
@@ -20,7 +21,13 @@ img {
 
 
 .helper-toolbar {
-  position: fixed;
+  //position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
-  z-index: 2;
+}
+
+mat-toolbar {
+  z-index: 6;
+}
+:host {
+  display: flex;
 }

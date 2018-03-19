@@ -3,7 +3,18 @@
 
   <app-nav></app-nav>
 
-  <app-side-nav fxFlex></app-side-nav>
+  <mat-sidenav-container fxFlex>
+    <mat-sidenav #sidenav [mode]="mode">
+      <mat-nav-list>
+        <a mat-list-item>slsl</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
 
 </div>
 

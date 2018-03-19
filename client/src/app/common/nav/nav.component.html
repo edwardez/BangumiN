@@ -1,14 +1,12 @@
-<div>
-  <mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar">
-    <button mat-icon-button (click)="toggleSidenav()"><mat-icon>menu</mat-icon></button>
-    <div>Bangumin</div>
-    <div fxFlex="1 1 auto"></div>
-    <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
-      <span class="helper-vertical-align-img"></span><img src={{imgSrc}}>
-    </a>
+<mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()"><mat-icon>menu</mat-icon></button>
+  <div>Bangumin</div>
+  <div fxFlex="1 1 auto"></div>
+  <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
+    <span class="helper-vertical-align-img"></span><img src={{imgSrc}}>
+  </a>
 
-  </mat-toolbar>
-</div>
+</mat-toolbar>
 
 
 <mat-menu #menu="matMenu">

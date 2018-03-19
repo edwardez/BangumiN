@@ -13,7 +13,7 @@ const asyncHandler = require('express-async-handler');
 const createToken = function createToken(auth) {
   return jwt.sign(
     {
-      id: auth.id,
+      user_id: auth.user_id,
     }, config.passport.secret.jwt,
     {
       expiresIn: '5 days',
@@ -53,10 +53,10 @@ const authenticate = expressJwt({
  */
 router.post('/jwt/token/', asyncHandler(getUserProfile), (req, res, next) => {
   req.auth = {
-    id: req.bangumin.userProfile.user_id,
+    user_id: req.bangumin.userProfile.user_id,
   };
 
-  if (req.auth.id === undefined) return next(new CustomError('user_not_exist', 'Cannot find user from bangumi database'));
+  if (req.auth.user_id === undefined) return next(new CustomError('user_not_exist', 'Cannot find user from bangumi database'));
 
   return next();
 }, generateToken, sendToken);

@@ -26,7 +26,7 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SidenavService} from './shared/services/sidenav.service';
-import { SideNavComponent } from './common/side-nav/side-nav.component';
+import {MaterialFlexModule} from '../material-flex.module';
 
 @NgModule({
   declarations: [
@@ -35,14 +35,12 @@ import { SideNavComponent } from './common/side-nav/side-nav.component';
     DashboardComponent,
     NavComponent,
     ActivateBangumiComponent,
-    SideNavComponent,
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-
+    MaterialFlexModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -51,14 +49,6 @@ import { SideNavComponent } from './common/side-nav/side-nav.component';
       }
     }),
     InterceptorsModule.forRoot(),
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatIconModule,
-    MatListModule,
-    FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

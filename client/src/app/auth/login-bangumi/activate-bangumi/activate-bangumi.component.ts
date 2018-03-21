@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
-import {TokenStorage} from '../../../shared/services/token-storage.service';
+import {StorageService} from '../../../shared/services/storage.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
 

@@ -21,12 +21,14 @@ import {MatMenuModule} from '@angular/material/menu';
 import { NavComponent } from './common/nav/nav.component';
 import { ActivateBangumiComponent } from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {AuthenticationService} from './shared/services/auth.service';
-import {TokenStorage} from './shared/services/token-storage.service';
+import {StorageService} from './shared/services/storage.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SidenavService} from './shared/services/sidenav.service';
 import {MaterialFlexModule} from '../material-flex.module';
+import { ProgressComponent } from './home/progress/progress.component';
+import { ProfileComponent } from './home/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import {MaterialFlexModule} from '../material-flex.module';
     DashboardComponent,
     NavComponent,
     ActivateBangumiComponent,
+    ProgressComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,7 @@ import {MaterialFlexModule} from '../material-flex.module';
   ],
   providers: [AppGuard,
     AuthenticationService,
-    TokenStorage,
+    StorageService,
     SidenavService
     ],
   bootstrap: [AppComponent]

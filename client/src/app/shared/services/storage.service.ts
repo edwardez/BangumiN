@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
+import {BangumiUser} from '../models/BangumiUser';
 
 @Injectable()
-export class TokenStorage {
+export class StorageService {
 
   /**
    * Get access token
@@ -27,10 +28,26 @@ export class TokenStorage {
   }
 
   /**
-   * Set access token
-   * @returns {TokenStorage}
+   * Get bangumi user info
+   * @returns {StorageService}
    */
-  public setAccessToken(token: string): TokenStorage {
+  public getBangumiUser(): Observable<BangumiUser> {
+    const bangumiUserInfo: string = localStorage.getItem('bangumiUser');
+    let bangumiUser: BangumiUser;
+
+    try {
+      bangumiUser = JSON.parse(bangumiUserInfo);
+    } catch (err) {
+      console.log('Failed to parse user info %o', bangumiUserInfo);
+    }
+    return Observable.of(bangumiUser);
+  }
+
+  /**
+   * Set access token
+   * @returns {StorageService}
+   */
+  public setAccessToken(token: string): StorageService {
     localStorage.setItem('accessToken', token);
 
     return this;
@@ -38,20 +55,28 @@ export class TokenStorage {
 
   /**
    * Set jwt token
-   * @returns {TokenStorage}
+   * @returns {StorageService}
    */
-  public setJwtToken(token: string): TokenStorage {
+  public setJwtToken(token: string): StorageService {
     localStorage.setItem('jwtToken', token);
     return this;
   }
 
   /**
    * Set refresh token
-   * @returns {TokenStorage}
+   * @returns {StorageService}
    */
-  public setRefreshToken(token: string): TokenStorage {
+  public setRefreshToken(token: string): StorageService {
     localStorage.setItem('refreshToken', token);
+    return this;
+  }
 
+  /**
+   * Set bangumi user info
+   * @returns {StorageService}
+   */
+  public setBangumiUser(bangumiUser: BangumiUser): StorageService {
+    localStorage.setItem('bangumiUser', JSON.stringify(bangumiUser));
     return this;
   }
 
@@ -61,5 +86,7 @@ export class TokenStorage {
   public clear() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('bangumiUser');
   }
 }

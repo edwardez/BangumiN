@@ -35,12 +35,12 @@ export class NavComponent implements OnInit {
   }
 
   /**
-   ** we retrieve relevant user info here, we'll subscribe to first two non-null userSubject
+   ** we retrieve relevant user info here, we'll subscribe to first two user info service, and they must be non-null
    ** why two? because
    ** 1. the first value is from localStorage (to ensure speed)
    ** 2. the second value is from http service (slower, and user might change their avatar on computer A, after
    ** that they expect to see new avatar on computer B after refreshing)
-   ** in more complicated cases, we should use takeUntil
+   ** in more complicated cases, takeUntil should be used
    */
 
   updateUserInfo() {

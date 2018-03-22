@@ -1,3 +1,5 @@
+import {Serializable} from './Serializable';
+
 interface AvatarType {
   large: string;
   medium: string;
@@ -12,7 +14,7 @@ export class BangumiUser implements Serializable<BangumiUser> {
   username: string;
 
   deserialize(input) {
-    this.user_id = input.id;
+    this.user_id = input.id === undefined ? input.user_id : input.id;
     this.avatar = {
       'large': input.avatar.large.replace(/^http:/, 'https:'), // convert http link to https
       'medium': input.avatar.medium.replace(/^http:/, 'https:'), // convert http link to https

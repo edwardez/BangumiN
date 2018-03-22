@@ -1,3 +1,3 @@
-interface Serializable<T> {
+export interface Serializable<T> {
   deserialize(input: Object): T;
 }

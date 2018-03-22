@@ -8,7 +8,7 @@ import {
 import { AuthenticationService } from '../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import {environment} from '../../../environments/environment';
-import URL from 'url';
+const URL = require('url');
 
 
 @Injectable()

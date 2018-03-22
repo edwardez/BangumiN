@@ -28,7 +28,8 @@ export class BangumiUserService {
         take(1),
         switchMap(
           bangumiUserFromStorage => {
-            if (bangumiUserFromStorage) {
+            // if user info is in localStorage and username has at least 1 string
+            if (bangumiUserFromStorage && bangumiUserFromStorage.username.length >= 1) {
               return this.http.get(`${this.BANGUMI_API_URL}/user/${bangumiUserFromStorage.username}`)
                 .pipe(
                   map(bangumiUserFromHttp => {

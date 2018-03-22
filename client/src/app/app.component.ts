@@ -11,6 +11,7 @@ export class AppComponent implements OnInit{
 
   @ViewChild('sidenav') public sidenav: MatSidenav;
   mode = 'side';
+  title = 'BangumiN';
 
   ngOnInit(): void {
     this.sidenavService

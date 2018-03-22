@@ -22,9 +22,9 @@ export class NavComponent implements OnInit {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser().deserialize({
       id: '',
-      avatar: {'large': 'https://lain.bgm.tv/pic/user/l/icon.jpg',
-        'medium': 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-        'small': 'https://lain.bgm.tv/pic/user/s/icon.jpg'},
+      avatar: {large: 'https://lain.bgm.tv/pic/user/l/icon.jpg',
+        medium: 'https://lain.bgm.tv/pic/user/m/icon.jpg',
+        small: 'https://lain.bgm.tv/pic/user/s/icon.jpg'},
       nickname: '',
       username: ''
     });

@@ -28,6 +28,15 @@ export class StorageService {
   }
 
   /**
+   * Get jwt token
+   * @returns {Observable<string>}
+   */
+  public getJwtToken(): Observable<string> {
+    const token: string = <string>localStorage.getItem('jwtToken');
+    return Observable.of(token);
+  }
+
+  /**
    * Get bangumi user info
    * @returns {StorageService}
    */
@@ -36,10 +45,12 @@ export class StorageService {
     let bangumiUser: BangumiUser;
 
     try {
-      bangumiUser = JSON.parse(bangumiUserInfo);
+      bangumiUser = new BangumiUser().deserialize(JSON.parse(bangumiUserInfo));
     } catch (err) {
       console.log('Failed to parse user info %o', bangumiUserInfo);
+      bangumiUser = null;
     }
+
     return Observable.of(bangumiUser);
   }
 
@@ -77,6 +88,7 @@ export class StorageService {
    */
   public setBangumiUser(bangumiUser: BangumiUser): StorageService {
     localStorage.setItem('bangumiUser', JSON.stringify(bangumiUser));
+
     return this;
   }
 

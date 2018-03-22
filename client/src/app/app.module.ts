@@ -29,6 +29,7 @@ import {SidenavService} from './shared/services/sidenav.service';
 import {MaterialFlexModule} from '../material-flex.module';
 import { ProgressComponent } from './home/progress/progress.component';
 import { ProfileComponent } from './home/profile/profile.component';
+import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
 
 @NgModule({
   declarations: [
@@ -65,8 +66,9 @@ import { ProfileComponent } from './home/profile/profile.component';
   ],
   providers: [AppGuard,
     AuthenticationService,
+    BangumiUserService,
     StorageService,
-    SidenavService
+    SidenavService,
     ],
   bootstrap: [AppComponent]
 })

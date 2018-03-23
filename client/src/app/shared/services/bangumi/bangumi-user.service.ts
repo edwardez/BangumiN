@@ -23,30 +23,32 @@ export class BangumiUserService {
   getUserInfo(username?: string): Observable<any> {
     if (username) {
       return this.http.get(`${this.BANGUMI_API_URL}/user/${username}`);
-    } else {
-      return this.storageService.getBangumiUser().pipe(
-        take(1),
-        switchMap(
-          bangumiUserFromStorage => {
-            // if user info is in localStorage and username has at least 1 string
-            if (bangumiUserFromStorage && bangumiUserFromStorage.username.length >= 1) {
-              return this.http.get(`${this.BANGUMI_API_URL}/user/${bangumiUserFromStorage.username}`)
-                .pipe(
-                  map(bangumiUserFromHttp => {
-                    const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserFromHttp);
-                    this.storageService.setBangumiUser(bangumiUser);
-                    return bangumiUser;
-                  })
-                );
-            } else {
-              return Observable.of();
-            }
-          }
-        )
-      ).catch((err) => {
-        return Observable.throw(err);
-      });
     }
+
+    return this.storageService.getBangumiUser().pipe(
+      take(1),
+      switchMap(
+        bangumiUserFromStorage => {
+          // if user info is in localStorage and username has at least 1 string
+          if (bangumiUserFromStorage && bangumiUserFromStorage.username.length >= 1) {
+            return this.http.get(`${this.BANGUMI_API_URL}/user/${bangumiUserFromStorage.username}`)
+              .pipe(
+                map(bangumiUserFromHttp => {
+                  const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserFromHttp);
+                  this.storageService.setBangumiUser(bangumiUser);
+                  return bangumiUser;
+                })
+              );
+          }
+
+          // else return an empty Observable
+          return Observable.of();
+        }
+      )
+    ).catch((err) => {
+      return Observable.throw(err);
+    });
+
 
   }
 

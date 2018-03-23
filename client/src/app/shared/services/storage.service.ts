@@ -42,13 +42,14 @@ export class StorageService {
    */
   public getBangumiUser(): Observable<BangumiUser> {
     const bangumiUserInfo: string = localStorage.getItem('bangumiUser');
-    let bangumiUser: BangumiUser;
+    let bangumiUser: BangumiUser = null;
 
-    try {
-      bangumiUser = new BangumiUser().deserialize(JSON.parse(bangumiUserInfo));
-    } catch (err) {
-      console.log('Failed to parse user info %o', bangumiUserInfo);
-      bangumiUser = null;
+    if (bangumiUserInfo !== null) {
+      try {
+        bangumiUser = new BangumiUser().deserialize(JSON.parse(bangumiUserInfo));
+      } catch (err) {
+        console.log('Failed to parse user info %o', bangumiUserInfo);
+      }
     }
 
     return Observable.of(bangumiUser);

@@ -43,21 +43,25 @@ export class AuthenticationService {
 
   /**
    * Check, if user already authenticated.
+   * Check whether
+   * 1. token exists
+   * 2. if token exists, whether it is expired and return
+   true or false
    * @description Should return Observable with true or false values
-   * @returns boolean
+   * @returns Observable<boolean>
    * @memberOf AuthenticationService
    */
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem('jwtToken');
-    // Check whether
-    // 1. token exists
-    // 2. if token exists, whether it is expired and return
-    // true or false
-    if (token == null) {
-      return false;
-    } else {
-      return !this.jwtHelper.isTokenExpired(token);
-    }
+  public isAuthenticated(): Observable<boolean> {
+
+    return this.storageService.getJwtToken().pipe(
+      map(jwtToken => {
+        if (jwtToken == null) {
+          return false;
+        } else {
+          return !this.jwtHelper.isTokenExpired(jwtToken);
+        }
+      })
+    );
 
   }
 

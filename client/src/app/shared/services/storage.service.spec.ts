@@ -23,7 +23,7 @@ describe('TokenStorageService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should empty localStorage at first', () => {
+  it('should return null if localStorage is empty', () => {
     storageService.getAccessToken().subscribe( res => {
       expect(res).toBe(null);
     });

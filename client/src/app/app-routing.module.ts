@@ -6,6 +6,7 @@ import {DashboardComponent} from './home/dashboard/dashboard.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
+import {SettingsComponent} from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent
       },
     ]
   },

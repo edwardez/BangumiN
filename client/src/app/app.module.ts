@@ -30,6 +30,7 @@ import {MaterialFlexModule} from '../material-flex.module';
 import { ProgressComponent } from './home/progress/progress.component';
 import { ProfileComponent } from './home/profile/profile.component';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service
     ActivateBangumiComponent,
     ProgressComponent,
     ProfileComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,12 +2,13 @@ import {NgModule} from '@angular/core';
 
 import {
   MatButtonModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatSidenavModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule
+  MatSidenavModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule, MatSelectModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -20,7 +21,9 @@ import {MatMenuModule} from '@angular/material/menu';
     MatListModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatTabsModule,
+    MatSelectModule
   ],
   exports: [
     MatCardModule,
@@ -32,7 +35,9 @@ import {MatMenuModule} from '@angular/material/menu';
     MatListModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatTabsModule,
+    MatSelectModule
   ]
 })
 export class MaterialFlexModule {

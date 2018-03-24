@@ -18,7 +18,8 @@ export class NavComponent implements OnInit {
   constructor(private sidenavService: SidenavService,
               private storageService: StorageService,
               private authService: AuthenticationService,
-              private bangumiUserService: BangumiUserService) {
+              private bangumiUserService: BangumiUserService,
+             ) {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser().deserialize({
       id: '',
@@ -28,10 +29,13 @@ export class NavComponent implements OnInit {
       nickname: '',
       username: ''
     });
+
+
   }
 
   ngOnInit() {
     this.updateUserInfo();
+
   }
 
   /**

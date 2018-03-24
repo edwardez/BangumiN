@@ -1,0 +1,7 @@
+{
+  "login": {
+    "welcomeTitle": "欢迎!",
+    "welcomeText": "bangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
+    "oauthRedirect": "登陆"
+  }
+}

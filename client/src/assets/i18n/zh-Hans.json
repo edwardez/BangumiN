@@ -3,5 +3,21 @@
     "welcomeTitle": "欢迎!",
     "welcomeText": "bangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
     "oauthRedirect": "登陆"
+  },
+  "settings": {
+    "title": "设置",
+    "description": "所有设置都会被自动保存",
+    "tabs": {
+      "general": {
+        "name": "通用",
+        "language": {
+          "name": "语言"
+        }
+      },
+      "social": {
+        "name": "社交"
+      }
+    }
   }
+
 }

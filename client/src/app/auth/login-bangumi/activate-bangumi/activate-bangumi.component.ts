@@ -25,7 +25,6 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
           this.authService.verifyAccessToken(params['access_token'])
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe( response => {
-              console.log(response);
           }, err => {
               console.log(err);
           });

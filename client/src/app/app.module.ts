@@ -31,6 +31,8 @@ import { ProgressComponent } from './home/progress/progress.component';
 import { ProfileComponent } from './home/profile/profile.component';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
 import { SettingsComponent } from './settings/settings.component';
+import {FormsModule} from '@angular/forms';
+import { KeysPipePipe } from './shared/pipe/keys-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -42,11 +44,13 @@ import { SettingsComponent } from './settings/settings.component';
     ProgressComponent,
     ProfileComponent,
     SettingsComponent,
+    KeysPipePipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     MaterialFlexModule,
     JwtModule.forRoot({
       config: {

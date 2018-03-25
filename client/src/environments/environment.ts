@@ -12,4 +12,8 @@ export const environment = {
   BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
   whitelistedDomains: ['localhost:3000'],
   blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/g],
+  availableLanguage: {
+    'en-US': 'English',
+    'zh-Hans': '简体中文'
+  },
 };

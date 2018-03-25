@@ -7,4 +7,8 @@ export const environment = {
   BACKEND_OAUTH_REDIRECT_URL: 'https://bangumin.tv/oauth',
   whitelistedDomains: ['bangumin.tv'],
   blacklistedRoutes: [/http:\/\/localhost:3000\/proxy\/.+/g, /https?:\/\/bangumin\.tv\/auth.+/g],
+  availableLanguage: {
+    'en-US': 'English',
+    'zh-Hans': '简体中文'
+  },
 };

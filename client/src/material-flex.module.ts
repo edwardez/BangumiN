@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 
 import {
   MatButtonModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatSidenavModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule, MatSelectModule
+  MatSidenavModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule, MatSelectModule, MatRadioModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -23,7 +23,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatTabsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioModule
   ],
   exports: [
     MatCardModule,
@@ -37,7 +38,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatTabsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioModule
   ]
 })
 export class MaterialFlexModule {

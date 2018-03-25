@@ -3,5 +3,20 @@
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
     "oauthRedirect": "Login"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "All changes will be saved automatically",
+    "tabs": {
+      "general": {
+        "name": "General",
+        "language": {
+          "name": "Language"
+        }
+      },
+      "social": {
+        "name": "Social"
+      }
+    }
   }
 }

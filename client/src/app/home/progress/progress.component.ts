@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 
 @Component({
   selector: 'app-progress',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProgressComponent implements OnInit {
 
-  constructor() { }
+  constructor(private bangumiCollectionService: BangumiCollectionService) {
+
+  }
 
   ngOnInit() {
   }

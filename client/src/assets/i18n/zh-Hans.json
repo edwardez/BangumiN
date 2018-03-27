@@ -18,6 +18,22 @@
         "name": "社交"
       }
     }
+  },
+  "progress": {
+  "tabs": {
+    "all": {
+      "name": "所有"
+    },
+    "anime": {
+      "name": "动画"
+    },
+    "real": {
+      "name": "三次元"
+    },
+    "book": {
+      "name": "书籍"
+    }
   }
+}
 
 }

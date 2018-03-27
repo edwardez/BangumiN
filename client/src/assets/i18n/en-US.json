@@ -18,5 +18,21 @@
         "name": "Social"
       }
     }
+  },
+  "progress": {
+    "tabs": {
+      "all": {
+        "name": "All"
+      },
+      "anime": {
+        "name": "Anime"
+      },
+      "real": {
+        "name": "Real"
+      },
+      "book": {
+        "name": "Books"
+      }
+    }
   }
 }

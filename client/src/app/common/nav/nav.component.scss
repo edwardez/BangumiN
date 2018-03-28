@@ -28,6 +28,42 @@ img {
 mat-toolbar {
   z-index: 6;
 }
+
+
+// search bar style is from AIO
+.search-container {
+  width: 100%;
+  min-width: 150px;
+  height: 100%;
+
+  input {
+    color: black;
+    border: none;
+    border-radius: 100px;
+    background-color: white;
+    padding: 5px 16px;
+    margin-left: 8px;
+    width: 180px;
+    max-width: 240px;
+    height: 50%;
+    -webkit-appearance: none;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 400;
+
+    &:focus {
+      outline: none;
+    }
+
+
+    @media (max-width: 480px) {
+      width: 150px;
+    }
+  }
+}
+
 :host {
   display: flex;
 }
+
+

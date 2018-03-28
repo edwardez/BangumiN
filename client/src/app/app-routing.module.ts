@@ -7,6 +7,7 @@ import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/ac
 import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
 import {SettingsComponent} from './settings/settings.component';
+import {FullSearchComponent} from './search/full-search/full-search.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
         component: SettingsComponent
       },
     ]
+  },
+  {
+    path: 'search',
+    component: FullSearchComponent
   },
   {
     path: 'login',

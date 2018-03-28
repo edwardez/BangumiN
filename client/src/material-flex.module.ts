@@ -24,7 +24,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     FlexLayoutModule,
     MatTabsModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatInputModule,
+    MatDialogModule
   ],
   exports: [
     MatCardModule,
@@ -39,7 +41,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     FlexLayoutModule,
     MatTabsModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatInputModule,
+    MatDialogModule
   ]
 })
 export class MaterialFlexModule {

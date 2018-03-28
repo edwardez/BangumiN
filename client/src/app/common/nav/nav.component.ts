@@ -1,11 +1,12 @@
 import {Component, ContentChildren, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, first, take, tap} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import { concat } from 'rxjs/observable/concat';
+import {concat} from 'rxjs/observable/concat';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -14,18 +15,23 @@ import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.ser
 })
 export class NavComponent implements OnInit {
   bangumiUser: BangumiUser;
+  searchKeywords = '';
+
 
   constructor(private sidenavService: SidenavService,
               private storageService: StorageService,
               private authService: AuthenticationService,
               private bangumiUserService: BangumiUserService,
-             ) {
+              private route: ActivatedRoute,
+              private router: Router) {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser().deserialize({
       id: '',
-      avatar: {large: 'https://lain.bgm.tv/pic/user/l/icon.jpg',
+      avatar: {
+        large: 'https://lain.bgm.tv/pic/user/l/icon.jpg',
         medium: 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-        small: 'https://lain.bgm.tv/pic/user/s/icon.jpg'},
+        small: 'https://lain.bgm.tv/pic/user/s/icon.jpg'
+      },
       nickname: '',
       username: ''
     });
@@ -34,8 +40,24 @@ export class NavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateSearchBarText();
     this.updateUserInfo();
 
+  }
+
+  /**
+   * this function will update text in search bar according to route params
+   */
+  updateSearchBarText() {
+    this.route
+      .queryParams
+      .pipe(
+        filter(params => params['keywords'] !== undefined)
+      ).subscribe(
+      params => {
+        this.searchKeywords = decodeURI(params['keywords']);
+      }
+    );
   }
 
   /**
@@ -56,16 +78,22 @@ export class NavComponent implements OnInit {
         take(userInfoServiceArray.length),
         filter(bangumiUser => !!bangumiUser),
       )
-      .subscribe( bangumiUser => {
+      .subscribe(bangumiUser => {
         this.bangumiUser = bangumiUser;
+        this.authService.userSubject.next(bangumiUser);
       });
   }
 
   toggleSidenav() {
     this.sidenavService
       .toggle()
-      .then(() => { });
+      .then(() => {
+      });
 
+  }
+
+  doFullSearch(query: string) {
+    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
 }

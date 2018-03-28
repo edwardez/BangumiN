@@ -29,6 +29,9 @@ import {SettingsComponent} from './settings/settings.component';
 import {FormsModule} from '@angular/forms';
 import {BanguminHomeModule} from './home/home.module';
 import {KeysPipePipe} from './shared/pipe/keys-pipe.pipe';
+import {BanguminCommonComponentModule} from './common/common.module';
+import {BangumiSearchService} from './shared/services/bangumi/bangumi-search.service';
+import { FullSearchComponent } from './search/full-search/full-search.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +44,14 @@ import {KeysPipePipe} from './shared/pipe/keys-pipe.pipe';
     ProfileComponent,
     SettingsComponent,
     KeysPipePipe,
+    FullSearchComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BanguminHomeModule,
+    BanguminCommonComponentModule,
     FormsModule,
     MaterialFlexModule,
     JwtModule.forRoot({
@@ -70,6 +75,7 @@ import {KeysPipePipe} from './shared/pipe/keys-pipe.pipe';
   providers: [AppGuard,
     AuthenticationService,
     BangumiUserService,
+    BangumiSearchService,
     StorageService,
     SidenavService,
   ],

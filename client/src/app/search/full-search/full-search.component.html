@@ -11,8 +11,10 @@
         <mat-card fxFlex.lt-sm="0 1 40%" fxFlex.sm="0 1 30%" fxFlex.md="0 1 30%" fxFlex.gt-md="0 1 15%"
                   fxLayout="column" ngClass.lt-lg="has-margin-top-md">
 
-          <img *ngIf="subject.images !== null" mat-card-image [src]="subject.images.large | https">
-          <img *ngIf="subject.images === null" mat-card-image src="https://bgm.tv/img/no_icon_subject.png | https">
+          <a [routerLink]="['../subject']" [queryParams]="{id: subject.id}">
+            <img *ngIf="subject.images !== null" mat-card-image [src]="subject.images.large | https">
+            <img *ngIf="subject.images === null" mat-card-image src="https://bgm.tv/img/no_icon_subject.png">
+          </a>
 
           <div fxFlex="1 1 auto"></div>
 

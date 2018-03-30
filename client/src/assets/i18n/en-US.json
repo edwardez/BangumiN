@@ -34,5 +34,22 @@
         "name": "Books"
       }
     }
+  },
+  "search": {
+    "empty": "No results",
+    "category": {
+      "all": "All",
+      "anime": "Anime",
+      "book": "Book",
+      "music": "Music",
+      "game": "Game",
+      "real": "Real"
+    },
+    "subject": {
+      "action": {
+        "collect": "Collect",
+        "more": "More"
+      }
+    }
   }
 }

@@ -20,20 +20,36 @@
     }
   },
   "progress": {
-  "tabs": {
-    "all": {
-      "name": "所有"
+    "tabs": {
+      "all": {
+        "name": "所有"
+      },
+      "anime": {
+        "name": "动画"
+      },
+      "real": {
+        "name": "三次元"
+      },
+      "book": {
+        "name": "书籍"
+      }
+    }
+  },
+  "search": {
+    "empty": "无结果",
+    "category": {
+      "all": "综合",
+      "anime": "动画",
+      "book": "书籍",
+      "music": "音乐",
+      "game": "游戏",
+      "real": "三次元"
     },
-    "anime": {
-      "name": "动画"
-    },
-    "real": {
-      "name": "三次元"
-    },
-    "book": {
-      "name": "书籍"
+    "subject": {
+      "action": {
+        "collect": "收藏",
+        "more": "详细"
+      }
     }
   }
-}
-
 }

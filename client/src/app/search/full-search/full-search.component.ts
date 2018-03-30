@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BangumiSearchService} from '../../shared/services/bangumi/bangumi-search.service';
 import {ActivatedRoute} from '@angular/router';
 import {concatAll, filter, map, mergeMap, switchMap, takeUntil} from 'rxjs/operators';
@@ -7,6 +7,7 @@ import {from} from 'rxjs/observable/from';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {of} from 'rxjs/observable/of';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
+import {_} from '../../shared/utils/translation-marker';
 
 @Component({
   selector: 'app-full-search',
@@ -15,8 +16,11 @@ import {SubjectType} from '../../shared/enums/subject-type.enum';
 })
 export class FullSearchComponent implements OnInit {
 
+  subjectSearchResult = [];
+
   constructor(private bangumiSearchService: BangumiSearchService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.getSearchResult();
@@ -35,7 +39,7 @@ export class FullSearchComponent implements OnInit {
     this.route
       .queryParams
       .pipe(
-        filter( params => params['keywords'] !== undefined),
+        filter(params => params['keywords'] !== undefined),
         switchMap(params => {
           const {keywords, type, responseGroup, start, max_results, ...rest} = params;
 
@@ -43,12 +47,13 @@ export class FullSearchComponent implements OnInit {
           const allSubjectType = Object.keys(SubjectType)
             .map(k => SubjectType[k])
             .filter(v => typeof v === 'number') as number[];
+
           // if type is in parameter list, which means we should only search a single type
           if (type) {
             return forkJoin(this.bangumiSearchService.searchSubject(keywords, type, responseGroup, start, max_results));
           }
 
-          return forkJoin(allSubjectType.map( singleType =>
+          return forkJoin(allSubjectType.map(singleType =>
               this.bangumiSearchService.searchSubject(keywords, singleType.toString(),
                 responseGroup, start, max_results === undefined ? 5 : max_results)
             )
@@ -56,8 +61,37 @@ export class FullSearchComponent implements OnInit {
         }),
       )
       .subscribe(res => {
-
+        this.subjectSearchResult = res;
       });
+  }
+
+
+  /**
+   * map a enum type into relevant string
+   * @param {number} type
+   * @returns {string}
+   */
+  getTypeName(type: number): string {
+    switch (type) {
+      case SubjectType.book : {
+        return _('search.category.book');
+      }
+      case SubjectType.anime : {
+        return _('search.category.anime');
+      }
+      case SubjectType.music : {
+        return _('search.category.music');
+      }
+      case SubjectType.game : {
+        return _('search.category.game');
+      }
+      case SubjectType.real : {
+        return _('search.category.real');
+      }
+      default : {
+        return _('search.category.all');
+      }
+    }
   }
 
 

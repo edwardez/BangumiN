@@ -28,10 +28,11 @@ import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service
 import {SettingsComponent} from './settings/settings.component';
 import {FormsModule} from '@angular/forms';
 import {BanguminHomeModule} from './home/home.module';
-import {KeysPipePipe} from './shared/pipe/keys-pipe.pipe';
+import {KeysPipe} from './shared/pipe/keys.pipe';
 import {BanguminCommonComponentModule} from './common/common.module';
 import {BangumiSearchService} from './shared/services/bangumi/bangumi-search.service';
 import { FullSearchComponent } from './search/full-search/full-search.component';
+import { HttpsPipe } from './shared/pipe/https.pipe';
 
 @NgModule({
   declarations: [
@@ -43,8 +44,9 @@ import { FullSearchComponent } from './search/full-search/full-search.component'
     ProgressComponent,
     ProfileComponent,
     SettingsComponent,
-    KeysPipePipe,
+    KeysPipe,
     FullSearchComponent,
+    HttpsPipe,
   ],
   imports: [
     BrowserModule,

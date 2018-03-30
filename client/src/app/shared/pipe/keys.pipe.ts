@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'keys'
 })
-export class KeysPipePipe implements PipeTransform {
+export class KeysPipe implements PipeTransform {
 
   transform(value, args: string[]): any {
     const keys = [];

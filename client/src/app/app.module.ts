@@ -33,6 +33,8 @@ import {BanguminCommonComponentModule} from './common/common.module';
 import {BangumiSearchService} from './shared/services/bangumi/bangumi-search.service';
 import { FullSearchComponent } from './search/full-search/full-search.component';
 import { HttpsPipe } from './shared/pipe/https.pipe';
+import { SingleSubjectComponent } from './subject/single-subject/single-subject.component';
+import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { HttpsPipe } from './shared/pipe/https.pipe';
     KeysPipe,
     FullSearchComponent,
     HttpsPipe,
+    SingleSubjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,7 @@ import { HttpsPipe } from './shared/pipe/https.pipe';
     AuthenticationService,
     BangumiUserService,
     BangumiSearchService,
+    BangumiSubjectService,
     StorageService,
     SidenavService,
   ],

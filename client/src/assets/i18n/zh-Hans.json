@@ -55,7 +55,15 @@
   "subject": {
     "tabs": {
       "overview": {
-        "name": "概览"
+        "name": "概览",
+        "review": {
+          "score": "分数",
+          "rank": "排名",
+          "action": {
+            "collect": "收藏",
+            "more": "详细"
+          }
+        }
       },
       "episode": {
         "name": "章节"

@@ -46,18 +46,32 @@
       "real": "Real"
     },
     "subject": {
-      "tabs": {
-        "overview": {
-          "name": "概览"
-        },
-        "episode": {
-          "name": "章节"
-        }
-      },
       "action": {
         "collect": "Collect",
-        "more": "More"
+        "more": "More Info"
       }
+    }
+  },
+  "subject": {
+    "tabs": {
+      "overview": {
+        "name": "Overview",
+        "review": {
+          "score": "Score",
+          "rank": "Ranked",
+          "action": {
+            "collect": "收藏",
+            "more": "详细"
+          }
+        }
+      },
+      "episode": {
+        "name": "Episode"
+      }
+    },
+    "action": {
+      "collect": "Collect",
+      "more": "More Info"
     }
   }
 }

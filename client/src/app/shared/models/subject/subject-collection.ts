@@ -33,12 +33,20 @@ export class SubjectCollection implements Serializable<SubjectCollection> {
    */
   dropped?: number;
 
+  SubjectCollection() {
+    this.wish = 0;
+    this.collect = 0;
+    this.doing = 0;
+    this.on_hold = 0;
+    this.dropped = 0;
+  }
+
   deserialize(input) {
-    this.wish = input.wish;
-    this.collect = input.collect;
-    this.doing = input.doing;
-    this.on_hold = input.on_hold;
-    this.dropped = input.dropped;
+    this.wish = input.wish === undefined ? 0 : input.wish;
+    this.collect = input.collect === undefined ? 0 : input.collect;
+    this.doing = input.doing === undefined ? 0 : input.doing;
+    this.on_hold = input.on_hold === undefined ? 0 : input.on_hold;
+    this.dropped = input.dropped === undefined ? 0 : input.dropped;
     return this;
   }
 }

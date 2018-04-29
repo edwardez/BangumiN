@@ -40,14 +40,14 @@ export class SubjectBase implements Serializable<SubjectBase> {
   air_weekday?: number;
 
   deserialize(input) {
-    this.id = input.id;
-    this.url = input.url.replace(/^http:/, 'https:');
-    this.type = input.type;
-    this.name = input.name;
-    this.name_cn = input.name_cn;
-    this.summary = input.summary;
-    this.air_date = input.air_date;
-    this.air_weekday = input.air_weekday;
+    this.id = input.id || 0;
+    this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');
+    this.type = input.type || 0;
+    this.name = input.name || '';
+    this.name_cn = input.name_cn || '';
+    this.summary = input.summary || '';
+    this.air_date = input.air_date === undefined ?  '1970-01-01' : input.air_date;
+    this.air_weekday = input.air_weekday || 0;
     return this;
   }
 

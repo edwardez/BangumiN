@@ -16,10 +16,16 @@ export class SubjectRating implements Serializable<SubjectRating> {
    */
   score?: number;
 
+  SubjectRating() {
+    this.total = 0;
+    this.count = new SubjectCount();
+    this.score = 0;
+  }
+
   deserialize(input) {
-    this.total = input.total;
-    this.count = new SubjectCount().deserialize(input.count);
-    this.score = input.score;
+    this.total = input.total || 0;
+    this.count = input.count === undefined ? new SubjectCount() : new SubjectCount().deserialize(input.count);
+    this.score = input.score || 0;
     return this;
   }
 }

@@ -29,12 +29,12 @@ export class SubjectSmall extends SubjectBase implements Serializable<SubjectSma
 
   deserialize(input) {
     super.deserialize(input);
-    this.eps = input.eps;
-    this.eps_count = input.eps_count;
-    this.rating = new SubjectRating().deserialize(input.rating);
-    this.rank = input.rank;
-    this.collection = new SubjectCollection().deserialize(input.collection);
-    this.images = new Images().deserialize(input.images);
+    this.eps = input.eps || 0;
+    this.eps_count = input.eps_count || 0;
+    this.rating = input.rating === undefined ? new SubjectRating() : new SubjectRating().deserialize(input.rating);
+    this.rank = input.rank  === undefined ? '-' : input.rank;
+    this.collection = input.collection ===  undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
+    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;
   }
 

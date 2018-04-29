@@ -52,17 +52,30 @@ export class SubjectCount implements Serializable<SubjectCount> {
    */
   10?: number;
 
+  SubjectCount() {
+    this['1'] = 0;
+    this['2'] = 0;
+    this['3'] = 0;
+    this['4'] = 0;
+    this['5'] = 0;
+    this['6'] = 0;
+    this['7'] = 0;
+    this['8'] = 0;
+    this['9'] = 0;
+    this['10'] = 0;
+  }
+
   deserialize(input) {
-    this['1'] = input['1'];
-    this['2'] = input['2'];
-    this['3'] = input['3'];
-    this['4'] = input['4'];
-    this['5'] = input['5'];
-    this['6'] = input['6'];
-    this['7'] = input['7'];
-    this['8'] = input['8'];
-    this['9'] = input['9'];
-    this['10'] = input['10'];
+    this['1'] = input['1'] || 0;
+    this['2'] = input['2'] || 0;
+    this['3'] = input['3'] || 0;
+    this['4'] = input['4'] || 0;
+    this['5'] = input['5'] || 0;
+    this['6'] = input['6'] || 0;
+    this['7'] = input['7'] || 0;
+    this['8'] = input['8'] || 0;
+    this['9'] = input['9'] || 0;
+    this['10'] = input['10'] || 0;
     return this;
   }
 }

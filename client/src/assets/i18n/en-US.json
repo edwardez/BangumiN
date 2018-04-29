@@ -46,6 +46,14 @@
       "real": "Real"
     },
     "subject": {
+      "tabs": {
+        "overview": {
+          "name": "概览"
+        },
+        "episode": {
+          "name": "章节"
+        }
+      },
       "action": {
         "collect": "Collect",
         "more": "More"

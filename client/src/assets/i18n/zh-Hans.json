@@ -51,5 +51,15 @@
         "more": "详细"
       }
     }
+  },
+  "subject": {
+    "tabs": {
+      "overview": {
+        "name": "概览"
+      },
+      "episode": {
+        "name": "章节"
+      }
+    }
   }
 }

@@ -59,9 +59,29 @@
         "review": {
           "score": "Score",
           "rank": "Ranked",
+          "modal": {
+            "title": "Edit collection",
+            "comment": "Comment, maximum 200 characters",
+            "cancel": "Cancel",
+            "submit": "Submit"
+          },
+          "status": {
+            "wish": "Wish",
+            "collect": "Finished",
+            "do": "In Progress",
+            "on_hold": "Hold",
+            "dropped": "Drop"
+          },
           "action": {
-            "collect": "收藏",
-            "more": "详细"
+            "collect": "Collect",
+            "more": "More info",
+            "type": {
+              "1": "",
+              "2": "",
+              "3": "",
+              "4": "",
+              "6": ""
+            }
           }
         }
       },

@@ -1,8 +1,19 @@
 import {NgModule} from '@angular/core';
 
 import {
-  MatButtonModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatSidenavModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule, MatSelectModule, MatRadioModule
+  MatButtonModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatListModule,
+  MatCardModule,
+  MatTableModule,
+  MatDialogModule,
+  MatSelectModule,
+  MatRadioModule,
+  MatTooltipModule,
+  MatSnackBarModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -26,7 +37,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSelectModule,
     MatRadioModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule,
   ],
   exports: [
     MatCardModule,
@@ -43,7 +56,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSelectModule,
     MatRadioModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class MaterialFlexModule {

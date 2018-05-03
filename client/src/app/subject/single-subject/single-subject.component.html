@@ -21,12 +21,13 @@
             </div>
             <div fxFlex="20%"  fxFlexOffset="2%">
               <mat-card>
-                <mat-card-content>
+                <mat-card-content fxLayout="column">
                   <p>{{'subject.tabs.overview.review.score' | translate}}: {{subject.rating.score}}/10</p>
                   <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
+                  <app-star-rating [currentRating]="currentRating"  [starCount]="10" [isEditable]="true" (ratingUpdated)="onRatingChanged($event)" ></app-star-rating>
                 </mat-card-content>
                 <mat-card-actions>
-                  <button mat-button>{{'subject.tabs.overview.review.action.collect' | translate}}</button>
+                  <button mat-button (click)="openDialog()">{{'subject.tabs.overview.review.action.collect' | translate}}</button>
                   <button mat-button>{{'subject.tabs.overview.review.action.more' | translate}}</button>
                 </mat-card-actions>
               </mat-card>

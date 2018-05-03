@@ -11,8 +11,7 @@ export class StarRatingComponent implements OnInit {
   @Input('currentRating') private currentRating: number;
   @Input('starCount') private starCount: number;
   @Input('isEditable') private isEditable: boolean;
-  @Output() private ratingUpdatedClick = new EventEmitter();
-  @Output() private ratingUpdatedHover = new EventEmitter();
+  @Output() private ratingUpdated = new EventEmitter();
 
   ratingToBeStore: number;
 
@@ -32,7 +31,7 @@ export class StarRatingComponent implements OnInit {
   onClickSingleRatingStar(rating: number) {
     if (!this.isEditable) { return false; }
 
-    this.ratingUpdatedClick.emit(rating);
+    this.ratingUpdated.emit(rating);
     this.ratingToBeStore = rating;
     return false;
   }
@@ -40,7 +39,7 @@ export class StarRatingComponent implements OnInit {
   onHoverEnterSingleRatingStar(ratingId: number) {
     if (!this.isEditable) { return false; }
 
-    this.ratingUpdatedHover.emit(ratingId);
+    this.ratingUpdated.emit(ratingId);
 
   }
 
@@ -48,7 +47,7 @@ export class StarRatingComponent implements OnInit {
     if (!this.isEditable) { return false; }
 
     this.currentRating = this.ratingToBeStore;
-    this.ratingUpdatedClick.emit(this.ratingToBeStore);
+    this.ratingUpdated.emit(this.ratingToBeStore);
   }
 
   showIcon(index: number) {

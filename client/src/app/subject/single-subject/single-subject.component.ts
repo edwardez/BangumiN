@@ -4,6 +4,10 @@ import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subje
 import {filter, switchMap} from 'rxjs/operators';
 import {SubjectSmall} from '../../shared/models/subject/subject-small';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
+import {MatDialog} from '@angular/material';
+import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 
 @Component({
   selector: 'app-single-subject',
@@ -13,9 +17,12 @@ import {SubjectLarge} from '../../shared/models/subject/subject-large';
 export class SingleSubjectComponent implements OnInit {
 
   subject: SubjectLarge;
+  currentRating = 0;
 
   constructor(private route: ActivatedRoute,
-              private bangumiSubjectService: BangumiSubjectService
+              public dialog: MatDialog,
+              private bangumiSubjectService: BangumiSubjectService,
+              private bangumiCollectionService: BangumiCollectionService
               ) { }
 
   ngOnInit() {
@@ -24,12 +31,26 @@ export class SingleSubjectComponent implements OnInit {
       .pipe(
         filter(params => params['id'] !== undefined),
         switchMap(params => {
-          return this.bangumiSubjectService.getSubject( params['id'], 'large');
+          return forkJoin(
+            this.bangumiSubjectService.getSubject( params['id'], 'large'),
+            this.bangumiCollectionService.getSubjectCollectionStatus( params['id']));
         }
       ))
       .subscribe( res => {
-        this.subject = res;
+        this.subject = res[0];
+        this.currentRating = res[1] && res[1].rating ? res[1].rating : 0; // todo: parse result
       });
+  }
+
+  onRatingChanged(rating) {
+    this.currentRating = rating;
+  }
+
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
+      data: {}
+    });
   }
 
 }

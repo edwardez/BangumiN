@@ -59,9 +59,30 @@
         "review": {
           "score": "分数",
           "rank": "排名",
+          "modal": {
+            "title": "编辑收藏",
+            "comment": "评论, 最多200字",
+            "cancel": "取消",
+            "submit": "提交"
+          },
+          "status": {
+            "wish": "想",
+            "collect": "过",
+            "do": "在",
+            "on_hold": "搁置",
+            "dropped": "抛弃"
+          },
           "action": {
             "collect": "收藏",
-            "more": "详细"
+            "more": "详细",
+            "type": {
+              "0": "做",
+              "1": "看",
+              "2": "看",
+              "3": "听",
+              "4": "玩",
+              "6": "看"
+            }
           }
         }
       },

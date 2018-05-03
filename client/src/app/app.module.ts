@@ -31,10 +31,12 @@ import {BanguminHomeModule} from './home/home.module';
 import {KeysPipe} from './shared/pipe/keys.pipe';
 import {BanguminCommonComponentModule} from './common/common.module';
 import {BangumiSearchService} from './shared/services/bangumi/bangumi-search.service';
-import { FullSearchComponent } from './search/full-search/full-search.component';
-import { HttpsPipe } from './shared/pipe/https.pipe';
-import { SingleSubjectComponent } from './subject/single-subject/single-subject.component';
+import {FullSearchComponent} from './search/full-search/full-search.component';
+import {HttpsPipe} from './shared/pipe/https.pipe';
+import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
 import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.service';
+import {ReviewDialogComponent} from './subject/single-subject/review-dialog/review-dialog.component';
+import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
 
 @NgModule({
   declarations: [
@@ -50,15 +52,17 @@ import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.s
     FullSearchComponent,
     HttpsPipe,
     SingleSubjectComponent,
+    ReviewDialogComponent,
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MaterialFlexModule,
     BanguminHomeModule,
     BanguminCommonComponentModule,
     FormsModule,
-    MaterialFlexModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -77,11 +81,15 @@ import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.s
     ),
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
+  entryComponents: [
+    ReviewDialogComponent
+  ],
   providers: [AppGuard,
     AuthenticationService,
     BangumiUserService,
     BangumiSearchService,
     BangumiSubjectService,
+    BangumiCollectionService,
     StorageService,
     SidenavService,
   ],

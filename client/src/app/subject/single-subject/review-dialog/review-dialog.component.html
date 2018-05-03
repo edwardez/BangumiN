@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>{{'subject.tabs.overview.review.modal.title' | translate}}</h1>
+
+
+<div mat-dialog-content fxLayout="column">
+  <mat-radio-group  fxFlexAlign="end" fxFlexOffset="5%">
+    <mat-radio-button value="1">
+      {{'subject.tabs.overview.review.status.wish' | translate}}{{getActionTypeName(2) | translate}}
+    </mat-radio-button>
+    <mat-radio-button value="2">
+      {{getActionTypeName(2) | translate}}{{'subject.tabs.overview.review.status.collect' | translate}}
+    </mat-radio-button>
+    <mat-radio-button value="3">
+      {{'subject.tabs.overview.review.status.do' | translate}}{{getActionTypeName(2) | translate}}
+    </mat-radio-button>
+    <mat-radio-button value="4">
+      {{'subject.tabs.overview.review.status.on_hold' | translate}}
+    </mat-radio-button>
+    <mat-radio-button value="5">
+      {{'subject.tabs.overview.review.status.dropped' | translate}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+
+  <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
+  <textarea matInput placeholder="{{'subject.tabs.overview.review.modal.comment' | translate}}" matTextareaAutosize matAutosizeMinRows="2"
+            matAutosizeMaxRows="10"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
+  <button mat-button (click)="onSubmitClick()">{{'subject.tabs.overview.review.modal.submit' | translate}}</button>
+</div>

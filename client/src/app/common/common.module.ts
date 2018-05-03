@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {BangumiSearchService} from '../shared/services/bangumi/bangumi-search.service';
-import {NavComponent} from './nav/nav.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
+import {MaterialFlexModule} from '../../material-flex.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialFlexModule
   ],
   declarations: [
-  ],
+  StarRatingComponent],
   providers: [
 
+  ],
+  exports: [
+    StarRatingComponent
   ]
 })
 export class BanguminCommonComponentModule { }

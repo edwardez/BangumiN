@@ -1,20 +1,19 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { StarRatingComponent } from './star-rating/star-rating.component';
-import {MaterialFlexModule} from '../../material-flex.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {StarRatingComponent} from './star-rating/star-rating.component';
+import {MaterialLayoutCommonModule} from '../../material-layout-common.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialFlexModule
+    MaterialLayoutCommonModule
   ],
   declarations: [
-  StarRatingComponent],
-  providers: [
-
-  ],
+    StarRatingComponent],
+  providers: [],
   exports: [
     StarRatingComponent
   ]
 })
-export class BanguminCommonComponentModule { }
+export class BanguminCommonComponentModule {
+}

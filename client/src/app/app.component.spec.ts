@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import {NavComponent} from './common/nav/nav.component';
-import {MaterialFlexModule} from '../material-flex.module';
+import {MaterialLayoutCommonModule} from '../material-layout-common.module';
 import {SidenavService} from './shared/services/sidenav.service';
 import {StorageService} from './shared/services/storage.service';
 import {AuthenticationService} from './shared/services/auth.service';
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MaterialFlexModule,
+        MaterialLayoutCommonModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {

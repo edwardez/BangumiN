@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginBangumiComponent } from './login-bangumi.component';
-import {MaterialFlexModule} from '../../../material-flex.module';
+import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
 
 describe('LoginBangumiComponent', () => {
   let component: LoginBangumiComponent;
@@ -10,7 +10,7 @@ describe('LoginBangumiComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MaterialFlexModule
+        MaterialLayoutCommonModule
       ],
       declarations: [ LoginBangumiComponent ],
       providers: [

@@ -7,7 +7,7 @@ import {AppRoutingModule} from '../../../app-routing.module';
 import {ProgressComponent} from '../../../home/progress/progress.component';
 import {ProfileComponent} from '../../../home/profile/profile.component';
 import {LoginBangumiComponent} from '../login-bangumi.component';
-import {MaterialFlexModule} from '../../../../material-flex.module';
+import {MaterialLayoutCommonModule} from '../../../../material-layout-common.module';
 import {APP_BASE_HREF} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {StorageService} from '../../../shared/services/storage.service';
@@ -24,7 +24,7 @@ describe('ActivateBangumiComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AppRoutingModule,
-        MaterialFlexModule,
+        MaterialLayoutCommonModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {

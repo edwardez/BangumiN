@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavComponent } from './nav.component';
-import {MaterialFlexModule} from '../../../material-flex.module';
+import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {StorageService} from '../../shared/services/storage.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
@@ -19,7 +19,7 @@ describe('NavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MaterialFlexModule,
+        MaterialLayoutCommonModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {

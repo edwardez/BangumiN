@@ -21,7 +21,7 @@ import {StorageService} from './shared/services/storage.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {SidenavService} from './shared/services/sidenav.service';
-import {MaterialFlexModule} from '../material-flex.module';
+import {MaterialLayoutCommonModule} from '../material-layout-common.module';
 import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
@@ -59,7 +59,7 @@ import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collec
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    MaterialFlexModule,
+    MaterialLayoutCommonModule,
     BanguminHomeModule,
     BanguminCommonComponentModule,
     FormsModule,

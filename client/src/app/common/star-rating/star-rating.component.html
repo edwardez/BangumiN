@@ -1,6 +1,4 @@
-
-
-<div (mouseleave)="onHoverLeaveRatingArea()" fxLayout="row" >
+<div (mouseleave)="onHoverLeaveRatingArea()" fxLayout="row">
   <button mat-icon-button *ngFor="let ratingId of ratingArray;index as i" [id]="'star_'+i"
           (click)="onClickSingleRatingStar(i+1)" (mouseover)="onHoverEnterSingleRatingStar(ratingId+1)"
           [ngClass]="{'not-editable': !isEditable}" class="star-rating" fxFlex="0 1 10%">
@@ -8,4 +6,8 @@
       {{showIcon(i)}}
     </mat-icon>
   </button>
+
 </div>
+
+
+

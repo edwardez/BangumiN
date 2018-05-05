@@ -29,7 +29,7 @@
     <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
   <textarea matInput placeholder="{{'subject.tabs.overview.review.modal.comment' | translate: {commentCurrentLength:ratingForm.value.comment.length, commentMaxLength: commentMaxLength} }}"
             formControlName="comment"
-            matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="10" [errorStateMatcher]="matcher"></textarea>
+            matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6" [errorStateMatcher]="matcher"></textarea>
     </mat-form-field>
     <mat-error *ngIf="ratingForm.controls['comment'].errors">
       {{'subject.tabs.overview.review.modal.error.comment.maxLength' | translate: {commentMaxLength: commentMaxLength} }}
@@ -37,7 +37,7 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
-    <button mat-button (click)="onSubmitClick()" cdkFocusInitial>{{'subject.tabs.overview.review.modal.submit' | translate}}</button>
+    <button mat-button (click)="onSubmitClick()" [disabled]="ratingForm.invalid">{{'subject.tabs.overview.review.modal.submit' | translate}}</button>
   </div>
 </form>
 

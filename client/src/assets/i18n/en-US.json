@@ -78,7 +78,8 @@
             "dropped": "Drop"
           },
           "action": {
-            "collect": "Collect",
+            "addToCollection": "Add to collection",
+            "EditCollection": "Edit collection",
             "more": "More info",
             "type": {
               "1": "",

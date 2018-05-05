@@ -78,7 +78,8 @@
             "dropped": "抛弃"
           },
           "action": {
-            "collect": "收藏",
+            "addToCollection": "加入收藏",
+            "EditCollection": "修改收藏",
             "more": "详细",
             "type": {
               "0": "做",

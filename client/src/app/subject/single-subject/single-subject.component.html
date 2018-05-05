@@ -24,10 +24,13 @@
                 <mat-card-content fxLayout="column">
                   <p>{{'subject.tabs.overview.review.score' | translate}}: {{subject.rating.score}}/10</p>
                   <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
-                  <app-star-rating [(currentRating)]="currentRating"  [starCount]="10" [isEditable]="true" (ratingUpdated)="onRatingChanged($event)" ></app-star-rating>
+                  <app-star-rating [(currentRating)]="currentRating"  [starCount]="10" [isEditable]="true" (ratingUpdated)="onRatingChanged($event)" *ngIf="this.collectionResponse.status.isTouched"></app-star-rating>
                 </mat-card-content>
                 <mat-card-actions>
-                  <button mat-button (click)="openDialog()">{{'subject.tabs.overview.review.action.collect' | translate}}</button>
+                  <button mat-button (click)="openDialog()">
+                    <ng-container *ngIf="!this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.action.addToCollection' | translate}}</ng-container>
+                    <ng-container *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.action.EditCollection' | translate}}</ng-container>
+                  </button>
                   <button mat-button>{{'subject.tabs.overview.review.action.more' | translate}}</button>
                 </mat-card-actions>
               </mat-card>

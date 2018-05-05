@@ -33,7 +33,7 @@ export class SubjectCollection implements Serializable<SubjectCollection> {
    */
   dropped?: number;
 
-  SubjectCollection() {
+  constructor() {
     this.wish = 0;
     this.collect = 0;
     this.doing = 0;

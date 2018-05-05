@@ -8,6 +8,7 @@ import {MatDialog} from '@angular/material';
 import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
+import {CollectionResponse} from '../../shared/models/collection/collection-response';
 
 
 
@@ -19,6 +20,7 @@ import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-co
 export class SingleSubjectComponent implements OnInit {
 
   subject: SubjectLarge;
+  collectionResponse: CollectionResponse;
   currentRating = 0;
 
   constructor(private route: ActivatedRoute,
@@ -40,9 +42,8 @@ export class SingleSubjectComponent implements OnInit {
       ))
       .subscribe( res => {
         this.subject = res[0];
-        this.currentRating = res[1] && res[1].rating ? res[1].rating : 0; // todo: parse result
-
-
+        this.collectionResponse = res[1];
+        this.currentRating = this.collectionResponse.rating;
       });
 
 
@@ -59,7 +60,9 @@ export class SingleSubjectComponent implements OnInit {
   */
   openDialog(): void {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
-      data: { rating : this.currentRating},
+      data: { rating : this.currentRating,
+              statusId: this.collectionResponse.status.id,
+              comment: this.collectionResponse.comment},
       autoFocus: false
     });
 
@@ -73,5 +76,6 @@ export class SingleSubjectComponent implements OnInit {
     });
 
   }
+
 
 }

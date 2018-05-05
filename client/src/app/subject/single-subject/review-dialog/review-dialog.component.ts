@@ -36,12 +36,13 @@ export class ReviewDialogComponent implements OnInit {
     this.commentMaxLength = environment.commentMaxLength;
     this.ratingForm = this.formBuilder.group(
       {
-        'rating': <number>this.data.rating,
-        'collectionStatus': 0,
-        'comment': ['', Validators.maxLength(this.commentMaxLength)]
+        'rating': [<number>this.data.rating],
+        'collectionStatus': [<string>this.data.statusId.toString()],
+        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)]
 
       }
     );
+
   }
 
   ngOnInit() {

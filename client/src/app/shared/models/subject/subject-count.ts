@@ -52,7 +52,7 @@ export class SubjectCount implements Serializable<SubjectCount> {
    */
   10?: number;
 
-  SubjectCount() {
+  constructor() {
     this['1'] = 0;
     this['2'] = 0;
     this['3'] = 0;

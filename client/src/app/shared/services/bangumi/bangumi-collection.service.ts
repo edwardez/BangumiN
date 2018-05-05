@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
+import {CollectionResponse} from '../../models/collection/collection-response';
 
 @Injectable()
 export class BangumiCollectionService {
@@ -25,14 +26,14 @@ export class BangumiCollectionService {
    * get user collection status
    * only collection that's being watched will be returned per api
    */
-  public getSubjectCollectionStatus(subjectId: string): Observable<any> {
+  public getSubjectCollectionStatus(subjectId: string): Observable<CollectionResponse> {
     return this.http.get(`${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}`)
       .pipe(
         map(res => {
             if (res['code'] && res['code'] !== 200) {
-              return undefined;
+              return new CollectionResponse();
             } else {
-              return res;
+              return new CollectionResponse().deserialize(res);
             }
           }
         )

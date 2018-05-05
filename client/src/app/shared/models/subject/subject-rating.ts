@@ -16,7 +16,7 @@ export class SubjectRating implements Serializable<SubjectRating> {
    */
   score?: number;
 
-  SubjectRating() {
+  constructor() {
     this.total = 0;
     this.count = new SubjectCount();
     this.score = 0;

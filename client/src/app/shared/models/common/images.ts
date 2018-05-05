@@ -14,7 +14,6 @@ export class Images implements Serializable<Images> {
   grid?: string;
 
   // in case image url is undefined, get fallback image url (if available), otherwise get the default
-  // for example,
   private static getFallbackImageUrl(imageUrlObject) {
     for (const url of Object.values(imageUrlObject)) {
       if (url) {
@@ -25,7 +24,7 @@ export class Images implements Serializable<Images> {
     return 'https://bgm.tv/img/no_icon_subject.png';
   }
 
-  Images() {
+  constructor() {
     this.large = 'https://bgm.tv/img/no_icon_subject.png';
     this.common = 'https://bgm.tv/img/no_icon_subject.png';
     this.medium = 'https://bgm.tv/img/no_icon_subject.png';

@@ -79,7 +79,7 @@
           },
           "action": {
             "addToCollection": "Add to collection",
-            "EditCollection": "Edit collection",
+            "editCollection": "Edit collection",
             "more": "More info",
             "type": {
               "1": "",

@@ -1,6 +1,7 @@
 import {Serializable} from '../Serializable';
 import {CollectionStatus} from './collection-status';
 import {BangumiUser} from '../BangumiUser';
+import {environment} from '../../../../environments/environment';
 
 export class CollectionResponse  implements Serializable<CollectionResponse> {
 
@@ -42,16 +43,13 @@ export class CollectionResponse  implements Serializable<CollectionResponse> {
   deserialize(input): CollectionResponse {
     this.status = input.status === undefined ? new CollectionStatus() : new CollectionStatus().deserialize(input.status);
     this.rating = input.rating === undefined ? 0 : input.rating;
-    this.comment = input.comment === undefined ? '' : input.comment;
+    // in case comment is  longer than maximum: truncate it
+    this.comment = input.comment === undefined ? '' : input.comment.substring(0, environment.commentMaxLength);
     this.private = input.private === undefined ? 0 : input.private;
     this.tag = input.tag === undefined ? [''] : input.tag;
     this.epStatus = input.ep_status === undefined ? 0 : input.ep_status;
     this.lassTouch = input.lasttouch === undefined ? 0 : input.lasttouch;
     this.user = input.user === undefined ? new BangumiUser() : input.user;
     return this;
-  }
-
-  isUntouched(id) {
-    return []
   }
 }

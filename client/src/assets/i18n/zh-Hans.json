@@ -61,9 +61,14 @@
           "rank": "排名",
           "modal": {
             "title": "编辑收藏",
-            "comment": "评论, 最多200字",
+            "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
             "cancel": "取消",
-            "submit": "提交"
+            "submit": "提交",
+            "error": {
+              "comment": {
+                "maxLength": "最多只能输入{{commentMaxLength}}个字"
+              }
+            }
           },
           "status": {
             "wish": "想",

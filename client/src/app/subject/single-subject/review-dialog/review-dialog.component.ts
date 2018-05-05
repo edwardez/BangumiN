@@ -3,6 +3,18 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {SingleSubjectComponent} from '../single-subject.component';
 import {_} from '../../../shared/utils/translation-marker';
 import {SubjectType} from '../../../shared/enums/subject-type.enum';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {environment} from '../../../../environments/environment';
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class InstantStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return (control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
+
 
 @Component({
   selector: 'app-review-dialog',
@@ -12,8 +24,24 @@ import {SubjectType} from '../../../shared/enums/subject-type.enum';
 export class ReviewDialogComponent implements OnInit {
 
 
+
+
+  ratingForm: FormGroup;
+  matcher = new InstantStateMatcher();
+  commentMaxLength: number;
+
   constructor(public dialogRef: MatDialogRef<SingleSubjectComponent>,
+              private formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.commentMaxLength = environment.commentMaxLength;
+    this.ratingForm = this.formBuilder.group(
+      {
+        'rating': <number>this.data.rating,
+        'collectionStatus': 0,
+        'comment': ['', Validators.maxLength(this.commentMaxLength)]
+
+      }
+    );
   }
 
   ngOnInit() {
@@ -21,8 +49,7 @@ export class ReviewDialogComponent implements OnInit {
   }
 
   onSubmitClick() {
-
-
+    this.dialogRef.close(this.data);
   }
 
   /**
@@ -52,6 +79,20 @@ export class ReviewDialogComponent implements OnInit {
       }
     }
   }
+
+  onRatingChanged(rating) {
+    this.data.rating = rating;
+    this.ratingForm.patchValue(
+      {
+        'rating': rating
+      }
+    );
+  }
+
+  get collectionStatus() {return this.ratingForm.get('collectionStatus'); }
+  get rating() {return this.ratingForm.get('rating'); }
+  get comment() {return this.ratingForm.get('comment'); }
+
 
 
 }

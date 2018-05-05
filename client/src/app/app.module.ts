@@ -26,7 +26,7 @@ import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
 import {SettingsComponent} from './settings/settings.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BanguminHomeModule} from './home/home.module';
 import {KeysPipe} from './shared/pipe/keys.pipe';
 import {BanguminCommonComponentModule} from './common/common.module';
@@ -63,6 +63,7 @@ import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collec
     BanguminHomeModule,
     BanguminCommonComponentModule,
     FormsModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

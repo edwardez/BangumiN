@@ -61,9 +61,14 @@
           "rank": "Ranked",
           "modal": {
             "title": "Edit collection",
-            "comment": "Comment, maximum 200 characters",
+            "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
             "cancel": "Cancel",
-            "submit": "Submit"
+            "submit": "Submit",
+            "error": {
+              "comment": {
+                "maxLength": "Maximum: {{commentMaxLength}} characters"
+              }
+            }
           },
           "status": {
             "wish": "Wish",

@@ -9,6 +9,8 @@ import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 
+
+
 @Component({
   selector: 'app-single-subject',
   templateUrl: './single-subject.component.html',
@@ -39,18 +41,37 @@ export class SingleSubjectComponent implements OnInit {
       .subscribe( res => {
         this.subject = res[0];
         this.currentRating = res[1] && res[1].rating ? res[1].rating : 0; // todo: parse result
+
+
       });
+
+
   }
 
   onRatingChanged(rating) {
     this.currentRating = rating;
   }
 
-
+  /*
+  Note on autoFocus: It is an accessibility feature.
+  The dialog automatically focuses the first focusable element.
+  This can be set as a configurable option if needed
+  */
   openDialog(): void {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
-      data: {}
+      data: { rating : this.currentRating},
+      autoFocus: false
     });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter(result => result && result.rating)
+      )
+      .subscribe(
+      result => {
+      this.currentRating = result.rating;
+    });
+
   }
 
 }

@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {StorageService} from '../storage.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 import {CollectionResponse} from '../../models/collection/collection-response';
+import {CollectionRequest} from '../../models/collection/collection-request';
 
 @Injectable()
 export class BangumiCollectionService {
@@ -35,6 +36,34 @@ export class BangumiCollectionService {
             } else {
               return new CollectionResponse().deserialize(res);
             }
+          }
+        )
+      );
+  }
+
+  /**
+   * create or update user collection status
+   * it's a 'upsert' action per doc so :action will be fixed to update
+   */
+  public upsertSubjectCollectionStatus(
+    subjectId: string, collectionRequest: CollectionRequest,
+    action = 'update'): Observable<CollectionResponse> {
+    const collectionRequestBody = new URLSearchParams();
+    collectionRequestBody.set('status', collectionRequest.status);
+    collectionRequestBody.set('comment', collectionRequest.comment);
+    collectionRequestBody.set('tags', collectionRequest.tags);
+    collectionRequestBody.set('rating', collectionRequest.rating.toString());
+    collectionRequestBody.set('privacy', collectionRequest.privacy.toString());
+
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http.post<CollectionResponse>
+    (`${environment.BANGUMI_API_URL}/collection/${subjectId}/update?app_id=${environment.BANGUMI_APP_ID}&status=do`,
+      collectionRequestBody.toString(), {headers: headers})
+      .pipe(
+        map(res => {
+          return res;
           }
         )
       );

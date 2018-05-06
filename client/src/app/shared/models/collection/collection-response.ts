@@ -46,7 +46,7 @@ export class CollectionResponse  implements Serializable<CollectionResponse> {
     // in case comment is  longer than maximum: truncate it
     this.comment = input.comment === undefined ? '' : input.comment.substring(0, environment.commentMaxLength);
     this.private = input.private === undefined ? 0 : input.private;
-    this.tags = input.tag === undefined ? [''] : (input.tags === undefined ? [''] : input.tags);
+    this.tags = input.tag === undefined ?  (input.tags === undefined ? [''] : input.tags) : input.tag;
     this.epStatus = input.ep_status === undefined ? 0 : input.ep_status;
     this.lastTouch = input.lasttouch === undefined ? 0 : input.lasttouch;
     this.user = input.user === undefined ? new BangumiUser() : input.user;

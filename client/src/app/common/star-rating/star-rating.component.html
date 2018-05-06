@@ -1,11 +1,21 @@
 <div (mouseleave)="onHoverLeaveRatingArea()" fxLayout="row">
+
+  <button *ngIf="isRemovable" mat-icon-button (click)="onClickRemoveRating()" (mouseover)="onHoverEnterRemoveRating()"
+
+  class="remove-rating" type="button"
+  >
+  <mat-icon>remove_circle_outline</mat-icon>
+  </button>
+
   <button mat-icon-button *ngFor="let ratingId of ratingArray;index as i" [id]="'star_'+i"
           (click)="onClickSingleRatingStar(i+1)" (mouseover)="onHoverEnterSingleRatingStar(ratingId+1)"
-          [ngClass]="{'not-editable': !isEditable}" class="star-rating" fxFlex="0 1 10%">
+          [ngClass]="{'not-editable': !isEditable}" fxFlex="0 1 10%"
+          class="star-rating" type="button">
     <mat-icon>
       {{showIcon(i)}}
     </mat-icon>
   </button>
+
 
 </div>
 

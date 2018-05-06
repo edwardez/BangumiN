@@ -62,6 +62,7 @@
           "modal": {
             "title": "编辑收藏",
             "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
+            "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
             "cancel": "取消",
             "submit": "提交",
             "error": {

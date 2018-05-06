@@ -62,6 +62,7 @@
           "modal": {
             "title": "Edit collection",
             "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
+            "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
             "cancel": "Cancel",
             "submit": "Submit",
             "error": {

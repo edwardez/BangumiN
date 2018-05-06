@@ -13,7 +13,9 @@ import {
   MatSelectModule,
   MatRadioModule,
   MatTooltipModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatCheckboxModule,
+  MatChipsModule, MatAutocompleteModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -40,6 +42,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatDialogModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatCardModule,
@@ -58,7 +63,10 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatInputModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialLayoutCommonModule {

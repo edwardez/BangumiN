@@ -1,11 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef} from '@angular/material';
 import {SingleSubjectComponent} from '../single-subject.component';
 import {_} from '../../../shared/utils/translation-marker';
 import {SubjectType} from '../../../shared/enums/subject-type.enum';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormArray, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
 import {environment} from '../../../../environments/environment';
+import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
+import {Subject} from 'rxjs/Subject';
+import {CollectionRequest} from '../../../shared/models/collection/collection-request';
+import {map, startWith, takeUntil} from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class InstantStateMatcher implements ErrorStateMatcher {
@@ -21,36 +27,63 @@ export class InstantStateMatcher implements ErrorStateMatcher {
   templateUrl: './review-dialog.component.html',
   styleUrls: ['./review-dialog.component.scss']
 })
-export class ReviewDialogComponent implements OnInit {
+export class ReviewDialogComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ratingForm: FormGroup;
+  private matcher = new InstantStateMatcher();
 
 
+  separatorKeysCodes = [ENTER, COMMA, SPACE];
 
-
-  ratingForm: FormGroup;
-  matcher = new InstantStateMatcher();
-  commentMaxLength: number;
+  private readonly commentMaxLength: number;
+  private readonly tagsMaxNumber: number;
 
   constructor(public dialogRef: MatDialogRef<SingleSubjectComponent>,
               private formBuilder: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private bangumiCollectionService: BangumiCollectionService) {
     this.commentMaxLength = environment.commentMaxLength;
-    this.ratingForm = this.formBuilder.group(
-      {
-        'rating': [<number>this.data.rating],
-        'collectionStatus': [<string>this.data.statusId.toString()],
-        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)]
-
-      }
-    );
-
+    this.tagsMaxNumber = environment.tagsMaxNumber;
+    this.createForm();
   }
 
   ngOnInit() {
 
   }
 
-  onSubmitClick() {
-    this.dialogRef.close(this.data);
+  ngOnDestroy(): void {
+    // unsubscribe
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  createForm() {
+    this.ratingForm = this.formBuilder.group(
+      {
+        'rating': [<number>this.data.rating],
+        'tag': '',
+        'tagsArray': this.formBuilder.array(this.data.tags,  Validators.maxLength(10)),
+        'collectionStatus': [<string>this.data.statusType],
+        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)]
+      }
+    );
+  }
+
+
+  onSubmit() {
+    const ratingModel = this.ratingForm.value;
+
+    const collectionRequest: CollectionRequest = new CollectionRequest(
+      ratingModel.collectionStatus, ratingModel.comment, '', ratingModel.rating, 0);
+
+
+    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subjectId, collectionRequest).pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe( res => {
+      this.dialogRef.close(this.data);
+    });
+
   }
 
   /**
@@ -90,9 +123,36 @@ export class ReviewDialogComponent implements OnInit {
     );
   }
 
+  onAddTags(event: MatChipInputEvent) {
+    const input = event.input;
+    const value = event.value;
+    // Add tag
+    if ((value || '').trim()) {
+      this.tagsArray.push(new FormControl(value));
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+  }
+
+  onRemoveTags(tag: any) {
+
+  }
+
+
+
   get collectionStatus() {return this.ratingForm.get('collectionStatus'); }
   get rating() {return this.ratingForm.get('rating'); }
   get comment() {return this.ratingForm.get('comment'); }
+  get tag() {return this.ratingForm.get('tag'); }
+  get tagsArray(): FormArray {
+    return this.ratingForm.get('tagsArray') as FormArray;
+  }
+
+
 
 
 

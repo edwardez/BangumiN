@@ -17,5 +17,6 @@ export const environment = {
     'en-US': 'English',
     'zh-Hans': '简体中文'
   },
-  commentMaxLength: 200
+  commentMaxLength: 200,
+  tagsMaxNumber: 10
 };

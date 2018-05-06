@@ -27,11 +27,12 @@
     </mat-radio-group>
 
 
-    <mat-form-field >
+    <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
     <mat-chip-list #chipList >
 
       <mat-chip *ngFor="let tag of tagsArray.value"
                 (removed)="onRemoveTags(tag)"
+                class="margin-chips-top"
       >
         {{tag}}
         <mat-icon matChipRemove >cancel</mat-icon>

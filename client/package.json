@@ -9,8 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "extract-translations": "ngx-translate-extract --input ./src --output ./src/assets/i18n/en-US.json ./src/assets/i18n/zh-Hans.json --clean --sort --format namespaced-json --marker _",
-    "generate": "swagger-angular-generator -s src/api/converted.json -d src/api/generated"
+    "extract-translations": "ngx-translate-extract --input ./src --output ./src/assets/i18n/en-US.json ./src/assets/i18n/zh-Hans.json --clean --sort --format namespaced-json --marker _"
   },
   "private": true,
   "dependencies": {

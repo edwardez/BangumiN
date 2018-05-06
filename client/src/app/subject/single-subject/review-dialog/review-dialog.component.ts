@@ -127,7 +127,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     const input = event.input;
     const value = event.value;
     // Add tag
-    if ((value || '').trim()) {
+    if ((value || '').trim() && this.tagsArray.value.indexOf(value) === -1) {
       this.tagsArray.push(new FormControl(value));
     }
 
@@ -140,6 +140,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
 
   onRemoveTags(tag: any) {
 
+    this.tagsArray.removeAt(this.tagsArray.value.indexOf(tag))
   }
 
 

@@ -68,6 +68,9 @@
             "error": {
               "comment": {
                 "maxLength": "最多只能输入{{commentMaxLength}}个字"
+              },
+              "tags":{
+                "tagsMaxNumber": "最多只能输入{{tagsMaxNumber}}个标签，当前已输入{{tagsCurrentNumber}}/{{tagsMaxNumber}}个"
               }
             }
           },

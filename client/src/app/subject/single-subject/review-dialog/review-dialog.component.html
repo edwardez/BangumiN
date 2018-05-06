@@ -43,8 +43,12 @@
              (matChipInputTokenEnd)="onAddTags($event)"
       />
     </mat-chip-list>
-    </mat-form-field>
 
+
+    </mat-form-field>
+    <mat-error *ngIf="tagsArray.errors">
+      {{'subject.tabs.overview.review.modal.error.tags.tagsMaxNumber' | translate: {tagsCurrentNumber:tagsArray.value.length, tagsMaxNumber: tagsMaxNumber} }}
+    </mat-error>
 
 
     <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">

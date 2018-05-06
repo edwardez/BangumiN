@@ -68,6 +68,9 @@
             "error": {
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"
+              },
+              "tags":{
+                "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
               }
             }
           },

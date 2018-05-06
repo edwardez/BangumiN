@@ -51,19 +51,22 @@ export class BangumiCollectionService {
     const collectionRequestBody = new URLSearchParams();
     collectionRequestBody.set('status', collectionRequest.status);
     collectionRequestBody.set('comment', collectionRequest.comment);
-    collectionRequestBody.set('tags', collectionRequest.tags);
+    collectionRequestBody.set('tags', collectionRequest.tags.map(tag => tag.trim()).filter(tag => tag.trim().length >= 1).join(' '));
     collectionRequestBody.set('rating', collectionRequest.rating.toString());
     collectionRequestBody.set('privacy', collectionRequest.privacy.toString());
-
 
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http.post<CollectionResponse>
-    (`${environment.BANGUMI_API_URL}/collection/${subjectId}/update?app_id=${environment.BANGUMI_APP_ID}&status=do`,
+    (`${environment.BANGUMI_API_URL}/collection/${subjectId}/update?app_id=${environment.BANGUMI_APP_ID}`,
       collectionRequestBody.toString(), {headers: headers})
       .pipe(
         map(res => {
-          return res;
+          if (res['code'] && res['code'] !== 200) {
+            throw Error('Failed to update response'); // todo: handle exception
+          } else {
+            return new CollectionResponse().deserialize(res);
+          }
           }
         )
       );

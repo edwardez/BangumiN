@@ -65,6 +65,7 @@
             "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
             "cancel": "取消",
             "submit": "提交",
+            "privacy": "仅自己可见",
             "error": {
               "comment": {
                 "maxLength": "最多只能输入{{commentMaxLength}}个字"

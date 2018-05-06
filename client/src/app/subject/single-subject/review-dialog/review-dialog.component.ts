@@ -65,7 +65,8 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
         'tag': '',
         'tagsArray': this.formBuilder.array(this.data.tags,  Validators.maxLength(10)),
         'collectionStatus': [<string>this.data.statusType],
-        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)]
+        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)],
+        'privacy': <boolean>(this.data.privacy.toString() !== '0'),
       }
     );
   }
@@ -75,13 +76,13 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     const ratingModel = this.ratingForm.value;
 
     const collectionRequest: CollectionRequest = new CollectionRequest(
-      ratingModel.collectionStatus, ratingModel.comment, '', ratingModel.rating, 0);
+      ratingModel.collectionStatus, ratingModel.comment, ratingModel.tagsArray, ratingModel.rating, ratingModel.privacy === false ? 0 : 1);
 
 
     this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subjectId, collectionRequest).pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe( res => {
-      this.dialogRef.close(this.data);
+      this.dialogRef.close(res);
     });
 
   }
@@ -124,6 +125,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   }
 
   onAddTags(event: MatChipInputEvent) {
+    console.log(this.ratingForm.value);
     const input = event.input;
     const value = event.value;
     // Add tag
@@ -139,8 +141,8 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   }
 
   onRemoveTags(tag: any) {
-
-    this.tagsArray.removeAt(this.tagsArray.value.indexOf(tag))
+    // remove tag at the specific index, since tags are unique we can just delete the first one
+    this.tagsArray.removeAt(this.tagsArray.value.indexOf(tag));
   }
 
 

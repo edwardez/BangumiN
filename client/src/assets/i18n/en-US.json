@@ -65,6 +65,7 @@
             "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
             "cancel": "Cancel",
             "submit": "Submit",
+            "privacy": "Only visible to yourself",
             "error": {
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"

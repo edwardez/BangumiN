@@ -66,7 +66,8 @@ export class SingleSubjectComponent implements OnInit {
         rating: this.currentRating,
         tags: this.collectionResponse.tags,
         statusType: this.collectionResponse.status.type,
-        comment: this.collectionResponse.comment
+        comment: this.collectionResponse.comment,
+        privacy: this.collectionResponse.privacy,
       },
       autoFocus: false
     });
@@ -78,6 +79,8 @@ export class SingleSubjectComponent implements OnInit {
       .subscribe(
         result => {
           this.currentRating = result.rating;
+          this.collectionResponse = result;
+          console.log(result);
         });
 
   }

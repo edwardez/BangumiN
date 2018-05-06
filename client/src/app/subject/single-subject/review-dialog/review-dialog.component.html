@@ -6,7 +6,7 @@
     <app-star-rating
       [(currentRating)]="this.data.rating"
       formControlName="rating"
-       [starCount]="10" [isEditable]="true" (ratingUpdated)="onRatingChanged($event)" *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
+       [starCount]="10" [isEditable]="true" [isRemovable]="true" (ratingUpdated)="onRatingChanged($event)" *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
 
     <mat-radio-group  fxFlexOffset="5%" fxFlexAlign="center" formControlName="collectionStatus">
       <mat-radio-button value="wish"  >
@@ -56,14 +56,17 @@
             formControlName="comment"
             matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6" [errorStateMatcher]="matcher"></textarea>
     </mat-form-field>
-    <mat-checkbox>privacy</mat-checkbox>
+
     <mat-error *ngIf="ratingForm.controls['comment'].errors">
       {{'subject.tabs.overview.review.modal.error.comment.maxLength' | translate: {commentMaxLength: commentMaxLength} }}
     </mat-error>
+
+    <mat-checkbox formControlName="privacy">{{'subject.tabs.overview.review.modal.privacy' | translate}}</mat-checkbox>
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
     <button mat-button type="submit" [disabled]="ratingForm.invalid">{{'subject.tabs.overview.review.modal.submit' | translate}}</button>
+
   </div>
 </form>
 

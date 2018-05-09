@@ -1,0 +1,48 @@
+
+
+
+<div fxLayout="row" fxLayoutAlign="center start" *ngIf="subject">
+
+
+  <div fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%">
+    <h2>{{subject.name}}</h2>
+    <div>
+      <mat-tab-group>
+        <mat-tab label="{{'subject.tabs.overview.name' | translate}}">
+          <div fxLayout="row" class="has-margin-top-md">
+            <div fxFlex="20%">
+              <div fxLayout="column" fxLayoutAlign="start center">
+                <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
+                <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
+              </div>
+            </div>
+            <div class="line-breaker" fxFlex="50%" fxFlexOffset="2%">
+              {{subject.summary}}
+            </div>
+            <div fxFlex="20%"  fxFlexOffset="2%">
+              <mat-card>
+                <mat-card-content fxLayout="column">
+                  <p>{{'subject.tabs.overview.review.score' | translate}}: {{subject.rating.score}}/10</p>
+                  <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
+                  <app-star-rating [(currentRating)]="currentRating"  [starCount]="10" [isEditable]="true" (ratingUpdated)="onRatingChanged($event)" *ngIf="this.collectionResponse.status.isTouched"></app-star-rating>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button (click)="openDialog()">
+                    <ng-container *ngIf="!this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.action.addToCollection' | translate}}</ng-container>
+                    <ng-container *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.action.editCollection' | translate}}</ng-container>
+                  </button>
+                  <button mat-button>{{'subject.tabs.overview.review.action.more' | translate}}</button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="{{'subject.tabs.episode.name' | translate}}">
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+
+  </div>
+
+</div>

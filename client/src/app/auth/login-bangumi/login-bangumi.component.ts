@@ -10,7 +10,9 @@ export class LoginBangumiComponent implements OnInit {
 
   bangumi_oauth_redirect = `${environment.BACKEND_OAUTH_REDIRECT_URL}/bangumi`;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit() {
   }

@@ -1,5 +1,25 @@
-<div>
-  <mat-toolbar color="primary" class="fixed-header mat-elevation-z6">
+<mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar" fxLayoutGap="10px">
+  <button mat-icon-button (click)="toggleSidenav()"><mat-icon>menu</mat-icon></button>
+  <div>Bangumin</div>
+  <div fxFlex="1 1 auto"></div>
 
-  </mat-toolbar>
-</div>
+  <div class="search-container" fxLayoutAlign="end center">
+    <input type="search" aria-label="search" placeholder="search" #searchBar (keyup.enter)="doFullSearch(searchBar.value)" value="{{searchKeywords}}">
+  </div>
+
+
+  <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
+    <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.large}}>
+  </a>
+
+</mat-toolbar>
+
+
+<mat-menu #menu="matMenu">
+  <button routerLink="./settings" mat-menu-item>
+    <span>Settings</span>
+  </button>
+  <button mat-menu-item>
+    <span>Sign out</span>
+  </button>
+</mat-menu>

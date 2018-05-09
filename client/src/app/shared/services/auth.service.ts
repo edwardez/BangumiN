@@ -2,13 +2,16 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {AuthService} from 'ngx-auth';
-import {TokenStorage} from './token-storage.service';
+import {StorageService} from './storage.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import {environment} from '../../../environments/environment';
-import {map, catchError, tap} from 'rxjs/operators';
+import {map, catchError, tap, switchMap} from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
+import {Subject} from 'rxjs/Subject';
+import {BangumiUser} from '../models/BangumiUser';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 
@@ -28,22 +31,38 @@ interface BangumiUserStatus {
 
 
 @Injectable()
-export class AuthenticationService implements AuthService {
+export class AuthenticationService {
+
+  userSubject: Subject<BangumiUser> = new BehaviorSubject<BangumiUser>(null);
+  BANGUMI_API_URL = environment.BANGUMI_API_URL;
 
   constructor(private http: HttpClient,
-              private tokenStorage: TokenStorage) {
+              private storageService: StorageService,
+              private jwtHelper: JwtHelperService) {
   }
 
   /**
-   * Check, if user already authorized.
+   * Check, if user already authenticated.
+   * Check whether
+   * 1. token exists
+   * 2. if token exists, whether it is expired and return
+   true or false
    * @description Should return Observable with true or false values
-   * @returns {Observable<boolean>}
-   * @memberOf AuthService
+   * @returns Observable<boolean>
+   * @memberOf AuthenticationService
    */
-  public isAuthorized(): Observable<boolean> {
-    return this.tokenStorage
-      .getAccessToken()
-      .map(token => !!token);
+  public isAuthenticated(): Observable<boolean> {
+
+    return this.storageService.getJwtToken().pipe(
+      map(jwtToken => {
+        if (jwtToken == null) {
+          return false;
+        } else {
+          return !this.jwtHelper.isTokenExpired(jwtToken);
+        }
+      })
+    );
+
   }
 
   /**
@@ -53,7 +72,7 @@ export class AuthenticationService implements AuthService {
    * @returns {Observable<string>}
    */
   public getAccessToken(): Observable<string> {
-    return this.tokenStorage.getAccessToken();
+    return this.storageService.getAccessToken();
   }
 
   /**
@@ -63,7 +82,7 @@ export class AuthenticationService implements AuthService {
    * @returns {Observable<any>}
    */
   public refreshToken(): Observable<AccessData> {
-    return this.tokenStorage
+    return this.storageService
       .getRefreshToken()
       .switchMap((refreshToken: string) => {
         return this.http.post(`http://localhost:3000/refresh`, {refreshToken});
@@ -111,7 +130,7 @@ export class AuthenticationService implements AuthService {
    * Logout
    */
   public logout(): void {
-    this.tokenStorage.clear();
+    this.storageService.clear();
     location.reload(true);
   }
 
@@ -122,7 +141,7 @@ export class AuthenticationService implements AuthService {
    * @param {AccessData} data
    */
   private saveAccessData({accessToken, refreshToken}: AccessData) {
-    this.tokenStorage
+    this.storageService
       .setAccessToken(accessToken)
       .setRefreshToken(refreshToken);
   }
@@ -135,14 +154,20 @@ export class AuthenticationService implements AuthService {
       {accessToken: accessToken},
       {observe: 'response' } )
       .pipe(
+        switchMap( response => this.http.get(`${this.BANGUMI_API_URL}/user/${response.body.user_id}`), (outer, inner) => {
+          return {'authDetails': outer, 'bangumiUserInfo': inner};
+        }),
         tap( response => {
+          const {authDetails, bangumiUserInfo} = response;
           // save access token to local storage
-          // const token = x.headers.get('x-auth-token');
-          const jwtToken = response.headers.get('x-auth-token');
-          if (jwtToken) {
-            this.tokenStorage.setJwtToken(jwtToken);
+          const jwtToken = authDetails.headers.get('Authorization');
+          if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
+            this.storageService.setJwtToken(jwtToken.split(' ')[1]);
           }
-          this.tokenStorage.setAccessToken(accessToken);
+          this.storageService.setAccessToken(accessToken);
+          const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
+          this.userSubject.next(bangumiUser);
+          this.storageService.setBangumiUser(bangumiUser);
         }),
       ).catch((err) => {
         return Observable.throw(err);

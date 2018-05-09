@@ -1,0 +1,49 @@
+<div fxLayout="column" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%" fxFlexOffset="5vh" class="has-margin-bottom-md">
+  <ng-container *ngFor="let subjects of subjectSearchResult">
+    <h2>
+      {{getTypeName(subjects.type) | translate}}
+    </h2>
+    <div fxLayout="row wrap" fxFlexAlign="stretch" fxLayoutGap="10px">
+      <p *ngIf="subjects.list.length === 0">
+        {{'search.empty' | translate}}
+      </p>
+      <ng-container *ngFor="let subject of subjects.list">
+        <mat-card fxFlex.lt-sm="0 1 40%" fxFlex.sm="0 1 30%" fxFlex.md="0 1 30%" fxFlex.gt-md="0 1 15%"
+                  fxLayout="column" ngClass.lt-lg="has-margin-top-md">
+
+          <a [routerLink]="['../subject', subject.id]">
+            <img *ngIf="subject.images !== null" mat-card-image [src]="subject.images.large | https">
+            <img *ngIf="subject.images === null" mat-card-image src="https://bgm.tv/img/no_icon_subject.png">
+          </a>
+
+          <div fxFlex="1 1 auto"></div>
+
+          <mat-card-header class="title-truncate" fxFlex="0 1 auto">
+            <mat-card-title [innerHTML]="subject.name + '<span class=&quot;paragraph-end&quot;></span>'"
+                            class="title-fading"></mat-card-title>
+            <mat-card-subtitle [innerHTML]="subject.name_cn === '' ? '<br/>' : subject.name_cn"
+                               class="title-fading"></mat-card-subtitle>
+          </mat-card-header>
+
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-card-content>
+            </mat-card-content>
+            <mat-card-actions fxFlexAlign="end">
+              <div fxFlex="1 1 auto"></div>
+              <button mat-button color="primary">
+                {{'search.subject.action.collect' | translate}}
+              </button>
+            </mat-card-actions>
+          </div>
+
+
+        </mat-card>
+      </ng-container>
+
+    </div>
+  </ng-container>
+
+
+</div>
+
+

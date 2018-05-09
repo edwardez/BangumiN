@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
-import {TokenStorage} from '../../../shared/services/token-storage.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
 
@@ -26,7 +25,6 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
           this.authService.verifyAccessToken(params['access_token'])
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe( response => {
-              console.log(response);
           }, err => {
               console.log(err);
           });

@@ -19,7 +19,7 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
     * `npm run start-dev`
 
 
-# (Planned) Features
+# Highlights & Technical Details
 * Responsive design
 * Front end is written in [Angular Material](https://material.angular.io/) and [Flex layout](https://github.com/angular/flex-layout)
 * Use jwt to authenticate user
@@ -27,4 +27,22 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
 * Progressive Web App 
 * i18n
 * and more...
+
+
+
+# Roadmap
+
+
+
+
+| Plan | Status & deadline | Comment |
+| --- | --- | --- |
+| Basic functionality(Profile, Subject, progress Management, search) | In progress,planned 2018 Q2  |  |
+| User statistics | 2018 Q2 |  |
+| Upgrade to Angular v6 | 2018 Q2 | Blocked by dependencies, might be deferred |
+| PWA improvment(server-side rendering, cache, lazy loading, etc.) | 2018 Q2-Q3 | Q2: basic optimization, Q3: further improvement |
+| public database, subject historical statistics, etc. | 2018 Q3 | Anonymous spider no longer works for all subjects(restricted subjects), need to figure out a way to fix this |
+| Accessibility  | 2018 Q3 |  |
+| Drag and drop | TBD | Blocked by https://github.com/angular/material2/issues/8963 |
+
 

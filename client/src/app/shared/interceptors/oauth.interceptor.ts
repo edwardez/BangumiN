@@ -5,10 +5,9 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { AuthenticationService } from '../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import {environment} from '../../../environments/environment';
-const URL = require('url');
+import { parse } from 'url';
 
 
 @Injectable()
@@ -32,7 +31,7 @@ export class OauthInterceptor implements HttpInterceptor {
 
   isWhitelistedDomain(request: HttpRequest<any>): boolean {
     const whitelistedDomains: Array<string | RegExp> = environment.whitelistedDomains;
-    const requestUrl = URL.parse(request.url, false, true);
+    const requestUrl = parse(request.url, false, true);
 
     return (
       whitelistedDomains.findIndex(

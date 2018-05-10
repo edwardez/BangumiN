@@ -8,10 +8,9 @@ import {ErrorStateMatcher} from '@angular/material/core';
 import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
 import {environment} from '../../../../environments/environment';
 import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Observable} from 'rxjs';
 import {CollectionRequest} from '../../../shared/models/collection/collection-request';
 import {map, startWith, takeUntil} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class InstantStateMatcher implements ErrorStateMatcher {

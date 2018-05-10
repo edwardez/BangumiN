@@ -17,7 +17,7 @@ export class Images implements Serializable<Images> {
   private static getFallbackImageUrl(imageUrlObject) {
     for (const url of Object.values(imageUrlObject)) {
       if (url) {
-        return url.replace(/^http:/, 'https:');
+        return url.toString().replace(/^http:/, 'https:');
       }
     }
 

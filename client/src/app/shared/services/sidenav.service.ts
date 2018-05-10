@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import {MatDrawerToggleResult, MatSidenav} from '@angular/material';
 
 @Injectable()
 export class SidenavService {
@@ -19,7 +19,7 @@ export class SidenavService {
    *
    * @returns Promise<void>
    */
-  public open(): Promise<void> {
+  public open(): Promise<MatDrawerToggleResult> {
     return this.sidenav.open();
   }
 
@@ -28,7 +28,7 @@ export class SidenavService {
    *
    * @returns Promise<void>
    */
-  public close(): Promise<void> {
+  public close(): Promise<MatDrawerToggleResult> {
     return this.sidenav.close();
   }
 
@@ -42,7 +42,7 @@ export class SidenavService {
    *
    * @returns
    */
-  public toggle(isOpen?: boolean): Promise<void> {
+  public toggle(isOpen?: boolean): Promise<MatDrawerToggleResult> {
     return this.sidenav.toggle(isOpen);
   }
 

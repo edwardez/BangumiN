@@ -3,7 +3,7 @@ import {StorageService} from '../storage.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {CollectionRequest} from '../../models/collection/collection-request';
 

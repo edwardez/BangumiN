@@ -13,7 +13,7 @@ export class Avatar implements Serializable<Avatar> {
   private static getFallbackAvatarUrl(avatarUrlObject) {
     for (const url of Object.values(avatarUrlObject)) {
       if (url) {
-        return url.replace(/^http:/, 'https:');
+        return url.toString().replace(/^http:/, 'https:');
       }
     }
 

@@ -1,17 +1,15 @@
+
+import {throwError as observableThrowError, Observable, Subject, BehaviorSubject} from 'rxjs';
 // this file is from https://github.com/serhiisol/ngx-auth-example/blob/master/src/app/shared/authentication/authentication.service.ts
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {StorageService} from './storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
+
+
 import {environment} from '../../../environments/environment';
 import {map, catchError, tap, switchMap} from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
-import {Subject} from 'rxjs/Subject';
 import {BangumiUser} from '../models/BangumiUser';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 
@@ -81,18 +79,23 @@ export class AuthenticationService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<AccessData> {
+  public refreshToken(): Observable<any> {
     return this.storageService
       .getRefreshToken()
-      .switchMap((refreshToken: string) => {
-        return this.http.post(`http://localhost:3000/refresh`, {refreshToken});
-      })
-      .do(this.saveAccessData.bind(this))
-      .catch((err) => {
-        this.logout();
-
-        return Observable.throw(err);
-      });
+      .pipe(
+        switchMap((refreshToken: string) => {
+          return this.http.post(`http://localhost:3000/refresh`, {refreshToken});
+        }),
+        tap(
+          this.saveAccessData.bind(this)
+        ),
+        catchError(
+          (err) => {
+            this.logout();
+            return observableThrowError(err);
+          }
+        )
+      );
   }
 
   /**
@@ -122,8 +125,11 @@ export class AuthenticationService {
 
   public login(): Observable<any> {
     return this.http.post(`http://localhost:3000/login`, {})
-      .pipe()
-      .do((tokens: AccessData) => this.saveAccessData(tokens));
+      .pipe(
+        tap(
+          (tokens: AccessData) => this.saveAccessData(tokens)
+        )
+      );
   }
 
   /**
@@ -147,14 +153,14 @@ export class AuthenticationService {
   }
 
 
-  public verifyAccessToken(accessToken: string): Observable<BangumiUserStatus> {
+  public verifyAccessToken(accessToken: string): Observable<any> {
 
-    return this.http.post<BangumiUserStatus>(
+    return this.http.post(
       `${environment.BACKEND_AUTH_URL}/jwt/token`,
       {accessToken: accessToken},
       {observe: 'response' } )
       .pipe(
-        switchMap( response => this.http.get(`${this.BANGUMI_API_URL}/user/${response.body.user_id}`), (outer, inner) => {
+        switchMap( response => this.http.get(`${this.BANGUMI_API_URL}/user/${response['body']['user_id']}`), (outer, inner) => {
           return {'authDetails': outer, 'bangumiUserInfo': inner};
         }),
         tap( response => {
@@ -169,9 +175,12 @@ export class AuthenticationService {
           this.userSubject.next(bangumiUser);
           this.storageService.setBangumiUser(bangumiUser);
         }),
-      ).catch((err) => {
-        return Observable.throw(err);
-      });
+        catchError(
+          (err) => {
+            return observableThrowError(err);
+          }
+        )
+      );
 
   }
 

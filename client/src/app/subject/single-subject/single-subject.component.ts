@@ -6,7 +6,7 @@ import {SubjectSmall} from '../../shared/models/subject/subject-small';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
 import {MatDialog} from '@angular/material';
 import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
-import {forkJoin} from 'rxjs/observable/forkJoin';
+import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {CollectionResponse} from '../../shared/models/collection/collection-response';
 

@@ -32,7 +32,6 @@
 
       <mat-chip *ngFor="let tag of tagsArray.value"
                 (removed)="onRemoveTags(tag)"
-                class="margin-chips-top"
       >
         {{tag}}
         <mat-icon matChipRemove >cancel</mat-icon>

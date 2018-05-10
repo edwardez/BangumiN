@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError, Observable, of} from 'rxjs';
 import { Injectable } from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {StorageService} from '../storage.service';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {catchError, map, switchMap, take, tap} from 'rxjs/operators';
 import {BangumiUser} from '../../models/BangumiUser';
 
 @Injectable()
@@ -42,12 +43,13 @@ export class BangumiUserService {
           }
 
           // else return an empty Observable
-          return Observable.of();
+          return of();
         }
-      )
-    ).catch((err) => {
-      return Observable.throw(err);
-    });
+      ),
+      catchError((err) => {
+        return observableThrowError(err);
+      })
+    );
 
 
   }

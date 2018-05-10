@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, take} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import {concat} from 'rxjs/observable/concat';
+import {concat} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 

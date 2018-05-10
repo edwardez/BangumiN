@@ -1,9 +1,9 @@
 // this file is from https://github.com/serhiisol/ngx-auth-example/blob/master/src/app/shared/authentication/token-storage.service.ts
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
+import { Observable, of } from 'rxjs';
+
+
+
 import {BangumiUser} from '../models/BangumiUser';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class StorageService {
    */
   public getAccessToken(): Observable<string> {
     const token: string = <string>localStorage.getItem('accessToken');
-    return Observable.of(token);
+    return of(token);
   }
 
   /**
@@ -24,7 +24,7 @@ export class StorageService {
    */
   public getRefreshToken(): Observable<string> {
     const token: string = <string>localStorage.getItem('refreshToken');
-    return Observable.of(token);
+    return of(token);
   }
 
   /**
@@ -33,7 +33,7 @@ export class StorageService {
    */
   public getJwtToken(): Observable<string> {
     const token: string = <string>localStorage.getItem('jwtToken');
-    return Observable.of(token);
+    return of(token);
   }
 
   /**
@@ -52,7 +52,7 @@ export class StorageService {
       }
     }
 
-    return Observable.of(bangumiUser);
+    return of(bangumiUser);
   }
 
   /**

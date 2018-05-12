@@ -1,11 +1,14 @@
-.app-container {
-  position: absolute;
-  top: 0;
+mat-sidenav {
+  position: fixed;
+  top: 64px;
   bottom: 0;
   left: 0;
-  right: 0;
-  min-height: 100vh;
+  padding: 0;
 }
 
 
 
+mat-sidenav-content {
+  min-height: 100vh;
+  padding: 80px;
+}

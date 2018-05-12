@@ -10,19 +10,17 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
-  mode = 'side';
+
   title = 'BangumiN';
 
-  constructor(private sidenavService: SidenavService,
-              private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService) {
 
     this.setDefaultLanguage(translate);
   }
 
   ngOnInit(): void {
-    this.sidenavService
-      .setSidenav(this.sidenav);
+
   }
 
   setDefaultLanguage(translate) {

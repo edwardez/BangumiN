@@ -1,0 +1,12 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [mode]="mode">
+    <mat-nav-list>
+      <a mat-list-item routerLink="./progress" >Progress</a>
+      <a mat-list-item routerLink="./profile" >Profile</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

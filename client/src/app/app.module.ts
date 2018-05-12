@@ -37,10 +37,12 @@ import {SingleSubjectComponent} from './subject/single-subject/single-subject.co
 import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.service';
 import {ReviewDialogComponent} from './subject/single-subject/review-dialog/review-dialog.component';
 import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
+import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    SideNavContentComponent,
     LoginBangumiComponent,
     DashboardComponent,
     NavComponent,

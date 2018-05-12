@@ -9,6 +9,7 @@ import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
 import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {CollectionResponse} from '../../shared/models/collection/collection-response';
+import {TitleService} from '../../shared/services/page/title.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class SingleSubjectComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               public dialog: MatDialog,
               private bangumiSubjectService: BangumiSubjectService,
-              private bangumiCollectionService: BangumiCollectionService
+              private bangumiCollectionService: BangumiCollectionService,
+              private titleService: TitleService
   ) {
   }
 
@@ -42,6 +44,7 @@ export class SingleSubjectComponent implements OnInit {
         ))
       .subscribe(res => {
         this.subject = res[0];
+        this.titleService.title = this.subject.name;
         this.collectionResponse = res[1];
         this.currentRating = this.collectionResponse.rating;
       });

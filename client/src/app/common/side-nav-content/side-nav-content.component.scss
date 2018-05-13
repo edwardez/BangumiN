@@ -7,8 +7,13 @@ mat-sidenav {
 }
 
 
-
-mat-sidenav-content {
+.mat-sidenav-content-lt-md {
   min-height: 100vh;
-  padding: 80px;
+  padding: 80px 1rem 1rem;
 }
+
+.mat-sidenav-content-gt-sm {
+  min-height: 450px;
+  padding: 80px 3rem 1rem;
+}
+

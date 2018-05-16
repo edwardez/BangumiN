@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {CollectionRequest} from '../../models/collection/collection-request';
+import {CollectionWatchingResponseMedium} from '../../models/collection/collection-watching-response-medium';
 
 @Injectable()
 export class BangumiCollectionService {
@@ -15,12 +16,35 @@ export class BangumiCollectionService {
 
   }
 
+
   /**
-   * get user collection status
-   * only collection that's being watched will be returned per api
+   * get all subjects that user is watching
+   * note: only book/anime/real status will be returned per api
    */
-  public getOngoingCollectionStatus(username: string, category: string) {
-    return this.http.get(`${environment.BANGUMI_API_URL}/user/${username}/collection?cat=${category}&app_id=${environment.BANGUMI_APP_ID}`);
+  public getOngoingCollectionStatusOverview(userName: string,
+                                            cat = 'all_watching',
+                                            ids = '',
+                                            responseGroup = 'medium'): Observable<CollectionWatchingResponseMedium[]> {
+    return this.http.get(`${environment.BANGUMI_API_URL}/user/${userName}/collection
+    ?app_id=${environment.BANGUMI_APP_ID}
+    &cat=${cat}
+    &ids=${ids}
+    &responseGroup=${responseGroup}`.replace(/\s+/g, ''))
+      .pipe(
+        map(res => {
+          if (res instanceof Array) {
+            const parsedResponse = [];
+            for (const collection of res) {
+
+              parsedResponse.push(new CollectionWatchingResponseMedium().deserialize(collection));
+            }
+            return parsedResponse;
+          } else {
+            return [];
+          }
+          }
+        )
+      );
   }
 
   /**

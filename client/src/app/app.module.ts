@@ -35,7 +35,7 @@ import {FullSearchComponent} from './search/full-search/full-search.component';
 import {HttpsPipe} from './shared/pipe/https.pipe';
 import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
 import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.service';
-import {ReviewDialogComponent} from './subject/single-subject/review-dialog/review-dialog.component';
+import {ReviewDialogComponent} from './subject/review-dialog/review-dialog.component';
 import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
 import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
 

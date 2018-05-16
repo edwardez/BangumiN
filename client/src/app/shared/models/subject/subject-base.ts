@@ -39,6 +39,17 @@ export class SubjectBase implements Serializable<SubjectBase> {
    */
   air_weekday?: number;
 
+  constructor() {
+    this.id = 0;
+    this.url = '';
+    this.type = 0;
+    this.name = '';
+    this.name_cn = '';
+    this.summary = '';
+    this.air_date = '1970-01-01';
+    this.air_weekday = 0;
+  }
+
   deserialize(input) {
     this.id = input.id || 0;
     this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');

@@ -1,15 +1,15 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef} from '@angular/material';
-import {SingleSubjectComponent} from '../single-subject.component';
-import {_} from '../../../shared/utils/translation-marker';
-import {SubjectType} from '../../../shared/enums/subject-type.enum';
+import {SingleSubjectComponent} from '../single-subject/single-subject.component';
+import {_} from '../../shared/utils/translation-marker';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {FormBuilder, FormControl, FormArray, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
-import {environment} from '../../../../environments/environment';
-import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
+import {environment} from '../../../environments/environment';
+import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {Subject, Observable} from 'rxjs';
-import {CollectionRequest} from '../../../shared/models/collection/collection-request';
+import {CollectionRequest} from '../../shared/models/collection/collection-request';
 import {map, startWith, takeUntil} from 'rxjs/operators';
 
 /** Error when invalid control is dirty, touched, or submitted. */

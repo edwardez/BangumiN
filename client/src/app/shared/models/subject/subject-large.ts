@@ -12,8 +12,8 @@ export class SubjectLarge extends SubjectMedium implements Serializable<SubjectL
 
   deserialize(input) {
     super.deserialize(input);
-    this.eps = input.eps;
-    this.topic = input.eps;
+    this.eps = input.episodes;
+    this.topic = input.episodes;
     this.blog = input.blog;
     return this;
   }

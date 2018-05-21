@@ -17,35 +17,7 @@ export class BangumiCollectionService {
   }
 
 
-  /**
-   * get all subjects that user is watching
-   * note: only book/anime/real status will be returned per api
-   */
-  public getOngoingCollectionStatusOverview(userName: string,
-                                            cat = 'all_watching',
-                                            ids = '',
-                                            responseGroup = 'medium'): Observable<CollectionWatchingResponseMedium[]> {
-    return this.http.get(`${environment.BANGUMI_API_URL}/user/${userName}/collection
-    ?app_id=${environment.BANGUMI_APP_ID}
-    &cat=${cat}
-    &ids=${ids}
-    &responseGroup=${responseGroup}`.replace(/\s+/g, ''))
-      .pipe(
-        map(res => {
-          if (res instanceof Array) {
-            const parsedResponse = [];
-            for (const collection of res) {
 
-              parsedResponse.push(new CollectionWatchingResponseMedium().deserialize(collection));
-            }
-            return parsedResponse;
-          } else {
-            return [];
-          }
-          }
-        )
-      );
-  }
 
   /**
    * get user collection status

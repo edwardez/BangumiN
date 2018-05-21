@@ -32,7 +32,7 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
 
   deserialize(input) {
     super.deserialize(input);
-    this.eps = input.eps || 0;
+    this.eps = input.episodes || 0;
     this.eps_count = input.eps_count || 0;
     this.collection = input.collection ===  undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
     this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);

@@ -22,7 +22,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
    * 条目中文名称
    * example: 人形电脑天使心
    */
-  name_cn?: string;
+  nameCN?: string;
   /**
    * 剧情简介
    */
@@ -31,23 +31,23 @@ export class SubjectBase implements Serializable<SubjectBase> {
    * 放送开始日期
    * example: 2002-04-02
    */
-  air_date?: string;
+  airDate?: string;
   /**
    * 放送星期
    * example: 2
    * format: int32
    */
-  air_weekday?: number;
+  airWeekday?: number;
 
   constructor() {
     this.id = 0;
     this.url = '';
     this.type = 0;
     this.name = '';
-    this.name_cn = '';
+    this.nameCN = '';
     this.summary = '';
-    this.air_date = '1970-01-01';
-    this.air_weekday = 0;
+    this.airDate = '1970-01-01';
+    this.airWeekday = 0;
   }
 
   deserialize(input) {
@@ -55,10 +55,10 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');
     this.type = input.type || 0;
     this.name = input.name || '';
-    this.name_cn = input.name_cn || '';
+    this.nameCN = input.name_cn || '';
     this.summary = input.summary || '';
-    this.air_date = input.air_date === undefined ?  '1970-01-01' : input.air_date;
-    this.air_weekday = input.air_weekday || 0;
+    this.airDate = input.air_date ||  '';
+    this.airWeekday = input.air_weekday || 0;
     return this;
   }
 

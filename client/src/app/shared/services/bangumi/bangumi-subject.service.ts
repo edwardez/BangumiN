@@ -6,6 +6,7 @@ import {SubjectSmall} from '../../models/subject/subject-small';
 import {SubjectLarge} from '../../models/subject/subject-large';
 import {SubjectMedium} from '../../models/subject/subject-medium';
 import {map} from 'rxjs/operators';
+import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 
 @Injectable()
 export class BangumiSubjectService {
@@ -31,9 +32,22 @@ export class BangumiSubjectService {
           }
         })
       );
-
-
   }
+
+  public getSubjectEpisode(subject_id: string): Observable<SubjectEpisodes> {
+
+    return this.http.get(`${environment.BANGUMI_API_URL}/subject/${subject_id}/ep`)
+      .pipe(
+        map(res => {
+          if (res['code'] && res['code'] !== 200) {
+            return new SubjectEpisodes();
+          } else {
+            return new SubjectEpisodes().deserialize(res); }
+
+        })
+      );
+  }
+
 
 
 

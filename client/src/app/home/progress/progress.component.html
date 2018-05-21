@@ -1,12 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingArray">
 
   <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
-    <mat-card-content  >
+    <mat-card-content>
       <mat-tab-group>
         <mat-tab label="{{'progress.tabs.all.name' | translate}}">
           <div fxLayout="row wrap" fxLayoutAlign="center center">
-            <ng-container *ngFor="let collection of collectionWatchingArray" >
-              <div fxLayout="row" fxFlex="0 1 100%"
+            <ng-container *ngFor="let collection of collectionWatchingArray">
+              <div fxLayout="row"  fxLayoutAlign="start center"
+                   fxFlex="0 1 100%"
                    ngClass.gt-sm="has-margin-top-md has-margin-bottom-md"
                    ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm">
                 <img [src]="collection.subject.images.medium">
@@ -29,7 +30,7 @@
         </mat-tab>
         <mat-tab label="{{'progress.tabs.book.name' | translate}}">
 
-      </mat-tab>
+        </mat-tab>
       </mat-tab-group>
     </mat-card-content>
 

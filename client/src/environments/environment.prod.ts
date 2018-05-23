@@ -13,5 +13,6 @@ export const environment = {
     'zh-Hans': '简体中文'
   },
   commentMaxLength: 200,
-  tagsMaxNumber: 10
+  tagsMaxNumber: 10,
+  progressPageMaxEpisodeCount: 20,
 };

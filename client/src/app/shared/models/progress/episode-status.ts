@@ -6,7 +6,7 @@ export class EpisodeStatus implements Serializable<EpisodeStatus> {
    * example: 12
    * format: int32
    */
-  id: EpisodeUserStatus;
+  id: EpisodeCollectionStatus;
   cssName: string;
   urlName: string;
   cnName: string;

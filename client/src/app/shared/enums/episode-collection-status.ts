@@ -1,4 +1,4 @@
-enum EpisodeUserStatus {
+enum EpisodeCollectionStatus {
   queue = 1,
   watched = 2,
   drop = 3,

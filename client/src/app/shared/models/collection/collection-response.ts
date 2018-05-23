@@ -63,7 +63,7 @@ export class CollectionResponse  implements Serializable<CollectionResponse> {
     this.comment = input.comment === undefined ? '' : input.comment.substring(0, environment.commentMaxLength);
     this.privacy = input.private === undefined ? 0 : input.private;
     this.tags = CollectionResponse.parseTags(input);
-    this.epStatus = input.ep_status === undefined ? 0 : input.ep_status;
+    this.epStatus = input.completedEpisodeCount === undefined ? 0 : input.completedEpisodeCount;
     this.lastTouch = input.lasttouch === undefined ? 0 : input.lasttouch;
     this.user = input.user === undefined ? new BangumiUser() : input.user;
     return this;

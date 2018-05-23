@@ -26,7 +26,7 @@ export class SubjectEpisodes extends SubjectBase implements Serializable<Subject
   deserialize(input) {
     super.deserialize(input);
     this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
-    this.episodes = input.eps === undefined ? [] : input.eps.map(ep => new Episode().deserialize(ep));
+    this.episodes = input.eps === undefined || input.eps === null ? [] : input.eps.map(ep => new Episode().deserialize(ep));
     this.episodesObject = Object.assign({}, ...this.episodes.map(episode => ({ [episode.id]: episode }) ) );
     return this;
   }

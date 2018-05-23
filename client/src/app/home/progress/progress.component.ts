@@ -1,12 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {forkJoin} from 'rxjs';
-import {Subject} from 'rxjs/index';
-import {first, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
+import {forkJoin} from 'rxjs';
+import {Subject} from 'rxjs/index';
+import {first, map, switchMap, takeUntil, tap} from 'rxjs/operators';
+
+import {SubjectProgress} from '../../shared/models/progress/subject-progress';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 @Component({
   selector: 'app-progress',
@@ -18,35 +20,14 @@ export class ProgressComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   collectionWatchingArray: CollectionWatchingResponseMedium[];
 
-  constructor(private bangumiUserService: BangumiUserService,
-              private bangumiSubjectService: BangumiSubjectService,
-              private authService: AuthenticationService) {
-    this.authService.userSubject
+  constructor(private bangumiUserService: BangumiUserService) {
+    this.bangumiUserService.getOngoingCollectionStatusAndProgress()
       .pipe(
-        takeUntil(this.ngUnsubscribe),
-        first(), // we only need user id, which is unlikely to be updated, so only first value(in localStorage) is needed,
-        switchMap( res =>
-          this.bangumiUserService.getOngoingProgressEpisodeDetail(res['user_id'].toString()).pipe(
-            map(episodes => {
-              return {'id' : res['user_id'].toString(), 'episodes': episodes};
-            })
-          )),
-        switchMap(res => {
-          return forkJoin([this.bangumiUserService.getOngoingCollectionStatusOverview(res.id),
-            ...res.episodes.progress.map(episode =>
-              this.bangumiSubjectService.getSubjectEpisode(episode.id.toString()).pipe(
-                map(episodeInfo => {
-                  const episodeIndex = res.episodes.progress.findIndex( ep => ep.id === episodeInfo.id);
-                  return {
-                    subjectProgress : res.episodes.progressObject[episodeInfo.id],
-                    subjectEpisodes: episodeInfo};
-                })
-              ))]);
-        })
+        takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(res => {
-        // this.collectionWatchingArray = res;
+      .subscribe(response => {
       });
+
   }
 
   ngOnDestroy(): void {

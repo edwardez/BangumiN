@@ -8,6 +8,7 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
   /**
    * 话数
    * example: 27
+   * difference between eps_count?
    * format: int32
    */
   eps?: number;
@@ -16,7 +17,7 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
    * example: 27
    * format: int32
    */
-  eps_count?: number;
+  totalEpisodesCount?: number;
 
   images?: Images;
 
@@ -25,15 +26,15 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
   constructor() {
     super();
     this.eps = 0;
-    this.eps_count = 0;
+    this.totalEpisodesCount = 0;
     this.collection = new SubjectCollection();
     this.images = new Images();
   }
 
   deserialize(input) {
     super.deserialize(input);
-    this.eps = input.episodes || 0;
-    this.eps_count = input.eps_count || 0;
+    this.eps = input.eps || 0;
+    this.totalEpisodesCount = input.eps_count || 0;
     this.collection = input.collection ===  undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
     this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;

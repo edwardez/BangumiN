@@ -55,6 +55,8 @@ export class Episode implements Serializable<Episode> {
    */
   status?: EpisodeOnAirStatus;
 
+  userCollectionStatus?: EpisodeCollectionStatus;
+
   deserialize(input) {
     this.id = input.id || 0;
     this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');
@@ -67,6 +69,7 @@ export class Episode implements Serializable<Episode> {
     this.comment = input.comment || 0;
     this.desc = input.desc || '';
     this.status = input.status || EpisodeOnAirStatus.Air;
+    this.userCollectionStatus = null;
     return this;
   }
 

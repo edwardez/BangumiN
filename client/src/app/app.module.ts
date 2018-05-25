@@ -38,6 +38,7 @@ import {BangumiSubjectService} from './shared/services/bangumi/bangumi-subject.s
 import {ReviewDialogComponent} from './subject/review-dialog/review-dialog.component';
 import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
 import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
+import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {SideNavContentComponent} from './common/side-nav-content/side-nav-conten
     HttpsPipe,
     SingleSubjectComponent,
     ReviewDialogComponent,
+    EpisodeDialogComponent
 
   ],
   imports: [
@@ -85,7 +87,8 @@ import {SideNavContentComponent} from './common/side-nav-content/side-nav-conten
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   entryComponents: [
-    ReviewDialogComponent
+    ReviewDialogComponent,
+    EpisodeDialogComponent
   ],
   providers: [AppGuard,
     Title,

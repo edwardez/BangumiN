@@ -1,4 +1,5 @@
 import {Serializable} from '../Serializable';
+import {EpisodeCollectionStatus} from '../../enums/episode-collection-status';
 
 export class EpisodeStatus implements Serializable<EpisodeStatus> {
   /**
@@ -11,12 +12,25 @@ export class EpisodeStatus implements Serializable<EpisodeStatus> {
   urlName: string;
   cnName: string;
 
+  static setEpisodeStatusID(id: EpisodeCollectionStatus): EpisodeCollectionStatus {
+    if (id === undefined || null) {
+      return 1;
+    } else if (id in EpisodeCollectionStatus) {
+      return id;
+    } else {
+      return EpisodeCollectionStatus.untouched;
+    }
+  }
+
+
   deserialize(input) {
-    this.id = input.id === undefined ? 1 : input.id;
+    this.id = EpisodeStatus.setEpisodeStatusID(input.id);
     this.cssName = input.css_name || '';
     this.urlName = input.url_name || '';
     this.cnName = input.cn_name || '';
     return this;
   }
+
+
 
 }

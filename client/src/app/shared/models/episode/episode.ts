@@ -1,6 +1,7 @@
 import {Serializable} from '../Serializable';
 import {EpisodeType} from '../../enums/episode-type';
 import {EpisodeOnAirStatus} from '../../enums/episode-on-air-status';
+import {EpisodeCollectionStatus} from '../../enums/episode-collection-status';
 
 export class Episode implements Serializable<Episode> {
   /**
@@ -69,7 +70,7 @@ export class Episode implements Serializable<Episode> {
     this.comment = input.comment || 0;
     this.desc = input.desc || '';
     this.status = input.status || EpisodeOnAirStatus.Air;
-    this.userCollectionStatus = null;
+    this.userCollectionStatus = EpisodeCollectionStatus.untouched; // default to untouched
     return this;
   }
 

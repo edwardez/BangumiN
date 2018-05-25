@@ -33,6 +33,14 @@
       "book": {
         "name": "Books"
       }
+    },
+    "episode": {
+      "status": {
+        "queue": "Wish",
+        "watched": "Watched",
+        "drop": "Drop",
+        "remove": "remove"
+      }
     }
   },
   "search": {
@@ -70,7 +78,7 @@
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"
               },
-              "tags":{
+              "tags": {
                 "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
               }
             }

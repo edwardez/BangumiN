@@ -18,7 +18,9 @@
                   </div>
                   <mat-chip-list fxLayout="row">
                     <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
-                      <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}" selected="{{episode.userCollectionStatus !==null}}">{{episode.sort}}</mat-chip>
+                      <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
+                                selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched}}"
+                      (click)="openEpisodeDialog(episode)">{{episode.sort}}</mat-chip>
                     </ng-container>
                   </mat-chip-list>
                   <mat-progress-bar mode="determinate" value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>

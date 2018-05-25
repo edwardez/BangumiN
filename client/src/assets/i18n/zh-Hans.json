@@ -33,6 +33,14 @@
       "book": {
         "name": "书籍"
       }
+    },
+    "episode": {
+      "status": {
+        "queue": "想看",
+        "watched": "看过",
+        "drop": "抛弃",
+        "remove": "撤销"
+      }
     }
   },
   "search": {

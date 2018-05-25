@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {BangumiCollectionService} from '../shared/services/bangumi/bangumi-collection.service';
 
 @NgModule({
@@ -7,9 +7,10 @@ import {BangumiCollectionService} from '../shared/services/bangumi/bangumi-colle
     CommonModule
   ],
   declarations: [
-  ],
+    ],
   providers: [
     BangumiCollectionService
   ]
 })
-export class BanguminHomeModule { }
+export class BanguminHomeModule {
+}

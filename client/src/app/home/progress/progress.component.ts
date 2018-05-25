@@ -3,6 +3,10 @@ import {CollectionWatchingResponseMedium} from '../../shared/models/collection/c
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {Subject} from 'rxjs/index';
 import {takeUntil} from 'rxjs/operators';
+import {MatDialog} from '@angular/material';
+import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
+import {Episode} from '../../shared/models/episode/episode';
+import {EpisodeCollectionStatus} from '../../shared/enums/episode-collection-status';
 
 
 @Component({
@@ -13,9 +17,11 @@ import {takeUntil} from 'rxjs/operators';
 export class ProgressComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private episodeCollectionStatusUntouched = EpisodeCollectionStatus.untouched;
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
-  constructor(private bangumiUserService: BangumiUserService) {
+  constructor(private bangumiUserService: BangumiUserService,
+              public episodeDialog: MatDialog) {
     this.bangumiUserService.getOngoingCollectionStatusAndProgress()
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -53,6 +59,15 @@ export class ProgressComponent implements OnInit, OnDestroy {
        default:
          return 'primary';
      }
+  }
+
+  openEpisodeDialog(episode: Episode): void {
+    const dialogRef = this.episodeDialog.open(EpisodeDialogComponent, {
+      data: episode
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
 }

@@ -1,19 +1,33 @@
-<div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingArray">
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingResponse">
 
   <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
     <mat-card-content>
       <mat-tab-group>
         <mat-tab label="{{'progress.tabs.all.name' | translate}}">
           <div fxLayout="row wrap" fxLayoutAlign="center center">
-            <ng-container *ngFor="let collection of collectionWatchingArray">
+            <ng-container *ngFor="let collection of collectionWatchingResponse">
               <div fxLayout="row"  fxLayoutAlign="start center"
                    fxFlex="0 1 100%"
                    ngClass.gt-sm="has-margin-top-md has-margin-bottom-md"
                    ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm">
                 <img [src]="collection.subject.images.medium">
-                <div fxFlex="1 1 auto"></div>
+
+                <div fxLayout="column" fxFlex="1 1 auto" fxLayoutGap="5px" ngClass.gt-md="has-padding-left-md">
+                  <div fxFlexAlign="center">
+                    {{collection.subject.name}}
+                  </div>
+                  <mat-chip-list fxLayout="row">
+                    <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
+                      <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}" selected="{{episode.userCollectionStatus !==null}}">{{episode.sort}}</mat-chip>
+                    </ng-container>
+                  </mat-chip-list>
+                  <mat-progress-bar mode="determinate" value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
+                </div>
+
+
+                <!--<div fxFlex="1 1 auto"></div>-->
                 <button mat-button>
-                  test
+                  placeholder
                 </button>
 
               </div>

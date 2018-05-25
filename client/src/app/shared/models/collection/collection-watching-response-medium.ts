@@ -35,7 +35,7 @@ export class CollectionWatchingResponseMedium implements Serializable<Collection
     this.lastTouch = input.lasttouch || 0;
     this.subject = input.subject === undefined ?
       new SubjectWatchingCollectionMedium() : new SubjectWatchingCollectionMedium().deserialize(input.subject);
-    this.episodeHeap = null; // by default, subject doesn't have episode
+    this.episodeHeap = new PriorityQueue<Episode>(); // by default, subject doesn't have episode
     return this;
   }
 }

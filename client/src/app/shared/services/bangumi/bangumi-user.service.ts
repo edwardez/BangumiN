@@ -61,15 +61,19 @@ export class BangumiUserService {
       }
     });
 
+    const totalEpisodesCount: number = subjectEpisodes.episodes.length;
     for (const subjectEpisode of  subjectEpisodes.episodes) {
       // break if more than required number of episode is fetched
       if (priorityQueue.length >= maxEpisodeCount) {
         break;
       }
-      // add episode to a priority queue
-      if (subjectEpisode.sort >= subjectProgress.episodeSortMinMaxByType[subjectEpisode.type].max) {
+
+      if (totalEpisodesCount <= maxEpisodeCount ||
+        subjectEpisode.sort >= subjectProgress.episodeSortMinMaxByType[subjectEpisode.type].max) {
         priorityQueue.queue(subjectEpisode);
       }
+      // add episode to a priority queue
+
     }
 
     return priorityQueue;
@@ -256,7 +260,6 @@ export class BangumiUserService {
         }),
         map(
           response => {
-
             // for each show, update its episodeHeap
             response['ongoingAllShow'].forEach(
               show => {
@@ -271,7 +274,12 @@ export class BangumiUserService {
                 // theoretically we should be able to find one, but if there's no such collection, skip the assignment
                 if (matchedCollection !== undefined) {
                   matchedCollection.episodeHeap = priorityQueue;
+
+                  if (priorityQueue.length !== 0 && matchedCollection.subject.totalEpisodesCount === 0) {
+                    matchedCollection.subject.totalEpisodesCount = show['subjectEpisodes'].episodes.length;
+                  }
                 }
+
               }
             );
 

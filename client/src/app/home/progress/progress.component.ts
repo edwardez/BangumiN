@@ -1,14 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../shared/services/auth.service';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
-import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
-import {forkJoin} from 'rxjs';
 import {Subject} from 'rxjs/index';
-import {first, map, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 
-import {SubjectProgress} from '../../shared/models/progress/subject-progress';
-import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 @Component({
   selector: 'app-progress',
@@ -18,7 +13,7 @@ import {SubjectType} from '../../shared/enums/subject-type.enum';
 export class ProgressComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  collectionWatchingArray: CollectionWatchingResponseMedium[];
+  collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
   constructor(private bangumiUserService: BangumiUserService) {
     this.bangumiUserService.getOngoingCollectionStatusAndProgress()
@@ -26,6 +21,8 @@ export class ProgressComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(response => {
+        this.collectionWatchingResponse = response;
+
       });
 
   }
@@ -37,6 +34,25 @@ export class ProgressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+  }
+
+  calculateCollectionProgress(collectionWatchingResponseMedium: CollectionWatchingResponseMedium) {
+    if (collectionWatchingResponseMedium.subject.totalEpisodesCount <= 0) {
+      return 0;
+    } else {
+      return collectionWatchingResponseMedium.completedEpisodeCount / collectionWatchingResponseMedium.subject.totalEpisodesCount * 100;
+    }
+  }
+
+  calculateChipColorByEpisodeStatus(userCollectionStatus: number|null): string {
+     switch (userCollectionStatus) {
+       case 2:
+         return 'primary';
+       case 3:
+         return 'warn';
+       default:
+         return 'primary';
+     }
   }
 
 }

@@ -6,37 +6,32 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EpisodeCollectionStatus} from '../../../shared/enums/episode-collection-status';
 
 @Component({
-  selector: 'app-episode-dialog',
-  templateUrl: './episode-dialog.component.html',
-  styleUrls: ['./episode-dialog.component.scss']
+    selector: 'app-episode-dialog',
+    templateUrl: './episode-dialog.component.html',
+    styleUrls: ['./episode-dialog.component.scss']
 })
 export class EpisodeDialogComponent implements OnInit {
 
-  private episodeForm: FormGroup;
-  episodeCollectionStatus: EpisodeCollectionStatus;
+    private episodeForm: FormGroup;
+    episodeCollectionStatus: EpisodeCollectionStatus;
 
-  constructor(public dialogRef: MatDialogRef<ProgressComponent>,
-              @Inject(MAT_DIALOG_DATA) public episode: Episode,
-              private formBuilder: FormBuilder) { }
+    constructor(public dialogRef: MatDialogRef<ProgressComponent>,
+                @Inject(MAT_DIALOG_DATA) public episode: Episode,
+                private formBuilder: FormBuilder) {
+    }
 
-  ngOnInit() {
-    this.createForm();
-  }
+    ngOnInit() {
+        this.createForm();
+    }
 
-  createForm() {
+    createForm() {
 
-    this.episodeForm = this.formBuilder.group(
-      {
-        'collectionStatus': [<string>EpisodeCollectionStatus[this.episode.userCollectionStatus], []],
-      }
-    );
-  }
-
-
-
-
-
-
+        this.episodeForm = this.formBuilder.group(
+            {
+                'collectionStatus': [<string>EpisodeCollectionStatus[this.episode.userCollectionStatus], []],
+            }
+        );
+    }
 
 
 }

@@ -1,113 +1,113 @@
 {
-  "login": {
-    "welcomeTitle": "欢迎!",
-    "welcomeText": "bangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
-    "oauthRedirect": "登陆"
-  },
-  "settings": {
-    "title": "设置",
-    "description": "所有设置都会被自动保存",
-    "tabs": {
-      "general": {
-        "name": "通用",
-        "language": {
-          "name": "语言"
-        }
-      },
-      "social": {
-        "name": "社交"
-      }
-    }
-  },
-  "progress": {
-    "tabs": {
-      "all": {
-        "name": "所有"
-      },
-      "anime": {
-        "name": "动画"
-      },
-      "real": {
-        "name": "三次元"
-      },
-      "book": {
-        "name": "书籍"
-      }
+    "login": {
+        "welcomeTitle": "欢迎!",
+        "welcomeText": "bangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
+        "oauthRedirect": "登陆"
     },
-    "episode": {
-      "status": {
-        "queue": "想看",
-        "watched": "看过",
-        "drop": "抛弃",
-        "remove": "撤销"
-      }
-    }
-  },
-  "search": {
-    "empty": "无结果",
-    "category": {
-      "all": "综合",
-      "anime": "动画",
-      "book": "书籍",
-      "music": "音乐",
-      "game": "游戏",
-      "real": "三次元"
+    "settings": {
+        "title": "设置",
+        "description": "所有设置都会被自动保存",
+        "tabs": {
+            "general": {
+                "name": "通用",
+                "language": {
+                    "name": "语言"
+                }
+            },
+            "social": {
+                "name": "社交"
+            }
+        }
+    },
+    "progress": {
+        "tabs": {
+            "all": {
+                "name": "所有"
+            },
+            "anime": {
+                "name": "动画"
+            },
+            "real": {
+                "name": "三次元"
+            },
+            "book": {
+                "name": "书籍"
+            }
+        },
+        "episode": {
+            "status": {
+                "queue": "想看",
+                "watched": "看过",
+                "drop": "抛弃",
+                "remove": "撤销"
+            }
+        }
+    },
+    "search": {
+        "empty": "无结果",
+        "category": {
+            "all": "综合",
+            "anime": "动画",
+            "book": "书籍",
+            "music": "音乐",
+            "game": "游戏",
+            "real": "三次元"
+        },
+        "subject": {
+            "action": {
+                "collect": "收藏",
+                "more": "详细"
+            }
+        }
     },
     "subject": {
-      "action": {
-        "collect": "收藏",
-        "more": "详细"
-      }
-    }
-  },
-  "subject": {
-    "tabs": {
-      "overview": {
-        "name": "概览",
-        "review": {
-          "score": "分数",
-          "rank": "排名",
-          "modal": {
-            "title": "编辑收藏",
-            "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
-            "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
-            "cancel": "取消",
-            "submit": "提交",
-            "privacy": "仅自己可见",
-            "error": {
-              "comment": {
-                "maxLength": "最多只能输入{{commentMaxLength}}个字"
-              },
-              "tags":{
-                "tagsMaxNumber": "最多只能输入{{tagsMaxNumber}}个标签，当前已输入{{tagsCurrentNumber}}/{{tagsMaxNumber}}个"
-              }
+        "tabs": {
+            "overview": {
+                "name": "概览",
+                "review": {
+                    "score": "分数",
+                    "rank": "排名",
+                    "modal": {
+                        "title": "编辑收藏",
+                        "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
+                        "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
+                        "cancel": "取消",
+                        "submit": "提交",
+                        "privacy": "仅自己可见",
+                        "error": {
+                            "comment": {
+                                "maxLength": "最多只能输入{{commentMaxLength}}个字"
+                            },
+                            "tags": {
+                                "tagsMaxNumber": "最多只能输入{{tagsMaxNumber}}个标签，当前已输入{{tagsCurrentNumber}}/{{tagsMaxNumber}}个"
+                            }
+                        }
+                    },
+                    "status": {
+                        "wish": "想",
+                        "collect": "过",
+                        "do": "在",
+                        "on_hold": "搁置",
+                        "dropped": "抛弃"
+                    },
+                    "action": {
+                        "addToCollection": "加入收藏",
+                        "editCollection": "修改收藏",
+                        "more": "详细",
+                        "type": {
+                            "0": "做",
+                            "1": "看",
+                            "2": "看",
+                            "3": "听",
+                            "4": "玩",
+                            "6": "看"
+                        }
+                    }
+                }
+            },
+            "episode": {
+                "name": "章节"
             }
-          },
-          "status": {
-            "wish": "想",
-            "collect": "过",
-            "do": "在",
-            "on_hold": "搁置",
-            "dropped": "抛弃"
-          },
-          "action": {
-            "addToCollection": "加入收藏",
-            "editCollection": "修改收藏",
-            "more": "详细",
-            "type": {
-              "0": "做",
-              "1": "看",
-              "2": "看",
-              "3": "听",
-              "4": "玩",
-              "6": "看"
-            }
-          }
         }
-      },
-      "episode": {
-        "name": "章节"
-      }
     }
-  }
 }

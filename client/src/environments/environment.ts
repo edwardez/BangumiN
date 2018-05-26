@@ -4,20 +4,20 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false,
-  BANGUMI_API_URL: 'http://localhost:4200/proxy/api/bangumi',
-  BANGUMI_OAUTH_URL: 'http://localhost:4200/proxy/oauth/bangumi',
-  BACKEND_API_URL: 'http://localhost:3000/api',
-  BACKEND_AUTH_URL: 'http://localhost:3000/auth',
-  BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
-  BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
-  whitelistedDomains: ['localhost:3000'],
-  blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/],
-  availableLanguage: {
-    'en-US': 'English',
-    'zh-Hans': '简体中文'
-  },
-  commentMaxLength: 200,
-  tagsMaxNumber: 10,
-  progressPageMaxEpisodeCount: 30,
+    production: false,
+    BANGUMI_API_URL: 'http://localhost:4200/proxy/api/bangumi',
+    BANGUMI_OAUTH_URL: 'http://localhost:4200/proxy/oauth/bangumi',
+    BACKEND_API_URL: 'http://localhost:3000/api',
+    BACKEND_AUTH_URL: 'http://localhost:3000/auth',
+    BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
+    BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
+    whitelistedDomains: ['localhost:3000'],
+    blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/],
+    availableLanguage: {
+        'en-US': 'English',
+        'zh-Hans': '简体中文'
+    },
+    commentMaxLength: 200,
+    tagsMaxNumber: 10,
+    progressPageMaxEpisodeCount: 30,
 };

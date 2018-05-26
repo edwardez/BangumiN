@@ -1,116 +1,116 @@
 {
-  "login": {
-    "welcomeTitle": "Welcome!",
-    "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
-    "oauthRedirect": "Login"
-  },
-  "settings": {
-    "title": "Settings",
-    "description": "All changes will be saved automatically",
-    "tabs": {
-      "general": {
-        "name": "General",
-        "language": {
-          "name": "Language"
-        }
-      },
-      "social": {
-        "name": "Social"
-      }
-    }
-  },
-  "progress": {
-    "tabs": {
-      "all": {
-        "name": "All"
-      },
-      "anime": {
-        "name": "Anime"
-      },
-      "real": {
-        "name": "Real"
-      },
-      "book": {
-        "name": "Books"
-      }
+    "login": {
+        "welcomeTitle": "Welcome!",
+        "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
+        "oauthRedirect": "Login"
     },
-    "episode": {
-      "status": {
-        "queue": "Wish",
-        "watched": "Watched",
-        "drop": "Drop",
-        "remove": "remove"
-      }
-    }
-  },
-  "search": {
-    "empty": "No results",
-    "category": {
-      "all": "All",
-      "anime": "Anime",
-      "book": "Book",
-      "music": "Music",
-      "game": "Game",
-      "real": "Real"
+    "settings": {
+        "title": "Settings",
+        "description": "All changes will be saved automatically",
+        "tabs": {
+            "general": {
+                "name": "General",
+                "language": {
+                    "name": "Language"
+                }
+            },
+            "social": {
+                "name": "Social"
+            }
+        }
+    },
+    "progress": {
+        "tabs": {
+            "all": {
+                "name": "All"
+            },
+            "anime": {
+                "name": "Anime"
+            },
+            "real": {
+                "name": "Real"
+            },
+            "book": {
+                "name": "Books"
+            }
+        },
+        "episode": {
+            "status": {
+                "queue": "Wish",
+                "watched": "Watched",
+                "drop": "Drop",
+                "remove": "remove"
+            }
+        }
+    },
+    "search": {
+        "empty": "No results",
+        "category": {
+            "all": "All",
+            "anime": "Anime",
+            "book": "Book",
+            "music": "Music",
+            "game": "Game",
+            "real": "Real"
+        },
+        "subject": {
+            "action": {
+                "collect": "Collect",
+                "more": "More Info"
+            }
+        }
     },
     "subject": {
-      "action": {
-        "collect": "Collect",
-        "more": "More Info"
-      }
-    }
-  },
-  "subject": {
-    "tabs": {
-      "overview": {
-        "name": "Overview",
-        "review": {
-          "score": "Score",
-          "rank": "Ranked",
-          "modal": {
-            "title": "Edit collection",
-            "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
-            "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
-            "cancel": "Cancel",
-            "submit": "Submit",
-            "privacy": "Only visible to yourself",
-            "error": {
-              "comment": {
-                "maxLength": "Maximum: {{commentMaxLength}} characters"
-              },
-              "tags": {
-                "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
-              }
+        "tabs": {
+            "overview": {
+                "name": "Overview",
+                "review": {
+                    "score": "Score",
+                    "rank": "Ranked",
+                    "modal": {
+                        "title": "Edit collection",
+                        "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
+                        "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
+                        "cancel": "Cancel",
+                        "submit": "Submit",
+                        "privacy": "Only visible to yourself",
+                        "error": {
+                            "comment": {
+                                "maxLength": "Maximum: {{commentMaxLength}} characters"
+                            },
+                            "tags": {
+                                "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
+                            }
+                        }
+                    },
+                    "status": {
+                        "wish": "Wish",
+                        "collect": "Finished",
+                        "do": "In Progress",
+                        "on_hold": "Hold",
+                        "dropped": "Drop"
+                    },
+                    "action": {
+                        "addToCollection": "Add to collection",
+                        "editCollection": "Edit collection",
+                        "more": "More info",
+                        "type": {
+                            "1": "",
+                            "2": "",
+                            "3": "",
+                            "4": "",
+                            "6": ""
+                        }
+                    }
+                }
+            },
+            "episode": {
+                "name": "Episode"
             }
-          },
-          "status": {
-            "wish": "Wish",
-            "collect": "Finished",
-            "do": "In Progress",
-            "on_hold": "Hold",
-            "dropped": "Drop"
-          },
-          "action": {
-            "addToCollection": "Add to collection",
-            "editCollection": "Edit collection",
-            "more": "More info",
-            "type": {
-              "1": "",
-              "2": "",
-              "3": "",
-              "4": "",
-              "6": ""
-            }
-          }
+        },
+        "action": {
+            "collect": "Collect",
+            "more": "More Info"
         }
-      },
-      "episode": {
-        "name": "Episode"
-      }
-    },
-    "action": {
-      "collect": "Collect",
-      "more": "More Info"
     }
-  }
 }

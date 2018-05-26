@@ -3,14 +3,13 @@ import {CommonModule} from '@angular/common';
 import {BangumiCollectionService} from '../shared/services/bangumi/bangumi-collection.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
+    imports: [
+        CommonModule
     ],
-  providers: [
-    BangumiCollectionService
-  ]
+    declarations: [],
+    providers: [
+        BangumiCollectionService
+    ]
 })
 export class BanguminHomeModule {
 }

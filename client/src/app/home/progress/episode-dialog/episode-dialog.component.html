@@ -1,26 +1,26 @@
 <form [formGroup]="episodeForm" novalidate>
-  <h1 mat-dialog-title>ep.{{episode.sort}} {{episode.name === "" ? "-" : episode.name}}
-    <small class="grey" *ngIf="episode.nameCN !== '' ">{{episode.nameCN}}</small>
-  </h1>
-  <div mat-dialog-content>
-    <mat-radio-group
-                     formControlName="collectionStatus">
-      <mat-radio-button value="queue">
-        {{'progress.episode.status.queue' | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="watched" class="has-margin-left-sm">
-        {{'progress.episode.status.watched' | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="drop" class="has-margin-left-sm">
-        {{'progress.episode.status.drop' | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="remove" class="has-margin-left-sm">
-        {{'progress.episode.status.remove' | translate}}
-      </mat-radio-button>
-    </mat-radio-group>
+    <h1 mat-dialog-title>ep.{{episode.sort}} {{episode.name === "" ? "-" : episode.name}}
+        <small class="grey" *ngIf="episode.nameCN !== '' ">{{episode.nameCN}}</small>
+    </h1>
+    <div mat-dialog-content>
+        <mat-radio-group
+            formControlName="collectionStatus">
+            <mat-radio-button value="queue">
+                {{'progress.episode.status.queue' | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="watched" class="has-margin-left-sm">
+                {{'progress.episode.status.watched' | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="drop" class="has-margin-left-sm">
+                {{'progress.episode.status.drop' | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="remove" class="has-margin-left-sm">
+                {{'progress.episode.status.remove' | translate}}
+            </mat-radio-button>
+        </mat-radio-group>
 
-  </div>
-  <div mat-dialog-actions>
+    </div>
+    <div mat-dialog-actions>
 
-  </div>
+    </div>
 </form>

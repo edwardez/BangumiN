@@ -2,71 +2,79 @@
 
 
 <form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" novalidate>
-  <div mat-dialog-content fxLayout="column">
-    <app-star-rating
-      [(currentRating)]="this.data.rating"
-      formControlName="rating"
-       [starCount]="10" [isEditable]="true" [isRemovable]="true" (ratingUpdated)="onRatingChanged($event)" *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
+    <div mat-dialog-content fxLayout="column">
+        <app-star-rating
+            [(currentRating)]="this.data.rating"
+            formControlName="rating"
+            [starCount]="10" [isEditable]="true" [isRemovable]="true" (ratingUpdated)="onRatingChanged($event)"
+            *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
 
-    <mat-radio-group  fxFlexOffset="5%" fxFlexAlign="center" formControlName="collectionStatus">
-      <mat-radio-button value="wish"  >
-        {{'subject.tabs.overview.review.status.wish' | translate}}{{getActionTypeName(2) | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="collect">
-        {{getActionTypeName(2) | translate}}{{'subject.tabs.overview.review.status.collect' | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="do">
-        {{'subject.tabs.overview.review.status.do' | translate}}{{getActionTypeName(2) | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="on_hold">
-        {{'subject.tabs.overview.review.status.on_hold' | translate}}
-      </mat-radio-button>
-      <mat-radio-button value="dropped">
-        {{'subject.tabs.overview.review.status.dropped' | translate}}
-      </mat-radio-button>
-    </mat-radio-group>
-
-
-    <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
-    <mat-chip-list #chipList >
-
-      <mat-chip *ngFor="let tag of tagsArray.value"
-                (removed)="onRemoveTags(tag)"
-      >
-        {{tag}}
-        <mat-icon matChipRemove >cancel</mat-icon>
-      </mat-chip>
-      <input placeholder="{{'subject.tabs.overview.review.modal.tags' | translate: {tagsMaxNumber: tagsMaxNumber} }}"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputFor]="chipList"
-             (matChipInputTokenEnd)="onAddTags($event)"
-      />
-    </mat-chip-list>
+        <mat-radio-group fxFlexOffset="5%" fxFlexAlign="center" formControlName="collectionStatus">
+            <mat-radio-button value="wish">
+                {{'subject.tabs.overview.review.status.wish' | translate}}{{getActionTypeName(2) | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="collect">
+                {{getActionTypeName(2) | translate}}{{'subject.tabs.overview.review.status.collect' | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="do">
+                {{'subject.tabs.overview.review.status.do' | translate}}{{getActionTypeName(2) | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="on_hold">
+                {{'subject.tabs.overview.review.status.on_hold' | translate}}
+            </mat-radio-button>
+            <mat-radio-button value="dropped">
+                {{'subject.tabs.overview.review.status.dropped' | translate}}
+            </mat-radio-button>
+        </mat-radio-group>
 
 
-    </mat-form-field>
-    <mat-error *ngIf="tagsArray.errors">
-      {{'subject.tabs.overview.review.modal.error.tags.tagsMaxNumber' | translate: {tagsCurrentNumber:tagsArray.value.length, tagsMaxNumber: tagsMaxNumber} }}
-    </mat-error>
+        <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
+            <mat-chip-list #chipList>
+
+                <mat-chip *ngFor="let tag of tagsArray.value"
+                          (removed)="onRemoveTags(tag)"
+                >
+                    {{tag}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input
+                    placeholder="{{'subject.tabs.overview.review.modal.tags' | translate: {tagsMaxNumber: tagsMaxNumber} }}"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputFor]="chipList"
+                    (matChipInputTokenEnd)="onAddTags($event)"
+                />
+            </mat-chip-list>
 
 
-    <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
-  <textarea matInput placeholder="{{'subject.tabs.overview.review.modal.comment' | translate: {commentCurrentLength:ratingForm.value.comment.length, commentMaxLength: commentMaxLength} }}"
+        </mat-form-field>
+        <mat-error *ngIf="tagsArray.errors">
+            {{'subject.tabs.overview.review.modal.error.tags.tagsMaxNumber' | translate:
+            {tagsCurrentNumber:tagsArray.value.length, tagsMaxNumber: tagsMaxNumber} }}
+        </mat-error>
+
+
+        <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
+  <textarea matInput
+            placeholder="{{'subject.tabs.overview.review.modal.comment' | translate: {commentCurrentLength:ratingForm.value.comment.length, commentMaxLength: commentMaxLength} }}"
             formControlName="comment"
             matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="6" [errorStateMatcher]="matcher"></textarea>
-    </mat-form-field>
+        </mat-form-field>
 
-    <mat-error *ngIf="ratingForm.controls['comment'].errors">
-      {{'subject.tabs.overview.review.modal.error.comment.maxLength' | translate: {commentMaxLength: commentMaxLength} }}
-    </mat-error>
+        <mat-error *ngIf="ratingForm.controls['comment'].errors">
+            {{'subject.tabs.overview.review.modal.error.comment.maxLength' | translate: {commentMaxLength:
+            commentMaxLength} }}
+        </mat-error>
 
-    <mat-checkbox formControlName="privacy">{{'subject.tabs.overview.review.modal.privacy' | translate}}</mat-checkbox>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
-    <button mat-button type="submit" [disabled]="ratingForm.invalid">{{'subject.tabs.overview.review.modal.submit' | translate}}</button>
+        <mat-checkbox formControlName="privacy">{{'subject.tabs.overview.review.modal.privacy' | translate}}
+        </mat-checkbox>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
+        <button mat-button type="submit" [disabled]="ratingForm.invalid">{{'subject.tabs.overview.review.modal.submit' |
+            translate}}
+        </button>
 
-  </div>
+    </div>
 </form>
 
 

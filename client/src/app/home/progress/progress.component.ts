@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {Subject} from 'rxjs/index';
@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material';
 import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
 import {Episode} from '../../shared/models/episode/episode';
 import {EpisodeCollectionStatus} from '../../shared/enums/episode-collection-status';
+import {SubjectWatchingCollectionMedium} from '../../shared/models/subject/subject-watching-collection-medium';
 
 
 @Component({
@@ -21,7 +22,10 @@ export class ProgressComponent implements OnInit, OnDestroy {
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
   constructor(private bangumiUserService: BangumiUserService,
-              public episodeDialog: MatDialog) {
+              public episodeDialog: MatDialog,
+              private changeDetector: ChangeDetectorRef
+  ) {
+
     this.bangumiUserService.getOngoingCollectionStatusAndProgress()
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -42,6 +46,18 @@ export class ProgressComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
+  openEpisodeDialog(subject: SubjectWatchingCollectionMedium, episode: Episode): void {
+    const dialogRef = this.episodeDialog.open(EpisodeDialogComponent, {
+      data: {'subject': subject, 'episode': episode}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.response.code === 200) {
+        episode.userCollectionStatus = result.collectionStatus;
+      }
+    });
+  }
+
   calculateCollectionProgress(collectionWatchingResponseMedium: CollectionWatchingResponseMedium) {
     if (collectionWatchingResponseMedium.subject.totalEpisodesCount <= 0) {
       return 0;
@@ -50,24 +66,17 @@ export class ProgressComponent implements OnInit, OnDestroy {
     }
   }
 
-  calculateChipColorByEpisodeStatus(userCollectionStatus: number|null): string {
-     switch (userCollectionStatus) {
-       case 2:
-         return 'primary';
-       case 3:
-         return 'warn';
-       default:
-         return 'primary';
-     }
+  calculateChipColorByEpisodeStatus(userCollectionStatus: number | null): string {
+    switch (userCollectionStatus) {
+      case EpisodeCollectionStatus.watched:
+        return 'primary';
+      case EpisodeCollectionStatus.drop:
+        return 'warn';
+      default:
+        return 'primary';
+    }
   }
 
-  openEpisodeDialog(episode: Episode): void {
-    const dialogRef = this.episodeDialog.open(EpisodeDialogComponent, {
-      data: episode
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
 
 }

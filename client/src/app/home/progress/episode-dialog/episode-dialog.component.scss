@@ -2,3 +2,7 @@ small.grey {
   font-size: 10px;
   color: #999;
 }
+
+.episode-action-mat-button-group {
+  box-shadow: none !important; // override default box-shadow
+}

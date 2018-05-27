@@ -38,6 +38,7 @@
       "status": {
         "queue": "想看",
         "watched": "看过",
+        "watchedUntil": "看到",
         "drop": "抛弃",
         "remove": "撤销"
       }

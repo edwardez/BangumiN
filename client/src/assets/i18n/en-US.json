@@ -37,7 +37,8 @@
     "episode": {
       "status": {
         "queue": "Wish",
-        "watched": "Watched",
+        "watched": "Watched this",
+        "watchedUntil": "Watched until this",
         "drop": "Drop",
         "remove": "remove"
       }

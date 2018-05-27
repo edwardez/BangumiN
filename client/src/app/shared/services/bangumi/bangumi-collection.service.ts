@@ -7,6 +7,9 @@ import {Observable} from 'rxjs';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {CollectionRequest} from '../../models/collection/collection-request';
 import {CollectionWatchingResponseMedium} from '../../models/collection/collection-watching-response-medium';
+import {StatusCode} from '../../models/common/status-code';
+import {Episode} from '../../models/episode/episode';
+import {SubjectWatchingCollectionMedium} from '../../models/subject/subject-watching-collection-medium';
 
 @Injectable()
 export class BangumiCollectionService {
@@ -16,7 +19,26 @@ export class BangumiCollectionService {
 
   }
 
+  /**
+   * test whether the number is valid
+   * in order to qualify, it must not be a undefined/null value
+   * and it must only contain numbers, or dot(.)
+   * @param {string} id episode id
+   * @returns {boolean} whether it's valid
+   */
+  static isValidEpisodeSortNumber(id: string): boolean {
+    return id !== undefined && id !== null && /^\d+\.*\d*$/.test(id);
+  }
 
+  /**
+   * test whether the number is valid
+   * in order to qualify, it must not be a undefined/null positive integer
+   * @param {string} id volume number
+   * @returns {boolean} whether it's valid
+   */
+  static isValidVolumeNumber(id: string): boolean {
+    return id !== undefined && id !== null && id !== environment.invalidVolume && /^\d+$/.test(id) && parseInt(id, 10) >= 0;
+  }
 
 
   /**
@@ -58,13 +80,67 @@ export class BangumiCollectionService {
       collectionRequestBody.toString(), {headers: headers})
       .pipe(
         map(res => {
-          if (res['code'] && res['code'] !== 200) {
-            throw Error('Failed to update response'); // todo: handle exception
-          } else {
-            return new CollectionResponse().deserialize(res);
-          }
+            if (res['code'] && res['code'] !== 200) {
+              throw Error('Failed to update response'); // todo: handle exception
+            } else {
+              return new CollectionResponse().deserialize(res);
+            }
           }
         )
+      );
+  }
+
+  /**
+   * update status of an episode
+   * @param {number} episodeID episode id
+   * @param {string} status Available values : watched, queue, drop, remove
+   * @returns {Observable<StatusCode>} status code model
+   */
+  public upsertEpisodeStatus(episodeID: number, status: string): Observable<StatusCode> {
+    const episodeStatusUpdateRequestBody = new URLSearchParams();
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http.post(`${environment.BANGUMI_API_URL}/ep/${episodeID}/status/${status}`,
+      episodeStatusUpdateRequestBody.toString(), {headers: headers})
+      .pipe(
+        map(res => {
+          return new StatusCode().deserialize(res);
+        })
+      );
+  }
+
+  /**
+   *update episode status of a subject in batch mode
+   * for book subject, either watched_eps or watched_vols should be present
+   * @param {SubjectWatchingCollectionMedium} subject model
+   * @param {Episode} episode model
+   * @param {string} watchedEpisode watch until this episode number
+   * @param {string} watchedVolumes watch until this volume number
+   * @returns {Observable<StatusCode>} status code model
+   */
+  public upsertEpisodeStatusBatch(subject: SubjectWatchingCollectionMedium,
+                                  episode: Episode,
+                                  watchedEpisode: string,
+                                  watchedVolumes: string)
+    : Observable<StatusCode> {
+    const episodeStatusUpdateRequestBody = new URLSearchParams();
+
+    if (BangumiCollectionService.isValidEpisodeSortNumber(watchedEpisode)) {
+      episodeStatusUpdateRequestBody.set('watched_eps', watchedVolumes);
+    }
+
+    if (BangumiCollectionService.isValidVolumeNumber(watchedVolumes) && watchedVolumes !== environment.invalidVolume ) {
+      episodeStatusUpdateRequestBody.set('watched_vols', watchedVolumes);
+    }
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http.post(`${environment.BANGUMI_API_URL}/subject/${subject.id}/update/watched_eps`,
+      episodeStatusUpdateRequestBody.toString(), {headers: headers})
+      .pipe(
+        map(res => {
+          return new StatusCode().deserialize(res);
+        })
       );
   }
 

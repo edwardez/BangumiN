@@ -16,11 +16,11 @@
                   <div fxFlexAlign="center">
                     {{collection.subject.name}}
                   </div>
-                  <mat-chip-list fxLayout="row">
+                  <mat-chip-list fxLayout="row" [multiple]="true">
                     <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
                       <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
-                                selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched}}"
-                      (click)="openEpisodeDialog(episode)">{{episode.sort}}</mat-chip>
+                                selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched }}"
+                      (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}</mat-chip>
                     </ng-container>
                   </mat-chip-list>
                   <mat-progress-bar mode="determinate" value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>

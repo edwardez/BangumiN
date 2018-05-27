@@ -9,25 +9,25 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {StorageService} from '../storage.service';
 
 describe('BangumiUserService', () => {
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                HttpClientModule,
-                JwtModule.forRoot({
-                    config: {
-                        tokenGetter: tokenGetter,
-                        whitelistedDomains: environment.whitelistedDomains,
-                        blacklistedRoutes: environment.blacklistedRoutes,
-                    }
-                }),
-                InterceptorsModule.forRoot(),
-            ],
-            providers: [BangumiUserService,
-                StorageService]
-        });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        JwtModule.forRoot({
+          config: {
+            tokenGetter: tokenGetter,
+            whitelistedDomains: environment.whitelistedDomains,
+            blacklistedRoutes: environment.blacklistedRoutes,
+          }
+        }),
+        InterceptorsModule.forRoot(),
+      ],
+      providers: [BangumiUserService,
+        StorageService]
     });
+  });
 
-    it('should be created', inject([BangumiUserService], (service: BangumiUserService) => {
-        expect(service).toBeTruthy();
-    }));
+  it('should be created', inject([BangumiUserService], (service: BangumiUserService) => {
+    expect(service).toBeTruthy();
+  }));
 });

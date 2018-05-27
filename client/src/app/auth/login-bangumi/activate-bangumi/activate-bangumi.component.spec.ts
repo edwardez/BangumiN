@@ -17,45 +17,45 @@ import {InterceptorsModule} from '../../../shared/interceptors/interceptors.modu
 import {JwtModule} from '@auth0/angular-jwt';
 
 describe('ActivateBangumiComponent', () => {
-    let component: ActivateBangumiComponent;
-    let fixture: ComponentFixture<ActivateBangumiComponent>;
+  let component: ActivateBangumiComponent;
+  let fixture: ComponentFixture<ActivateBangumiComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                AppRoutingModule,
-                MaterialLayoutCommonModule,
-                HttpClientModule,
-                JwtModule.forRoot({
-                    config: {
-                        tokenGetter: tokenGetter,
-                        whitelistedDomains: environment.whitelistedDomains,
-                        blacklistedRoutes: environment.blacklistedRoutes,
-                    }
-                }),
-                InterceptorsModule.forRoot(),
-            ],
-            declarations: [
-                ActivateBangumiComponent,
-                ProgressComponent,
-                ProfileComponent,
-                LoginBangumiComponent],
-            providers: [
-                AuthenticationService,
-                StorageService,
-                {provide: APP_BASE_HREF, useValue: '/'}
-            ]
-        })
-            .compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        AppRoutingModule,
+        MaterialLayoutCommonModule,
+        HttpClientModule,
+        JwtModule.forRoot({
+          config: {
+            tokenGetter: tokenGetter,
+            whitelistedDomains: environment.whitelistedDomains,
+            blacklistedRoutes: environment.blacklistedRoutes,
+          }
+        }),
+        InterceptorsModule.forRoot(),
+      ],
+      declarations: [
+        ActivateBangumiComponent,
+        ProgressComponent,
+        ProfileComponent,
+        LoginBangumiComponent],
+      providers: [
+        AuthenticationService,
+        StorageService,
+        {provide: APP_BASE_HREF, useValue: '/'}
+      ]
+    })
+      .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ActivateBangumiComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ActivateBangumiComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

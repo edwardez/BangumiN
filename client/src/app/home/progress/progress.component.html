@@ -6,7 +6,7 @@
         <mat-tab label="{{'progress.tabs.all.name' | translate}}">
           <div fxLayout="row wrap" fxLayoutAlign="center center">
             <ng-container *ngFor="let collection of collectionWatchingResponse">
-              <div fxLayout="row"  fxLayoutAlign="start center"
+              <div fxLayout="row" fxLayoutAlign="start center"
                    fxFlex="0 1 100%"
                    ngClass.gt-sm="has-margin-top-md has-margin-bottom-md"
                    ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm">
@@ -20,10 +20,12 @@
                     <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
                       <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
                                 selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched }}"
-                      (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}</mat-chip>
+                                (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}
+                      </mat-chip>
                     </ng-container>
                   </mat-chip-list>
-                  <mat-progress-bar mode="determinate" value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
+                  <mat-progress-bar mode="determinate"
+                                    value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
                 </div>
 
 

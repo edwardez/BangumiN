@@ -4,16 +4,16 @@ import {EpisodeType} from '../../enums/episode-type';
 
 export class UserProgress implements Serializable<UserProgress> {
 
-    progress: SubjectProgress[];
+  progress: SubjectProgress[];
 
-    constructor() {
-        this.progress = [];
-    }
+  constructor() {
+    this.progress = [];
+  }
 
-    deserialize(input) {
-        this.progress = input === undefined || input === null ?
-            [] : input.map(subjectProgress => new SubjectProgress().deserialize(subjectProgress));
-        return this;
-    }
+  deserialize(input) {
+    this.progress = input === undefined || input === null ?
+      [] : input.map(subjectProgress => new SubjectProgress().deserialize(subjectProgress));
+    return this;
+  }
 
 }

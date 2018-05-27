@@ -1,5 +1,5 @@
 export enum EpisodeOnAirStatus {
-    Air = 'Air',
-    Today = 'Today',
-    NA = 'NA'
+  Air = 'Air',
+  Today = 'Today',
+  NA = 'NA'
 }

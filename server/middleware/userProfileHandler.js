@@ -1,7 +1,7 @@
 const requestPromise = require('request-promise');
 const logger = require('../utils/logger')(module);
 const joi = require('joi');
-const {CustomError} = require('../middleware/errorHandler');
+const { CustomError } = require('../middleware/errorHandler');
 const config = require('../config/components/passport');
 
 /**
@@ -15,18 +15,18 @@ const config = require('../config/components/passport');
  * @returns {*}
  */
 function verifyAccessToken(userProfile, clientId) {
-    const profileSchema = joi.object({
-        access_token: joi.string().required(),
-        user_id: joi.required(),
-        client_id: joi.string().valid(clientId).required(),
-    }).unknown().required();
+  const profileSchema = joi.object({
+    access_token: joi.string().required(),
+    user_id: joi.required(),
+    client_id: joi.string().valid(clientId).required(),
+  }).unknown().required();
 
-    const {error, value: profileVars} = joi.validate(userProfile, profileSchema);
-    if (error) {
-        throw new Error(`Config validation error: ${error.message}`);
-    }
+  const { error, value: profileVars } = joi.validate(userProfile, profileSchema);
+  if (error) {
+    throw new Error(`Config validation error: ${error.message}`);
+  }
 
-    return profileVars;
+  return profileVars;
 }
 
 /**
@@ -41,22 +41,22 @@ function verifyAccessToken(userProfile, clientId) {
  * @returns {Promise<*>}
  */
 const getUserProfile = async function getUserProfile(req, res, next) {
-    const {accessToken} = req.body;
-    req.bangumin = req.bangumin || {};
-    let response;
-    let userProfile;
+  const { accessToken } = req.body;
+  req.bangumin = req.bangumin || {};
+  let response;
+  let userProfile;
 
-    try {
-        response = await requestPromise.post(`${config.passport.oauth.bangumi.tokenStatusURL}?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`);
-        userProfile = verifyAccessToken(JSON.parse(response), config.passport.oauth.bangumi.clientID);
-        req.bangumin.userProfile = userProfile;
-    } catch (err) {
-        logger.error('Response cannot be parsed or verified: %o', response);
-        logger.error(err);
-        return next(new CustomError('response_invalid', 'Response cannot be verified: use your bangumi account to log in again.'));
-    }
+  try {
+    response = await requestPromise.post(`${config.passport.oauth.bangumi.tokenStatusURL}?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`);
+    userProfile = verifyAccessToken(JSON.parse(response), config.passport.oauth.bangumi.clientID);
+    req.bangumin.userProfile = userProfile;
+  } catch (err) {
+    logger.error('Response cannot be parsed or verified: %o', response);
+    logger.error(err);
+    return next(new CustomError('response_invalid', 'Response cannot be verified: use your bangumi account to log in again.'));
+  }
 
-    return next();
+  return next();
 };
 
 module.exports = getUserProfile;

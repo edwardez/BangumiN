@@ -17,10 +17,10 @@ const server = app.listen(config.server.port, config.server.host);
 
 // enable cors
 const corsOption = {
-    origin: config.frontEndUrl,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    exposedHeaders: ['Authorization'],
+  origin: config.frontEndUrl,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['Authorization'],
 };
 
 app.use(cors(corsOption));
@@ -29,7 +29,7 @@ app.use(cors(corsOption));
 // rest API requirements
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true,
+  extended: true,
 }));
 app.use(cookieParser());
 // TODO: enable csrf support before in production
@@ -37,14 +37,14 @@ app.use(cookieParser());
 
 // jwt is used to authenticate user but session is still required by passport-oauth2
 app.use(expressSession({
-    secret: config.passport.secret.session,
+  secret: config.passport.secret.session,
+  name: 'sessionId',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
     name: 'sessionId',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        name: 'sessionId',
-    },
+  },
 }));
 
 // security setup
@@ -59,17 +59,17 @@ app.use('/auth', auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err, req, res, next) {
-    logger.error('%o', err.stack);
-    next(err);
+  logger.error('%o', err.stack);
+  next(err);
 };
 
 
 // error handler, send stacktrace only during development
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = function errorHandler(err, req, res, next) {
-    res
-        .status(res.statusCode === 200 ? 500 : res.statusCode)
-        .json({error: err.code === undefined ? 'unclassified' : err.code, error_description: err.message});
+  res
+    .status(res.statusCode === 200 ? 500 : res.statusCode)
+    .json({ error: err.code === undefined ? 'unclassified' : err.code, error_description: err.message });
 };
 
 app.use(logErrors);

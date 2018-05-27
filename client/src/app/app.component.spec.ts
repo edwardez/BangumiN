@@ -14,43 +14,43 @@ import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
 
 describe('AppComponent', () => {
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MaterialLayoutCommonModule,
-                HttpClientModule,
-                JwtModule.forRoot({
-                    config: {
-                        tokenGetter: tokenGetter,
-                        whitelistedDomains: environment.whitelistedDomains,
-                        blacklistedRoutes: environment.blacklistedRoutes,
-                    }
-                }),
-                InterceptorsModule.forRoot(),
-            ],
-            declarations: [
-                AppComponent,
-                NavComponent
-            ],
-            providers: [
-                SidenavService,
-                StorageService,
-                AuthenticationService,
-                JwtHelperService,
-                BangumiUserService
-            ]
-            ,
-        }).compileComponents();
-    }));
-    it('should create the app', async(() => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app).toBeTruthy();
-    }));
-    it(`should have as title 'BangumiN'`, async(() => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual('BangumiN');
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        MaterialLayoutCommonModule,
+        HttpClientModule,
+        JwtModule.forRoot({
+          config: {
+            tokenGetter: tokenGetter,
+            whitelistedDomains: environment.whitelistedDomains,
+            blacklistedRoutes: environment.blacklistedRoutes,
+          }
+        }),
+        InterceptorsModule.forRoot(),
+      ],
+      declarations: [
+        AppComponent,
+        NavComponent
+      ],
+      providers: [
+        SidenavService,
+        StorageService,
+        AuthenticationService,
+        JwtHelperService,
+        BangumiUserService
+      ]
+      ,
+    }).compileComponents();
+  }));
+  it('should create the app', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
+  it(`should have as title 'BangumiN'`, async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('BangumiN');
+  }));
 });

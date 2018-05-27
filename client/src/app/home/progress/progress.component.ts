@@ -78,5 +78,4 @@ export class ProgressComponent implements OnInit, OnDestroy {
   }
 
 
-
 }

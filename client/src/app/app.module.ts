@@ -41,75 +41,75 @@ import {SideNavContentComponent} from './common/side-nav-content/side-nav-conten
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        SideNavContentComponent,
-        LoginBangumiComponent,
-        DashboardComponent,
-        NavComponent,
-        ActivateBangumiComponent,
-        ProgressComponent,
-        ProfileComponent,
-        SettingsComponent,
-        KeysPipe,
-        FullSearchComponent,
-        HttpsPipe,
-        SingleSubjectComponent,
-        ReviewDialogComponent,
-        EpisodeDialogComponent
+  declarations: [
+    AppComponent,
+    SideNavContentComponent,
+    LoginBangumiComponent,
+    DashboardComponent,
+    NavComponent,
+    ActivateBangumiComponent,
+    ProgressComponent,
+    ProfileComponent,
+    SettingsComponent,
+    KeysPipe,
+    FullSearchComponent,
+    HttpsPipe,
+    SingleSubjectComponent,
+    ReviewDialogComponent,
+    EpisodeDialogComponent
 
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        MaterialLayoutCommonModule,
-        BanguminHomeModule,
-        BanguminCommonComponentModule,
-        FormsModule,
-        ReactiveFormsModule,
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: tokenGetter,
-                whitelistedDomains: environment.whitelistedDomains,
-                blacklistedRoutes: environment.blacklistedRoutes,
-            }
-        }),
-        InterceptorsModule.forRoot(),
-        TranslateModule.forRoot({
-                loader: {
-                    provide: TranslateLoader,
-                    useFactory: HttpLoaderFactory,
-                    deps: [HttpClient]
-                }
-            }
-        ),
-        ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
-    ],
-    entryComponents: [
-        ReviewDialogComponent,
-        EpisodeDialogComponent
-    ],
-    providers: [AppGuard,
-        Title,
-        AuthenticationService,
-        BangumiUserService,
-        BangumiSearchService,
-        BangumiSubjectService,
-        BangumiCollectionService,
-        StorageService,
-        SidenavService,
-    ],
-    bootstrap: [AppComponent]
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    MaterialLayoutCommonModule,
+    BanguminHomeModule,
+    BanguminCommonComponentModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: environment.whitelistedDomains,
+        blacklistedRoutes: environment.blacklistedRoutes,
+      }
+    }),
+    InterceptorsModule.forRoot(),
+    TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      }
+    ),
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+  ],
+  entryComponents: [
+    ReviewDialogComponent,
+    EpisodeDialogComponent
+  ],
+  providers: [AppGuard,
+    Title,
+    AuthenticationService,
+    BangumiUserService,
+    BangumiSearchService,
+    BangumiSubjectService,
+    BangumiCollectionService,
+    StorageService,
+    SidenavService,
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http);
 }
 
 export function tokenGetter() {
-    return localStorage.getItem('jwtToken');
+  return localStorage.getItem('jwtToken');
 }

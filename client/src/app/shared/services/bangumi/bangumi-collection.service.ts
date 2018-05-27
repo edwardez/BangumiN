@@ -129,7 +129,7 @@ export class BangumiCollectionService {
       episodeStatusUpdateRequestBody.set('watched_eps', watchedVolumes);
     }
 
-    if (BangumiCollectionService.isValidVolumeNumber(watchedVolumes) && watchedVolumes !== environment.invalidVolume ) {
+    if (BangumiCollectionService.isValidVolumeNumber(watchedVolumes) && watchedVolumes !== environment.invalidVolume) {
       episodeStatusUpdateRequestBody.set('watched_vols', watchedVolumes);
     }
 

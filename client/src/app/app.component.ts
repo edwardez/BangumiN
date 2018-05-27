@@ -4,37 +4,37 @@ import {SidenavService} from './shared/services/sidenav.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 
 
-    title = 'BangumiN';
+  title = 'BangumiN';
 
-    constructor(
-        private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService) {
 
-        this.setDefaultLanguage(translate);
+    this.setDefaultLanguage(translate);
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  setDefaultLanguage(translate) {
+    translate.addLangs(['en-US', 'zh-Hans']);
+    const browserLang = this.translate.getBrowserLang();
+    let defaultLang: string;
+    if (browserLang.match(/en/)) {
+      defaultLang = 'en-US';
+    } else if (browserLang.match(/zh/)) {
+      defaultLang = 'zh-Hans';
     }
-
-    ngOnInit(): void {
-
-    }
-
-    setDefaultLanguage(translate) {
-        translate.addLangs(['en-US', 'zh-Hans']);
-        const browserLang = this.translate.getBrowserLang();
-        let defaultLang: string;
-        if (browserLang.match(/en/)) {
-            defaultLang = 'en-US';
-        } else if (browserLang.match(/zh/)) {
-            defaultLang = 'zh-Hans';
-        }
-        translate.setDefaultLang(defaultLang);
-        this.translate.use(defaultLang);
-    }
+    translate.setDefaultLang(defaultLang);
+    this.translate.use(defaultLang);
+  }
 
 
 }

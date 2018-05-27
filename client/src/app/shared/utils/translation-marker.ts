@@ -1,3 +1,3 @@
 export function _(str: string) {
-    return str;
+  return str;
 }

@@ -4,24 +4,24 @@ const csrf = require('csurf');
 const config = require('../config');
 
 router.get(
-  '/bangumi',
-  passport.authenticate('bangumi-oauth'),
+    '/bangumi',
+    passport.authenticate('bangumi-oauth'),
 );
 
 router.get(
-  '/bangumi/callback',
-  passport.authenticate('bangumi-oauth', {
-    failureRedirect: '/',
-    session: false,
-  }),
-  (req, res) => {
-    res.redirect(`${config.frontEndUrl}/activate?type=bangumi&access_token=${req.user.access_token}`);
-  },
+    '/bangumi/callback',
+    passport.authenticate('bangumi-oauth', {
+        failureRedirect: '/',
+        session: false,
+    }),
+    (req, res) => {
+        res.redirect(`${config.frontEndUrl}/activate?type=bangumi&access_token=${req.user.access_token}`);
+    },
 );
 
-const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({cookie: true});
 router.get('/json', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
+    res.json({csrfToken: req.csrfToken()});
 });
 
 

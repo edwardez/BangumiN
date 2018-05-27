@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NavComponent } from './nav.component';
+import {NavComponent} from './nav.component';
 import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {StorageService} from '../../shared/services/storage.service';
@@ -13,41 +13,41 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 
 describe('NavComponent', () => {
-  let component: NavComponent;
-  let fixture: ComponentFixture<NavComponent>;
+    let component: NavComponent;
+    let fixture: ComponentFixture<NavComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MaterialLayoutCommonModule,
-        HttpClientModule,
-        JwtModule.forRoot({
-          config: {
-            tokenGetter: tokenGetter,
-            whitelistedDomains: environment.whitelistedDomains,
-            blacklistedRoutes: environment.blacklistedRoutes,
-          }
-        }),
-        InterceptorsModule.forRoot(),
-      ],
-      declarations: [ NavComponent ],
-      providers: [
-        SidenavService,
-        StorageService,
-        AuthenticationService,
-        BangumiUserService
-      ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                MaterialLayoutCommonModule,
+                HttpClientModule,
+                JwtModule.forRoot({
+                    config: {
+                        tokenGetter: tokenGetter,
+                        whitelistedDomains: environment.whitelistedDomains,
+                        blacklistedRoutes: environment.blacklistedRoutes,
+                    }
+                }),
+                InterceptorsModule.forRoot(),
+            ],
+            declarations: [NavComponent],
+            providers: [
+                SidenavService,
+                StorageService,
+                AuthenticationService,
+                BangumiUserService
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NavComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(NavComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

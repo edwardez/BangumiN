@@ -4,10 +4,14 @@
     "mocha": true
   },
   "extends": "airbnb-base",
-  "plugins": ["mocha", "chai-friendly", "chai-expect", "async-await"],
+  "plugins": [
+    "mocha",
+    "chai-friendly",
+    "chai-expect",
+    "async-await"
+  ],
   "rules": {
     "mocha/no-exclusive-tests": "error",
-
     "no-unused-expressions": 0,
     "chai-friendly/no-unused-expressions": 2
   }

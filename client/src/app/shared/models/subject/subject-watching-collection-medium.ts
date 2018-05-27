@@ -5,38 +5,38 @@ import {Images} from '../common/images';
 
 
 export class SubjectWatchingCollectionMedium extends SubjectBase implements Serializable<SubjectWatchingCollectionMedium> {
-  /**
-   * 话数
-   * example: 27
-   * difference between eps_count?
-   * format: int32
-   */
-  eps?: number;
-  /**
-   * 话数
-   * example: 27
-   * format: int32
-   */
-  totalEpisodesCount?: number;
+    /**
+     * 话数
+     * example: 27
+     * difference between eps_count?
+     * format: int32
+     */
+    eps?: number;
+    /**
+     * 话数
+     * example: 27
+     * format: int32
+     */
+    totalEpisodesCount?: number;
 
-  images?: Images;
+    images?: Images;
 
-  collection?: SubjectCollection; // seems like only 'doing' is returned?
+    collection?: SubjectCollection; // seems like only 'doing' is returned?
 
-  constructor() {
-    super();
-    this.eps = 0;
-    this.totalEpisodesCount = 0;
-    this.collection = new SubjectCollection();
-    this.images = new Images();
-  }
+    constructor() {
+        super();
+        this.eps = 0;
+        this.totalEpisodesCount = 0;
+        this.collection = new SubjectCollection();
+        this.images = new Images();
+    }
 
-  deserialize(input) {
-    super.deserialize(input);
-    this.eps = input.eps || 0;
-    this.totalEpisodesCount = input.eps_count || 0;
-    this.collection = input.collection ===  undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
-    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
-    return this;
-  }
+    deserialize(input) {
+        super.deserialize(input);
+        this.eps = input.eps || 0;
+        this.totalEpisodesCount = input.eps_count || 0;
+        this.collection = input.collection === undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
+        this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
+        return this;
+    }
 }

@@ -1,12 +1,12 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [mode]="mode">
-    <mat-nav-list>
-      <a mat-list-item routerLink="./progress" >Progress</a>
-      <a mat-list-item routerLink="./profile" >Profile</a>
-    </mat-nav-list>
-  </mat-sidenav>
+    <mat-sidenav #sidenav [mode]="mode">
+        <mat-nav-list>
+            <a mat-list-item routerLink="./progress">Progress</a>
+            <a mat-list-item routerLink="./profile">Profile</a>
+        </mat-nav-list>
+    </mat-sidenav>
 
-  <mat-sidenav-content ngClass.lt-md="mat-sidenav-content-lt-md" ngClass.gt-sm="mat-sidenav-content-gt-sm">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <mat-sidenav-content ngClass.lt-md="mat-sidenav-content-lt-md" ngClass.gt-sm="mat-sidenav-content-gt-sm">
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
 </mat-sidenav-container>

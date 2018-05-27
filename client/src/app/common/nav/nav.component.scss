@@ -1,73 +1,71 @@
 
 img {
-  max-height: 80%;
-  min-height: 80%;
-  border-radius: 50%;
-  vertical-align: middle;
+    max-height: 80%;
+    min-height: 80%;
+    border-radius: 50%;
+    vertical-align: middle;
 }
 
 .helper-mat-toolbar-item {
-  height: inherit;
+    height: inherit;
 }
+
 .helper-vertical-align-img {
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 
 .helper-cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-
 .helper-toolbar {
-  //position: fixed;
-  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    //position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
 }
 
 mat-toolbar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 6;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 6;
 }
-
 
 // search bar style is from AIO
 .search-container {
-  width: 100%;
-  min-width: 150px;
-  height: 100%;
+    width: 100%;
+    min-width: 150px;
+    height: 100%;
 
-  input {
-    color: black;
-    border: none;
-    border-radius: 100px;
-    background-color: white;
-    padding: 5px 16px;
-    margin-left: 8px;
-    width: 180px;
-    max-width: 240px;
-    height: 50%;
-    -webkit-appearance: none;
-    font-size: 14px;
-    line-height: 24px;
-    font-weight: 400;
+    input {
+        color: black;
+        border: none;
+        border-radius: 100px;
+        background-color: white;
+        padding: 5px 16px;
+        margin-left: 8px;
+        width: 180px;
+        max-width: 240px;
+        height: 50%;
+        -webkit-appearance: none;
+        font-size: 14px;
+        line-height: 24px;
+        font-weight: 400;
 
-    &:focus {
-      outline: none;
+        &:focus {
+            outline: none;
+        }
+
+        @media (max-width: 480px) {
+            width: 150px;
+        }
     }
-
-
-    @media (max-width: 480px) {
-      width: 150px;
-    }
-  }
 }
 
 :host {
-  display: flex;
+    display: flex;
 }
 
 

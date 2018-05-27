@@ -1,27 +1,28 @@
 <div fxLayout="row" fxLayoutAlign="center center" class="container">
 
-  <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%" fxLayout="column" fxLayoutAlign="center center">
-    <mat-card-header class="text-center">
-      <mat-card-title><h2>{{'settings.title' | translate}}</h2></mat-card-title>
-      <mat-card-subtitle>{{'settings.description' | translate}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content fxFlexAlign="start">
-      <mat-tab-group>
-        <mat-tab label="{{'settings.tabs.general.name' | translate}}">
-          <div class="has-margin-top-md">
-            <mat-radio-group [(ngModel)]="currentLanguage" (ngModelChange)="setLanguage(currentLanguage)">
-              <span>{{'settings.tabs.general.language.name' | translate}}</span>
-              <mat-radio-button [value]="language.key" *ngFor="let language of availableLanguage | keys"
-                                [checked]="currentLanguage === language.key">
-                {{language.value}}
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </mat-tab>
-        <mat-tab label="{{'settings.tabs.social.name' | translate}}">
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-  </mat-card>
+    <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%" fxLayout="column"
+              fxLayoutAlign="center center">
+        <mat-card-header class="text-center">
+            <mat-card-title><h2>{{'settings.title' | translate}}</h2></mat-card-title>
+            <mat-card-subtitle>{{'settings.description' | translate}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content fxFlexAlign="start">
+            <mat-tab-group>
+                <mat-tab label="{{'settings.tabs.general.name' | translate}}">
+                    <div class="has-margin-top-md">
+                        <mat-radio-group [(ngModel)]="currentLanguage" (ngModelChange)="setLanguage(currentLanguage)">
+                            <span>{{'settings.tabs.general.language.name' | translate}}</span>
+                            <mat-radio-button [value]="language.key" *ngFor="let language of availableLanguage | keys"
+                                              [checked]="currentLanguage === language.key">
+                                {{language.value}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </mat-tab>
+                <mat-tab label="{{'settings.tabs.social.name' | translate}}">
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
 
 </div>

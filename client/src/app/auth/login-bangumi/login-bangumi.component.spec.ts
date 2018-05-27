@@ -1,32 +1,30 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginBangumiComponent } from './login-bangumi.component';
+import {LoginBangumiComponent} from './login-bangumi.component';
 import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
 
 describe('LoginBangumiComponent', () => {
-  let component: LoginBangumiComponent;
-  let fixture: ComponentFixture<LoginBangumiComponent>;
+    let component: LoginBangumiComponent;
+    let fixture: ComponentFixture<LoginBangumiComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MaterialLayoutCommonModule
-      ],
-      declarations: [ LoginBangumiComponent ],
-      providers: [
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                MaterialLayoutCommonModule
+            ],
+            declarations: [LoginBangumiComponent],
+            providers: []
+        })
+            .compileComponents();
+    }));
 
-      ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LoginBangumiComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoginBangumiComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

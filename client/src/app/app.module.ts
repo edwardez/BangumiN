@@ -39,6 +39,7 @@ import {ReviewDialogComponent} from './subject/review-dialog/review-dialog.compo
 import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
 import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
+import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress-by-type.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dia
     HttpsPipe,
     SingleSubjectComponent,
     ReviewDialogComponent,
-    EpisodeDialogComponent
+    EpisodeDialogComponent,
+    ProgressByTypeComponent
 
   ],
   imports: [

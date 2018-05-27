@@ -8,6 +8,7 @@ import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component'
 import {Episode} from '../../shared/models/episode/episode';
 import {EpisodeCollectionStatus} from '../../shared/enums/episode-collection-status';
 import {SubjectWatchingCollectionMedium} from '../../shared/models/subject/subject-watching-collection-medium';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 
 @Component({
@@ -18,12 +19,10 @@ import {SubjectWatchingCollectionMedium} from '../../shared/models/subject/subje
 export class ProgressComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  private episodeCollectionStatusUntouched = EpisodeCollectionStatus.untouched;
+
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
   constructor(private bangumiUserService: BangumiUserService,
-              public episodeDialog: MatDialog,
-              private changeDetector: ChangeDetectorRef
   ) {
 
     this.bangumiUserService.getOngoingCollectionStatusAndProgress()
@@ -46,35 +45,22 @@ export class ProgressComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  openEpisodeDialog(subject: SubjectWatchingCollectionMedium, episode: Episode): void {
-    const dialogRef = this.episodeDialog.open(EpisodeDialogComponent, {
-      data: {'subject': subject, 'episode': episode}
-    });
+  filterBySubjectType(collectionWatchingResponse: CollectionWatchingResponseMedium[],
+                      subjectType: SubjectType): CollectionWatchingResponseMedium[] {
+    const filteredCollectionWatchingResponse: CollectionWatchingResponseMedium[] = [];
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.response.code === 200) {
-        episode.userCollectionStatus = result.collectionStatus;
+    for (const collection of collectionWatchingResponse) {
+      if (collection.subject.type === subjectType) {
+        filteredCollectionWatchingResponse.push(collection);
       }
-    });
+    }
+
+    return filteredCollectionWatchingResponse;
+
   }
 
-  calculateCollectionProgress(collectionWatchingResponseMedium: CollectionWatchingResponseMedium) {
-    if (collectionWatchingResponseMedium.subject.totalEpisodesCount <= 0) {
-      return 0;
-    } else {
-      return collectionWatchingResponseMedium.completedEpisodeCount / collectionWatchingResponseMedium.subject.totalEpisodesCount * 100;
-    }
-  }
-
-  calculateChipColorByEpisodeStatus(userCollectionStatus: number | null): string {
-    switch (userCollectionStatus) {
-      case EpisodeCollectionStatus.watched:
-        return 'primary';
-      case EpisodeCollectionStatus.drop:
-        return 'warn';
-      default:
-        return 'primary';
-    }
+  get subjectType() {
+    return SubjectType;
   }
 
 

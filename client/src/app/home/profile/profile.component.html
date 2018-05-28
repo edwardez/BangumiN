@@ -1,3 +1,30 @@
-<p>
-  profile works!
-</p>
+<mat-tab-group class="homepage-main-mat-tab-group">
+  <mat-tab label="{{'profile.tabs.collection.name' | translate}}">
+
+    <ng-container *ngFor="let subjectType of validSubjectTypeArray">
+      <mat-card class="has-margin-top-md has-margin-bottom-md">
+        <mat-card-subtitle>
+          {{'profile.tabs.collection.cards' + '.' + subjectType + '.name' | translate}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-tab-group>
+            <mat-tab label="{{'common.status.wish' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}">
+            </mat-tab>
+            <mat-tab label="{{'common.action.type' + '.' +  subjectType| translate}}{{'common.status.collect' | translate}}">
+            </mat-tab>
+            <mat-tab label="{{'common.status.do' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}">
+            </mat-tab>
+            <mat-tab label="{{'common.status.on_hold' | translate}}">
+            </mat-tab>
+            <mat-tab label="{{'common.status.dropped' | translate}}">
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+
+
+
+  </mat-tab>
+
+</mat-tab-group>

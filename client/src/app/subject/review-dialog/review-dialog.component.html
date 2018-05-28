@@ -11,19 +11,19 @@
 
     <mat-radio-group fxFlexOffset="5%" fxFlexAlign="center" formControlName="collectionStatus">
       <mat-radio-button value="wish">
-        {{'subject.tabs.overview.review.status.wish' | translate}}{{getActionTypeName(2) | translate}}
+        {{'common.status.wish' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}
       </mat-radio-button>
       <mat-radio-button value="collect">
-        {{getActionTypeName(2) | translate}}{{'subject.tabs.overview.review.status.collect' | translate}}
+        {{'common.action.type' + '.' +  subjectType| translate}}{{'common.status.collect' | translate}}
       </mat-radio-button>
       <mat-radio-button value="do">
-        {{'subject.tabs.overview.review.status.do' | translate}}{{getActionTypeName(2) | translate}}
+        {{'common.status.do' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}
       </mat-radio-button>
       <mat-radio-button value="on_hold">
-        {{'subject.tabs.overview.review.status.on_hold' | translate}}
+        {{'common.status.on_hold' | translate}}
       </mat-radio-button>
       <mat-radio-button value="dropped">
-        {{'subject.tabs.overview.review.status.dropped' | translate}}
+        {{'common.status.dropped' | translate}}
       </mat-radio-button>
     </mat-radio-group>
 

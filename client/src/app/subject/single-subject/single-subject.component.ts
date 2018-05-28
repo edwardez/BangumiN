@@ -70,6 +70,7 @@ export class SingleSubjectComponent implements OnInit {
         statusType: this.collectionResponse.status.type,
         comment: this.collectionResponse.comment,
         privacy: this.collectionResponse.privacy,
+        type: this.subject.type
       },
       autoFocus: false
     });
@@ -82,7 +83,6 @@ export class SingleSubjectComponent implements OnInit {
         result => {
           this.currentRating = result.rating;
           this.collectionResponse = result;
-          console.log(result);
         });
 
   }

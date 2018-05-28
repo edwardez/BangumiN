@@ -1,4 +1,26 @@
 {
+  "common":{
+    "status": {
+      "wish": "Wish",
+      "collect": "Finished",
+      "do": "In Progress",
+      "on_hold": "Hold",
+      "dropped": "Drop"
+    },
+    "action": {
+      "addToCollection": "Add to collection",
+      "editCollection": "Edit collection",
+      "more": "More info",
+      "type": {
+        "general": "",
+        "anime": "",
+        "real": "",
+        "listen": "",
+        "game": "",
+        "book": ""
+      }
+    }
+  },
   "login": {
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
@@ -83,25 +105,6 @@
                 "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
               }
             }
-          },
-          "status": {
-            "wish": "Wish",
-            "collect": "Finished",
-            "do": "In Progress",
-            "on_hold": "Hold",
-            "dropped": "Drop"
-          },
-          "action": {
-            "addToCollection": "Add to collection",
-            "editCollection": "Edit collection",
-            "more": "More info",
-            "type": {
-              "1": "",
-              "2": "",
-              "3": "",
-              "4": "",
-              "6": ""
-            }
           }
         }
       },
@@ -112,6 +115,30 @@
     "action": {
       "collect": "Collect",
       "more": "More Info"
+    }
+  },
+  "profile":{
+    "tabs":{
+      "collection":{
+        "name":"Collection",
+        "cards":{
+          "anime":{
+            "name":"Anime"
+          },
+          "game":{
+            "name":"Game"
+          },
+          "book":{
+            "name":"Book"
+          },
+          "real":{
+            "name":"Real"
+          },
+          "music":{
+            "name":"Music"
+          }
+        }
+      }
     }
   }
 }

@@ -30,8 +30,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private ratingForm: FormGroup;
-  private matcher = new InstantStateMatcher();
-
+  private subjectType: string;
 
   separatorKeysCodes = [ENTER, COMMA, SPACE];
 
@@ -44,6 +43,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
               private bangumiCollectionService: BangumiCollectionService) {
     this.commentMaxLength = environment.commentMaxLength;
     this.tagsMaxNumber = environment.tagsMaxNumber;
+    this.subjectType = SubjectType[data.type];
     this.createForm();
   }
 
@@ -84,34 +84,6 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
       this.dialogRef.close(res);
     });
 
-  }
-
-  /**
-   * map a enum type into relevant string
-   * @param {number} type
-   * @returns {string}
-   */
-  getActionTypeName(type: number): string {
-    switch (type) {
-      case SubjectType.book : {
-        return _('subject.tabs.overview.review.action.type.1');
-      }
-      case SubjectType.anime : {
-        return _('subject.tabs.overview.review.action.type.2');
-      }
-      case SubjectType.music : {
-        return _('subject.tabs.overview.review.action.type.3');
-      }
-      case SubjectType.game : {
-        return _('subject.tabs.overview.review.action.type.4');
-      }
-      case SubjectType.real : {
-        return _('subject.tabs.overview.review.action.type.6');
-      }
-      default : {
-        return _('subject.tabs.overview.review.action.type.0');
-      }
-    }
   }
 
   onRatingChanged(rating) {

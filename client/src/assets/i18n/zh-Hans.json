@@ -1,5 +1,5 @@
 {
-  "common":{
+  "common": {
     "status": {
       "wish": "想",
       "collect": "过",
@@ -113,25 +113,25 @@
       }
     }
   },
-  "profile":{
-    "tabs":{
-      "collection":{
-        "name":"收藏",
-        "cards":{
-          "anime":{
-            "name":"动画"
+  "profile": {
+    "tabs": {
+      "collection": {
+        "name": "收藏",
+        "cards": {
+          "anime": {
+            "name": "动画"
           },
-          "game":{
-            "name":"游戏"
+          "game": {
+            "name": "游戏"
           },
-          "book":{
-            "name":"书籍"
+          "book": {
+            "name": "书籍"
           },
-          "real":{
-            "name":"三次元"
+          "real": {
+            "name": "三次元"
           },
-          "music":{
-            "name":"音乐"
+          "music": {
+            "name": "音乐"
           }
         }
       }

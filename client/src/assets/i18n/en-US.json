@@ -1,5 +1,5 @@
 {
-  "common":{
+  "common": {
     "status": {
       "wish": "Wish",
       "collect": "Finished",
@@ -111,31 +111,27 @@
       "episode": {
         "name": "Episode"
       }
-    },
-    "action": {
-      "collect": "Collect",
-      "more": "More Info"
     }
   },
-  "profile":{
-    "tabs":{
-      "collection":{
-        "name":"Collection",
-        "cards":{
-          "anime":{
-            "name":"Anime"
+  "profile": {
+    "tabs": {
+      "collection": {
+        "name": "Collection",
+        "cards": {
+          "anime": {
+            "name": "Anime"
           },
-          "game":{
-            "name":"Game"
+          "game": {
+            "name": "Game"
           },
-          "book":{
-            "name":"Book"
+          "book": {
+            "name": "Book"
           },
-          "real":{
-            "name":"Real"
+          "real": {
+            "name": "Real"
           },
-          "music":{
-            "name":"Music"
+          "music": {
+            "name": "Music"
           }
         }
       }

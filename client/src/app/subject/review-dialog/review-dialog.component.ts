@@ -1,7 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef} from '@angular/material';
 import {SingleSubjectComponent} from '../single-subject/single-subject.component';
-import {_} from '../../shared/utils/translation-marker';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {FormBuilder, FormControl, FormArray, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';

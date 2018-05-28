@@ -1,28 +1,81 @@
-<mat-tab-group class="homepage-main-mat-tab-group">
+<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined">
   <mat-tab label="{{'profile.tabs.collection.name' | translate}}">
 
-    <ng-container *ngFor="let subjectType of validSubjectTypeArray">
-      <mat-card class="has-margin-top-md has-margin-bottom-md">
+    <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray" >
+      <mat-card class="has-margin-top-md has-margin-bottom-md"
+                *ngIf="!undefinedOrEmpty(userCollectionResponseByType[subjectType[currentSubjectType]])"
+      >
         <mat-card-subtitle>
-          {{'profile.tabs.collection.cards' + '.' + subjectType + '.name' | translate}}
+          {{'profile.tabs.collection.cards' + '.' + currentSubjectType + '.name' | translate}}
         </mat-card-subtitle>
         <mat-card-content>
           <mat-tab-group>
-            <mat-tab label="{{'common.status.wish' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}">
+            <mat-tab
+              label="{{'common.status.wish' | translate}}{{'common.action.type' + '.' +  currentSubjectType | translate}}"
+            *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.wish] !== undefined"
+            >
+              <app-collection-by-type
+                [statusName]="'wish'"
+                [currentSubjectType]="currentSubjectType"
+                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
+              >
+              </app-collection-by-type>
+
             </mat-tab>
-            <mat-tab label="{{'common.action.type' + '.' +  subjectType| translate}}{{'common.status.collect' | translate}}">
+            <mat-tab
+              label="{{'common.action.type' + '.' + currentSubjectType| translate}}{{'common.status.collect' | translate}}"
+              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.collect] !== undefined"
+            >
+
+              <app-collection-by-type
+                [statusName]="'collect'"
+                [currentSubjectType]="currentSubjectType"
+                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
+              >
+              </app-collection-by-type>
+
             </mat-tab>
-            <mat-tab label="{{'common.status.do' | translate}}{{'common.action.type' + '.' +  subjectType | translate}}">
+            <mat-tab
+              label="{{'common.status.do' | translate}}{{'common.action.type' + '.' +  currentSubjectType | translate}}"
+              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.do] !== undefined"
+            >
+
+              <app-collection-by-type
+                [statusName]="'do'"
+                [currentSubjectType]="currentSubjectType"
+                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
+              >
+              </app-collection-by-type>
+
             </mat-tab>
-            <mat-tab label="{{'common.status.on_hold' | translate}}">
+            <mat-tab label="{{'common.status.on_hold' | translate}}"
+                     *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.on_hold] !== undefined"
+            >
+
+              <app-collection-by-type
+                [statusName]="'on_hold'"
+                [currentSubjectType]="currentSubjectType"
+                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
+              >
+              </app-collection-by-type>
+
             </mat-tab>
-            <mat-tab label="{{'common.status.dropped' | translate}}">
+            <mat-tab label="{{'common.status.dropped' | translate}}"
+                     *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.dropped] !== undefined"
+            >
+
+              <app-collection-by-type
+                [statusName]="'dropped'"
+                [currentSubjectType]="currentSubjectType"
+                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
+              >
+              </app-collection-by-type>
+
             </mat-tab>
           </mat-tab-group>
         </mat-card-content>
       </mat-card>
     </ng-container>
-
 
 
   </mat-tab>

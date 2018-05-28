@@ -19,8 +19,6 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
    */
   totalEpisodesCount?: number;
 
-  images?: Images;
-
   collection?: SubjectCollection; // seems like only 'doing' is returned?
 
   constructor() {
@@ -28,7 +26,6 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
     this.eps = 0;
     this.totalEpisodesCount = 0;
     this.collection = new SubjectCollection();
-    this.images = new Images();
   }
 
   deserialize(input) {
@@ -36,7 +33,6 @@ export class SubjectWatchingCollectionMedium extends SubjectBase implements Seri
     this.eps = input.eps || 0;
     this.totalEpisodesCount = input.eps_count || 0;
     this.collection = input.collection === undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
-    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;
   }
 }

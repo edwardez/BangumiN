@@ -15,6 +15,8 @@ import {BangumiSubjectService} from './bangumi-subject.service';
 import * as PriorityQueue from 'js-priority-queue';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 import {Episode} from '../../models/episode/episode';
+import {CollectionResponse} from '../../models/collection/collection-response';
+import {UserCollectionResponse} from '../../models/collection/user-collection-response';
 
 @Injectable()
 export class BangumiUserService {
@@ -156,6 +158,26 @@ export class BangumiUserService {
         return observableThrowError(err);
       })
     );
+  }
+
+  /**
+   * get user collection detail info by type
+   */
+  public getUserCollectionByType(userName: string, subjectType: string, max_results = 25): Observable<UserCollectionResponse> {
+    return this.http.get(`${environment.BANGUMI_API_URL}/user/${userName}/collections/${subjectType}
+    ?app_id=${environment.BANGUMI_APP_ID}
+    &max_results=${max_results}`.replace(/\s+/g, ''))
+      .pipe(
+        map(res => {
+            if (res !== null) {
+              return new UserCollectionResponse().deserialize(res);
+            } else {
+              // if user has no collection item under this category, a null will be returned
+              return new UserCollectionResponse(SubjectType[subjectType]);
+            }
+          }
+        )
+      );
   }
 
   /**

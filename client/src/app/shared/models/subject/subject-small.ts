@@ -24,7 +24,6 @@ export class SubjectSmall extends SubjectBase implements Serializable<SubjectSma
    * format: int32
    */
   rank?: number;
-  images?: Images;
   collection?: SubjectCollection;
 
   deserialize(input) {
@@ -34,7 +33,6 @@ export class SubjectSmall extends SubjectBase implements Serializable<SubjectSma
     this.rating = input.rating === undefined ? new SubjectRating() : new SubjectRating().deserialize(input.rating);
     this.rank = input.rank === undefined ? '-' : input.rank;
     this.collection = input.collection === undefined ? new SubjectCollection() : new SubjectCollection().deserialize(input.collection);
-    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;
   }
 

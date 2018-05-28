@@ -59,6 +59,7 @@ export class BangumiCollectionService {
       );
   }
 
+
   /**
    * create or update user collection status
    * it's a 'upsert' action per doc so :action will be fixed to update

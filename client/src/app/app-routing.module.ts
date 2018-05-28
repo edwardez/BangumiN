@@ -20,7 +20,7 @@ const routes: Routes = [
         component: ProgressComponent
       },
       {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent
       },
       {

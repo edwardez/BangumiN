@@ -1,13 +1,8 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {Subject} from 'rxjs/index';
-import {takeUntil} from 'rxjs/operators';
-import {MatDialog} from '@angular/material';
-import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
-import {Episode} from '../../shared/models/episode/episode';
-import {EpisodeCollectionStatus} from '../../shared/enums/episode-collection-status';
-import {SubjectWatchingCollectionMedium} from '../../shared/models/subject/subject-watching-collection-medium';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 
@@ -24,7 +19,6 @@ export class ProgressComponent implements OnInit, OnDestroy {
 
   constructor(private bangumiUserService: BangumiUserService,
   ) {
-
     this.bangumiUserService.getOngoingCollectionStatusAndProgress()
       .pipe(
         takeUntil(this.ngUnsubscribe)

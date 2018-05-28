@@ -1,4 +1,5 @@
 import {Serializable} from '../Serializable';
+import {Images} from '../common/images';
 
 export class SubjectBase implements Serializable<SubjectBase> {
   /**
@@ -39,6 +40,8 @@ export class SubjectBase implements Serializable<SubjectBase> {
    */
   airWeekday?: number;
 
+  images?: Images;
+
   constructor() {
     this.id = 0;
     this.url = '';
@@ -48,6 +51,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.summary = '';
     this.airDate = '1970-01-01';
     this.airWeekday = 0;
+    this.images = new Images();
   }
 
   deserialize(input) {
@@ -59,6 +63,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.summary = input.summary || '';
     this.airDate = input.air_date || '';
     this.airWeekday = input.air_weekday || 0;
+    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;
   }
 

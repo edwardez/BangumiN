@@ -23,7 +23,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
   private ratingToBeStore: number;
   private ratingArray = [];
   private propagateChange = (_: any) => {
-  };
+  }
 
   constructor() {
   }

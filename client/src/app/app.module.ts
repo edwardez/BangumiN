@@ -40,6 +40,7 @@ import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collec
 import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
 import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress-by-type.component';
+import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
 
 @NgModule({
   declarations: [
@@ -58,8 +59,8 @@ import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress
     SingleSubjectComponent,
     ReviewDialogComponent,
     EpisodeDialogComponent,
-    ProgressByTypeComponent
-
+    ProgressByTypeComponent,
+    CollectionByTypeComponent,
   ],
   imports: [
     BrowserModule,

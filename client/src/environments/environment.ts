@@ -10,7 +10,7 @@ export const environment = {
   BACKEND_API_URL: 'http://localhost:3000/api',
   BACKEND_AUTH_URL: 'http://localhost:3000/auth',
   BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
-  BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
+  BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
   whitelistedDomains: ['localhost:3000'],
   blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/],
   availableLanguage: {

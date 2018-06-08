@@ -13,7 +13,12 @@ const bangumiOauth = new OAuth2Strategy(
     callbackURL: config.passport.oauth.bangumi.callbackURL,
     state: true, // set state to true to mitigate CSRF attack
   },
-  ((accessToken, refreshToken, profile, done) => done(null, profile)),
+  ((accessToken, refreshToken, profile, done) => {
+    const profileWithRefreshToken = profile;
+    profileWithRefreshToken.refresh_token = refreshToken;
+    return done(null, profileWithRefreshToken);
+
+  }),
 );
 
 // implement userProfile function to retrieve user profile from server
@@ -41,6 +46,14 @@ bangumiOauth.userProfile = function userProfile(accessToken, done) {
   );
 };
 
+function authenticationMiddleware() {
+  return (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    return res.redirect('/login');
+  };
+}
 
 passport.use('bangumi-oauth', bangumiOauth);
 
@@ -52,5 +65,6 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+passport.authenticationMiddleware = authenticationMiddleware;
 
 module.exports = passport;

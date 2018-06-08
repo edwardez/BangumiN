@@ -24,7 +24,14 @@
   "login": {
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
-    "oauthRedirect": "Login"
+    "oauthRedirect": "Login",
+    "waitForBangumiAuth":{
+      "title":"Login in progress",
+      "content":"Please complete the login process in the newly opened window, please don't close this dialog before login is completed.",
+      "cancel":"Cancel authentication"
+    },
+    "loginSuccess": "Login succeeded, now redirecting...",
+    "loginFailure": "Login failed, please try again later."
   },
   "settings": {
     "title": "Settings",

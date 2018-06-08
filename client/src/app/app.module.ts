@@ -41,6 +41,8 @@ import {SideNavContentComponent} from './common/side-nav-content/side-nav-conten
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
 import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress-by-type.component';
 import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
+import {CookieModule} from 'ngx-cookie';
+import { BangumiAuthWaitDialogComponent } from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import {CollectionByTypeComponent} from './home/profile/collection/collection-by
     EpisodeDialogComponent,
     ProgressByTypeComponent,
     CollectionByTypeComponent,
+    BangumiAuthWaitDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import {CollectionByTypeComponent} from './home/profile/collection/collection-by
     BanguminCommonComponentModule,
     FormsModule,
     ReactiveFormsModule,
+    CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -91,7 +95,8 @@ import {CollectionByTypeComponent} from './home/profile/collection/collection-by
   ],
   entryComponents: [
     ReviewDialogComponent,
-    EpisodeDialogComponent
+    EpisodeDialogComponent,
+    BangumiAuthWaitDialogComponent
   ],
   providers: [AppGuard,
     Title,

@@ -15,7 +15,8 @@ router.get(
     session: false,
   }),
   (req, res) => {
-    res.redirect(`${config.frontEndUrl}/activate?type=bangumi&access_token=${req.user.access_token}`);
+    res.cookie('activationInfo', JSON.stringify(req.user), { domain: process.env.HOST})
+    res.redirect(`${config.frontEndUrl}/activate?type=bangumi`);
   },
 );
 

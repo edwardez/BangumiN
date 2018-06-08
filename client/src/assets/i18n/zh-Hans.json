@@ -24,7 +24,14 @@
   "login": {
     "welcomeTitle": "欢迎!",
     "welcomeText": "bangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
-    "oauthRedirect": "登陆"
+    "oauthRedirect": "登陆",
+    "waitForBangumiAuth":{
+      "title":"正在登录中",
+      "content":"请在新打开的窗口完成登录认证，在认证期间请不要关闭此对话框",
+      "cancel":"取消认证"
+    },
+    "loginSuccess": "登录成功，正在跳转...",
+    "loginFailure": "登录失败，请稍后重试"
   },
   "settings": {
     "title": "设置",

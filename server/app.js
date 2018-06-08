@@ -35,7 +35,6 @@ app.use(cookieParser());
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
-// jwt is used to authenticate user but session is still required by passport-oauth2
 app.use(expressSession({
   secret: config.passport.secret.session,
   name: 'sessionId',

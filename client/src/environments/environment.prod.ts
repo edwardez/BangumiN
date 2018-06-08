@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  FRONTEND_URL: 'https://bangumin.tv',
   BANGUMI_API_URL: '/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: '/proxy/oauth/bangumi',
   BACKEND_API_URL: 'https://bangumin.tv/api',

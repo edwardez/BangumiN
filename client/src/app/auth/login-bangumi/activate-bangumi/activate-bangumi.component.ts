@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {CookieService} from 'ngx-cookie';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-activate-bangumi',
@@ -14,25 +16,28 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private authService: AuthenticationService) {
+              private authService: AuthenticationService,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
-    this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        if (params['access_token'] && params['type'] === 'bangumi') {
-          this.authService.verifyAccessToken(params['access_token'])
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(response => {
-            }, err => {
-              console.log(err);
-            });
-        }
-      });
-
-
+    const activationInfo = this.cookieService.getObject('activationInfo') || {};
+    console.log(activationInfo);
+    if (typeof activationInfo['access_token'] === 'string' && typeof activationInfo['refresh_token'] === 'string') {
+      window.opener.postMessage(
+        {
+          'type': 'bangumiCallBack',
+          'success': true,
+          'accessToken': activationInfo['access_token'],
+          'refreshToken': activationInfo['refresh_token']
+        }, environment.FRONTEND_URL);
+    } else {
+      window.opener.postMessage(
+        {
+          'type': 'bangumiCallBack',
+          'success': false,
+        }, environment.FRONTEND_URL);
+    }
   }
 
   ngOnDestroy(): void {

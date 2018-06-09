@@ -91,8 +91,7 @@ import { BangumiAuthWaitDialogComponent } from './auth/login-bangumi/bangumi-aut
         }
       }
     ),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
-    NgxChartsModule
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   entryComponents: [
     ReviewDialogComponent,

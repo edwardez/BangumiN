@@ -31,7 +31,8 @@
       "cancel":"取消认证"
     },
     "loginSuccess": "登录成功，正在跳转...",
-    "loginFailure": "登录失败，请稍后重试"
+    "loginFailure": "登录失败，请稍后重试",
+    "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭"
   },
   "settings": {
     "title": "设置",

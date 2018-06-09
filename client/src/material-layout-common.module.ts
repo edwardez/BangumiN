@@ -17,7 +17,8 @@ import {
   MatCheckboxModule,
   MatChipsModule,
   MatAutocompleteModule,
-  MatProgressBarModule, MatButtonToggleModule,
+  MatProgressBarModule,
+  MatButtonToggleModule, MatProgressSpinnerModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -49,6 +50,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatAutocompleteModule,
     MatProgressBarModule,
     MatButtonToggleModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatCardModule,
@@ -73,6 +75,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatAutocompleteModule,
     MatProgressBarModule,
     MatButtonToggleModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialLayoutCommonModule {

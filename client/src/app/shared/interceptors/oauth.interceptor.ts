@@ -16,7 +16,7 @@ export class OauthInterceptor implements HttpInterceptor {
     const accessToken = localStorage.getItem('accessToken');
     // if it IS in blacklisted route, in our case, a bangumi route
     // attach bangumi access token to the header
-    if (this.isBlacklistedRoute(request) && accessToken !== undefined) {
+    if (this.isBlacklistedRoute(request) && accessToken) {
       request = request.clone({
         setHeaders: {
           'Authorization': `Bearer ${accessToken}`

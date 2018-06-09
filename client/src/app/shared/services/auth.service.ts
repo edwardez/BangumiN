@@ -1,5 +1,5 @@
-import {throwError as observableThrowError, Observable, Subject, BehaviorSubject} from 'rxjs';
-// this file is from https://github.com/serhiisol/ngx-auth-example/blob/master/src/app/shared/authentication/authentication.service.ts
+import {throwError as observableThrowError, Observable, Subject, BehaviorSubject, of} from 'rxjs';
+// this file is from https://github.com/serhiisol/ngx-auth-example with modifications
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {StorageService} from './storage.service';
@@ -37,6 +37,19 @@ export class AuthenticationService {
   }
 
   /**
+   * whether expiration deadline has passed, a millisecond epoch time should be passed in
+   * @param {number} expirationTime
+   * @returns {boolean}
+   */
+  private isTokenValid(expirationTime: number): Observable<boolean> {
+    if (expirationTime === null || expirationTime === 0) {
+      return of(true);
+    }
+
+    return of((expirationTime > Date.now() / 1000));
+  }
+
+  /**
    * Check, if user already authenticated.
    * Check whether
    * 1. token exists
@@ -48,13 +61,16 @@ export class AuthenticationService {
    */
   public isAuthenticated(): Observable<boolean> {
 
-    return this.storageService.getJwtToken().pipe(
-      map(jwtToken => {
-        if (jwtToken == null) {
-          return false;
-        } else {
-          return !this.jwtHelper.isTokenExpired(jwtToken);
-        }
+    return this.storageService.getAccessToken().pipe(
+      map(accessToken => {
+        return accessToken != null;
+      }),
+      switchMap(accessToken => {
+          return this.storageService.getBangumiAccessTokenExpirationTime();
+        },
+      ),
+      switchMap(expirationTime => {
+        return this.isTokenValid(expirationTime);
       })
     );
 
@@ -150,27 +166,34 @@ export class AuthenticationService {
   }
 
 
-  public verifyAccessToken(accessToken: string): Observable<any> {
+  public verifyAndSetBangumiToken(accessToken: string, refreshToken: string): Observable<any> {
+    const collectionRequestBody = new URLSearchParams();
+    collectionRequestBody.set('access_token', accessToken);
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http.post(
-      `${environment.BACKEND_AUTH_URL}/jwt/token`,
-      {accessToken: accessToken},
-      {observe: 'response'})
+      `${environment.BANGUMI_OAUTH_URL}/token_status`,
+      collectionRequestBody.toString(), {headers: headers})
       .pipe(
-        switchMap(response => this.http.get(`${this.BANGUMI_API_URL}/user/${response['body']['user_id']}`), (outer, inner) => {
-          return {'authDetails': outer, 'bangumiUserInfo': inner};
-        }),
-        tap(response => {
-          const {authDetails, bangumiUserInfo} = response;
-          // save access token to local storage
-          const jwtToken = authDetails.headers.get('Authorization');
-          if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
-            this.storageService.setJwtToken(jwtToken.split(' ')[1]);
+        tap(authInfo => {
+          if (authInfo['access_token'] === undefined
+            || authInfo['client_id'] !== environment.BANGUMI_APP_ID) {
+            throw Error('Invalid access token');
           }
-          this.storageService.setAccessToken(accessToken);
+        }),
+        switchMap(authInfo => {
+            this.storageService.setBangumiAccessTokenExpirationTime(authInfo['expires']);
+            return this.http.get(`${this.BANGUMI_API_URL}/user/${authInfo['user_id']}`);
+          }
+        ),
+        tap(bangumiUserInfo => {
+          // save access token and refresh token to local storage
           const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
-          this.userSubject.next(bangumiUser);
           this.storageService.setBangumiUser(bangumiUser);
+          this.storageService.setAccessToken(accessToken);
+          this.storageService.setRefreshToken(refreshToken);
+          this.userSubject.next(bangumiUser);
         }),
         catchError(
           (err) => {

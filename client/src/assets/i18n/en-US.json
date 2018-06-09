@@ -31,7 +31,8 @@
       "cancel":"Cancel authentication"
     },
     "loginSuccess": "Login succeeded, now redirecting...",
-    "loginFailure": "Login failed, please try again later."
+    "loginFailure": "Login failed, please try again later.",
+    "waitForActivationPrompt": "Activation in progress, this window will be closed shortly."
   },
   "settings": {
     "title": "Settings",

@@ -55,6 +55,19 @@ export class StorageService {
   }
 
   /**
+   * Get bangumi auth expiration time
+   * @returns {Observable<string>}
+   */
+  public getBangumiAccessTokenExpirationTime(): Observable<number> {
+    const expirationTimeString: string = <string>localStorage.getItem('bangumiAccessTokenExpirationTime');
+    if (expirationTimeString !== null && !Number.isNaN(Number(expirationTimeString))) {
+      return of(parseInt(expirationTimeString, 10));
+    } else {
+      return of(0);
+    }
+  }
+
+  /**
    * Set access token
    * @returns {StorageService}
    */
@@ -88,7 +101,15 @@ export class StorageService {
    */
   public setBangumiUser(bangumiUser: BangumiUser): StorageService {
     localStorage.setItem('bangumiUser', JSON.stringify(bangumiUser));
+    return this;
+  }
 
+  /**
+   * Get bangumi auth expiration time
+   * @returns {StorageService}
+   */
+  public setBangumiAccessTokenExpirationTime(expirationTime: string): StorageService {
+    localStorage.setItem('bangumiAccessTokenExpirationTime', expirationTime);
     return this;
   }
 
@@ -99,6 +120,7 @@ export class StorageService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('bangumiAccessTokenExpirationTime');
     localStorage.removeItem('bangumiUser');
   }
 }

@@ -22,7 +22,6 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const activationInfo = this.cookieService.getObject('activationInfo') || {};
-    console.log(activationInfo);
     if (typeof activationInfo['access_token'] === 'string' && typeof activationInfo['refresh_token'] === 'string') {
       window.opener.postMessage(
         {
@@ -31,6 +30,8 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
           'accessToken': activationInfo['access_token'],
           'refreshToken': activationInfo['refresh_token']
         }, environment.FRONTEND_URL);
+
+      this.cookieService.remove('activationInfo');
     } else {
       window.opener.postMessage(
         {

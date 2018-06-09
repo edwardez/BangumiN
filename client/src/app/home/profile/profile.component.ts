@@ -82,5 +82,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return CollectionStatusId;
   }
 
+  onStatsSelected(tab) {
+    if(tab.textLabel === 'Stats') {
+      // fetch user stats
+      console.log("stats!!!!!");
+    }
+  }
+
 
 }

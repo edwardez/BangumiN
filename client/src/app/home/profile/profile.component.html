@@ -1,4 +1,4 @@
-<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined">
+<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined" (selectedTabChange)="onStatsSelected($event.tab)">
   <mat-tab label="{{'profile.tabs.collection.name' | translate}}">
 
     <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray" >
@@ -78,6 +78,10 @@
     </ng-container>
 
 
+  </mat-tab>
+
+  <mat-tab label="Stats">
+    <span>This is stats</span>
   </mat-tab>
 
 </mat-tab-group>

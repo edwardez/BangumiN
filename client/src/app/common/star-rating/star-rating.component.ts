@@ -14,10 +14,10 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class StarRatingComponent implements OnInit, ControlValueAccessor {
 
-  @Input('currentRating') private currentRating = 0;
-  @Input('starCount') private starCount = 10;
-  @Input('isEditable') private isEditable = false; // whether edit is allowed
-  @Input('isRemovable') private isRemovable = false; // whether to show removal button
+  @Input() private currentRating = 0;
+  @Input() private starCount = 10;
+  @Input() private isEditable = false; // whether edit is allowed
+  @Input() private isRemovable = false; // whether to show removal button
   @Output() private ratingUpdated = new EventEmitter();
 
   private ratingToBeStore: number;

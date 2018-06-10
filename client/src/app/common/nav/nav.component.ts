@@ -1,21 +1,29 @@
-import {Component, ContentChildren, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, take} from 'rxjs/operators';
+import {filter, take,} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {concat} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {LayoutService} from '../../shared/services/layout/layout.service';
+import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
   bangumiUser: BangumiUser;
   searchKeywords = '';
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  @Input()
+  private currentDeviceWidth: DeviceWidth;
 
 
   constructor(private sidenavService: SidenavService,
@@ -23,7 +31,8 @@ export class NavComponent implements OnInit {
               private authService: AuthenticationService,
               private bangumiUserService: BangumiUserService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private layoutService: LayoutService) {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser().deserialize({
       id: '',
@@ -43,6 +52,11 @@ export class NavComponent implements OnInit {
     this.updateSearchBarText();
     this.updateUserInfo();
 
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -96,4 +110,7 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
+  get LayoutService() {
+    return LayoutService;
+  }
 }

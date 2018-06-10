@@ -50,6 +50,7 @@
     }
   },
   "progress": {
+    "name":"收视进度",
     "tabs": {
       "all": {
         "name": "所有"
@@ -122,6 +123,7 @@
     }
   },
   "profile": {
+    "name":"主页",
     "tabs": {
       "collection": {
         "name": "收藏",

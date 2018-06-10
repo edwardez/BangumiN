@@ -1,8 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, first} from 'rxjs/operators';
+import {filter, first, takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs/index';
+import {LayoutService} from '../../shared/services/layout/layout.service';
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -11,12 +14,16 @@ import {filter, first} from 'rxjs/operators';
 })
 export class SideNavContentComponent implements OnInit {
 
+  private userID: string;
+
+  @Input()
+  private currentDeviceWidth: DeviceWidth;
+
   @ViewChild('sidenav') public sidenav: MatSidenav;
-  mode = 'side';
-  userID: string;
 
   constructor(private sidenavService: SidenavService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private layoutService: LayoutService) {
     this.authenticationService.userSubject.pipe(
         filter( res => res !== null),
         first()
@@ -28,6 +35,10 @@ export class SideNavContentComponent implements OnInit {
   ngOnInit() {
     this.sidenavService
       .setSidenav(this.sidenav);
+  }
+
+  get DeviceWidth() {
+    return DeviceWidth;
   }
 
 }

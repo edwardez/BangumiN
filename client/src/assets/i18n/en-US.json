@@ -50,6 +50,7 @@
     }
   },
   "progress": {
+    "name":"progress",
     "tabs": {
       "all": {
         "name": "All"
@@ -122,6 +123,7 @@
     }
   },
   "profile": {
+    "name":"profile",
     "tabs": {
       "collection": {
         "name": "Collection",

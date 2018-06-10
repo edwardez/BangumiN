@@ -25,6 +25,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
+import {LayoutModule} from '@angular/cdk/layout';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatAutocompleteModule,
     MatProgressBarModule,
     MatButtonToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LayoutModule
   ],
   exports: [
     MatCardModule,
@@ -75,7 +77,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatAutocompleteModule,
     MatProgressBarModule,
     MatButtonToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LayoutModule
   ]
 })
 export class MaterialLayoutCommonModule {

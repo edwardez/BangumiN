@@ -1,8 +1,14 @@
 <mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar" fxLayoutGap="10px">
-  <button mat-icon-button (click)="toggleSidenav()">
+  <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.ltSm(currentDeviceWidth)">
     <mat-icon>menu</mat-icon>
   </button>
   <div>Bangumin</div>
+
+  <div *ngIf="LayoutService.gtXs(currentDeviceWidth)">
+    <a mat-button routerLink="./progress">{{'progress.name' | translate}}</a>
+    <a mat-button [routerLink]="['./profile', userID]">{{'profile.name' | translate}}</a>
+  </div>
+
   <div fxFlex="1 1 auto"></div>
 
   <div class="search-container" fxLayoutAlign="end center">

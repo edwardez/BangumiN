@@ -22,8 +22,7 @@ export class SideNavContentComponent implements OnInit {
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   constructor(private sidenavService: SidenavService,
-              private authenticationService: AuthenticationService,
-              private layoutService: LayoutService) {
+              private authenticationService: AuthenticationService) {
     this.authenticationService.userSubject.pipe(
         filter( res => res !== null),
         first()

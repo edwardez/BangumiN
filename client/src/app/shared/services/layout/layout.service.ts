@@ -12,6 +12,16 @@ export class LayoutService {
   deviceWidth: Subject<DeviceWidth> = new BehaviorSubject<DeviceWidth>(null);
 
   /**
+   * static method that will decide whether device width is xsmall
+   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * @param {DeviceWidth} deviceWidth device width
+   * @returns {boolean} whether device width is xsmall
+   */
+  static xs(deviceWidth: DeviceWidth): boolean {
+    return deviceWidth === DeviceWidth.xs;
+  }
+
+  /**
    * static method that will decide whether device width is small
    * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width

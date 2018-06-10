@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, take,} from 'rxjs/operators';
+import {filter, first, take} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {concat} from 'rxjs';
@@ -17,10 +17,10 @@ import {Subject} from 'rxjs/index';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit, OnDestroy {
-  bangumiUser: BangumiUser;
-  searchKeywords = '';
-
+  private bangumiUser: BangumiUser;
+  private searchKeywords = '';
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private isAuthenticated = false;
 
   @Input()
   private currentDeviceWidth: DeviceWidth;
@@ -28,27 +28,16 @@ export class NavComponent implements OnInit, OnDestroy {
 
   constructor(private sidenavService: SidenavService,
               private storageService: StorageService,
-              private authService: AuthenticationService,
               private bangumiUserService: BangumiUserService,
               private route: ActivatedRoute,
               private router: Router,
-              private layoutService: LayoutService) {
-    // initialize a dummy user
-    this.bangumiUser = new BangumiUser().deserialize({
-      id: '',
-      avatar: {
-        large: 'https://lain.bgm.tv/pic/user/l/icon.jpg',
-        medium: 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-        small: 'https://lain.bgm.tv/pic/user/s/icon.jpg'
-      },
-      nickname: '',
-      username: ''
-    });
-
-
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
+    // initialize a dummy user
+    this.bangumiUser = new BangumiUser();
+
     this.updateSearchBarText();
     this.updateUserInfo();
 
@@ -84,6 +73,14 @@ export class NavComponent implements OnInit, OnDestroy {
    */
 
   updateUserInfo() {
+    this.authenticationService.isAuthenticated()
+      .pipe(
+        first()
+      )
+      .subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
+
     const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserInfo()];
 
 
@@ -94,7 +91,7 @@ export class NavComponent implements OnInit, OnDestroy {
       )
       .subscribe(bangumiUser => {
         this.bangumiUser = bangumiUser;
-        this.authService.userSubject.next(bangumiUser);
+        this.authenticationService.userSubject.next(bangumiUser);
       });
   }
 

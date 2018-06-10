@@ -7,8 +7,9 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 
 
 import {environment} from '../../../environments/environment';
-import {map, catchError, tap, switchMap} from 'rxjs/operators';
+import {map, catchError, tap, switchMap, mergeMap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
+import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 
 
 interface AccessData {
@@ -43,7 +44,7 @@ export class AuthenticationService {
    */
   private isTokenValid(expirationTime: number): Observable<boolean> {
     if (expirationTime === null || expirationTime === 0) {
-      return of(true);
+      return of(false);
     }
 
     return of((expirationTime > Date.now() / 1000));
@@ -60,19 +61,28 @@ export class AuthenticationService {
    * @memberOf AuthenticationService
    */
   public isAuthenticated(): Observable<boolean> {
+    const isAuthenticated = forkJoin(
+      this.storageService
+        .getAccessToken()
+        .pipe(
+        map(accessToken => {
+          return accessToken != null;
+        })),
+      this.storageService
+        .getBangumiAccessTokenExpirationTime()
+        .pipe(
+          switchMap(expirationTime => {
+            return this.isTokenValid(expirationTime);
+          })
+        )
+    );
 
-    return this.storageService.getAccessToken().pipe(
-      map(accessToken => {
-        return accessToken != null;
-      }),
-      switchMap(accessToken => {
-          return this.storageService.getBangumiAccessTokenExpirationTime();
-        },
-      ),
-      switchMap(expirationTime => {
-        return this.isTokenValid(expirationTime);
+    return isAuthenticated.pipe(
+      map(resultArray => {
+        return resultArray.reduce( (a, b) => a && b);
       })
     );
+
 
   }
 

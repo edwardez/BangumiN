@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {DeviceWidth} from '../../enums/device-width.enum';
 import {BehaviorSubject, Subject} from 'rxjs/index';
-import {BangumiUser} from '../../models/BangumiUser';
 
 @Injectable({
   providedIn: 'root'
@@ -146,6 +145,9 @@ export class LayoutService {
   }
 
 
+  /**
+   * update device width and emit updated value
+   */
   private updateDeviceWidth() {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,

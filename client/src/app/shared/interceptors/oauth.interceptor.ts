@@ -3,11 +3,13 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {parse} from 'url';
+import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs/internal/observable/throwError';
 
 
 @Injectable()
@@ -26,7 +28,16 @@ export class OauthInterceptor implements HttpInterceptor {
       request = request.clone();
     }
 
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError(error => {
+        if (error instanceof HttpErrorResponse) {
+          console.log((<HttpErrorResponse>error).status);
+      return throwError(error);
+        } else {
+          return throwError(error);
+        }
+      })
+    );
   }
 
   isWhitelistedDomain(request: HttpRequest<any>): boolean {

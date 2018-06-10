@@ -43,6 +43,7 @@ import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress
 import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
 import {CookieModule} from 'ngx-cookie';
 import { BangumiAuthWaitDialogComponent } from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
+import {ProfileModule} from "./home/profile/profile.module";
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { BangumiAuthWaitDialogComponent } from './auth/login-bangumi/bangumi-aut
         }
       }
     ),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    ProfileModule
   ],
   entryComponents: [
     ReviewDialogComponent,

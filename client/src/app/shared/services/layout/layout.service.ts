@@ -13,7 +13,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is xsmall
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is xsmall
    */
@@ -23,7 +23,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is small
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is small
    */
@@ -33,7 +33,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is medium
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is medium
    */
@@ -43,7 +43,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is large
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is large
    */
@@ -53,7 +53,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is xlarge
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is xlarge
    */
@@ -63,7 +63,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width equals to or is smaller of than small
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width equals to or is smaller of than small
    */
@@ -73,7 +73,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width equals to or is smaller of than medium
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width equals to or is smaller of than medium
    */
@@ -83,7 +83,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width equals to or is smaller of than large
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width equals to or is smaller of than large
    */
@@ -93,7 +93,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width equals to or is smaller of than xlarge
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width equals to or is smaller of than xlarge
    */
@@ -103,7 +103,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is bigger than xsmall
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is bigger than xsmall
    */
@@ -113,7 +113,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is bigger than small
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is bigger than small
    */
@@ -123,7 +123,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is bigger than medium
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is bigger than medium
    */
@@ -133,7 +133,7 @@ export class LayoutService {
 
   /**
    * static method that will decide whether device width is bigger than large
-   * method name is hard to in recognize but it's intended since we need to be in consistent with responsive API of flex-layout
+   * method name might be hard to memorize but it's intended since we need to be in consistent with responsive API of flex-layout
    * @param {DeviceWidth} deviceWidth device width
    * @returns {boolean} whether device width is bigger than large
    */

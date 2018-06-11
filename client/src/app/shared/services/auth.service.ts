@@ -10,6 +10,9 @@ import {environment} from '../../../environments/environment';
 import {map, catchError, tap, switchMap, mergeMap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
 import {forkJoin} from 'rxjs/internal/observable/forkJoin';
+import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
+import {MatSnackBar} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 
 
 interface AccessData {
@@ -34,7 +37,8 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private storageService: StorageService,
-              private jwtHelper: JwtHelperService) {
+              private translateService: TranslateService,
+              private snackBar: MatSnackBar) {
   }
 
   /**
@@ -65,9 +69,9 @@ export class AuthenticationService {
       this.storageService
         .getAccessToken()
         .pipe(
-        map(accessToken => {
-          return accessToken != null;
-        })),
+          map(accessToken => {
+            return accessToken != null;
+          })),
       this.storageService
         .getBangumiAccessTokenExpirationTime()
         .pipe(
@@ -79,7 +83,7 @@ export class AuthenticationService {
 
     return isAuthenticated.pipe(
       map(resultArray => {
-        return resultArray.reduce( (a, b) => a && b);
+        return resultArray.reduce((a, b) => a && b);
       })
     );
 
@@ -102,19 +106,37 @@ export class AuthenticationService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<any> {
+  public refreshBangumiOauthToken(): Observable<BangumiRefreshTokenResponse> {
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    const options = {withCredentials: true};
     return this.storageService
       .getRefreshToken()
       .pipe(
         switchMap((refreshToken: string) => {
-          return this.http.post(`http://localhost:3000/refresh`, {refreshToken});
+          return this.http.post(`${environment.BACKEND_OAUTH_URL}/bangumi/refresh`,
+            {
+              refreshToken: refreshToken,
+              clientId: environment.BANGUMI_APP_ID,
+              grantType: 'refresh_token',
+              redirectUrl: `${environment.BACKEND_OAUTH_URL}/bangumi/callback`,
+              userId: JSON.parse(localStorage.getItem('bangumiUser')).user_id
+            },
+            options);
         }),
+        map( res => new BangumiRefreshTokenResponse().deserialize(res)),
         tap(
-          this.saveAccessData.bind(this)
+          res => {
+            if (res.accessToken !== undefined && res.refreshToken !== undefined) {
+              this.storageService.setAccessToken(res.accessToken);
+              this.storageService.setRefreshToken(res.refreshToken);
+              this.storageService.setBangumiAccessTokenExpirationTime((currentTime + res.expiresIn).toString());
+            }
+          }
         ),
         catchError(
           (err) => {
-            this.logout();
+            this.logoutWithMessage('error.unauthorized');
             return observableThrowError(err);
           }
         )
@@ -162,6 +184,25 @@ export class AuthenticationService {
     this.storageService.clear();
     location.reload(true);
   }
+
+
+  /**
+   *logout with a snackbar message
+   * @param {string} messageLabel a message label or a message string, first it will be treated as a message label, if such
+   * label cannot be found in translation file, then the messageLabel itself will be used
+   */
+  public logoutWithMessage(messageLabel: string): void {
+    const snackBarDuration = 3000;
+    this.translateService.get(messageLabel).subscribe(res => {
+      const messageSnackBar = this.snackBar.open(res, '', {
+        duration: snackBarDuration
+      });
+      setTimeout(() => {
+        this.logout();
+      }, snackBarDuration);
+  });
+  }
+
 
   /**
    * Save access data in the storage

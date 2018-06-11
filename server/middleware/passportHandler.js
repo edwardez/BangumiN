@@ -17,7 +17,6 @@ const bangumiOauth = new OAuth2Strategy(
     const profileWithRefreshToken = profile;
     profileWithRefreshToken.refresh_token = refreshToken;
     return done(null, profileWithRefreshToken);
-
   }),
 );
 
@@ -46,19 +45,24 @@ bangumiOauth.userProfile = function userProfile(accessToken, done) {
   );
 };
 
+/**
+ * check whether user is authenticated or not, if not
+ * send a 401 unauthorized response
+ * @returns {Function}
+ */
 function authenticationMiddleware() {
   return (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
     }
-    return res.redirect('/login');
+    return res.sendStatus(401);
   };
 }
 
 passport.use('bangumi-oauth', bangumiOauth);
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, { id: user.user_id });
 });
 
 passport.deserializeUser((user, done) => {

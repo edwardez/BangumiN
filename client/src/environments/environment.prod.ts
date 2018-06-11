@@ -5,7 +5,7 @@ export const environment = {
   BANGUMI_OAUTH_URL: '/proxy/oauth/bangumi',
   BACKEND_API_URL: 'https://bangumin.tv/api',
   BACKEND_AUTH_URL: 'https://bangumin.tv/auth',
-  BACKEND_OAUTH_REDIRECT_URL: 'https://bangumin.tv/oauth',
+  BACKEND_OAUTH_URL: 'https://bangumin.tv/oauth',
   BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
   whitelistedDomains: ['bangumin.tv'],
   blacklistedRoutes: [/http:\/\/localhost:3000\/proxy\/.+/g, /https?:\/\/bangumin\.tv\/auth.+/g],

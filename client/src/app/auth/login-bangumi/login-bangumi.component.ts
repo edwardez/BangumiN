@@ -28,7 +28,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
   }
 
   redirectToBangumi() {
-    this.openedBangumiPopup = window.open(`${environment.BACKEND_OAUTH_REDIRECT_URL}/bangumi`);
+    this.openedBangumiPopup = window.open(`${environment.BACKEND_OAUTH_URL}/bangumi`);
     this.bangumiAuthWaitDialog = this.dialog.open(BangumiAuthWaitDialogComponent,
       {
         data: {

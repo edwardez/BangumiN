@@ -7,6 +7,8 @@ const envVarsSchema = joi.object({
   FRONT_END_URL: joi.string()
     .uri()
     .required(),
+  COOKIE_SECURE: joi.boolean().required(),
+  COOKIE_EXPIRE_IN: joi.number().integer().min(1).required(),
 }).unknown()
   .required();
 
@@ -18,6 +20,8 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   frontEndUrl: envVars.FRONT_END_URL,
+  cookieSecure: envVars.SECURE_COOKIE,
+  cookieExpireIn: envVars.COOKIE_EXPIRE_IN,
 };
 
 module.exports = config;

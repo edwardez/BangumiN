@@ -42,15 +42,15 @@ describe('TokenStorageService', () => {
   });
 
 
-  it('should be able to get accessToken, JwtToken, refreshToken after calling set method', () => {
+  it('should be able to get accessToken, JwtToken, refreshBangumiOauthToken after calling set method', () => {
     storageService.setAccessToken('accessToken');
     storageService.getAccessToken().subscribe(res => {
       expect(res).toBe('accessToken');
     });
 
-    storageService.setRefreshToken('refreshToken');
+    storageService.setRefreshToken('refreshBangumiOauthToken');
     storageService.getRefreshToken().subscribe(res => {
-      expect(res).toBe('refreshToken');
+      expect(res).toBe('refreshBangumiOauthToken');
     });
 
     storageService.setJwtToken('jwtToken');

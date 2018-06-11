@@ -29,6 +29,7 @@ export class SideNavContentComponent implements OnInit {
     ).subscribe( res => {
       this.userID = res.user_id.toString();
     });
+
   }
 
   ngOnInit() {

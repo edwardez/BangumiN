@@ -6,6 +6,8 @@ const csrf = require('csurf');
 const helmet = require('helmet');
 const config = require('./config');
 const expressSession = require('express-session');
+const MongoStore = require('connect-mongo')(expressSession);
+const mongoose = require('mongoose');
 const passport = require('./middleware/passportHandler');
 const logger = require('./utils/logger')(module);
 const oauth = require('./routes/oauth');
@@ -31,18 +33,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.use(cookieParser());
+app.use(cookieParser(config.passport.secret.session));
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
+mongoose.connect(config.mongodb.uri);
+
 app.use(expressSession({
   secret: config.passport.secret.session,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   name: 'sessionId',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     name: 'sessionId',
+    maxAge: 31536000000,
+    secure: config.cookieSecure,
   },
 }));
 
@@ -53,7 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/auth', auth);
+app.use('/auth', passport.authenticationMiddleware(), auth);
 
 
 // define error-handling middleware last, after other app.use() & routes calls;

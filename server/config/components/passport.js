@@ -8,7 +8,6 @@ const envVarsSchema = joi.object({
   BANGUMI_CALLBACK_URL: joi.string().uri().trim().required(),
   BANGUMI_TOKEN_STATUS: joi.string().uri().trim().required(),
   SESSION_SECRET: joi.string().required(),
-  JWT_SECRET: joi.string().required(),
 }).unknown().required();
 
 const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
@@ -30,7 +29,6 @@ const config = {
     },
     secret: {
       session: envVars.SESSION_SECRET,
-      jwt: envVars.JWT_SECRET,
     },
   },
 };

@@ -146,5 +146,8 @@
         }
       }
     }
+  },
+  "error":{
+    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again."
   }
 }

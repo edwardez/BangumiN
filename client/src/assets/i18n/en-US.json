@@ -73,6 +73,12 @@
         "drop": "Drop",
         "remove": "remove"
       }
+    },
+    "error":{
+      "empty":{
+        "all":"It looks like you don't have any in-progress collections, try to add some first!",
+        "subType":"It looks like you don't have any in-progress collections under this type, try to add some first!"
+      }
     }
   },
   "search": {

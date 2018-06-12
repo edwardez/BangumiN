@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingResponse">
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingResponse;else emptyProgress">
 
   <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
     <mat-card-content>
@@ -21,3 +21,14 @@
   </mat-card>
 
 </div>
+
+
+
+<ng-template #emptyProgress>
+  <div fxLayout="row" fxLayoutAlign="center center" class="container">
+    <p>...</p>
+  </div>
+</ng-template>
+
+
+

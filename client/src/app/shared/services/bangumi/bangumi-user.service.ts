@@ -40,7 +40,8 @@ export class BangumiUserService {
    * @param {number} maxEpisodeCount
    * @returns {module:js-priority-queue.PriorityQueue<Episode>}
    */
-  static addEpisodeToHeap(subjectProgress: SubjectProgress, subjectEpisodes: SubjectEpisodes, maxEpisodeCount: number): PriorityQueue<Episode> {
+  static addEpisodeToHeap(subjectProgress: SubjectProgress, subjectEpisodes: SubjectEpisodes, maxEpisodeCount: number)
+    : PriorityQueue<Episode> {
 
     // calculate the max/min episode sort number(in episodes that user has watched) under each category
     // this number is needed because we need to show the first unwatched episode to users
@@ -227,7 +228,8 @@ export class BangumiUserService {
       .replace(/\s+/g, ''))
       .pipe(
         map(res => {
-          if (res['code'] && res['code'] !== 200) {
+          // console.log(res === null)
+          if ( res === null || (res['code'] && res['code'] !== 200)) {
             return new UserProgress();
           } else {
             return new UserProgress().deserialize(res);
@@ -260,18 +262,7 @@ export class BangumiUserService {
         ),
         switchMap(collectionStatus => {
           const ongoingAllShowProgress = collectionStatus[0];
-          return forkJoin([
-            ...ongoingAllShowProgress.progress.map(episode =>
-              this.bangumiSubjectService.getSubjectEpisode(episode.id.toString())
-                .pipe(
-                  map(
-                    episodeInfo => {
-                      return {
-                        subjectProgress: ongoingAllShowProgress.progress.find(ep => ep.id === episode.id),
-                        subjectEpisodes: episodeInfo
-                      };
-                    })
-                ))])
+          return this.buildObservableArrayForOngoingCollectionStatusAndProgress(collectionStatus[0])
             .pipe(
               map(
                 response => ({
@@ -309,6 +300,28 @@ export class BangumiUserService {
           }
         )
       );
+  }
+
+  private buildObservableArrayForOngoingCollectionStatusAndProgress(ongoingAllShowProgress: UserProgress): any {
+    const observableArray = [
+      ...ongoingAllShowProgress.progress.map(episode =>
+        this.bangumiSubjectService.getSubjectEpisode(episode.id.toString())
+          .pipe(
+            map(
+              episodeInfo => {
+                return {
+                  subjectProgress: ongoingAllShowProgress.progress.find(ep => ep.id === episode.id),
+                  subjectEpisodes: episodeInfo
+                };
+              })
+          ))];
+
+    if (observableArray.length === 0) {
+      return of(observableArray);
+    } else {
+      return forkJoin(observableArray);
+    }
+
   }
 
 

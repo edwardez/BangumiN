@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {Subject} from 'rxjs/index';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {filter, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 
@@ -18,16 +18,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
   constructor(private bangumiUserService: BangumiUserService,
-  ) {
-    this.bangumiUserService.getOngoingCollectionStatusAndProgress()
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(response => {
-        this.collectionWatchingResponse = response;
-
-      });
-
+              ) {
   }
 
   ngOnDestroy(): void {
@@ -37,6 +28,14 @@ export class ProgressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.bangumiUserService.getOngoingCollectionStatusAndProgress()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(response => {
+        this.collectionWatchingResponse = response;
+
+      });
   }
 
   filterBySubjectType(collectionWatchingResponse: CollectionWatchingResponseMedium[],

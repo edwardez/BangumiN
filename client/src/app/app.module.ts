@@ -22,7 +22,6 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {SidenavService} from './shared/services/sidenav.service';
 import {MaterialLayoutCommonModule} from '../material-layout-common.module';
-import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
 import {BangumiUserService} from './shared/services/bangumi/bangumi-user.service';
 import {SettingsComponent} from './settings/settings.component';
@@ -39,13 +38,10 @@ import {ReviewDialogComponent} from './subject/review-dialog/review-dialog.compo
 import {BangumiCollectionService} from './shared/services/bangumi/bangumi-collection.service';
 import {SideNavContentComponent} from './common/side-nav-content/side-nav-content.component';
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
-import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress-by-type.component';
 import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
 import {CookieModule} from 'ngx-cookie';
 import {BangumiAuthWaitDialogComponent} from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
 import {ProfileModule} from './home/profile/profile.module';
-import {ProgressPlaceholderComponent} from './home/progress/progress-placeholder/progress-placeholder.component';
-import {ProgressContentComponent} from './home/progress/progress-content/progress-content.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +51,6 @@ import {ProgressContentComponent} from './home/progress/progress-content/progres
     DashboardComponent,
     NavComponent,
     ActivateBangumiComponent,
-    ProgressComponent,
     ProfileComponent,
     SettingsComponent,
     KeysPipe,
@@ -63,12 +58,9 @@ import {ProgressContentComponent} from './home/progress/progress-content/progres
     HttpsPipe,
     SingleSubjectComponent,
     ReviewDialogComponent,
-    EpisodeDialogComponent,
-    ProgressByTypeComponent,
     CollectionByTypeComponent,
     BangumiAuthWaitDialogComponent,
-    ProgressPlaceholderComponent,
-    ProgressContentComponent
+
   ],
   imports: [
     BrowserModule,

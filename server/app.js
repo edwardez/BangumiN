@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const csrf = require('csurf');
 const helmet = require('helmet');
@@ -33,7 +32,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.use(cookieParser(config.passport.secret.session));
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 

@@ -17,8 +17,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
 
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
 
-  constructor(private bangumiUserService: BangumiUserService,
-              ) {
+  constructor(private bangumiUserService: BangumiUserService, ) {
   }
 
   ngOnDestroy(): void {
@@ -38,19 +37,6 @@ export class ProgressComponent implements OnInit, OnDestroy {
       });
   }
 
-  filterBySubjectType(collectionWatchingResponse: CollectionWatchingResponseMedium[],
-                      subjectType: SubjectType): CollectionWatchingResponseMedium[] {
-    const filteredCollectionWatchingResponse: CollectionWatchingResponseMedium[] = [];
-
-    for (const collection of collectionWatchingResponse) {
-      if (collection.subject.type === subjectType) {
-        filteredCollectionWatchingResponse.push(collection);
-      }
-    }
-
-    return filteredCollectionWatchingResponse;
-
-  }
 
   get subjectType() {
     return SubjectType;

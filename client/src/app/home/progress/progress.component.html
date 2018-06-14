@@ -1,19 +1,19 @@
-<div fxLayout="row" fxLayoutAlign="center center" *ngIf="collectionWatchingResponse;else emptyProgress">
+<div fxLayout="row" fxLayoutAlign="center center" >
 
   <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
     <mat-card-content>
       <mat-tab-group>
         <mat-tab label="{{'progress.tabs.all.name' | translate}}">
-          <app-progress-by-type [collectionWatchingResponse]="collectionWatchingResponse"></app-progress-by-type>
+          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse" [currentSubjectType]="subjectType.all"></app-progress-content>
         </mat-tab>
         <mat-tab label="{{'progress.tabs.anime.name' | translate}}">
-          <app-progress-by-type [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, subjectType.anime)"></app-progress-by-type>
+          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse" [currentSubjectType]="subjectType.anime"></app-progress-content>
         </mat-tab>
         <mat-tab label="{{'progress.tabs.real.name' | translate}}">
-          <app-progress-by-type [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, subjectType.real)"></app-progress-by-type>
+          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse" [currentSubjectType]="subjectType.real"></app-progress-content>
         </mat-tab>
         <mat-tab label="{{'progress.tabs.book.name' | translate}}">
-          <app-progress-by-type [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, subjectType.book)"></app-progress-by-type>
+          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse" [currentSubjectType]="subjectType.book"></app-progress-content>
         </mat-tab>
       </mat-tab-group>
     </mat-card-content>
@@ -22,13 +22,6 @@
 
 </div>
 
-
-
-<ng-template #emptyProgress>
-  <div fxLayout="row" fxLayoutAlign="center center" class="container">
-    <p>...</p>
-  </div>
-</ng-template>
 
 
 

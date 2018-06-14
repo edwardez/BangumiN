@@ -42,8 +42,10 @@ import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dia
 import {ProgressByTypeComponent} from './home/progress/progress-by-type/progress-by-type.component';
 import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
 import {CookieModule} from 'ngx-cookie';
-import { BangumiAuthWaitDialogComponent } from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
-import {ProfileModule} from "./home/profile/profile.module";
+import {BangumiAuthWaitDialogComponent} from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
+import {ProfileModule} from './home/profile/profile.module';
+import {ProgressPlaceholderComponent} from './home/progress/progress-placeholder/progress-placeholder.component';
+import {ProgressContentComponent} from './home/progress/progress-content/progress-content.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import {ProfileModule} from "./home/profile/profile.module";
     ProgressByTypeComponent,
     CollectionByTypeComponent,
     BangumiAuthWaitDialogComponent,
+    ProgressPlaceholderComponent,
+    ProgressContentComponent
   ],
   imports: [
     BrowserModule,

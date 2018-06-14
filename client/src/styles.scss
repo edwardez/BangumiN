@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/theming';
+@import "~placeholder-loading/src/scss/placeholder-loading";
+
 
 body {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
@@ -16,6 +18,11 @@ body {
 
 .container {
   height: 100vh;
+}
+
+//override default border
+.ph-item {
+  border: none !important;
 }
 
 $marginKey: "has-margin";

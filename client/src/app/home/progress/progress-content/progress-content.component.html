@@ -1,0 +1,7 @@
+<app-progress-placeholder *ngIf="!collectionWatchingResponse">
+
+</app-progress-placeholder>
+
+<app-progress-by-type *ngIf="collectionWatchingResponse" [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, currentSubjectType)">
+
+</app-progress-by-type>

@@ -7,7 +7,6 @@ import {map} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class BangumiSearchService {
 
   constructor(private http: HttpClient) {

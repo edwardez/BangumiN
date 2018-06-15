@@ -11,7 +11,6 @@ import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class BangumiSubjectService {
 
   constructor(private http: HttpClient) {

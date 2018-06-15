@@ -13,7 +13,6 @@ import {SubjectWatchingCollectionMedium} from '../../models/subject/subject-watc
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class BangumiCollectionService {
 
   constructor(private http: HttpClient,

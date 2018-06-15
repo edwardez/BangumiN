@@ -21,7 +21,6 @@ import {UserCollectionResponse} from '../../models/collection/user-collection-re
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class BangumiUserService {
 
   BANGUMI_API_URL = environment.BANGUMI_API_URL;

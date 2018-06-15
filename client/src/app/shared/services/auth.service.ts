@@ -31,7 +31,6 @@ interface BangumiUserStatus {
 @Injectable({
   providedIn: 'root'
 })
-@Injectable()
 export class AuthenticationService {
 
   userSubject: Subject<BangumiUser> = new BehaviorSubject<BangumiUser>(null);

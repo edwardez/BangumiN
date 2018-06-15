@@ -28,7 +28,9 @@ interface BangumiUserStatus {
   scope: null;
 }
 
-
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class AuthenticationService {
 

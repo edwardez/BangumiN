@@ -18,6 +18,9 @@ import {Episode} from '../../models/episode/episode';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {UserCollectionResponse} from '../../models/collection/user-collection-response';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class BangumiUserService {
 

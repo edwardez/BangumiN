@@ -8,6 +8,9 @@ import {SubjectMedium} from '../../models/subject/subject-medium';
 import {map} from 'rxjs/operators';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class BangumiSubjectService {
 

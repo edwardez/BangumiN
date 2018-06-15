@@ -4,6 +4,9 @@ import {Observable} from 'rxjs';
 import {AuthenticationService} from './shared/services/auth.service';
 import {map} from 'rxjs/operators';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class AppGuard implements CanActivate {
 

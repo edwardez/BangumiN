@@ -96,15 +96,7 @@ import {ProfileModule} from './home/profile/profile.module';
     EpisodeDialogComponent,
     BangumiAuthWaitDialogComponent
   ],
-  providers: [AppGuard,
-    Title,
-    AuthenticationService,
-    BangumiUserService,
-    BangumiSearchService,
-    BangumiSubjectService,
-    BangumiCollectionService,
-    StorageService,
-    SidenavService,
+  providers: [
   ],
   bootstrap: [AppComponent]
 })

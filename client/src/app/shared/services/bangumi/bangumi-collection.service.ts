@@ -6,11 +6,13 @@ import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {CollectionRequest} from '../../models/collection/collection-request';
-import {CollectionWatchingResponseMedium} from '../../models/collection/collection-watching-response-medium';
 import {StatusCode} from '../../models/common/status-code';
 import {Episode} from '../../models/episode/episode';
 import {SubjectWatchingCollectionMedium} from '../../models/subject/subject-watching-collection-medium';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class BangumiCollectionService {
 

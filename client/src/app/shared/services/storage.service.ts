@@ -5,6 +5,9 @@ import {Observable, of} from 'rxjs';
 
 import {BangumiUser} from '../models/BangumiUser';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class StorageService {
 

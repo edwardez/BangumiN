@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BangumiCollectionService} from '../shared/services/bangumi/bangumi-collection.service';
 import {ProgressModule} from './progress/progress.module';
+import {BanguminProfileModule} from './profile/bangumin-profile.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ProgressModule
+    ProgressModule,
+    BanguminProfileModule,
   ],
   declarations: [
 
   ],
   providers: [
-    BangumiCollectionService
   ]
 })
 export class BanguminHomeModule {

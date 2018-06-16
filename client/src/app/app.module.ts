@@ -10,10 +10,8 @@ import {environment} from '../environments/environment';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
 import {DashboardComponent} from './home/dashboard/dashboard.component';
 
-import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BanguminSharedModule} from '../bangumin-shared.module';
@@ -30,15 +28,13 @@ import {ReviewDialogComponent} from './subject/review-dialog/review-dialog.compo
 import {EpisodeDialogComponent} from './home/progress/episode-dialog/episode-dialog.component';
 import {CollectionByTypeComponent} from './home/profile/collection/collection-by-type/collection-by-type.component';
 import {CookieModule} from 'ngx-cookie';
-import {BangumiAuthWaitDialogComponent} from './auth/login-bangumi/bangumi-auth-wait-dialog/bangumi-auth-wait-dialog.component';
 import {ProfileModule} from './home/profile/profile.module';
+import {BanguminAuthModule} from './auth/bangumin-auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginBangumiComponent,
     DashboardComponent,
-    ActivateBangumiComponent,
     ProfileComponent,
     SettingsComponent,
     KeysPipe,
@@ -47,8 +43,6 @@ import {ProfileModule} from './home/profile/profile.module';
     SingleSubjectComponent,
     ReviewDialogComponent,
     CollectionByTypeComponent,
-    BangumiAuthWaitDialogComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -57,6 +51,7 @@ import {ProfileModule} from './home/profile/profile.module';
     BanguminSharedModule,
     BanguminHomeModule,
     BanguminCommonComponentModule,
+    BanguminAuthModule,
     FormsModule,
     ReactiveFormsModule,
     CookieModule.forRoot(),
@@ -81,8 +76,7 @@ import {ProfileModule} from './home/profile/profile.module';
   ],
   entryComponents: [
     ReviewDialogComponent,
-    EpisodeDialogComponent,
-    BangumiAuthWaitDialogComponent
+    EpisodeDialogComponent
   ],
   providers: [
   ],

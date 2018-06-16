@@ -4,7 +4,6 @@ import {ProgressPlaceholderComponent} from './progress-placeholder/progress-plac
 import {ProgressContentComponent} from './progress-content/progress-content.component';
 import {ProgressComponent} from './progress.component';
 import {ProgressByTypeComponent} from './progress-by-type/progress-by-type.component';
-import {TranslateModule} from '@ngx-translate/core';
 import {RouterModule} from '@angular/router';
 import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
 import {BanguminSharedModule} from '../../../bangumin-shared.module';

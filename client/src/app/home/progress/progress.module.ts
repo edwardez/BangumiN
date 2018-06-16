@@ -7,15 +7,14 @@ import {ProgressByTypeComponent} from './progress-by-type/progress-by-type.compo
 import {TranslateModule} from '@ngx-translate/core';
 import {RouterModule} from '@angular/router';
 import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
-import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
+import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    TranslateModule,
-    MaterialLayoutCommonModule,
+    BanguminSharedModule,
     FormsModule,
     ReactiveFormsModule
   ],

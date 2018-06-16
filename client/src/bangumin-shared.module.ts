@@ -26,6 +26,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
 import {LayoutModule} from '@angular/cdk/layout';
+import {TranslateModule} from '@ngx-translate/core';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -52,7 +54,9 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatProgressBarModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
-    LayoutModule
+    LayoutModule,
+    TranslateModule,
+    RouterModule
   ],
   exports: [
     MatCardModule,
@@ -78,8 +82,10 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatProgressBarModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
-    LayoutModule
+    LayoutModule,
+    TranslateModule,
+    RouterModule
   ]
 })
-export class MaterialLayoutCommonModule {
+export class BanguminSharedModule {
 }

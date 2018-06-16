@@ -1,4 +1,4 @@
-import { SharedPipeModule } from './shared-pipe.module';
+import {SharedPipeModule} from './shared-pipe.module';
 
 describe('SharedPipeModule', () => {
   let sharedPipeModule: SharedPipeModule;

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProgressContentComponent } from './progress-content.component';
+import {ProgressContentComponent} from './progress-content.component';
 
 describe('ProgressContentComponent', () => {
   let component: ProgressContentComponent;
@@ -8,9 +8,9 @@ describe('ProgressContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressContentComponent ]
+      declarations: [ProgressContentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

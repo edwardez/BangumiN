@@ -1,13 +1,12 @@
-import {throwError as observableThrowError, Observable, Subject, BehaviorSubject, of} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject, throwError as observableThrowError} from 'rxjs';
 // this file is from https://github.com/serhiisol/ngx-auth-example with modifications
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {StorageService} from './storage.service';
-import {JwtHelperService} from '@auth0/angular-jwt';
 
 
 import {environment} from '../../../environments/environment';
-import {map, catchError, tap, switchMap, mergeMap} from 'rxjs/operators';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
 import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
@@ -125,7 +124,7 @@ export class AuthenticationService {
             },
             options);
         }),
-        map( res => new BangumiRefreshTokenResponse().deserialize(res)),
+        map(res => new BangumiRefreshTokenResponse().deserialize(res)),
         tap(
           res => {
             if (res.accessToken !== undefined && res.refreshToken !== undefined) {
@@ -201,7 +200,7 @@ export class AuthenticationService {
       setTimeout(() => {
         this.logout();
       }, snackBarDuration);
-  });
+    });
   }
 
 

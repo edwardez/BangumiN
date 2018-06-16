@@ -9,11 +9,8 @@ import {BanguminProfileModule} from './profile/bangumin-profile.module';
     ProgressModule,
     BanguminProfileModule,
   ],
-  declarations: [
-
-  ],
-  providers: [
-  ]
+  declarations: [],
+  providers: []
 })
 export class BanguminHomeModule {
 }

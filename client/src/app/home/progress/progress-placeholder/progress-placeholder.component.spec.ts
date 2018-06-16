@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProgressPlaceholderComponent } from './progress-placeholder.component';
+import {ProgressPlaceholderComponent} from './progress-placeholder.component';
 
 describe('ProgressPlaceholderComponent', () => {
   let component: ProgressPlaceholderComponent;
@@ -8,9 +8,9 @@ describe('ProgressPlaceholderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressPlaceholderComponent ]
+      declarations: [ProgressPlaceholderComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

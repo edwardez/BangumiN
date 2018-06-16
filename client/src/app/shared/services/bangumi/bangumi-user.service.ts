@@ -1,9 +1,9 @@
-import {throwError as observableThrowError, Observable, of} from 'rxjs';
+import {Observable, of, throwError as observableThrowError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../storage.service';
-import {catchError, first, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {catchError, first, map, switchMap, take} from 'rxjs/operators';
 import {BangumiUser} from '../../models/BangumiUser';
 import {CollectionWatchingResponseMedium} from '../../models/collection/collection-watching-response-medium';
 import {UserProgress} from '../../models/progress/user-progress';
@@ -15,7 +15,6 @@ import {BangumiSubjectService} from './bangumi-subject.service';
 import * as PriorityQueue from 'js-priority-queue';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 import {Episode} from '../../models/episode/episode';
-import {CollectionResponse} from '../../models/collection/collection-response';
 import {UserCollectionResponse} from '../../models/collection/user-collection-response';
 
 @Injectable({
@@ -231,7 +230,7 @@ export class BangumiUserService {
       .pipe(
         map(res => {
           // console.log(res === null)
-          if ( res === null || (res['code'] && res['code'] !== 200)) {
+          if (res === null || (res['code'] && res['code'] !== 200)) {
             return new UserProgress();
           } else {
             return new UserProgress().deserialize(res);

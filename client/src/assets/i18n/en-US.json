@@ -25,10 +25,10 @@
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
     "oauthRedirect": "Login",
-    "waitForBangumiAuth":{
-      "title":"Login in progress",
-      "content":"Please complete the login process in the newly opened window, please don't close this dialog before login is completed.",
-      "cancel":"Cancel authentication"
+    "waitForBangumiAuth": {
+      "title": "Login in progress",
+      "content": "Please complete the login process in the newly opened window, please don't close this dialog before login is completed.",
+      "cancel": "Cancel authentication"
     },
     "loginSuccess": "Login succeeded, now redirecting...",
     "loginFailure": "Login failed, please try again later.",
@@ -50,7 +50,7 @@
     }
   },
   "progress": {
-    "name":"progress",
+    "name": "progress",
     "tabs": {
       "all": {
         "name": "All"
@@ -74,10 +74,10 @@
         "remove": "remove"
       }
     },
-    "error":{
-      "empty":{
-        "all":"It looks like you don't have any in-progress collections, try to add some first!",
-        "subType":"It looks like you don't have any in-progress collections under this type, try to add some first!"
+    "error": {
+      "empty": {
+        "all": "It looks like you don't have any in-progress collections, try to add some first!",
+        "subType": "It looks like you don't have any in-progress collections under this type, try to add some first!"
       }
     }
   },
@@ -129,7 +129,7 @@
     }
   },
   "profile": {
-    "name":"profile",
+    "name": "profile",
     "tabs": {
       "collection": {
         "name": "Collection",
@@ -153,7 +153,7 @@
       }
     }
   },
-  "error":{
+  "error": {
     "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again."
   }
 }

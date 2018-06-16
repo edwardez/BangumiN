@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {KeysPipe} from './keys.pipe';
 import {HttpsPipe} from './https.pipe';
 
@@ -11,9 +11,10 @@ import {HttpsPipe} from './https.pipe';
     KeysPipe,
     HttpsPipe
   ],
-  exports:[
+  exports: [
     KeysPipe,
     HttpsPipe
   ]
 })
-export class SharedPipeModule { }
+export class SharedPipeModule {
+}

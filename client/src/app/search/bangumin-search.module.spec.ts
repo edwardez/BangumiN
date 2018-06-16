@@ -1,4 +1,4 @@
-import { BanguminSearchModule } from './bangumin-search.module';
+import {BanguminSearchModule} from './bangumin-search.module';
 
 describe('BanguminSearchModule', () => {
   let searchModule: BanguminSearchModule;

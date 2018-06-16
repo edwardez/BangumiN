@@ -36,6 +36,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   ngOnInit() {
     this.receiveMessageHandler = this.receiveMessage.bind(this);
     if (window.addEventListener) {
@@ -53,7 +54,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
   }
 
 
-  receiveMessage: any = (event: any) =>  {
+  receiveMessage: any = (event: any) => {
     if (event && event.data && event.data.type === 'bangumiCallBack') {
       if (this.bangumiAuthWaitDialog) {
         this.bangumiAuthWaitDialog.close();
@@ -87,8 +88,8 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
               this.router.navigate(['/progress']);
             })
           )
-          .subscribe( res => {
-        });
+          .subscribe(res => {
+          });
       } else {
         loginResultTranslationLabel = 'login.loginFailure';
         this.translateService.get(loginResultTranslationLabel).subscribe(res => {
@@ -98,6 +99,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
         });
       }
     }
-  }
+  };
 
 }

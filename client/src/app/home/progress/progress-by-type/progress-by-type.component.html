@@ -1,8 +1,6 @@
-
-
-
 <div *ngIf="collectionWatchingResponse">
-  <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="collectionWatchingResponse.length >= 1; else emptyProgress">
+  <div fxLayout="row wrap" fxLayoutAlign="center center"
+       *ngIf="collectionWatchingResponse.length >= 1; else emptyProgress">
     <ng-container *ngFor="let collection of collectionWatchingResponse">
       <div fxLayout="row" fxLayoutAlign="start center"
            fxFlex="0 1 100%"

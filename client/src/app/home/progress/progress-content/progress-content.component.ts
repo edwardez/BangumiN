@@ -15,7 +15,8 @@ export class ProgressContentComponent implements OnInit {
   @Input()
   currentSubjectType: SubjectType;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

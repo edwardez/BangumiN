@@ -1,6 +1,4 @@
-import {Component, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material';
-import {SidenavService} from './shared/services/sidenav.service';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Subject} from 'rxjs/index';
 import {DeviceWidth} from './shared/enums/device-width.enum';
@@ -59,7 +57,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.currentDeviceWidth = observedDeviceWidth;
       });
   }
-
 
 
 }

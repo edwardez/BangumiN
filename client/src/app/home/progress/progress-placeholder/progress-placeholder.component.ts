@@ -14,7 +14,8 @@ export class ProgressPlaceholderComponent implements OnInit {
   private defaultDummyArrayValue = 2; // an arbitrary number
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.placeholderDummyArray = Array(this.placeholderCount).fill(this.defaultDummyArrayValue);

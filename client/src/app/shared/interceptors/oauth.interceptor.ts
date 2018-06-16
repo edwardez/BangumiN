@@ -1,10 +1,5 @@
 import {Injectable} from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor, HttpErrorResponse
-} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {parse} from 'url';
@@ -91,12 +86,12 @@ export class OauthInterceptor implements HttpInterceptor {
           take(1),
           switchMap(bangumiRefreshTokenResponse => {
             const newAccessToken = bangumiRefreshTokenResponse.accessToken;
-              if (newAccessToken !== undefined && bangumiRefreshTokenResponse.refreshToken !== undefined) {
-                this.tokenSubject.next(newAccessToken);
-                return next.handle(OauthInterceptor.addToken(request, newAccessToken));
-              } else {
-                this.authenticationService.logoutWithMessage('error.unauthorized');
-              }
+            if (newAccessToken !== undefined && bangumiRefreshTokenResponse.refreshToken !== undefined) {
+              this.tokenSubject.next(newAccessToken);
+              return next.handle(OauthInterceptor.addToken(request, newAccessToken));
+            } else {
+              this.authenticationService.logoutWithMessage('error.unauthorized');
+            }
 
           }),
           catchError(err => {
@@ -110,17 +105,15 @@ export class OauthInterceptor implements HttpInterceptor {
     } else {
       return this.tokenSubject
         .pipe(
-        filter(token => token != null),
-        take(1),
-        switchMap(token => {
-          return next.handle(OauthInterceptor.addToken(request, token));
-        })
+          filter(token => token != null),
+          take(1),
+          switchMap(token => {
+            return next.handle(OauthInterceptor.addToken(request, token));
+          })
         );
     }
 
   }
-
-
 
 
   constructor(private authenticationService: AuthenticationService) {

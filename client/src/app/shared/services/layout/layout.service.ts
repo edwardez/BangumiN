@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {DeviceWidth} from '../../enums/device-width.enum';
 import {BehaviorSubject, Subject} from 'rxjs/index';

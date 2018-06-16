@@ -9,7 +9,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class BangumiAuthWaitDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<BangumiAuthWaitDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {
     this.dialogRef.disableClose = true;

@@ -1,4 +1,4 @@
-import { StarRatingModule } from './star-rating.module';
+import {StarRatingModule} from './star-rating.module';
 
 describe('StarRatingModule', () => {
   let starRatingModule: StarRatingModule;

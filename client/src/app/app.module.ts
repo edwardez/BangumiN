@@ -58,10 +58,8 @@ import {BanguminSubjectModule} from './subject/bangumin-subject.module';
     ),
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
-  entryComponents: [
-  ],
-  providers: [
-  ],
+  entryComponents: [],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

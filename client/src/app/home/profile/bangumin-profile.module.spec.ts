@@ -1,4 +1,4 @@
-import { BanguminProfileModule } from './bangumin-profile.module';
+import {BanguminProfileModule} from './bangumin-profile.module';
 
 describe('BanguminProfileModule', () => {
   let profileModule: BanguminProfileModule;

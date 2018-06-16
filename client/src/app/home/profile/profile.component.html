@@ -1,7 +1,8 @@
-<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined" (selectedTabChange)="onStatsSelected($event.tab)">
+<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined"
+               (selectedTabChange)="onStatsSelected($event.tab)">
   <mat-tab label="{{'profile.tabs.collection.name' | translate}}">
 
-    <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray" >
+    <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray">
       <mat-card class="has-margin-top-md has-margin-bottom-md"
                 *ngIf="!undefinedOrEmpty(userCollectionResponseByType[subjectType[currentSubjectType]])"
       >
@@ -12,7 +13,7 @@
           <mat-tab-group>
             <mat-tab
               label="{{'common.status.wish' | translate}}{{'common.action.type' + '.' +  currentSubjectType | translate}}"
-            *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.wish] !== undefined"
+              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.wish] !== undefined"
             >
               <app-collection-by-type
                 [statusName]="'wish'"

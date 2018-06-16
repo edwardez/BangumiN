@@ -1,4 +1,4 @@
-import { BanguminSettingsModule } from './bangumin-settings.module';
+import {BanguminSettingsModule} from './bangumin-settings.module';
 
 describe('BanguminSettingsModule', () => {
   let settingsModule: BanguminSettingsModule;

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProgressByTypeComponent } from './progress-by-type.component';
+import {ProgressByTypeComponent} from './progress-by-type.component';
 
 describe('ProgressByTypeComponent', () => {
   let component: ProgressByTypeComponent;
@@ -8,9 +8,9 @@ describe('ProgressByTypeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressByTypeComponent ]
+      declarations: [ProgressByTypeComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

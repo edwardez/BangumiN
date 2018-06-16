@@ -1,10 +1,8 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, first, takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs/index';
-import {LayoutService} from '../../shared/services/layout/layout.service';
+import {filter, first} from 'rxjs/operators';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 
 @Component({
@@ -24,9 +22,9 @@ export class SideNavContentComponent implements OnInit {
   constructor(private sidenavService: SidenavService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.userSubject.pipe(
-        filter( res => res !== null),
-        first()
-    ).subscribe( res => {
+      filter(res => res !== null),
+      first()
+    ).subscribe(res => {
       this.userID = res.user_id.toString();
     });
 

@@ -1,4 +1,4 @@
-import { BanguminAuthModule } from './bangumin-auth.module';
+import {BanguminAuthModule} from './bangumin-auth.module';
 
 describe('BanguminAuthModule', () => {
   let banguminAuthModule: BanguminAuthModule;

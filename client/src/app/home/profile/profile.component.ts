@@ -4,7 +4,6 @@ import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.ser
 import {forkJoin, Subject} from 'rxjs/index';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
-import {UserCollectionResponse} from '../../shared/models/collection/user-collection-response';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 
 @Component({
@@ -23,7 +22,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return Object.assign({}, ...collectionArray.map(collection => ({[collection.status.id]: collection.collectionUnderCurrentStatus})));
 
   }
-
 
 
   constructor(private bangumiUserService: BangumiUserService,
@@ -83,9 +81,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onStatsSelected(tab) {
-    if(tab.textLabel === 'Stats') {
+    if (tab.textLabel === 'Stats') {
       // fetch user stats
-      console.log("stats!!!!!");
+      console.log('stats!!!!!');
     }
   }
 

@@ -18,7 +18,8 @@ export class ProgressByTypeComponent implements OnInit {
 
   private episodeCollectionStatusUntouched = EpisodeCollectionStatus.untouched;
 
-  constructor( public episodeDialog: MatDialog) { }
+  constructor(public episodeDialog: MatDialog) {
+  }
 
   ngOnInit() {
   }

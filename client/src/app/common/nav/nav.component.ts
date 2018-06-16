@@ -78,8 +78,8 @@ export class NavComponent implements OnInit, OnDestroy {
         first()
       )
       .subscribe(isAuthenticated => {
-      this.isAuthenticated = isAuthenticated;
-    });
+        this.isAuthenticated = isAuthenticated;
+      });
 
     const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserInfo()];
 

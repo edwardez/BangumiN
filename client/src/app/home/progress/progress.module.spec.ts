@@ -1,4 +1,4 @@
-import { ProgressModule } from './progress.module';
+import {ProgressModule} from './progress.module';
 
 describe('ProgressModule', () => {
   let progressModule: ProgressModule;

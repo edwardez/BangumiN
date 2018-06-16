@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BangumiAuthWaitDialogComponent } from './bangumi-auth-wait-dialog.component';
+import {BangumiAuthWaitDialogComponent} from './bangumi-auth-wait-dialog.component';
 
 describe('BangumiAuthWaitDialogComponent', () => {
   let component: BangumiAuthWaitDialogComponent;
@@ -8,9 +8,9 @@ describe('BangumiAuthWaitDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BangumiAuthWaitDialogComponent ]
+      declarations: [BangumiAuthWaitDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

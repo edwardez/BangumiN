@@ -1,4 +1,4 @@
-import { BanguminSubjectModule } from './bangumin-subject.module';
+import {BanguminSubjectModule} from './bangumin-subject.module';
 
 describe('BanguminSubjectModule', () => {
   let banguminSubjectModule: BanguminSubjectModule;

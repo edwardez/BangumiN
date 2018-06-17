@@ -1,0 +1,49 @@
+<div fxLayout="row" fxLayoutAlign="start center"
+     fxFlex="0 1 100%"
+     ngClass.gt-sm="has-margin-top-md has-margin-bottom-md"
+     ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm">
+  <a [routerLink]="['../subject', collection.subject.id]">
+    <img [src]="collection.subject.images.medium">
+  </a>
+
+  <div fxLayout="column" fxFlex="1 1 auto" fxLayoutGap="5px" ngClass.gt-md="has-padding-left-md">
+    <div fxFlexAlign="center">
+      {{collection.subject.name}}
+    </div>
+    <mat-chip-list fxLayout="row" [multiple]="true">
+      <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
+        <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
+                  selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched }}"
+                  (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}
+        </mat-chip>
+      </ng-container>
+    </mat-chip-list>
+    <div *ngIf="collection.subject.type === SubjectType.book && bookProgressForm !== undefined">
+      <form fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" [formGroup]="bookProgressForm"
+            (ngSubmit)="submitBookProgress()" novalidate>
+        <mat-form-field class="input-book-width">
+          <div matPrefix="">{{'common.book.volumeNumber' | translate}}</div>
+          <input type="number" pattern="\d*" matInput formControlName="completedVolumeCount" class="text-align-right">
+          <div matSuffix>/{{collection.subject.totalVolumesCount}}{{'common.book.volume' | translate}}</div>
+        </mat-form-field>
+        <mat-form-field class="input-book-width">
+          <div matPrefix="">{{'common.book.chapterNumber' | translate}}</div>
+          <input type="number" pattern="\d*" matInput formControlName="completedEpisodeCount" class="text-align-right">
+          <div matSuffix>/{{collection.subject.totalEpisodesCount}}{{'common.book.chapter' | translate}}</div>
+        </mat-form-field>
+        <button mat-button type="submit">{{'common.action.update' |
+          translate}}
+        </button>
+      </form>
+
+    </div>
+    <mat-progress-bar mode="determinate"
+                      value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
+  </div>
+  <button mat-button>
+    placeholder
+  </button>
+
+</div>
+<mat-divider></mat-divider>
+

@@ -18,7 +18,15 @@
         "music": "听",
         "game": "玩",
         "book": "看"
-      }
+      },
+      "update": "更新",
+      "edit": "编辑"
+    },
+    "book": {
+      "volume": "卷",
+      "chapter": "话",
+      "volumeNumber": "第",
+      "chapterNumber": "第"
     }
   },
   "login": {

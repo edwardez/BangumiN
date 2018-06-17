@@ -18,7 +18,15 @@
         "listen": "",
         "game": "",
         "book": ""
-      }
+      },
+      "update": "Update",
+      "edit": "Edit"
+    },
+    "book": {
+      "volume": "",
+      "chapter": "",
+      "volumeNumber": "Vol.",
+      "chapterNumber": "Chap."
     }
   },
   "login": {

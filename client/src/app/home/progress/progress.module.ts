@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
 import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ProgessBySubjectComponent} from './progess-by-subject/progess-by-subject.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ProgressByTypeComponent,
     ProgressPlaceholderComponent,
     ProgressContentComponent,
-    EpisodeDialogComponent
+    EpisodeDialogComponent,
+    ProgessBySubjectComponent
   ],
   entryComponents: [
     EpisodeDialogComponent,

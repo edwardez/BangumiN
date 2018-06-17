@@ -1,36 +1,8 @@
 <div *ngIf="collectionWatchingResponse">
   <div fxLayout="row wrap" fxLayoutAlign="center center"
        *ngIf="collectionWatchingResponse.length >= 1; else emptyProgress">
-    <ng-container *ngFor="let collection of collectionWatchingResponse">
-      <div fxLayout="row" fxLayoutAlign="start center"
-           fxFlex="0 1 100%"
-           ngClass.gt-sm="has-margin-top-md has-margin-bottom-md"
-           ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm">
-        <a [routerLink]="['../subject', collection.subject.id]">
-          <img [src]="collection.subject.images.medium">
-        </a>
-
-        <div fxLayout="column" fxFlex="1 1 auto" fxLayoutGap="5px" ngClass.gt-md="has-padding-left-md">
-          <div fxFlexAlign="center">
-            {{collection.subject.name}}
-          </div>
-          <mat-chip-list fxLayout="row" [multiple]="true">
-            <ng-container *ngFor="let episode of collection.episodeHeap.priv.data">
-              <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
-                        selected="{{episode.userCollectionStatus !== episodeCollectionStatusUntouched }}"
-                        (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}
-              </mat-chip>
-            </ng-container>
-          </mat-chip-list>
-          <mat-progress-bar mode="determinate"
-                            value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
-        </div>
-        <button mat-button>
-          placeholder
-        </button>
-
-      </div>
-      <mat-divider [inset]="true"></mat-divider>
+    <ng-container *ngFor="let currentCollection of collectionWatchingResponse">
+      <app-progess-by-subject fxFlex="1 1 100%" [collection]="currentCollection"></app-progess-by-subject>
     </ng-container>
 
   </div>

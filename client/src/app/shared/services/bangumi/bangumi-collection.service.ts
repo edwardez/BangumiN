@@ -7,7 +7,6 @@ import {Observable} from 'rxjs';
 import {CollectionResponse} from '../../models/collection/collection-response';
 import {CollectionRequest} from '../../models/collection/collection-request';
 import {StatusCode} from '../../models/common/status-code';
-import {Episode} from '../../models/episode/episode';
 import {SubjectWatchingCollectionMedium} from '../../models/subject/subject-watching-collection-medium';
 
 @Injectable({
@@ -115,20 +114,18 @@ export class BangumiCollectionService {
    *update episode status of a subject in batch mode
    * for book subject, either watched_eps or watched_vols should be present
    * @param {SubjectWatchingCollectionMedium} subject model
-   * @param {Episode} episode model
    * @param {string} watchedEpisode watch until this episode number
    * @param {string} watchedVolumes watch until this volume number
    * @returns {Observable<StatusCode>} status code model
    */
   public upsertEpisodeStatusBatch(subject: SubjectWatchingCollectionMedium,
-                                  episode: Episode,
                                   watchedEpisode: string,
                                   watchedVolumes: string)
     : Observable<StatusCode> {
     const episodeStatusUpdateRequestBody = new URLSearchParams();
 
     if (BangumiCollectionService.isValidEpisodeSortNumber(watchedEpisode)) {
-      episodeStatusUpdateRequestBody.set('watched_eps', watchedVolumes);
+      episodeStatusUpdateRequestBody.set('watched_eps', watchedEpisode);
     }
 
     if (BangumiCollectionService.isValidVolumeNumber(watchedVolumes) && watchedVolumes !== environment.invalidVolume) {

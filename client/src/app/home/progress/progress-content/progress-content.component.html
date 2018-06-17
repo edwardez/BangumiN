@@ -3,6 +3,7 @@
 </app-progress-placeholder>
 
 <app-progress-by-type *ngIf="collectionWatchingResponse"
-                      [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, currentSubjectType)">
+                      [collectionWatchingResponse]="filterBySubjectType(collectionWatchingResponse, currentSubjectType)"
+                      [currentSubjectType]="currentSubjectType">
 
 </app-progress-by-type>

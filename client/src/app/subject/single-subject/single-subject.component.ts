@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {filter, switchMap} from 'rxjs/operators';
-import {SubjectSmall} from '../../shared/models/subject/subject-small';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
 import {MatDialog} from '@angular/material';
 import {ReviewDialogComponent} from '../review-dialog/review-dialog.component';
@@ -58,7 +57,7 @@ export class SingleSubjectComponent implements OnInit {
 
   /*
   Note on autoFocus: It is an accessibility feature.
-  The dialog automatically focuses the first focusable element.
+  The dialog automatically focuses the first focus-able element.
   This can be set as a configurable option if needed
   */
   openDialog(): void {
@@ -77,7 +76,7 @@ export class SingleSubjectComponent implements OnInit {
 
     dialogRef.afterClosed()
       .pipe(
-        filter(result => result && result.rating)
+        filter(result => result !== undefined && result.rating !== undefined)
       )
       .subscribe(
         result => {

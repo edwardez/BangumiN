@@ -9,7 +9,7 @@ import scrapy
 
 class DictField(scrapy.item.Field):
     def serializer(self, value):
-        return ";".join(":".join([k, v]) for k, v in value.iteritems())
+        return ";".join(":".join([k, v]) for k, v in value.items())
         
 
 class User(scrapy.Item):
@@ -31,6 +31,7 @@ class Record(scrapy.Item):
     ## Following three are optional.
     rate = scrapy.Field()
     tags = scrapy.Field()
+    comment = scrapy.Field()
 
 class Index(scrapy.Item):
     indexid = scrapy.Field()
@@ -65,6 +66,4 @@ class Subject(scrapy.Item):
 
     #staff = scrapy.Field() # feature list!
     relations = scrapy.Field() #map
-    relations['serializer'] = lambda x: u";".join(u":".join([k, v]) for k, v in x.iteritems())
-    tags = scrapy.Field() #map
-    tags['serializer'] = lambda x: u";".join(u":".join([k, unicode(v)]) for k, v in x.iteritems())
+    relations['serializer'] = lambda x: u";".join(u":".join([k, v]) for k, v in x.items())

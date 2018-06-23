@@ -7,8 +7,10 @@ from bgm.util import *
 from scrapy.http import Request
 import datetime
 
+mpa = dict.fromkeys(range(32))
 
 class UserSpider(scrapy.Spider):
+    # User spider may be deprecated, since api.bgm.tv contains more information
     name = 'user'
     def __init__(self, *args, **kwargs):
         super(UserSpider, self).__init__(*args, **kwargs)
@@ -16,13 +18,13 @@ class UserSpider(scrapy.Spider):
             self.id_max=400000
         if not hasattr(self, 'id_min'):
             self.id_min=1
-        self.start_urls = ["http://chii.in/user/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        self.start_urls = ["http://mirror.bgm.rin.cat/user/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         if len(response.xpath(".//*[@id='headerProfile']"))==0:
             return
         user = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/small/text()").extract()[0][1:]
-        nickname = response.xpath(".//*[@class='headerContainer']//*[@class='inner']/a/text()").extract()[0]
+        nickname = response.xpath(".//*[@class='headerContainer']//*[@class='inner']/a/text()").extract()[0].translate(mpa)
 
         # Is blocked?
         if len(response.xpath("//ul[@class='timeline']/li"))==0:
@@ -50,7 +52,7 @@ class IndexSpider(scrapy.Spider):
             self.id_max=20000
         if not hasattr(self, 'id_min'):
             self.id_min=1
-        self.start_urls = ["http://chii.in/index/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        self.start_urls = ["http://mirror.bgm.rin.cat/index/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         if len(response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a"))==0:
@@ -58,7 +60,7 @@ class IndexSpider(scrapy.Spider):
         indexid = response.url.split('/')[-1]
         indexid=int(indexid)
         creator = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a/@href").extract()[0].split('/')[-1]
-        creator=str(creator)
+        creator=str(creator).translate(mpa)
         td = response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/span/span[1]/text()").extract()[0]
         date = parsedate(td.split(' ')[0])
         if len(response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/span/span"))==2:
@@ -84,13 +86,13 @@ class RecordSpider(scrapy.Spider):
                     l = fr.readline().strip()
                     if not l: break;
                     userlist.append(l)
-            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, i) for i in userlist for tp in tplst]
+            self.start_urls = ["http://mirror.bgm.rin.cat/{0}/list/{1}".format(tp, i) for i in userlist for tp in tplst]
         else:
             if not hasattr(self, 'id_max'):
-                self.id_max=400000
+                self.id_max=500000
             if not hasattr(self, 'id_min'):
                 self.id_min=1
-            self.start_urls = ["http://chii.in/{0}/list/{1}".format(tp, str(i)) for i in xrange(int(self.id_min),int(self.id_max)) for tp in tplst]
+            self.start_urls = ["http://mirror.bgm.rin.cat/{0}/list/{1}".format(tp, str(i)) for i in range(int(self.id_min),int(self.id_max)) for tp in tplst]
 
     def parse(self, response):
         username = response.url.split('/')[-1]
@@ -101,7 +103,7 @@ class RecordSpider(scrapy.Spider):
 
         followlinks = response.xpath(".//div[@id='columnA']/div/div[1]/ul/li[2]//@href").extract() # a list of links
         for link in followlinks:
-            req = scrapy.Request(u"http://chii.in"+link, callback = self.parse_recorder)
+            req = scrapy.Request(u"http://mirror.bgm.rin.cat"+link, callback = self.parse_recorder)
             req.meta['uid']=uid
             yield req
 
@@ -127,11 +129,15 @@ class RecordSpider(scrapy.Spider):
             else:
                 item_rate = None
 
+            comment = item.xpath(".//div[@class='text']/text()").extract()[0] if len(item.xpath(".//div[@class='text']")) > 0 else None
+
             watchRecord = Record(name = name, uid = uid, typ = tp, state = state, iid = item_id, adddate = item_date)
             if item_tags:
                 watchRecord["tags"]=item_tags
             if item_rate:
                 watchRecord["rate"]=item_rate
+            if comment:
+                watchRecord["comment"]=comment
             yield watchRecord
 
         if len(items)==24:
@@ -148,7 +154,7 @@ class FriendsSpider(scrapy.Spider):
             self.id_max=400000
         if not hasattr(self, 'id_min'):
             self.id_min=1
-        self.start_urls = ["http://chii.in/user/"+str(i)+"/friends" for i in xrange(int(self.id_min),int(self.id_max))]
+        self.start_urls = ["http://mirror.bgm.rin.cat/user/"+str(i)+"/friends" for i in range(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
         user = response.url.split('/')[-2]
@@ -164,7 +170,7 @@ class SubjectInfoSpider(scrapy.Spider):
             self.id_max=200000
         if not hasattr(self, 'id_min'):
             self.id_min=1
-        self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+        self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
 
     def make_requests_from_url(self, url):
         rtn = Request(url)
@@ -202,13 +208,13 @@ class SubjectSpider(scrapy.Spider):
                     l = fr.readline().strip()
                     if not l: break;
                     itemlist.append(l)
-            self.start_urls = ["http://chii.in/subject/"+i for i in itemlist]
+            self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+i for i in itemlist]
         else:
             if not hasattr(self, 'id_max'):
                 self.id_max=200000
             if not hasattr(self, 'id_min'):
                 self.id_min=1
-            self.start_urls = ["http://chii.in/subject/"+str(i) for i in xrange(int(self.id_min),int(self.id_max))]
+            self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
     
 
     def make_requests_from_url(self, url):
@@ -241,19 +247,19 @@ class SubjectSpider(scrapy.Spider):
 
         rank = response.xpath(".//div[@class='global_score']/div/small[2]/text()").extract()[0]
         if rank==u'--':
-            rank=None;
+            rank=None
         else:
             rank = int(rank[1:])
         votenum = int(response.xpath(".//*[@id='ChartWarpper']/div/small/span/text()").extract()[0])
 
         tplst = [itm.split('/')[-1] for itm in response.xpath(".//*[@id='columnSubjectHomeA']/div[3]/span/a/@href").extract()]
         favcount = [0]*5; j=1;
-        for i in xrange(5):
+        for i in range(5):
             if not tplst or tplst[0]!=statestr[i]:
                 favcount[i]=0;
             else:
                 tmpstr = response.xpath(".//*[@id='columnSubjectHomeA']/div[3]/span/a["+str(j)+"]/text()").extract()[0]
-                mtch = re.match(ur"^(\d+)", tmpstr);
+                mtch = re.match(r"^(\d+)", tmpstr);
                 favcount[i] = int(mtch.group());
                 j+=1
                 tplst = tplst[1:]
@@ -290,22 +296,16 @@ class SubjectSpider(scrapy.Spider):
                                       extract()[0].split('/')[-1]))
         brouche = response.xpath(".//ul[@class='browserCoverSmall clearit']/li")
         if brouche:
-            relations[u'单行本']=[int(itm.split('/')[-1]) for itm in
+            relations['单行本']=[int(itm.split('/')[-1]) for itm in
                            brouche.xpath("a/@href").extract()]
-
-        tagbox = response.xpath(".//div[@class='subject_tag_section']/div")
-        tagname = tagbox.xpath("a/text()").extract()
-        tagval = [int(itm) for itm in tagbox.xpath("small").re("\d+")]
-        tags = dict(zip(tagname,tagval))
 
         yield Subject(subjectid=subjectid,
                       subjecttype=subjecttype,
-                      subjectname=subjectname,
+                      subjectname=subjectname.translate(mpa),
                       order=order,
                       rank=rank,
                       votenum=votenum,
                       favnum=';'.join([str(itm) for itm in favcount]),
                       date=date,
                       #staff=infobox,
-                      relations=relations,
-                      tags=tags)
+                      relations=relations)

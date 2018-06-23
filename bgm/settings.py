@@ -22,6 +22,7 @@ ITEM_PIPELINES = {
     'bgm.pipelines.TsvPipeline':300
 }
 RETRY_TIMES = 10
+LOG_LEVEL='INFO'
 
 #DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None
@@ -36,8 +37,6 @@ MYSQL_DBNAME = 'bgm'
 MYSQL_USER = 'bgmer'
 MYSQL_PASSWD = 'sai'
 MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
-
-DOWNLOAD_DELAY = 0.25
 
 ########################################
 # The following settings are only applicable to Ronnie Wang's spider setting

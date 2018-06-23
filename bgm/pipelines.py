@@ -8,12 +8,12 @@ from scrapy import log
 from scrapy.exceptions import DropItem
 from twisted.enterprise import adbapi
 from scrapy import signals
-from scrapy.contrib.exporter import JsonLinesItemExporter, CsvItemExporter
-import cPickle
+from scrapy.exporters import JsonLinesItemExporter, CsvItemExporter
+import pickle
 import codecs
 import datetime
 import os
-from settings import *
+from .settings import *
 if UPLOAD_TO_AZURE_STORAGE:
     from azure.storage.blob import BlockBlobService, ContentSettings
 
@@ -416,8 +416,8 @@ class SubjectInfoPipeline(object):
     def spider_closed(self, spider):
         if spider.name=='subjectinfo':
             with open("subjectinfo.pkl", "wb") as fw:
-                cPickle.dump(self.subjectinfo, fw)
-                cPickle.dump(self.relations, fw)
+                pickle.dump(self.subjectinfo, fw)
+                pickle.dump(self.relations, fw)
 
     def process_item(self, item, spider):
         if spider.name=='subjectinfo':
@@ -454,9 +454,9 @@ class TsvPipeline(object):
         if spider.name=='user':
             self.exporter.fields_to_export = ['uid', 'name', 'nickname', 'joindate', 'activedate']
         elif spider.name=='subject':
-            self.exporter.fields_to_export = ['subjectid', 'order', 'subjectname', 'subjecttype', 'rank', 'date', 'votenum', 'favnum', 'tags']
+            self.exporter.fields_to_export = ['subjectid', 'order', 'subjectname', 'subjecttype', 'rank', 'date', 'votenum', 'favnum']
         elif spider.name=='record':
-            self.exporter.fields_to_export = ['name', 'uid', 'iid', 'typ', 'state', 'adddate', 'rate', 'tags']
+            self.exporter.fields_to_export = ['name', 'uid', 'iid', 'typ', 'state', 'adddate', 'rate', 'tags', 'comment']
         elif spider.name=='index':
             self.exporter.fields_to_export = ['indexid', 'creator', 'favourite', 'date', 'items']
         elif spider.name=='friends':

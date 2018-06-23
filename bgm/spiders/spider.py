@@ -300,14 +300,14 @@ class SubjectSpider(scrapy.Spider):
         for itm in relateditms:
             if itm.xpath("@class"):
                 relationtype = itm.xpath("span/text()").extract()[0]
-                relations[relationtype]=[int(itm.xpath("a[@class='title']/@href").
-                                extract()[0].split('/')[-1])]
+                relations[relationtype]=[itm.xpath("a[@class='title']/@href").
+                                extract()[0].split('/')[-1]]
             else:
-                relations[relationtype].append(int(itm.xpath("a[@class='title']/@href").
-                                      extract()[0].split('/')[-1]))
+                relations[relationtype].append(itm.xpath("a[@class='title']/@href").
+                                      extract()[0].split('/')[-1])
         brouche = response.xpath(".//ul[@class='browserCoverSmall clearit']/li")
         if brouche:
-            relations['单行本']=[int(itm.split('/')[-1]) for itm in
+            relations['单行本']=[itm.split('/')[-1] for itm in
                            brouche.xpath("a/@href").extract()]
 
         yield Subject(subjectid=subjectid,

@@ -66,4 +66,4 @@ class Subject(scrapy.Item):
 
     #staff = scrapy.Field() # feature list!
     relations = scrapy.Field() #map
-    relations['serializer'] = lambda x: u";".join(u":".join([k, v]) for k, v in x.items())
+    relations['serializer'] = lambda x: ";".join(":".join([k, ','.join(v)]) for k, v in x.items())

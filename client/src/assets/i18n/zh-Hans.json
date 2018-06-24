@@ -27,6 +27,13 @@
       "chapter": "话",
       "volumeNumber": "第",
       "chapterNumber": "第"
+    },
+    "snakBar": {
+      "error": {
+        "submit": {
+          "general": "提交失败"
+        }
+      }
     }
   },
   "login": {

@@ -3,12 +3,12 @@ import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {filter, switchMap} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
-import {MatDialog} from '@angular/material';
-import {ReviewDialogComponent} from '../review-dialog/review-dialog.component';
 import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {CollectionResponse} from '../../shared/models/collection/collection-response';
 import {TitleService} from '../../shared/services/page/title.service';
+import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
+import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
 
 
 @Component({
@@ -23,10 +23,10 @@ export class SingleSubjectComponent implements OnInit {
   currentRating = 0;
 
   constructor(private route: ActivatedRoute,
-              public dialog: MatDialog,
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
-              private titleService: TitleService
+              private titleService: TitleService,
+              private reviewDialogService: ReviewDialogService
   ) {
   }
 
@@ -61,28 +61,32 @@ export class SingleSubjectComponent implements OnInit {
   This can be set as a configurable option if needed
   */
   openDialog(): void {
-    const dialogRef = this.dialog.open(ReviewDialogComponent, {
-      data: {
-        subjectId: this.subject.id,
-        rating: this.currentRating,
-        tags: this.collectionResponse.tags,
-        statusType: this.collectionResponse.status.type,
-        comment: this.collectionResponse.comment,
-        privacy: this.collectionResponse.privacy,
-        type: this.subject.type
-      },
-      autoFocus: false
-    });
 
-    dialogRef.afterClosed()
+    // construct review dialog data
+    const reviewDialogData: ReviewDialogData = {
+      subjectId: this.subject.id,
+      rating: this.currentRating,
+      tags: this.collectionResponse.tags,
+      statusType: this.collectionResponse.status.type,
+      comment: this.collectionResponse.comment,
+      privacy: this.collectionResponse.privacy,
+      type: this.subject.type
+    };
+
+
+    // open the dialog
+    const dialogRefObservable = this.reviewDialogService.openReviewDialog(reviewDialogData);
+
+    dialogRefObservable
       .pipe(
-        filter(result => result !== undefined && result.rating !== undefined)
+        switchMap(dialogRef => dialogRef.afterClosed()),
+        filter(result => result !== undefined && result.rating !== undefined),
       )
-      .subscribe(
-        result => {
-          this.currentRating = result.rating;
-          this.collectionResponse = result;
-        });
+      .subscribe(result => {
+        this.currentRating = result.rating;
+        this.collectionResponse = result;
+      });
+
 
   }
 

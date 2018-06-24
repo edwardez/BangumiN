@@ -27,6 +27,13 @@
       "chapter": "",
       "volumeNumber": "Vol.",
       "chapterNumber": "Chap."
+    },
+    "snakBar": {
+      "error": {
+        "submit": {
+          "general": "Failed to submit"
+        }
+      }
     }
   },
   "login": {

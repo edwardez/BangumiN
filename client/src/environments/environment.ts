@@ -20,7 +20,7 @@ export const environment = {
   },
   commentMaxLength: 200,
   tagsMaxNumber: 10,
-  progressPageMaxEpisodeCount: 30,
+  progressPageMaxEpisodeCount: 5,
   invalidEpisode: '-1',
   invalidVolume: '-1'
 };

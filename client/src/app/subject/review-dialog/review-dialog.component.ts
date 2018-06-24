@@ -2,14 +2,15 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef} from '@angular/material';
 import {SingleSubjectComponent} from '../single-subject/single-subject.component';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
-import {FormBuilder, FormControl, FormArray, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
-import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
+import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
 import {environment} from '../../../environments/environment';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
-import {Subject, Observable} from 'rxjs';
+import {Subject} from 'rxjs';
 import {CollectionRequest} from '../../shared/models/collection/collection-request';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {catchError, take, takeUntil} from 'rxjs/operators';
+import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class InstantStateMatcher implements ErrorStateMatcher {
@@ -39,7 +40,8 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   constructor(public dialogRef: MatDialogRef<SingleSubjectComponent>,
               private formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private bangumiCollectionService: BangumiCollectionService) {
+              private bangumiCollectionService: BangumiCollectionService,
+              private snackBarService: SnackBarService) {
     this.commentMaxLength = environment.commentMaxLength;
     this.tagsMaxNumber = environment.tagsMaxNumber;
     this.subjectType = SubjectType[data.type];
@@ -78,10 +80,20 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
 
 
     this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subjectId, collectionRequest).pipe(
-      takeUntil(this.ngUnsubscribe)
+      takeUntil(this.ngUnsubscribe),
+      catchError(error => {
+        this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
+          .pipe(take(1)).subscribe(() => {
+        });
+        return error;
+      })
     ).subscribe(res => {
       this.dialogRef.close(res);
     });
+
+  }
+
+  onCancelSubmit() {
 
   }
 
@@ -95,7 +107,6 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   }
 
   onAddTags(event: MatChipInputEvent) {
-    console.log(this.ratingForm.value);
     const input = event.input;
     const value = event.value;
     // Add tag

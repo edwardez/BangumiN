@@ -8,8 +8,8 @@ import {MatDialog} from '@angular/material';
 import {SubjectType} from '../../../shared/enums/subject-type.enum';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
-import {ReviewDialogComponent} from '../../../subject/review-dialog/review-dialog.component';
-import {filter} from 'rxjs/operators';
+import {ReviewDialogData} from '../../../shared/models/review/reviewDialogData';
+import {ReviewDialogService} from '../../../shared/services/dialog/review-dialog.service';
 
 @Component({
   selector: 'app-progess-by-subject',
@@ -24,9 +24,9 @@ export class ProgessBySubjectComponent implements OnInit {
   collection: CollectionWatchingResponseMedium;
 
   constructor(public episodeDialog: MatDialog,
-              public reviewDialog: MatDialog,
               private formBuilder: FormBuilder,
-              private bangumiCollectionService: BangumiCollectionService) {
+              private bangumiCollectionService: BangumiCollectionService,
+              private reviewDialogService: ReviewDialogService) {
   }
 
   ngOnInit() {
@@ -89,29 +89,25 @@ export class ProgessBySubjectComponent implements OnInit {
   The dialog automatically focuses the first focus-able element.
   This can be set as a configurable option if needed
   */
-  openDialog(): void {
+  openReviewDialog(): void {
     this.bangumiCollectionService.getSubjectCollectionStatus(this.collection.id.toString()).subscribe(res => {
-      const dialogRef = this.reviewDialog.open(ReviewDialogComponent, {
-        data: {
-          subjectId: this.collection.id,
+
+      // construct review dialog data
+      const reviewDialogData: ReviewDialogData = {
+        subjectId: this.collection.id,
           rating: res.rating,
           tags: res.tags,
           statusType: res.status.type,
           comment: res.comment,
           privacy: res.privacy,
           type: this.collection.subject.type
-        },
-        autoFocus: false
+      };
+
+      // open the dialog
+      this.reviewDialogService.openReviewDialog(reviewDialogData).subscribe(dialogRef => {
       });
 
-      dialogRef.afterClosed()
-        .pipe(
-          filter(result => result !== undefined && result.rating !== undefined)
-        )
-        .subscribe(
-          result => {
 
-          });
     });
 
 

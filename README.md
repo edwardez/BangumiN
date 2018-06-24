@@ -8,59 +8,13 @@ Currently, bangumi spider can scrape user information, users' item record (their
 
 ## How to set up the spider?
 
-### If you want to store data in the format of TSV
+### Bangumi spider defaults generates scraped data in the form of TSV.
 
-Currently, we added the support to scrape the data in the format of TSV. No prerequisites are required to store in TSV. Just follow the steps described in MySQL guide.
+Currently, we added the support to scrape the data in the format of TSV. No prerequisites are required to store in TSV.
 
-Besides, we have added the functionality to upload data to Azure Blob storage after the scrape of data. You just have provide you Azure account name, container name and access key. One must set up his/her own container (by Azure protal or other methods) before open up this functionality.
+Besides, we have added the functionality to upload data to Azure Blob storage after the scrape of data. You just have provide you Azure account name, container name and access key. One must set up his/her own container (by Azure protal or other methods) in `bgm/settings.py` before open up this functionality.
 
-### If you want to store data in MySQL
-
-You should set up mysql first. All the information were stored in mysql. You should create two tables named “users” and “record”:
-
-```sql
-DROP TABLE IF EXISTS `users`;
-DROP TABLE IF EXISTS `record`;
-DROP TABLE IF EXISTS `subject`;
-
-CREATE TABLE `users` (
-  `name` varchar(50) NOT NULL,
-  `nickname` varchar(50) DEFAULT NULL,
-  `uid` int(11) NOT NULL,
-  `joindate` date NOT NULL,
-  `activedate` date DEFAULT NULL,
-  PRIMARY KEY (`name`),
-  UNIQUE KEY `name_idx` (`name`)
-);
-
-CREATE TABLE `record` (
-  `name` varchar(50) NOT NULL,
-  `typ` varchar(5) NOT NULL,
-  `iid` int(11) NOT NULL,
-  `state` varchar(7) NOT NULL,
-  `adddate` date NOT NULL,
-  `rate` int(2) DEFAULT NULL,
-  `tags` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`name`,`iid`),
-  KEY `name_idx` (`name`),
-  KEY `iid_idx` (`iid`)
-)
-
-CREATE TABLE `subject` (
-  `id` int(11) NOT NULL,
-  `trueid` int(11) NOT NULL,
-  `name` varchar(50),
-  `type` varchar(5) NOT NULL,
-  `date` date NULL DEFAULT NULL,
-  `rank` int(2) NULL DEFAULT NULL,
-  `favnum` int(11) NOT NULL DEFAULT 0,
-  `votenum` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `id_idx` (`id`)
-);
-```
-
-Then you deploy your spider to aws EC2. Don't forget to open 6800 port for [scrapyd](http://scrapyd.readthedocs.org/en/latest/), the scrapy on the production environment.
+Then you deploy your spider to your server. Don't forget to open 6800 port for [scrapyd](http://scrapyd.readthedocs.org/en/latest/), the scrapy on the production environment.
 
 Then follow the following steps:
 
@@ -76,6 +30,7 @@ conda install lxml
 pip install scrapyd
 pip install mysql-python
 pip install service_identity
+pip install azure # if you enabled azure storage
 ```  
 4. Run scrapyd:
 ```

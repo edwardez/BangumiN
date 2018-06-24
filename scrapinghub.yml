@@ -1,0 +1,4 @@
+projects:
+    default: bgm
+stacks:
+    default: scrapy:1.4-py3

@@ -222,7 +222,7 @@ class SubjectSpider(scrapy.Spider):
             self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+i for i in itemlist]
         else:
             if not hasattr(self, 'id_max'):
-                self.id_max=200000
+                self.id_max=300000
             if not hasattr(self, 'id_min'):
                 self.id_min=1
             self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+str(i) for i in range(int(self.id_min),int(self.id_max))]

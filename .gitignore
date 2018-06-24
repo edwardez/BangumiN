@@ -66,3 +66,6 @@ target/
 
 # pycharm
 .idea
+
+# scrapinghub
+./scrapinghub.yml

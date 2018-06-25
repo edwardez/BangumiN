@@ -1,8 +1,8 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" ngClass.xs="mat-sidenav-xs">
     <mat-nav-list *ngIf="userID !== undefined">
-      <a mat-list-item routerLink="./progress">Progress</a>
-      <a mat-list-item [routerLink]="['./profile', userID]">Profile</a>
+      <a mat-list-item routerLink="./progress" (click)="sidenav.close()">Progress</a>
+      <a mat-list-item [routerLink]="['./profile', userID]" (click)="sidenav.close()">Profile</a>
     </mat-nav-list>
   </mat-sidenav>
 

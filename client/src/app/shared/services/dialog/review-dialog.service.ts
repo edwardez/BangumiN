@@ -3,10 +3,8 @@ import {ReviewDialogData} from '../../models/review/reviewDialogData';
 import {MatDialog} from '@angular/material';
 import {ReviewDialogComponent} from '../../../subject/review-dialog/review-dialog.component';
 import {map, take} from 'rxjs/operators';
-import {MatDialogConfig} from '@angular/material/dialog/typings/dialog-config';
 import {LayoutService} from '../layout/layout.service';
 import {DeviceWidth} from '../../enums/device-width.enum';
-import {MatDialogRef} from '@angular/material/dialog/typings/dialog-ref';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -19,7 +17,7 @@ export class ReviewDialogService {
   ) {
   }
 
-  static createDialogConfig<D = any>(reviewDialogData: ReviewDialogData, deviceWidth: DeviceWidth): MatDialogConfig<D> {
+  static createDialogConfig<D = any>(reviewDialogData: ReviewDialogData, deviceWidth: DeviceWidth): any {
     const reviewDialogConfig = {
       data: reviewDialogData,
       autoFocus: false
@@ -41,13 +39,13 @@ export class ReviewDialogService {
   }
 
 
-  public openReviewDialog(reviewDialogData: ReviewDialogData): Observable<MatDialogRef> {
+  public openReviewDialog(reviewDialogData: ReviewDialogData): Observable<any> {
 
     return this.layoutService.deviceWidth
       .pipe(
         take(1),
         map(deviceWidth => {
-          const reviewDialogConfig = ReviewDialogService.createDialogConfig(reviewDialogData, deviceWidth);
+          const reviewDialogConfig = ReviewDialogService.createDialogConfig<ReviewDialogData>(reviewDialogData, deviceWidth);
           return this.reviewDialog.open(ReviewDialogComponent, reviewDialogConfig);
         }))
       ;

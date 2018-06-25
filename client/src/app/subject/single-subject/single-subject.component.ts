@@ -80,11 +80,11 @@ export class SingleSubjectComponent implements OnInit {
     dialogRefObservable
       .pipe(
         switchMap(dialogRef => dialogRef.afterClosed()),
-        filter(result => result !== undefined && result.rating !== undefined),
+        filter(result => result !== undefined && result['rating'] !== undefined),
       )
       .subscribe(result => {
-        this.currentRating = result.rating;
-        this.collectionResponse = result;
+        this.currentRating = result['rating'];
+        this.collectionResponse = new CollectionResponse().deserialize(result);
       });
 
 

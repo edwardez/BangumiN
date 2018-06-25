@@ -280,7 +280,7 @@ export class BangumiUserService {
                 const priorityQueue: PriorityQueue<Episode> = BangumiUserService.addEpisodeToHeap(
                   show['subjectProgress'],
                   show['subjectEpisodes'],
-                  environment.progressPageMaxEpisodeCount);
+                  environment.progressPageMaxEpisodeCountDesktop);
 
                 // in collectionWatchingResponses, find the matched response
                 const matchedCollection = response['collectionWatchingResponses'].find(

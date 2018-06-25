@@ -15,5 +15,6 @@ export const environment = {
   },
   commentMaxLength: 200,
   tagsMaxNumber: 10,
-  progressPageMaxEpisodeCount: 30,
+  progressPageMaxEpisodeCountMobile: 5,
+  progressPageMaxEpisodeCountDesktop: 30,
 };

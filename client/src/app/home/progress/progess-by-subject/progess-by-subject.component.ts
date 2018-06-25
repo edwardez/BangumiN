@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SubjectWatchingCollectionMedium} from '../../../shared/models/subject/subject-watching-collection-medium';
 import {EpisodeDialogComponent} from '../episode-dialog/episode-dialog.component';
 import {CollectionWatchingResponseMedium} from '../../../shared/models/collection/collection-watching-response-medium';
@@ -10,15 +10,21 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
 import {ReviewDialogData} from '../../../shared/models/review/reviewDialogData';
 import {ReviewDialogService} from '../../../shared/services/dialog/review-dialog.service';
+import {LayoutService} from '../../../shared/services/layout/layout.service';
+import {environment} from '../../../../environments/environment';
+import {Subject} from 'rxjs/index';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-progess-by-subject',
   templateUrl: './progess-by-subject.component.html',
   styleUrls: ['./progess-by-subject.component.scss']
 })
-export class ProgessBySubjectComponent implements OnInit {
+export class ProgessBySubjectComponent implements OnInit, OnDestroy {
 
+  firstNElementCount: number;
   private bookProgressForm: FormGroup;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input()
   collection: CollectionWatchingResponseMedium;
@@ -26,13 +32,22 @@ export class ProgessBySubjectComponent implements OnInit {
   constructor(public episodeDialog: MatDialog,
               private formBuilder: FormBuilder,
               private bangumiCollectionService: BangumiCollectionService,
-              private reviewDialogService: ReviewDialogService) {
+              private reviewDialogService: ReviewDialogService,
+              private layoutService: LayoutService) {
   }
 
   ngOnInit() {
     if (this.collection.subject.type === SubjectType.book) {
       this.createBookProgressForm();
     }
+
+    this.calculateProgressPageMaxEpisodeCount();
+  }
+
+  ngOnDestroy(): void {
+    // unsubscribe, we can also first() in subscription
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   createBookProgressForm() {
@@ -42,6 +57,23 @@ export class ProgessBySubjectComponent implements OnInit {
         'completedEpisodeCount': this.collection.completedEpisodeCount,
       }
     );
+  }
+
+  /**
+   * calculate maximum umber of episode chips that should be displayed on the page
+   */
+  calculateProgressPageMaxEpisodeCount() {
+    this.layoutService.deviceWidth
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(deviceWidth => {
+        if (LayoutService.xs(deviceWidth)) {
+          this.firstNElementCount = environment.progressPageMaxEpisodeCountMobile;
+        } else {
+          this.firstNElementCount = environment.progressPageMaxEpisodeCountDesktop;
+        }
+      });
   }
 
   submitBookProgress() {
@@ -95,12 +127,12 @@ export class ProgessBySubjectComponent implements OnInit {
       // construct review dialog data
       const reviewDialogData: ReviewDialogData = {
         subjectId: this.collection.id,
-          rating: res.rating,
-          tags: res.tags,
-          statusType: res.status.type,
-          comment: res.comment,
-          privacy: res.privacy,
-          type: this.collection.subject.type
+        rating: res.rating,
+        tags: res.tags,
+        statusType: res.status.type,
+        comment: res.comment,
+        privacy: res.privacy,
+        type: this.collection.subject.type
       };
 
       // open the dialog

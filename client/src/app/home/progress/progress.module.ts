@@ -9,6 +9,7 @@ import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component'
 import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProgessBySubjectComponent} from './progess-by-subject/progess-by-subject.component';
+import {SharedPipeModule} from '../../shared/pipe/shared-pipe.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {ProgessBySubjectComponent} from './progess-by-subject/progess-by-subject
     RouterModule,
     BanguminSharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedPipeModule
   ],
   declarations: [
     ProgressComponent,

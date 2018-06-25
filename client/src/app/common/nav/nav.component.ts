@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, first, take} from 'rxjs/operators';
+import {filter, switchMap, take, tap} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {concat} from 'rxjs';
@@ -73,14 +73,6 @@ export class NavComponent implements OnInit, OnDestroy {
    */
 
   updateUserInfo() {
-    this.authenticationService.isAuthenticated()
-      .pipe(
-        first()
-      )
-      .subscribe(isAuthenticated => {
-        this.isAuthenticated = isAuthenticated;
-      });
-
     const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserInfo()];
 
 
@@ -90,9 +82,25 @@ export class NavComponent implements OnInit, OnDestroy {
         filter(bangumiUser => !!bangumiUser),
       )
       .subscribe(bangumiUser => {
-        this.bangumiUser = bangumiUser;
         this.authenticationService.userSubject.next(bangumiUser);
       });
+
+
+    // subscribe to change in userSubject
+    this.authenticationService.userSubject
+      .pipe(
+        filter(bangumiUser => !!bangumiUser),
+        tap(
+          bangumiUser => {
+            this.bangumiUser = bangumiUser;
+          }
+        ),
+        switchMap(
+          bangumiUser => this.authenticationService.isAuthenticated()
+        ),
+      ).subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
   }
 
   toggleSidenav() {

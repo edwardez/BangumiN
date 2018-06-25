@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+  selector: 'app-profile-stats',
+  templateUrl: './profile-stats.component.html',
+  styleUrls: ['./profile-stats.component.scss']
 })
-export class StatsComponent implements OnInit {
+export class ProfileStatsComponent implements OnInit {
 
   view: any[] = [700, 400];
 

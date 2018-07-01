@@ -44,5 +44,5 @@ MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
 UPLOAD_TO_AZURE_STORAGE = False
 AZURE_ACCOUNT_NAME = "ikely"  # this is the subdomain to https://*.blob.core.windows.net/
 AZURE_ACCOUNT_KEY = ""
-AZURE_CONTAINER = ''   # the name of the container (you should have already created it)
+AZURE_CONTAINER = 'bangumi'   # the name of the container (you should have already created it)
 ########################################

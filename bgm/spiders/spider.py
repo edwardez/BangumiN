@@ -8,7 +8,7 @@ from scrapy.http import Request
 import datetime
 import json
 
-mpa = dict([(i, ' ') for i in range(32)])
+mpa = dict([(i, None) for i in range(32)])
 
 class UserSpider(scrapy.Spider):
     # User spider may be deprecated, since api.bgm.tv contains more information
@@ -92,37 +92,36 @@ class RecordSpider(scrapy.Spider):
             self.start_urls = ["http://mirror.bgm.rin.cat/user/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
 
     def parse(self, response):
+        username = response.url.split('/')[-1]
         if (not response.xpath(".//*[@id='headerProfile']")) or response.xpath(".//div[@class='tipIntro']"):
             return
-        username = response.xpath(".//*[@id='headerProfile']/div/div/h1/div[3]/small/text()").extract()[0][1:]
-        username = str(username)
-
+        try:
+            nickname = response.xpath(".//h1[@class='nameSingle']/div[@class='inner']/a/text()").extract()[0].translate(mpa)
+        except IndexError:
+            nickname = ""
         uid = int(response.meta['redirect_urls'][0].split('/')[-1]) if 'redirect_urls' in response.meta else int(username)
 
         if len(response.xpath(".//*[@id='anime']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/anime/list/"+username, callback = self.merge, meta = { 'uid': uid })
+            yield scrapy.Request("http://mirror.bgm.rin.cat/anime/list/"+username, callback = self.merge, meta = { 'uid': uid, 'username': username, 'nickname': nickname })
 
         if len(response.xpath(".//*[@id='game']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/game/list/"+username, callback = self.merge, meta = { 'uid': uid })
+            yield scrapy.Request("http://mirror.bgm.rin.cat/game/list/"+username, callback = self.merge, meta = { 'uid': uid, 'username': username, 'nickname': nickname })
 
         if len(response.xpath(".//*[@id='book']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/book/list/"+username, callback = self.merge, meta = { 'uid': uid })
+            yield scrapy.Request("http://mirror.bgm.rin.cat/book/list/"+username, callback = self.merge, meta = { 'uid': uid, 'username': username, 'nickname': nickname })
 
         if len(response.xpath(".//*[@id='music']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/music/list/"+username, callback = self.merge, meta = { 'uid': uid })
+            yield scrapy.Request("http://mirror.bgm.rin.cat/music/list/"+username, callback = self.merge, meta = { 'uid': uid, 'username': username, 'nickname': nickname })
 
         if len(response.xpath(".//*[@id='real']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/real/list/"+username, callback = self.merge, meta = { 'uid': uid })
+            yield scrapy.Request("http://mirror.bgm.rin.cat/real/list/"+username, callback = self.merge, meta = { 'uid': uid, 'username': username, 'nickname': nickname })
 
     def merge(self, response):
-        uid = response.meta['uid']
         followlinks = response.xpath(".//div[@id='columnA']/div/div[1]/ul/li[2]//@href").extract() # a list of links
         for link in followlinks:
-            yield scrapy.Request(u"http://mirror.bgm.rin.cat"+link, callback = self.parse_recorder, meta = { 'uid': uid })
+            yield scrapy.Request(u"http://mirror.bgm.rin.cat"+link, callback = self.parse_recorder, meta = { 'uid': response.meta['uid'], 'username': response.meta['username'], 'nickname': response.meta['nickname'] })
 
     def parse_recorder(self, response):
-        name = response.url.split('/')[-2]
-        uid = response.meta['uid']
         state = response.url.split('/')[-1].split('?')[0]
         tp = response.url.split('/')[-4]
 
@@ -144,7 +143,8 @@ class RecordSpider(scrapy.Spider):
 
             comment = item.xpath(".//div[@class='text']/text()").extract()[0] if len(item.xpath(".//div[@class='text']")) > 0 else None
 
-            watchRecord = Record(name = name, uid = uid, typ = tp, state = state, iid = item_id, adddate = item_date)
+            watchRecord = Record(nickname = response.meta['nickname'], name = response.meta['username'], uid = response.meta['uid'],
+              typ = tp, state = state, iid = item_id, adddate = item_date)
             if item_tags:
                 watchRecord["tags"]=item_tags
             if item_rate:
@@ -154,7 +154,7 @@ class RecordSpider(scrapy.Spider):
             yield watchRecord
 
         if len(items)==24:
-            yield scrapy.Request(getnextpage(response.url),callback = self.parse_recorder, meta = { 'uid': uid })
+            yield scrapy.Request(getnextpage(response.url),callback = self.parse_recorder, meta = { 'uid': response.meta['uid'], 'username': response.meta['username'], 'nickname': response.meta['nickname'] })
 
 class FriendsSpider(scrapy.Spider):
     name='friends'
@@ -280,8 +280,8 @@ class SubjectSpider(scrapy.Spider):
         infobox = dict()
         for key,val in zip(infokey, infoval):
             if val.xpath("a"):
-                infobox[key]=[int(ref.split('/')[-1]) for ref in
-                      val.xpath("a/@href").extract()]
+                infobox[key]=[ref.split('/')[-1] for ref in
+                    val.xpath("a/@href").extract()]
 
         date = None
         for datekey in datestr:
@@ -318,5 +318,5 @@ class SubjectSpider(scrapy.Spider):
                       votenum=votenum,
                       favnum=';'.join([str(itm) for itm in favcount]),
                       date=date,
-                      #staff=infobox,
+                      staff=infobox,
                       relations=relations)

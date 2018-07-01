@@ -22,6 +22,7 @@ class User(scrapy.Item):
 
 class Record(scrapy.Item):
     ## First five items are required.
+    nickname = scrapy.Field()
     name = scrapy.Field()
     uid = scrapy.Field()
     typ = scrapy.Field()
@@ -65,5 +66,7 @@ class Subject(scrapy.Item):
     date = scrapy.Field()
 
     #staff = scrapy.Field() # feature list!
+    staff = scrapy.Field() #map
+    staff['serializer'] = lambda x: ";".join(":".join([k, ",".join(v)]) for k, v in x.items())
     relations = scrapy.Field() #map
     relations['serializer'] = lambda x: ";".join(":".join([k, ','.join(v)]) for k, v in x.items())

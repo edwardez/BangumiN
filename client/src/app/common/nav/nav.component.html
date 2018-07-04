@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated">
     <mat-icon>menu</mat-icon>
   </button>
-  <div>Bangumin</div>
+  <div fxShow fxHide.xs>Bangumin</div>
 
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
     <a mat-button routerLink="./progress">{{'progress.name' | translate}}</a>

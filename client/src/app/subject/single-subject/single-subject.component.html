@@ -98,14 +98,14 @@
 
         </mat-tab>
 
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth)"
+        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.character.length >= 1"
                  label="{{'subject.tabs.overview.info.characters' | translate}}">
 
           <app-character-list [subject]="subject"></app-character-list>
 
 
         </mat-tab>
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth)"
+        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.staff.length >= 1"
                  label="{{'subject.tabs.overview.info.staff' | translate}}">
           <app-staff-list [subject]="subject"></app-staff-list>
         </mat-tab>

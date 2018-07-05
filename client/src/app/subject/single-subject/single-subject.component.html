@@ -66,14 +66,17 @@
               <mat-card>
                 <mat-card-content fxLayout="column">
                   <p>{{'subject.tabs.overview.review.bangumiScore' | translate}}:
+                    <span *ngIf="subject.rating.total === 0">-</span>
                   </p>
 
-                  <app-score-spinner fxFlexAlign="center" [score]="subject.rating.score"></app-score-spinner>
+                  <app-score-spinner *ngIf="subject.rating.total !== 0" fxFlexAlign="center"
+                                     [rating]="subject.rating"></app-score-spinner>
 
                   <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
 
-                  <p>{{'subject.tabs.overview.review.myScore' | translate}}:
-                    <span *ngIf="!this.collectionResponse.status.isTouched">{{currentRating}}</span></p>
+                  <p *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.myScore' |
+                    translate}}:
+                    <span *ngIf="currentRating !== 0">{{currentRating}}</span></p>
                   <app-star-rating [(currentRating)]="currentRating" [starCount]="10"
                                    [isEditable]="true" (ratingUpdated)="onRatingChanged($event)"
                                    *ngIf="this.collectionResponse.status.isTouched"
@@ -94,7 +97,8 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="{{'subject.tabs.episode.name' | translate}}">
+        <mat-tab label="{{'subject.tabs.episode.name' | translate}}"
+                 *ngIf="subject.type === SubjectType.anime || subject.type === SubjectType.real">
 
         </mat-tab>
 

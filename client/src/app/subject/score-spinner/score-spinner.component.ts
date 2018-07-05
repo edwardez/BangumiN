@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {SubjectRating} from '../../shared/models/subject/subject-rating';
 
 @Component({
   selector: 'app-score-spinner',
@@ -8,7 +9,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ScoreSpinnerComponent implements OnInit {
 
   @Input()
-  score: number;
+  rating: SubjectRating;
 
   constructor() {
   }

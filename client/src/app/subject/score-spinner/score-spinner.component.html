@@ -1,11 +1,25 @@
-<div>
-  <mat-progress-spinner
-    [diameter]="100"
-    [value]="score/10*100"
-  >
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <div>
+    <mat-progress-spinner
+      [diameter]="100"
+      [value]="rating.score/10*100"
+    >
 
-  </mat-progress-spinner>
-  <div class="score-text-center">
-    {{score}}
+    </mat-progress-spinner>
+    <div class="score-text-center" fxLayout="column" fxLayoutAlign="start center">
+      <div *ngIf="rating.score !== 0">
+        {{rating.score}}
+      </div>
+      <div *ngIf="rating.total !== 0">
+        <mat-icon style="vertical-align: middle">people</mat-icon>
+        <span>{{rating.total}}</span>
+      </div>
+
+    </div>
   </div>
+
+  <div>
+
+  </div>
+
 </div>

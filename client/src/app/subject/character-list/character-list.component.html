@@ -4,7 +4,7 @@
   <div fxLayout="row wrap" fxFlex="0 1"
        fxFlexAlign="start">
     <div fxLayout="row" fxLayoutAlign="start start"
-         [fxFlex.gt-xs]="subject.character.length <= 3 ? '50%' : '25%'" fxFlex.xs="50%"
+         fxFlex.gt-xs="0 1 25%" fxFlex.xs="0 1 50%"
          fxLayoutGap="3%"
          class="has-margin-top-xs"
          *ngFor="let character of subject.character">

@@ -6,15 +6,46 @@
     <div>
       <mat-tab-group>
         <mat-tab label="{{'subject.tabs.overview.name' | translate}}">
-          <div fxLayout="row" class="has-margin-top-md">
+          <div fxLayout="row" class="has-margin-top-md has-margin-bottom-xs">
             <div fxFlex="20%">
               <div fxLayout="column" fxLayoutAlign="start center">
                 <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
                 <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
+                <div>
+                  <p *ngFor="let staff of subject.staff">
+                    {{staff.jobs[0]}} : {{staff.name}}
+                  </p>
+                </div>
+
               </div>
             </div>
             <div class="line-breaker" fxFlex="50%" fxFlexOffset="2%">
-              {{subject.summary}}
+
+
+              <div fxLayout="column">
+                <div>
+                  {{subject.summary}}
+                </div>
+
+                <div fxLayout="row wrap" fxFlex="0 1"
+                     fxFlexAlign="start">
+
+                  <div fxLayout="row" fxLayoutAlign="start start"
+                       fxFlex="25%" fxLayoutGap="3%"
+                       class="has-margin-top-xs"
+                       *ngFor="let character of subject.character">
+                    <img [src]="character.images.small">
+                    <div fxLayout="column">
+                      <div>{{character.name}}</div>
+                      <mat-divider></mat-divider>
+                      <small class="sub-list">{{generateActorsList(character.actors)}}</small>
+
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
             </div>
             <div fxFlex="20%" fxFlexOffset="2%">
               <mat-card>

@@ -61,7 +61,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.name = input.name || '';
     this.nameCN = input.name_cn || '';
     this.summary = input.summary || '';
-    this.airDate = input.air_date || '';
+    this.airDate = input.air_date || null;
     this.airWeekday = input.air_weekday || 0;
     this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;

@@ -9,6 +9,7 @@ import {CollectionResponse} from '../../shared/models/collection/collection-resp
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
 import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
+import {MonoBase} from '../../shared/models/mono/mono-base';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class SingleSubjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0); // scroll to the top
     this.route
       .params
       .pipe(
@@ -42,7 +44,9 @@ export class SingleSubjectComponent implements OnInit {
           },
         ))
       .subscribe(res => {
+
         this.subject = res[0];
+        console.log(this.subject);
         this.titleService.title = this.subject.name;
         this.collectionResponse = res[1];
         this.currentRating = this.collectionResponse.rating;
@@ -88,6 +92,15 @@ export class SingleSubjectComponent implements OnInit {
       });
 
 
+  }
+
+  generateActorsList(actorsInfo: MonoBase[]): string {
+    const actors = actorsInfo.reduce((accumulatedValue, currentValue) => {
+      accumulatedValue.push(currentValue.name);
+      return accumulatedValue;
+    }, []);
+
+    return actors.length >= 1 ? 'CV: ' + actors.join(' / ') : '';
   }
 
 

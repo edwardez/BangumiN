@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
-import {filter, switchMap} from 'rxjs/operators';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
 import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
@@ -9,7 +9,10 @@ import {CollectionResponse} from '../../shared/models/collection/collection-resp
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
 import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
-import {MonoBase} from '../../shared/models/mono/mono-base';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {Subject} from 'rxjs/index';
+import {LayoutService} from '../../shared/services/layout/layout.service';
 
 
 @Component({
@@ -17,36 +20,52 @@ import {MonoBase} from '../../shared/models/mono/mono-base';
   templateUrl: './single-subject.component.html',
   styleUrls: ['./single-subject.component.scss']
 })
-export class SingleSubjectComponent implements OnInit {
+export class SingleSubjectComponent implements OnInit, OnDestroy {
 
   subject: SubjectLarge;
   collectionResponse: CollectionResponse;
   currentRating = 0;
+  currentDeviceWidth: DeviceWidth;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
-              private reviewDialogService: ReviewDialogService
+              private reviewDialogService: ReviewDialogService,
+              private layoutService: LayoutService
   ) {
+  }
+
+  get SubjectType() {
+    return SubjectType;
+  }
+
+  get LayoutService() {
+    return LayoutService;
   }
 
   ngOnInit() {
     window.scrollTo(0, 0); // scroll to the top
+
+    this.getDeviceWidth();
+
     this.route
       .params
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         filter(params => params['id'] !== undefined),
         switchMap(params => {
             return forkJoin(
               this.bangumiSubjectService.getSubject(params['id'], 'large'),
-              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']));
+              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
+            );
           },
         ))
       .subscribe(res => {
 
         this.subject = res[0];
-        console.log(this.subject);
+        console.log(res[2]);
         this.titleService.title = this.subject.name;
         this.collectionResponse = res[1];
         this.currentRating = this.collectionResponse.rating;
@@ -94,13 +113,19 @@ export class SingleSubjectComponent implements OnInit {
 
   }
 
-  generateActorsList(actorsInfo: MonoBase[]): string {
-    const actors = actorsInfo.reduce((accumulatedValue, currentValue) => {
-      accumulatedValue.push(currentValue.name);
-      return accumulatedValue;
-    }, []);
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
-    return actors.length >= 1 ? 'CV: ' + actors.join(' / ') : '';
+  getDeviceWidth() {
+    this.layoutService.deviceWidth
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(deviceWidth => {
+        this.currentDeviceWidth = deviceWidth;
+      });
   }
 
 

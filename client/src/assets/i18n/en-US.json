@@ -117,9 +117,11 @@
     "tabs": {
       "overview": {
         "name": "Overview",
+        "openInBangumi": "Open in Bangumi",
         "review": {
-          "score": "Score",
-          "rank": "Ranked",
+          "bangumiScore": "Bangumi Score",
+          "myScore": "My score",
+          "rank": "Bangumi ranke",
           "modal": {
             "title": "Edit collection",
             "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
@@ -136,6 +138,21 @@
               }
             }
           }
+        },
+        "info": {
+          "staff": "Staff",
+          "charactersAndActors": "Characters & Voice Actors",
+          "characters": "Characters",
+          "airDate": {
+            "all": "Start date",
+            "anime": "Air date",
+            "book": "Publish date",
+            "music": "Release date",
+            "game": "Release date",
+            "real": "Air date"
+          },
+          "nameCN": "Chinese Name",
+          "episodeCount": "Episode Count"
         }
       },
       "episode": {

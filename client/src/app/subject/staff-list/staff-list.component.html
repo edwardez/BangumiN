@@ -1,0 +1,20 @@
+<div fxLayout="column" *ngIf="subject.staff.length >= 1">
+  <h4>{{'subject.tabs.overview.info.staff' | translate}}</h4>
+
+  <div fxLayout="row wrap" fxFlex="0 1"
+       fxFlexAlign="start">
+    <div fxLayout="row" fxLayoutAlign="start start"
+         fxFlex.gt-xs="25%" fxFlex.xs="50%"
+         fxLayoutGap="3%"
+         class="has-margin-top-xs"
+         *ngFor="let staff of subject.staff">
+      <a *ngIf="staff.url" target="_blank" href="{{staff.url}}"><img [src]="staff.images.small"></a>
+      <img *ngIf="!staff.url" [src]="staff.images.small">
+      <div fxLayout="column">
+        <div>{{staff.name}}</div>
+        <mat-divider></mat-divider>
+        <small class="sub-list">{{staff.jobs.join(" / ")}}</small>
+      </div>
+    </div>
+  </div>
+</div>

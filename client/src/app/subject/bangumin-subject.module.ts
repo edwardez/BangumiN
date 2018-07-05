@@ -6,6 +6,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SingleSubjectComponent} from './single-subject/single-subject.component';
 import {ReviewDialogComponent} from './review-dialog/review-dialog.component';
 import {StarRatingModule} from '../common/star-rating/star-rating.module';
+import {CharacterListComponent} from './character-list/character-list.component';
+import {StaffListComponent} from './staff-list/staff-list.component';
+import {ScoreSpinnerComponent} from './score-spinner/score-spinner.component';
 
 @NgModule({
   imports: [
@@ -18,7 +21,10 @@ import {StarRatingModule} from '../common/star-rating/star-rating.module';
   ],
   declarations: [
     SingleSubjectComponent,
-    ReviewDialogComponent
+    ReviewDialogComponent,
+    CharacterListComponent,
+    StaffListComponent,
+    ScoreSpinnerComponent,
   ],
   entryComponents: [
     ReviewDialogComponent

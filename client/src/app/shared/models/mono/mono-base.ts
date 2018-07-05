@@ -19,7 +19,7 @@ export class MonoBase implements Serializable<MonoBase> {
     const defaultMonoImage = 'https://bgm.tv//img/info_only_m.png';
 
     this.id = input.id ? input.id : 0;
-    this.url = input.url ? input.url.replace(/^http:/, 'https:') : '';
+    this.url = input.url ? input.url.replace(/^http:/, 'https:') : null;
     this.name = input.name ? input.name : '';
     this.images = new Images(defaultMonoImage).deserialize(input.images, defaultMonoImage);
     return this;

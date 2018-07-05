@@ -117,9 +117,11 @@
     "tabs": {
       "overview": {
         "name": "概览",
+        "openInBangumi": "查看Bangumi对应页面",
         "review": {
-          "score": "分数",
-          "rank": "排名",
+          "bangumiScore": "Bangumi评分",
+          "myScore": "我的评分",
+          "rank": "Bangumi排名",
           "modal": {
             "title": "编辑收藏",
             "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
@@ -136,6 +138,21 @@
               }
             }
           }
+        },
+        "info": {
+          "staff": "工作人员",
+          "charactersAndActors": "角色与声优",
+          "characters": "角色",
+          "airDate": {
+            "all": "起始日期",
+            "anime": "放送开始",
+            "book": "出版日",
+            "music": "发售日期",
+            "game": "发售日期",
+            "real": "放送开始"
+          },
+          "nameCN": "中文名",
+          "EpisodeCount": "集数"
         }
       },
       "episode": {

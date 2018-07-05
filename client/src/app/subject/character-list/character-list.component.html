@@ -1,0 +1,20 @@
+<div fxLayout="column" *ngIf="subject.character.length >= 1">
+  <h4>{{'subject.tabs.overview.info.charactersAndActors' | translate}}</h4>
+
+  <div fxLayout="row wrap" fxFlex="0 1"
+       fxFlexAlign="start">
+    <div fxLayout="row" fxLayoutAlign="start start"
+         fxFlex.gt-xs="25%" fxFlex.xs="50%"
+         fxLayoutGap="3%"
+         class="has-margin-top-xs"
+         *ngFor="let character of subject.character">
+      <a *ngIf="character.url" target="_blank" href="{{character.url}}"><img [src]="character.images.small"></a>
+      <img *ngIf="!character.url" [src]="character.images.small">
+      <div fxLayout="column">
+        <div>{{character.name}}</div>
+        <mat-divider></mat-divider>
+        <small class="sub-list">{{generateActorsList(character.actors)}}</small>
+      </div>
+    </div>
+  </div>
+</div>

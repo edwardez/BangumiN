@@ -1,7 +1,9 @@
 import {Serializable} from '../Serializable';
 import {Alias} from './alias';
+import {CommonUtils} from '../../utils/common-utils';
 
-/** 人物信息 */
+/** info of a person
+ * there might exist user-defined attribute */
 export class MonoInfo implements Serializable<MonoInfo> {
   /**
    * 生日
@@ -22,17 +24,21 @@ export class MonoInfo implements Serializable<MonoInfo> {
   /** 引用来源 */
   source?: object;
   /** 简体中文名 */
-  name_cn?: string;
+  nameCN?: string;
   /** 声优 */
   cv?: string;
 
+  // placeholder to avoid collision, not in use
+  name_cn = null;
+
   deserialize(input): MonoInfo {
-    this.birth = input.birth;
-    this.height = input.height;
-    this.gender = input.gender;
-    this.name_cn = input.name_cn;
-    this.cv = input.cv;
-    this.alias = new Alias().deserialize(input.alias);
+    this.birth = input.birth ? input.birth : null;
+    this.height = input.height ? input.height : null;
+    this.gender = input.gender ? input.gender : null;
+    this.nameCN = input.name_cn ? input.name_cn : null;
+    this.cv = input.cv ? input.cv : null;
+    this.alias = new Alias().deserialize(input.alias ? input.alias : {});
+    CommonUtils.copyCustomizedProperties(input, this);
     return this;
   }
 }

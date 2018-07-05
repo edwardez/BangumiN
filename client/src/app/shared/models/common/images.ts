@@ -33,12 +33,17 @@ export class Images implements Serializable<Images> {
   }
 
   deserialize(input) {
-    this.large = input.large === undefined ? Images.getFallbackImageUrl(input) : input.large.replace(/^http:/, 'https:');
-    this.common = input.common === undefined ? Images.getFallbackImageUrl(input) : input.common.replace(/^http:/, 'https:');
-    this.medium = input.medium === undefined ? Images.getFallbackImageUrl(input) : input.medium.replace(/^http:/, 'https:');
-    this.small = input.small === undefined ? Images.getFallbackImageUrl(input) : input.small.replace(/^http:/, 'https:');
-    this.grid = input.grid === undefined ? Images.getFallbackImageUrl(input) : input.grid.replace(/^http:/, 'https:');
-    return this;
+    if (input) {
+      this.large = input.large === undefined ? Images.getFallbackImageUrl(input) : input.large.replace(/^http:/, 'https:');
+      this.common = input.common === undefined ? Images.getFallbackImageUrl(input) : input.common.replace(/^http:/, 'https:');
+      this.medium = input.medium === undefined ? Images.getFallbackImageUrl(input) : input.medium.replace(/^http:/, 'https:');
+      this.small = input.small === undefined ? Images.getFallbackImageUrl(input) : input.small.replace(/^http:/, 'https:');
+      this.grid = input.grid === undefined ? Images.getFallbackImageUrl(input) : input.grid.replace(/^http:/, 'https:');
+      return this;
+    } else {
+      return new Images();
+    }
+
   }
 
 }

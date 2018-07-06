@@ -99,6 +99,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
         });
       }
     }
-  };
+  }
 
 }

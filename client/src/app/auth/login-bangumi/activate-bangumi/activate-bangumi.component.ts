@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
-import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {CookieService} from 'ngx-cookie';
 import {environment} from '../../../../environments/environment';
@@ -39,6 +38,7 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
           'success': false,
         }, environment.FRONTEND_URL);
     }
+    window.close();
   }
 
   ngOnDestroy(): void {

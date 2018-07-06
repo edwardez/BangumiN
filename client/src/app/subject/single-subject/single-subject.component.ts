@@ -76,7 +76,8 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
   }
 
   onRatingChanged(rating) {
-    const collectionRequest = new CollectionRequest(this.collectionResponse.status.type, undefined, undefined, rating, this.collectionResponse.privacy);
+    const collectionRequest = new CollectionRequest(this.collectionResponse.status.type,
+      undefined, undefined, rating, this.collectionResponse.privacy);
 
     this.bangumiCollectionService.upsertSubjectCollectionStatus(this.subject.id.toString(), collectionRequest).pipe(
       takeUntil(this.ngUnsubscribe),
@@ -106,7 +107,8 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
       statusType: this.collectionResponse.status.type,
       comment: this.collectionResponse.comment,
       privacy: this.collectionResponse.privacy,
-      type: this.subject.type
+      type: this.subject.type,
+      name: this.subject.name
     };
 
 

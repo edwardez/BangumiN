@@ -9,7 +9,7 @@ import {MonoBase} from '../../shared/models/mono/mono-base';
 export class CharacterListComponent implements OnInit {
 
   @Input()
-  subject;
+  allCharacters;
 
   constructor() {
   }

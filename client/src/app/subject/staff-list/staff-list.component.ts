@@ -8,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class StaffListComponent implements OnInit {
 
   @Input()
-  subject;
+  allStaff;
 
   constructor() {
   }

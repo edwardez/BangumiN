@@ -1,4 +1,4 @@
-<div fxLayout="column" *ngIf="subject.character.length >= 1">
+<div fxLayout="column" *ngIf="allCharacters.length >= 1">
   <h4>{{'subject.tabs.overview.info.charactersAndActors' | translate}}</h4>
 
   <div fxLayout="row wrap" fxFlex="0 1"
@@ -7,11 +7,13 @@
          fxFlex.gt-xs="0 1 25%" fxFlex.xs="0 1 50%"
          fxLayoutGap="3%"
          class="has-margin-top-xs"
-         *ngFor="let character of subject.character">
+         *ngFor="let character of allCharacters">
       <a *ngIf="character.url" target="_blank" href="{{character.url}}"><img [src]="character.images.small"></a>
       <img *ngIf="!character.url" [src]="character.images.small">
       <div fxLayout="column">
-        <div>{{character.name}}</div>
+        <div><span>{{character.name}}</span>
+          <small class="comment-number">(+{{character.comment}})</small>
+        </div>
         <mat-divider></mat-divider>
         <small class="sub-list">{{generateActorsList(character.actors)}}</small>
       </div>

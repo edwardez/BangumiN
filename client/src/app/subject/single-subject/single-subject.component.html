@@ -49,9 +49,9 @@
                   {{subject.summary}}
                 </div>
 
-                <app-character-list [subject]="subject" fxHide.xs></app-character-list>
+                <app-character-list [allCharacters]="subject.character" fxHide.xs></app-character-list>
 
-                <app-staff-list [subject]="subject" fxHide.xs></app-staff-list>
+                <app-staff-list [allStaff]="subject.staff" fxHide.xs></app-staff-list>
 
               </div>
             </div>
@@ -105,13 +105,13 @@
         <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.character.length >= 1"
                  label="{{'subject.tabs.overview.info.characters' | translate}}">
 
-          <app-character-list [subject]="subject"></app-character-list>
+          <app-character-list [allCharacters]="subject.character"></app-character-list>
 
 
         </mat-tab>
         <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.staff.length >= 1"
                  label="{{'subject.tabs.overview.info.staff' | translate}}">
-          <app-staff-list [subject]="subject"></app-staff-list>
+          <app-staff-list [allStaff]="subject.staff"></app-staff-list>
         </mat-tab>
 
 

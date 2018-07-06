@@ -63,9 +63,7 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
           },
         ))
       .subscribe(res => {
-
         this.subject = res[0];
-        console.log(res[2]);
         this.titleService.title = this.subject.name;
         this.collectionResponse = res[1];
         this.currentRating = this.collectionResponse.rating;

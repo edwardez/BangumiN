@@ -25,7 +25,7 @@
     "express-validator": "^5.2.0",
     "helmet": "^3.12.1",
     "joi": "^13.4.0",
-    "mongoose": "^5.1.5",
+    "mongoose": "^5.2.1",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.4.0",
     "request": "^2.87.0",
@@ -40,10 +40,10 @@
     "eslint-plugin-async-await": "0.0.0",
     "eslint-plugin-chai-expect": "^1.1.1",
     "eslint-plugin-chai-friendly": "^0.4.1",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-mocha": "^4.12.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.17.5",
-    "sinon": "^6.0.0"
+    "sinon": "^6.1.0"
   }
 }

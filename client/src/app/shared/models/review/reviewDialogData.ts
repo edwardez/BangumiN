@@ -24,9 +24,12 @@ export class ReviewDialogData {
   // type of the subject
   type: SubjectType;
 
+  // name of the subject
+  name: string;
+
 
   constructor(subjectId: number, rating: number, tags: string[],
-              statusType: CollectionStatusType, comment: string, privacy: number, type: SubjectType) {
+              statusType: CollectionStatusType, comment: string, privacy: number, type: SubjectType, name: string) {
     this.subjectId = subjectId;
     this.rating = rating;
     this.tags = tags;
@@ -34,5 +37,6 @@ export class ReviewDialogData {
     this.comment = comment;
     this.privacy = privacy;
     this.type = type;
+    this.name = name;
   }
 }

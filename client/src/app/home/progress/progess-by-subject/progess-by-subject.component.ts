@@ -132,7 +132,8 @@ export class ProgessBySubjectComponent implements OnInit, OnDestroy {
         statusType: res.status.type,
         comment: res.comment,
         privacy: res.privacy,
-        type: this.collection.subject.type
+        type: this.collection.subject.type,
+        name: this.collection.subject.name
       };
 
       // open the dialog

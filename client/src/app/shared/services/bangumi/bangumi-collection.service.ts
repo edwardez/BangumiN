@@ -68,11 +68,27 @@ export class BangumiCollectionService {
     subjectId: string, collectionRequest: CollectionRequest,
     action = 'update'): Observable<CollectionResponse> {
     const collectionRequestBody = new URLSearchParams();
-    collectionRequestBody.set('status', collectionRequest.status);
-    collectionRequestBody.set('comment', collectionRequest.comment);
-    collectionRequestBody.set('tags', collectionRequest.tags.map(tag => tag.trim()).filter(tag => tag.trim().length >= 1).join(' '));
-    collectionRequestBody.set('rating', collectionRequest.rating.toString());
-    collectionRequestBody.set('privacy', collectionRequest.privacy.toString());
+
+    if (collectionRequest.status !== undefined) {
+      collectionRequestBody.set('status', collectionRequest.status);
+    }
+
+    if (collectionRequest.comment !== undefined) {
+      collectionRequestBody.set('comment', collectionRequest.comment);
+    }
+
+    if (collectionRequest.tags !== undefined) {
+      collectionRequestBody.set('tags', collectionRequest.tags.map(tag => tag.trim()).filter(tag => tag.trim().length >= 1).join(' '));
+    }
+
+    if (collectionRequest.rating !== undefined) {
+      collectionRequestBody.set('rating', collectionRequest.rating.toString());
+    }
+
+    if (collectionRequest.privacy !== undefined) {
+      collectionRequestBody.set('privacy', collectionRequest.privacy.toString());
+    }
+
 
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 

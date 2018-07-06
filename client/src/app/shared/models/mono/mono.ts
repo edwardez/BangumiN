@@ -1,19 +1,12 @@
 import {Serializable} from '../Serializable';
-import {Images} from '../common/images';
+import {MonoBase} from './mono-base';
 
-export class Mono implements Serializable<Mono> {
-  /**
-   * 人物 ID
-   * format: int32
-   */
-  id?: number;
-  /** 人物地址 */
-  url?: string;
-  /** 姓名 */
-  name?: string;
-  images?: Images;
-  /** 简体中文名 */
-  name_cn?: string;
+export class Mono extends MonoBase implements Serializable<Mono> {
+
+  // placeholder to avoid collision, not in use
+  name_cn = null;
+
+  nameCN?: string;
   /**
    * 回复数量
    * format: int32
@@ -26,13 +19,10 @@ export class Mono implements Serializable<Mono> {
   collects?: number;
 
   deserialize(input) {
-    this.id = input.id;
-    this.url = input.url;
-    this.name = input.name;
-    this.name_cn = input.name_cn;
-    this.comment = input.comment;
-    this.collects = input.collects;
-    this.images = new Images().deserialize(input.images);
+    super.deserialize(input);
+    this.nameCN = input.name_cn ? input.name_cn : '';
+    this.comment = input.comment ? input.comment : 0;
+    this.collects = input.collects ? input.collects : 0;
     return this;
   }
 }

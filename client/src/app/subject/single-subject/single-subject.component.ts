@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
-import {filter, switchMap} from 'rxjs/operators';
+import {catchError, filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
 import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
@@ -9,6 +9,12 @@ import {CollectionResponse} from '../../shared/models/collection/collection-resp
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
 import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {Subject} from 'rxjs/index';
+import {LayoutService} from '../../shared/services/layout/layout.service';
+import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
+import {CollectionRequest} from '../../shared/models/collection/collection-request';
 
 
 @Component({
@@ -16,29 +22,47 @@ import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.se
   templateUrl: './single-subject.component.html',
   styleUrls: ['./single-subject.component.scss']
 })
-export class SingleSubjectComponent implements OnInit {
+export class SingleSubjectComponent implements OnInit, OnDestroy {
 
   subject: SubjectLarge;
   collectionResponse: CollectionResponse;
   currentRating = 0;
+  currentDeviceWidth: DeviceWidth;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
-              private reviewDialogService: ReviewDialogService
+              private reviewDialogService: ReviewDialogService,
+              private layoutService: LayoutService,
+              private snackBarService: SnackBarService
   ) {
   }
 
+  get SubjectType() {
+    return SubjectType;
+  }
+
+  get LayoutService() {
+    return LayoutService;
+  }
+
   ngOnInit() {
+    window.scrollTo(0, 0); // scroll to the top
+
+    this.getDeviceWidth();
+
     this.route
       .params
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         filter(params => params['id'] !== undefined),
         switchMap(params => {
             return forkJoin(
               this.bangumiSubjectService.getSubject(params['id'], 'large'),
-              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']));
+              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
+            );
           },
         ))
       .subscribe(res => {
@@ -52,7 +76,20 @@ export class SingleSubjectComponent implements OnInit {
   }
 
   onRatingChanged(rating) {
-    this.currentRating = rating;
+    const collectionRequest = new CollectionRequest(this.collectionResponse.status.type,
+      undefined, undefined, rating, this.collectionResponse.privacy);
+
+    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.subject.id.toString(), collectionRequest).pipe(
+      takeUntil(this.ngUnsubscribe),
+      catchError(error => {
+        this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
+          .pipe(take(1)).subscribe(() => {
+        });
+        return error;
+      })
+    ).subscribe(res => {
+      this.currentRating = rating;
+    });
   }
 
   /*
@@ -70,7 +107,8 @@ export class SingleSubjectComponent implements OnInit {
       statusType: this.collectionResponse.status.type,
       comment: this.collectionResponse.comment,
       privacy: this.collectionResponse.privacy,
-      type: this.subject.type
+      type: this.subject.type,
+      name: this.subject.name
     };
 
 
@@ -88,6 +126,21 @@ export class SingleSubjectComponent implements OnInit {
       });
 
 
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  getDeviceWidth() {
+    this.layoutService.deviceWidth
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(deviceWidth => {
+        this.currentDeviceWidth = deviceWidth;
+      });
   }
 
 

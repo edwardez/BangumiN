@@ -49,8 +49,8 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.name = '';
     this.nameCN = '';
     this.summary = '';
-    this.airDate = '1970-01-01';
-    this.airWeekday = 0;
+    this.airDate = null;
+    this.airWeekday = null;
     this.images = new Images();
   }
 
@@ -61,8 +61,10 @@ export class SubjectBase implements Serializable<SubjectBase> {
     this.name = input.name || '';
     this.nameCN = input.name_cn || '';
     this.summary = input.summary || '';
-    this.airDate = input.air_date || '';
-    this.airWeekday = input.air_weekday || 0;
+    // bangumi will set null start date to 0000-00-00, since a normal YYYY or MM or DD will not start with 00, any dates that start with 00 should
+    // be a invalid one
+    this.airDate = input.air_date && !input.air_date.startsWith('00') ? input.air_date : null;
+    this.airWeekday = input.air_weekday || null;
     this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
     return this;
   }

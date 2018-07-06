@@ -7,7 +7,7 @@ export class CollectionRequest {
   rating?: number;
   privacy?: number;
 
-  constructor(status: CollectionStatusType, comment = '', tags = [], rating = 0, privacy = 0) {
+  constructor(status: CollectionStatusType, comment?, tags?, rating?, privacy?) {
     this.status = status;
     this.comment = comment;
     this.tags = tags;

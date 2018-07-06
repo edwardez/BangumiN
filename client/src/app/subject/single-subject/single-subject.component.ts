@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {catchError, filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
 import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
@@ -13,6 +13,8 @@ import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {Subject} from 'rxjs/index';
 import {LayoutService} from '../../shared/services/layout/layout.service';
+import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
+import {CollectionRequest} from '../../shared/models/collection/collection-request';
 
 
 @Component({
@@ -33,7 +35,8 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
               private reviewDialogService: ReviewDialogService,
-              private layoutService: LayoutService
+              private layoutService: LayoutService,
+              private snackBarService: SnackBarService
   ) {
   }
 
@@ -73,7 +76,19 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
   }
 
   onRatingChanged(rating) {
-    this.currentRating = rating;
+    const collectionRequest = new CollectionRequest(this.collectionResponse.status.type, undefined, undefined, rating, this.collectionResponse.privacy);
+
+    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.subject.id.toString(), collectionRequest).pipe(
+      takeUntil(this.ngUnsubscribe),
+      catchError(error => {
+        this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
+          .pipe(take(1)).subscribe(() => {
+        });
+        return error;
+      })
+    ).subscribe(res => {
+      this.currentRating = rating;
+    });
   }
 
   /*

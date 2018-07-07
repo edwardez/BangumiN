@@ -17,13 +17,13 @@ import {Subject} from 'rxjs/index';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit, OnDestroy {
-  private bangumiUser: BangumiUser;
-  private searchKeywords = '';
+  bangumiUser: BangumiUser;
+  searchKeywords = '';
+  isAuthenticated = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  private isAuthenticated = false;
 
   @Input()
-  private currentDeviceWidth: DeviceWidth;
+  currentDeviceWidth: DeviceWidth;
 
 
   constructor(private sidenavService: SidenavService,

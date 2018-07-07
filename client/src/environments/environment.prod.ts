@@ -7,8 +7,7 @@ export const environment = {
   BACKEND_AUTH_URL: 'https://bangumin.tv/auth',
   BACKEND_OAUTH_URL: 'https://bangumin.tv/oauth',
   BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
-  whitelistedDomains: ['bangumin.tv'],
-  blacklistedRoutes: [/http:\/\/localhost:3000\/proxy\/.+/g, /https?:\/\/bangumin\.tv\/auth.+/g],
+  whitelistedDomains: ['proxy.bangumin.tv'],
   availableLanguage: {
     'en-US': 'English',
     'zh-Hans': '简体中文'
@@ -17,4 +16,6 @@ export const environment = {
   tagsMaxNumber: 10,
   progressPageMaxEpisodeCountMobile: 5,
   progressPageMaxEpisodeCountDesktop: 30,
+  invalidEpisode: '-1',
+  invalidVolume: '-1'
 };

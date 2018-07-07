@@ -7,7 +7,7 @@
 
   <div mat-dialog-content>
     <mat-button-toggle-group formControlName="collectionStatus"
-                             #group="matButtonToggleGroup" (change)="onSubmitValueChange(group.value)"
+                             #group="matButtonToggleGroup" (change)="onSubmitValueChange()"
                              class="episode-action-mat-button-group">
       <mat-button-toggle [value]="episodeCollectionStatus.queue">{{'progress.episode.status.queue' | translate}}
       </mat-button-toggle>

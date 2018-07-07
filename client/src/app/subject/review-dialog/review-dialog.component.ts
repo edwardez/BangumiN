@@ -28,14 +28,16 @@ export class InstantStateMatcher implements ErrorStateMatcher {
 })
 export class ReviewDialogComponent implements OnInit, OnDestroy {
 
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
-  private ratingForm: FormGroup;
-  private subjectType: string;
 
+  ratingForm: FormGroup;
+  subjectType: string;
   separatorKeysCodes = [ENTER, COMMA, SPACE];
+  matcher = new InstantStateMatcher();
 
-  private readonly commentMaxLength: number;
-  private readonly tagsMaxNumber: number;
+  readonly commentMaxLength: number;
+  readonly tagsMaxNumber: number;
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(public dialogRef: MatDialogRef<SingleSubjectComponent>,
               private formBuilder: FormBuilder,

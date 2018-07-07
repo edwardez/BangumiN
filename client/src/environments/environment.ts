@@ -12,8 +12,7 @@ export const environment = {
   BACKEND_AUTH_URL: 'http://127.0.0.1:3000/auth',
   BACKEND_OAUTH_URL: 'http://127.0.0.1:3000/oauth',
   BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
-  whitelistedDomains: ['127.0.0.1:3000'],
-  blacklistedRoutes: [/http:\/\/127\.0\.0\.1:4200\/proxy\/api\/.+/],
+  whitelistedDomains: ['127.0.0.1:4200'],
   availableLanguage: {
     'en-US': 'English',
     'zh-Hans': '简体中文'

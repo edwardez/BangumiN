@@ -23,7 +23,7 @@ import {takeUntil} from 'rxjs/operators';
 export class ProgessBySubjectComponent implements OnInit, OnDestroy {
 
   firstNElementCount: number;
-  private bookProgressForm: FormGroup;
+  bookProgressForm: FormGroup;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input()

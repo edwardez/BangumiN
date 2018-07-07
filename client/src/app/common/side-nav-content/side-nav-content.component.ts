@@ -12,10 +12,10 @@ import {DeviceWidth} from '../../shared/enums/device-width.enum';
 })
 export class SideNavContentComponent implements OnInit {
 
-  private userID: string;
+  userID: string;
 
   @Input()
-  private currentDeviceWidth: DeviceWidth;
+  currentDeviceWidth: DeviceWidth;
 
   @ViewChild('sidenav') public sidenav: MatSidenav;
 

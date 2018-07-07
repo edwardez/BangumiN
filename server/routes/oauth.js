@@ -84,7 +84,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.cookie('activationInfo', JSON.stringify(req.user), { domain: config.server.host });
+    res.cookie('activationInfo', JSON.stringify(req.user), { domain: config.cookieDomain });
     res.redirect(`${config.frontEndUrl}/activate?type=bangumi`);
   },
 );

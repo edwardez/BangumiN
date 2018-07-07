@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
-mongoose.connect(config.mongodb.uri);
+mongoose.connect(config.mongodb.uri, { useNewUrlParser: true });
 
 app.use(expressSession({
   secret: config.passport.secret.session,

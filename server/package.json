@@ -24,6 +24,7 @@
     "express-session": "^1.15.6",
     "express-validator": "^5.2.0",
     "helmet": "^3.12.1",
+    "http-proxy-middleware": "^0.18.0",
     "joi": "^13.4.0",
     "mongoose": "^5.2.1",
     "passport": "^0.4.0",

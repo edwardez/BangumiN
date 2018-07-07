@@ -44,6 +44,7 @@ import {JwtModule} from '@auth0/angular-jwt';
       config: {
         tokenGetter: tokenGetter,
         whitelistedDomains: environment.whitelistedDomains,
+        blacklistedRoutes: environment.blacklistedRoutes
       }
     }),
     InterceptorsModule.forRoot(

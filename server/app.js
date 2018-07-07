@@ -8,13 +8,14 @@ const expressSession = require('express-session');
 const MongoStore = require('connect-mongo')(expressSession);
 const mongoose = require('mongoose');
 const passport = require('./middleware/passportHandler');
+const proxy = require('http-proxy-middleware');
 const logger = require('./utils/logger')(module);
 const oauth = require('./routes/oauth');
 const auth = require('./routes/auth');
 
 const app = express();
-const server = app.listen(config.server.port, config.server.host);
 
+const server = app.listen(config.server.port, config.server.host);
 
 // enable cors
 const corsOption = {
@@ -26,6 +27,23 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
+app.use('/proxy/api/bangumi', proxy({
+  target: 'https://api.bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/api/bangumi': '', // rewrite path
+  },
+  logProvider: () => logger,
+}));
+
+app.use('/proxy/oauth/bangumi', proxy({
+  target: 'https://bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/oauth/bangumi': '/oauth', // rewrite path
+  },
+  logProvider: () => logger,
+}));
 
 // rest API requirements
 app.use(bodyParser.json());
@@ -67,13 +85,13 @@ const logErrors = function logErrors(err, req, res, next) {
   next(err);
 };
 
-
 // error handler, send stacktrace only during development
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = function errorHandler(err, req, res, next) {
-  res
-    .status(res.statusCode === 200 ? 500 : res.statusCode)
-    .json({ error: err.code === undefined ? 'unclassified' : err.code, error_description: err.message });
+  res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
+    error: err.code === undefined ? 'unclassified' : err.code,
+    error_description: err.message,
+  });
 };
 
 app.use(logErrors);

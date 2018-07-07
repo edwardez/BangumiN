@@ -6,13 +6,14 @@
 export const environment = {
   production: false,
   FRONTEND_URL: 'http://127.0.0.1:4200',
-  BANGUMI_API_URL: 'http://127.0.0.1:4200/proxy/api/bangumi',
-  BANGUMI_OAUTH_URL: 'http://127.0.0.1:4200/proxy/oauth/bangumi',
+  BANGUMI_API_URL: 'http://127.0.0.1:3000/proxy/api/bangumi',
+  BANGUMI_OAUTH_URL: 'http://127.0.0.1:3000/proxy/oauth/bangumi',
   BACKEND_API_URL: 'http://127.0.0.1:3000/api',
   BACKEND_AUTH_URL: 'http://127.0.0.1:3000/auth',
   BACKEND_OAUTH_URL: 'http://127.0.0.1:3000/oauth',
   BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
-  whitelistedDomains: ['127.0.0.1:4200'],
+  whitelistedDomains: ['127.0.0.1:3000'],
+  blacklistedRoutes: ['127.0.0.1:3000/api', '127.0.0.1:3000/oauth', '127.0.0.1:3000/auth'],
   availableLanguage: {
     'en-US': 'English',
     'zh-Hans': '简体中文'

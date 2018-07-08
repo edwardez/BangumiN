@@ -1,4 +1,4 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
 import {StorageService} from './storage.service';
 import {BangumiUser} from '../models/BangumiUser';
@@ -10,7 +10,7 @@ describe('TokenStorageService', () => {
     TestBed.configureTestingModule({
       providers: [StorageService]
     });
-    // use actual service here to test whether localStorage works on different browsers
+    // use actual service here to switchType whether localStorage works on different browsers
     storageService = TestBed.get(StorageService);
     storageService.clear();
   });

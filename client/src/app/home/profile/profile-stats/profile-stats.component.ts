@@ -15,33 +15,93 @@ export class ProfileStatsComponent implements OnInit {
   gradient = false;
   showLegend = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Country';
+  xAxisLabel = 'Score';
   showYAxisLabel = true;
-  yAxisLabel = 'Population';
+  yAxisLabel = 'Count';
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', "#2361bd"]
   };
 
-  single = [
-    {
-      'name': 'Germany',
-      'value': 8940000
-    },
-    {
-      'name': 'USA',
-      'value': 5000000
-    },
-    {
-      'name': 'France',
-      'value': 7200000
-    }
-  ];
+  data = [];
 
   constructor() {
   }
 
   ngOnInit() {
+    this.data = [
+      {
+        'name': '1',
+        'value': 10
+      }, {
+        'name': '2',
+        'value': 3
+      }, {
+        'name': '3',
+        'value': 4
+      }, {
+        'name': '4',
+        'value': 0.01
+      }, {
+        'name': '5',
+        'value': 1
+      }, {
+        'name': '6',
+        'value': 12
+      }, {
+        'name': '7',
+        'value': 17
+      }, {
+        'name': '8',
+        'value': 4
+      }, {
+        'name': '9',
+        'value': 11
+      }, {
+        'name': '10',
+        'value': 1
+      }
+    ];
+  }
+
+  switchType(type) {
+    // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
+    // tmp hack: use 0.01 instead
+    if (type === 'Real') {
+      this.data = [
+        {
+          'name': '1',
+          'value': 1
+        }, {
+          'name': '2',
+          'value': 4
+        }, {
+          'name': '3',
+          'value': 14
+        }, {
+          'name': '4',
+          'value': 1
+        }, {
+          'name': '5',
+          'value': 13
+        }, {
+          'name': '6',
+          'value': 23
+        }, {
+          'name': '7',
+          'value': 12
+        }, {
+          'name': '8',
+          'value': 4
+        }, {
+          'name': '9',
+          'value': 8
+        }, {
+          'name': '10',
+          'value': 5
+        }
+      ];
+    }
   }
 
 }

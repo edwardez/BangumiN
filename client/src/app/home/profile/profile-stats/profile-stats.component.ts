@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BangumiUserService} from "../../../shared/services/bangumi/bangumi-user.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-profile-stats',
@@ -41,81 +42,19 @@ export class ProfileStatsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data = [
-      {
-        'name': '1',
-        'value': 10
-      }, {
-        'name': '2',
-        'value': 3
-      }, {
-        'name': '3',
-        'value': 4
-      }, {
-        'name': '4',
-        'value': 0.01
-      }, {
-        'name': '5',
-        'value': 1
-      }, {
-        'name': '6',
-        'value': 12
-      }, {
-        'name': '7',
-        'value': 17
-      }, {
-        'name': '8',
-        'value': 4
-      }, {
-        'name': '9',
-        'value': 11
-      }, {
-        'name': '10',
-        'value': 1
-      }
-    ];
-
     let tmp = this.banguminUserService.getUserProfileStats('hi');
+    this.data = _.map(_.countBy(tmp, "rate"), (val, key) => ({name: key, value: val}));
   }
 
   switchType(type) {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.01 instead
-    if (type === 'Real') {
-      this.data = [
-        {
-          'name': '1',
-          'value': 1
-        }, {
-          'name': '2',
-          'value': 4
-        }, {
-          'name': '3',
-          'value': 14
-        }, {
-          'name': '4',
-          'value': 1
-        }, {
-          'name': '5',
-          'value': 13
-        }, {
-          'name': '6',
-          'value': 23
-        }, {
-          'name': '7',
-          'value': 12
-        }, {
-          'name': '8',
-          'value': 4
-        }, {
-          'name': '9',
-          'value': 8
-        }, {
-          'name': '10',
-          'value': 5
-        }
-      ];
-    }
+    let arr = this.banguminUserService.getUserProfileStats('hi', type);
+    this.data = _.map(_.countBy(arr, "rate"), (val, key) => ({name: key, value: val}));
+  }
+
+  private groupAndCountByRate(arr) {
+
   }
 
 }

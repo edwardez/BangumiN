@@ -16,7 +16,6 @@ import * as PriorityQueue from 'js-priority-queue';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 import {Episode} from '../../models/episode/episode';
 import {UserCollectionResponse} from '../../models/collection/user-collection-response';
-import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -327,7 +326,7 @@ export class BangumiUserService {
   }
 
   public getUserProfileStats(username: string, type = 'All'): any {
-    let stats = [
+    return [
       {typ: 'Real', rate: 8},
       {typ: 'Anime', rate: 7},
       {typ: 'Real', rate: 4},
@@ -335,13 +334,17 @@ export class BangumiUserService {
       {typ: 'Real', rate: 6},
       {typ: 'Anime', rate: 10},
       {typ: 'Anime', rate: 2},
-      {typ: 'Anime', rate: 5}
-    ], filteredArr = stats;
-    if (type !== 'All') {
-      filteredArr = _.filter(stats, ['typ', type]);
-    }
-
-    return _.countBy(filteredArr, 'rate');
+      {typ: 'Anime', rate: 5},
+      {typ: 'Anime', rate: 1},
+      {typ: 'Anime', rate: 2},
+      {typ: 'Anime', rate: 3},
+      {typ: 'Anime', rate: 4},
+      {typ: 'Anime', rate: 4},
+      {typ: 'Anime', rate: 6},
+      {typ: 'Anime', rate: 7},
+      {typ: 'Anime', rate: 8},
+      {typ: 'Anime', rate: 9}
+    ].filter((stat) => stat.typ === type);
   }
 
 

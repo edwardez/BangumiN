@@ -97,5 +97,7 @@ const generalErrorHandler = function errorHandler(err, req, res, next) {
 app.use(logErrors);
 app.use(generalErrorHandler);
 
+logger.info(`Server running at ${config.server.host}:${config.server.port}`);
+
 module.exports = server;
 

@@ -27,33 +27,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
               private authenticationService: AuthenticationService) {
   }
 
-  redirectToBangumi() {
-    this.openedBangumiPopup = window.open(`${environment.BACKEND_OAUTH_URL}/bangumi`);
-    this.bangumiAuthWaitDialog = this.dialog.open(BangumiAuthWaitDialogComponent,
-      {
-        data: {
-          receiveMessageHandler: this.receiveMessageHandler
-        }
-      });
-  }
-
-  ngOnInit() {
-    this.receiveMessageHandler = this.receiveMessage.bind(this);
-    if (window.addEventListener) {
-      window.addEventListener('message', this.receiveMessageHandler, false);
-    } else {
-      (<any>window).attachEvent('onmessage', this.receiveMessageHandler);
-    }
-
-  }
-
-  ngOnDestroy(): void {
-    // unsubscribe, we can also first() in subscription
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
-
   receiveMessage: any = (event: any) => {
     if (event && event.data && event.data.type === 'bangumiCallBack') {
       if (this.bangumiAuthWaitDialog) {
@@ -62,10 +35,11 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
       if (this.openedBangumiPopup) {
         this.openedBangumiPopup.close();
       }
+      this.removePostMessageListener();
 
       const bangumiCallBackData = event.data;
       let loginResultTranslationLabel: string;
-      if (bangumiCallBackData.success === true) {
+      if (bangumiCallBackData['result'] === 'success') {
         this.authenticationService.verifyAndSetBangumiToken(bangumiCallBackData.accessToken, bangumiCallBackData.refreshToken)
           .pipe(
             takeUntil(this.ngUnsubscribe),
@@ -94,11 +68,36 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
         loginResultTranslationLabel = 'login.loginFailure';
         this.translateService.get(loginResultTranslationLabel).subscribe(res => {
           this.snackBar.open(res, '', {
-            duration: 3000
+            duration: 10000
           });
         });
       }
     }
+  }
+
+  ngOnInit() {
+    this.receiveMessageHandler = this.receiveMessage.bind(this);
+  }
+
+  ngOnDestroy(): void {
+    // unsubscribe, we can also first() in subscription
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  redirectToBangumi() {
+    window.addEventListener('message', this.receiveMessageHandler, false);
+    this.openedBangumiPopup = window.open(`${environment.BACKEND_OAUTH_URL}/bangumi`);
+    this.bangumiAuthWaitDialog = this.dialog.open(BangumiAuthWaitDialogComponent,
+      {
+        data: {
+          receiveMessageHandler: this.receiveMessageHandler
+        }
+      });
+  }
+
+  removePostMessageListener() {
+    window.removeEventListener('message', this.receiveMessageHandler, false);
   }
 
 }

@@ -23,7 +23,7 @@ const config = {
   frontEndUrl: envVars.FRONT_END_URL,
   cookieSecure: envVars.COOKIE_SECURE,
   cookieExpireIn: envVars.COOKIE_EXPIRE_IN,
-  cookieDomain: envVars.COOKIE_DOMAIN
+  cookieDomain: envVars.COOKIE_DOMAIN,
 };
 
 module.exports = config;

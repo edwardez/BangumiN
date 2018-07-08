@@ -42,7 +42,7 @@
     "oauthRedirect": "登陆",
     "waitForBangumiAuth": {
       "title": "正在登录中",
-      "content": "请在新打开的窗口完成登录认证，在认证期间请不要关闭此对话框",
+      "content": "在认证期间请不要关闭本窗口，请在新打开的窗口完成登录认证",
       "cancel": "取消认证"
     },
     "loginSuccess": "登录成功，正在跳转...",

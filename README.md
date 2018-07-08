@@ -42,6 +42,10 @@ At this time, you can check http://votre.site:6800/ to see if scrapyd presents y
 5. Then on your local machine, you have to package your project to upload it to your scrapyd server. You have to `pip install scrapyd-client` to help you package and upload. For this part, you can refer to [here](https://github.com/scrapy/scrapyd-client).  
 6. Execute `curl http://votre.site:6800/schedule.json -d project=bgm -d spider=the-spider-you-want`  
 
+## Known issue
+
+Due to sensitive content restriction, this spider cannot scrape subjects that are marked as R-18.
+
 ## License
 
 MIT Licensed.

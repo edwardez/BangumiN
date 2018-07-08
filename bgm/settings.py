@@ -23,6 +23,7 @@ ITEM_PIPELINES = {
 }
 RETRY_TIMES = 10
 LOG_LEVEL='INFO'
+DUPEFILTER_CLASS='scrapy.dupefilters.BaseDupeFilter'
 
 #DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None

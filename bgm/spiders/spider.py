@@ -181,11 +181,6 @@ class SubjectInfoSpider(scrapy.Spider):
             self.id_min=1
         self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
 
-    def make_requests_from_url(self, url):
-        rtn = Request(url)
-        rtn.meta['dont_redirect']=True
-        return rtn;
-
     def parse(self, response):
         subject_id = int(response.url.split('/')[-1])
         if not response.xpath(".//*[@id='headerSubject']"):
@@ -224,12 +219,6 @@ class SubjectSpider(scrapy.Spider):
             if not hasattr(self, 'id_min'):
                 self.id_min=1
             self.start_urls = ["http://mirror.bgm.rin.cat/subject/"+str(i) for i in range(int(self.id_min),int(self.id_max))]
-    
-
-    def make_requests_from_url(self, url):
-        rtn = Request(url)
-        # rtn.meta['dont_redirect']=True
-        return rtn;
 
     def parse(self, response):
         subjectid = int(response.url.split('/')[-1]) # trueid

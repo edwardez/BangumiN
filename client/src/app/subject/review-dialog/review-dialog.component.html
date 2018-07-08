@@ -40,6 +40,7 @@
         <input
           placeholder="{{'subject.tabs.overview.review.modal.tags' | translate: {tagsMaxNumber: tagsMaxNumber} }}"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
           [matChipInputFor]="chipList"
           (matChipInputTokenEnd)="onAddTags($event)"
         />

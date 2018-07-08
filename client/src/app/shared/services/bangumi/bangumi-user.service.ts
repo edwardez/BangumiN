@@ -16,6 +16,7 @@ import * as PriorityQueue from 'js-priority-queue';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
 import {Episode} from '../../models/episode/episode';
 import {UserCollectionResponse} from '../../models/collection/user-collection-response';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -125,7 +126,7 @@ export class BangumiUserService {
   }
 
 
-  /*
+  /**
   get user info
   is username is not provided/null/etc, by default, user info in localStorage will be used to retrieve user info from server
   if there's no user info in localStorage, a null will be emitted
@@ -323,6 +324,24 @@ export class BangumiUserService {
       return forkJoin(observableArray);
     }
 
+  }
+
+  public getUserProfileStats(username: string, type = 'All'): any {
+    let stats = [
+      {typ: 'Real', rate: 8},
+      {typ: 'Anime', rate: 7},
+      {typ: 'Real', rate: 4},
+      {typ: 'Real', rate: 7},
+      {typ: 'Real', rate: 6},
+      {typ: 'Anime', rate: 10},
+      {typ: 'Anime', rate: 2},
+      {typ: 'Anime', rate: 5}
+    ], filteredArr = stats;
+    if (type !== 'All') {
+      filteredArr = _.filter(stats, ['typ', type]);
+    }
+
+    return _.countBy(filteredArr, 'rate');
   }
 
 

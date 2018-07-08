@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {BangumiUserService} from "../../../shared/services/bangumi/bangumi-user.service";
 
 @Component({
   selector: 'app-profile-stats',
@@ -6,26 +7,37 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./profile-stats.component.scss']
 })
 export class ProfileStatsComponent implements OnInit {
+  view;
+  showXAxis;
+  showYAxis;
+  gradient;
+  showLegend;
+  showXAxisLabel;
+  xAxisLabel;
+  showYAxisLabel;
+  yAxisLabel;
+  colorScheme;
+  data;
 
-  view: any[] = [700, 400];
+  constructor(
+    private banguminUserService: BangumiUserService
+  ) {
+    this.view = [700, 400];
+    // options
+    this.gradient = false;
+    this.showLegend = true;
 
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Score';
-  showYAxisLabel = true;
-  yAxisLabel = 'Count';
+    this.xAxisLabel = 'Score';
+    this.showXAxisLabel = true;
+    this.showXAxis = true;
 
-  colorScheme = {
-    domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', "#2361bd"]
-  };
+    this.yAxisLabel = 'Count';
+    this.showYAxisLabel = true;
+    this.showYAxis = false;
 
-  data = [];
-
-  constructor() {
+    this.colorScheme = {
+      domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', "#2361bd"]
+    };
   }
 
   ngOnInit() {
@@ -62,6 +74,8 @@ export class ProfileStatsComponent implements OnInit {
         'value': 1
       }
     ];
+
+    let tmp = this.banguminUserService.getUserProfileStats('hi');
   }
 
   switchType(type) {

@@ -6,7 +6,6 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {EpisodeCollectionStatus} from '../../../shared/enums/episode-collection-status';
 import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
 import {SubjectWatchingCollectionMedium} from '../../../shared/models/subject/subject-watching-collection-medium';
-import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-episode-dialog',
@@ -15,7 +14,7 @@ import {environment} from '../../../../environments/environment';
 })
 export class EpisodeDialogComponent implements OnInit {
 
-  private episodeStatusForm: FormGroup;
+  episodeStatusForm: FormGroup;
   eps = EpisodeCollectionStatus;
 
   constructor(public dialogRef: MatDialogRef<ProgressComponent>,

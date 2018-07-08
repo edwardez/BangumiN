@@ -21,7 +21,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
   @Output() ratingUpdated = new EventEmitter();
 
   private ratingToBeStore: number;
-  private ratingArray = [];
+  ratingArray = [];
   private propagateChange = (_: any) => {
   };
 

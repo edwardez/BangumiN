@@ -7,7 +7,6 @@ const logger = require('../utils/logger')(module);
 const requestPromise = require('request-promise');
 const asyncHandler = require('express-async-handler');
 
-
 /**
  * verify bangumi user refresh token request is in the correct format
  * @param req request context
@@ -16,12 +15,15 @@ const asyncHandler = require('express-async-handler');
 function verifyBangumiUserRefreshAccessTokenRequest(req, res) {
   const tokenSchema = joi.object({
     refreshToken: joi.string().required(),
-    clientId: joi.string().valid(config.passport.oauth.bangumi.clientID).required(),
+    clientId: joi.string()
+      .valid(config.passport.oauth.bangumi.clientID)
+      .required(),
     grantType: joi.string().valid('refresh_token').required(),
-    redirectUrl: joi.string().valid(config.passport.oauth.bangumi.callbackURL).required(),
+    redirectUrl: joi.string()
+      .valid(config.passport.oauth.bangumi.callbackURL)
+      .required(),
     userId: joi.string().valid(req.user.id).required(),
   }).unknown().required();
-
 
   const { error, value: tokenVars } = joi.validate(req.body, tokenSchema);
   if (error) {
@@ -80,24 +82,27 @@ router.get(
 router.get(
   '/bangumi/callback',
   passport.authenticate('bangumi-oauth', {
-    failureRedirect: '/',
+    failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
     session: true,
   }),
   (req, res) => {
-    res.cookie('activationInfo', JSON.stringify(req.user), { domain: config.server.host });
-    res.redirect(`${config.frontEndUrl}/activate?type=bangumi`);
+    res.cookie('activationInfo', JSON.stringify(req.user), {
+      domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
+      config.cookieDomain,
+    });
+    res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=success`);
   },
 );
 
 router.post(
   '/bangumi/refresh', passport.authenticationMiddleware(),
-  asyncHandler(refreshUserAccessToken), (req, res) => res.json(req.refreshedTokenInfo),
+  asyncHandler(refreshUserAccessToken),
+  (req, res) => res.json(req.refreshedTokenInfo),
 );
 
 const csrfProtection = csrf({ cookie: true });
 router.get('/json', csrfProtection, (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
 });
-
 
 module.exports = router;

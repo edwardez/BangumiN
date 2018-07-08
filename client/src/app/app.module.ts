@@ -12,7 +12,6 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {DashboardComponent} from './home/dashboard/dashboard.component';
 
-import {JwtModule} from '@auth0/angular-jwt';
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
 import {BanguminSharedModule} from '../bangumin-shared.module';
 import {BanguminHomeModule} from './home/home.module';
@@ -22,6 +21,7 @@ import {BanguminAuthModule} from './auth/bangumin-auth.module';
 import {BanguminSearchModule} from './search/bangumin-search.module';
 import {BanguminSettingsModule} from './settings/bangumin-settings.module';
 import {BanguminSubjectModule} from './subject/bangumin-subject.module';
+import {JwtModule} from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -44,10 +44,11 @@ import {BanguminSubjectModule} from './subject/bangumin-subject.module';
       config: {
         tokenGetter: tokenGetter,
         whitelistedDomains: environment.whitelistedDomains,
-        blacklistedRoutes: environment.blacklistedRoutes,
+        blacklistedRoutes: environment.blacklistedRoutes
       }
     }),
-    InterceptorsModule.forRoot(),
+    InterceptorsModule.forRoot(
+    ),
     TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -71,5 +72,5 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 export function tokenGetter() {
-  return localStorage.getItem('jwtToken');
+  return localStorage.getItem('accessToken');
 }

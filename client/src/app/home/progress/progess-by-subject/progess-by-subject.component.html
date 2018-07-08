@@ -22,7 +22,7 @@
       </button>
     </div>
     <mat-chip-list fxLayout="row" [multiple]="true">
-      <ng-container *ngFor="let episode of collection.episodeHeap.priv.data | arrayFirstN:firstNElementCount">
+      <ng-container *ngFor="let episode of collection.episodeHeap['priv']['data'] | arrayFirstN:firstNElementCount">
         <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
                   selected="{{episode.userCollectionStatus !== EpisodeCollectionStatus.untouched }}"
                   (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}

@@ -24,6 +24,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
     // unsubscribe, we can also first() in subscription
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    window.scrollTo(0, 0); // scroll to the top, in some cases user might be confused if next page doesn't start from top
   }
 
   ngOnInit(): void {

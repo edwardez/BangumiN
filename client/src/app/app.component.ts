@@ -43,6 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
       defaultLang = 'en-US';
     } else if (browserLang.match(/zh/)) {
       defaultLang = 'zh-Hans';
+    } else {
+      defaultLang = 'en-US';
     }
     translate.setDefaultLang(defaultLang);
     this.translate.use(defaultLang);

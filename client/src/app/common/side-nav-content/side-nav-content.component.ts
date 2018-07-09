@@ -47,7 +47,7 @@ export class SideNavContentComponent implements OnInit {
 
   // display git build version on the page
   displayBuildVersion(): string {
-    if (environment.environmentType !== 'uat') {
+    if (environment.displayBuildVersion) {
       return BuildVersion.version + '/' + BuildVersion.branch + '/' + BuildVersion.revision;
     } else {
       return '';

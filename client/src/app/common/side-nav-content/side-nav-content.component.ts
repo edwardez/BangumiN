@@ -4,6 +4,8 @@ import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, first} from 'rxjs/operators';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {environment} from '../../../environments/environment';
+import {BuildVersion} from '../../../environments/build-version';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -35,8 +37,22 @@ export class SideNavContentComponent implements OnInit {
       .setSidenav(this.sidenav);
   }
 
+  get Environment() {
+    return environment;
+  }
+
   get DeviceWidth() {
     return DeviceWidth;
+  }
+
+  // display git build version on the page
+  displayBuildVersion(): string {
+    if (environment.displayBuildVersion) {
+      return BuildVersion.version + '/' + BuildVersion.branch + '/' + BuildVersion.revision;
+    } else {
+      return '';
+    }
+
   }
 
 }

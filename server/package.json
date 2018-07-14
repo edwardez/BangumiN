@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node .",
     "start-dev": "NODE_ENV=development nodemon .",
+    "start-uat": "NODE_ENV=uat node .",
     "start-prod": "NODE_ENV=production npm start",
     "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.spec.js' --reporter nyan",
     "lint-fix": "eslint . --fix"
@@ -29,6 +30,7 @@
     "mongoose": "^5.2.1",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.4.0",
+    "pm2": "^3.0.0",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "winston": "^3.0.0"

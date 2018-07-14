@@ -7,6 +7,7 @@
     "start": "ng serve",
     "start-dev": "ng serve --host 127.0.0.1",
     "build": "ng build --prod",
+    "build-uat": "ts-node ./utils/git.version.ts && ng build --configuration uat",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

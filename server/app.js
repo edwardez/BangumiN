@@ -15,7 +15,10 @@ const auth = require('./routes/auth');
 
 const app = express();
 
-const server = app.listen(config.server.port, config.server.host);
+// if environment is not development, trust the first proxy
+if (config.env !== 'development') {
+    app.set('trust proxy', 1) // trust first proxy
+}
 
 // enable cors
 const corsOption = {
@@ -62,9 +65,10 @@ app.use(expressSession({
   resave: false,
   saveUninitialized: false,
   cookie: {
+      domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') + config.cookieDomain,
     httpOnly: true,
     name: 'sessionId',
-    maxAge: 31536000000,
+      maxAge: config.cookieExpireIn,
     secure: config.cookieSecure,
   },
 }));
@@ -96,6 +100,8 @@ const generalErrorHandler = function errorHandler(err, req, res, next) {
 
 app.use(logErrors);
 app.use(generalErrorHandler);
+
+const server = app.listen(config.server.port, config.server.host);
 
 logger.info(`Server running at ${config.server.host}:${config.server.port}`);
 

@@ -8,5 +8,7 @@
 
   <mat-sidenav-content ngClass.lt-md="mat-sidenav-content-lt-md" ngClass.gt-sm="mat-sidenav-content-gt-sm">
     <router-outlet></router-outlet>
+    <small *ngIf="Environment.displayBuildVersion" class="build-version-footer">{{displayBuildVersion()}}</small>
   </mat-sidenav-content>
 </mat-sidenav-container>
+

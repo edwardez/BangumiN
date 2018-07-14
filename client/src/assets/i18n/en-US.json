@@ -42,7 +42,7 @@
     "oauthRedirect": "Login",
     "waitForBangumiAuth": {
       "title": "Login in progress",
-      "content": "Please complete the login process in the newly opened window, please don't close this dialog before login is completed.",
+      "content": "Please complete the login process in the newly opened window, please don't close this window before login is completed.",
       "cancel": "Cancel authentication"
     },
     "loginSuccess": "Login succeeded, now redirecting...",

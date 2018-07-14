@@ -19,3 +19,12 @@ mat-sidenav {
 .mat-sidenav-xs {
   top: 56px;
 }
+
+.build-version-footer {
+  color: grey;
+  position: fixed;
+  left: 10px;
+  bottom: 0;
+  width: 100%;
+  text-align: left;
+}

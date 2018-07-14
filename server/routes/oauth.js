@@ -75,12 +75,12 @@ const refreshUserAccessToken = async function refreshUserAccessToken(req, res, n
 };
 
 router.get(
-  '/bangumi',
-  passport.authenticate('bangumi-oauth'),
+    '/bangumi',
+    passport.authenticate('bangumi-oauth'),
 );
 
 router.get(
-  '/bangumi/callback',
+    '/bangumi/callback',
   passport.authenticate('bangumi-oauth', {
     failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
     session: true,

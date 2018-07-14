@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const envVarsSchema = joi.object({
   NODE_ENV: joi.string()
-    .allow(['development', 'production', 'test'])
+    .allow(['development', 'production', 'test', 'uat'])
     .required(),
   FRONT_END_URL: joi.string()
     .uri()

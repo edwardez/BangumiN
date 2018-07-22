@@ -2,6 +2,8 @@
   "name": "bangumin-server",
   "version": "0.0.0",
   "description": "server for BangumiN",
+  "author": "edward",
+  "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
     "start": "NODE_ENV=production node dist/index.js",
@@ -12,11 +14,21 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "watch-js": "wait-on dist/index.js && nodemon dist/index.js",
-    "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.spec.js' --reporter nyan",
+    "test": "NODE_ENV=test jest",
     "lint-fix": "tslint --fix -c tslint.json -p tsconfig.json 'src/**/*.ts'"
   },
-  "author": "edward",
-  "license": "MIT",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.(ts|js)"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
@@ -45,6 +57,7 @@
     "@types/express-session": "^1.15.10",
     "@types/helmet": "0.0.38",
     "@types/http-proxy-middleware": "^0.17.5",
+    "@types/jest": "^23.3.0",
     "@types/joi": "^13.4.0",
     "@types/node": "^10.5.2",
     "@types/passport": "^0.4.6",
@@ -52,7 +65,9 @@
     "@types/request": "^2.47.1",
     "@types/request-promise": "^4.1.42",
     "concurrently": "^3.6.0",
+    "jest": "^23.4.1",
     "nodemon": "^1.17.5",
+    "ts-jest": "^23.0.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.2",

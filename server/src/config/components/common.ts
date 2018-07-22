@@ -13,7 +13,7 @@ const envVarsSchema = joi.object({
 }).unknown()
   .required();
 
-const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
+const {error, value: envVars} = joi.validate(process.env, envVarsSchema);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
@@ -26,4 +26,4 @@ const config = {
   cookieDomain: envVars.COOKIE_DOMAIN,
 };
 
-module.exports = config;
+export = config;

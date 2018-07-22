@@ -1,5 +1,5 @@
-const joi = require('joi');
-const winston = require('winston');
+import joi from 'joi';
+import winston from 'winston';
 
 const envVarsSchema = joi.object({
   LOGGER_LEVEL: joi.string()
@@ -14,7 +14,7 @@ const envVarsSchema = joi.object({
 }).unknown()
   .required();
 
-const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
+const {error, value: envVars} = joi.validate(process.env, envVarsSchema);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
@@ -26,9 +26,8 @@ const config = {
   },
 };
 
-
 if (!config.logger.enabled) {
   // TODO: a better way to remove all loggers
   winston.clear(); // Remove all transports
 }
-module.exports = config;
+export = config;

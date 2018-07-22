@@ -1,14 +1,13 @@
-const joi = require('joi');
+import joi from 'joi';
 
 const envVarsSchema = joi.object({
   MONGODB_URI: joi.string()
-    .uri({ scheme: 'mongodb' })
+    .uri({scheme: 'mongodb'})
     .required(),
 }).unknown()
   .required();
 
-
-const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
+const {error, value: envVars} = joi.validate(process.env, envVarsSchema);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
@@ -19,4 +18,4 @@ const config = {
   },
 };
 
-module.exports = config;
+export = config;

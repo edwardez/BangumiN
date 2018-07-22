@@ -1,23 +1,23 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const csrf = require('csurf');
-const helmet = require('helmet');
-const config = require('./config');
-const expressSession = require('express-session');
-const MongoStore = require('connect-mongo')(expressSession);
-const mongoose = require('mongoose');
-const passport = require('./middleware/passportHandler');
-const proxy = require('http-proxy-middleware');
-const logger = require('./utils/logger')(module);
-const oauth = require('./routes/oauth');
-const auth = require('./routes/auth');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import helmet from 'helmet';
+import config from './config';
+import expressSession from 'express-session';
+import passport from './middleware/passportHandler';
+import {authenticationMiddleware} from './middleware/authenticationHandler';
+import proxy from 'http-proxy-middleware';
+import Logger from './utils/logger';
+import oauth from './routes/oauth';
+import auth from './routes/auth';
+
+const logger = Logger(module);
 
 const app = express();
 
 // if environment is not development, trust the first proxy
 if (config.env !== 'development') {
-    app.set('trust proxy', 1) // trust first proxy
+  app.set('trust proxy', 1); // trust first proxy
 }
 
 // enable cors
@@ -56,19 +56,15 @@ app.use(bodyParser.urlencoded({
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
-mongoose.connect(config.mongodb.uri, { useNewUrlParser: true });
-
 app.use(expressSession({
   secret: config.passport.secret.session,
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   name: 'sessionId',
   resave: false,
   saveUninitialized: false,
   cookie: {
-      domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') + config.cookieDomain,
+    domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') + config.cookieDomain,
     httpOnly: true,
-    name: 'sessionId',
-      maxAge: config.cookieExpireIn,
+    maxAge: config.cookieExpireIn,
     secure: config.cookieSecure,
   },
 }));
@@ -80,18 +76,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/auth', passport.authenticationMiddleware(), auth);
-
+app.use('/auth', authenticationMiddleware(), auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
-const logErrors = function logErrors(err, req, res, next) {
+const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
   logger.error('%o', err.stack);
   next(err);
 };
 
 // error handler, send stacktrace only during development
 // eslint-disable-next-line no-unused-vars
-const generalErrorHandler = function errorHandler(err, req, res, next) {
+const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
   res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
     error: err.code === undefined ? 'unclassified' : err.code,
     error_description: err.message,
@@ -106,4 +101,3 @@ const server = app.listen(config.server.port, config.server.host);
 logger.info(`Server running at ${config.server.host}:${config.server.port}`);
 
 module.exports = server;
-

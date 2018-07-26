@@ -1,4 +1,4 @@
 require('./config');
-const server = require('./app');
+import server = require('./app');
 
 module.exports = server;

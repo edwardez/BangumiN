@@ -1,18 +1,24 @@
-const router = require('express').Router();
-const passport = require('passport');
-const csrf = require('csurf');
-const config = require('../config');
-const joi = require('joi');
-const logger = require('../utils/logger')(module);
-const requestPromise = require('request-promise');
-const asyncHandler = require('express-async-handler');
+import * as express from 'express';
+import passport from 'passport';
+import csrf from 'csurf';
+import config from '../config';
+import joi from 'joi';
+import Logger from '../utils/logger';
+import requestPromise from 'request-promise';
+import asyncHandler from 'express-async-handler';
+import {authenticationMiddleware} from '../middleware/authenticationHandler';
+
+const router = express.Router();
+
+const logger = Logger(module);
 
 /**
  * verify bangumi user refresh token request is in the correct format
  * @param req request context
+ * @param res response context
  * @returns accessToken access token of the account
  */
-function verifyBangumiUserRefreshAccessTokenRequest(req, res) {
+function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
   const tokenSchema = joi.object({
     refreshToken: joi.string().required(),
     clientId: joi.string()
@@ -25,14 +31,14 @@ function verifyBangumiUserRefreshAccessTokenRequest(req, res) {
     userId: joi.string().valid(req.user.id).required(),
   }).unknown().required();
 
-  const { error, value: tokenVars } = joi.validate(req.body, tokenSchema);
+  const {error, value: tokenVars} = joi.validate(req.body, tokenSchema);
   if (error) {
     logger.error(error);
     logger.error(`Config validation error: ${error.message} for user ${req.user.id}`);
     return res.sendStatus(400);
   }
 
-  const { refreshToken } = tokenVars;
+  const {refreshToken} = tokenVars;
 
   return refreshToken;
 }
@@ -45,7 +51,7 @@ function verifyBangumiUserRefreshAccessTokenRequest(req, res) {
  * @param next next middleware
  * @returns {Promise<*>}
  */
-const refreshUserAccessToken = async function refreshUserAccessToken(req, res, next) {
+const refreshUserAccessToken = async function refreshUserAccessToken(req: any, res: any, next: any) {
   const refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
 
   const options = {
@@ -75,34 +81,34 @@ const refreshUserAccessToken = async function refreshUserAccessToken(req, res, n
 };
 
 router.get(
-    '/bangumi',
-    passport.authenticate('bangumi-oauth'),
+  '/bangumi',
+  passport.authenticate('bangumi-oauth'),
 );
 
 router.get(
-    '/bangumi/callback',
+  '/bangumi/callback',
   passport.authenticate('bangumi-oauth', {
     failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
     session: true,
   }),
-  (req, res) => {
+  (req: any, res: any) => {
     res.cookie('activationInfo', JSON.stringify(req.user), {
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
-      config.cookieDomain,
+        config.cookieDomain,
     });
     res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=success`);
   },
 );
 
 router.post(
-  '/bangumi/refresh', passport.authenticationMiddleware(),
+  '/bangumi/refresh', authenticationMiddleware(),
   asyncHandler(refreshUserAccessToken),
-  (req, res) => res.json(req.refreshedTokenInfo),
+  (req: any, res: any) => res.json(req.refreshedTokenInfo),
 );
 
-const csrfProtection = csrf({ cookie: true });
-router.get('/json', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
+const csrfProtection = csrf({cookie: true});
+router.get('/json', csrfProtection, (req: any, res: any) => {
+  res.json({csrfToken: req.csrfToken()});
 });
 
-module.exports = router;
+export default router;

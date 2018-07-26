@@ -1,7 +1,7 @@
-const passport = require('passport');
-const OAuth2Strategy = require('passport-oauth2').Strategy;
-const config = require('../config/components/passport');
-const request = require('request');
+import passport from 'passport';
+import {Strategy as OAuth2Strategy} from 'passport-oauth2';
+import config from '../config/components/passport';
+import request from 'request';
 
 // oauth strategy for bangumi
 const bangumiOauth = new OAuth2Strategy(
@@ -13,7 +13,7 @@ const bangumiOauth = new OAuth2Strategy(
     callbackURL: config.passport.oauth.bangumi.callbackURL,
     state: true, // set state to true to mitigate CSRF attack
   },
-  ((accessToken, refreshToken, profile, done) => {
+  ((accessToken: string, refreshToken: string, profile: any, done: any) => {
     const profileWithRefreshToken = profile;
     profileWithRefreshToken.refresh_token = refreshToken;
     return done(null, profileWithRefreshToken);
@@ -23,11 +23,12 @@ const bangumiOauth = new OAuth2Strategy(
 // implement userProfile function to retrieve user profile from server
 // this method avoids DRY, and should be combined with getUserProfile
 // ...well, I just want to practice with different ways to make requests
-bangumiOauth.userProfile = function userProfile(accessToken, done) {
+bangumiOauth.userProfile = function userProfile(accessToken: string, done: any) {
   // choose your own adventure, or use the Strategy's oauth client
   request.post(
-    `${config.passport.oauth.bangumi.tokenStatusURL}?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`,
-    (err, response, body) => {
+    `${config.passport.oauth.bangumi.tokenStatusURL}
+        ?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`,
+    (err: any, response: any, body: any) => {
       if (err) {
         return done(err);
       }
@@ -45,30 +46,14 @@ bangumiOauth.userProfile = function userProfile(accessToken, done) {
   );
 };
 
-/**
- * check whether user is authenticated or not, if not
- * send a 401 unauthorized response
- * @returns {Function}
- */
-function authenticationMiddleware() {
-  return (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    return res.sendStatus(401);
-  };
-}
-
 passport.use('bangumi-oauth', bangumiOauth);
 
-passport.serializeUser((user, done) => {
-  done(null, { id: user.user_id });
+passport.serializeUser((user: any, done) => {
+  done(null, {id: user['user_id']});
 });
 
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-passport.authenticationMiddleware = authenticationMiddleware;
-
-module.exports = passport;
+export = passport;

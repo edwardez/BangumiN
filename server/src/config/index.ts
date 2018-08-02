@@ -13,16 +13,6 @@ if (process.env.NODE_ENV === 'development') {
     'development/production/uat/test');
 }
 
-let webConfig: any;
-try {
-  webConfig = require('./web'); // eslint-disable-line global-require
-} catch (ex) {
-  if (ex.code === 'MODULE_NOT_FOUND') {
-    throw new Error('No config for web');
-  }
+import config from './web';
 
-  throw ex;
-}
-
-const config = webConfig;
-export = config;
+export default config;

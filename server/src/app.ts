@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import config from './config';
 import expressSession from 'express-session';
 import passport from './middleware/passportHandler';
-import {authenticationMiddleware} from './middleware/authenticationHandler';
+import authenticationMiddleware from './middleware/authenticationHandler';
 import proxy from 'http-proxy-middleware';
 import Logger from './utils/logger';
 import oauth from './routes/oauth';
@@ -76,7 +76,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/auth', authenticationMiddleware(), auth);
+app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
 
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
@@ -100,4 +100,4 @@ const server = app.listen(config.server.port, config.server.host);
 
 logger.info(`Server running at ${config.server.host}:${config.server.port}`);
 
-module.exports = server;
+export default server;

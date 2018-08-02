@@ -10,7 +10,7 @@ const router = express.Router();
  * the authentication will be done by checking whether bangumi can verify user identity
  * with the provided access token
  */
-router.post('/auth/token', asyncHandler(getUserProfile), (req: any, res: any, next: any) => {
+router.post('/token', asyncHandler(getUserProfile), (req: any, res: any, next: any) => {
   req.auth = {
     user_id: req.bangumin.userProfile.user_id,
   };

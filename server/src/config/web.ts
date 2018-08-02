@@ -1,7 +1,8 @@
-const common = require('./components/common');
-const logger = require('./components/logger');
-const mongodb = require('./components/mongodb');
-const server = require('./components/server');
-const passport = require('./components/passport');
+import common from './components/common';
+import logger from './components/logger';
+import mongodb from './components/mongodb';
+import server from './components/server';
+import passport from './components/passport';
 
-module.exports = Object.assign({}, common, logger, mongodb, server, passport);
+const config = Object.assign({}, common, logger, mongodb, server, passport);
+export default config;

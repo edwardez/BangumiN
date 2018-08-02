@@ -22,7 +22,7 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testMatch": [
-      "**/tests/**/*.test.(ts|js)"
+      "**/**/*.spec.ts"
     ],
     "moduleFileExtensions": [
       "ts",
@@ -64,9 +64,12 @@
     "@types/passport-oauth2": "^1.4.5",
     "@types/request": "^2.47.1",
     "@types/request-promise": "^4.1.42",
+    "@types/sinon": "^5.0.1",
     "concurrently": "^3.6.0",
     "jest": "^23.4.1",
     "nodemon": "^1.17.5",
+    "sinon": "^6.1.4",
+    "supertest": "^3.1.0",
     "ts-jest": "^23.0.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.9.2",

@@ -5,8 +5,7 @@ import config from '../config';
 import joi from 'joi';
 import Logger from '../utils/logger';
 import requestPromise from 'request-promise';
-import asyncHandler from 'express-async-handler';
-import {authenticationMiddleware} from '../middleware/authenticationHandler';
+import authenticationMiddleware from '../middleware/authenticationHandler';
 
 const router = express.Router();
 
@@ -101,9 +100,10 @@ router.get(
 );
 
 router.post(
-  '/bangumi/refresh', authenticationMiddleware(),
-  asyncHandler(refreshUserAccessToken),
-  (req: any, res: any) => res.json(req.refreshedTokenInfo),
+  '/bangumi/refresh', authenticationMiddleware.isAuthenticated,
+  (req: any, res: any) => res.json({awesome: ':)'}),
+  // asyncHandler(refreshUserAccessToken),
+  // (req: any, res: any) => res.json(req.refreshedTokenInfo),
 );
 
 const csrfProtection = csrf({cookie: true});

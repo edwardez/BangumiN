@@ -26,4 +26,4 @@ const config = {
   cookieDomain: envVars.COOKIE_DOMAIN,
 };
 
-export = config;
+export default config;

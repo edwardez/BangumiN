@@ -1,4 +1,5 @@
 import * as express from 'express';
+import asyncHandler from 'express-async-handler';
 import passport from 'passport';
 import csrf from 'csurf';
 import config from '../config';
@@ -32,9 +33,7 @@ function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
 
   const {error, value: tokenVars} = joi.validate(req.body, tokenSchema);
   if (error) {
-    logger.error(error);
-    logger.error(`Config validation error: ${error.message} for user ${req.user.id}`);
-    return res.sendStatus(400);
+    throw error;
   }
 
   const {refreshToken} = tokenVars;
@@ -50,8 +49,15 @@ function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
  * @param next next middleware
  * @returns {Promise<*>}
  */
-const refreshUserAccessToken = async function refreshUserAccessToken(req: any, res: any, next: any) {
-  const refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
+export const refreshUserAccessToken = async function refreshUserAccessToken(req: any, res: any, next: any) {
+  let refreshToken;
+  try {
+    refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
+  } catch (err) {
+    logger.error('Request cannot be verified: %o', req.body);
+    logger.error(err);
+    return res.sendStatus(400);
+  }
 
   const options = {
     method: 'POST',
@@ -100,10 +106,12 @@ router.get(
 );
 
 router.post(
-  '/bangumi/refresh', authenticationMiddleware.isAuthenticated,
-  (req: any, res: any) => res.json({awesome: ':)'}),
-  // asyncHandler(refreshUserAccessToken),
-  // (req: any, res: any) => res.json(req.refreshedTokenInfo),
+  '/bangumi/refresh',
+  (req, res, next) => {
+    return authenticationMiddleware.isAuthenticated(req, res, next);
+  },
+  asyncHandler(refreshUserAccessToken),
+  (req: any, res: any) => res.json(req.refreshedTokenInfo),
 );
 
 const csrfProtection = csrf({cookie: true});

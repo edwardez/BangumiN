@@ -11,14 +11,16 @@ export class SettingsComponent implements OnInit {
 
   availableLanguage = environment.availableLanguage;
   currentLanguage: string;
+  preferredBangumiLanguage: string;
 
   constructor(
     private translate: TranslateService
   ) {
-    this.currentLanguage = translate.currentLang;
   }
 
   ngOnInit() {
+    this.currentLanguage = this.translate.currentLang;
+    this.preferredBangumiLanguage = 'original';
   }
 
   setLanguage(lang: string) {

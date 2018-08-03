@@ -52,15 +52,19 @@
   "settings": {
     "title": "Settings",
     "description": "All changes will be saved automatically",
-    "tabs": {
-      "general": {
-        "name": "General",
-        "language": {
-          "name": "Language"
+    "category": {
+      "language": {
+        "name": "????",
+        "BangumiNLanguage": {
+          "name": "Main display language"
+        },
+        "BangumiLanguage": {
+          "name": "Show bangumi info in",
+          "options": {
+            "original": "Original",
+            "chinese": "Chinese translation"
+          }
         }
-      },
-      "social": {
-        "name": "Social"
       }
     }
   },

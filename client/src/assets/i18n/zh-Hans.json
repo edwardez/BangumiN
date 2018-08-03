@@ -52,15 +52,19 @@
   "settings": {
     "title": "设置",
     "description": "所有设置都会被自动保存",
-    "tabs": {
-      "general": {
-        "name": "通用",
-        "language": {
-          "name": "语言"
+    "category": {
+      "language": {
+        "name": "语言偏好",
+        "BangumiNLanguage": {
+          "name": "网站主语言"
+        },
+        "BangumiLanguage": {
+          "name": "Bangumi条目名语言",
+          "options": {
+            "original": "原文",
+            "chinese": "中文翻译"
+          }
         }
-      },
-      "social": {
-        "name": "社交"
       }
     }
   },

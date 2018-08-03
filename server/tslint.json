@@ -6,6 +6,7 @@
   "jsRules": {},
   "rules": {
     "import-name": false,
+    "object-curly-spacing": false,
     "max-line-length": [
       true,
       140

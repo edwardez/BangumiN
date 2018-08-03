@@ -2,6 +2,9 @@ import passport from 'passport';
 import {Strategy as OAuth2Strategy} from 'passport-oauth2';
 import config from '../config/components/passport';
 import request from 'request';
+import Logger from '../utils/logger';
+
+const logger = Logger(module);
 
 // oauth strategy for bangumi
 const bangumiOauth = new OAuth2Strategy(
@@ -15,7 +18,7 @@ const bangumiOauth = new OAuth2Strategy(
   },
   ((accessToken: string, refreshToken: string, profile: any, done: any) => {
     const profileWithRefreshToken = profile;
-    profileWithRefreshToken.refresh_token = refreshToken;
+    profileWithRefreshToken.refresh_token = refreshToken; // refresh token is not included in profile
     return done(null, profileWithRefreshToken);
   }),
 );
@@ -27,18 +30,17 @@ bangumiOauth.userProfile = function userProfile(accessToken: string, done: any) 
   // choose your own adventure, or use the Strategy's oauth client
   request.post(
     `${config.passport.oauth.bangumi.tokenStatusURL}
-        ?app_id=${config.passport.oauth.bangumi.clientID}2&access_token=${accessToken}`,
+        ?app_id=${config.passport.oauth.bangumi.clientID}
+        &access_token=${accessToken}`.replace(/\s+/g, ''),
     (err: any, response: any, body: any) => {
-      if (err) {
+      if (err || response.statusCode !== 200) {
         return done(err);
       }
       let data;
-      if (!err && response.statusCode === 200) {
-        try {
-          data = JSON.parse(body);
-        } catch (e) {
-          return done(e);
-        }
+      try {
+        data = JSON.parse(body);
+      } catch (e) {
+        return done(e);
       }
 
       return done(null, data === undefined ? {} : data);

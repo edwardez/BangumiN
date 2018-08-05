@@ -1,5 +1,5 @@
 # BangumiN
-BangumiN - A cloud-based Bangumi client progressive web app.
+BangumiN - A cloud-based Bangumi progressive web app.
 
 [中文](./documents/zh-Hans/README.md)
 

@@ -6,8 +6,8 @@
   "license": "MIT",
   "main": "dist/src/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/src/index.js",
-    "start-dev": "NODE_ENV=development concurrently -k -n tsc,js \"npm:watch-ts\" \"npm:watch-js\"",
+    "start": "NODE_ENV=prod node dist/src/index.js",
+    "start-dev": "NODE_ENV=dev concurrently -k -n tsc,js \"npm:watch-ts\" \"npm:watch-js\"",
     "start-uat": "NODE_ENV=uat node dist/src/index.js",
     "start-prod": "npm start",
     "build": "tsc",

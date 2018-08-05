@@ -10,8 +10,10 @@ import proxy from 'http-proxy-middleware';
 import Logger from './utils/logger';
 import oauth from './routes/oauth';
 import auth from './routes/auth';
+import settings from './routes/settings';
 
 const logger = Logger(module);
+const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
 const app = express();
 
@@ -56,8 +58,18 @@ app.use(bodyParser.urlencoded({
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
+const dynamoDBStoreOptios = {
+  table: `BangumiN_${config.env}_sessions`,
+  AWSConfigJSON: {
+    accessKeyId: config.dynamodb.accessKeyID,
+    secretAccessKey: config.dynamodb.secretAccessKey,
+    region: config.dynamodb.region,
+  },
+};
+
 app.use(expressSession({
   secret: config.passport.secret.session,
+  store: new dynamoDBStore(dynamoDBStoreOptios),
   name: 'sessionId',
   resave: false,
   saveUninitialized: false,
@@ -76,7 +88,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
+app.use('/api/user/:id/settings', authenticationMiddleware.isAuthenticated, settings);
 app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
+app.all('*', (req, res) => {
+  res.status(404).json({error_code: 'not_found'});
+});
 
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err: any, req: any, res: any, next: any) {

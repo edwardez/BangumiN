@@ -19,9 +19,7 @@ import {MatButtonModule} from "@angular/material/button";
     CollectionByTypeComponent,
     ProfileStatsComponent,
   ],
-  exports: [
-    MatButtonModule
-  ]
+  exports: []
 })
 export class BanguminProfileModule {
 }

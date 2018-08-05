@@ -125,7 +125,7 @@ export class BangumiUserService {
   }
 
 
-  /*
+  /**
   get user info
   is username is not provided/null/etc, by default, user info in localStorage will be used to retrieve user info from server
   if there's no user info in localStorage, a null will be emitted
@@ -323,6 +323,29 @@ export class BangumiUserService {
       return forkJoin(observableArray);
     }
 
+  }
+
+  public getUserProfileStats(username: string, typeList = []): any {
+    // TODO: cache with subject in the future
+    return [
+      {typ: 'Real', rate: 8},
+      {typ: 'Anime', rate: 7},
+      {typ: 'Real', rate: 4},
+      {typ: 'Real', rate: 7},
+      {typ: 'Real', rate: 6},
+      {typ: 'Anime', rate: 10},
+      {typ: 'Anime', rate: 2},
+      {typ: 'Anime', rate: 5},
+      {typ: 'Anime', rate: 1},
+      {typ: 'Real', rate: 2},
+      {typ: 'Anime', rate: 3},
+      {typ: 'Anime', rate: 4},
+      {typ: 'Anime', rate: 4},
+      {typ: 'Real', rate: 6},
+      {typ: 'Anime', rate: 7},
+      {typ: 'Real', rate: 8},
+      {typ: 'Anime', rate: 9}
+    ].filter((stat) => (typeList.length === 0) ? true : typeList.includes(stat.typ));
   }
 
 

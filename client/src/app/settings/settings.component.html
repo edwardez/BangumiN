@@ -1,39 +1,47 @@
-<div fxLayout="row wrap" fxLayoutAlign="center start" class="container">
+<form [formGroup]="settingsForm">
 
+  <div fxLayout="row wrap" fxLayoutAlign="center start" class="container">
 
-  <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
-            fxLayoutAlign="center center">
-    <h3>{{'settings.category.language.name' | translate}}</h3>
-    <mat-card-content fxFlexAlign="start">
-      <h4>{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
-      <div class="has-margin-top-md">
-        <mat-radio-group [(ngModel)]="currentLanguage" (ngModelChange)="setLanguage(currentLanguage)">
-          <mat-radio-button class="has-margin-right-md"
-                            [value]="language.key" *ngFor="let language of availableLanguage | keys"
-                            [checked]="currentLanguage === language.key">
-            {{language.value}}
-          </mat-radio-button>
+    <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
+              fxLayoutAlign="center center">
+      <h3>{{'settings.category.language.name' | translate}}</h3>
+      <mat-card-content fxFlexAlign="start">
+        <h4>{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
+        <div class="has-margin-top-md">
+          <mat-radio-group formControlName="appLanguage">
+            <mat-radio-button class="has-margin-right-md"
+                              [value]="language.key" *ngFor="let language of availableLanguage | keys"
+            >
+              {{language.value}}
+            </mat-radio-button>
 
-        </mat-radio-group>
-      </div>
-      <div class="has-margin-top-md"></div>
+          </mat-radio-group>
+        </div>
+        <div class="has-margin-top-md"></div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <h4>{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
+          <mat-icon matTooltip="{{'settings.category.language.BangumiLanguage.explanation' | translate}}"
+                    matTooltipPosition="{{'above'}}">info
+          </mat-icon>
+        </div>
 
-      <h4>{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
-      <div class="has-margin-top-md">
-        <mat-radio-group [(ngModel)]="preferredBangumiLanguage">
-          <mat-radio-button class="has-margin-right-md"
-                            [value]="'original'" [checked]="true">
-            {{'settings.category.language.BangumiLanguage.options.original' | translate}}
-          </mat-radio-button>
-          <mat-radio-button class="has-margin-right-md"
-                            [value]="'chinese'"
-          >
-            {{'settings.category.language.BangumiLanguage.options.chinese' | translate}}
-          </mat-radio-button>
+        <div class="has-margin-top-md">
+          <mat-radio-group formControlName="bangumiLanguage">
+            <mat-radio-button class="has-margin-right-md"
+                              [value]="'original'">
+              {{'settings.category.language.BangumiLanguage.options.original' | translate}}
+            </mat-radio-button>
+            <mat-radio-button class="has-margin-right-md"
+                              [value]="'zh-Hans'"
+            >
+              {{'settings.category.language.BangumiLanguage.options.zh-Hans' | translate}}
+            </mat-radio-button>
 
-        </mat-radio-group>
-      </div>
-    </mat-card-content>
-  </mat-card>
+          </mat-radio-group>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-</div>
+  </div>
+
+</form>

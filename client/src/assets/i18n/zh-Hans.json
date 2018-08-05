@@ -50,19 +50,20 @@
     "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭"
   },
   "settings": {
-    "title": "设置",
+    "name": "设置",
     "description": "所有设置都会被自动保存",
     "category": {
       "language": {
         "name": "语言偏好",
         "BangumiNLanguage": {
-          "name": "网站主语言"
+          "name": "主语言"
         },
         "BangumiLanguage": {
           "name": "Bangumi条目名语言",
+          "explanation": "如果Bangumi上没有对应翻译信息，则本选项不起效",
           "options": {
             "original": "原文",
-            "chinese": "中文翻译"
+            "zh-Hans": "中文翻译"
           }
         }
       }

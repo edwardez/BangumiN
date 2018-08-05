@@ -30,4 +30,4 @@ if (!config.logger.enabled) {
   // TODO: a better way to remove all loggers
   winston.clear(); // Remove all transports
 }
-export = config;
+export default config;

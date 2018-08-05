@@ -50,22 +50,27 @@
     "waitForActivationPrompt": "Activation in progress, this window will be closed shortly."
   },
   "settings": {
-    "title": "Settings",
+    "name": "Settings",
     "description": "All changes will be saved automatically",
-    "tabs": {
-      "general": {
-        "name": "General",
-        "language": {
-          "name": "Language"
+    "category": {
+      "language": {
+        "name": "Language preferences",
+        "BangumiNLanguage": {
+          "name": "Main display language"
+        },
+        "BangumiLanguage": {
+          "name": "Show bangumi info in",
+          "explanation": "Won't work if relevant translation is not available on Bangumi",
+          "options": {
+            "original": "Original",
+            "zh-Hans": "Chinese translation"
+          }
         }
-      },
-      "social": {
-        "name": "Social"
       }
     }
   },
   "progress": {
-    "name": "progress",
+    "name": "Progress",
     "tabs": {
       "all": {
         "name": "All"
@@ -161,7 +166,7 @@
     }
   },
   "profile": {
-    "name": "profile",
+    "name": "Profile",
     "tabs": {
       "collection": {
         "name": "Collection",

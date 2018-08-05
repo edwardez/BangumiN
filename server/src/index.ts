@@ -1,4 +1,4 @@
 require('./config');
-import server = require('./app');
+import server from './app';
 
-module.exports = server;
+export default server;

@@ -1,8 +1,11 @@
 # BangumiN
-BangumiN - Bangumi client built with MEAN stack(Mongodb, Express.js, Angular 5, Node.js).
-[中文](./documents/README-zh-Hans.md)
+BangumiN - A cloud-based progressive web app for Bangumi.
 
-# Notice☠️
+[中文](./documents/zh-Hans/README.md)
+
+![name](./documents/en-US/images/name.png)
+
+# Notice☠
 
 This project is still under heavy development and features may be changed without notice.
 
@@ -13,16 +16,15 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
 
 * For client
     * `npm install`
-    * `npm start`
+    * `npm run start-dev`
 * For server
     * `npm install`
     * `npm run start-dev`
 
 
-# Highlights & Technical Details
+# Highlights
 * Responsive design
 * Front end is written in [Angular Material](https://material.angular.io/) and [Flex layout](https://github.com/angular/flex-layout)
-* Use jwt to authenticate user
 * User score statistics 
 * Progressive Web App 
 * i18n

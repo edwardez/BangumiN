@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const envVarsSchema = joi.object({
   NODE_ENV: joi.string()
-    .allow(['development', 'production', 'test', 'uat'])
+    .allow(['dev', 'prod', 'test', 'uat'])
     .required(),
   FRONT_END_URL: joi.string()
     .uri()
@@ -26,4 +26,4 @@ const config = {
   cookieDomain: envVars.COOKIE_DOMAIN,
 };
 
-export = config;
+export default config;

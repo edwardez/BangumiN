@@ -3,6 +3,7 @@
   [scheme]="colorScheme"
   [results]="data"
   [gradient]="gradient"
+  [showGridLines]="showGridLines"
   [xAxis]="showXAxis"
   [yAxis]="showYAxis"
   [legend]="showLegend"
@@ -12,13 +13,22 @@
   [yAxisLabel]="yAxisLabel">
 </ngx-charts-bar-vertical>
 
-<button
-  mat-flat-button
-  (click)="switchType('Real')">
-  Real
-</button>
-<button
-  mat-flat-button
-  (click)="switchType('Anime')">
-  Anime
-</button>
+<mat-form-field>
+  <mat-select
+    [(value)]="selectedTypeList"
+    (selectionChange)="switchType()"
+    multiple>
+    <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!--<button-->
+<!--mat-flat-button-->
+<!--(click)="switchType('Real')">-->
+<!--Real-->
+<!--</button>-->
+<!--<button-->
+<!--mat-flat-button-->
+<!--(click)="switchType('Anime')">-->
+<!--Anime-->
+<!--</button>-->

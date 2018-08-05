@@ -325,7 +325,8 @@ export class BangumiUserService {
 
   }
 
-  public getUserProfileStats(username: string, type = 'All'): any {
+  public getUserProfileStats(username: string, typeList = []): any {
+    // TODO: cache with subject in the future
     return [
       {typ: 'Real', rate: 8},
       {typ: 'Anime', rate: 7},
@@ -336,15 +337,15 @@ export class BangumiUserService {
       {typ: 'Anime', rate: 2},
       {typ: 'Anime', rate: 5},
       {typ: 'Anime', rate: 1},
-      {typ: 'Anime', rate: 2},
+      {typ: 'Real', rate: 2},
       {typ: 'Anime', rate: 3},
       {typ: 'Anime', rate: 4},
       {typ: 'Anime', rate: 4},
-      {typ: 'Anime', rate: 6},
+      {typ: 'Real', rate: 6},
       {typ: 'Anime', rate: 7},
-      {typ: 'Anime', rate: 8},
+      {typ: 'Real', rate: 8},
       {typ: 'Anime', rate: 9}
-    ].filter((stat) => stat.typ === type);
+    ].filter((stat) => (typeList.length === 0) ? true : typeList.includes(stat.typ));
   }
 
 

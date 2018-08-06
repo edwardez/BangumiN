@@ -45,8 +45,8 @@ export class ProfileStatsComponent implements OnInit {
       domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', '#2361bd']
     };
 
-    this.typeList = ['All', 'Real', 'Anime'];
-    this.selectedTypeList = [];
+    this.typeList = ['Real', 'Anime'];
+    this.selectedTypeList = this.typeList;
   }
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class ProfileStatsComponent implements OnInit {
     const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
     if (diff.length !== 0) {
       diff.forEach((axis) => {
-        countedArr.push({name: axis, value: 0.0000001});
+        countedArr.push({name: axis, value: 0.000001});
       });
     }
 

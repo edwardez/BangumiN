@@ -1,4 +1,5 @@
 # BangumiN
+
 BangumiN - A cloud-based progressive web app for Bangumi.
 
 [中文](./documents/zh-Hans/README.md)

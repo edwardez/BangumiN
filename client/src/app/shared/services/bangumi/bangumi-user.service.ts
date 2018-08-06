@@ -324,9 +324,9 @@ export class BangumiUserService {
     }
 
   }
-
+  // todo: switch case for different filter type(e.g. byYear, byType, byState, etc)
   public getUserProfileStats(username: string, typeList = []): any {
-    // TODO: cache with subject in the future
+    // todo: cache with subject in the future
     return [
       {typ: 'Real', rate: 8},
       {typ: 'Anime', rate: 7},

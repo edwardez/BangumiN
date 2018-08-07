@@ -22,12 +22,12 @@ const bangumiOauth = new OAuth2Strategy(
     profileWithRefreshToken.refresh_token = refreshToken; // refresh token is not included in profile
     logger.info(profile);
 
-    const id = profile.user_id;
+    const userId: string = profile.user_id.toString();
     dynamooseUserModel.User
-      .findOrCreateUser(id)
+      .logInOrSignUpUser(userId)
       .then(
         (response) => {
-          dynamooseUserModel.User.updateUser({id, loggedInAt: (new Date).getTime()});
+          dynamooseUserModel.User.updateUser({id: userId, loggedInAt: (new Date).getTime()}, []);
           return done(null, profileWithRefreshToken);
         },
       );

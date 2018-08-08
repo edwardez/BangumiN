@@ -1,8 +1,8 @@
+import {CustomError} from './errorHandler';
+import config from '../config/components/passport';
 import requestPromise from 'request-promise';
 import Logger from '../utils/logger';
 import joi from 'joi';
-import {CustomError} from './errorHandler';
-import config from '../config/components/passport';
 
 const logger = Logger(module);
 
@@ -30,6 +30,7 @@ function verifyAccessToken(userProfile: any, clientId: any) {
 
   return profileVars;
 }
+
 
 /**
  * an async method that will get user profile from bangumi oauth api

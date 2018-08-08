@@ -3,6 +3,7 @@ import {Strategy as OAuth2Strategy} from 'passport-oauth2';
 import config from '../config/components/passport';
 import request from 'request';
 import Logger from '../utils/logger';
+import * as dynamooseUserModel from '../models/user';
 
 const logger = Logger(module);
 
@@ -19,7 +20,17 @@ const bangumiOauth = new OAuth2Strategy(
   ((accessToken: string, refreshToken: string, profile: any, done: any) => {
     const profileWithRefreshToken = profile;
     profileWithRefreshToken.refresh_token = refreshToken; // refresh token is not included in profile
-    return done(null, profileWithRefreshToken);
+    logger.info(profile);
+
+    const userId: string = profile.user_id.toString();
+    dynamooseUserModel.User
+      .logInOrSignUpUser(userId)
+      .then(
+        (response) => {
+          dynamooseUserModel.User.updateUser({id: userId, loggedInAt: (new Date).getTime()}, []);
+          return done(null, profileWithRefreshToken);
+        },
+      );
   }),
 );
 
@@ -51,7 +62,7 @@ bangumiOauth.userProfile = function userProfile(accessToken: string, done: any) 
 passport.use('bangumi-oauth', bangumiOauth);
 
 passport.serializeUser((user: any, done) => {
-  done(null, {id: user['user_id']});
+  done(null, {id: user['user_id'].toString()});
 });
 
 passport.deserializeUser((user, done) => {

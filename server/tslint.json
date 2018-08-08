@@ -5,6 +5,10 @@
   ],
   "jsRules": {},
   "rules": {
+    "align": [
+      true,
+      "parameters"
+    ],
     "import-name": false,
     "object-curly-spacing": false,
     "max-line-length": [

@@ -13,6 +13,7 @@ import auth from './routes/auth';
 import settings from './routes/settings';
 
 const logger = Logger(module);
+
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
 const app = express();
@@ -55,6 +56,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
+
 // TODO: enable csrf support before in production
 // app.use(csrf({ cookie: false }));
 
@@ -64,6 +66,8 @@ const dynamoDBStoreOptios = {
     accessKeyId: config.dynamodb.accessKeyID,
     secretAccessKey: config.dynamodb.secretAccessKey,
     region: config.dynamodb.region,
+    readCapacityUnits: config.env === 'prod' ? 5 : 1,
+    writeCapacityUnits: config.env === 'prod' ? 5 : 1,
   },
 };
 

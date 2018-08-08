@@ -1,6 +1,6 @@
 import * as express from 'express';
 import getUserProfile from '../middleware/userProfileHandler';
-import {CustomError} from '../middleware/errorHandler';
+import {AppError} from '../middleware/errorHandler';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.post('/token', asyncHandler(getUserProfile), (req: any, res: any, next: a
     user_id: req.bangumin.userProfile.user_id,
   };
 
-  if (req.auth.user_id === undefined) return next(new CustomError('user_not_exist', 'Cannot find user from bangumi database'));
+  if (req.auth.user_id === undefined) return next(new AppError('user_not_exist', 'Cannot find user from bangumi database'));
 
   return next();
 });

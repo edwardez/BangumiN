@@ -1,4 +1,4 @@
-export class CustomError extends Error {
+export class AppError extends Error {
   public name: string;
   public code: string;
 
@@ -6,7 +6,7 @@ export class CustomError extends Error {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = (this.constructor as any).name;
-    this.code = (this.constructor as any).code;
+    this.code = code;
     this.message = message;
     Error.captureStackTrace(this, this.constructor); // after initialize properties
   }

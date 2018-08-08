@@ -97,7 +97,7 @@ router.get(
     session: true,
   }),
   (req: any, res: any) => {
-    res.cookie('activationInfo', JSON.stringify(req.user), {
+    res.cookie('userInfo', JSON.stringify(req.user), {
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
         config.cookieDomain,
     });

@@ -48,17 +48,16 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
   }
 
   getBangumiActivationInfo() {
-    const activationInfo = this.cookieService.getObject('activationInfo') || {};
-    if (typeof activationInfo['access_token'] === 'string' && typeof activationInfo['refresh_token'] === 'string') {
+    const userInfo = this.cookieService.getObject('userInfo') || {bangumiProfile: {}, banguminSettings: {}};
+    if (typeof userInfo['bangumiActivationInfo']['access_token'] === 'string' && typeof userInfo['bangumiActivationInfo']['refresh_token'] === 'string') {
       window.opener.postMessage(
         {
-          'type': 'bangumiCallBack',
-          'result': 'success',
-          'accessToken': activationInfo['access_token'],
-          'refreshToken': activationInfo['refresh_token']
+          type: 'bangumiCallBack',
+          result: 'success',
+          userInfo: userInfo,
         }, environment.FRONTEND_URL);
 
-      this.cookieService.remove('activationInfo');
+      this.cookieService.remove('userInfo');
     } else {
       ActivateBangumiComponent.postFailureMessage();
     }

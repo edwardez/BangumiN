@@ -5,6 +5,8 @@ import {TitleService} from '../shared/services/page/title.service';
 import {tap} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../shared/services/bangumin/bangumin-user.service';
+import {StorageService} from '../shared/services/storage.service';
+import {BanguminUser} from '../shared/models/user/BanguminUser';
 
 @Component({
   selector: 'app-settings',
@@ -15,10 +17,12 @@ export class SettingsComponent implements OnInit {
 
   availableLanguage = environment.availableLanguage;
   settingsForm: FormGroup;
+  userSettings: BanguminUser;
 
   constructor(
     private banguminUserService: BanguminUserService,
     private formBuilder: FormBuilder,
+    private storageService: StorageService,
     private titleService: TitleService,
     private translateService: TranslateService
   ) {
@@ -26,20 +30,24 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.get('settings.name')
-      .pipe(tap(settingsPageTitle => {
-        this.titleService.title = settingsPageTitle;
-      }))
       .subscribe(settingsPageTitle => {
+        this.titleService.title = settingsPageTitle;
       });
 
-    this.buildSettingsForm();
+
+    this.banguminUserService.getUserSettings().subscribe(userSettings => {
+      console.log(userSettings);
+      this.userSettings = userSettings;
+      this.buildSettingsForm(userSettings);
+    });
   }
 
-  buildSettingsForm() {
+  buildSettingsForm(userSettings: BanguminUser) {
     this.settingsForm = this.formBuilder.group({
-      appLanguage: ['zh-Hans'],
-      bangumiLanguage: ['original'],
+      appLanguage: [userSettings.appLanguage],
+      bangumiLanguage: [userSettings.bangumiLanguage],
     });
+
 
     this.onSettingsFormChange();
   }
@@ -57,7 +65,9 @@ export class SettingsComponent implements OnInit {
         }
       }))
       .subscribe(formValues => {
-        this.banguminUserService.updateUserSettings(formValues).subscribe(r => {
+        const newUserSettings = Object.assign(formValues);
+        newUserSettings.id = this.userSettings.id;
+        this.banguminUserService.postUserSettings(newUserSettings).subscribe(response => {
         });
 
       });

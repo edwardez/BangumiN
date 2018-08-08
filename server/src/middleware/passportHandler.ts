@@ -26,11 +26,13 @@ const bangumiOauth = new OAuth2Strategy(
     dynamooseUserModel.User
       .logInOrSignUpUser(userId)
       .then(
-        (response) => {
+        (userSettings) => {
           dynamooseUserModel.User.updateUser({id: userId, loggedInAt: (new Date).getTime()}, []);
-          return done(null, profileWithRefreshToken);
+          return done(null, {bangumiActivationInfo: profileWithRefreshToken, banguminSettings: userSettings});
         },
-      );
+      ).catch((error) => {
+        return done(error);
+      });
   }),
 );
 
@@ -62,7 +64,7 @@ bangumiOauth.userProfile = function userProfile(accessToken: string, done: any) 
 passport.use('bangumi-oauth', bangumiOauth);
 
 passport.serializeUser((user: any, done) => {
-  done(null, {id: user['user_id'].toString()});
+  done(null, {id: user['bangumiActivationInfo']['user_id'].toString()});
 });
 
 passport.deserializeUser((user, done) => {

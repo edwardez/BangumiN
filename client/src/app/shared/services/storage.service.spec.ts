@@ -73,7 +73,7 @@ describe('TokenStorageService', () => {
       username: ''
     });
 
-    storageService.setBangumiUser(bangumiUser);
+    storageService.setUserInfo(bangumiUser);
     storageService.getBangumiUser().subscribe(res => {
       expect(new BangumiUser().deserialize(res)).toEqual(bangumiUser);
     });

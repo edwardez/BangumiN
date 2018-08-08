@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 
 
 import {BangumiUser} from '../models/BangumiUser';
+import {BanguminUser} from '../models/user/BanguminUser';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,26 @@ export class StorageService {
   }
 
   /**
+   * Get bangumin user info
+   * @returns {StorageService}
+   */
+  public getBanguminUser(): Observable<BanguminUser> {
+    const banguminUserInfo: string = localStorage.getItem('banguminUser');
+    let banguminUser: BanguminUser = null;
+
+    if (banguminUserInfo !== null) {
+      try {
+        banguminUser = new BanguminUser().deserialize(JSON.parse(banguminUserInfo));
+      } catch (err) {
+        console.log('Failed to parse user info %o', banguminUserInfo);
+      }
+    }
+
+    return of(banguminUser);
+  }
+
+
+  /**
    * Get bangumi auth expiration time
    * @returns {Observable<string>}
    */
@@ -107,6 +128,15 @@ export class StorageService {
   }
 
   /**
+   * Set bangumi user info
+   * @returns {StorageService}
+   */
+  public setBanguminUser(banguminUser: BanguminUser): StorageService {
+    localStorage.setItem('banguminUser', JSON.stringify(banguminUser));
+    return this;
+  }
+
+  /**
    * Get bangumi auth expiration time
    * @returns {StorageService}
    */
@@ -124,5 +154,6 @@ export class StorageService {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('bangumiAccessTokenExpirationTime');
     localStorage.removeItem('bangumiUser');
+    localStorage.removeItem('banguminUser');
   }
 }

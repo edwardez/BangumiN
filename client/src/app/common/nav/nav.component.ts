@@ -73,7 +73,7 @@ export class NavComponent implements OnInit, OnDestroy {
    */
 
   updateUserInfo() {
-    const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserInfo()];
+    const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserSettings()];
 
 
     concat.apply(this, userInfoServiceArray)

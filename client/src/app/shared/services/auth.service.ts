@@ -8,10 +8,12 @@ import {StorageService} from './storage.service';
 import {environment} from '../../../environments/environment';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
+import {BanguminUser} from '../models/user/BanguminUser';
 import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
 import {MatSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
+import {BanguminUserService} from './bangumin/bangumin-user.service';
 
 
 interface AccessData {
@@ -19,12 +21,16 @@ interface AccessData {
   refreshToken: string;
 }
 
-interface BangumiUserStatus {
-  access_token: string;
-  client_id: string;
-  user_id: number;
-  expires: number;
-  scope: null;
+export interface UserInfo {
+  bangumiActivationInfo: {
+    access_token: string;
+    refresh_token: string;
+    client_id: string;
+    user_id: number;
+    expires: number;
+    scope: null;
+  };
+  banguminSettings: BanguminUser;
 }
 
 @Injectable({
@@ -36,6 +42,7 @@ export class AuthenticationService {
   BANGUMI_API_URL = environment.BANGUMI_API_URL;
 
   constructor(private http: HttpClient,
+              private banguminUserService: BanguminUserService,
               private storageService: StorageService,
               private translateService: TranslateService,
               private snackBar: MatSnackBar) {
@@ -217,9 +224,9 @@ export class AuthenticationService {
   }
 
 
-  public verifyAndSetBangumiToken(accessToken: string, refreshToken: string): Observable<any> {
+  public verifyAndSetBangumiActivationInfo(userInfo: UserInfo): Observable<any> {
     const collectionRequestBody = new URLSearchParams();
-    collectionRequestBody.set('access_token', accessToken);
+    collectionRequestBody.set('access_token', userInfo.bangumiActivationInfo.access_token);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -242,8 +249,13 @@ export class AuthenticationService {
           // save access token and refresh token to local storage
           const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
           this.storageService.setBangumiUser(bangumiUser);
-          this.storageService.setAccessToken(accessToken);
-          this.storageService.setRefreshToken(refreshToken);
+          this.storageService
+            .setBanguminUser(userInfo.banguminSettings)
+            .getBanguminUser().subscribe(banguminSettings => {
+            this.banguminUserService.updateUserSettings(banguminSettings);
+          });
+          this.storageService.setAccessToken(userInfo.bangumiActivationInfo.access_token);
+          this.storageService.setRefreshToken(userInfo.bangumiActivationInfo.refresh_token);
           this.userSubject.next(bangumiUser);
         }),
         catchError(

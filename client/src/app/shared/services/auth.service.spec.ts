@@ -73,7 +73,7 @@ describe('HeroesService', () => {
 
     beforeEach(() => {
       jwtHelperSpy = jasmine.createSpyObj('JwtHelperService', ['isTokenExpired']);
-      storageServiceSpy = jasmine.createSpyObj('StorageService', ['getJwtToken', 'setAccessToken', 'setBangumiUser', 'setJwtToken']);
+      storageServiceSpy = jasmine.createSpyObj('StorageService', ['getJwtToken', 'setAccessToken', 'setUserInfo', 'setJwtToken']);
       httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post']);
 
       TestBed.configureTestingModule({

@@ -1,4 +1,4 @@
-import {CustomError} from './errorHandler';
+import {AppError} from './errorHandler';
 import config from '../config/components/passport';
 import requestPromise from 'request-promise';
 import Logger from '../utils/logger';
@@ -31,7 +31,6 @@ function verifyAccessToken(userProfile: any, clientId: any) {
   return profileVars;
 }
 
-
 /**
  * an async method that will get user profile from bangumi oauth api
  * this method will return next(error) if:
@@ -57,7 +56,7 @@ export default async function getUserProfile(req: any, res: any, next: any) {
   } catch (err) {
     logger.error('Response cannot be parsed or verified: %o', response);
     logger.error(err);
-    return next(new CustomError('response_invalid', 'Response cannot be verified: use your bangumi account to log in again.'));
+    return next(new AppError('response_invalid', 'Response cannot be verified: use your bangumi account to log in again.'));
   }
 
   return next();

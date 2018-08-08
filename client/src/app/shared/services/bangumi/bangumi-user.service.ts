@@ -131,7 +131,7 @@ export class BangumiUserService {
   if there's no user info in localStorage, a null will be emitted
   if
    */
-  getUserInfo(username?: string): Observable<any> {
+  getUserSettings(username?: string): Observable<any> {
     if (username) {
       return this.http.get(`${this.BANGUMI_API_URL}/user/${username}`);
     }

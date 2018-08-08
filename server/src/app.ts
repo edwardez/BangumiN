@@ -92,7 +92,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/api/user/:id/settings', authenticationMiddleware.isAuthenticated, settings);
+app.use('/api/user/:id/setting', authenticationMiddleware.isAuthenticated, settings);
 app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
 app.all('*', (req, res) => {
   res.status(404).json({error_code: 'not_found'});

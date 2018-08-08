@@ -10,8 +10,8 @@ export interface UserSchema {
   appLanguage?: string;
   bangumiLanguage?: string;
   loggedInAt?: number;
-  updatedAt?: string;
-  createdAt?: string;
+  updatedAt?: number;
+  createdAt?: number;
 }
 
 export interface UserModel extends dynamoose.Model<UserModel>, UserSchema {

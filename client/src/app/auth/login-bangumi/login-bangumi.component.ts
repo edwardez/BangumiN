@@ -5,7 +5,7 @@ import {BangumiAuthWaitDialogComponent} from './bangumi-auth-wait-dialog/bangumi
 import {TranslateService} from '@ngx-translate/core';
 import {AuthenticationService} from '../../shared/services/auth.service';
 import {catchError, finalize, switchMap, takeUntil} from 'rxjs/operators';
-import {Subject, throwError} from 'rxjs/index';
+import {Subject, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 
 @Component({
@@ -40,7 +40,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
       const bangumiCallBackData = event.data;
       let loginResultTranslationLabel: string;
       if (bangumiCallBackData['result'] === 'success') {
-        this.authenticationService.verifyAndSetBangumiToken(bangumiCallBackData.accessToken, bangumiCallBackData.refreshToken)
+        this.authenticationService.verifyAndSetBangumiActivationInfo(bangumiCallBackData['userInfo'])
           .pipe(
             takeUntil(this.ngUnsubscribe),
             switchMap(
@@ -73,7 +73,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
         });
       }
     }
-  }
+  };
 
   ngOnInit() {
     this.receiveMessageHandler = this.receiveMessage.bind(this);

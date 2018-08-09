@@ -1,27 +1,25 @@
 import {NgModule} from '@angular/core';
 
 import {
+  MatAutocompleteModule,
   MatButtonModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatInputModule,
-  MatSidenavModule,
-  MatListModule,
+  MatButtonToggleModule,
   MatCardModule,
-  MatTableModule,
-  MatDialogModule,
-  MatSelectModule,
-  MatRadioModule,
-  MatTooltipModule,
-  MatSnackBarModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatAutocompleteModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
   MatProgressBarModule,
-  MatButtonToggleModule, MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
-import {CdkTableModule} from '@angular/cdk/table';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -39,7 +37,6 @@ import {RouterModule} from '@angular/router';
     MatIconModule,
     MatListModule,
     FlexLayoutModule,
-    BrowserAnimationsModule,
     MatTabsModule,
     MatSelectModule,
     MatRadioModule,
@@ -66,7 +63,6 @@ import {RouterModule} from '@angular/router';
     MatIconModule,
     MatListModule,
     FlexLayoutModule,
-    BrowserAnimationsModule,
     MatTabsModule,
     MatSelectModule,
     MatRadioModule,

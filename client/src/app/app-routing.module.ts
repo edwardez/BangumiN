@@ -1,8 +1,7 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {AppGuard} from './app.guard';
 import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
-import {DashboardComponent} from './home/dashboard/dashboard.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
@@ -26,6 +25,10 @@ const routes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {
+        path: 'spoilers',
+        loadChildren: 'app/posts/posts.module#PostsModule'
       },
     ]
   },

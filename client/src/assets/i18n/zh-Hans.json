@@ -165,6 +165,13 @@
       }
     }
   },
+  "posts": {
+    "bangumin": {
+      "spoilerBox": {
+        "name": "剧透箱"
+      }
+    }
+  },
   "profile": {
     "name": "主页",
     "tabs": {

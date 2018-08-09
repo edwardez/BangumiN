@@ -22,6 +22,7 @@ import {BanguminSearchModule} from './search/bangumin-search.module';
 import {BanguminSettingsModule} from './settings/bangumin-settings.module';
 import {BanguminSubjectModule} from './subject/bangumin-subject.module';
 import {JwtModule} from '@auth0/angular-jwt';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {JwtModule} from '@auth0/angular-jwt';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     BanguminSharedModule,

@@ -3,6 +3,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/theming';
 @import "~placeholder-loading/src/scss/placeholder-loading";
+@import '~quill/dist/quill.snow.css'; // TODO: figure out a way to lazy load this css only if user enters specific component
 
 body {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;

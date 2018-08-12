@@ -136,7 +136,7 @@ export class StorageService {
    * @returns {StorageService}
    */
   public setBanguminUser(banguminUser: BanguminUserSchema): StorageService {
-    localStorage.setItem('banguminUser', JSON.stringify(banguminUser));
+    localStorage.setItem('banguminUser', JSON.stringify(new BanguminUser().deserialize(banguminUser)));
     return this;
   }
 

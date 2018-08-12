@@ -85,8 +85,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }))
       .subscribe(formValues => {
         const newUserSettings = new BanguminUser().deserialize(formValues);
-        this.banguminUserService.userSubject.next(newUserSettings);
         newUserSettings.id = this.userSettings.id;
+        this.banguminUserService.userSubject.next(newUserSettings);
         this.banguminUserService.postUserSettings(newUserSettings).subscribe();
 
       });

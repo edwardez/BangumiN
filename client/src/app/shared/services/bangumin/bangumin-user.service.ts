@@ -59,7 +59,8 @@ export class BanguminUserService {
               );
           }
 
-          // else return an empty Observable
+          // else user hasn't logged in, update default settings then return an empty Observable
+          this.setDefaultLanguage();
           return of(null);
         }
       ),
@@ -76,6 +77,8 @@ export class BanguminUserService {
    * @param id user id
    */
   public updateUserSettingsEfficiently(id?: string): void {
+    this.setDefaultLanguage();
+
     const userSettingsServiceArray = [this.storageService.getBanguminUser(), this.getUserSettings()];
 
     concat.apply(this, userSettingsServiceArray)
@@ -120,6 +123,8 @@ export class BanguminUserService {
     } else {
       defaultLang = 'en-US';
     }
+
+    console.log(defaultLang)
 
     RuntimeConstantsService.defaultAppLanguage = defaultLang;
     return defaultLang;

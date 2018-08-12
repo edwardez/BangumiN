@@ -45,7 +45,7 @@ const userSchema = new dynamoose.Schema({
     },
   },
   appTheme: {
-    default: 'original',
+    default: 'bangumin-material-blue-teal',
     type: String,
     trim: true,
     validate: (v: string) => {
@@ -98,16 +98,17 @@ export class User {
     const id = userID.toString();
     return userModel.get(id)
       .then((existedUser: UserModel) => {
-        return existedUser ? User.deleteProtectedFields(existedUser, hiddenFields) : existedUser;
-      }).catch((error) => {
+        return existedUser ? <UserModel>User.deleteProtectedFields(existedUser, hiddenFields) : existedUser;
+      })
+      .catch((error) => {
         logger.error(`Failed to execute find user step for id:${id}`);
         logger.error(error.stack);
-        return error;
+        throw error;
       });
   }
 
   /**
-   * create a new user, return error upon rejection
+   * create a new user, throw error upon rejection
    * @param userInstance user settings
    */
   static createUser(userInstance: UserSchema): Promise<dynamoose.Model<UserModel>> {
@@ -125,8 +126,8 @@ export class User {
       })
       .catch((error) => {
         logger.error(`Cannot save user: ${userInstance.id}`);
-        logger.error(error);
-        return error;
+        logger.error(error.stack);
+        throw error;
       });
   }
 
@@ -150,7 +151,7 @@ export class User {
         return existedUser;
       })
       .catch((error) => {
-        return error;
+        throw error;
       })
       ;
   }
@@ -177,27 +178,26 @@ export class User {
       }).catch((error) => {
         logger.error('Failed to update user settings as %o', userSettings);
         logger.error(error.stack);
-        return error;
+        throw error;
       });
   }
 
   /**
    * delete protected user settings in case they shouldn't be directly updated or retried:
+   * this method is a in-place modification
    * i.e. user can update settings, but they shouldn't be able to manually update their loggedInAt timestamp
    * or, user can request a copy of their settings, but they shouldn't be able to retrieve their password
    * @param userInstance user settings
    * @param fieldsToDelete a list of settings that shouldn't be updated, default to loggedInAt, updatedAt, createdAt, note: dynamoose
    *   may still update updatedAt, createdAt and it's out of our control
-   * @return a cloned, modified user settings copy, note: nested objects are still copied as references
+   * @return a  modified user settings copy
    */
-  static deleteProtectedFields(userInstance: UserSchema, fieldsToDelete = ['loggedInAt', 'updatedAt', 'createdAt']): UserSchema {
+  static deleteProtectedFields(userInstance: UserSchema | UserModel, fieldsToDelete = ['loggedInAt', 'updatedAt', 'createdAt']): UserSchema | UserModel {
     if (!userInstance || !userInstance.id) {
       throw Error('Expect userInstance and userInstance.id to be a truthy value');
     }
-
-    const copiedUserSettings: UserSchema = Object.assign(userInstance);
-    fieldsToDelete.forEach(Reflect.deleteProperty.bind(null, copiedUserSettings));
-    return copiedUserSettings;
+    fieldsToDelete.forEach(Reflect.deleteProperty.bind(null, userInstance));
+    return userInstance;
   }
 
 }

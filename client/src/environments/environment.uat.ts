@@ -11,7 +11,7 @@ export const environment = {
   BANGUMI_APP_ID: 'bgm1155aa5769e3a21f',
   whitelistedDomains: ['api.dogfood.bangumin.tv'],
   blacklistedRoutes: ['api.dogfood.bangumin.tv/oauth', 'api.dogfood.bangumin.tv/auth'],
-  availableLanguage: {
+  availableLanguages: {
     'en-US': 'English',
     'zh-Hans': '简体中文'
   },

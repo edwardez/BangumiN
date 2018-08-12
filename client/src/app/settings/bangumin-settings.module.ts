@@ -5,6 +5,7 @@ import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {SharedPipeModule} from '../shared/pipe/shared-pipe.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,7 +16,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   ],
   declarations: [
     SettingsComponent,
-  ]
+
+  ],
+  entryComponents: [
+
+  ],
 })
 export class BanguminSettingsModule {
 }

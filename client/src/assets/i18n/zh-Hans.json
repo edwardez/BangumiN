@@ -66,138 +66,155 @@
             "zh-Hans": "中文翻译"
           }
         }
-      }
-    }
-  },
-  "progress": {
-    "name": "收视进度",
-    "tabs": {
-      "all": {
-        "name": "所有"
       },
-      "anime": {
-        "name": "动画"
-      },
-      "real": {
-        "name": "三次元"
-      },
-      "book": {
-        "name": "书籍"
-      }
-    },
-    "episode": {
-      "status": {
-        "queue": "想看",
-        "watched": "看过",
-        "watchedUntil": "看到",
-        "drop": "抛弃",
-        "remove": "撤销"
-      }
-    },
-    "error": {
-      "empty": {
-        "all": "看起来你没有任何正在观看的剧集/书籍，先去添加一些吧！",
-        "subType": "看起来你没有任何此分类下正在看的条目，先去添加一些吧！"
-      }
-    }
-  },
-  "search": {
-    "empty": "无结果",
-    "category": {
-      "all": "综合",
-      "anime": "动画",
-      "book": "书籍",
-      "music": "音乐",
-      "game": "游戏",
-      "real": "三次元"
-    },
-    "subject": {
-      "action": {
-        "collect": "收藏",
-        "more": "详细"
-      }
-    }
-  },
-  "subject": {
-    "tabs": {
-      "overview": {
-        "name": "概览",
-        "openInBangumi": "查看Bangumi对应页面",
-        "review": {
-          "bangumiScore": "Bangumi评分",
-          "myScore": "我的评分",
-          "rank": "Bangumi排名",
-          "modal": {
-            "title": "编辑收藏",
-            "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
-            "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
-            "cancel": "取消",
-            "submit": "提交",
-            "privacy": "仅自己可见",
-            "error": {
-              "comment": {
-                "maxLength": "最多只能输入{{commentMaxLength}}个字"
-              },
-              "tags": {
-                "tagsMaxNumber": "最多只能输入{{tagsMaxNumber}}个标签，当前已输入{{tagsCurrentNumber}}/{{tagsMaxNumber}}个"
-              }
-            }
-          }
-        },
-        "info": {
-          "staff": "制作人员",
-          "charactersAndActors": "角色与声优",
-          "characters": "角色",
-          "airDate": {
-            "all": "起始日期",
-            "anime": "放送开始",
-            "book": "出版日",
-            "music": "发售日期",
-            "game": "发售日期",
-            "real": "放送开始"
+      "appearance": {
+        "name": "外观设置",
+        "colorTheme": {
+          "name": "颜色主题",
+          "options": {
+            "bangumi-pink-blue": "Bangumi粉蓝",
+            "bangumin-material-blue-teal": "蓝与蓝绿",
+            "bangumin-material-dark-pink-blue-grey": "粉与蓝灰（夜间模式）"
           },
-          "nameCN": "中文名",
-          "EpisodeCount": "集数"
-        }
-      },
-      "episode": {
-        "name": "章节"
-      }
-    }
-  },
-  "posts": {
-    "bangumin": {
-      "spoilerBox": {
-        "name": "剧透箱"
-      }
-    }
-  },
-  "profile": {
-    "name": "主页",
-    "tabs": {
-      "collection": {
-        "name": "收藏",
-        "cards": {
-          "anime": {
-            "name": "动画"
-          },
-          "game": {
-            "name": "游戏"
-          },
-          "book": {
-            "name": "书籍"
-          },
-          "real": {
-            "name": "三次元"
-          },
-          "music": {
-            "name": "音乐"
+          "showA11YViolationTheme": {
+            "name": "展示不符合无障碍规范的主题",
+            "tooltip": {
+              "explanation": "一些主题选项（如Bangumi默认的粉色主题）不符合无障碍规范，视力障碍者在使用这些主题时可能会遇到困难。这些选项默认不予展示。勾选此选项代表您确认您确认自己已承知并确认相关说明。"
           }
         }
       }
+    }
+  }
+},
+"progress": {
+  "name": "收视进度",
+  "tabs": {
+    "all": {
+      "name": "所有"
+    },
+    "anime": {
+      "name": "动画"
+    },
+    "real": {
+      "name": "三次元"
+    },
+    "book": {
+      "name": "书籍"
+    }
+  },
+  "episode": {
+    "status": {
+      "queue": "想看",
+      "watched": "看过",
+      "watchedUntil": "看到",
+      "drop": "抛弃",
+      "remove": "撤销"
     }
   },
   "error": {
-    "unauthorized": "您的授权已过期，请在登录页面重新授权"
+    "empty": {
+      "all": "看起来你没有任何正在观看的剧集/书籍，先去添加一些吧！",
+      "subType": "看起来你没有任何此分类下正在看的条目，先去添加一些吧！"
+    }
   }
+},
+"search": {
+  "empty": "无结果",
+  "category": {
+    "all": "综合",
+    "anime": "动画",
+    "book": "书籍",
+    "music": "音乐",
+    "game": "游戏",
+    "real": "三次元"
+  },
+  "subject": {
+    "action": {
+      "collect": "收藏",
+      "more": "详细"
+    }
+  }
+},
+"subject": {
+  "tabs": {
+    "overview": {
+      "name": "概览",
+      "openInBangumi": "查看Bangumi对应页面",
+      "review": {
+        "bangumiScore": "Bangumi评分",
+        "myScore": "我的评分",
+        "rank": "Bangumi排名",
+        "modal": {
+          "title": "编辑收藏",
+          "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
+          "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
+          "cancel": "取消",
+          "submit": "提交",
+          "privacy": "仅自己可见",
+          "error": {
+            "comment": {
+              "maxLength": "最多只能输入{{commentMaxLength}}个字"
+            },
+            "tags": {
+              "tagsMaxNumber": "最多只能输入{{tagsMaxNumber}}个标签，当前已输入{{tagsCurrentNumber}}/{{tagsMaxNumber}}个"
+            }
+          }
+        }
+      },
+      "info": {
+        "staff": "制作人员",
+        "charactersAndActors": "角色与声优",
+        "characters": "角色",
+        "airDate": {
+          "all": "起始日期",
+          "anime": "放送开始",
+          "book": "出版日",
+          "music": "发售日期",
+          "game": "发售日期",
+          "real": "放送开始"
+        },
+        "nameCN": "中文名",
+        "EpisodeCount": "集数"
+      }
+    },
+    "episode": {
+      "name": "章节"
+    }
+  }
+},
+"posts": {
+  "bangumin": {
+    "spoilerBox": {
+      "name": "剧透箱"
+    }
+  }
+},
+"profile": {
+  "name": "主页",
+  "tabs": {
+    "collection": {
+      "name": "收藏",
+      "cards": {
+        "anime": {
+          "name": "动画"
+        },
+        "game": {
+          "name": "游戏"
+        },
+        "book": {
+          "name": "书籍"
+        },
+        "real": {
+          "name": "三次元"
+        },
+        "music": {
+          "name": "音乐"
+        }
+      }
+    }
+  }
+},
+"error": {
+  "unauthorized": "您的授权已过期，请在登录页面重新授权"
+}
 }

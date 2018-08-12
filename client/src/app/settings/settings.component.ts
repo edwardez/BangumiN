@@ -1,26 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '../../environments/environment';
 import {TitleService} from '../shared/services/page/title.service';
-import {tap} from 'rxjs/operators';
+import {take, tap} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../shared/services/bangumin/bangumin-user.service';
 import {StorageService} from '../shared/services/storage.service';
 import {BanguminUser} from '../shared/models/user/BanguminUser';
+import {MatDialog, MatSlideToggleChange} from '@angular/material';
+import {RuntimeConstantsService} from '../shared/services/runtime-constants.service';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
 
-  availableLanguage = environment.availableLanguage;
+  availableLanguage = environment.availableLanguages;
+  availableAppThemes = environment.availableAppThemes;
+  showA11YViolationTheme = false;
   settingsForm: FormGroup;
   userSettings: BanguminUser;
 
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   constructor(
     private banguminUserService: BanguminUserService,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private storageService: StorageService,
     private titleService: TitleService,
@@ -30,22 +38,33 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.get('settings.name')
+      .pipe(
+        take(1),
+      )
       .subscribe(settingsPageTitle => {
         this.titleService.title = settingsPageTitle;
       });
 
 
     this.banguminUserService.getUserSettings().subscribe(userSettings => {
-      console.log(userSettings);
+      this.banguminUserService.userSubject.next(userSettings);
       this.userSettings = userSettings;
-      this.buildSettingsForm(userSettings);
+
+      let showA11YViolationTheme = false;
+      if (this.userSettings.appTheme === 'bangumi-pink-blue' || this.userSettings.showA11YViolationTheme) {
+        showA11YViolationTheme = true;
+      }
+
+      this.buildSettingsForm(userSettings, showA11YViolationTheme);
     });
   }
 
-  buildSettingsForm(userSettings: BanguminUser) {
+  buildSettingsForm(userSettings: BanguminUser, showA11YViolationTheme: boolean) {
     this.settingsForm = this.formBuilder.group({
       appLanguage: [userSettings.appLanguage],
       bangumiLanguage: [userSettings.bangumiLanguage],
+      appTheme: [userSettings.appTheme],
+      showA11YViolationTheme: showA11YViolationTheme,
     });
 
 
@@ -65,16 +84,36 @@ export class SettingsComponent implements OnInit {
         }
       }))
       .subscribe(formValues => {
-        const newUserSettings = Object.assign(formValues);
+        const newUserSettings = new BanguminUser().deserialize(formValues);
+        this.banguminUserService.userSubject.next(newUserSettings);
         newUserSettings.id = this.userSettings.id;
-        this.banguminUserService.postUserSettings(newUserSettings).subscribe(response => {
-        });
+        this.banguminUserService.postUserSettings(newUserSettings).subscribe();
 
       });
   }
 
+  /**
+   * reset theme to the default one if user has selected a11y violation theme and they want to hide these options
+   * @param event
+   */
+  resetA11YViolationOptionsIfSelected(event: MatSlideToggleChange) {
+    if (event.checked === false && this.settingsForm.get('appTheme').value === 'bangumi-pink-blue') {
+      this.settingsForm.patchValue(
+        {
+          'appTheme': RuntimeConstantsService.defaultAppTheme
+        }
+      );
+    }
+
+  }
+
   setLanguage(lang: string) {
     this.translateService.use(lang);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

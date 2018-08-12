@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs/index';
 import {DeviceWidth} from './shared/enums/device-width.enum';
 import {takeUntil} from 'rxjs/operators';
 import {LayoutService} from './shared/services/layout/layout.service';
 import {StorageService} from './shared/services/storage.service';
 import {BanguminUserService} from './shared/services/bangumin/bangumin-user.service';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,8 @@ import {BanguminUserService} from './shared/services/bangumin/bangumin-user.serv
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
+
+  // @HostBinding('class.') lightTheme = true;
 
   title = 'BangumiN';
 
@@ -23,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private banguminUserService: BanguminUserService,
     private layoutService: LayoutService,
-    private storageService: StorageService,) {
+    private storageService: StorageService) {
   }
 
   ngOnInit(): void {
@@ -37,15 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setAppInitialSettings(): void {
-    this.storageService.getBanguminUser().subscribe(
-      userSettings => {
-        if (userSettings !== null) {
-          this.banguminUserService.reliablyUpdateUserSettings();
-        } else {
-          this.banguminUserService.setDefaultLanguage();
-        }
-      }
-    );
+    this.banguminUserService.updateUserSettingsEfficiently();
   }
 
 

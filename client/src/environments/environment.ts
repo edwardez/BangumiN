@@ -11,10 +11,15 @@ export const environment = {
   BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
   whitelistedDomains: ['127.0.0.1:8081'],
   blacklistedRoutes: ['127.0.0.1:8081/api', '127.0.0.1:8081/oauth', '127.0.0.1:8081/auth'],
-  availableLanguage: {
+  availableLanguages: {
     'en-US': 'English',
     'zh-Hans': '简体中文'
   },
+  availableAppThemes: [
+    'bangumin-material-blue-teal',
+    'bangumin-material-dark-pink-blue-grey',
+    'bangumi-pink-blue',
+  ],
   commentMaxLength: 200,
   tagsMaxNumber: 10,
   progressPageMaxEpisodeCountMobile: 5,

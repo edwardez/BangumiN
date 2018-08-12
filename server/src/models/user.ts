@@ -9,6 +9,8 @@ export interface UserSchema {
   id: string;
   appLanguage?: string;
   bangumiLanguage?: string;
+  appTheme?: string;
+  showA11YViolationTheme: boolean;
   loggedInAt?: number;
   updatedAt?: number;
   createdAt?: number;
@@ -40,6 +42,23 @@ const userSchema = new dynamoose.Schema({
     trim: true,
     validate: (v: string) => {
       return Joi.string().valid(['original', 'zh-Hans']).validate(v).error === null;
+    },
+  },
+  appTheme: {
+    default: 'original',
+    type: String,
+    trim: true,
+    validate: (v: string) => {
+      return Joi.string().valid(['bangumin-material-blue-teal',
+        'bangumin-material-dark-pink-blue-grey', 'bangumi-pink-blue']).validate(v).error === null;
+    },
+  },
+  showA11YViolationTheme: {
+    default: false,
+    type: Boolean,
+    trim: true,
+    validate: (v: boolean) => {
+      return Joi.boolean().validate(v).error === null;
     },
   },
   loggedInAt: {

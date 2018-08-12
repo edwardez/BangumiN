@@ -40,10 +40,63 @@
 
             </mat-radio-group>
           </div>
+
+
+
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="card has-margin-top-md" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
+                fxLayoutAlign="center center">
+        <h3>{{'settings.category.appearance.name' | translate}}</h3>
+        <mat-card-content fxFlexAlign="start">
+          <h4>{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
+
+
+          <div class="has-margin-top-md">
+            <mat-radio-group formControlName="appTheme">
+              <ng-container *ngFor="let appTheme of availableAppThemes" >
+                <mat-radio-button
+                  class="has-margin-right-md"
+                  [value]="appTheme"
+                  *ngIf="appTheme !== 'bangumi-pink-blue'"
+                >
+                  {{'settings.category.appearance.colorTheme.options.' + appTheme | translate}}
+                </mat-radio-button>
+              </ng-container>
+
+              <mat-radio-button
+                class="has-margin-right-md"
+                [value]="'bangumi-pink-blue'"
+                [(fxShow)]="settingsForm.get('showA11YViolationTheme').value"
+              >
+                {{'settings.category.appearance.colorTheme.options.bangumi-pink-blue' | translate}}
+              </mat-radio-button>
+
+            </mat-radio-group>
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-slide-toggle
+                formControlName="showA11YViolationTheme"
+                (change)="resetA11YViolationOptionsIfSelected($event)"
+                class="has-margin-right-sm"
+
+              >
+                {{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}
+              </mat-slide-toggle>
+              <mat-icon matTooltip="{{'settings.category.appearance.colorTheme.showA11YViolationTheme.tooltip.explanation' | translate}}"
+                        matTooltipPosition="{{'above'}}">info
+              </mat-icon>
+            </div>
+          </div>
+
         </mat-card-content>
       </mat-card>
 
     </div>
+
+
 
   </form>
 

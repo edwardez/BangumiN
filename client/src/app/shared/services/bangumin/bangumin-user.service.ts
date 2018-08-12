@@ -2,22 +2,25 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {TranslateService} from '@ngx-translate/core';
-import {BanguminUser} from '../../models/user/BanguminUser';
+import {BanguminUser, BanguminUserSchema} from '../../models/user/BanguminUser';
 import {StorageService} from '../storage.service';
-import {catchError, filter, map, switchMap, take, tap} from 'rxjs/operators';
+import {catchError, filter, map, pairwise, switchMap, take, tap} from 'rxjs/operators';
 import {BehaviorSubject, concat, Observable, of, Subject, throwError as observableThrowError} from 'rxjs';
+import {OverlayContainer} from '@angular/cdk/overlay';
+import {RuntimeConstantsService} from '../runtime-constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BanguminUserService {
-
   userSubject: Subject<BanguminUser> = new BehaviorSubject<BanguminUser>(null);
 
   constructor(private http: HttpClient,
               private storageService: StorageService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private overlayContainer: OverlayContainer) {
   }
+
 
   /**
    * post user Settings to the server and store the response in local storage
@@ -26,7 +29,7 @@ export class BanguminUserService {
   public postUserSettings(settings: any): any {
     const options = {withCredentials: true};
     return this.http.post(`${environment.BACKEND_API_URL}/user/${settings.id}/setting`, settings, options)
-      .pipe(tap((updatedUserSettings: BanguminUser) => {
+      .pipe(tap((updatedUserSettings: BanguminUserSchema) => {
         this.storageService.setBanguminUser(updatedUserSettings);
       }));
   }
@@ -48,7 +51,7 @@ export class BanguminUserService {
             return this.http.get(`${environment.BACKEND_API_URL}/user/${banguminUserFromStorage.id}/setting`, options)
               .pipe(
                 map(banguminUserFromHttp => {
-                  const banguminUser: BanguminUser = new BanguminUser().deserialize(banguminUserFromHttp);
+                  const banguminUser: BanguminUserSchema = new BanguminUser().deserialize(banguminUserFromHttp);
                   this.storageService.setBanguminUser(banguminUser);
                   return banguminUser;
                 })
@@ -56,7 +59,7 @@ export class BanguminUserService {
           }
 
           // else return an empty Observable
-          return of();
+          return of(null);
         }
       ),
       catchError((err) => {
@@ -66,12 +69,12 @@ export class BanguminUserService {
   }
 
   /**
-   * reliably update user Settings, with both speed and accuracy in mind, first time get it from local storage(ensure the speed)
+   * efficiently update user Settings, with both speed and accuracy in mind, first time get it from local storage(ensure the speed)
    * second time get it from server(ensure settings are the latest)
    *
    * @param id user id
    */
-  public reliablyUpdateUserSettings(id?: string): void {
+  public updateUserSettingsEfficiently(id?: string): void {
     const userSettingsServiceArray = [this.storageService.getBanguminUser(), this.getUserSettings()];
 
     concat.apply(this, userSettingsServiceArray)
@@ -83,34 +86,30 @@ export class BanguminUserService {
         this.userSubject.next(banguminUser);
       });
 
+    // get and set the initial user settings
+    this.userSubject.pipe(
+      take(1),
+    ).subscribe(
+      banguminUser => {
+        this.setInitialUserSettings(banguminUser);
+      }
+    );
 
-    // subscribe to change in userSubject
-    this.userSubject
-      .pipe(
-        filter(banguminUser => !!banguminUser),
-      ).subscribe(banguminUser => {
-      this.updateUserSettings(banguminUser);
+    // subscribe to userSubject, only update settings if there are any differences
+    this.userSubject.pipe(
+      filter(banguminUser => !!banguminUser),
+      pairwise()
+    ).subscribe(banguminUser => {
+      this.updateUserSettings(banguminUser[0], banguminUser[1]);
     });
   }
-
-  /**
-   * update user settings immediately
-   * currently only app language setting will be updated
-   * @param settings
-   */
-  public updateUserSettings(settings: BanguminUser): void {
-    if (this.translateService.currentLang !== settings.appLanguage) {
-      this.translateService.use(settings.appLanguage);
-    }
-  }
-
 
   /**
    * set default language by detecting the browser language
    * fallback to en-US if user browser doesn't contain languages that we currently support
    */
-  public setDefaultLanguage() {
-    this.translateService.addLangs(['en-US', 'zh-Hans']);
+  public getDefaultLanguage() {
+    this.translateService.addLangs(Object.keys(environment.availableLanguages));
     const browserLang = this.translateService.getBrowserLang();
     let defaultLang: string;
     if (browserLang.match(/en/)) {
@@ -120,7 +119,74 @@ export class BanguminUserService {
     } else {
       defaultLang = 'en-US';
     }
-    this.translateService.setDefaultLang(defaultLang);
-    this.translateService.use(defaultLang);
+
+    RuntimeConstantsService.defaultAppLanguage = defaultLang;
+    return defaultLang;
+  }
+
+
+  /**
+   * initially set user settings immediately
+   * @param settings
+   */
+  private setInitialUserSettings(settings: BanguminUserSchema): void {
+    this.translateService.use(settings.appLanguage);
+    this.overlayContainer.getContainerElement()
+      .classList.add(settings.appTheme);
+    document.body.classList.add(settings.appTheme);
+  }
+
+  /**
+   * update user settings immediately, use {@link this.areObjectsSame()}
+   * to check differences and do nothing if old and new settings are the same
+   * @param oldSettings old user settings
+   * @param newSettings new user settings
+   */
+  private updateUserSettings(oldSettings: BanguminUserSchema, newSettings: BanguminUserSchema): void {
+    if (this.areObjectsSame(oldSettings, newSettings)) {
+      return;
+    }
+
+    // old settings values might be unreliable, check through the translate service to get current language
+    if (this.translateService.currentLang !== newSettings.appLanguage) {
+      this.translateService.use(newSettings.appLanguage);
+    }
+
+    this.updateAppTheme(oldSettings.appTheme, newSettings.appTheme);
+
+  }
+
+  /**
+   * update app theme, do nothing if old theme and new theme are the same string
+   * @param oldTheme
+   * @param newTheme
+   */
+  private updateAppTheme(oldTheme: string, newTheme: string): void {
+    if (oldTheme === newTheme) {
+      return;
+    }
+
+    this.overlayContainer.getContainerElement().classList.remove(oldTheme);
+    this.overlayContainer.getContainerElement().classList.add(newTheme);
+    document.body.classList.remove(oldTheme);
+    document.body.classList.add(newTheme);
+
+  }
+
+  /**
+   * set default language by detecting the browser language
+   * fallback to en-US if user browser doesn't contain languages that we currently support
+   */
+  private setDefaultLanguage() {
+    const defaultLanguage = this.getDefaultLanguage();
+    this.translateService.setDefaultLang(defaultLanguage);
+    this.translateService.use(defaultLanguage);
+  }
+
+  /**
+   * check whether values in two objects are the same, only the first level is checked
+   */
+  private areObjectsSame(firstObject: object, secondObject: object) {
+    return Object.keys(firstObject).every(key => firstObject[key] === secondObject[key]);
   }
 }

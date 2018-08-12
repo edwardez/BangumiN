@@ -23,6 +23,7 @@ import {BanguminSettingsModule} from './settings/bangumin-settings.module';
 import {BanguminSubjectModule} from './subject/bangumin-subject.module';
 import {JwtModule} from '@auth0/angular-jwt';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
+  constructor(overlayContainer: OverlayContainer) {
+  }
 }
 
 // required for AOT compilation

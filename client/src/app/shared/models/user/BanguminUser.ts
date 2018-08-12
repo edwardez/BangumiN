@@ -1,21 +1,36 @@
 import {Serializable} from '../Serializable';
+import {RuntimeConstantsService} from '../../services/runtime-constants.service';
 
 
-export class BanguminUser implements Serializable<BanguminUser> {
+export interface BanguminUserSchema {
   id: string;
   appLanguage?: string;
   bangumiLanguage?: string;
+  appTheme: string;
+  showA11YViolationTheme: boolean;
+}
+
+export class BanguminUser implements Serializable<BanguminUser>, BanguminUserSchema {
+  id: string;
+  appLanguage?: string;
+  bangumiLanguage?: string;
+  appTheme: string;
+  showA11YViolationTheme: boolean;
 
   constructor() {
-    this.id = '0';
-    this.appLanguage = 'zh-Hans';
-    this.bangumiLanguage = 'original';
+    this.id = RuntimeConstantsService.defaultUserId;
+    this.appLanguage = RuntimeConstantsService.defaultAppLanguage;
+    this.bangumiLanguage = RuntimeConstantsService.defaultBangumiLanguage;
+    this.appTheme = RuntimeConstantsService.defaultAppTheme;
+    this.showA11YViolationTheme = RuntimeConstantsService.defaultShowA11YViolationTheme;
   }
 
   deserialize(input) {
-    this.id = input.id || '0';
-    this.appLanguage = input.appLanguage || 'zh-Hans';
-    this.bangumiLanguage = input.bangumiLanguage || 'original';
+    this.id = input.id || RuntimeConstantsService.defaultUserId;
+    this.appLanguage = input.appLanguage || RuntimeConstantsService.defaultAppLanguage;
+    this.bangumiLanguage = input.bangumiLanguage || RuntimeConstantsService.defaultBangumiLanguage;
+    this.appTheme = input.appTheme || RuntimeConstantsService.defaultAppTheme;
+    this.showA11YViolationTheme = input.showA11YViolationTheme || RuntimeConstantsService.defaultShowA11YViolationTheme;
     return this;
   }
 

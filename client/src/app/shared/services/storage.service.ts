@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 
 
 import {BangumiUser} from '../models/BangumiUser';
-import {BanguminUser} from '../models/user/BanguminUser';
+import {BanguminUser, BanguminUserSchema} from '../models/user/BanguminUser';
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +70,11 @@ export class StorageService {
         banguminUser = new BanguminUser().deserialize(JSON.parse(banguminUserInfo));
       } catch (err) {
         console.log('Failed to parse user info %o', banguminUserInfo);
+        banguminUser = new BanguminUser();
       }
+
+    } else {
+      banguminUser = null;
     }
 
     return of(banguminUser);
@@ -131,7 +135,7 @@ export class StorageService {
    * Set bangumi user info
    * @returns {StorageService}
    */
-  public setBanguminUser(banguminUser: BanguminUser): StorageService {
+  public setBanguminUser(banguminUser: BanguminUserSchema): StorageService {
     localStorage.setItem('banguminUser', JSON.stringify(banguminUser));
     return this;
   }

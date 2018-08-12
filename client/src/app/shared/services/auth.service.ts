@@ -8,7 +8,7 @@ import {StorageService} from './storage.service';
 import {environment} from '../../../environments/environment';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
-import {BanguminUser} from '../models/user/BanguminUser';
+import {BanguminUser, BanguminUserSchema} from '../models/user/BanguminUser';
 import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
 import {MatSnackBar} from '@angular/material';
@@ -252,7 +252,7 @@ export class AuthenticationService {
           this.storageService
             .setBanguminUser(userInfo.banguminSettings)
             .getBanguminUser().subscribe(banguminSettings => {
-            this.banguminUserService.updateUserSettings(banguminSettings);
+            this.banguminUserService.userSubject.next(banguminSettings);
           });
           this.storageService.setAccessToken(userInfo.bangumiActivationInfo.access_token);
           this.storageService.setRefreshToken(userInfo.bangumiActivationInfo.refresh_token);

@@ -66,6 +66,23 @@
             "zh-Hans": "Chinese translation"
           }
         }
+      },
+      "appearance": {
+        "name": "Appearance preferences",
+        "colorTheme": {
+          "name": "Color theme",
+          "options": {
+            "bangumi-pink-blue": "Bangumi Pink",
+            "bangumin-material-blue-teal": "Blue and Blue Teal",
+            "bangumin-material-dark-pink-blue-grey": "Pink and Blue Grey(Night Mode)"
+          },
+          "showA11YViolationTheme": {
+            "name": "Show themes that violate accessibility guidlines",
+            "tooltip": {
+              "explanation": "Some themes(like Bangumi's Pink theme) violate accessibility guideline, some people (i.e. have a visual impairment? might have difficulty in using them. These theme options are hidden by default. By toggling this slider you confirm that you've read relevant explanations."
+            }
+          }
+        }
       }
     }
   },

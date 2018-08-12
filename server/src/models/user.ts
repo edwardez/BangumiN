@@ -10,7 +10,7 @@ export interface UserSchema {
   appLanguage?: string;
   bangumiLanguage?: string;
   appTheme?: string;
-  showA11YViolationTheme: boolean;
+  showA11YViolationTheme?: boolean;
   loggedInAt?: number;
   updatedAt?: number;
   createdAt?: number;

@@ -46,8 +46,9 @@ export class BanguminUserService {
       take(1),
       switchMap(
         banguminUserFromStorage => {
-          // if user info is in localStorage and username has at least 1 string
-          if (banguminUserFromStorage && banguminUserFromStorage.id.length >= 1) {
+          // if user info is in localStorage and username has at least 1 string and it cannot be 0
+          if (banguminUserFromStorage && banguminUserFromStorage.id
+            && banguminUserFromStorage.id.length >= 1 && banguminUserFromStorage.id !== '0') {
             return this.http.get(`${environment.BACKEND_API_URL}/user/${banguminUserFromStorage.id}/setting`, options)
               .pipe(
                 map(banguminUserFromHttp => {

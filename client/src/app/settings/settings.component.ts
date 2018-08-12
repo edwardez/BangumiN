@@ -10,6 +10,7 @@ import {BanguminUser} from '../shared/models/user/BanguminUser';
 import {MatDialog, MatSlideToggleChange} from '@angular/material';
 import {RuntimeConstantsService} from '../shared/services/runtime-constants.service';
 import {Subject} from 'rxjs';
+import {AuthenticationService} from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,6 +28,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private authenticationService: AuthenticationService,
     private banguminUserService: BanguminUserService,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -46,17 +48,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
 
 
-    this.banguminUserService.getUserSettings().subscribe(userSettings => {
-      this.banguminUserService.userSubject.next(userSettings);
-      this.userSettings = userSettings;
+    this.banguminUserService.getUserSettings()
+      .subscribe(userSettings => {
+        if (!userSettings) {
+          this.authenticationService.logout();
+        }
 
-      let showA11YViolationTheme = false;
-      if (this.userSettings.appTheme === 'bangumi-pink-blue' || this.userSettings.showA11YViolationTheme) {
-        showA11YViolationTheme = true;
-      }
+        this.banguminUserService.userSubject.next(userSettings);
+        this.userSettings = userSettings;
 
-      this.buildSettingsForm(userSettings, showA11YViolationTheme);
-    });
+        let showA11YViolationTheme = false;
+        if (this.userSettings.appTheme === 'bangumi-pink-blue' || this.userSettings.showA11YViolationTheme) {
+          showA11YViolationTheme = true;
+        }
+
+        this.buildSettingsForm(userSettings, showA11YViolationTheme);
+      });
   }
 
   buildSettingsForm(userSettings: BanguminUser, showA11YViolationTheme: boolean) {

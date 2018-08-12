@@ -5,7 +5,7 @@ import {CollectionByTypeComponent} from './collection/collection-by-type/collect
 import {ProfileComponent} from './profile.component';
 import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {ProfileStatsComponent} from './profile-stats/profile-stats.component';
-import {MatButtonModule} from "@angular/material/button";
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   imports: [

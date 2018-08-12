@@ -48,7 +48,7 @@ export class BanguminUserService {
         banguminUserFromStorage => {
           // if user info is in localStorage and username has at least 1 string and it cannot be 0
           if (banguminUserFromStorage && banguminUserFromStorage.id
-            && banguminUserFromStorage.id.length >= 1 && banguminUserFromStorage.id !== '0') {
+            && banguminUserFromStorage.id.length >= 1 && banguminUserFromStorage.id !== RuntimeConstantsService.defaultUserId) {
             return this.http.get(`${environment.BACKEND_API_URL}/user/${banguminUserFromStorage.id}/setting`, options)
               .pipe(
                 map(banguminUserFromHttp => {
@@ -124,7 +124,7 @@ export class BanguminUserService {
       defaultLang = 'en-US';
     }
 
-    console.log(defaultLang)
+    console.log(defaultLang);
 
     RuntimeConstantsService.defaultAppLanguage = defaultLang;
     return defaultLang;

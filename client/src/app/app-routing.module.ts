@@ -8,6 +8,7 @@ import {ProfileComponent} from './home/profile/profile.component';
 import {SettingsComponent} from './settings/settings.component';
 import {FullSearchComponent} from './search/full-search/full-search.component';
 import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
+import {CollectionHomeComponent} from './home/profile/collection/collection-home/collection-home.component';
 
 const routes: Routes = [
   {
@@ -19,8 +20,23 @@ const routes: Routes = [
         component: ProgressComponent
       },
       {
-        path: 'profile/:id',
-        component: ProfileComponent
+        path: 'user/:id',
+        component: ProfileComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'collection',
+            pathMatch: 'full'
+          },
+          {
+            path: 'collection',
+            component: CollectionHomeComponent,
+          },
+          {
+            path: 'statistics',
+            loadChildren: 'app/home/profile/profile-stats/profile-stats.module#ProfileStatsModule'
+          },
+        ]
       },
       {
         path: 'settings',

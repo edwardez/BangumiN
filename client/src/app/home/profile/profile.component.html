@@ -1,90 +1,34 @@
-<mat-tab-group class="homepage-main-mat-tab-group" *ngIf="userCollectionResponseByType !== undefined"
-               (selectedTabChange)="onStatsSelected($event.tab)">
-  <mat-tab label="{{'profile.tabs.collection.name' | translate}}">
+<nav mat-tab-nav-bar>
+  <!--wait https://github.com/angular/angular/issues/20995 to be resolved before using ngFor here-->
+  <a mat-tab-link
+     [routerLink]="['collection']"
+     routerLinkActive
+     #rla="routerLinkActive"
+     [active]="rla.isActive"
 
-    <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray">
-      <mat-card class="has-margin-top-md has-margin-bottom-md"
-                *ngIf="!undefinedOrEmpty(userCollectionResponseByType[subjectType[currentSubjectType]])"
-      >
-        <mat-card-subtitle>
-          {{'profile.tabs.collection.cards' + '.' + currentSubjectType + '.name' | translate}}
-        </mat-card-subtitle>
-        <mat-card-content>
-          <mat-tab-group>
-            <mat-tab
-              label="{{'common.status.wish' | translate}}{{'common.action.type' + '.' +  currentSubjectType | translate}}"
-              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.wish] !== undefined"
-            >
-              <app-collection-by-type
-                [statusName]="'wish'"
-                [currentSubjectType]="currentSubjectType"
-                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
-              >
-              </app-collection-by-type>
+  >
+    {{'profile.tabs.collection.name' | translate}}
+  </a>
 
-            </mat-tab>
-            <mat-tab
-              label="{{'common.action.type' + '.' + currentSubjectType| translate}}{{'common.status.collect' | translate}}"
-              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.collect] !== undefined"
-            >
-
-              <app-collection-by-type
-                [statusName]="'collect'"
-                [currentSubjectType]="currentSubjectType"
-                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
-              >
-              </app-collection-by-type>
-
-            </mat-tab>
-            <mat-tab
-              label="{{'common.status.do' | translate}}{{'common.action.type' + '.' +  currentSubjectType | translate}}"
-              *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.do] !== undefined"
-            >
-
-              <app-collection-by-type
-                [statusName]="'do'"
-                [currentSubjectType]="currentSubjectType"
-                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
-              >
-              </app-collection-by-type>
-
-            </mat-tab>
-            <mat-tab label="{{'common.status.on_hold' | translate}}"
-                     *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.on_hold] !== undefined"
-            >
-
-              <app-collection-by-type
-                [statusName]="'on_hold'"
-                [currentSubjectType]="currentSubjectType"
-                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
-              >
-              </app-collection-by-type>
-
-            </mat-tab>
-            <mat-tab label="{{'common.status.dropped' | translate}}"
-                     *ngIf="userCollectionResponseByType[subjectType[currentSubjectType]][collectionStatus.dropped] !== undefined"
-            >
-
-              <app-collection-by-type
-                [statusName]="'dropped'"
-                [currentSubjectType]="currentSubjectType"
-                [collectionUnderCurrentSubjectType]="userCollectionResponseByType[subjectType[currentSubjectType]]"
-              >
-              </app-collection-by-type>
-
-            </mat-tab>
-          </mat-tab-group>
-        </mat-card-content>
-      </mat-card>
-    </ng-container>
+  <a mat-tab-link
+     [routerLink]="['statistics']"
+     routerLinkActive
+     #rlaStats="routerLinkActive"
+     [active]="rlaStats.isActive"
+  >
+    {{'profile.tabs.statistics.name' | translate}}
+  </a>
+</nav>
 
 
-  </mat-tab>
+<router-outlet></router-outlet>
 
-  <mat-tab label="Stats">
-    <ng-template matTabContent>
-      <app-profile-stats></app-profile-stats>
-    </ng-template>
-  </mat-tab>
 
-</mat-tab-group>
+
+
+
+
+
+
+
+

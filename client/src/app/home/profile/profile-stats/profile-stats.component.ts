@@ -84,7 +84,7 @@ export class ProfileStatsComponent implements OnInit {
       });
     }
 
-    this.data = countedArr.sort(function (a, b) {
+    this.data = countedArr.sort(function (a: any, b: any) {
       return a.name - b.name;
     });
   }

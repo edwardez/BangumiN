@@ -29,8 +29,8 @@ export class BanguminUserService {
   public postUserSettings(settings: any): any {
     const options = {withCredentials: true};
     return this.http.post(`${environment.BACKEND_API_URL}/user/${settings.id}/setting`, settings, options)
-      .pipe(tap((updatedUserSettings: BanguminUserSchema) => {
-        this.storageService.setBanguminUser(updatedUserSettings);
+      .pipe(tap((updatedBanguminUser: BanguminUserSchema) => {
+        this.storageService.setBanguminUser(new BanguminUser().deserialize(updatedBanguminUser));
       }));
   }
 
@@ -48,7 +48,7 @@ export class BanguminUserService {
         banguminUserFromStorage => {
           // if user info is in localStorage and username has at least 1 string and it cannot be 0
           if (banguminUserFromStorage && banguminUserFromStorage.id
-            && banguminUserFromStorage.id.length >= 1 && banguminUserFromStorage.id !== RuntimeConstantsService.defaultUserId) {
+            && banguminUserFromStorage.id !== RuntimeConstantsService.defaultUserId) {
             return this.http.get(`${environment.BACKEND_API_URL}/user/${banguminUserFromStorage.id}/setting`, options)
               .pipe(
                 map(banguminUserFromHttp => {
@@ -60,7 +60,6 @@ export class BanguminUserService {
           }
 
           // else user hasn't logged in, update default settings then return an empty Observable
-          this.setDefaultLanguage();
           return of(null);
         }
       ),
@@ -77,14 +76,21 @@ export class BanguminUserService {
    * @param id user id
    */
   public updateUserSettingsEfficiently(id?: string): void {
-    this.setDefaultLanguage();
+
 
     const userSettingsServiceArray = [this.storageService.getBanguminUser(), this.getUserSettings()];
 
     concat.apply(this, userSettingsServiceArray)
       .pipe(
         take(userSettingsServiceArray.length),
-        filter(banguminUser => !!banguminUser),
+        map(banguminUser => {
+          if (!banguminUser) {
+            this.setDefaultLanguage();
+            return new BanguminUser();
+          }
+
+          return banguminUser;
+        })
       )
       .subscribe(banguminUser => {
         this.userSubject.next(banguminUser);
@@ -123,9 +129,6 @@ export class BanguminUserService {
     } else {
       defaultLang = 'en-US';
     }
-
-    console.log(defaultLang);
-
     RuntimeConstantsService.defaultAppLanguage = defaultLang;
     return defaultLang;
   }

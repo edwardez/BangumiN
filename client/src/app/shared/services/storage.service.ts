@@ -74,7 +74,7 @@ export class StorageService {
       }
 
     } else {
-      banguminUser = null;
+      banguminUser = new BanguminUser();
     }
 
     return of(banguminUser);

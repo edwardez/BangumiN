@@ -248,9 +248,10 @@ export class AuthenticationService {
         tap(bangumiUserInfo => {
           // save access token and refresh token to local storage
           const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
+          const banguminUser: BanguminUserSchema = new BanguminUser().deserialize(userInfo.banguminSettings);
           this.storageService.setBangumiUser(bangumiUser);
           this.storageService
-            .setBanguminUser(userInfo.banguminSettings)
+            .setBanguminUser(banguminUser)
             .getBanguminUser().subscribe(banguminSettings => {
             this.banguminUserService.userSubject.next(banguminSettings);
           });

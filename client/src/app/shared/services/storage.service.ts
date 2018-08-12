@@ -74,7 +74,7 @@ export class StorageService {
       }
 
     } else {
-      banguminUser = new BanguminUser();
+      banguminUser = null;
     }
 
     return of(banguminUser);
@@ -133,10 +133,11 @@ export class StorageService {
 
   /**
    * Set bangumi user info
+   * this method will assume the input is in normal format, please deserialize/normalize banguminUser before settings if needed
    * @returns {StorageService}
    */
   public setBanguminUser(banguminUser: BanguminUserSchema): StorageService {
-    localStorage.setItem('banguminUser', JSON.stringify(new BanguminUser().deserialize(banguminUser)));
+    localStorage.setItem('banguminUser', JSON.stringify(banguminUser));
     return this;
   }
 

@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {BangumiUserService} from '../../../shared/services/bangumi/bangumi-user.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
+import {take} from 'rxjs/operators';
+import {BanguminUserService} from '../../../shared/services/bangumin/bangumin-user.service';
 
 @Component({
   selector: 'app-profile-stats',
   templateUrl: './profile-stats.component.html',
-  styleUrls: ['./profile-stats.component.scss']
+  styleUrls: ['./profile-stats.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProfileStatsComponent implements OnInit {
   view;
@@ -20,12 +22,13 @@ export class ProfileStatsComponent implements OnInit {
   yAxisLabel;
   colorScheme;
   data;
+  theme;
 
   typeList;
   selectedTypeList;
 
   constructor(
-    private banguminUserService: BangumiUserService
+    private banguminUserService: BanguminUserService
   ) {
     this.view = [500, 300];
     // options
@@ -52,6 +55,15 @@ export class ProfileStatsComponent implements OnInit {
   ngOnInit() {
     const arr = this.banguminUserService.getUserProfileStats('hi');
     this.groupAndCountByRate(arr);
+
+    this.banguminUserService.getUserSettings()
+      .pipe(
+        take(1)
+      ).subscribe(settings => {
+      if (settings && settings.appTheme === 'bangumin-material-dark-pink-blue-grey') {
+        this.theme = 'dark';
+      }
+    });
   }
 
   switchType() {

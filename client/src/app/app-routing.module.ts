@@ -25,16 +25,16 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'collection',
-            pathMatch: 'full'
-          },
-          {
-            path: 'collection',
             component: CollectionHomeComponent,
           },
           {
             path: 'statistics',
             loadChildren: 'app/home/profile/profile-stats/profile-stats.module#ProfileStatsModule'
+          },
+          {
+            path: '**',
+            redirectTo: '',
+            pathMatch: 'full'
           },
         ]
       },

@@ -2,8 +2,9 @@
 
   <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
     <mat-card-content>
-      <mat-tab-group>
-        <mat-tab label="{{'progress.tabs.all.name' | translate}}">
+      <mat-tab-group [selectedIndex]="currentIndex" (selectedIndexChange)="selectedIndexChange($event)">
+        <mat-tab
+          label="{{'progress.tabs.all.name' | translate}}">
           <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
                                 [currentSubjectType]="subjectType.all"></app-progress-content>
         </mat-tab>

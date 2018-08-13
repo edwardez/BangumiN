@@ -28,7 +28,7 @@ function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
     redirectUrl: joi.string()
       .valid(config.passport.oauth.bangumi.callbackURL)
       .required(),
-    userId: joi.string().valid(req.user.id).required(),
+    userId: [joi.string().valid(req.user.id.toString()).required(), joi.number().valid(Number(req.user.id)).required()],
   }).unknown().required();
 
   const {error, value: tokenVars} = joi.validate(req.body, tokenSchema);
@@ -55,7 +55,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
     refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
   } catch (err) {
     logger.error('Request cannot be verified: %o', req.body);
-    logger.error(err);
+    logger.error(err.stack);
     return res.sendStatus(400);
   }
 

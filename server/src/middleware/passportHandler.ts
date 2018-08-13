@@ -20,7 +20,6 @@ const bangumiOauth = new OAuth2Strategy(
   ((accessToken: string, refreshToken: string, profile: any, done: any) => {
     const profileWithRefreshToken = profile;
     profileWithRefreshToken.refresh_token = refreshToken; // refresh token is not included in profile
-    logger.info(profile);
 
     const userId: string = profile.user_id.toString();
     dynamooseUserModel.User

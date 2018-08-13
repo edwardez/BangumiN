@@ -50,6 +50,26 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
+  get collectionStatus() {
+    return this.ratingForm.get('collectionStatus');
+  }
+
+  get rating() {
+    return this.ratingForm.get('rating');
+  }
+
+  get comment() {
+    return this.ratingForm.get('comment');
+  }
+
+  get tag() {
+    return this.ratingForm.get('tag');
+  }
+
+  get tagsArray(): FormArray {
+    return this.ratingForm.get('tagsArray') as FormArray;
+  }
+
   ngOnInit() {
 
   }
@@ -72,7 +92,6 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
   onSubmit() {
     const ratingModel = this.ratingForm.value;
@@ -126,27 +145,6 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   onRemoveTags(tag: any) {
     // remove tag at the specific index, since tags are unique we can just delete the first one
     this.tagsArray.removeAt(this.tagsArray.value.indexOf(tag));
-  }
-
-
-  get collectionStatus() {
-    return this.ratingForm.get('collectionStatus');
-  }
-
-  get rating() {
-    return this.ratingForm.get('rating');
-  }
-
-  get comment() {
-    return this.ratingForm.get('comment');
-  }
-
-  get tag() {
-    return this.ratingForm.get('tag');
-  }
-
-  get tagsArray(): FormArray {
-    return this.ratingForm.get('tagsArray') as FormArray;
   }
 
 

@@ -9,6 +9,8 @@ import {StarRatingModule} from '../common/star-rating/star-rating.module';
 import {CharacterListComponent} from './character-list/character-list.component';
 import {StaffListComponent} from './staff-list/staff-list.component';
 import {ScoreSpinnerComponent} from './score-spinner/score-spinner.component';
+import {SubjectEpisodeComponent} from './subject-episode/subject-episode.component';
+import {SubjectComponent} from './subject.component';
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import {ScoreSpinnerComponent} from './score-spinner/score-spinner.component';
     CharacterListComponent,
     StaffListComponent,
     ScoreSpinnerComponent,
+    SubjectEpisodeComponent,
+    SubjectComponent,
   ],
   entryComponents: [
     ReviewDialogComponent

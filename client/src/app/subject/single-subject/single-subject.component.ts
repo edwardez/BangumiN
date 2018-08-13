@@ -1,16 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {catchError, filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
-import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {CollectionResponse} from '../../shared/models/collection/collection-response';
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
 import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
-import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {Subject} from 'rxjs/index';
 import {LayoutService} from '../../shared/services/layout/layout.service';
 import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
@@ -24,10 +22,15 @@ import {CollectionRequest} from '../../shared/models/collection/collection-reque
 })
 export class SingleSubjectComponent implements OnInit, OnDestroy {
 
+  @Input()
   subject: SubjectLarge;
+
+  @Input()
   collectionResponse: CollectionResponse;
+
+  @Input()
   currentRating = 0;
-  currentDeviceWidth: DeviceWidth;
+
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
@@ -44,34 +47,8 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
     return SubjectType;
   }
 
-  get LayoutService() {
-    return LayoutService;
-  }
 
   ngOnInit() {
-
-
-    this.getDeviceWidth();
-
-    this.route
-      .params
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        filter(params => params['id'] !== undefined),
-        switchMap(params => {
-            return forkJoin(
-              this.bangumiSubjectService.getSubject(params['id'], 'large'),
-              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
-            );
-          },
-        ))
-      .subscribe(res => {
-        this.subject = res[0];
-        this.titleService.title = this.subject.name;
-        this.collectionResponse = res[1];
-        this.currentRating = this.collectionResponse.rating;
-      });
-
 
   }
 
@@ -131,16 +108,6 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  getDeviceWidth() {
-    this.layoutService.deviceWidth
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-      )
-      .subscribe(deviceWidth => {
-        this.currentDeviceWidth = deviceWidth;
-      });
   }
 
 

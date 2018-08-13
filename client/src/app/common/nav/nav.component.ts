@@ -115,6 +115,10 @@ export class NavComponent implements OnInit, OnDestroy {
     this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
+  login() {
+    this.router.navigate(['/login']);
+  }
+
   logout() {
     this.authenticationService.logout();
   }

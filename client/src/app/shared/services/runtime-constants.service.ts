@@ -6,6 +6,7 @@ import {Injectable} from '@angular/core';
 export class RuntimeConstantsService {
 
   static readonly appTitleSuffix = ' | BangumiN';
+  static readonly maxCacheAge = 200000;  // in milliseconds
 
   static defaultUserId = null;
   static defaultAppLanguage = 'zh-Hans';

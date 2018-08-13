@@ -1,123 +1,81 @@
-<div fxLayout="row" fxLayoutAlign="center start" *ngIf="subject">
+<div fxLayout="row wrap" class="has-margin-top-md has-margin-bottom-xs">
+  <div
+    fxFlex.xs="100%"
+    fxFlex.sm="50%"
+    fxFlex.md="50%"
+    fxFlex.gt-md="20%"
+    fxFlexOrder="0"
+  >
+    <div fxLayout="column wrap" fxLayoutAlign="start center">
+      <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
+      <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
+      <div>
+        <p *ngIf="subject.nameCN">{{'subject.tabs.overview.info.nameCN' | translate}}: {{subject.nameCN}}</p>
+        <p *ngIf="subject.airDate">{{'subject.tabs.overview.info.airDate.' + SubjectType[subject.type] |
+          translate}}: {{subject.airDate}}</p>
+        <p *ngIf="subject.eps_count">{{'subject.tabs.overview.info.EpisodeCount' | translate}}:
+          {{subject.eps_count}}</p>
+      </div>
 
-
-  <div fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <h2>{{subject.name}}</h2>
-      <a
-        *ngIf="subject.url" href={{subject.url}} target="_blank"
-        matTooltip="{{'subject.tabs.overview.openInBangumi' | translate}}"
-      >
-        <mat-icon class="icon-center">open_in_new</mat-icon>
-      </a>
     </div>
-
-    <div>
-      <mat-tab-group>
-        <mat-tab label="{{'subject.tabs.overview.name' | translate}}">
-          <div fxLayout="row wrap" class="has-margin-top-md has-margin-bottom-xs">
-            <div
-              fxFlex.xs="100%"
-              fxFlex.sm="50%"
-              fxFlex.md="50%"
-              fxFlex.gt-md="20%"
-              fxFlexOrder="0"
-            >
-              <div fxLayout="column wrap" fxLayoutAlign="start center">
-                <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
-                <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
-                <div>
-                  <p *ngIf="subject.nameCN">{{'subject.tabs.overview.info.nameCN' | translate}}: {{subject.nameCN}}</p>
-                  <p *ngIf="subject.airDate">{{'subject.tabs.overview.info.airDate.' + SubjectType[subject.type] |
-                    translate}}: {{subject.airDate}}</p>
-                  <p *ngIf="subject.eps_count">{{'subject.tabs.overview.info.EpisodeCount' | translate}}:
-                    {{subject.eps_count}}</p>
-                </div>
-
-              </div>
-            </div>
-            <div class="line-breaker"
-                 fxFlex.lt-lg="100%"
-                 fxFlex.gt-md="50%"
-                 fxFlexOffset="2%"
-                 fxFlexOrder.gt-md="1" fxFlexOrder.lt-lg="2"
-            >
-
-
-              <div fxLayout="column" ngClass.lt-lg="has-margin-top-md">
-                <div>
-                  {{subject.summary}}
-                </div>
-
-                <app-character-list [allCharacters]="subject.character" fxHide.xs></app-character-list>
-
-                <app-staff-list [allStaff]="subject.staff" fxHide.xs></app-staff-list>
-
-              </div>
-            </div>
-            <div
-              fxFlex.xs="95%"
-              fxFlex.sm="40%"
-              fxFlex.md="40%"
-              fxFlex.gt-md="20%"
-              fxFlexOffset="2%"
-              fxFlexOrder.gt-md="2" fxFlexOrder.lt-lg="1"
-            >
-              <mat-card>
-                <mat-card-content fxLayout="column">
-                  <p>{{'subject.tabs.overview.review.bangumiScore' | translate}}:
-                    <span *ngIf="subject.rating.total === 0">-</span>
-                  </p>
-
-                  <app-score-spinner *ngIf="subject.rating.total !== 0" fxFlexAlign="center"
-                                     [rating]="subject.rating"></app-score-spinner>
-
-                  <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
-
-                  <p *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.myScore' |
-                    translate}}:
-                    <span *ngIf="currentRating !== 0">{{currentRating}}</span></p>
-                  <app-star-rating [(currentRating)]="currentRating" [starCount]="10"
-                                   [isEditable]="true" (ratingUpdated)="onRatingChanged($event)"
-                                   *ngIf="this.collectionResponse.status.isTouched"
-
-                  ></app-star-rating>
-                </mat-card-content>
-                <mat-card-actions>
-                  <button mat-button (click)="openDialog()">
-                    <ng-container *ngIf="!this.collectionResponse.status.isTouched">
-                      {{'common.action.addToCollection' | translate}}
-                    </ng-container>
-                    <ng-container *ngIf="this.collectionResponse.status.isTouched">
-                      {{'common.action.editCollection' | translate}}
-                    </ng-container>
-                  </button>
-                </mat-card-actions>
-              </mat-card>
-            </div>
-          </div>
-        </mat-tab>
-        <mat-tab label="{{'subject.tabs.episode.name' | translate}}"
-                 *ngIf="subject.type === SubjectType.anime || subject.type === SubjectType.real">
-
-        </mat-tab>
-
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.character.length >= 1"
-                 label="{{'subject.tabs.overview.info.characters' | translate}}">
-
-          <app-character-list [allCharacters]="subject.character"></app-character-list>
-
-
-        </mat-tab>
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.staff.length >= 1"
-                 label="{{'subject.tabs.overview.info.staff' | translate}}">
-          <app-staff-list [allStaff]="subject.staff"></app-staff-list>
-        </mat-tab>
-
-
-      </mat-tab-group>
-    </div>
-
   </div>
+  <div class="line-breaker"
+       fxFlex.lt-lg="100%"
+       fxFlex.gt-md="50%"
+       fxFlexOffset="2%"
+       fxFlexOrder.gt-md="1" fxFlexOrder.lt-lg="2"
+  >
 
+
+    <div fxLayout="column" ngClass.lt-lg="has-margin-top-md">
+      <div>
+        {{subject.summary}}
+      </div>
+
+      <app-character-list [allCharacters]="subject.character" fxHide.xs></app-character-list>
+
+      <app-staff-list [allStaff]="subject.staff" fxHide.xs></app-staff-list>
+
+    </div>
+  </div>
+  <div
+    fxFlex.xs="95%"
+    fxFlex.sm="40%"
+    fxFlex.md="40%"
+    fxFlex.gt-md="20%"
+    fxFlexOffset="2%"
+    fxFlexOrder.gt-md="2" fxFlexOrder.lt-lg="1"
+  >
+    <mat-card>
+      <mat-card-content fxLayout="column">
+        <p>{{'subject.tabs.overview.review.bangumiScore' | translate}}:
+          <span *ngIf="subject.rating.total === 0">-</span>
+        </p>
+
+        <app-score-spinner *ngIf="subject.rating.total !== 0" fxFlexAlign="center"
+                           [rating]="subject.rating"></app-score-spinner>
+
+        <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
+
+        <p *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.myScore' |
+          translate}}:
+          <span *ngIf="currentRating !== 0">{{currentRating}}</span></p>
+        <app-star-rating [(currentRating)]="currentRating" [starCount]="10"
+                         [isEditable]="true" (ratingUpdated)="onRatingChanged($event)"
+                         *ngIf="this.collectionResponse.status.isTouched"
+
+        ></app-star-rating>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="openDialog()">
+          <ng-container *ngIf="!this.collectionResponse.status.isTouched">
+            {{'common.action.addToCollection' | translate}}
+          </ng-container>
+          <ng-container *ngIf="this.collectionResponse.status.isTouched">
+            {{'common.action.editCollection' | translate}}
+          </ng-container>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

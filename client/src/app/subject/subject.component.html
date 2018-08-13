@@ -1,0 +1,44 @@
+<div fxLayout="row" fxLayoutAlign="center start" *ngIf="subject">
+
+
+  <div fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <h2>{{subject.name}}</h2>
+      <a
+        *ngIf="subject.url" href={{subject.url}} target="_blank"
+        matTooltip="{{'subject.tabs.overview.openInBangumi' | translate}}"
+      >
+        <mat-icon class="icon-center">open_in_new</mat-icon>
+      </a>
+    </div>
+
+    <div>
+      <mat-tab-group>
+        <mat-tab label="{{'subject.tabs.overview.name' | translate}}">
+          <app-single-subject [subject]="subject" [collectionResponse]="collectionResponse"
+                              [currentRating]="currentRating"></app-single-subject>
+        </mat-tab>
+        <mat-tab label="{{'subject.tabs.episode.name' | translate}}"
+                 *ngIf="subject.type === SubjectType.anime || subject.type === SubjectType.real">
+
+        </mat-tab>
+
+        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.character.length >= 1"
+                 label="{{'subject.tabs.overview.info.characters' | translate}}">
+
+          <app-character-list [allCharacters]="subject.character"></app-character-list>
+
+
+        </mat-tab>
+        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.staff.length >= 1"
+                 label="{{'subject.tabs.overview.info.staff' | translate}}">
+          <app-staff-list [allStaff]="subject.staff"></app-staff-list>
+        </mat-tab>
+
+
+      </mat-tab-group>
+    </div>
+
+  </div>
+
+</div>

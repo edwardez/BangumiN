@@ -12,8 +12,8 @@
 
   <div fxFlex="1 1 auto"></div>
 
-  <div class="search-container" fxLayoutAlign="end center">
-    <input type="search" aria-label="search" placeholder="search" #searchBar
+  <div class="search-container" fxLayoutAlign="end center" *ngIf="isAuthenticated">
+    <input type="search" aria-label="search" placeholder="{{'nav.search.placeholder.name' | translate}}" #searchBar
            (keyup.enter)="doFullSearch(searchBar.value)" value="{{searchKeywords}}">
   </div>
 
@@ -26,10 +26,18 @@
 
 
 <mat-menu #menu="matMenu">
-  <button routerLink="./settings" mat-menu-item>
-    <span>Settings</span>
-  </button>
-  <button mat-menu-item (click)="logout()">
-    <span>Sign out</span>
-  </button>
+  <ng-container *ngIf="isAuthenticated">
+    <button routerLink="./settings" mat-menu-item>
+      <span>{{'nav.menu.settings.name' | translate}}</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <span>{{'nav.menu.logout.name' | translate}}</span>
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="!isAuthenticated">
+    <button mat-menu-item (click)="login()">
+      <span>{{'nav.menu.login.name' | translate}}</span>
+    </button>
+  </ng-container>
 </mat-menu>

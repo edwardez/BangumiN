@@ -36,6 +36,24 @@
       }
     }
   },
+  "nav": {
+    "search": {
+      "placeholder": {
+        "name": "搜索"
+      }
+    },
+    "menu": {
+      "login": {
+        "name": "登陆"
+      },
+      "logout": {
+        "name": "登出"
+      },
+      "settings": {
+        "name": "设置"
+      }
+    }
+  },
   "login": {
     "welcomeTitle": "欢迎!",
     "welcomeText": "BangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",

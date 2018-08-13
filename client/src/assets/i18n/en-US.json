@@ -36,6 +36,24 @@
       }
     }
   },
+  "nav": {
+    "search": {
+      "placeholder": {
+        "name": "Search"
+      }
+    },
+    "menu": {
+      "login": {
+        "name": "Log In"
+      },
+      "logout": {
+        "name": "Log Out"
+      },
+      "settings": {
+        "name": "Settings"
+      }
+    }
+  },
   "login": {
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",

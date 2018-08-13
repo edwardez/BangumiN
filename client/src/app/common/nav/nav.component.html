@@ -12,7 +12,7 @@
 
   <div fxFlex="1 1 auto"></div>
 
-  <div class="search-container" fxLayoutAlign="end center">
+  <div class="search-container" fxLayoutAlign="end center" *ngIf="isAuthenticated">
     <input type="search" aria-label="search" placeholder="search" #searchBar
            (keyup.enter)="doFullSearch(searchBar.value)" value="{{searchKeywords}}">
   </div>

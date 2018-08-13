@@ -1,27 +1,108 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="container">
+<div *ngIf="this.userSettings">
+  <form [formGroup]="settingsForm">
 
-  <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%" fxLayout="column" fxLayoutAlign="center center">
-    <mat-card-header class="text-center">
-      <mat-card-title><h2>{{'settings.title' | translate}}</h2></mat-card-title>
-      <mat-card-subtitle>{{'settings.description' | translate}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content fxFlexAlign="start">
-      <mat-tab-group>
-        <mat-tab label="{{'settings.tabs.general.name' | translate}}">
+    <div fxLayout="row wrap" fxLayoutAlign="center start" class="container">
+
+      <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
+                fxLayoutAlign="center center">
+        <h3>{{'settings.category.language.name' | translate}}</h3>
+        <mat-card-content fxFlexAlign="start">
+          <h4>{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
           <div class="has-margin-top-md">
-            <mat-radio-group [(ngModel)]="currentLanguage" (ngModelChange)="setLanguage(currentLanguage)">
-              <span>{{'settings.tabs.general.language.name' | translate}}</span>
-              <mat-radio-button [value]="language.key" *ngFor="let language of availableLanguage | keys"
-                                [checked]="currentLanguage === language.key">
+            <mat-radio-group formControlName="appLanguage">
+              <mat-radio-button class="has-margin-right-md"
+                                [value]="language.key" *ngFor="let language of availableLanguage | keys"
+              >
                 {{language.value}}
               </mat-radio-button>
+
             </mat-radio-group>
           </div>
-        </mat-tab>
-        <mat-tab label="{{'settings.tabs.social.name' | translate}}">
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-  </mat-card>
+          <div class="has-margin-top-md"></div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <h4>{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
+            <mat-icon matTooltip="{{'settings.category.language.BangumiLanguage.explanation' | translate}}"
+                      matTooltipPosition="{{'above'}}">info
+            </mat-icon>
+          </div>
 
+          <div class="has-margin-top-md">
+            <mat-radio-group formControlName="bangumiLanguage">
+              <mat-radio-button class="has-margin-right-md"
+                                [value]="'original'">
+                {{'settings.category.language.BangumiLanguage.options.original' | translate}}
+              </mat-radio-button>
+              <mat-radio-button class="has-margin-right-md"
+                                [value]="'zh-Hans'"
+              >
+                {{'settings.category.language.BangumiLanguage.options.zh-Hans' | translate}}
+              </mat-radio-button>
+
+            </mat-radio-group>
+          </div>
+
+
+
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="card has-margin-top-md" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
+                fxLayoutAlign="center center">
+        <h3>{{'settings.category.appearance.name' | translate}}</h3>
+        <mat-card-content fxFlexAlign="start">
+          <h4>{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
+
+
+          <div class="has-margin-top-md">
+            <mat-radio-group formControlName="appTheme">
+              <ng-container *ngFor="let appTheme of availableAppThemes" >
+                <mat-radio-button
+                  class="has-margin-right-md"
+                  [value]="appTheme"
+                  *ngIf="appTheme !== 'bangumi-pink-blue'"
+                >
+                  {{'settings.category.appearance.colorTheme.options.' + appTheme | translate}}
+                </mat-radio-button>
+              </ng-container>
+
+              <mat-radio-button
+                class="has-margin-right-md"
+                [value]="'bangumi-pink-blue'"
+                [(fxShow)]="settingsForm.get('showA11YViolationTheme').value"
+              >
+                {{'settings.category.appearance.colorTheme.options.bangumi-pink-blue' | translate}}
+              </mat-radio-button>
+
+            </mat-radio-group>
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-slide-toggle
+                formControlName="showA11YViolationTheme"
+                (change)="resetA11YViolationOptionsIfSelected($event)"
+                class="has-margin-right-sm"
+
+              >
+                {{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}
+              </mat-slide-toggle>
+              <mat-icon matTooltip="{{'settings.category.appearance.colorTheme.showA11YViolationTheme.tooltip.explanation' | translate}}"
+                        matTooltipPosition="{{'above'}}">info
+              </mat-icon>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+
+
+  </form>
+
+</div>
+
+
+<div fxLayout="column" fxLayoutAlign="center center" class="container" *ngIf="!this.userSettings">
+  <mat-spinner></mat-spinner>
 </div>

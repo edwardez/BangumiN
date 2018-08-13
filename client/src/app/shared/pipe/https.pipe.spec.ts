@@ -1,4 +1,4 @@
-import { HttpsPipe } from './https.pipe';
+import {HttpsPipe} from './https.pipe';
 
 describe('HttpsPipe', () => {
   it('create an instance', () => {

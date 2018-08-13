@@ -1,18 +1,19 @@
-// this file is from https://github.com/serhiisol/ngx-auth-example/blob/master/src/app/shared/authentication/authentication.service.ts
+import {BehaviorSubject, Observable, of, Subject, throwError as observableThrowError} from 'rxjs';
+// this file is from https://github.com/serhiisol/ngx-auth-example with modifications
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {StorageService} from './storage.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import {environment} from '../../../environments/environment';
-import {map, catchError, tap, switchMap} from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
-import {Subject} from 'rxjs/Subject';
-import {BangumiUser} from '../models/BangumiUser';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
+
+import {environment} from '../../../environments/environment';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {BangumiUser} from '../models/BangumiUser';
+import {BanguminUser, BanguminUserSchema} from '../models/user/BanguminUser';
+import {forkJoin} from 'rxjs/internal/observable/forkJoin';
+import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
+import {MatSnackBar} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
+import {BanguminUserService} from './bangumin/bangumin-user.service';
 
 
 interface AccessData {
@@ -20,25 +21,44 @@ interface AccessData {
   refreshToken: string;
 }
 
-interface BangumiUserStatus {
-  access_token: string;
-  client_id: string;
-  user_id: number;
-  expires: number;
-  scope: null;
+export interface UserInfo {
+  bangumiActivationInfo: {
+    access_token: string;
+    refresh_token: string;
+    client_id: string;
+    user_id: number;
+    expires: number;
+    scope: null;
+  };
+  banguminSettings: BanguminUser;
 }
 
-
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
 
   userSubject: Subject<BangumiUser> = new BehaviorSubject<BangumiUser>(null);
   BANGUMI_API_URL = environment.BANGUMI_API_URL;
 
   constructor(private http: HttpClient,
+              private banguminUserService: BanguminUserService,
               private storageService: StorageService,
-              private jwtHelper: JwtHelperService) {
+              private translateService: TranslateService,
+              private snackBar: MatSnackBar) {
+  }
+
+  /**
+   * whether expiration deadline has passed, a millisecond epoch time should be passed in
+   * @param {number} expirationTime
+   * @returns {boolean}
+   */
+  private isTokenValid(expirationTime: number): Observable<boolean> {
+    if (expirationTime === null || expirationTime === 0) {
+      return of(false);
+    }
+
+    return of((expirationTime > Date.now() / 1000));
   }
 
   /**
@@ -52,16 +72,28 @@ export class AuthenticationService {
    * @memberOf AuthenticationService
    */
   public isAuthenticated(): Observable<boolean> {
+    const isAuthenticated = forkJoin(
+      this.storageService
+        .getAccessToken()
+        .pipe(
+          map(accessToken => {
+            return accessToken != null;
+          })),
+      this.storageService
+        .getBangumiAccessTokenExpirationTime()
+        .pipe(
+          switchMap(expirationTime => {
+            return this.isTokenValid(expirationTime);
+          })
+        )
+    );
 
-    return this.storageService.getJwtToken().pipe(
-      map(jwtToken => {
-        if (jwtToken == null) {
-          return false;
-        } else {
-          return !this.jwtHelper.isTokenExpired(jwtToken);
-        }
+    return isAuthenticated.pipe(
+      map(resultArray => {
+        return resultArray.reduce((a, b) => a && b);
       })
     );
+
 
   }
 
@@ -81,18 +113,41 @@ export class AuthenticationService {
    * can execute pending requests or retry original one
    * @returns {Observable<any>}
    */
-  public refreshToken(): Observable<AccessData> {
+  public refreshBangumiOauthToken(): Observable<BangumiRefreshTokenResponse> {
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    const options = {withCredentials: true};
     return this.storageService
       .getRefreshToken()
-      .switchMap((refreshToken: string) => {
-        return this.http.post(`http://localhost:3000/refresh`, {refreshToken});
-      })
-      .do(this.saveAccessData.bind(this))
-      .catch((err) => {
-        this.logout();
-
-        return Observable.throw(err);
-      });
+      .pipe(
+        switchMap((refreshToken: string) => {
+          return this.http.post(`${environment.BACKEND_OAUTH_URL}/bangumi/refresh`,
+            {
+              refreshToken: refreshToken,
+              clientId: environment.BANGUMI_APP_ID,
+              grantType: 'refresh_token',
+              redirectUrl: `${environment.BACKEND_OAUTH_URL}/bangumi/callback`,
+              userId: JSON.parse(localStorage.getItem('bangumiUser')).user_id
+            },
+            options);
+        }),
+        map(res => new BangumiRefreshTokenResponse().deserialize(res)),
+        tap(
+          res => {
+            if (res.accessToken !== undefined && res.refreshToken !== undefined) {
+              this.storageService.setAccessToken(res.accessToken);
+              this.storageService.setRefreshToken(res.refreshToken);
+              this.storageService.setBangumiAccessTokenExpirationTime((currentTime + res.expiresIn).toString());
+            }
+          }
+        ),
+        catchError(
+          (err) => {
+            this.logoutWithMessage('error.unauthorized');
+            return observableThrowError(err);
+          }
+        )
+      );
   }
 
   /**
@@ -122,8 +177,11 @@ export class AuthenticationService {
 
   public login(): Observable<any> {
     return this.http.post(`http://localhost:3000/login`, {})
-      .pipe()
-      .do((tokens: AccessData) => this.saveAccessData(tokens));
+      .pipe(
+        tap(
+          (tokens: AccessData) => this.saveAccessData(tokens)
+        )
+      );
   }
 
   /**
@@ -133,6 +191,25 @@ export class AuthenticationService {
     this.storageService.clear();
     location.reload(true);
   }
+
+
+  /**
+   *logout with a snackbar message
+   * @param {string} messageLabel a message label or a message string, first it will be treated as a message label, if such
+   * label cannot be found in translation file, then the messageLabel itself will be used
+   */
+  public logoutWithMessage(messageLabel: string): void {
+    const snackBarDuration = 3000;
+    this.translateService.get(messageLabel).subscribe(res => {
+      const messageSnackBar = this.snackBar.open(res, '', {
+        duration: snackBarDuration
+      });
+      setTimeout(() => {
+        this.logout();
+      }, snackBarDuration);
+    });
+  }
+
 
   /**
    * Save access data in the storage
@@ -147,31 +224,47 @@ export class AuthenticationService {
   }
 
 
-  public verifyAccessToken(accessToken: string): Observable<BangumiUserStatus> {
+  public verifyAndSetBangumiActivationInfo(userInfo: UserInfo): Observable<any> {
+    const collectionRequestBody = new URLSearchParams();
+    collectionRequestBody.set('access_token', userInfo.bangumiActivationInfo.access_token);
 
-    return this.http.post<BangumiUserStatus>(
-      `${environment.BACKEND_AUTH_URL}/jwt/token`,
-      {accessToken: accessToken},
-      {observe: 'response' } )
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+
+    return this.http.post(
+      `${environment.BANGUMI_OAUTH_URL}/token_status`,
+      collectionRequestBody.toString(), {headers: headers})
       .pipe(
-        switchMap( response => this.http.get(`${this.BANGUMI_API_URL}/user/${response.body.user_id}`), (outer, inner) => {
-          return {'authDetails': outer, 'bangumiUserInfo': inner};
-        }),
-        tap( response => {
-          const {authDetails, bangumiUserInfo} = response;
-          // save access token to local storage
-          const jwtToken = authDetails.headers.get('Authorization');
-          if (jwtToken && jwtToken.split(' ')[0] === 'Bearer') {
-            this.storageService.setJwtToken(jwtToken.split(' ')[1]);
+        tap(authInfo => {
+          if (authInfo['access_token'] === undefined
+            || authInfo['client_id'] !== environment.BANGUMI_APP_ID) {
+            throw Error('Invalid access token');
           }
-          this.storageService.setAccessToken(accessToken);
-          const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
-          this.userSubject.next(bangumiUser);
-          this.storageService.setBangumiUser(bangumiUser);
         }),
-      ).catch((err) => {
-        return Observable.throw(err);
-      });
+        switchMap(authInfo => {
+            this.storageService.setBangumiAccessTokenExpirationTime(authInfo['expires']);
+            return this.http.get(`${this.BANGUMI_API_URL}/user/${authInfo['user_id']}`);
+          }
+        ),
+        tap(bangumiUserInfo => {
+          // save access token and refresh token to local storage
+          const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserInfo);
+          const banguminUser: BanguminUserSchema = new BanguminUser().deserialize(userInfo.banguminSettings);
+          this.storageService.setBangumiUser(bangumiUser);
+          this.storageService
+            .setBanguminUser(banguminUser)
+            .getBanguminUser().subscribe(banguminSettings => {
+            this.banguminUserService.userSubject.next(banguminSettings);
+          });
+          this.storageService.setAccessToken(userInfo.bangumiActivationInfo.access_token);
+          this.storageService.setRefreshToken(userInfo.bangumiActivationInfo.refresh_token);
+          this.userSubject.next(bangumiUser);
+        }),
+        catchError(
+          (err) => {
+            return observableThrowError(err);
+          }
+        )
+      );
 
   }
 

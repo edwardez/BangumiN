@@ -1,22 +1,29 @@
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `.angular-cli.json`.
-
 export const environment = {
   production: false,
-  BANGUMI_API_URL: 'http://localhost:4200/proxy/api/bangumi',
-  BANGUMI_OAUTH_URL: 'http://localhost:4200/proxy/oauth/bangumi',
-  BACKEND_API_URL: 'http://localhost:3000/api',
-  BACKEND_AUTH_URL: 'http://localhost:3000/auth',
-  BACKEND_OAUTH_REDIRECT_URL: 'http://localhost:3000/oauth',
-  BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
-  whitelistedDomains: ['localhost:3000'],
-  blacklistedRoutes: [/http:\/\/localhost:4200\/proxy\/.+/],
-  availableLanguage: {
+  environmentType: 'dev',
+  displayBuildVersion: false,
+  FRONTEND_URL: 'http://127.0.0.1:4200',
+  BANGUMI_API_URL: 'http://127.0.0.1:8081/proxy/api/bangumi',
+  BANGUMI_OAUTH_URL: 'http://127.0.0.1:8081/proxy/oauth/bangumi',
+  BACKEND_API_URL: 'http://127.0.0.1:8081/api',
+  BACKEND_AUTH_URL: 'http://127.0.0.1:8081/auth',
+  BACKEND_OAUTH_URL: 'http://127.0.0.1:8081/oauth',
+  BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
+  whitelistedDomains: ['127.0.0.1:8081'],
+  blacklistedRoutes: ['127.0.0.1:8081/api', '127.0.0.1:8081/oauth', '127.0.0.1:8081/auth'],
+  availableLanguages: {
     'en-US': 'English',
     'zh-Hans': '简体中文'
   },
+  availableAppThemes: [
+    'bangumin-material-blue-teal',
+    'bangumin-material-dark-pink-blue-grey',
+    'bangumi-pink-blue',
+  ],
   commentMaxLength: 200,
-  tagsMaxNumber: 10
+  tagsMaxNumber: 10,
+  progressPageMaxEpisodeCountMobile: 5,
+  progressPageMaxEpisodeCountDesktop: 30,
+  invalidEpisode: '-1',
+  invalidVolume: '-1'
 };

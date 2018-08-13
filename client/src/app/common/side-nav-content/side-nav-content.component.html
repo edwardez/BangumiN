@@ -1,0 +1,15 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" ngClass.xs="mat-sidenav-xs">
+    <mat-nav-list *ngIf="userID !== undefined">
+      <a mat-list-item routerLink="./progress" (click)="sidenav.close()">{{'progress.name' | translate}}</a>
+      <a mat-list-item [routerLink]="['./user', userID]" (click)="sidenav.close()">{{'profile.name' | translate}}</a>
+      <a mat-button routerLink="./spoilers">{{'posts.bangumin.spoilerBox.name' | translate}}</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content ngClass.lt-md="mat-sidenav-content-lt-md" ngClass.gt-sm="mat-sidenav-content-gt-sm">
+    <router-outlet></router-outlet>
+    <small *ngIf="Environment.displayBuildVersion" class="build-version-footer">{{displayBuildVersion()}}</small>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

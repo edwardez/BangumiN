@@ -1,0 +1,37 @@
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: white;
+
+// bangumi pink doesn't meet the requirement for accessibility, hide this theme by default
+$mat-bangumi-pink: (
+  50: #ffe9ee,
+  100: #ffc8d2,
+  200: #f09199,
+  300: #e56572,
+  400: #ee3d50,
+  500: #f32037,
+  600: #e41036,
+  700: #d20030,
+  800: #c50029,
+  900: #b6001d,
+  A100: #ff80ab,
+  A200: #ff4081,
+  A400: #f50057,
+  A700: #c51162,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $light-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+

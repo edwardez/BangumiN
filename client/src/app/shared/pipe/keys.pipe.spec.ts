@@ -1,4 +1,4 @@
-import { KeysPipe } from './keys.pipe';
+import {KeysPipe} from './keys.pipe';
 
 describe('KeysPipePipe', () => {
   it('create an instance', () => {

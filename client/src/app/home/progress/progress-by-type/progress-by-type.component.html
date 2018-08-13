@@ -1,0 +1,16 @@
+<div *ngIf="collectionWatchingResponse">
+  <div fxLayout="row wrap" fxLayoutAlign="center center"
+       *ngIf="collectionWatchingResponse.length >= 1; else emptyProgress">
+    <ng-container *ngFor="let currentCollection of collectionWatchingResponse">
+      <app-progess-by-subject fxFlex="1 1 100%" [collection]="currentCollection"></app-progess-by-subject>
+    </ng-container>
+
+  </div>
+  <ng-template #emptyProgress>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <p>{{'progress.error.empty.subType' | translate}}</p>
+    </div>
+  </ng-template>
+</div>
+
+

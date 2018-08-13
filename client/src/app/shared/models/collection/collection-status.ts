@@ -34,5 +34,4 @@ export class CollectionStatus implements Serializable<CollectionStatus> {
   }
 
 
-
 }

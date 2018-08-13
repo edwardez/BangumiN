@@ -4,7 +4,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-star-rating',
-  providers:  [{
+  providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: StarRatingComponent,
     multi: true
@@ -14,15 +14,16 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class StarRatingComponent implements OnInit, ControlValueAccessor {
 
-  @Input('currentRating') private currentRating = 0;
-  @Input('starCount') private starCount = 10;
-  @Input('isEditable') private isEditable = false; // whether edit is allowed
-  @Input('isRemovable') private isRemovable = false; // whether to show removal button
-  @Output() private ratingUpdated = new EventEmitter();
+  @Input() currentRating = 0;
+  @Input() starCount = 10;
+  @Input() isEditable = false; // whether edit is allowed
+  @Input() isRemovable = false; // whether to show removal button
+  @Output() ratingUpdated = new EventEmitter();
 
   private ratingToBeStore: number;
-  private ratingArray = [];
-  private propagateChange = (_: any) => {};
+  ratingArray = [];
+  private propagateChange = (_: any) => {
+  };
 
   constructor() {
   }
@@ -36,7 +37,9 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
   }
 
   onClickSingleRatingStar(rating: number) {
-    if (!this.isEditable) { return false; }
+    if (!this.isEditable) {
+      return false;
+    }
 
     this.currentRating = rating;
     this.ratingToBeStore = rating;
@@ -46,12 +49,16 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
   }
 
   onHoverEnterSingleRatingStar(rating: number) {
-    if (!this.isEditable) { return false; }
+    if (!this.isEditable) {
+      return false;
+    }
     this.currentRating = rating;
   }
 
   onHoverLeaveRatingArea() {
-    if (!this.isEditable) { return false; }
+    if (!this.isEditable) {
+      return false;
+    }
     this.currentRating = this.ratingToBeStore;
   }
 
@@ -70,7 +77,6 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
       return 'star_border';
     }
   }
-
 
 
   registerOnChange(fn: any): void {

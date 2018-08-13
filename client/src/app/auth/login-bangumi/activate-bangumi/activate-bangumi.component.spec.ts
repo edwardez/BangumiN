@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ActivateBangumiComponent } from './activate-bangumi.component';
+import {ActivateBangumiComponent} from './activate-bangumi.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
 import {AppRoutingModule} from '../../../app-routing.module';
 import {ProgressComponent} from '../../../home/progress/progress.component';
 import {ProfileComponent} from '../../../home/profile/profile.component';
 import {LoginBangumiComponent} from '../login-bangumi.component';
-import {MaterialLayoutCommonModule} from '../../../../material-layout-common.module';
+import {BanguminSharedModule} from '../../../../bangumin-shared.module';
 import {APP_BASE_HREF} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {StorageService} from '../../../shared/services/storage.service';
@@ -24,7 +24,7 @@ describe('ActivateBangumiComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AppRoutingModule,
-        MaterialLayoutCommonModule,
+        BanguminSharedModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {
@@ -46,7 +46,7 @@ describe('ActivateBangumiComponent', () => {
         {provide: APP_BASE_HREF, useValue: '/'}
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

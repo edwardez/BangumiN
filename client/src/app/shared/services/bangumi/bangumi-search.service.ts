@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {map} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BangumiSearchService {
 
   constructor(private http: HttpClient) {
@@ -22,7 +24,9 @@ export class BangumiSearchService {
         map(
           response => {
             // parse 404 result into a object that's same as others
-            if (response['code'] && response['code'] === 404) { return {'results': 0, 'list': [], 'type': Number(type)}; }
+            if (response['code'] && response['code'] === 404) {
+              return {'results': 0, 'list': [], 'type': Number(type)};
+            }
 
             response['type'] = Number(type);
             return response;

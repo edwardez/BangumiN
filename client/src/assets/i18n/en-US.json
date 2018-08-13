@@ -1,37 +1,142 @@
 {
+  "common": {
+    "status": {
+      "wish": "Wish",
+      "collect": "Finished",
+      "do": "In Progress",
+      "on_hold": "Hold",
+      "dropped": "Drop"
+    },
+    "action": {
+      "addToCollection": "Add to collection",
+      "editCollection": "Edit collection",
+      "more": "More info",
+      "type": {
+        "general": "",
+        "anime": "",
+        "real": "",
+        "listen": "",
+        "game": "",
+        "book": ""
+      },
+      "update": "Update",
+      "modify": "Modify"
+    },
+    "book": {
+      "volume": "",
+      "chapter": "",
+      "volumeNumber": "Vol.",
+      "chapterNumber": "Chap."
+    },
+    "snakBar": {
+      "error": {
+        "submit": {
+          "general": "Failed to submit"
+        }
+      }
+    }
+  },
+  "nav": {
+    "search": {
+      "placeholder": {
+        "name": "Search"
+      }
+    },
+    "menu": {
+      "login": {
+        "name": "Log In"
+      },
+      "logout": {
+        "name": "Log Out"
+      },
+      "settings": {
+        "name": "Settings"
+      }
+    }
+  },
   "login": {
     "welcomeTitle": "Welcome!",
     "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
-    "oauthRedirect": "Login"
+    "oauthRedirect": "Login",
+    "waitForBangumiAuth": {
+      "title": "Login in progress",
+      "content": "Please complete the login process in the newly opened window, please don't close this window before login is completed.",
+      "cancel": "Cancel authentication"
+    },
+    "loginSuccess": "Login succeeded, now redirecting...",
+    "loginFailure": "Login failed, please try again later.",
+    "waitForActivationPrompt": "Activation in progress, this window will be closed shortly."
   },
   "settings": {
-    "title": "Settings",
+    "name": "Settings",
     "description": "All changes will be saved automatically",
-    "tabs": {
-      "general": {
-        "name": "General",
-        "language": {
-          "name": "Language"
+    "category": {
+      "language": {
+        "name": "Language preferences",
+        "BangumiNLanguage": {
+          "name": "Main display language"
+        },
+        "BangumiLanguage": {
+          "name": "Show bangumi info in",
+          "explanation": "Won't work if relevant translation is not available on Bangumi",
+          "options": {
+            "original": "Original",
+            "zh-Hans": "Chinese translation"
+          }
         }
       },
-      "social": {
-        "name": "Social"
+      "appearance": {
+        "name": "Appearance preferences",
+        "colorTheme": {
+          "name": "Color theme",
+          "options": {
+            "bangumi-pink-blue": "Bangumi Pink",
+            "bangumin-material-blue-teal": "Blue and Blue Teal",
+            "bangumin-material-dark-pink-blue-grey": "Pink and Blue Grey(Night Mode)"
+          },
+          "showA11YViolationTheme": {
+            "name": "Show themes that violate accessibility guidlines",
+            "tooltip": {
+              "explanation": "Some themes(like Bangumi's Pink theme) violate accessibility guideline, some people (i.e. have a visual impairment? might have difficulty in using them. These theme options are hidden by default. By toggling this slider you confirm that you've read relevant explanations."
+            }
+          }
+        }
       }
     }
   },
   "progress": {
+    "name": "Progress",
     "tabs": {
       "all": {
-        "name": "All"
+        "name": "All",
+        "title": "{{nickname}}'s in-progress overview"
       },
       "anime": {
-        "name": "Anime"
+        "name": "Anime",
+        "title": "{{nickname}}'s in-progress anime"
       },
       "real": {
-        "name": "Real"
+        "name": "Real",
+        "title": "{{nickname}}'s in-progress TV & movies"
       },
       "book": {
-        "name": "Books"
+        "name": "Books",
+        "title": "{{nickname}}'s in-progress books"
+      }
+    },
+    "episode": {
+      "status": {
+        "queue": "Wish",
+        "watched": "Watched this",
+        "watchedUntil": "Watched until this",
+        "drop": "Drop",
+        "remove": "remove"
+      }
+    },
+    "error": {
+      "empty": {
+        "all": "It looks like you don't have any in-progress collections, try to add some first!",
+        "subType": "It looks like you don't have any in-progress collections under this type, try to add some first!"
       }
     }
   },
@@ -56,9 +161,11 @@
     "tabs": {
       "overview": {
         "name": "Overview",
+        "openInBangumi": "Open in Bangumi",
         "review": {
-          "score": "Score",
-          "rank": "Ranked",
+          "bangumiScore": "Bangumi Score",
+          "myScore": "My score",
+          "rank": "Bangumi ranke",
           "modal": {
             "title": "Edit collection",
             "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
@@ -70,39 +177,69 @@
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"
               },
-              "tags":{
+              "tags": {
                 "tagsMaxNumber": "{{tagsCurrentNumber}}/{{tagsMaxNumber}} tags are added, You can only add up to to {{tagsMaxNumber}}"
               }
             }
-          },
-          "status": {
-            "wish": "Wish",
-            "collect": "Finished",
-            "do": "In Progress",
-            "on_hold": "Hold",
-            "dropped": "Drop"
-          },
-          "action": {
-            "addToCollection": "Add to collection",
-            "editCollection": "Edit collection",
-            "more": "More info",
-            "type": {
-              "1": "",
-              "2": "",
-              "3": "",
-              "4": "",
-              "6": ""
-            }
           }
+        },
+        "info": {
+          "staff": "Staff",
+          "charactersAndActors": "Characters & Voice Actors",
+          "characters": "Characters",
+          "airDate": {
+            "all": "Start date",
+            "anime": "Air date",
+            "book": "Publish date",
+            "music": "Release date",
+            "game": "Release date",
+            "real": "Air date"
+          },
+          "nameCN": "Chinese Name",
+          "episodeCount": "Episode Count"
         }
       },
       "episode": {
         "name": "Episode"
       }
-    },
-    "action": {
-      "collect": "Collect",
-      "more": "More Info"
     }
+  },
+  "posts": {
+    "bangumin": {
+      "spoilerBox": {
+        "name": "Spoiler Box"
+      }
+    }
+  },
+  "profile": {
+    "name": "Profile",
+    "tabs": {
+      "collection": {
+        "name": "Collection",
+        "cards": {
+          "anime": {
+            "name": "Anime"
+          },
+          "game": {
+            "name": "Game"
+          },
+          "book": {
+            "name": "Book"
+          },
+          "real": {
+            "name": "Real"
+          },
+          "music": {
+            "name": "Music"
+          }
+        }
+      },
+      "statistics": {
+        "name": "Statistics"
+      }
+    }
+  },
+  "error": {
+    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again."
   }
 }

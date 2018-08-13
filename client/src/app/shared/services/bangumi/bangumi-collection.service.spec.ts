@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
-import { BangumiCollectionService } from './bangumi-collection.service';
+import {BangumiCollectionService} from './bangumi-collection.service';
 
 describe('BangumiCollectionService', () => {
   beforeEach(() => {

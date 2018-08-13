@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
-import { BangumiUserService } from './bangumi-user.service';
+import {BangumiUserService} from './bangumi-user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {tokenGetter} from '../../../app.module';

@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginBangumiComponent } from './login-bangumi.component';
-import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
+import {LoginBangumiComponent} from './login-bangumi.component';
+import {BanguminSharedModule} from '../../../bangumin-shared.module';
 
 describe('LoginBangumiComponent', () => {
   let component: LoginBangumiComponent;
@@ -10,14 +10,12 @@ describe('LoginBangumiComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MaterialLayoutCommonModule
+        BanguminSharedModule
       ],
-      declarations: [ LoginBangumiComponent ],
-      providers: [
-
-      ]
+      declarations: [LoginBangumiComponent],
+      providers: []
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

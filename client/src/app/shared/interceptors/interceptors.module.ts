@@ -1,5 +1,5 @@
-import { NgModule, ModuleWithProviders, Optional, SkipSelf, Provider } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule, ModuleWithProviders, Optional, SkipSelf, Provider} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {OauthInterceptor} from './oauth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
@@ -12,6 +12,7 @@ export class InterceptorsModule {
       throw new Error('InterceptorsModule is already loaded. It should only be imported in your application\'s main module.');
     }
   }
+
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: InterceptorsModule,

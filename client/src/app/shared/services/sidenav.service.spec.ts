@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
-import { SidenavService } from './sidenav.service';
+import {SidenavService} from './sidenav.service';
 
 describe('SideNavService', () => {
   beforeEach(() => {

@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AppGuard } from './app.guard';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AppGuard} from './app.guard';
 import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
-import {DashboardComponent} from './home/dashboard/dashboard.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {ProgressComponent} from './home/progress/progress.component';
 import {ProfileComponent} from './home/profile/profile.component';
 import {SettingsComponent} from './settings/settings.component';
 import {FullSearchComponent} from './search/full-search/full-search.component';
 import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
+import {CollectionHomeComponent} from './home/profile/collection/collection-home/collection-home.component';
 
 const routes: Routes = [
   {
@@ -20,12 +20,31 @@ const routes: Routes = [
         component: ProgressComponent
       },
       {
-        path: 'profile',
-        component: ProfileComponent
+        path: 'user/:id',
+        component: ProfileComponent,
+        children: [
+          {
+            path: '',
+            component: CollectionHomeComponent,
+          },
+          {
+            path: 'statistics',
+            loadChildren: 'app/home/profile/profile-stats/profile-stats.module#ProfileStatsModule'
+          },
+          {
+            path: '**',
+            redirectTo: '',
+            pathMatch: 'full'
+          },
+        ]
       },
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {
+        path: 'spoilers',
+        loadChildren: 'app/posts/posts.module#PostsModule'
       },
     ]
   },
@@ -61,4 +80,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

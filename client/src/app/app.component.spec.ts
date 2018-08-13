@@ -1,12 +1,12 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
 import {NavComponent} from './common/nav/nav.component';
-import {MaterialLayoutCommonModule} from '../material-layout-common.module';
+import {BanguminSharedModule} from '../bangumin-shared.module';
 import {SidenavService} from './shared/services/sidenav.service';
 import {StorageService} from './shared/services/storage.service';
 import {AuthenticationService} from './shared/services/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {JwtHelperService, JwtModule} from '@auth0/angular-jwt';
 import {tokenGetter} from './app.module';
 import {environment} from '../environments/environment';
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MaterialLayoutCommonModule,
+        BanguminSharedModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {

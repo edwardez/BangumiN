@@ -1,48 +1,51 @@
-import {Component, ContentChildren, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
-import {filter, take} from 'rxjs/operators';
+import {filter, switchMap, take, tap} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import {concat} from 'rxjs/observable/concat';
+import {concat} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {LayoutService} from '../../shared/services/layout/layout.service';
+import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
   bangumiUser: BangumiUser;
   searchKeywords = '';
+  isAuthenticated = false;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  @Input()
+  currentDeviceWidth: DeviceWidth;
 
 
   constructor(private sidenavService: SidenavService,
               private storageService: StorageService,
-              private authService: AuthenticationService,
               private bangumiUserService: BangumiUserService,
               private route: ActivatedRoute,
-              private router: Router) {
-    // initialize a dummy user
-    this.bangumiUser = new BangumiUser().deserialize({
-      id: '',
-      avatar: {
-        large: 'https://lain.bgm.tv/pic/user/l/icon.jpg',
-        medium: 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-        small: 'https://lain.bgm.tv/pic/user/s/icon.jpg'
-      },
-      nickname: '',
-      username: ''
-    });
-
-
+              private router: Router,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
+    // initialize a dummy user
+    this.bangumiUser = new BangumiUser();
+
     this.updateSearchBarText();
     this.updateUserInfo();
 
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -70,7 +73,7 @@ export class NavComponent implements OnInit {
    */
 
   updateUserInfo() {
-    const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserInfo()];
+    const userInfoServiceArray = [this.storageService.getBangumiUser(), this.bangumiUserService.getUserSettings()];
 
 
     concat.apply(this, userInfoServiceArray)
@@ -79,9 +82,25 @@ export class NavComponent implements OnInit {
         filter(bangumiUser => !!bangumiUser),
       )
       .subscribe(bangumiUser => {
-        this.bangumiUser = bangumiUser;
-        this.authService.userSubject.next(bangumiUser);
+        this.authenticationService.userSubject.next(bangumiUser);
       });
+
+
+    // subscribe to change in userSubject
+    this.authenticationService.userSubject
+      .pipe(
+        filter(bangumiUser => !!bangumiUser),
+        tap(
+          bangumiUser => {
+            this.bangumiUser = bangumiUser;
+          }
+        ),
+        switchMap(
+          bangumiUser => this.authenticationService.isAuthenticated()
+        ),
+      ).subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
   }
 
   toggleSidenav() {
@@ -96,4 +115,15 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+  }
+
+  get LayoutService() {
+    return LayoutService;
+  }
 }

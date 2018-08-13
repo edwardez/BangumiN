@@ -2,10 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BangumiSearchService} from '../../shared/services/bangumi/bangumi-search.service';
 import {ActivatedRoute} from '@angular/router';
 import {concatAll, filter, map, mergeMap, switchMap, takeUntil} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
-import {from} from 'rxjs/observable/from';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {of} from 'rxjs/observable/of';
+import {Observable, from, forkJoin, of} from 'rxjs';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {_} from '../../shared/utils/translation-marker';
 

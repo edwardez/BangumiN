@@ -9,6 +9,7 @@ img {
 .helper-mat-toolbar-item {
   height: inherit;
 }
+
 .helper-vertical-align-img {
   display: inline-block;
   height: 100%;
@@ -19,16 +20,18 @@ img {
   cursor: pointer;
 }
 
-
 .helper-toolbar {
   //position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
 }
 
 mat-toolbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 6;
 }
-
 
 // search bar style is from AIO
 .search-container {
@@ -54,7 +57,6 @@ mat-toolbar {
     &:focus {
       outline: none;
     }
-
 
     @media (max-width: 480px) {
       width: 150px;

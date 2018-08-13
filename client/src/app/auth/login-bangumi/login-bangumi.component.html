@@ -1,13 +1,15 @@
 <div fxLayout="row" fxLayoutAlign="center center" class="container">
-    <mat-card class="card" fxFlex="0 1 80%" fxLayout="column" fxLayoutAlign="center center">
-      <mat-card-header>
-        <mat-card-title>{{'login.welcomeTitle' | translate}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p [innerHTML]="'login.welcomeText' | translate"></p>
-      </mat-card-content>
-      <mat-card-actions>
-        <a href={{bangumi_oauth_redirect}}><button mat-raised-button color="primary">{{'login.oauthRedirect' | translate}}</button></a>
-      </mat-card-actions>
-    </mat-card>
+  <mat-card class="card" fxFlex="0 1 80%" fxLayout="column" fxLayoutAlign="center center">
+    <mat-card-header>
+      <mat-card-title>{{'login.welcomeTitle' | translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p [innerHTML]="'login.welcomeText' | translate"></p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a (click)="redirectToBangumi()">
+        <button mat-raised-button color="primary">{{'login.oauthRedirect' | translate}}</button>
+      </a>
+    </mat-card-actions>
+  </mat-card>
 </div>

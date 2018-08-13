@@ -2,9 +2,9 @@
 
   <button *ngIf="isRemovable" mat-icon-button (click)="onClickRemoveRating()" (mouseover)="onHoverEnterRemoveRating()"
 
-  class="remove-rating" type="button"
+          class="remove-rating" type="button"
   >
-  <mat-icon>remove_circle_outline</mat-icon>
+    <mat-icon>remove_circle_outline</mat-icon>
   </button>
 
   <button mat-icon-button *ngFor="let ratingId of ratingArray;index as i" [id]="'star_'+i"

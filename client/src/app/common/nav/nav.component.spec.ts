@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NavComponent } from './nav.component';
-import {MaterialLayoutCommonModule} from '../../../material-layout-common.module';
+import {NavComponent} from './nav.component';
+import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {StorageService} from '../../shared/services/storage.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
@@ -19,7 +19,7 @@ describe('NavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MaterialLayoutCommonModule,
+        BanguminSharedModule,
         HttpClientModule,
         JwtModule.forRoot({
           config: {
@@ -30,7 +30,7 @@ describe('NavComponent', () => {
         }),
         InterceptorsModule.forRoot(),
       ],
-      declarations: [ NavComponent ],
+      declarations: [NavComponent],
       providers: [
         SidenavService,
         StorageService,
@@ -38,7 +38,7 @@ describe('NavComponent', () => {
         BangumiUserService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

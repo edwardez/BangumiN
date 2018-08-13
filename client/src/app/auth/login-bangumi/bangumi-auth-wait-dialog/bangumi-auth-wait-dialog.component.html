@@ -1,0 +1,8 @@
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<h1 mat-dialog-title class="text-align-center">{{'login.waitForBangumiAuth.title' | translate}}</h1>
+<div mat-dialog-content>
+  {{'login.waitForBangumiAuth.content' | translate}}
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center">
+  <button mat-button (click)="cancelAuth()"> {{'login.waitForBangumiAuth.cancel' | translate}}</button>
+</div>

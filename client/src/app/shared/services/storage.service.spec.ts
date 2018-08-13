@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { StorageService } from './storage.service';
+import {StorageService} from './storage.service';
 import {BangumiUser} from '../models/BangumiUser';
 
 describe('TokenStorageService', () => {
@@ -10,7 +10,7 @@ describe('TokenStorageService', () => {
     TestBed.configureTestingModule({
       providers: [StorageService]
     });
-    // use actual service here to test whether localStorage works on different browsers
+    // use actual service here to switchType whether localStorage works on different browsers
     storageService = TestBed.get(StorageService);
     storageService.clear();
   });
@@ -24,37 +24,37 @@ describe('TokenStorageService', () => {
   }));
 
   it('should return null if localStorage is empty', () => {
-    storageService.getAccessToken().subscribe( res => {
+    storageService.getAccessToken().subscribe(res => {
       expect(res).toBe(null);
     });
 
-    storageService.getRefreshToken().subscribe( res => {
+    storageService.getRefreshToken().subscribe(res => {
       expect(res).toBe(null);
     });
 
-    storageService.getJwtToken().subscribe( res => {
+    storageService.getJwtToken().subscribe(res => {
       expect(res).toBe(null);
     });
 
-    storageService.getBangumiUser().subscribe( res => {
+    storageService.getBangumiUser().subscribe(res => {
       expect(res).toBe(null);
     });
   });
 
 
-  it('should be able to get accessToken, JwtToken, refreshToken after calling set method', () => {
+  it('should be able to get accessToken, JwtToken, refreshBangumiOauthToken after calling set method', () => {
     storageService.setAccessToken('accessToken');
-    storageService.getAccessToken().subscribe( res => {
+    storageService.getAccessToken().subscribe(res => {
       expect(res).toBe('accessToken');
     });
 
-    storageService.setRefreshToken('refreshToken');
-    storageService.getRefreshToken().subscribe( res => {
-      expect(res).toBe('refreshToken');
+    storageService.setRefreshToken('refreshBangumiOauthToken');
+    storageService.getRefreshToken().subscribe(res => {
+      expect(res).toBe('refreshBangumiOauthToken');
     });
 
     storageService.setJwtToken('jwtToken');
-    storageService.getJwtToken().subscribe( res => {
+    storageService.getJwtToken().subscribe(res => {
       expect(res).toBe('jwtToken');
     });
   });
@@ -64,15 +64,17 @@ describe('TokenStorageService', () => {
 
     const bangumiUser: BangumiUser = new BangumiUser().deserialize({
       id: '',
-      avatar: {'large': 'https://lain.bgm.tv/pic/user/l/icon.jpg',
+      avatar: {
+        'large': 'https://lain.bgm.tv/pic/user/l/icon.jpg',
         'medium': 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-        'small': 'https://lain.bgm.tv/pic/user/s/icon.jpg'},
+        'small': 'https://lain.bgm.tv/pic/user/s/icon.jpg'
+      },
       nickname: '',
       username: ''
     });
 
-    storageService.setBangumiUser(bangumiUser);
-    storageService.getBangumiUser().subscribe( res => {
+    storageService.setUserInfo(bangumiUser);
+    storageService.getBangumiUser().subscribe(res => {
       expect(new BangumiUser().deserialize(res)).toEqual(bangumiUser);
     });
   });

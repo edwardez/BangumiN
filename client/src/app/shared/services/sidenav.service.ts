@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import {Injectable} from '@angular/core';
+import {MatDrawerToggleResult, MatSidenav} from '@angular/material';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SidenavService {
   private sidenav: MatSidenav;
 
@@ -19,7 +21,7 @@ export class SidenavService {
    *
    * @returns Promise<void>
    */
-  public open(): Promise<void> {
+  public open(): Promise<MatDrawerToggleResult> {
     return this.sidenav.open();
   }
 
@@ -28,12 +30,13 @@ export class SidenavService {
    *
    * @returns Promise<void>
    */
-  public close(): Promise<void> {
+  public close(): Promise<MatDrawerToggleResult> {
     return this.sidenav.close();
   }
 
 
-  constructor() { }
+  constructor() {
+  }
 
   /**
    * Toggle this sidenav. This is equivalent to calling open() when it's already opened, or close() when it's closed.
@@ -42,7 +45,7 @@ export class SidenavService {
    *
    * @returns
    */
-  public toggle(isOpen?: boolean): Promise<void> {
+  public toggle(isOpen?: boolean): Promise<MatDrawerToggleResult> {
     return this.sidenav.toggle(isOpen);
   }
 

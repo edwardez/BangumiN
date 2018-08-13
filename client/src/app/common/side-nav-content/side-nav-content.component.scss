@@ -1,0 +1,30 @@
+mat-sidenav {
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+}
+
+.mat-sidenav-content-lt-md {
+  min-height: 100vh;
+  padding: 80px 1rem 1rem;
+}
+
+.mat-sidenav-content-gt-sm {
+  min-height: 100vh;
+  padding: 80px 3rem 1rem;
+}
+
+.mat-sidenav-xs {
+  top: 56px;
+}
+
+.build-version-footer {
+  color: grey;
+  position: fixed;
+  left: 10px;
+  bottom: 0;
+  width: 100%;
+  text-align: left;
+}

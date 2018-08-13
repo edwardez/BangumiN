@@ -48,9 +48,6 @@ export class BangumiUser implements Serializable<BangumiUser> {
   }
 
 
-
-
-
 }
 
 

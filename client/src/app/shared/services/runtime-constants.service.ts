@@ -7,6 +7,7 @@ export class RuntimeConstantsService {
 
   static readonly appTitleSuffix = ' | BangumiN';
   static readonly maxCacheAge = 200000;  // in milliseconds
+  static readonly nonCacheableUrls: Array<string | RegExp> = [/http.*api\/user\/\d+\/setting/, /oauth/, /auth/, /assets/];
 
   static defaultUserId = null;
   static defaultAppLanguage = 'zh-Hans';

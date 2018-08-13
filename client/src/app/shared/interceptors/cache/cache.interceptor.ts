@@ -3,20 +3,28 @@ import {HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/
 import {of} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-
-
-const CACHABLE_URL = '/api/booksSearch';
+import {RuntimeConstantsService} from '../../services/runtime-constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CacheInterceptor implements HttpInterceptor {
 
+
   constructor(private cache: CacheMapService) {
   }
 
+  static isCacheableUrl(request: HttpRequest<any>) {
+    const url = request.url;
+    return !(RuntimeConstantsService.nonCacheableUrls.findIndex(function (route) {
+      return typeof route === 'string'
+        ? route === url
+        : route.test(url);
+    }) > -1);
+  }
+
   static isRequestCacheable(req: HttpRequest<any>) {
-    return (req.method === 'GET');
+    return (req.method === 'GET' && this.isCacheableUrl(req));
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
@@ -35,5 +43,6 @@ export class CacheInterceptor implements HttpInterceptor {
       })
     );
   }
+
 
 }

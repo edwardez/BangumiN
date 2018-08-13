@@ -19,14 +19,14 @@ export class InterceptorsModule {
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: OauthInterceptor,
+          useClass: CacheInterceptor,
           multi: true
         },
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: CacheInterceptor,
+          useClass: OauthInterceptor,
           multi: true
-        }
+        },
       ]
     };
   }

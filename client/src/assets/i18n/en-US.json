@@ -90,16 +90,20 @@
     "name": "Progress",
     "tabs": {
       "all": {
-        "name": "All"
+        "name": "All",
+        "title": "{{nickname}}'s in-progress overview"
       },
       "anime": {
-        "name": "Anime"
+        "name": "Anime",
+        "title": "{{nickname}}'s in-progress anime"
       },
       "real": {
-        "name": "Real"
+        "name": "Real",
+        "title": "{{nickname}}'s in-progress TV & movies"
       },
       "book": {
-        "name": "Books"
+        "name": "Books",
+        "title": "{{nickname}}'s in-progress books"
       }
     },
     "episode": {

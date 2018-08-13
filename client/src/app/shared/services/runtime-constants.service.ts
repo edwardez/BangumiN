@@ -5,6 +5,8 @@ import {Injectable} from '@angular/core';
 })
 export class RuntimeConstantsService {
 
+  static readonly appTitleSuffix = ' | BangumiN';
+
   static defaultUserId = null;
   static defaultAppLanguage = 'zh-Hans';
   static defaultBangumiLanguage = 'original';

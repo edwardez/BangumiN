@@ -90,16 +90,20 @@
   "name": "收视进度",
   "tabs": {
     "all": {
-      "name": "所有"
+      "name": "所有",
+      "title": "{{nickname}}的所有在看"
     },
     "anime": {
-      "name": "动画"
+      "name": "动画",
+      "title": "{{nickname}}在看的动画"
     },
     "real": {
-      "name": "三次元"
+      "name": "三次元",
+      "title": "{{nickname}}在看的剧集"
     },
     "book": {
-      "name": "书籍"
+      "name": "书籍",
+      "title": "{{nickname}}在看的书籍"
     }
   },
   "episode": {

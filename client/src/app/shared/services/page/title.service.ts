@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Title} from '@angular/platform-browser';
+import {RuntimeConstantsService} from '../runtime-constants.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,11 @@ export class TitleService {
       title = `${title}`;
     }
     this.bodyTitle.setTitle(`${title}`);
+  }
+
+  setTitle(title: string, suffix = RuntimeConstantsService.appTitleSuffix) {
+    this.title = title + suffix;
+    return this.title;
   }
 
   constructor(private bodyTitle: Title) {

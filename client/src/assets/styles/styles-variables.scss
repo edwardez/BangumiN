@@ -1,3 +1,19 @@
+$grid-breakpoints: (
+  xs: 0,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px,
+);
+
+// probably not the correct usage but it works...
+$container-max-widths: (
+  sm: 900px,
+  md: 1200px,
+  lg: 1800px
+);
+
+
 $dark-primary-text: rgba(black, 0.87);
 $light-primary-text: white;
 
@@ -35,3 +51,13 @@ $mat-bangumi-pink: (
   )
 );
 
+* {
+  &:active,
+  :focus {
+    outline: none !important;
+  }
+}
+
+label {
+  margin-bottom: 0;
+}

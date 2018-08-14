@@ -1,9 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-//@import "assets/material-icons/material-icons.css";
+//@import "assets/material-icons/material-icons.css"; // added cdn, don't need to import it manually at this time
+@import "assets/styles/styles-variables";
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+@import "~bootstrap/scss/utilities/_spacing";
+@import "~bootstrap/scss/utilities/_display";
+@import "~bootstrap/scss/mixins/_image";
+@import "~bootstrap/scss/_images";
 @import '~@angular/material/theming';
-
 @include mat-core();
-@import 'app/shared/theme/variables.scss';
 @import "~placeholder-loading/src/scss/placeholder-loading";
 @import '~quill/dist/quill.snow.css'; // TODO: figure out a way to lazy load this css only if user enters specific component
 
@@ -32,10 +37,6 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   @include angular-material-theme($bangumin-material-dark-pink-blue-grey-theme);
 }
 
-body {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
-}
-
 .line-breaker {
   white-space: pre-line;
 }
@@ -44,7 +45,7 @@ body {
   text-align: center;
 }
 
-.container {
+.bangumin-height-container {
   height: 100vh;
 }
 

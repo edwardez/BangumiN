@@ -1,66 +1,72 @@
-<div fxLayout="row"
-     fxLayoutAlign.xs="start start" fxLayoutAlign.gt-xs="center center"
-     fxFlex="0 1 100%"
-     fxLayoutGap.lt-sm="10px"
-     ngClass.gt-sm="has-margin-top-md has-margin-bottom-md" ngClass.lt-md="has-margin-top-sm has-margin-bottom-sm"
->
-  <a [routerLink]="['../subject', collection.subject.id]">
-    <img [src]="collection.subject.images.medium">
-    <mat-progress-bar fxHide fxShow.xs mode="determinate"
-                      value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
-  </a>
-
-  <div fxLayout="column" fxFlex="1 1 auto" fxLayoutGap="5px" ngClass.gt-md="has-padding-left-md">
-
-    <div fxLayout="row"
-         fxLayoutAlign.xs="space-between center" fxLayoutAlign.gt-xs="center center"
-    >
-      <div> {{collection.subject.name}}</div>
-
-      <button mat-icon-button (click)="openReviewDialog()" fxHide fxShow.xs>
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <mat-chip-list fxLayout="row" [multiple]="true">
-      <ng-container *ngFor="let episode of collection.episodeHeap['priv']['data'] | arrayFirstN:firstNElementCount">
-        <mat-chip color="{{calculateChipColorByEpisodeStatus(episode.userCollectionStatus)}}"
-                  selected="{{episode.userCollectionStatus !== EpisodeCollectionStatus.untouched }}"
-                  (click)="openEpisodeDialog(collection.subject, episode)">{{episode.sort}}
-        </mat-chip>
-      </ng-container>
-    </mat-chip-list>
-    <div *ngIf="collection.subject.type === SubjectType.book && bookProgressForm !== undefined">
-      <form fxLayout.xs="column" fxLayout.gt-xs="row"
-            fxLayoutAlign.xs="center start" fxLayoutAlign.gt-xs="center center"
-            fxLayoutGap="5px" [formGroup]="bookProgressForm"
-            (ngSubmit)="submitBookProgress()" novalidate>
-        <mat-form-field class="input-book-width">
-          <div matPrefix="">{{'common.book.volumeNumber' | translate}}</div>
-          <input type="number" pattern="\d*" matInput formControlName="completedVolumeCount" class="text-align-right">
-          <div matSuffix>/{{collection.subject.totalVolumesCount}}{{'common.book.volume' | translate}}</div>
-        </mat-form-field>
-        <mat-form-field class="input-book-width">
-          <div matPrefix="">{{'common.book.chapterNumber' | translate}}</div>
-          <input type="number" pattern="\d*" matInput formControlName="completedEpisodeCount" class="text-align-right">
-          <div matSuffix>/{{collection.subject.totalEpisodesCount}}{{'common.book.chapter' | translate}}</div>
-        </mat-form-field>
-        <button mat-button type="submit">{{'common.action.update' |
-          translate}}
-        </button>
-      </form>
-
-    </div>
-    <mat-progress-bar fxHide
-                      fxShow.gt-xs mode="determinate"
-                      ngClass.gt-xs="has-margin-top-xxs"
-                      value="{{calculateCollectionProgress(collection)}}"></mat-progress-bar>
-  </div>
-  <button mat-button (click)="openReviewDialog()"
-          fxHide fxShow.gt-xs
+<div class="container-fluid">
+  <div
+    class="row flex-nowrap mt-1 mt-1 mt-sm-2 mb-sm-2"
   >
-    {{'common.action.modify' | translate}}
-  </button>
+
+    <div class="col-2 col-sm-2">
+      <a [routerLink]="['../subject', collection.subject.id]">
+        <img class="img-fluid" [src]="collection.subject.images.medium">
+        <mat-progress-bar mode="determinate"
+                          [value]="calculateCollectionProgress(collection)"
+                          class="d-block d-sm-none mt-1 mb-1"></mat-progress-bar>
+      </a>
+    </div>
+
+    <div class="col-10 align-self-center">
+      <div class="row flex-nowrap">
+        <div class="col-12  col-sm-10">
+
+          <div class="text-align-center"
+          >
+            <p> {{collection.subject.name}}</p>
+
+            <button mat-icon-button (click)="openReviewDialog()"
+                    class="d-sm-none d-block">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="collection.subject.type === SubjectType.book && bookProgressForm !== undefined">
+            <form [formGroup]="bookProgressForm"
+                  (ngSubmit)="submitBookProgress()" novalidate>
+              <mat-form-field class="input-book-width">
+                <div matPrefix="">{{'common.book.volumeNumber' | translate}}</div>
+                <input type="number" pattern="\d*" matInput formControlName="completedVolumeCount"
+                       class="text-align-right">
+                <div matSuffix>/{{collection.subject.totalVolumesCount}}{{'common.book.volume' | translate}}</div>
+              </mat-form-field>
+              <mat-form-field class="input-book-width">
+                <div matPrefix="">{{'common.book.chapterNumber' | translate}}</div>
+                <input type="number" pattern="\d*" matInput formControlName="completedEpisodeCount"
+                       class="text-align-right">
+                <div matSuffix>/{{collection.subject.totalEpisodesCount}}{{'common.book.chapter' | translate}}</div>
+              </mat-form-field>
+              <button mat-button type="submit">{{'common.action.update' |
+                translate}}
+              </button>
+            </form>
+
+          </div>
+          <div class="d-none d-sm-block pt-md-1">
+            <mat-progress-bar mode="determinate"
+
+                              [value]="calculateCollectionProgress(collection)"
+            ></mat-progress-bar>
+          </div>
+
+        </div>
+        <button class=" d-none d-sm-block" mat-button (click)="openReviewDialog()"
+
+        >
+          {{'common.action.modify' | translate}}
+        </button>
+
+      </div>
+    </div>
+
+
+  </div>
+  <mat-divider></mat-divider>
+
 
 </div>
-<mat-divider></mat-divider>
-

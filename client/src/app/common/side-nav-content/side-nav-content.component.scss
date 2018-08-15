@@ -7,6 +7,10 @@ mat-sidenav {
 }
 
 @media only screen and (max-width: 599px) {
+  .mat-sidenav-xs {
+    top: 56px;
+  }
+
   .mat-sidenav-content-lt-md {
     min-height: 100vh;
     padding: 80px 1rem 1rem;
@@ -18,12 +22,6 @@ mat-sidenav {
     min-height: 100vh;
     padding-top: 80px;
   }
-}
-
-
-
-.mat-sidenav-xs {
-  top: 56px;
 }
 
 .build-version-footer {

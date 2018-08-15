@@ -1,12 +1,14 @@
-<div fxLayout="row wrap" class="has-margin-top-md has-margin-bottom-xs">
+<div class="row  mt-3 mb-2">
   <div
-    fxFlex.xs="100%"
-    fxFlex.sm="50%"
-    fxFlex.md="50%"
-    fxFlex.gt-md="20%"
-    fxFlexOrder="0"
+    class="col-12 col-sm-6 col-md-6 col-lg-2 order-0"
+
   >
-    <div fxLayout="column wrap" fxLayoutAlign="start center">
+    <!--fxFlex.xs="100%"-->
+    <!--fxFlex.sm="50%"-->
+    <!--fxFlex.md="50%"s-->
+    <!--fxFlex.gt-md="20%"-->
+    <!--fxFlexOrder="0"-->
+    <div class="d-flex flex-wrap justify-content-start align-items-center">
       <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
       <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
       <div>
@@ -19,11 +21,14 @@
 
     </div>
   </div>
-  <div class="line-breaker"
-       fxFlex.lt-lg="100%"
-       fxFlex.gt-md="50%"
-       fxFlexOffset="2%"
-       fxFlexOrder.gt-md="1" fxFlexOrder.lt-lg="2"
+
+  <!--fxFlex.lt-lg="100%"-->
+  <!--fxFlex.gt-md="50%"-->
+  <!--fxFlexOffset="2%"-->
+  <!--fxFlexOrder.gt-md="1" fxFlexOrder.lt-lg="2"-->
+  <div class="line-breaker col-12 col-sm-12 col-md-12 col-lg-6
+              order-2 order-lg-1"
+
   >
 
 
@@ -38,13 +43,15 @@
 
     </div>
   </div>
+
+  <!--fxFlex.xs="95%"-->
+  <!--fxFlex.sm="40%"-->
+  <!--fxFlex.md="40%"-->
+  <!--fxFlex.gt-md="20%"-->
+  <!--fxFlexOffset="2%"-->
+  <!--fxFlexOrder.gt-md="2" fxFlexOrder.lt-lg="1"-->
   <div
-    fxFlex.xs="95%"
-    fxFlex.sm="40%"
-    fxFlex.md="40%"
-    fxFlex.gt-md="20%"
-    fxFlexOffset="2%"
-    fxFlexOrder.gt-md="2" fxFlexOrder.lt-lg="1"
+    class="col-11 col-sm-5 col-md-5 col-lg-3 order-1 order-lg-2 mt-3 mt-sm-0"
   >
     <mat-card>
       <mat-card-content fxLayout="column">

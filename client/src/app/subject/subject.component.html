@@ -1,8 +1,8 @@
-<div fxLayout="row" fxLayoutAlign="center start" *ngIf="subject">
+<div class="row justify-content-center align-items-start" *ngIf="subject">
 
 
-  <div fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 80%">
-    <div fxLayout="row" fxLayoutAlign="start center">
+  <div class="col-11 col-sm-10 col-md-9">
+    <div class="d-flex justify-content-start align-items-center">
       <h2>{{subject.name}}</h2>
       <a
         *ngIf="subject.url" href={{subject.url}} target="_blank"

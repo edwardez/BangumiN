@@ -6,15 +6,21 @@ mat-sidenav {
   padding: 0;
 }
 
-.mat-sidenav-content-lt-md {
-  min-height: 100vh;
-  padding: 80px 1rem 1rem;
+@media only screen and (max-width: 599px) {
+  .mat-sidenav-content-lt-md {
+    min-height: 100vh;
+    padding: 80px 1rem 1rem;
+  }
 }
 
-.mat-sidenav-content-gt-sm {
-  min-height: 100vh;
-  padding: 80px 3rem 1rem;
+@media only screen and (min-width: 600px) {
+  .mat-sidenav-content-gt-sm {
+    min-height: 100vh;
+    padding-top: 80px;
+  }
 }
+
+
 
 .mat-sidenav-xs {
   top: 56px;

@@ -1,7 +1,7 @@
 <div *ngIf="this.userSettings">
   <form [formGroup]="settingsForm">
 
-    <div fxLayout="row wrap" fxLayoutAlign="center start" class="container">
+    <div fxLayout="row wrap" fxLayoutAlign="center start" class="bangumin-height-container">
 
       <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
                 fxLayoutAlign="center center">
@@ -103,6 +103,6 @@
 </div>
 
 
-<div fxLayout="column" fxLayoutAlign="center center" class="container" *ngIf="!this.userSettings">
+<div fxLayout="column" fxLayoutAlign="center center" class="bangumin-height-container" *ngIf="!this.userSettings">
   <mat-spinner></mat-spinner>
 </div>

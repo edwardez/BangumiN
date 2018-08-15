@@ -1,29 +1,42 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div class="container">
 
-  <mat-card fxFlex.lt-md="0 1 100%" fxFlex.gt-sm="0 1 80%">
-    <mat-card-content>
-      <mat-tab-group [selectedIndex]="currentIndex" (selectedIndexChange)="selectedIndexChange($event)">
-        <mat-tab
-          label="{{'progress.tabs.all.name' | translate}}">
-          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
-                                [currentSubjectType]="subjectType.all"></app-progress-content>
-        </mat-tab>
-        <mat-tab label="{{'progress.tabs.anime.name' | translate}}">
-          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
-                                [currentSubjectType]="subjectType.anime"></app-progress-content>
-        </mat-tab>
-        <mat-tab label="{{'progress.tabs.real.name' | translate}}">
-          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
-                                [currentSubjectType]="subjectType.real"></app-progress-content>
-        </mat-tab>
-        <mat-tab label="{{'progress.tabs.book.name' | translate}}">
-          <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
-                                [currentSubjectType]="subjectType.book"></app-progress-content>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
+  <div class="row justify-content-center">
+    <mat-card class="col-12 col-sm-10 col-md-9">
+      <mat-card-content>
+        <mat-tab-group [selectedIndex]="currentIndex" [dynamicHeight]="true"
+                       (selectedIndexChange)="selectedIndexChange($event)">
+          <mat-tab
+            label="{{'progress.tabs.all.name' | translate}}">
+            <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
+                                  [currentSubjectType]="subjectType.all"></app-progress-content>
+          </mat-tab>
+          <mat-tab label="{{'progress.tabs.anime.name' | translate}}">
+            <ng-template matTabContent>
+              <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
+                                    [currentSubjectType]="subjectType.anime"></app-progress-content>
+            </ng-template>
 
-  </mat-card>
+          </mat-tab>
+          <mat-tab label="{{'progress.tabs.real.name' | translate}}">
+            <ng-template matTabContent>
+              <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
+                                    [currentSubjectType]="subjectType.real"></app-progress-content>
+            </ng-template>
+
+          </mat-tab>
+          <mat-tab label="{{'progress.tabs.book.name' | translate}}">
+            <ng-template matTabContent>
+              <app-progress-content [collectionWatchingResponse]="collectionWatchingResponse"
+                                    [currentSubjectType]="subjectType.book"></app-progress-content>
+            </ng-template>
+
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+
 
 </div>
 

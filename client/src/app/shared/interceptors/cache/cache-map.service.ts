@@ -10,7 +10,6 @@ export class CacheMapService implements Cache {
   cacheMap = new Map<string, CacheEntry>();
 
   get(req: HttpRequest<any>): HttpResponse<any> | null {
-    console.log(this.cacheMap);
     const entry = this.cacheMap.get(req.urlWithParams);
     if (!entry) {
       return null;

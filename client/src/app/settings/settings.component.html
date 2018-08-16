@@ -1,12 +1,12 @@
 <div *ngIf="this.userSettings">
   <form [formGroup]="settingsForm">
 
-    <div fxLayout="row wrap" fxLayoutAlign="center start" class="bangumin-height-container">
+    <div class="row justify-content-center align-content-start bangumin-height-container">
 
-      <mat-card class="card" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
-                fxLayoutAlign="center center">
-        <h3>{{'settings.category.language.name' | translate}}</h3>
-        <mat-card-content fxFlexAlign="start">
+      <mat-card class="card col-11 col-sm-7 d-flex flex-column justify-content-center align-content-center"
+      >
+        <h3 class="text-align-center">{{'settings.category.language.name' | translate}}</h3>
+        <mat-card-content class="align-self-start">
           <h4>{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
           <div class="has-margin-top-md">
             <mat-radio-group formControlName="appLanguage">
@@ -19,7 +19,7 @@
             </mat-radio-group>
           </div>
           <div class="has-margin-top-md"></div>
-          <div fxLayout="row" fxLayoutAlign="start center">
+          <div class="d-flex flex-row justify-content-start align-content-center">
             <h4>{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
             <mat-icon matTooltip="{{'settings.category.language.BangumiLanguage.explanation' | translate}}"
                       matTooltipPosition="{{'above'}}">info
@@ -47,10 +47,9 @@
       </mat-card>
 
 
-      <mat-card class="card has-margin-top-md" fxFlex.lt-md="0 1 95%" fxFlex.gt-sm="0 1 60%" fxLayout="column"
-                fxLayoutAlign="center center">
-        <h3>{{'settings.category.appearance.name' | translate}}</h3>
-        <mat-card-content fxFlexAlign="start">
+      <mat-card class="card col-11 col-sm-7 d-flex flex-column justify-content-center align-content-center mt-3">
+        <h3 class="text-align-center">{{'settings.category.appearance.name' | translate}}</h3>
+        <mat-card-content class="align-self-start">
           <h4>{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
 
 
@@ -69,18 +68,18 @@
               <mat-radio-button
                 class="has-margin-right-md"
                 [value]="'bangumi-pink-blue'"
-                [(fxShow)]="settingsForm.get('showA11YViolationTheme').value"
+                *ngIf="settingsForm.get('showA11YViolationTheme').value"
               >
                 {{'settings.category.appearance.colorTheme.options.bangumi-pink-blue' | translate}}
               </mat-radio-button>
 
             </mat-radio-group>
 
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="d-flex flex-row justify-content-start align-content-center">
               <mat-slide-toggle
                 formControlName="showA11YViolationTheme"
                 (change)="resetA11YViolationOptionsIfSelected($event)"
-                class="has-margin-right-sm"
+                class="mr-2"
 
               >
                 {{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}
@@ -102,7 +101,6 @@
 
 </div>
 
-
-<div fxLayout="column" fxLayoutAlign="center center" class="bangumin-height-container" *ngIf="!this.userSettings">
+<div class="row justify-content-center align-items-center bangumin-height-container">
   <mat-spinner></mat-spinner>
 </div>

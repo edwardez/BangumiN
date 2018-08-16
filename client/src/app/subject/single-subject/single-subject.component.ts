@@ -14,6 +14,7 @@ import {LayoutService} from '../../shared/services/layout/layout.service';
 import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
 import {CollectionRequest} from '../../shared/models/collection/collection-request';
 
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
 
 @Component({
   selector: 'app-single-subject',
@@ -31,6 +32,8 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
   @Input()
   currentRating = 0;
 
+  currentDeviceWidth: DeviceWidth;
+
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
@@ -47,8 +50,13 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
     return SubjectType;
   }
 
+  get LayoutService() {
+    return LayoutService;
+  }
+
 
   ngOnInit() {
+    this.getDeviceWidth();
 
   }
 
@@ -108,6 +116,16 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  getDeviceWidth() {
+    this.layoutService.deviceWidth
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(deviceWidth => {
+        this.currentDeviceWidth = deviceWidth;
+      });
   }
 
 

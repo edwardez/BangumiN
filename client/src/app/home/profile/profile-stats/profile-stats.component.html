@@ -1,19 +1,39 @@
 <div
   [class]="theme">
-  <ngx-charts-bar-vertical
+  <!--<ngx-charts-bar-vertical-->
+  <!--[view]="view"-->
+  <!--[scheme]="colorScheme"-->
+  <!--[results]="data"-->
+  <!--[gradient]="gradient"-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[legend]="showLegend"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel">-->
+  <!--</ngx-charts-bar-vertical>-->
+  <ngx-charts-line-chart
     [view]="view"
     [scheme]="colorScheme"
-    [results]="data"
+    [schemeType]="schemeType"
+    [results]="lineData"
+    [animations]=true
+    [legend]="showLegend"
     [gradient]="gradient"
-    [showGridLines]="showGridLines"
     [xAxis]="showXAxis"
     [yAxis]="showYAxis"
-    [legend]="showLegend"
     [showXAxisLabel]="showXAxisLabel"
     [showYAxisLabel]="showYAxisLabel"
     [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel">
-  </ngx-charts-bar-vertical>
+    [yAxisLabel]="yAxisLabel"
+    [timeline]=false
+    [showGridLines]="showGridLines"
+    [rangeFillOpacity]="rangeFillOpacity"
+    [roundDomains]=false
+    [tooltipDisabled]=false>
+  </ngx-charts-line-chart>
 </div>
 
 

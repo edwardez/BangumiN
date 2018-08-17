@@ -2,14 +2,14 @@
 
 
 <form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" novalidate>
-  <div mat-dialog-content fxLayout="column">
+  <div mat-dialog-content class="d-flex flex-column">
     <app-star-rating
       [(currentRating)]="this.data.rating"
       formControlName="rating"
       [starCount]="10" [isEditable]="true" [isRemovable]="true" (ratingUpdated)="onRatingChanged($event)"
       *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
 
-    <mat-radio-group fxFlexOffset="5%" fxFlexAlign="center" formControlName="collectionStatus">
+    <mat-radio-group class="d-flex justify-content-around" formControlName="collectionStatus">
       <mat-radio-button value="wish">
         {{'common.status.wish' | translate}}{{'common.action.type' + '.' + subjectType | translate}}
       </mat-radio-button>
@@ -28,7 +28,7 @@
     </mat-radio-group>
 
 
-    <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
+    <mat-form-field class="mr-1 mr-sm-2">
       <mat-chip-list #chipList>
 
         <mat-chip *ngFor="let tag of tagsArray.value"
@@ -54,7 +54,7 @@
     </mat-error>
 
 
-    <mat-form-field fxFlexOffset.lt-md="1%" fxFlexOffset.gt-sm="3%">
+    <mat-form-field class="mr-1 mr-sm-2">
   <textarea matInput
             placeholder="{{'subject.tabs.overview.review.modal.comment' | translate: {commentCurrentLength:ratingForm.value.comment.length, commentMaxLength: commentMaxLength} }}"
             formControlName="comment"

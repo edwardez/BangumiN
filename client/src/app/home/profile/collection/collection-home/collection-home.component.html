@@ -1,6 +1,6 @@
 <div *ngIf="userCollectionResponseByType !== undefined">
   <ng-container *ngFor="let currentSubjectType of validSubjectTypeArray">
-    <mat-card class="has-margin-top-md has-margin-bottom-md"
+    <mat-card class="mt-3 mb-3"
               *ngIf="!undefinedOrEmpty(userCollectionResponseByType[subjectType[currentSubjectType]])"
     >
       <mat-card-subtitle>

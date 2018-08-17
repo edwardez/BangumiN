@@ -1,22 +1,38 @@
-<div fxLayout="column" *ngIf="allCharacters.length >= 1">
-  <h4>{{'subject.tabs.overview.info.charactersAndActors' | translate}}</h4>
+<div class="container">
+  <div class="row" *ngIf="allCharacters.length >= 1">
+    <h4 class="col-12 ">{{'subject.tabs.overview.info.charactersAndActors' | translate}}</h4>
+    <div class="w-100"></div>
+    <div class="col-12"
+    >
 
-  <div fxLayout="row wrap" fxFlex="0 1"
-       fxFlexAlign="start">
-    <div fxLayout="row" fxLayoutAlign="start start"
-         fxFlex.gt-xs="0 1 25%" fxFlex.xs="0 1 50%"
-         fxLayoutGap="3%"
-         class="has-margin-top-xs"
-         *ngFor="let character of allCharacters">
-      <a *ngIf="character.url" target="_blank" href="{{character.url}}"><img [src]="character.images.small"></a>
-      <img *ngIf="!character.url" [src]="character.images.small">
-      <div fxLayout="column">
-        <div><span>{{character.name}}</span>
-          <small class="comment-number">(+{{character.comment}})</small>
+      <div class="row">
+
+        <div class="col-5 col-sm-4"
+             *ngFor="let character of allCharacters">
+          <div class="row flex-nowrap">
+            <div class="col-5 col-sm-5 ">
+              <div>
+                <a *ngIf="character.url" target="_blank" href="{{character.url}}"><img
+                  [src]="character.images.small"></a>
+                <img *ngIf="!character.url" [src]="character.images.small">
+              </div>
+
+            </div>
+            <div class="col-5 col-sm-5 align-self-start pr-0 pl-0">
+              <div><span>{{character.name}}</span>
+                <small class="comment-number">(+{{character.comment}})</small>
+              </div>
+              <mat-divider></mat-divider>
+              <small class="sub-list">{{generateActorsList(character.actors)}}</small>
+            </div>
+          </div>
+
         </div>
-        <mat-divider></mat-divider>
-        <small class="sub-list">{{generateActorsList(character.actors)}}</small>
+
       </div>
+
+
     </div>
   </div>
+
 </div>

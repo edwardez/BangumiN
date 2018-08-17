@@ -196,7 +196,7 @@
           "real": "放送开始"
         },
         "nameCN": "中文名",
-        "EpisodeCount": "集数"
+        "episodeCount": "集数"
       }
     },
     "episode": {

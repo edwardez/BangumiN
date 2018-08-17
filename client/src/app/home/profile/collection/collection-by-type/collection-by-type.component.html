@@ -1,8 +1,8 @@
-<div fxLayout="row">
-  <div fxLayout="column"
+<div>
+  <div
        *ngFor="let subject of collectionUnderCurrentSubjectType[collectionStatus[statusName]]">
     <a [routerLink]="['../../subject', subject.id]">
-      <img src="{{subject.images.small}}" fxFlexAlign="center">
+      <img src="{{subject.images.small}}">
     </a>
 
     <span>{{subject.name}}</span>

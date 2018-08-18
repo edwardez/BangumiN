@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CollectionByTypeComponent} from './collection-by-type.component';
+import {SpoilerOverviewComponent} from './spoiler-overview.component';
 
-describe('CollectionByTypeComponent', () => {
-  let component: CollectionByTypeComponent;
-  let fixture: ComponentFixture<CollectionByTypeComponent>;
+describe('SpoilerOverviewComponent', () => {
+  let component: SpoilerOverviewComponent;
+  let fixture: ComponentFixture<SpoilerOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CollectionByTypeComponent]
+      declarations: [SpoilerOverviewComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CollectionByTypeComponent);
+    fixture = TestBed.createComponent(SpoilerOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

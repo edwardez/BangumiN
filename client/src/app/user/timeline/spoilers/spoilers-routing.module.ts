@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ProfileStatsComponent} from './profile-stats.component';
+import {SpoilerOverviewComponent} from './spoiler-overview/spoiler-overview.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProfileStatsComponent
+    component: SpoilerOverviewComponent
   }
 ];
 
@@ -13,5 +13,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProfileStatsRoutingModule {
+export class SpoilersRoutingModule {
 }

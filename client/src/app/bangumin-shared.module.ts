@@ -8,6 +8,7 @@ import {
   MatCheckboxModule,
   MatChipsModule,
   MatDialogModule,
+  MatExpansionModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
@@ -15,12 +16,12 @@ import {
   MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
-  MatSidenavModule, MatSlideToggleModule,
+  MatSidenavModule,
+  MatSlideToggleModule,
   MatSnackBarModule,
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
 import {LayoutModule} from '@angular/cdk/layout';
@@ -31,12 +32,12 @@ import {RouterModule} from '@angular/router';
   imports: [
     MatCardModule,
     MatButtonModule,
+    MatExpansionModule,
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
     MatIconModule,
     MatListModule,
-    FlexLayoutModule,
     MatTabsModule,
     MatSelectModule,
     MatSlideToggleModule,
@@ -58,12 +59,12 @@ import {RouterModule} from '@angular/router';
   exports: [
     MatCardModule,
     MatButtonModule,
+    MatExpansionModule,
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
     MatIconModule,
     MatListModule,
-    FlexLayoutModule,
     MatTabsModule,
     MatSelectModule,
     MatSlideToggleModule,

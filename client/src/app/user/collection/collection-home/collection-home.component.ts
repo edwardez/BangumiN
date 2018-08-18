@@ -2,10 +2,10 @@ import {Location} from '@angular/common';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {forkJoin, Subject} from 'rxjs';
-import {BangumiUserService} from '../../../../shared/services/bangumi/bangumi-user.service';
-import {SubjectType} from '../../../../shared/enums/subject-type.enum';
+import {BangumiUserService} from '../../../shared/services/bangumi/bangumi-user.service';
+import {SubjectType} from '../../../shared/enums/subject-type.enum';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
-import {CollectionStatusId} from '../../../../shared/enums/collection-status-id';
+import {CollectionStatusId} from '../../../shared/enums/collection-status-id';
 
 @Component({
   selector: 'app-collection-home',

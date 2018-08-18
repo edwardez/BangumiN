@@ -13,7 +13,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {DashboardComponent} from './home/dashboard/dashboard.component';
 
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
-import {BanguminSharedModule} from '../bangumin-shared.module';
+import {BanguminSharedModule} from './bangumin-shared.module';
 import {BanguminHomeModule} from './home/home.module';
 import {BanguminCommonComponentModule} from './common/common.module';
 import {CookieModule} from 'ngx-cookie';

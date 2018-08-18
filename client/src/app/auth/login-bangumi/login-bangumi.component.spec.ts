@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {LoginBangumiComponent} from './login-bangumi.component';
-import {BanguminSharedModule} from '../../../bangumin-shared.module';
+import {BanguminSharedModule} from '../../bangumin-shared.module';
 
 describe('LoginBangumiComponent', () => {
   let component: LoginBangumiComponent;

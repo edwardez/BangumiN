@@ -1,11 +1,10 @@
-import {Component, HostBinding, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs/index';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
+import {Subject} from 'rxjs';
 import {DeviceWidth} from './shared/enums/device-width.enum';
 import {takeUntil} from 'rxjs/operators';
 import {LayoutService} from './shared/services/layout/layout.service';
 import {StorageService} from './shared/services/storage.service';
 import {BanguminUserService} from './shared/services/bangumin/bangumin-user.service';
-import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',

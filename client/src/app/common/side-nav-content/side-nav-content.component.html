@@ -3,8 +3,6 @@
     <mat-nav-list *ngIf="userID !== undefined">
       <a mat-list-item routerLink="./progress" (click)="sidenav.close()">{{'progress.name' | translate}}</a>
       <a mat-list-item [routerLink]="['./user', userID]" (click)="sidenav.close()">{{'profile.name' | translate}}</a>
-      <a mat-list-item routerLink="./spoilers" (click)="sidenav.close()">{{'posts.bangumin.spoilerBox.name' |
-        translate}}</a>
     </mat-nav-list>
   </mat-sidenav>
 

@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {BanguminPostsComponent} from './bangumin-posts.component';
+import {SpoilerOverviewComponent} from './spoiler-overview.component';
 
-describe('BanguminPostsComponent', () => {
-  let component: BanguminPostsComponent;
-  let fixture: ComponentFixture<BanguminPostsComponent>;
+describe('SpoilerOverviewComponent', () => {
+  let component: SpoilerOverviewComponent;
+  let fixture: ComponentFixture<SpoilerOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BanguminPostsComponent]
+      declarations: [SpoilerOverviewComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BanguminPostsComponent);
+    fixture = TestBed.createComponent(SpoilerOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

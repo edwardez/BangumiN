@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CollectionStatusId} from '../../../../shared/enums/collection-status-id';
+import {CollectionStatusId} from '../../../shared/enums/collection-status-id';
 
 @Component({
   selector: 'app-collection-by-type',
@@ -20,11 +20,11 @@ export class CollectionByTypeComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit() {
-  }
-
   get collectionStatus() {
     return CollectionStatusId;
+  }
+
+  ngOnInit() {
   }
 
 }

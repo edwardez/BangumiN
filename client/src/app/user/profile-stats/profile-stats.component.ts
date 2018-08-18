@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import {take} from 'rxjs/operators';
-import {BanguminUserService} from '../../../shared/services/bangumin/bangumin-user.service';
+import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 
 @Component({
   selector: 'app-profile-stats',

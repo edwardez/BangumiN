@@ -236,6 +236,11 @@
     },
     "statistics": {
       "name": "统计"
+    },
+    "timeline": {
+      "spoilerBox": {
+        "name": "剧透箱"
+      }
     }
   }
 },

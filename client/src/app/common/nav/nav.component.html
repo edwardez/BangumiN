@@ -7,7 +7,6 @@
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
     <a mat-button routerLink="./progress">{{'progress.name' | translate}}</a>
     <a mat-button [routerLink]="['./user', this.bangumiUser.user_id]">{{'profile.name' | translate}}</a>
-    <a mat-button routerLink="./spoilers">{{'posts.bangumin.spoilerBox.name' | translate}}</a>
   </div>
 
   <div class="flex-grow-1 flex-shrink-1"></div>

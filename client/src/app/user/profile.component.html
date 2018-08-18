@@ -22,6 +22,16 @@
   >
     {{'profile.tabs.statistics.name' | translate}}
   </a>
+
+  <a mat-tab-link
+     [routerLink]="['timeline', 'spoilers']"
+     routerLinkActive
+     #rlaSpoiler="routerLinkActive"
+     [routerLinkActiveOptions]="{exact: true}"
+     [active]="rlaSpoiler.isActive"
+  >
+    {{'profile.tabs.timeline.spoilerBox.name' | translate}}
+  </a>
 </nav>
 
 

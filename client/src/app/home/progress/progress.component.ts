@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CollectionWatchingResponseMedium} from '../../shared/models/collection/collection-watching-response-medium';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {Subject} from 'rxjs';
@@ -15,7 +15,7 @@ import {AuthenticationService} from '../../shared/services/auth.service';
   templateUrl: './progress.component.html',
   styleUrls: ['./progress.component.scss']
 })
-export class ProgressComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProgressComponent implements OnInit, OnDestroy {
 
   currentIndex = 0;
   collectionWatchingResponse: CollectionWatchingResponseMedium[];
@@ -47,7 +47,6 @@ export class ProgressComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe(response => {
         this.collectionWatchingResponse = response;
-        console.log('dara loaded');
       });
 
     this.setSelectedIndex();
@@ -115,11 +114,6 @@ export class ProgressComponent implements OnInit, OnDestroy, AfterViewInit {
       this.titleService.setTitle(title);
     });
   }
-
-  ngAfterViewInit(): void {
-    console.log('view loaded!');
-  }
-
 
 }
 

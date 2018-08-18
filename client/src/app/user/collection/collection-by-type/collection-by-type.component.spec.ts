@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {BanguminPostsComponent} from './bangumin-posts.component';
+import {CollectionByTypeComponent} from './collection-by-type.component';
 
-describe('BanguminPostsComponent', () => {
-  let component: BanguminPostsComponent;
-  let fixture: ComponentFixture<BanguminPostsComponent>;
+describe('CollectionByTypeComponent', () => {
+  let component: CollectionByTypeComponent;
+  let fixture: ComponentFixture<CollectionByTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BanguminPostsComponent]
+      declarations: [CollectionByTypeComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BanguminPostsComponent);
+    fixture = TestBed.createComponent(CollectionByTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

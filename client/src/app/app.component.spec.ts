@@ -1,8 +1,8 @@
-import {TestBed, async} from '@angular/core/testing';
+import {async, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {NavComponent} from './common/nav/nav.component';
-import {BanguminSharedModule} from '../bangumin-shared.module';
+import {BanguminSharedModule} from './bangumin-shared.module';
 import {SidenavService} from './shared/services/sidenav.service';
 import {StorageService} from './shared/services/storage.service';
 import {AuthenticationService} from './shared/services/auth.service';

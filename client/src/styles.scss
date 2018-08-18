@@ -7,36 +7,12 @@
 @import "~bootstrap/scss/utilities/_display";
 @import "~bootstrap/scss/mixins/_image";
 @import "~bootstrap/scss/_images";
-@import '~@angular/material/theming';
 
 @include mat-core();
 @import "~placeholder-loading/src/scss/placeholder-loading";
 @import '~quill/dist/quill.snow.css'; // TODO: figure out a way to lazy load this css only if user enters specific component
 
-// Angular customization
-$bangumi-pink-blue-primary: mat-palette($mat-bangumi-pink, 200, 100, 700);
-$bangumi-pink-blue-accent: mat-palette($mat-blue, A200, A100, A400);
-$bangumi-pink-theme: mat-light-theme($bangumi-pink-blue-primary, $bangumi-pink-blue-accent);
 
-$bangumin-material-blue-teal-primary: mat-palette($mat-blue);
-$bangumin-material-blue-teal-accent: mat-palette($mat-teal, A200, A100, A400);
-$bangumin-material-blue-teal-theme: mat-light-theme($bangumin-material-blue-teal-primary, $bangumin-material-blue-teal-accent);
-
-$bangumin-material-dark-pink-blue-grey-primary: mat-palette($mat-pink);
-$bangumin-material-dark-pink-blue-grey-accent: mat-palette($mat-blue-grey, A200, A100, A400);
-$bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-dark-pink-blue-grey-primary, $bangumin-material-dark-pink-blue-grey-accent);
-
-.bangumi-pink-blue {
-  @include angular-material-theme($bangumi-pink-theme);
-}
-
-.bangumin-material-blue-teal {
-  @include angular-material-theme($bangumin-material-blue-teal-theme);
-}
-
-.bangumin-material-dark-pink-blue-grey {
-  @include angular-material-theme($bangumin-material-dark-pink-blue-grey-theme);
-}
 
 .mat-card-header-text {
   width: 100%;

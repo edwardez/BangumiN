@@ -236,6 +236,11 @@
       },
       "statistics": {
         "name": "Statistics"
+      },
+      "timeline": {
+        "spoilerBox": {
+          "name": "Spoiler Box"
+        }
       }
     }
   },

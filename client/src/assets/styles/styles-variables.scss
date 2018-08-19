@@ -1,4 +1,6 @@
 @import '~@angular/material/theming';
+@import "quill-theme.snow.core";
+@import "quill-theme.snow.variant";
 
 $grid-breakpoints: (
   xs: 0,
@@ -94,6 +96,11 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   .background-color-bangumin-theme-accent {
     background-color: mat-color($accent);
   }
+
+  quill-editor {
+    @include quill-color-mixin($theme);
+  }
+
 }
 
 .bangumi-pink-blue {

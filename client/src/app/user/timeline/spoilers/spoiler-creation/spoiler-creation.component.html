@@ -1,0 +1,33 @@
+<div class="d-flex  align-items-center">
+  <div mat-card-avatar class="avatar-image mb-1 mr-1"
+       [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.large + ')' }"></div>
+  <div>
+    <mat-select placeholder="Set who can view it" class="col-8">
+      <mat-option [value]="'public'">
+        Public
+      </mat-option>
+    </mat-select>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <quill-editor #editor class="editor-wrapper" (onEditorCreated)="setEditor($event)">
+    <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
+      <button matTooltip="Info about the action" class="ql-clean">
+        <mat-icon>visibility_off</mat-icon>
+      </button>
+      <!--<button id="bold-button" (click)="addBold($event)"><i class="bangumin-spoiler-hider"></i></button>-->
+      <button matTooltip="Info about the action" id="bold-button" (click)="addBold($event)">
+        <mat-icon>visibility_off</mat-icon>
+      </button>
+
+    </div>
+
+  </quill-editor>
+
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button>Cancel</button>
+  <button mat-button cdkFocusInitial>Submit</button>
+</div>

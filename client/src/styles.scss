@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-//@import "assets/material-icons/material-icons.css"; // added cdn, don't need to import it manually at this time
+//@import "assets/material-icons/material-icons.css"; // we're using cdn now, don't need to import it manually at this time
 @import "assets/styles/styles-variables";
 @import '~bootstrap/scss/bootstrap-reboot';
 @import '~bootstrap/scss/bootstrap-grid';
@@ -10,9 +10,12 @@
 
 @include mat-core();
 @import "~placeholder-loading/src/scss/placeholder-loading";
-@import '~quill/dist/quill.snow.css'; // TODO: figure out a way to lazy load this css only if user enters specific component
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 
+}
 
 .mat-card-header-text {
   width: 100%;
@@ -35,4 +38,3 @@
 .bangumin-height-container {
   height: 100vh;
 }
-

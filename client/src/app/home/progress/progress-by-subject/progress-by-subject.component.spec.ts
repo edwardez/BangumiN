@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ProgessBySubjectComponent} from './progess-by-subject.component';
+import {ProgressBySubjectComponent} from './progress-by-subject.component';
 
-describe('ProgessBySubjectComponent', () => {
-  let component: ProgessBySubjectComponent;
-  let fixture: ComponentFixture<ProgessBySubjectComponent>;
+describe('ProgressBySubjectComponent', () => {
+  let component: ProgressBySubjectComponent;
+  let fixture: ComponentFixture<ProgressBySubjectComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProgessBySubjectComponent]
+      declarations: [ProgressBySubjectComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProgessBySubjectComponent);
+    fixture = TestBed.createComponent(ProgressBySubjectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

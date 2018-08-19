@@ -7,7 +7,7 @@ import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-co
 import {CollectionResponse} from '../../shared/models/collection/collection-response';
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
-import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
+import {DialogConfig, ResponsiveDialogService} from '../../shared/services/dialog/responsive-dialog.service';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {Subject} from 'rxjs/index';
 import {LayoutService} from '../../shared/services/layout/layout.service';
@@ -15,6 +15,7 @@ import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service'
 import {CollectionRequest} from '../../shared/models/collection/collection-request';
 
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {ReviewDialogComponent} from '../review-dialog/review-dialog.component';
 
 @Component({
   selector: 'app-single-subject',
@@ -40,7 +41,7 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
-              private reviewDialogService: ReviewDialogService,
+              private reviewDialogService: ResponsiveDialogService,
               private layoutService: LayoutService,
               private snackBarService: SnackBarService
   ) {
@@ -96,9 +97,18 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
       name: this.subject.name
     };
 
+    const dialogConfig: DialogConfig<ReviewDialogData> = {
+      matDialogConfig: {
+        data: reviewDialogData,
+      },
+      sizeConfig: {
+        onLtSmScreen: null
+      }
+    };
+
 
     // open the dialog
-    const dialogRefObservable = this.reviewDialogService.openReviewDialog(reviewDialogData);
+    const dialogRefObservable = this.reviewDialogService.openDialog(ReviewDialogComponent, dialogConfig);
 
     dialogRefObservable
       .pipe(

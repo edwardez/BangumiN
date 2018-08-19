@@ -9,11 +9,12 @@ import {SubjectType} from '../../../shared/enums/subject-type.enum';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BangumiCollectionService} from '../../../shared/services/bangumi/bangumi-collection.service';
 import {ReviewDialogData} from '../../../shared/models/review/reviewDialogData';
-import {ReviewDialogService} from '../../../shared/services/dialog/review-dialog.service';
+import {DialogConfig, ResponsiveDialogService} from '../../../shared/services/dialog/responsive-dialog.service';
 import {LayoutService} from '../../../shared/services/layout/layout.service';
 import {environment} from '../../../../environments/environment';
 import {Subject} from 'rxjs/index';
 import {takeUntil} from 'rxjs/operators';
+import {ReviewDialogComponent} from '../../../subject/review-dialog/review-dialog.component';
 
 @Component({
   selector: 'app-progess-by-subject',
@@ -32,7 +33,7 @@ export class ProgessBySubjectComponent implements OnInit, OnDestroy {
   constructor(public episodeDialog: MatDialog,
               private formBuilder: FormBuilder,
               private bangumiCollectionService: BangumiCollectionService,
-              private reviewDialogService: ReviewDialogService,
+              private reviewDialogService: ResponsiveDialogService,
               private layoutService: LayoutService) {
   }
 
@@ -136,8 +137,17 @@ export class ProgessBySubjectComponent implements OnInit, OnDestroy {
         name: this.collection.subject.name
       };
 
+      const dialogConfig: DialogConfig<ReviewDialogData> = {
+        matDialogConfig: {
+          data: reviewDialogData,
+        },
+        sizeConfig: {
+          onLtSmScreen: null
+        }
+      };
+
       // open the dialog
-      this.reviewDialogService.openReviewDialog(reviewDialogData).subscribe(dialogRef => {
+      this.reviewDialogService.openDialog(ReviewDialogComponent, dialogConfig).subscribe(dialogRef => {
       });
 
 

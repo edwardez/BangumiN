@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../shared/services/bangumi/bangumi-subject.service';
 import {BangumiCollectionService} from '../shared/services/bangumi/bangumi-collection.service';
 import {TitleService} from '../shared/services/page/title.service';
-import {ReviewDialogService} from '../shared/services/dialog/review-dialog.service';
+import {ResponsiveDialogService} from '../shared/services/dialog/responsive-dialog.service';
 import {LayoutService} from '../shared/services/layout/layout.service';
 import {SnackBarService} from '../shared/services/snackBar/snack-bar.service';
 import {forkJoin, Subject} from 'rxjs';
@@ -31,7 +31,7 @@ export class SubjectComponent implements OnInit, OnDestroy {
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
-              private reviewDialogService: ReviewDialogService,
+              private reviewDialogService: ResponsiveDialogService,
               private layoutService: LayoutService,
               private snackBarService: SnackBarService) {
   }

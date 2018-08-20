@@ -19,6 +19,7 @@ import {
   MatSidenavModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatStepperModule,
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
@@ -45,6 +46,7 @@ import {RouterModule} from '@angular/router';
     MatInputModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatStepperModule,
     MatTooltipModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -72,6 +74,7 @@ import {RouterModule} from '@angular/router';
     MatInputModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatStepperModule,
     MatTooltipModule,
     MatCheckboxModule,
     MatChipsModule,

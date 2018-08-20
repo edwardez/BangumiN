@@ -7,6 +7,7 @@ import {SpoilerSingleModule} from './spoiler-single/spoiler-single.module';
 import {QuillModule} from 'ngx-quill';
 import {SpoilerCreationComponent} from './spoiler-creation/spoiler-creation.component';
 import {ResponsiveDialogService} from '../../../shared/services/dialog/responsive-dialog.service';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import {ResponsiveDialogService} from '../../../shared/services/dialog/responsiv
     QuillModule,
     BanguminSharedModule,
     SpoilersRoutingModule,
-    SpoilerSingleModule
+    SpoilerSingleModule,
+    ReactiveFormsModule
   ],
   declarations:
     [

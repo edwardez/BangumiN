@@ -38,3 +38,10 @@ body {
 .bangumin-height-container {
   height: 100vh;
 }
+
+.spoiler-text {
+  padding: 4px 4px 4px 4px;
+  box-decoration-break: clone;
+  text-decoration: none;
+  border-radius: 5px;
+}

@@ -42,16 +42,16 @@ export class SubjectBase implements Serializable<SubjectBase> {
 
   images?: Images;
 
-  constructor() {
-    this.id = 0;
-    this.url = '';
-    this.type = 0;
-    this.name = '';
-    this.nameCN = '';
-    this.summary = '';
-    this.airDate = null;
-    this.airWeekday = null;
-    this.images = new Images();
+  constructor(id?: number, url?: string, type?: number, name?: string, nameCN?: string, summary?: string, airDate?: string, airWeekday?: number, images?: Images) {
+    this.id = id || 0;
+    this.url = url || '';
+    this.type = type || 0;
+    this.name = name || '';
+    this.nameCN = nameCN || '';
+    this.summary = summary || '';
+    this.airDate = airDate || null;
+    this.airWeekday = airWeekday || null;
+    this.images = images ? new Images().deserialize(images) : new Images();
   }
 
   deserialize(input) {

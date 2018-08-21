@@ -1,13 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../../../shared/services/auth.service';
-import {map, startWith, take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 
 import Quill from 'quill';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent} from '@angular/material';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {BangumiSearchService} from '../../../../shared/services/bangumi/bangumi-search.service';
+import {SubjectBase} from '../../../../shared/models/subject/subject-base';
 
 const Parchment = Quill.import('parchment');
 
@@ -55,22 +56,24 @@ export class SpoilerCreationComponent implements OnInit {
   bangumiUser: BangumiUser;
   quill: Quill;
 
-  visible = true;
+  duringSearch = false;
   selectable = true;
   removable = true;
   addOnBlur = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [];
   subjectCtrl = new FormControl();
-  filteredSubjects: Observable<string[]>;
+  filteredSubjects: Observable<SubjectBase[]>;
   subjects: string[] = ['Subject1'];
   allSubjects: string[] = ['Subject1', 'Subject2'];
 
-  @ViewChild('subjectInput') subjectInput: ElementRef;
+  @ViewChild('subjectInput')
+  subjectInput: ElementRef;
 
-  constructor(private authenticationService: AuthenticationService) {
-    this.filteredSubjects = this.subjectCtrl.valueChanges.pipe(
-      startWith(null),
-      map((subject: string | null) => subject ? this._filter(subject) : this.allSubjects.slice()));
+  @ViewChild('matAutocompleteTrigger')
+  matAutocompleteTrigger: MatAutocompleteTrigger;
+
+  constructor(private authenticationService: AuthenticationService,
+              private bangumiSearchService: BangumiSearchService) {
   }
 
   ngOnInit() {
@@ -81,11 +84,12 @@ export class SpoilerCreationComponent implements OnInit {
         this.bangumiUser = bangumiUser;
       }
     );
+
+    this.filteredSubjects = of([]);
   }
 
   addBold(event) {
     this.quill.format('spoiler', true);
-    console.log(this.quill.getContents());
   }
 
   setEditor(quill: Quill) {
@@ -123,11 +127,33 @@ export class SpoilerCreationComponent implements OnInit {
     this.subjectCtrl.setValue(null);
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allSubjects.filter(subject => subject.toLowerCase().indexOf(filterValue) === 0);
+  submitSearch(event) {
+    event.stopPropagation();
+    this.duringSearch = true;
+    this.setSearchButtonText();
+    this.filteredSubjects = this.bangumiSearchService.searchSubject(this.subjectInput.nativeElement.value, undefined, 'small').pipe(
+      take(1),
+      map(searchResult => {
+        searchResult.subjects.push(new SubjectBase(
+          undefined, undefined, undefined, this.subjectInput.nativeElement.value,
+          'No result', undefined, undefined, undefined, undefined));
+        console.log(searchResult);
+        this.duringSearch = false;
+        this.setSearchButtonText();
+        return searchResult.subjects;
+      })
+    );
   }
+
+  setSearchButtonText() {
+    if (this.duringSearch) {
+      return 'cancel search';
+    } else {
+      return 'search';
+    }
+  }
+
+
 
 
 

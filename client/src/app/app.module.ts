@@ -23,6 +23,7 @@ import {BanguminSettingsModule} from './settings/bangumin-settings.module';
 import {BanguminSubjectModule} from './subject/bangumin-subject.module';
 import {JwtModule} from '@auth0/angular-jwt';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     }),
     InterceptorsModule.forRoot(
     ),
+    LoadingBarHttpClientModule,
     TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,

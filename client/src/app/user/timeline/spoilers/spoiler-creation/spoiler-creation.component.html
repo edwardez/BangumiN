@@ -1,3 +1,4 @@
+
 <div class="d-flex  align-items-center">
   <div mat-card-avatar class="avatar-image mb-1 mr-1"
        [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.large + ')' }"></div>
@@ -16,7 +17,7 @@
                     (onEditorCreated)="setEditor($event)">
         <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
           <button matTooltip="Info about the action" class="ql-clean">
-            <mat-icon>visibility_off</mat-icon>
+            <mat-icon>visibility</mat-icon>
           </button>
           <button matTooltip="Info about the action" id="bold-button" (click)="addBold($event)">
             <mat-icon>visibility_off</mat-icon>
@@ -30,8 +31,8 @@
     <mat-step>
       <ng-template matStepLabel>Fill out your name</ng-template>
 
-      <div class="row no-gutters align-items-center align-content-center">
-        <mat-form-field class="col-9">
+      <div class="row no-gutters justify-content-center align-items-center align-content-center">
+        <mat-form-field class="col col-sm-9">
 
           <mat-chip-list #chipList>
             <mat-chip
@@ -50,18 +51,26 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="add($event)">
+              (matChipInputTokenEnd)="add($event)"
+              (keyup.enter)="submitSearch($event)"
+            >
           </mat-chip-list>
 
 
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject">
-              {{subject}}
+            <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject.id" class="mb-1">
+              <img class="img-grid" aria-hidden [src]="subject.images.grid">
+              <small>{{subject.name}}</small>
+              |
+              <small>{{subject.nameCN}}</small>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <div class="col-1"></div>
-        <button mat-raised-button class="col-2 align-self-center">search</button>
+        <div class="col-sm-1"></div>
+        <button mat-raised-button
+                (click)="submitSearch($event)"
+                class="col-2 col-sm-2 align-self-center">{{setSearchButtonText()}}
+        </button>
       </div>
 
       <mat-select placeholder="Set who can view it" class="col-8">

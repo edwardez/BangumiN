@@ -114,6 +114,16 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
     @include quill-color-mixin($theme);
   }
 
+  ngx-loading-bar {
+    #loading-bar {
+      color: mat-color($primary, default-contrast) !important;
+
+      .bar {
+        background: mat-color($primary, default-contrast) !important;
+      }
+    }
+  }
+
 }
 
 .bangumi-pink-blue {

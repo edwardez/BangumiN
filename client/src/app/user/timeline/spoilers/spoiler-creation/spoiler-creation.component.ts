@@ -1,14 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../../../shared/services/auth.service';
-import {map, take} from 'rxjs/operators';
+import {catchError, finalize, map} from 'rxjs/operators';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 
 import Quill from 'quill';
 import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent} from '@angular/material';
 import {FormControl} from '@angular/forms';
-import {Observable, of} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {BangumiSearchService} from '../../../../shared/services/bangumi/bangumi-search.service';
 import {SubjectBase} from '../../../../shared/models/subject/subject-base';
+import {SearchSubjectsResponseSmall} from '../../../../shared/models/search/search-subjects-response-small';
+import {SubjectType} from '../../../../shared/enums/subject-type.enum';
 
 const Parchment = Quill.import('parchment');
 
@@ -47,24 +49,30 @@ const icons = Quill.import('ui/icons');
 icons['clean'] = '<mat-icon class="mat-icon material-icons">visibility</mat-icon>';
 
 
+export class SearchConfig {
+  // expect user to tolerate a shorter timeout period here
+  static readonly SEARCH_TIME_OUT = 3000;
+  static readonly MAX_RESULT = 10;
+}
 @Component({
   selector: 'app-spoiler-creation',
   templateUrl: './spoiler-creation.component.html',
   styleUrls: ['./spoiler-creation.component.scss']
 })
 export class SpoilerCreationComponent implements OnInit {
+
   bangumiUser: BangumiUser;
   quill: Quill;
 
-  duringSearch = false;
+  disableSearch = false;
   selectable = true;
   removable = true;
   addOnBlur = false;
   separatorKeysCodes: number[] = [];
   subjectCtrl = new FormControl();
   filteredSubjects: Observable<SubjectBase[]>;
-  subjects: string[] = ['Subject1'];
-  allSubjects: string[] = ['Subject1', 'Subject2'];
+  subjects: string[] = [];
+
 
   @ViewChild('subjectInput')
   subjectInput: ElementRef;
@@ -73,17 +81,31 @@ export class SpoilerCreationComponent implements OnInit {
   matAutocompleteTrigger: MatAutocompleteTrigger;
 
   constructor(private authenticationService: AuthenticationService,
-              private bangumiSearchService: BangumiSearchService) {
+              private bangumiSearchService: BangumiSearchService,
+  ) {
+  }
+
+  static generateSubjectSearchResult(searchKeyWord: string, searchSubjectsResponse?: SearchSubjectsResponseSmall):
+    SearchSubjectsResponseSmall {
+    let searchResult;
+    if (!searchSubjectsResponse) {
+      searchResult = new SearchSubjectsResponseSmall();
+    } else {
+      searchResult = searchSubjectsResponse;
+    }
+
+    searchResult.subjects.push(SpoilerCreationComponent.getDefaultEmptySubject(searchKeyWord));
+
+    return searchResult;
+  }
+
+  static getDefaultEmptySubject(searchKeyWord: string): SubjectBase {
+    return new SubjectBase(
+      undefined, undefined, undefined, searchKeyWord,
+      'No result', undefined, undefined, undefined, undefined);
   }
 
   ngOnInit() {
-
-    this.authenticationService.userSubject.pipe(
-      take(1)
-    ).subscribe((bangumiUser: BangumiUser) => {
-        this.bangumiUser = bangumiUser;
-      }
-    );
 
     this.filteredSubjects = of([]);
   }
@@ -129,32 +151,57 @@ export class SpoilerCreationComponent implements OnInit {
 
   submitSearch(event) {
     event.stopPropagation();
-    this.duringSearch = true;
-    this.setSearchButtonText();
-    this.filteredSubjects = this.bangumiSearchService.searchSubject(this.subjectInput.nativeElement.value, undefined, 'small').pipe(
-      take(1),
+    this.disableSearch = true;
+    this.updateSearchButtonText();
+    const searchKeyWord = this.subjectInput.nativeElement.value;
+    this.filteredSubjects = this.bangumiSearchService.searchSubject(this.subjectInput.nativeElement.value,
+      undefined, 'small', undefined, SearchConfig.MAX_RESULT, SearchConfig.SEARCH_TIME_OUT).pipe(
       map(searchResult => {
-        searchResult.subjects.push(new SubjectBase(
-          undefined, undefined, undefined, this.subjectInput.nativeElement.value,
-          'No result', undefined, undefined, undefined, undefined));
-        console.log(searchResult);
-        this.duringSearch = false;
-        this.setSearchButtonText();
-        return searchResult.subjects;
-      })
+        return SpoilerCreationComponent.generateSubjectSearchResult(searchKeyWord, searchResult).subjects;
+      }),
+      catchError((error) => {
+        return throwError(error);
+      }),
+      finalize(() => {
+          this.updateSearchButtonText();
+          // anyhow, reset the search button so user can perform next search
+          this.disableSearch = false;
+        }
+      )
     );
   }
 
-  setSearchButtonText() {
-    if (this.duringSearch) {
-      return 'cancel search';
-    } else {
-      return 'search';
-    }
+  updateSearchButtonText(): string {
+    return this.disableSearch ?
+      'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.button.searching' :
+      'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.button.search';
   }
 
+  setSubjectIcon(subjectType: SubjectType): string {
+    let subjectMatIcon;
+    switch (subjectType) {
+      case SubjectType.anime:
+        subjectMatIcon = 'live_tv';
+        break;
+      case SubjectType.book:
+        subjectMatIcon = 'book';
+        break;
+      case SubjectType.music:
+        subjectMatIcon = 'music_note';
+        break;
+      case SubjectType.game:
+        subjectMatIcon = 'videogame_asset';
+        break;
+      case SubjectType.real:
+        subjectMatIcon = 'tv';
+        break;
+      default:
+        subjectMatIcon = 'live_tv';
+        break;
+    }
 
-
+    return subjectMatIcon;
+  }
 
 
 }

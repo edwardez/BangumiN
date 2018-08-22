@@ -239,7 +239,31 @@
     },
     "timeline": {
       "spoilerBox": {
-        "name": "剧透箱"
+        "name": "剧透箱",
+        "creation": {
+          "dialog": {
+            "editor": {
+              "prompt": "有什么想发表的新剧透？",
+              "toolbar": {
+                "visibilityOn": "清除剧透标记",
+                "visibilityOff": "标记选中为剧透"
+              }
+            },
+            "option": {
+              "tagSubject": {
+                "name": "选择你要剧透的作品",
+                "button": {
+                  "search": "搜索",
+                  "searching": "搜索中"
+                }
+              }
+            },
+            "button": {
+              "cancel": "取消",
+              "submit": "提交"
+            }
+          }
+        }
       }
     }
   }

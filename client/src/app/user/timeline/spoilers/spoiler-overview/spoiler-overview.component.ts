@@ -28,6 +28,7 @@ export class SpoilerOverviewComponent implements OnInit {
     const dialogRef = this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
       sizeConfig: {
         onLtSmScreen: {
+          width: '50vw',
           maxWidth: '50vw',
           maxHeight: '80vh',
         }

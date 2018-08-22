@@ -1,92 +1,81 @@
 
 <div class="d-flex  align-items-center">
-  <div mat-card-avatar class="avatar-image mb-1 mr-1"
-       [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.large + ')' }"></div>
-  <div>
 
-  </div>
 </div>
 
 <div mat-dialog-content>
 
-
-  <mat-vertical-stepper [linear]="false" #stepper>
-    <mat-step>
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <quill-editor #editor class="editor-wrapper" [formats]="['spoiler', 'clean']"
-                    (onEditorCreated)="setEditor($event)">
-        <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
-          <button matTooltip="Info about the action" class="ql-clean">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button matTooltip="Info about the action" id="bold-button" (click)="addBold($event)">
-            <mat-icon>visibility_off</mat-icon>
-          </button>
+  <quill-editor #editor class="editor-wrapper" [formats]="['spoiler', 'clean']"
+                [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.prompt' | translate"
+                (onEditorCreated)="setEditor($event)">
+    <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
+      <button [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOn' | translate"
+              class="ql-clean">
+      </button>
+      <button [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOff' | translate"
+              id="bold-button" (click)="addBold($event)">
+        <mat-icon>visibility_off</mat-icon>
+      </button>
 
 
-        </div>
+    </div>
 
-      </quill-editor>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Fill out your name</ng-template>
+  </quill-editor>
 
-      <div class="row no-gutters justify-content-center align-items-center align-content-center">
-        <mat-form-field class="col col-sm-9">
+  <mat-divider></mat-divider>
 
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor="let subject of subjects"
-              [selectable]="selectable"
-              [removable]="removable"
-              (removed)="remove(subject)">
-              {{subject}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <input
-              placeholder="New subject..."
-              #subjectInput
-              [formControl]="subjectCtrl"
-              [matAutocomplete]="auto"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="add($event)"
-              (keyup.enter)="submitSearch($event)"
-            >
-          </mat-chip-list>
+  <div class="row flex-nowrap no-gutters justify-content-center align-items-center align-content-center mt-2">
+    <mat-form-field class="col-9 col-sm-9">
+
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let subject of subjects"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(subject)">
+          {{subject}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate"
+          #subjectInput
+          [formControl]="subjectCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+          (keyup.enter)="submitSearch($event)"
+        >
+      </mat-chip-list>
 
 
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject.id" class="mb-1">
-              <img class="img-grid" aria-hidden [src]="subject.images.grid">
-              <small>{{subject.name}}</small>
-              |
-              <small>{{subject.nameCN}}</small>
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <div class="col-sm-1"></div>
-        <button mat-raised-button
-                (click)="submitSearch($event)"
-                class="col-2 col-sm-2 align-self-center">{{setSearchButtonText()}}
-        </button>
-      </div>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject.id" class="mb-1">
 
-      <mat-select placeholder="Set who can view it" class="col-8">
-        <mat-option [value]="'public'">
-          Public
+          <img class="img-grid img-fluid" aria-hidden [src]="subject.images.grid">
+          <mat-icon class="ml-1 mr-1">{{setSubjectIcon(subject.type)}}</mat-icon>
+          <small>{{subject.name}}</small>
+          |
+          <small>{{subject.nameCN}}</small>
         </mat-option>
-      </mat-select>
-    </mat-step>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="col-sm-1"></div>
+    <button mat-raised-button
+            [disabled]="this.disableSearch"
+            (click)="submitSearch($event)"
+            class="col-2 col-sm-2 align-self-center ml-2 ml-sm-0">{{updateSearchButtonText() | translate}}
+    </button>
+  </div>
 
-  </mat-vertical-stepper>
 
 
 </div>
 
 
-<div mat-dialog-actions>
-  <button mat-raised-button>Cancel</button>
-  <button mat-raised-button cdkFocusInitial>Submit</button>
+<div mat-dialog-actions class="row">
+  <button mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">Cancel</button>
+  <div class="col-2 col-sm-6"></div>
+  <button mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">Submit</button>
 </div>

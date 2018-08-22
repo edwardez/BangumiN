@@ -239,7 +239,31 @@
       },
       "timeline": {
         "spoilerBox": {
-          "name": "Spoiler Box"
+          "name": "Spoiler Box",
+          "creation": {
+            "dialog": {
+              "editor": {
+                "prompt": "What's your next spoiler?",
+                "toolbar": {
+                  "visibilityOn": "Clear spoiler mark for selected text",
+                  "visibilityOff": "Mark selected text as spoiler"
+                }
+              },
+              "option": {
+                "tagSubject": {
+                  "name": "Select the subject that you want to spoil",
+                  "button": {
+                    "search": "Search",
+                    "searching": "Searching.."
+                  }
+                }
+              },
+              "button": {
+                "cancel": "Cancel",
+                "submit": "Submit"
+              }
+            }
+          }
         }
       }
     }

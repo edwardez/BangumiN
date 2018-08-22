@@ -254,7 +254,7 @@
                 "name": "选择你要剧透的作品",
                 "button": {
                   "search": "搜索",
-                  "searching": "搜索中"
+                  "searching": "搜索中.."
                 }
               }
             },

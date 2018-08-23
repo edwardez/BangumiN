@@ -195,7 +195,7 @@
             "game": "Release date",
             "real": "Air date"
           },
-          "nameCN": "Chinese Name",
+          "alternativeName": "Alternative Name",
           "episodeCount": "Episode Count"
         }
       },

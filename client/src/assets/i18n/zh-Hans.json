@@ -195,7 +195,7 @@
           "game": "发售日期",
           "real": "放送开始"
         },
-        "nameCN": "中文名",
+        "alternativeName": "别名",
         "episodeCount": "集数"
       }
     },

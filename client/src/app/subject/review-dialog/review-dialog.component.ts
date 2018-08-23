@@ -47,7 +47,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     this.commentMaxLength = environment.commentMaxLength;
     this.tagsMaxNumber = environment.tagsMaxNumber;
     this.subjectType = SubjectType[data.type];
-    this.createForm();
+    this.initializeRatingForm();
   }
 
   get collectionStatus() {
@@ -80,7 +80,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  createForm() {
+  initializeRatingForm() {
     this.ratingForm = this.formBuilder.group(
       {
         'rating': [<number>this.data.rating],

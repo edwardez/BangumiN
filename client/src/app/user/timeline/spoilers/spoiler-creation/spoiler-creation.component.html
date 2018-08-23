@@ -1,74 +1,94 @@
-
 <div class="d-flex  align-items-center">
 
 </div>
 
 <div mat-dialog-content>
 
-  <quill-editor #editor class="editor-wrapper" [formats]="['spoiler', 'clean']"
-                [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.prompt' | translate"
-                (onEditorCreated)="setEditor($event)">
-    <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
-      <button [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOn' | translate"
-              class="ql-clean">
-      </button>
-      <button [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOff' | translate"
-              id="bold-button" (click)="addBold($event)">
-        <mat-icon>visibility_off</mat-icon>
-      </button>
+  <form [formGroup]="spoilerForm">
+
+    <quill-editor #editor [formControl]="spoilerForm.controls['spoilerText']"
+                  [formats]="['spoiler', 'clean']" [format]="'object'"
+                  [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.prompt' | translate"
+                  (onEditorCreated)="initializeEditor($event)"
+                  class="editor-wrapper"
+    >
+      <div quill-editor-toolbar id="quill-editor-toolbar" class="bangumin-quill-editor">
+        <button
+          [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOn' | translate"
+          class="ql-clean">
+        </button>
+        <button
+          [matTooltip]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.toolbar.visibilityOff' | translate"
+          id="bold-button" (click)="markSpoilerText($event)">
+          <mat-icon>visibility_off</mat-icon>
+        </button>
 
 
+      </div>
+
+    </quill-editor>
+
+
+    <mat-divider></mat-divider>
+
+
+  </form>
+
+
+  <form [formGroup]="spoilerForm">
+    <div class="row flex-nowrap no-gutters justify-content-center align-items-center align-content-center mt-2">
+      <mat-form-field class="col-9 col-sm-9">
+
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let relatedSubject of spoilerForm.get('relatedSubjects').value"
+            [selectable]="false"
+            [removable]="true"
+            (removed)="onSubjectChipRemoveClick(relatedSubject.id)">
+            {{relatedSubject.preferredName}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate"
+            #subjectInput
+
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="[]"
+            [matChipInputAddOnBlur]="false"
+            (keyup.enter)="onTriggerSubjectSearch($event)"
+          >
+        </mat-chip-list>
+
+
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearchAutoCompleteOptionSelect($event)">
+          <mat-option *ngFor="let subject of subjectSearchResult | async" [value]="subject" class="mb-1">
+
+            <img class="img-grid img-fluid" aria-hidden [src]="subject.images.grid">
+            <mat-icon class="ml-1 mr-1">{{setSubjectIcon(subject.type)}}</mat-icon>
+            <small>{{subject.subjectName.preferred}}</small>
+            <ng-container *ngIf="subject.subjectName.secondary">
+              |
+              <ng-container *ngIf="subject.id">
+                <small>{{subject.subjectName.secondary}}</small>
+              </ng-container>
+              <!--if subject id doesn't exist, then it's a self-defined subject TODO: improve this two-ish if logic-->
+              <ng-container *ngIf="!subject.id">
+                <small>{{subject.subjectName.secondary | translate}}</small>
+              </ng-container>
+            </ng-container>
+
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div class="col-sm-1"></div>
+      <button mat-raised-button
+              [disabled]="this.disableSearch"
+              (click)="onTriggerSubjectSearch($event)"
+              class="col-2 col-sm-2 align-self-center ml-2 ml-sm-0">{{updateSearchButtonText() | translate}}
+      </button>
     </div>
-
-  </quill-editor>
-
-  <mat-divider></mat-divider>
-
-  <div class="row flex-nowrap no-gutters justify-content-center align-items-center align-content-center mt-2">
-    <mat-form-field class="col-9 col-sm-9">
-
-      <mat-chip-list #chipList>
-        <mat-chip
-          *ngFor="let subject of subjects"
-          [selectable]="selectable"
-          [removable]="removable"
-          (removed)="remove(subject)">
-          {{subject}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-        <input
-          [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate"
-          #subjectInput
-          [formControl]="subjectCtrl"
-          [matAutocomplete]="auto"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="add($event)"
-          (keyup.enter)="submitSearch($event)"
-        >
-      </mat-chip-list>
-
-
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject.id" class="mb-1">
-
-          <img class="img-grid img-fluid" aria-hidden [src]="subject.images.grid">
-          <mat-icon class="ml-1 mr-1">{{setSubjectIcon(subject.type)}}</mat-icon>
-          <small>{{subject.name}}</small>
-          |
-          <small>{{subject.nameCN}}</small>
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <div class="col-sm-1"></div>
-    <button mat-raised-button
-            [disabled]="this.disableSearch"
-            (click)="submitSearch($event)"
-            class="col-2 col-sm-2 align-self-center ml-2 ml-sm-0">{{updateSearchButtonText() | translate}}
-    </button>
-  </div>
-
+  </form>
 
 
 </div>
@@ -79,7 +99,8 @@
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.cancel' | translate}}
   </button>
   <div class="col-2 col-sm-6"></div>
-  <button mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
+  <button (click)="onSpoilerFormSubmit()"
+          mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.submit' | translate}}
   </button>
 </div>

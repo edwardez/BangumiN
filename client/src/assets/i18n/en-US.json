@@ -251,10 +251,13 @@
               },
               "option": {
                 "tagSubject": {
-                  "name": "Select the subject that you want to spoil",
+                  "name": "Enter and select the subject that you want to spoil",
                   "button": {
                     "search": "Search",
                     "searching": "Searching.."
+                  },
+                  "searchResult": {
+                    "userDefined": "No result, self-defined subject"
                   }
                 }
               },

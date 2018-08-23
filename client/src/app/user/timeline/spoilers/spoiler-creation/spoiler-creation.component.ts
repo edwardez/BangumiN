@@ -4,8 +4,8 @@ import {catchError, finalize, map} from 'rxjs/operators';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 
 import Quill from 'quill';
-import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent} from '@angular/material';
-import {FormControl} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of, throwError} from 'rxjs';
 import {BangumiSearchService} from '../../../../shared/services/bangumi/bangumi-search.service';
 import {SubjectBase} from '../../../../shared/models/subject/subject-base';
@@ -43,16 +43,12 @@ class SpoilerClass extends Parchment.Attributor.Class {
   }
 }
 
-Quill.register(new SpoilerClass(), true);
-
-const icons = Quill.import('ui/icons');
-icons['clean'] = '<mat-icon class="mat-icon material-icons">visibility</mat-icon>';
-
-
-export class SearchConfig {
+export class SubjectSearchConfig {
   // expect user to tolerate a shorter timeout period here
   static readonly SEARCH_TIME_OUT = 3000;
-  static readonly MAX_RESULT = 10;
+  static readonly MAX_SEARCH_RESULT = 10;
+  // user can only add up to this number of related subjects
+  static readonly MAXIMUM_RELATED_SUBJECT_NUMBER = 2;
 }
 @Component({
   selector: 'app-spoiler-creation',
@@ -62,15 +58,11 @@ export class SearchConfig {
 export class SpoilerCreationComponent implements OnInit {
 
   bangumiUser: BangumiUser;
-  quill: Quill;
+  spoilerEditor: Quill;
 
   disableSearch = false;
-  selectable = true;
-  removable = true;
-  addOnBlur = false;
-  separatorKeysCodes: number[] = [];
-  subjectCtrl = new FormControl();
-  filteredSubjects: Observable<SubjectBase[]>;
+  spoilerForm: FormGroup;
+  subjectSearchResult: Observable<SubjectBase[]>;
   subjects: string[] = [];
 
 
@@ -82,6 +74,7 @@ export class SpoilerCreationComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService,
               private bangumiSearchService: BangumiSearchService,
+              private formBuilder: FormBuilder
   ) {
   }
 
@@ -100,62 +93,51 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   static getDefaultEmptySubject(searchKeyWord: string): SubjectBase {
+    // use secondary name as the place to place prompt text
     return new SubjectBase(
       undefined, undefined, undefined, searchKeyWord,
-      'No result', undefined, undefined, undefined, undefined);
+      'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.searchResult.noResult',
+      undefined, undefined, undefined, undefined);
   }
 
   ngOnInit() {
+    this.subjectSearchResult = of([]);
+    Quill.register(new SpoilerClass(), true);
+    const icons = Quill.import('ui/icons');
+    icons['clean'] = '<mat-icon class="mat-icon material-icons">visibility</mat-icon>';
 
-    this.filteredSubjects = of([]);
+    this.initializeSpoilerForm();
   }
 
-  addBold(event) {
-    this.quill.format('spoiler', true);
+  initializeEditor(quill: Quill) {
+    this.spoilerEditor = quill;
   }
 
-  setEditor(quill: Quill) {
-    this.quill = quill;
+  initializeSpoilerForm() {
+    this.spoilerForm = this.formBuilder.group(
+      {
+        spoilerText: ['', Validators.maxLength(20)],
+        relatedSubjects: this.formBuilder.array([], Validators.maxLength(10))
+      }
+    );
   }
 
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
+  markSpoilerText(event) {
+    this.spoilerEditor.format('spoiler', true);
+  }
 
-    // Add our subject
-    if ((value || '').trim()) {
-      this.subjects.push(value.trim());
+  // perform a new subject search and attach a user-defined subject, currently this will be called if user clicks search or presses enter
+  onTriggerSubjectSearch(event) {
+    const searchKeyWord = this.subjectInput.nativeElement.value;
+    // if search is currently disabled or search keyword is empty, do nothing and return
+    if (this.disableSearch || !searchKeyWord) {
+      return;
     }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
-    this.subjectCtrl.setValue(null);
-  }
-
-  remove(subject: string): void {
-    const index = this.subjects.indexOf(subject);
-
-    if (index >= 0) {
-      this.subjects.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.subjects.push(event.option.viewValue);
-    this.subjectInput.nativeElement.value = '';
-    this.subjectCtrl.setValue(null);
-  }
-
-  submitSearch(event) {
     event.stopPropagation();
     this.disableSearch = true;
     this.updateSearchButtonText();
-    const searchKeyWord = this.subjectInput.nativeElement.value;
-    this.filteredSubjects = this.bangumiSearchService.searchSubject(this.subjectInput.nativeElement.value,
-      undefined, 'small', undefined, SearchConfig.MAX_RESULT, SearchConfig.SEARCH_TIME_OUT).pipe(
+    this.subjectSearchResult = this.bangumiSearchService.searchSubject(searchKeyWord,
+      undefined, 'small', undefined, SubjectSearchConfig.MAX_SEARCH_RESULT, SubjectSearchConfig.SEARCH_TIME_OUT).pipe(
       map(searchResult => {
         return SpoilerCreationComponent.generateSubjectSearchResult(searchKeyWord, searchResult).subjects;
       }),
@@ -169,6 +151,27 @@ export class SpoilerCreationComponent implements OnInit {
         }
       )
     );
+  }
+
+  onSearchAutoCompleteOptionSelect(event: MatAutocompleteSelectedEvent): void {
+    const selectedSubject: SubjectBase = <SubjectBase>event.option.value;
+    this.subjects.push(selectedSubject.subjectName.preferred);
+    this.subjectInput.nativeElement.value = '';
+    const relatedSubjects = this.spoilerForm.get('relatedSubjects') as FormArray;
+    relatedSubjects.push(this.formBuilder.control({id: selectedSubject.id, preferredName: selectedSubject.subjectName.preferred}));
+    this.subjectSearchResult = of([]);
+  }
+
+  onSubjectChipRemoveClick(subjectId: number): void {
+    const relatedSubjects = this.spoilerForm.get('relatedSubjects') as FormArray;
+    const index = relatedSubjects.value.findIndex(subject => subjectId === subject.id);
+
+    if (index >= 0) {
+      relatedSubjects.removeAt(index);
+    }
+  }
+
+  onSpoilerFormSubmit() {
   }
 
   updateSearchButtonText(): string {
@@ -196,7 +199,8 @@ export class SpoilerCreationComponent implements OnInit {
         subjectMatIcon = 'tv';
         break;
       default:
-        subjectMatIcon = 'live_tv';
+        // use help_outline as a 'question mark' as material icon doesn't have a question mark
+        subjectMatIcon = 'help_outline';
         break;
     }
 

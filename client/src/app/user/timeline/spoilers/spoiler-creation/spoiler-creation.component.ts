@@ -45,7 +45,7 @@ class SpoilerClass extends Parchment.Attributor.Class {
 
 export class SpoilerCreationConfig {
   // maximum spoiler text length
-  static readonly MAX_SPOILER_LENGTH = 10;
+  static readonly MAX_SPOILER_LENGTH = 500;
   // expect user to tolerate a shorter timeout period here
   static readonly SEARCH_TIME_OUT = 3000;
   static readonly MAX_SEARCH_RESULT = 10;

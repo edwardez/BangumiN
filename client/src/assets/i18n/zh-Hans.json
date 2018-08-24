@@ -195,7 +195,7 @@
           "game": "发售日期",
           "real": "放送开始"
         },
-        "nameCN": "中文名",
+        "alternativeName": "别名",
         "episodeCount": "集数"
       }
     },
@@ -239,7 +239,34 @@
     },
     "timeline": {
       "spoilerBox": {
-        "name": "剧透箱"
+        "name": "剧透箱",
+        "creation": {
+          "dialog": {
+            "editor": {
+              "prompt": "有什么想发表的新剧透？",
+              "toolbar": {
+                "visibilityOn": "清除剧透标记",
+                "visibilityOff": "标记选中为剧透"
+              }
+            },
+            "option": {
+              "tagSubject": {
+                "name": "输入并选择你要剧透的作品",
+                "button": {
+                  "search": "搜索",
+                  "searching": "搜索中.."
+                },
+                "searchResult": {
+                  "noResult": "无结果，自定义条目"
+                }
+              }
+            },
+            "button": {
+              "cancel": "取消",
+              "submit": "提交"
+            }
+          }
+        }
       }
     }
   }

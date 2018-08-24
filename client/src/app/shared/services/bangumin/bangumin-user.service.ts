@@ -13,6 +13,9 @@ import {RuntimeConstantsService} from '../runtime-constants.service';
   providedIn: 'root'
 })
 export class BanguminUserService {
+  // a static copy of userSubject result, the subject version should be used if possible
+  static currentBanguminUserSettings: BanguminUserSchema = new BanguminUser();
+
   userSubject: Subject<BanguminUser> = new BehaviorSubject<BanguminUser>(null);
 
   constructor(private http: HttpClient,
@@ -108,6 +111,7 @@ export class BanguminUserService {
     // subscribe to userSubject, only update settings if there are any differences
     this.userSubject.pipe(
       filter(banguminUser => !!banguminUser),
+      tap(banguminUser => BanguminUserService.currentBanguminUserSettings = banguminUser),
       pairwise()
     ).subscribe(banguminUser => {
       this.updateUserSettings(banguminUser[0], banguminUser[1]);

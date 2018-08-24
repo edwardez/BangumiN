@@ -18,10 +18,10 @@ import {ReviewDialogComponent} from '../../../subject/review-dialog/review-dialo
 
 @Component({
   selector: 'app-progess-by-subject',
-  templateUrl: './progess-by-subject.component.html',
-  styleUrls: ['./progess-by-subject.component.scss']
+  templateUrl: './progress-by-subject.component.html',
+  styleUrls: ['./progress-by-subject.component.scss']
 })
-export class ProgessBySubjectComponent implements OnInit, OnDestroy {
+export class ProgressBySubjectComponent implements OnInit, OnDestroy {
 
   firstNElementCount: number;
   bookProgressForm: FormGroup;

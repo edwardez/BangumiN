@@ -195,7 +195,7 @@
             "game": "Release date",
             "real": "Air date"
           },
-          "nameCN": "Chinese Name",
+          "alternativeName": "Alternative Name",
           "episodeCount": "Episode Count"
         }
       },
@@ -239,7 +239,34 @@
       },
       "timeline": {
         "spoilerBox": {
-          "name": "Spoiler Box"
+          "name": "Spoiler Box",
+          "creation": {
+            "dialog": {
+              "editor": {
+                "prompt": "What's your next spoiler?",
+                "toolbar": {
+                  "visibilityOn": "Clear spoiler mark for selected text",
+                  "visibilityOff": "Mark selected text as spoiler"
+                }
+              },
+              "option": {
+                "tagSubject": {
+                  "name": "Enter and select the subject that you want to spoil",
+                  "button": {
+                    "search": "Search",
+                    "searching": "Searching.."
+                  },
+                  "searchResult": {
+                    "userDefined": "No result, self-defined subject"
+                  }
+                }
+              },
+              "button": {
+                "cancel": "Cancel",
+                "submit": "Submit"
+              }
+            }
+          }
         }
       }
     }

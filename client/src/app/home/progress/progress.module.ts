@@ -8,7 +8,7 @@ import {RouterModule} from '@angular/router';
 import {EpisodeDialogComponent} from './episode-dialog/episode-dialog.component';
 import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ProgessBySubjectComponent} from './progess-by-subject/progess-by-subject.component';
+import {ProgressBySubjectComponent} from './progress-by-subject/progress-by-subject.component';
 import {SharedPipeModule} from '../../shared/pipe/shared-pipe.module';
 
 @NgModule({
@@ -26,7 +26,7 @@ import {SharedPipeModule} from '../../shared/pipe/shared-pipe.module';
     ProgressPlaceholderComponent,
     ProgressContentComponent,
     EpisodeDialogComponent,
-    ProgessBySubjectComponent
+    ProgressBySubjectComponent
   ],
   entryComponents: [
     EpisodeDialogComponent,

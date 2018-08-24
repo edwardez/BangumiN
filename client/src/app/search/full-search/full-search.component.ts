@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {BangumiSearchService} from '../../shared/services/bangumi/bangumi-search.service';
 import {ActivatedRoute} from '@angular/router';
-import {concatAll, filter, map, mergeMap, switchMap, takeUntil} from 'rxjs/operators';
-import {Observable, from, forkJoin, of} from 'rxjs';
+import {filter, switchMap} from 'rxjs/operators';
+import {forkJoin} from 'rxjs';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {_} from '../../shared/utils/translation-marker';
 
@@ -51,7 +51,7 @@ export class FullSearchComponent implements OnInit {
           }
 
           return forkJoin(allSubjectType.map(singleType =>
-              this.bangumiSearchService.searchSubject(keywords, singleType.toString(),
+              this.bangumiSearchService.searchSubject(keywords, singleType,
                 responseGroup, start, max_results === undefined ? 5 : max_results)
             )
           );

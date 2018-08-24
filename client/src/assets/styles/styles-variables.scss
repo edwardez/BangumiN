@@ -1,4 +1,6 @@
 @import '~@angular/material/theming';
+@import "quill-theme.snow.core";
+@import "quill-theme.snow.variant";
 
 $grid-breakpoints: (
   xs: 0,
@@ -84,6 +86,7 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
 
   // Use mat-color to extract individual colors from a palette as necessary.
 
@@ -91,9 +94,36 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
     color: mat-color($foreground, text)
   }
 
+  .mat-icon {
+    color: mat-color($foreground, text)
+  }
+
   .background-color-bangumin-theme-accent {
     background-color: mat-color($accent);
   }
+
+  .spoiler-text {
+    padding: 4px 4px 4px 4px;
+    box-decoration-break: clone;
+    text-decoration: none;
+    border-radius: 5px;
+    color: mat-color($accent, default-contrast);
+  }
+
+  quill-editor {
+    @include quill-color-mixin($theme);
+  }
+
+  ngx-loading-bar {
+    #loading-bar {
+      color: mat-color($primary, default-contrast) !important;
+
+      .bar {
+        background: mat-color($primary, default-contrast) !important;
+      }
+    }
+  }
+
 }
 
 .bangumi-pink-blue {

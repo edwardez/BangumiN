@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ProgessBySubjectComponent} from './progess-by-subject.component';
+import {SpoilerCreationComponent} from './spoiler-creation.component';
 
-describe('ProgessBySubjectComponent', () => {
-  let component: ProgessBySubjectComponent;
-  let fixture: ComponentFixture<ProgessBySubjectComponent>;
+describe('SpoilerCreationComponent', () => {
+  let component: SpoilerCreationComponent;
+  let fixture: ComponentFixture<SpoilerCreationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProgessBySubjectComponent]
+      declarations: [SpoilerCreationComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProgessBySubjectComponent);
+    fixture = TestBed.createComponent(SpoilerCreationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

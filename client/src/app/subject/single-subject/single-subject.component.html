@@ -6,7 +6,8 @@
         <img *ngIf="subject.images !== null" [src]="subject.images.common | https">
         <img *ngIf="subject.images === null" src="https://bgm.tv/img/no_icon_subject.png">
         <div>
-          <p *ngIf="subject.nameCN">{{'subject.tabs.overview.info.nameCN' | translate}}: {{subject.nameCN}}</p>
+          <p *ngIf="subject?.subjectName?.secondary">{{'subject.tabs.overview.info.alternativeName' | translate}}:
+            {{subject.subjectName.preferred || '-'}}</p>
           <p *ngIf="subject.airDate">{{'subject.tabs.overview.info.airDate.' + SubjectType[subject.type] | translate}}:
             {{subject.airDate}}</p>
           <p *ngIf="subject.eps_count">{{'subject.tabs.overview.info.episodeCount' | translate}}: {{subject.eps_count}}

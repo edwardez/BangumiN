@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef} from '@angular/material';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, finalize, map} from 'rxjs/operators';
 import Quill from 'quill';
@@ -90,7 +90,8 @@ export class SpoilerCreationComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService,
               private bangumiSearchService: BangumiSearchService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private spoilerDialog: MatDialogRef<SpoilerCreationComponent>
   ) {
   }
 
@@ -216,6 +217,10 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   onSpoilerFormSubmit() {
+  }
+
+  onSpoilerDialogClose() {
+    this.spoilerDialog.close();
   }
 
   updateSearchButtonText(): string {

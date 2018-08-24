@@ -17,14 +17,9 @@ export class SpoilerOverviewComponent implements OnInit {
 
 
   ngOnInit() {
-
-    setTimeout(() => {
-      this.openDialog();
-    }, 100);
   }
 
   openDialog(): void {
-    // this.dialog.open(SpoilerCreationComponent);
     const dialogRef = this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
       sizeConfig: {
         onLtSmScreen: {

@@ -117,7 +117,9 @@
 
 
 <div mat-dialog-actions class="row">
-  <button mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
+  <button
+    (click)="onSpoilerDialogClose()"
+    mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.cancel' | translate}}
   </button>
   <div class="col-2 col-sm-6"></div>

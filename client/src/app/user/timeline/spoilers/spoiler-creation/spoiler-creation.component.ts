@@ -132,7 +132,7 @@ export class SpoilerCreationComponent implements OnInit {
     this.subjectSearchResult = of([]);
     Quill.register(new SpoilerClass(), true);
     const icons = Quill.import('ui/icons');
-    icons['clean'] = '<mat-icon class="mat-icon material-icons">visibility</mat-icon>';
+    icons['clean'] = '<mat-icon class="mat-icon material-icons mat-icon-color-foreground">visibility</mat-icon>';
 
     this.initializeSpoilerForm();
   }

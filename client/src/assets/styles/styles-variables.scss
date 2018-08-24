@@ -95,7 +95,7 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
     color: mat-color($foreground, text)
   }
 
-  .mat-icon {
+  .mat-icon.mat-icon-color-foreground {
     color: mat-color($foreground, text)
   }
 

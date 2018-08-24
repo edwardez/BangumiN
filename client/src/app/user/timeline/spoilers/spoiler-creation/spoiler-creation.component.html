@@ -6,8 +6,9 @@
 
   <form [formGroup]="spoilerForm">
 
-    <quill-editor #editor [formControl]="spoilerForm.controls['spoilerText']"
-                  [formats]="['spoiler', 'clean']" [format]="'object'"
+    <quill-editor #editor [formControl]="spoilerTextEditorControl"
+                  [format]="'object'" [formats]="['spoiler', 'clean']" [required]="true"
+                  [maxLength]="SpoilerCreationConfig.MAX_SPOILER_LENGTH"
                   [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.prompt' | translate"
                   (onEditorCreated)="initializeEditor($event)"
                   class="editor-wrapper"
@@ -29,7 +30,18 @@
     </quill-editor>
 
 
-    <mat-divider></mat-divider>
+    <mat-divider
+      [ngClass]="{'quill-invalid' :spoilerTextEditorControl.errors && !spoilerTextEditorControl.errors['required']}"></mat-divider>
+
+    <mat-error *ngIf="spoilerTextEditorControl.errors && !spoilerTextEditorControl.errors['required']">
+      <p *ngIf="spoilerTextEditorControl.errors['maxLengthError']">
+        {{'error.maximumTextLengthReached' | translate: {maxLength: SpoilerCreationConfig.MAX_SPOILER_LENGTH } }}
+        {{'common.punctuation.comma' | translate }}
+        {{'common.punctuation.space' | translate }}
+        {{'errorHelper.text.currentLength' | translate: {currentLength:
+        spoilerTextEditorControl.errors['maxLengthError']['given'] || '' } }}
+      </p>
+    </mat-error>
 
 
   </form>
@@ -39,17 +51,17 @@
     <div class="row flex-nowrap no-gutters justify-content-center align-items-center align-content-center mt-2">
       <mat-form-field class="col-9 col-sm-9">
 
-        <mat-chip-list #chipList>
+        <mat-chip-list #chipList [formControl]="relatedSubjectsControl">
           <mat-chip
-            *ngFor="let relatedSubject of spoilerForm.get('relatedSubjects').value"
+            *ngFor="let relatedSubject of relatedSubjectsControl.value"
             [selectable]="false"
             [removable]="true"
-            (removed)="onSubjectChipRemoveClick(relatedSubject.id)">
-            {{relatedSubject.preferredName}}
+            (removed)="onSubjectChipRemoveClick(relatedSubject)">
+            {{relatedSubject.subjectName.preferred}}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input
-            [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate"
+            [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate: {maximumCount: SpoilerCreationConfig.MAX_RELATED_SUBJECT_NUMBER}"
             #subjectInput
 
             [matAutocomplete]="auto"
@@ -61,24 +73,27 @@
         </mat-chip-list>
 
 
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearchAutoCompleteOptionSelect($event)">
-          <mat-option *ngFor="let subject of subjectSearchResult | async" [value]="subject" class="mb-1">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAddChipAutoCompletionClick($event)">
+          <ng-container *ngFor="let subject of subjectSearchResult | async">
+            <mat-option [value]="subject" class="mb-1">
 
-            <img class="img-grid img-fluid" aria-hidden [src]="subject.images.grid">
-            <mat-icon class="ml-1 mr-1">{{setSubjectIcon(subject.type)}}</mat-icon>
-            <small>{{subject.subjectName.preferred}}</small>
-            <ng-container *ngIf="subject.subjectName.secondary">
-              |
-              <ng-container *ngIf="subject.id">
-                <small>{{subject.subjectName.secondary}}</small>
+              <img class="img-grid img-fluid" aria-hidden [src]="subject.images.grid">
+              <mat-icon class="ml-1 mr-1">{{getSubjectIcon(subject.type)}}</mat-icon>
+              <small>{{subject.subjectName.preferred}}</small>
+              <ng-container *ngIf="subject.subjectName.secondary">
+                |
+                <ng-container *ngIf="subject.id">
+                  <small>{{subject.subjectName.secondary}}</small>
+                </ng-container>
+                <!--if subject id doesn't exist, then it's a self-defined subject TODO: improve this two-ish if logic-->
+                <ng-container *ngIf="!subject.id">
+                  <small>{{subject.subjectName.secondary | translate}}</small>
+                </ng-container>
               </ng-container>
-              <!--if subject id doesn't exist, then it's a self-defined subject TODO: improve this two-ish if logic-->
-              <ng-container *ngIf="!subject.id">
-                <small>{{subject.subjectName.secondary | translate}}</small>
-              </ng-container>
-            </ng-container>
 
-          </mat-option>
+            </mat-option>
+          </ng-container>
+
         </mat-autocomplete>
       </mat-form-field>
       <div class="col-sm-1"></div>
@@ -88,6 +103,12 @@
               class="col-2 col-sm-2 align-self-center ml-2 ml-sm-0">{{updateSearchButtonText() | translate}}
       </button>
     </div>
+
+    <mat-error *ngIf="relatedSubjectsControl.errors">
+      <p *ngIf="relatedSubjectsControl.errors['maxlength']">
+        {{'error.maximumTagLengthReached' | translate: {maxLength: SpoilerCreationConfig.MAX_RELATED_SUBJECT_NUMBER } }}
+      </p>
+    </mat-error>
   </form>
 
 
@@ -99,7 +120,8 @@
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.cancel' | translate}}
   </button>
   <div class="col-2 col-sm-6"></div>
-  <button (click)="onSpoilerFormSubmit()"
+  <button [disabled]="spoilerForm.invalid"
+          (click)="onSpoilerFormSubmit()"
           mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.submit' | translate}}
   </button>

@@ -34,6 +34,10 @@
           "general": "Failed to submit"
         }
       }
+    },
+    "punctuation": {
+      "comma": ",",
+      "space": " "
     }
   },
   "nav": {
@@ -247,11 +251,16 @@
                 "toolbar": {
                   "visibilityOn": "Clear spoiler mark for selected text",
                   "visibilityOff": "Mark selected text as spoiler"
+                },
+                "error": {
+                  "text": {
+                    "currentTextLength": "Now: {{currentLength}} characters "
+                  }
                 }
               },
               "option": {
                 "tagSubject": {
-                  "name": "Enter and select the subject that you want to spoil",
+                  "name": "Enter and select the subject that you want to spoil(Maximum: {{maximumCount}})",
                   "button": {
                     "search": "Search",
                     "searching": "Searching.."
@@ -272,6 +281,15 @@
     }
   },
   "error": {
-    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again."
+    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again.",
+    "inputEmpty": "Input is empty",
+    "maximumTextLengthReached": "Maximum: {{maxLength}} characters",
+    "maximumTagLengthReached": "Maximum: {{maxLength}} tags"
+  },
+  "errorHelper": {
+    "text": {
+      "requireInput": "Enter something to continue",
+      "currentLength": "Now: {{currentLength}}"
+    }
   }
 }

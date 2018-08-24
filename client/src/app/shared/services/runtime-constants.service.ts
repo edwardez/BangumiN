@@ -10,6 +10,7 @@ export class RuntimeConstantsService {
   static readonly nonCacheableUrls: Array<string | RegExp> = [/http.*api\/user\/\d+\/setting/, /oauth/, /auth/, /assets/];
 
   static defaultUserId = null;
+  static defaultSubjectId = 0;
   static defaultAppLanguage = 'zh-Hans';
   static defaultBangumiLanguage = 'original';
   static defaultAppTheme = 'bangumin-material-blue-teal';

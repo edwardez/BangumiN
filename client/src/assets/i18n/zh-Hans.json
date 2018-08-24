@@ -34,6 +34,10 @@
           "general": "提交失败"
         }
       }
+    },
+    "punctuation": {
+      "comma": "，",
+      "space": " "
     }
   },
   "nav": {
@@ -247,11 +251,16 @@
               "toolbar": {
                 "visibilityOn": "清除剧透标记",
                 "visibilityOff": "标记选中为剧透"
+              },
+              "error": {
+                "text": {
+                  "currentTextLength": "当前已输入: {{currentLength}}"
+                }
               }
             },
             "option": {
               "tagSubject": {
-                "name": "输入并选择你要剧透的作品",
+                "name": "输入并选择你要剧透的作品(最多{{maximumCount}}个)",
                 "button": {
                   "search": "搜索",
                   "searching": "搜索中.."
@@ -272,6 +281,15 @@
   }
 },
 "error": {
-  "unauthorized": "您的授权已过期，请在登录页面重新授权"
+  "unauthorized": "您的授权已过期，请在登录页面重新授权",
+  "inputEmpty": "输入为空",
+  "maximumTextLengthReached": "最多只能输入{{maxLength}}个字",
+  "maximumTagLengthReached": "最多只能选择{{maxLength}}个标签"
+},
+  "errorHelper": {
+    "text": {
+      "requireInput": "输入点东西吧",
+      "currentLength": "当前已输入: {{currentLength}}"
+    }
 }
 }

@@ -85,6 +85,7 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   // Extract whichever individual palettes you need from the theme.
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
 
@@ -100,6 +101,10 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
   .background-color-bangumin-theme-accent {
     background-color: mat-color($accent);
+  }
+
+  .mat-divider.quill-invalid {
+    border-top-color: mat-color($warn);
   }
 
   .spoiler-text {

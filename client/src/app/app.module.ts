@@ -24,6 +24,7 @@ import {BanguminSubjectModule} from './subject/bangumin-subject.module';
 import {JwtModule} from '@auth0/angular-jwt';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
+import {DocumentsModule} from './documents/documents.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
     BanguminSettingsModule,
     BanguminSubjectModule,
     BanguminSearchModule,
+    DocumentsModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {

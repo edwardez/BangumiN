@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {BanguminSharedModule} from '../bangumin-shared.module';
 import {NavComponent} from './nav/nav.component';
 import {SideNavContentComponent} from './side-nav-content/side-nav-content.component';
+import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import {SideNavContentComponent} from './side-nav-content/side-nav-content.compo
   ],
   declarations: [
     NavComponent,
-    SideNavContentComponent
+    SideNavContentComponent,
+    FooterComponent,
   ],
   providers: [],
   exports: [

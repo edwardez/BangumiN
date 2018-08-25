@@ -280,6 +280,30 @@
     }
   }
 },
+  "footer": {
+    "about": {
+      "name": "关于"
+    },
+    "help": {
+      "name": "帮助"
+    }
+  },
+  "about": {
+    "link": {
+      "tos": {
+        "name": "服务条款"
+      },
+      "privacy": {
+        "name": "隐私政策"
+      }
+    },
+    "body": {
+      "content": "<section><h3>关于BangumiN</h3><p>BanguminN（读作Bangu-min或Bangumi-N）是一个基于Bangumi开发的app，旨在提供优秀的番组管理体验。<br/>BanguminN的开发代码<a href=\"https://github.com/edwardez/BangumiN\" target=\"blank\">开源</a>，基于MIT授权发布，欢迎做出贡献。</p></section><section><h3>开发团队</h3><a href=\"https://github.com/edwardez\" target=\"blank\">Astrea</a><br/><a href=\"https://github.com/puranzhang\" target=\"blank\">Andrew</a></section><section><br/><h3>联系我们</h3><p> <a href=\"https://github.com/edwardez\" target=\"blank\">Github Issues</a> 或 bangumin!protonmail*com（<a href=\"https://api.protonmail.ch/pks/lookup?op=get&search=bangumin!protonmail*com\" target=\"_blank\">PGP key</a>, ! -> @，* -> .）</p><br/></section>"
+    }
+  },
+  "pageNotFound": {
+    "name": "页面不存在"
+  },
 "error": {
   "unauthorized": "您的授权已过期，请在登录页面重新授权",
   "inputEmpty": "输入为空",

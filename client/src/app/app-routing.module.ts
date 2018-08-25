@@ -10,8 +10,18 @@ import {FullSearchComponent} from './search/full-search/full-search.component';
 import {CollectionHomeComponent} from './user/collection/collection-home/collection-home.component';
 import {SubjectComponent} from './subject/subject.component';
 import {SpoilerSingleWrapperComponent} from './user/timeline/spoilers/spoiler-single/spoiler-single-wrapper/spoiler-single-wrapper.component';
-
+import {PageNotFoundComponent} from './common/page-not-found/page-not-found.component';
+import {TosComponent} from './documents/tos/tos.component';
+import {PrivacyComponent} from './documents/privacy/privacy.component';
+import {AboutHomeComponent} from './documents/about/about-home/about-home.component';
+import {HelpHomeComponent} from './documents/help/help-home/help-home.component';
+//
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'user',
+    pathMatch: 'full'
+  },
   {
     path: '',
     canActivate: [AppGuard],
@@ -71,13 +81,24 @@ const routes: Routes = [
     component: ActivateBangumiComponent
   },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    path: 'help',
+    component: HelpHomeComponent
+  },
+  {
+    path: 'about',
+    component: AboutHomeComponent
+  },
+  {
+    path: 'privacy',
+    component: PrivacyComponent
+  },
+  {
+    path: 'tos',
+    component: TosComponent
   },
   {
     path: '**',
-    redirectTo: 'login'
+    component: PageNotFoundComponent
   }
 ];
 

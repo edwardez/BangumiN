@@ -1,16 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AuthenticationService} from '../../../../shared/services/auth.service';
-import {catchError, finalize, map} from 'rxjs/operators';
-import {BangumiUser} from '../../../../shared/models/BangumiUser';
-
-import Quill from 'quill';
-import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef} from '@angular/material';
 import {Observable, of, throwError} from 'rxjs';
+import {catchError, finalize, map} from 'rxjs/operators';
+import Quill from 'quill';
+import {BangumiUser} from '../../../../shared/models/BangumiUser';
+import {AuthenticationService} from '../../../../shared/services/auth.service';
 import {BangumiSearchService} from '../../../../shared/services/bangumi/bangumi-search.service';
 import {SubjectBase} from '../../../../shared/models/subject/subject-base';
 import {SearchSubjectsResponseSmall} from '../../../../shared/models/search/search-subjects-response-small';
 import {SubjectType} from '../../../../shared/enums/subject-type.enum';
+import {RuntimeConstantsService} from '../../../../shared/services/runtime-constants.service';
 
 const Parchment = Quill.import('parchment');
 
@@ -43,13 +43,31 @@ class SpoilerClass extends Parchment.Attributor.Class {
   }
 }
 
-export class SubjectSearchConfig {
+export class SpoilerCreationConfig {
+  // maximum spoiler text length
+  static readonly MAX_SPOILER_LENGTH = 500;
   // expect user to tolerate a shorter timeout period here
   static readonly SEARCH_TIME_OUT = 3000;
   static readonly MAX_SEARCH_RESULT = 10;
   // user can only add up to this number of related subjects
-  static readonly MAXIMUM_RELATED_SUBJECT_NUMBER = 2;
+  static readonly MAX_RELATED_SUBJECT_NUMBER = 2;
 }
+
+// a single mat-chip chip value, record the subject that user
+export class SelectedRelatedSubject {
+  id: number;
+
+  name: {
+    preferred: string;
+  };
+
+  constructor(id = RuntimeConstantsService.defaultSubjectId, preferredName = '') {
+    this.id = id;
+    this.name = {preferred: preferredName};
+  }
+
+}
+
 @Component({
   selector: 'app-spoiler-creation',
   templateUrl: './spoiler-creation.component.html',
@@ -57,25 +75,36 @@ export class SubjectSearchConfig {
 })
 export class SpoilerCreationComponent implements OnInit {
 
+  disableSearch = false;
+
   bangumiUser: BangumiUser;
   spoilerEditor: Quill;
-
-  disableSearch = false;
   spoilerForm: FormGroup;
   subjectSearchResult: Observable<SubjectBase[]>;
-  subjects: string[] = [];
-
 
   @ViewChild('subjectInput')
   subjectInput: ElementRef;
 
-  @ViewChild('matAutocompleteTrigger')
+  @ViewChild(MatAutocompleteTrigger)
   matAutocompleteTrigger: MatAutocompleteTrigger;
 
   constructor(private authenticationService: AuthenticationService,
               private bangumiSearchService: BangumiSearchService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private spoilerDialog: MatDialogRef<SpoilerCreationComponent>
   ) {
+  }
+
+  get SpoilerCreationConfig() {
+    return SpoilerCreationConfig;
+  }
+
+  get spoilerTextEditorControl() {
+    return this.spoilerForm.get('spoilerText');
+  }
+
+  get relatedSubjectsControl() {
+    return this.spoilerForm.get('relatedSubjects');
   }
 
   static generateSubjectSearchResult(searchKeyWord: string, searchSubjectsResponse?: SearchSubjectsResponseSmall):
@@ -104,7 +133,7 @@ export class SpoilerCreationComponent implements OnInit {
     this.subjectSearchResult = of([]);
     Quill.register(new SpoilerClass(), true);
     const icons = Quill.import('ui/icons');
-    icons['clean'] = '<mat-icon class="mat-icon material-icons">visibility</mat-icon>';
+    icons['clean'] = '<mat-icon class="mat-icon material-icons mat-icon-color-foreground">visibility</mat-icon>';
 
     this.initializeSpoilerForm();
   }
@@ -116,8 +145,8 @@ export class SpoilerCreationComponent implements OnInit {
   initializeSpoilerForm() {
     this.spoilerForm = this.formBuilder.group(
       {
-        spoilerText: ['', Validators.maxLength(20)],
-        relatedSubjects: this.formBuilder.array([], Validators.maxLength(10))
+        spoilerText: [''],
+        relatedSubjects: [[], Validators.maxLength(SpoilerCreationConfig.MAX_RELATED_SUBJECT_NUMBER)]
       }
     );
   }
@@ -128,17 +157,23 @@ export class SpoilerCreationComponent implements OnInit {
 
   // perform a new subject search and attach a user-defined subject, currently this will be called if user clicks search or presses enter
   onTriggerSubjectSearch(event) {
+    event.stopPropagation();
     const searchKeyWord = this.subjectInput.nativeElement.value;
     // if search is currently disabled or search keyword is empty, do nothing and return
     if (this.disableSearch || !searchKeyWord) {
       return;
     }
-    event.stopPropagation();
+    //
+
     this.disableSearch = true;
     this.updateSearchButtonText();
     this.subjectSearchResult = this.bangumiSearchService.searchSubject(searchKeyWord,
-      undefined, 'small', undefined, SubjectSearchConfig.MAX_SEARCH_RESULT, SubjectSearchConfig.SEARCH_TIME_OUT).pipe(
+      undefined, 'small', undefined, SpoilerCreationConfig.MAX_SEARCH_RESULT, SpoilerCreationConfig.SEARCH_TIME_OUT).pipe(
       map(searchResult => {
+        const selectedSubjects = this.spoilerForm.get('relatedSubjects').value || [];
+        const selectedSubjectsSet = new Set(selectedSubjects.map(subject => subject.id));
+        searchResult.subjects = searchResult.subjects.filter(subject =>
+          subject.id === RuntimeConstantsService.defaultSubjectId || !selectedSubjectsSet.has(subject.id));
         return SpoilerCreationComponent.generateSubjectSearchResult(searchKeyWord, searchResult).subjects;
       }),
       catchError((error) => {
@@ -148,30 +183,44 @@ export class SpoilerCreationComponent implements OnInit {
           this.updateSearchButtonText();
           // anyhow, reset the search button so user can perform next search
           this.disableSearch = false;
+        this.matAutocompleteTrigger.openPanel();
         }
       )
     );
+
   }
 
-  onSearchAutoCompleteOptionSelect(event: MatAutocompleteSelectedEvent): void {
-    const selectedSubject: SubjectBase = <SubjectBase>event.option.value;
-    this.subjects.push(selectedSubject.subjectName.preferred);
+  onAddChipAutoCompletionClick(event: MatAutocompleteSelectedEvent): void {
     this.subjectInput.nativeElement.value = '';
-    const relatedSubjects = this.spoilerForm.get('relatedSubjects') as FormArray;
-    relatedSubjects.push(this.formBuilder.control({id: selectedSubject.id, preferredName: selectedSubject.subjectName.preferred}));
+    const subjectToAdd = <SubjectBase>event.option.value;
+    const selectedSubjectsControl = this.spoilerForm.get('relatedSubjects');
+    const selectedSubjects = selectedSubjectsControl.value || [];
+    // if user has specified multiple self-defined subject, then these subject id will all be default value, use && subject.id to skip them
+    if (subjectToAdd.id === RuntimeConstantsService.defaultSubjectId) {
+      // if it is an user self defined subject, name shouldn't be same
+      if (!selectedSubjects.find(subject => subject.subjectName.preferred === subjectToAdd.subjectName.preferred)) {
+        selectedSubjectsControl.setValue([...selectedSubjects, subjectToAdd]);
+      }
+    } else {
+      // else, id shouldn't be the same
+      if (!selectedSubjects.find(subject => subject.id === subjectToAdd.id)) {
+        selectedSubjectsControl.setValue([...selectedSubjects, subjectToAdd]);
+      }
+    }
+
     this.subjectSearchResult = of([]);
   }
 
-  onSubjectChipRemoveClick(subjectId: number): void {
-    const relatedSubjects = this.spoilerForm.get('relatedSubjects') as FormArray;
-    const index = relatedSubjects.value.findIndex(subject => subjectId === subject.id);
-
-    if (index >= 0) {
-      relatedSubjects.removeAt(index);
-    }
+  onSubjectChipRemoveClick(subjectToRemove: SubjectBase): void {
+    const relatedSubjectsControl = this.spoilerForm.get('relatedSubjects');
+    relatedSubjectsControl.setValue((relatedSubjectsControl.value || []).filter(subject => subject.id !== subjectToRemove.id));
   }
 
   onSpoilerFormSubmit() {
+  }
+
+  onSpoilerDialogClose() {
+    this.spoilerDialog.close();
   }
 
   updateSearchButtonText(): string {
@@ -180,7 +229,7 @@ export class SpoilerCreationComponent implements OnInit {
       'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.button.search';
   }
 
-  setSubjectIcon(subjectType: SubjectType): string {
+  getSubjectIcon(subjectType: SubjectType): string {
     let subjectMatIcon;
     switch (subjectType) {
       case SubjectType.anime:

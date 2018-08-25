@@ -34,6 +34,10 @@
           "general": "Failed to submit"
         }
       }
+    },
+    "punctuation": {
+      "comma": ",",
+      "space": " "
     }
   },
   "nav": {
@@ -247,11 +251,16 @@
                 "toolbar": {
                   "visibilityOn": "Clear spoiler mark for selected text",
                   "visibilityOff": "Mark selected text as spoiler"
+                },
+                "error": {
+                  "text": {
+                    "currentTextLength": "Now: {{currentLength}} characters "
+                  }
                 }
               },
               "option": {
                 "tagSubject": {
-                  "name": "Enter and select the subject that you want to spoil",
+                  "name": "Enter and select the subject that you want to spoil(Maximum: {{maximumCount}})",
                   "button": {
                     "search": "Search",
                     "searching": "Searching.."
@@ -271,7 +280,40 @@
       }
     }
   },
+  "footer": {
+    "about": {
+      "name": "About"
+    },
+    "help": {
+      "name": "Help"
+    }
+  },
+  "about": {
+    "link": {
+      "tos": {
+        "name": "Terms of service"
+      },
+      "privacy": {
+        "name": "Privacy Policy"
+      }
+    },
+    "body": {
+      "content": "<section><h3>About BangumiN</h3><p>BanguminN (read as Bangu-min or Bangumi-N) is a Bangumi-based app, we aim at providing an excellent bangumi management experience.<br/>The code of BangumiN is <a href=\"https://github.com/edwardez/BangumiN\" target=\"blank\">open-sourced</a> under MIT license, welcome to contribute.</p></section><section><h3>Development Team</h3><a href=\"https://github.com/edwardez\" target=\"blank\">Astrea</a><br/><a href=\"https://github.com/puranzhang\" target=\"blank\">Andrew</a></section><section><br/><h3>Contact us</h3><p><a href=\"https://github.com/edwardez\" target=\"blank\">Github Issues</a> or bangumin!protonmail*com (<a href=\"https://api.protonmail.ch/pks/lookup?op=get&search=bangumin!protonmail*com\" target=\"_blank\">PGP key</a>, ! -> @?* -> .)</p><br/></section>"
+    }
+  },
+  "pageNotFound": {
+    "name": "Page doesn't exist."
+  },
   "error": {
-    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again."
+    "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again.",
+    "inputEmpty": "Input is empty",
+    "maximumTextLengthReached": "Maximum: {{maxLength}} characters",
+    "maximumTagLengthReached": "Maximum: {{maxLength}} tags"
+  },
+  "errorHelper": {
+    "text": {
+      "requireInput": "Enter something to continue",
+      "currentLength": "Now: {{currentLength}}"
+    }
   }
 }

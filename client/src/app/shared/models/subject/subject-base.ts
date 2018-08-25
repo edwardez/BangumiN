@@ -1,6 +1,7 @@
 import {Serializable} from '../Serializable';
 import {Images} from '../common/images';
 import {SubjectName} from './subject-name';
+import {RuntimeConstantsService} from '../../services/runtime-constants.service';
 
 export class SubjectBase implements Serializable<SubjectBase> {
   /**
@@ -46,7 +47,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
 
   constructor(id?: number, url?: string, type?: number, name?: string, nameCN?: string, summary?: string,
               airDate?: string, airWeekday?: number, images?: Images) {
-    this.id = id || 0;
+    this.id = id || RuntimeConstantsService.defaultSubjectId;
     this.url = url || '';
     this.type = type || 0;
     this.name = name || '';
@@ -59,7 +60,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
   }
 
   deserialize(input) {
-    this.id = input.id || 0;
+    this.id = input.id || RuntimeConstantsService.defaultSubjectId;
     this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');
     this.type = input.type || 0;
     this.name = input.name || '';

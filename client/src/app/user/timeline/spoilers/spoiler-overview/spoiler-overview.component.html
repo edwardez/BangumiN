@@ -3,7 +3,7 @@
 
     <!--<app-spoiler-creation class="col-11 col-sm-8 col-md-6 "></app-spoiler-creation>-->
 
-    <button mat-raised-button (click)="openDialog()">Pick one</button>
+    <button mat-raised-button onclick="this.blur()" (click)="openDialog()">Pick one</button>
 
     <div class="col-12 mb-5 "></div>
 
@@ -16,5 +16,8 @@
 
 </div>
 
-
-
+<!--TODO: remove this.blur() after https://github.com/angular/material2/issues/8420 is resolved-->
+<button onclick="this.blur()" (click)="openDialog();"
+        mat-fab color="primary" id="spoiler-creation-fab">
+  <mat-icon>add</mat-icon>
+</button>

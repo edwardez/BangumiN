@@ -32,39 +32,8 @@ export class ProfileStatsComponent implements OnInit {
   schemeType = 'ordinal';
   lineData = [
     {
-      'name': 'Cuba',
-      'series': [
-        {
-          'value': 5544,
-          'name': '2016-09-20T01:14:19.196Z',
-          'min': 90,
-          'max': 5801
-        },
-        {
-          'value': 5312,
-          'name': '2016-09-23T03:54:33.069Z',
-          'min': 5187,
-          'max': 5437
-        },
-        {
-          'value': 2339,
-          'name': '2016-09-24T00:43:23.314Z',
-          'min': 2217,
-          'max': 2461
-        },
-        {
-          'value': 4854,
-          'name': '2016-09-21T02:31:01.094Z',
-          'min': 4481,
-          'max': 5227
-        },
-        {
-          'value': 6150,
-          'name': '2016-09-14T08:44:26.704Z',
-          'min': 5771,
-          'max': 6529
-        }
-      ]
+      'name': '',
+      'series': []
     }
   ];
 
@@ -151,6 +120,10 @@ export class ProfileStatsComponent implements OnInit {
   private getYearArr(minYear, maxYear) {
     const arr = _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
     return arr.slice();
+  }
+
+  public calendarAxisTickFormatting(year: string) {
+    return moment(year).year();
   }
 
 }

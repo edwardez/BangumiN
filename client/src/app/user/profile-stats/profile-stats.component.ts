@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import * as day from 'dayjs';
 import {take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 
@@ -100,10 +100,10 @@ export class ProfileStatsComponent implements OnInit {
     });
   }
 
-  private groupAndCountByYear() {
+  groupAndCountByYear() {
     const arr = this.banguminUserService.getUserProfileStats('hi');
     const arrByYear = _.groupBy(arr, (row) => {
-      return moment(row.adddate).year();
+      return day(row.adddate).year();
     });
     const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
     yearArr.forEach((row) => {
@@ -117,13 +117,12 @@ export class ProfileStatsComponent implements OnInit {
     this.lineData = [{name: 'Anime', series: yearArr}];
   }
 
-  private getYearArr(minYear, maxYear) {
-    const arr = _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
-    return arr.slice();
+  public calendarAxisTickFormatting(year: string) {
+    return day(year).year();
   }
 
-  public calendarAxisTickFormatting(year: string) {
-    return moment(year).year();
+  private getYearArr(minYear, maxYear) {
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
   }
 
 }

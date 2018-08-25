@@ -2,6 +2,13 @@
 @import "quill-theme.snow.core";
 @import "quill-theme.snow.variant";
 
+// Override the typography in the core CSS.
+$custom-typography: mat-typography-config(
+  $font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+);
+@include mat-core($custom-typography);
+
 $grid-breakpoints: (
   xs: 0,
   sm: 600px,
@@ -88,6 +95,8 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   $warn: map-get($theme, warn);
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
+
+  @include angular-material-typography($custom-typography);
 
   // Use mat-color to extract individual colors from a palette as necessary.
 

@@ -19,7 +19,7 @@ import {HelpHomeComponent} from './documents/help/help-home/help-home.component'
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'user',
+    redirectTo: 'progress',
     pathMatch: 'full'
   },
   {

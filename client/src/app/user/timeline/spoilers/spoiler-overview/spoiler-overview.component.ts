@@ -19,8 +19,7 @@ export class SpoilerOverviewComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(buttonRef): void {
-    console.log(buttonRef);
+  openDialog(): void {
     const dialogRef = this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
       sizeConfig: {
         onLtSmScreen: {

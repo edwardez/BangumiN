@@ -298,7 +298,23 @@
       }
     },
     "body": {
-      "content": "<section><h3>About BangumiN</h3><p>BanguminN (read as Bangu-min or Bangumi-N) is a Bangumi-based app, we aim at providing an excellent bangumi management experience.<br/>The code of BangumiN is <a href=\"https://github.com/edwardez/BangumiN\" target=\"blank\">open-sourced</a> under MIT license, welcome to contribute.</p></section><section><h3>Development Team</h3><a href=\"https://github.com/edwardez\" target=\"blank\">Astrea</a><br/><a href=\"https://github.com/puranzhang\" target=\"blank\">Andrew</a></section><section><br/><h3>Contact us</h3><p><a href=\"https://github.com/edwardez\" target=\"blank\">Github Issues</a> or bangumin!protonmail*com (<a href=\"https://api.protonmail.ch/pks/lookup?op=get&search=bangumin!protonmail*com\" target=\"_blank\">PGP key</a>, ! -> @?* -> .)</p><br/></section>"
+      "content": "<section><h3>About BangumiN</h3><p>BanguminN (read as Bangu-min or Bangumi-N) is a Bangumi-based app, we aim at providing an excellent bangumi management experience.<br/>The code of BangumiN is <a href=\"https://github.com/edwardez/BangumiN\" target=\"blank\">open-sourced</a> under MIT license, welcome to contribute.</p></section><section><h3>Development Team</h3><a href=\"https://github.com/edwardez\" target=\"blank\">Astrea</a><br/><a href=\"https://github.com/puranzhang\" target=\"blank\">Andrew</a></section><section><br/><h3>Contact us</h3><p><a href=\"https://github.com/edwardez/BangumiN/issues\" target=\"blank\">Github Issues</a> or bangumin!protonmail*com (<a href=\"https://api.protonmail.ch/pks/lookup?op=get&search=bangumin!protonmail*com\" target=\"_blank\">PGP key</a>, ! -> @?* -> .)</p><br/></section>"
+    }
+  },
+  "help": {
+    "name": "Help",
+    "supportedBrowsers": {
+      "name": "Supported Browsers",
+      "brief": "We support most modern browsers",
+      "body": {
+        "browser": "Browser",
+        "operatingSystem": "Operating System",
+        "browserVersion": "Browser Version",
+        "latest": "Latest",
+        "allSupportedPlatforms": "All supported platforms",
+        "twoMostRecentMajorVersions": "2 most recent major versions",
+        "explanation": "Users who are using other browsers/platforms may still use BangumiN, however full functionality is not guaranteed and we won't provide support or fix bugs that require non-trivial actions."
+      }
     }
   },
   "pageNotFound": {

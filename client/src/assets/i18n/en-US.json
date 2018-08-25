@@ -309,7 +309,7 @@
       "body": {
         "browser": "Browser",
         "operatingSystem": "Operating System",
-        "version": "Version",
+        "browserVersion": "Browser Version",
         "latest": "Latest",
         "allSupportedPlatforms": "All supported platforms",
         "twoMostRecentMajorVersions": "2 most recent major versions",

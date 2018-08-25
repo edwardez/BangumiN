@@ -309,7 +309,7 @@
       "body": {
         "browser": "浏览器",
         "operatingSystem": "操作系统",
-        "version": "版本",
+        "browserVersion": "浏览器版本",
         "latest": "最新",
         "allSupportedPlatforms": "所有受支持的平台",
         "twoMostRecentMajorVersions": "最近的两个主版本",

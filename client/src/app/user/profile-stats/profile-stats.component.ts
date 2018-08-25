@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import {take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 
@@ -26,6 +27,15 @@ export class ProfileStatsComponent implements OnInit {
 
   typeList;
   selectedTypeList;
+
+  rangeFillOpacity = 0.15;
+  schemeType = 'ordinal';
+  lineData = [
+    {
+      'name': '',
+      'series': []
+    }
+  ];
 
   constructor(
     private banguminUserService: BanguminUserService
@@ -69,7 +79,8 @@ export class ProfileStatsComponent implements OnInit {
   switchType() {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.0000001 instead
-    const arr = this.banguminUserService.getUserProfileStats('hi', this.selectedTypeList);
+    const arr = this.banguminUserService.getUserProfileStats('hi')
+      .filter((stat) => (this.selectedTypeList.length === 0) ? true : this.selectedTypeList.includes(stat.typ));
     this.groupAndCountByRate(arr);
   }
 
@@ -87,6 +98,32 @@ export class ProfileStatsComponent implements OnInit {
     this.data = countedArr.sort(function (a: any, b: any) {
       return a.name - b.name;
     });
+  }
+
+  private groupAndCountByYear() {
+    const arr = this.banguminUserService.getUserProfileStats('hi');
+    const arrByYear = _.groupBy(arr, (row) => {
+      return moment(row.adddate).year();
+    });
+    const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
+    yearArr.forEach((row) => {
+      const tmpArr = arrByYear[row.name];
+      if (tmpArr) {
+        row.min = +_.minBy(tmpArr, 'rate').rate;
+        row.max = +_.maxBy(tmpArr, 'rate').rate;
+        row.value = +_.meanBy(tmpArr, 'rate');
+      }
+    });
+    this.lineData = [{name: 'Anime', series: yearArr}];
+  }
+
+  private getYearArr(minYear, maxYear) {
+    const arr = _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+    return arr.slice();
+  }
+
+  public calendarAxisTickFormatting(year: string) {
+    return moment(year).year();
   }
 
 }

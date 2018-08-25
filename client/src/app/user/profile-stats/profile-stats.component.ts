@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import {take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 
@@ -64,41 +65,6 @@ export class ProfileStatsComponent implements OnInit {
           'max': 6529
         }
       ]
-    },
-    {
-      'name': 'Cook Islands',
-      'series': [
-        {
-          'value': 6953,
-          'name': '2016-09-20T01:14:19.196Z',
-          'min': 6662,
-          'max': 7244
-        },
-        {
-          'value': 3451,
-          'name': '2016-09-23T03:54:33.069Z',
-          'min': 3285,
-          'max': 3617
-        },
-        {
-          'value': 6657,
-          'name': '2016-09-24T00:43:23.314Z',
-          'min': 6081,
-          'max': 7233
-        },
-        {
-          'value': 4799,
-          'name': '2016-09-21T02:31:01.094Z',
-          'min': 4681,
-          'max': 4917
-        },
-        {
-          'value': 4218,
-          'name': '2016-09-14T08:44:26.704Z',
-          'min': 3992,
-          'max': 4444
-        }
-      ]
     }
   ];
 
@@ -144,7 +110,8 @@ export class ProfileStatsComponent implements OnInit {
   switchType() {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.0000001 instead
-    const arr = this.banguminUserService.getUserProfileStats('hi', this.selectedTypeList);
+    const arr = this.banguminUserService.getUserProfileStats('hi')
+      .filter((stat) => (this.selectedTypeList.length === 0) ? true : this.selectedTypeList.includes(stat.typ));
     this.groupAndCountByRate(arr);
   }
 
@@ -162,6 +129,28 @@ export class ProfileStatsComponent implements OnInit {
     this.data = countedArr.sort(function (a: any, b: any) {
       return a.name - b.name;
     });
+  }
+
+  private groupAndCountByYear() {
+    const arr = this.banguminUserService.getUserProfileStats('hi');
+    const arrByYear = _.groupBy(arr, (row) => {
+      return moment(row.adddate).year();
+    });
+    const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
+    yearArr.forEach((row) => {
+      const tmpArr = arrByYear[row.name];
+      if (tmpArr) {
+        row.min = +_.minBy(tmpArr, 'rate').rate;
+        row.max = +_.maxBy(tmpArr, 'rate').rate;
+        row.value = +_.meanBy(tmpArr, 'rate');
+      }
+    });
+    this.lineData = [{name: 'Anime', series: yearArr}];
+  }
+
+  private getYearArr(minYear, maxYear) {
+    const arr = _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+    return arr.slice();
   }
 
 }

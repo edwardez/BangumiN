@@ -24,6 +24,7 @@ body {
 //override default border for placeholder
 .ph-item {
   border: none !important;
+  background-color: transparent !important;
 }
 
 //customize angular material style
@@ -45,7 +46,8 @@ app-spoiler-creation .mat-dialog-container {
 }
 
 .spoiler-text {
-  padding: 4px 4px 4px 4px;
+  line-height: 2em;
+  padding: 0.28em;
   box-decoration-break: clone;
   text-decoration: none;
   border-radius: 5px;

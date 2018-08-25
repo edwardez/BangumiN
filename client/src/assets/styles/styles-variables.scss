@@ -108,10 +108,6 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   }
 
   .spoiler-text {
-    padding: 4px 4px 4px 4px;
-    box-decoration-break: clone;
-    text-decoration: none;
-    border-radius: 5px;
     color: mat-color($accent, default-contrast);
   }
 

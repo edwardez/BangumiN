@@ -141,23 +141,23 @@ export class BanguminUserService {
   public getUserProfileStats(username: string): any {
     // todo: cache with subject in the future
     return of([
-      {typ: 'Real', rate: 8, adddate: '2016-09-24'},
-      {typ: 'Anime', rate: 7, adddate: '2017-09-24'},
-      {typ: 'Real', rate: 4, adddate: '2018-09-24'},
-      {typ: 'Real', rate: 7, adddate: '2016-09-24'},
-      {typ: 'Real', rate: 6, adddate: '2017-09-24'},
-      {typ: 'Anime', rate: 10, adddate: '2018-09-24'},
-      {typ: 'Anime', rate: 2, adddate: '2018-09-24'},
-      {typ: 'Anime', rate: 5, adddate: '2016-09-24'},
-      {typ: 'Anime', rate: 1, adddate: '2017-09-24'},
-      {typ: 'Real', rate: 2, adddate: '2016-09-24'},
-      {typ: 'Anime', rate: 3, adddate: '2017-09-24'},
-      {typ: 'Anime', rate: 4, adddate: '2017-09-24'},
-      {typ: 'Anime', rate: 4, adddate: '2018-09-24'},
-      {typ: 'Real', rate: 6, adddate: '2016-09-24'},
-      {typ: 'Anime', rate: 7, adddate: '2017-09-24'},
-      {typ: 'Real', rate: 8, adddate: '2018-09-24'},
-      {typ: 'Anime', rate: 9, adddate: '2017-09-24'}
+      {typ: 'real', rate: 8, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 7, adddate: '2017-09-24'},
+      {typ: 'real', rate: 4, adddate: '2018-09-24'},
+      {typ: 'real', rate: 7, adddate: '2016-09-24'},
+      {typ: 'real', rate: 6, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 10, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 2, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 5, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 1, adddate: '2017-09-24'},
+      {typ: 'real', rate: 2, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 3, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 4, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 4, adddate: '2018-09-24'},
+      {typ: 'real', rate: 6, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 7, adddate: '2017-09-24'},
+      {typ: 'real', rate: 8, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 9, adddate: '2017-09-24'}
     ]);
   }
 

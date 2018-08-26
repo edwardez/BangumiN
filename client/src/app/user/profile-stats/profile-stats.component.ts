@@ -13,6 +13,7 @@ import {of} from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class ProfileStatsComponent implements OnInit {
+  // todo: options for each chart
   view;
   showXAxis;
   showYAxis;
@@ -62,7 +63,7 @@ export class ProfileStatsComponent implements OnInit {
       domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', '#2361bd']
     };
 
-    this.typeList = ['Real', 'Anime'];
+    this.typeList = ['real', 'anime', 'game', 'book'];
     this.selectedTypeListForscoreVsCount = this.typeList;
     this.selectedTypeListForyearVsMean = this.typeList;
     this.selectedTypeListForDefault = this.typeList;
@@ -110,8 +111,11 @@ export class ProfileStatsComponent implements OnInit {
     }
   }
 
-  calendarAxisTickFormatting(year: string) {
-    return day().set('year', +year).year();
+  calendarAxisTickFormatting(year) {
+    if (Math.floor(year) !== year) {
+      return '';
+    }
+    return day().set('year', year).year();
   }
 
   pieTooltipText({data}) {
@@ -189,7 +193,7 @@ export class ProfileStatsComponent implements OnInit {
   }
 
   private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year.toString(), value: 0, min: 0, max: 0}));
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
   }
 
   private groupAndCountByYear(arr, type: string) {
@@ -200,9 +204,11 @@ export class ProfileStatsComponent implements OnInit {
     yearArr.forEach((row) => {
       const tmpArr = arrByYear[row.name];
       if (tmpArr) {
-        row.min = +_.minBy(tmpArr, 'rate').rate;
-        row.max = +_.maxBy(tmpArr, 'rate').rate;
-        row.value = +_.meanBy(tmpArr, 'rate');
+        row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
+        row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
+        row.value = _(tmpArr)
+                      .reject((row) => !row.rate)
+                      .meanBy('rate');
       }
     });
     this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];

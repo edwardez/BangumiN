@@ -1,8 +1,9 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
 import {take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'app-profile-stats',
@@ -22,20 +23,20 @@ export class ProfileStatsComponent implements OnInit {
   showYAxisLabel;
   yAxisLabel;
   colorScheme;
-  data;
+  scoreVsCountData;
   theme;
 
   typeList;
-  selectedTypeList;
+  selectedTypeListForscoreVsCount;
+  selectedTypeListForyearVsMean;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
-  lineData = [
-    {
-      'name': '',
-      'series': []
-    }
-  ];
+  yearVsMeanData = [];
+
+  @ViewChild('select')
+  select: MatSelect;
+  lastValue;
 
   constructor(
     private banguminUserService: BanguminUserService
@@ -59,13 +60,11 @@ export class ProfileStatsComponent implements OnInit {
     };
 
     this.typeList = ['Real', 'Anime'];
-    this.selectedTypeList = this.typeList;
+    this.selectedTypeListForscoreVsCount = this.typeList;
+    this.selectedTypeListForyearVsMean = this.typeList;
   }
 
   ngOnInit() {
-    const arr = this.banguminUserService.getUserProfileStats('hi');
-    this.groupAndCountByRate(arr);
-
     this.banguminUserService.getUserSettings()
       .pipe(
         take(1)
@@ -74,14 +73,40 @@ export class ProfileStatsComponent implements OnInit {
         this.theme = 'dark';
       }
     });
+    this.inityearVsMean();
   }
 
-  switchType() {
+  switchType(target, graph: string) {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.0000001 instead
-    const arr = this.banguminUserService.getUserProfileStats('hi')
-      .filter((stat) => (this.selectedTypeList.length === 0) ? true : this.selectedTypeList.includes(stat.typ));
-    this.groupAndCountByRate(arr);
+    if (graph === 'scoreVsCount') {
+      const arr = this.banguminUserService.getUserProfileStats('hi')
+        .filter((stat) => (this.selectedTypeListForscoreVsCount.length === 0) ? true : this.selectedTypeListForscoreVsCount.includes(stat.typ));
+      this.groupAndCountByRate(arr);
+    } else if (graph === 'yearVsMean') {
+      console.log('lastValue', this.lastValue);
+      const arr = this.banguminUserService.getUserProfileStats('hi')
+        .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
+      this.groupAndCountByYear(arr);
+    }
+
+  }
+
+  calendarAxisTickFormatting(year: string) {
+    return day().set('year', +year).year();
+  }
+
+  private inityearVsMean() {
+    this.yearVsMeanData.push({
+      'name': '',
+      'series': []
+    });
+    this.select.optionSelectionChanges
+      .subscribe((res) => {
+        if (res) {
+          this.lastValue = res.source.value;
+        }
+      );
   }
 
   private groupAndCountByRate(arr) {
@@ -95,13 +120,12 @@ export class ProfileStatsComponent implements OnInit {
       });
     }
 
-    this.data = countedArr.sort(function (a: any, b: any) {
+    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
       return a.name - b.name;
     });
   }
 
-  groupAndCountByYear() {
-    const arr = this.banguminUserService.getUserProfileStats('hi');
+  private groupAndCountByYear(arr) {
     const arrByYear = _.groupBy(arr, (row) => {
       return day(row.adddate).year();
     });
@@ -114,15 +138,11 @@ export class ProfileStatsComponent implements OnInit {
         row.value = +_.meanBy(tmpArr, 'rate');
       }
     });
-    this.lineData = [{name: 'Anime', series: yearArr}];
-  }
-
-  public calendarAxisTickFormatting(year: string) {
-    return day(year).year();
+    this.yearVsMeanData = [{name: 'Anime', series: yearArr}];
   }
 
   private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year.toString(), value: 0, min: 0, max: 0}));
   }
 
 }

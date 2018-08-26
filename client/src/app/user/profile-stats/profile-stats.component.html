@@ -3,7 +3,7 @@
   <!--<ngx-charts-bar-vertical-->
   <!--[view]="view"-->
   <!--[scheme]="colorScheme"-->
-  <!--[results]="data"-->
+  <!--[results]="scoreVsCountData"-->
   <!--[gradient]="gradient"-->
   <!--[showGridLines]="showGridLines"-->
   <!--[xAxis]="showXAxis"-->
@@ -18,7 +18,7 @@
     [view]="view"
     [scheme]="colorScheme"
     [schemeType]="schemeType"
-    [results]="lineData"
+    [results]="yearVsMeanData"
     [animations]=true
     [legend]="showLegend"
     [gradient]="gradient"
@@ -27,7 +27,6 @@
     [showXAxisLabel]="showXAxisLabel"
     [showYAxisLabel]="showYAxisLabel"
     [xAxisLabel]="xAxisLabel"
-    [xAxisTickFormatting]="calendarAxisTickFormatting"
     [yAxisLabel]="yAxisLabel"
     [timeline]=false
     [showGridLines]="showGridLines"
@@ -40,10 +39,20 @@
 <button (click)="groupAndCountByYear()">year</button>
 
 
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[(value)]="selectedTypeListForscoreVsCount"-->
+<!--(selectionChange)="switchType('scoreVsCount')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+
 <mat-form-field>
   <mat-select
-    [(value)]="selectedTypeList"
-    (selectionChange)="switchType()"
+    #select="matSelect"
+    [(value)]="selectedTypeListForyearVsMean"
+    (selectionChange)="switchType($event, 'yearVsMean')"
     multiple>
     <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
   </mat-select>

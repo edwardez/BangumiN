@@ -18,7 +18,7 @@
     [view]="view"
     [scheme]="colorScheme"
     [schemeType]="schemeType"
-    [results]="yearVsMeanData"
+    [results]="yearVsMeanData | async"
     [animations]=true
     [legend]="showLegend"
     [gradient]="gradient"
@@ -50,9 +50,8 @@
 
 <mat-form-field>
   <mat-select
-    #select="matSelect"
+    #yearVsMeanSelect="matSelect"
     [(value)]="selectedTypeListForyearVsMean"
-    (selectionChange)="switchType($event, 'yearVsMean')"
     multiple>
     <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
   </mat-select>

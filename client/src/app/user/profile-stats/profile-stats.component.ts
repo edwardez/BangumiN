@@ -34,9 +34,8 @@ export class ProfileStatsComponent implements OnInit {
   schemeType = 'ordinal';
   yearVsMeanData = [];
 
-  @ViewChild('select')
-  select: MatSelect;
-  lastValue;
+  @ViewChild('yearVsMeanSelect')
+  yearVsMeanSelect: MatSelect;
 
   constructor(
     private banguminUserService: BanguminUserService
@@ -73,40 +72,62 @@ export class ProfileStatsComponent implements OnInit {
         this.theme = 'dark';
       }
     });
-    this.inityearVsMean();
+    this.initYearVsMean();
   }
 
-  switchType(target, graph: string) {
+  switchType(graph: string) {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.0000001 instead
     if (graph === 'scoreVsCount') {
       const arr = this.banguminUserService.getUserProfileStats('hi')
-        .filter((stat) => (this.selectedTypeListForscoreVsCount.length === 0) ? true : this.selectedTypeListForscoreVsCount.includes(stat.typ));
-      this.groupAndCountByRate(arr);
-    } else if (graph === 'yearVsMean') {
-      console.log('lastValue', this.lastValue);
-      const arr = this.banguminUserService.getUserProfileStats('hi')
-        .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
-      this.groupAndCountByYear(arr);
+        .filter((stat) => {
+          if (this.selectedTypeListForscoreVsCount.length === 0) {
+            return true;
+          } else {
+            return this.selectedTypeListForscoreVsCount.includes(stat.typ);
+          }
+        });
     }
-
   }
 
   calendarAxisTickFormatting(year: string) {
     return day().set('year', +year).year();
   }
 
-  private inityearVsMean() {
+  private initYearVsMean() {
+    // todo: how to initialize the chart?
     this.yearVsMeanData.push({
       'name': '',
       'series': []
     });
-    this.select.optionSelectionChanges
+    // initialize the chart with all types
+    const arr = this.banguminUserService.getUserProfileStats('hi')
+      .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
+    const arrByType = _.groupBy(arr, (row) => {
+      return row.typ;
+    });
+    Object.keys(arrByType).forEach((type) => {
+      this.groupAndCountByYear(arrByType[type], type);
+    });
+
+    // edit the chart on change of type selection
+    this.yearVsMeanSelect.optionSelectionChanges
       .subscribe((res) => {
-        if (res) {
-          this.lastValue = res.source.value;
+        if (res && res.isUserInput) {
+          const triggerValue = res.source.value;
+          // selected a value
+          if (this.selectedTypeListForyearVsMean.includes(triggerValue)) {
+            const thisTypeArr = this.banguminUserService.getUserProfileStats('hi')
+              .filter((stat) => (stat.typ === triggerValue));
+            this.groupAndCountByYear(thisTypeArr, triggerValue);
+          } else {
+            // deselected a value
+            _.remove(this.yearVsMeanData, (row) => {
+              return row.name === triggerValue;
+            });
+          }
         }
-      );
+      });
   }
 
   private groupAndCountByRate(arr) {
@@ -125,7 +146,7 @@ export class ProfileStatsComponent implements OnInit {
     });
   }
 
-  private groupAndCountByYear(arr) {
+  private groupAndCountByYear(arr, type: string) {
     const arrByYear = _.groupBy(arr, (row) => {
       return day(row.adddate).year();
     });
@@ -138,7 +159,7 @@ export class ProfileStatsComponent implements OnInit {
         row.value = +_.meanBy(tmpArr, 'rate');
       }
     });
-    this.yearVsMeanData = [{name: 'Anime', series: yearArr}];
+    this.yearVsMeanData.push({name: type, series: yearArr});
   }
 
   private getYearArr(minYear, maxYear) {

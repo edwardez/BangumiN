@@ -14,30 +14,36 @@
   <!--[xAxisLabel]="xAxisLabel"-->
   <!--[yAxisLabel]="yAxisLabel">-->
   <!--</ngx-charts-bar-vertical>-->
-  <ngx-charts-line-chart
+  <!--<ngx-charts-line-chart-->
+  <!--[view]="view"-->
+  <!--[scheme]="colorScheme"-->
+  <!--[schemeType]="schemeType"-->
+  <!--[results]="yearVsMeanData"-->
+  <!--[animations]=true-->
+  <!--[legend]="showLegend"-->
+  <!--[gradient]="gradient"-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel"-->
+  <!--[timeline]=false-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[rangeFillOpacity]="rangeFillOpacity"-->
+  <!--[roundDomains]=false-->
+  <!--[tooltipDisabled]=false>-->
+  <!--</ngx-charts-line-chart>-->
+  <ngx-charts-advanced-pie-chart
     [view]="view"
     [scheme]="colorScheme"
-    [schemeType]="schemeType"
-    [results]="yearVsMeanData | async"
+    [results]="scoreVsCountData"
     [animations]=true
-    [legend]="showLegend"
     [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]=false
-    [showGridLines]="showGridLines"
-    [rangeFillOpacity]="rangeFillOpacity"
-    [roundDomains]=false
-    [tooltipDisabled]=false>
-  </ngx-charts-line-chart>
+    [tooltipDisabled]=false
+    [tooltipText]="pieTooltipText">
+  </ngx-charts-advanced-pie-chart>
 </div>
-
-<button (click)="groupAndCountByYear()">year</button>
-
 
 <!--<mat-form-field>-->
 <!--<mat-select-->

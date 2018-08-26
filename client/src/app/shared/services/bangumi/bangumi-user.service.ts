@@ -126,10 +126,10 @@ export class BangumiUserService {
 
 
   /**
-  get user info
-  is username is not provided/null/etc, by default, user info in localStorage will be used to retrieve user info from server
-  if there's no user info in localStorage, a null will be emitted
-  if
+   get user info
+   is username is not provided/null/etc, by default, user info in localStorage will be used to retrieve user info from server
+   if there's no user info in localStorage, a null will be emitted
+   if
    */
   getUserSettings(username?: string): Observable<any> {
     if (username) {

@@ -37,31 +37,31 @@
     [tooltipDisabled]=false>
   </ngx-charts-line-chart>
 
-  <!--<ngx-charts-advanced-pie-chart-->
-  <!--[view]="view"-->
-  <!--[scheme]="colorScheme"-->
-  <!--[results]="countByTypeData"-->
-  <!--[animations]=true-->
-  <!--[gradient]="gradient"-->
-  <!--[tooltipDisabled]=false-->
-  <!--[tooltipText]="pieTooltipText">-->
-  <!--</ngx-charts-advanced-pie-chart>-->
-  <!--</div>-->
+  <!-- <ngx-charts-advanced-pie-chart
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="countByTypeData"
+  [animations]=true
+  [gradient]="gradient"
+  [tooltipDisabled]=false
+  [tooltipText]="pieTooltipText">
+  </ngx-charts-advanced-pie-chart>
+  </div> -->
 
-<!--<mat-form-field>-->
-<!--<mat-select-->
-<!--[(value)]="selectedTypeListForscoreVsCount"-->
-<!--(selectionChange)="switchType('scoreVsCount')"-->
-<!--multiple>-->
-<!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
-<!--</mat-select>-->
-<!--</mat-form-field>-->
+  <!--<mat-form-field>-->
+  <!--<mat-select-->
+  <!--[(value)]="selectedTypeListForscoreVsCount"-->
+  <!--(selectionChange)="switchType('scoreVsCount')"-->
+  <!--multiple>-->
+  <!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
+  <!--</mat-select>-->
+  <!--</mat-form-field>-->
 
-<mat-form-field>
-  <mat-select
-    #yearVsMeanSelect="matSelect"
-    [(value)]="selectedTypeListForyearVsMean"
-    multiple>
-    <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
-  </mat-select>
-</mat-form-field>
+  <mat-form-field>
+    <mat-select
+      #yearVsMeanSelect="matSelect"
+      [(value)]="selectedTypeListForyearVsMean"
+      multiple>
+      <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
+    </mat-select>
+  </mat-form-field>

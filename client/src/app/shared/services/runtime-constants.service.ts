@@ -17,5 +17,6 @@ export class RuntimeConstantsService {
   static defaultShowA11YViolationTheme = false;
 
 
-  constructor() { }
+  constructor() {
+  }
 }

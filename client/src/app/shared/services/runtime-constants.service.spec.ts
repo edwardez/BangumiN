@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { RuntimeConstantsService } from './runtime-constants.service';
+import {RuntimeConstantsService} from './runtime-constants.service';
 
 describe('RuntimeConstantsService', () => {
   beforeEach(() => {

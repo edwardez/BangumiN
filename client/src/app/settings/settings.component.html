@@ -42,7 +42,6 @@
           </div>
 
 
-
         </mat-card-content>
       </mat-card>
 
@@ -55,7 +54,7 @@
 
           <div class="mt-3">
             <mat-radio-group formControlName="appTheme">
-              <ng-container *ngFor="let appTheme of availableAppThemes" >
+              <ng-container *ngFor="let appTheme of availableAppThemes">
                 <mat-radio-button
                   class="mr-3"
                   [value]="appTheme"
@@ -84,8 +83,9 @@
               >
                 {{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}
               </mat-slide-toggle>
-              <mat-icon matTooltip="{{'settings.category.appearance.colorTheme.showA11YViolationTheme.tooltip.explanation' | translate}}"
-                        matTooltipPosition="{{'above'}}">info
+              <mat-icon
+                matTooltip="{{'settings.category.appearance.colorTheme.showA11YViolationTheme.tooltip.explanation' | translate}}"
+                matTooltipPosition="{{'above'}}">info
               </mat-icon>
             </div>
           </div>
@@ -94,7 +94,6 @@
       </mat-card>
 
     </div>
-
 
 
   </form>

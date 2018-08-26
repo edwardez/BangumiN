@@ -40,7 +40,7 @@ export class ProfileStatsComponent implements OnInit {
   constructor(
     private banguminUserService: BanguminUserService
   ) {
-    this.view = [500, 300];
+    this.view = [800, 500];
     // options
     this.gradient = false;
     this.showLegend = true;
@@ -73,6 +73,32 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
     this.initYearVsMean();
+    this.scoreVsCountData = [
+      {
+        'name': 'Germany',
+        'value': 40632
+      },
+      {
+        'name': 'United States',
+        'value': 49737
+      },
+      {
+        'name': 'France',
+        'value': 36745
+      },
+      {
+        'name': 'United Kingdom',
+        'value': 36240
+      },
+      {
+        'name': 'Spain',
+        'value': 33000
+      },
+      {
+        'name': 'Italy',
+        'value': 35800
+      }
+    ];
   }
 
   switchType(graph: string) {
@@ -92,6 +118,32 @@ export class ProfileStatsComponent implements OnInit {
 
   calendarAxisTickFormatting(year: string) {
     return day().set('year', +year).year();
+  }
+
+  pieTooltipText({data}) {
+    const label = data.name;
+    const val = data.value;
+
+    return `
+      <span class="tooltip-label">${label}</span>
+      <span class="tooltip-val">$${val}</span>
+    `;
+  }
+
+  private groupAndCountByRate(arr) {
+    // TODO: fixed xAxis ticks
+    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    const countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
+    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
+    if (diff.length !== 0) {
+      diff.forEach((axis) => {
+        countedArr.push({name: axis, value: 0.000001});
+      });
+    }
+
+    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
+      return a.name - b.name;
+    });
   }
 
   private initYearVsMean() {
@@ -122,28 +174,17 @@ export class ProfileStatsComponent implements OnInit {
             this.groupAndCountByYear(thisTypeArr, triggerValue);
           } else {
             // deselected a value
-            _.remove(this.yearVsMeanData, (row) => {
-              return row.name === triggerValue;
+            const newArr = _.filter(this.yearVsMeanData, (row) => {
+              return row.name !== triggerValue;
             });
+            this.yearVsMeanData = [...newArr];
           }
         }
       });
   }
 
-  private groupAndCountByRate(arr) {
-    // TODO: fixed xAxis ticks
-    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    const countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
-    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
-    if (diff.length !== 0) {
-      diff.forEach((axis) => {
-        countedArr.push({name: axis, value: 0.000001});
-      });
-    }
-
-    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
-      return a.name - b.name;
-    });
+  private getYearArr(minYear, maxYear) {
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year.toString(), value: 0, min: 0, max: 0}));
   }
 
   private groupAndCountByYear(arr, type: string) {
@@ -159,11 +200,7 @@ export class ProfileStatsComponent implements OnInit {
         row.value = +_.meanBy(tmpArr, 'rate');
       }
     });
-    this.yearVsMeanData.push({name: type, series: yearArr});
-  }
-
-  private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year.toString(), value: 0, min: 0, max: 0}));
+    this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
   }
 
 }

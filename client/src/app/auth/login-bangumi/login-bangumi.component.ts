@@ -7,6 +7,7 @@ import {AuthenticationService} from '../../shared/services/auth.service';
 import {catchError, finalize, switchMap, takeUntil} from 'rxjs/operators';
 import {Subject, throwError} from 'rxjs';
 import {Router} from '@angular/router';
+import {StorageService} from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-login-bangumi',
@@ -19,13 +20,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
   bangumiAuthWaitDialog;
   openedBangumiPopup;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-
-  constructor(public dialog: MatDialog,
-              public snackBar: MatSnackBar,
-              private translateService: TranslateService,
-              private router: Router,
-              private authenticationService: AuthenticationService) {
-  }
 
   receiveMessage: any = (event: any) => {
     if (event && event.data && event.data.type === 'bangumiCallBack') {
@@ -46,6 +40,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
             switchMap(
               res => {
                 loginResultTranslationLabel = 'login.loginSuccess';
+                this.router.navigate(['/progress']);
                 return this.translateService.get(loginResultTranslationLabel);
               }
             ),
@@ -59,7 +54,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
                   duration: 3000
                 });
               });
-              this.router.navigate(['/progress']);
             })
           )
           .subscribe(res => {
@@ -74,6 +68,17 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
       }
     }
   };
+
+  constructor(private authenticationService: AuthenticationService,
+              public dialog: MatDialog,
+              private router: Router,
+              public snackBar: MatSnackBar,
+              private storageService: StorageService,
+              private translateService: TranslateService,
+  ) {
+    // clear storage
+    this.storageService.clear();
+  }
 
   ngOnInit() {
     this.receiveMessageHandler = this.receiveMessage.bind(this);

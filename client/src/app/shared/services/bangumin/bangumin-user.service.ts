@@ -140,8 +140,7 @@ export class BanguminUserService {
   // todo: switch case for different filter type(e.g. byYear, byType, byState, etc)
   public getUserProfileStats(username: string): any {
     // todo: cache with subject in the future
-    return of([
-      {typ: 'real', rate: 8, adddate: '2016-09-24'},
+    return of([{typ: 'real', rate: 8, adddate: '2016-09-24'},
       {typ: 'anime', rate: 7, adddate: '2017-09-24'},
       {typ: 'real', rate: 4, adddate: '2018-09-24'},
       {typ: 'real', rate: 7, adddate: '2016-09-24'},

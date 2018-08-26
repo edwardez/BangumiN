@@ -18,9 +18,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     SettingsComponent,
 
   ],
-  entryComponents: [
-
-  ],
+  entryComponents: [],
 })
 export class BanguminSettingsModule {
 }

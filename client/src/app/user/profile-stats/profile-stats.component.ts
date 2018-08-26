@@ -31,7 +31,6 @@ export class ProfileStatsComponent implements OnInit {
   typeList;
   selectedTypeListForscoreVsCount;
   selectedTypeListForyearVsMean;
-  selectedTypeListForDefault;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
@@ -63,10 +62,8 @@ export class ProfileStatsComponent implements OnInit {
       domain: ['#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', '#2361bd']
     };
 
-    this.typeList = ['real', 'anime', 'game', 'book'];
     this.selectedTypeListForscoreVsCount = this.typeList;
     this.selectedTypeListForyearVsMean = this.typeList;
-    this.selectedTypeListForDefault = this.typeList;
   }
 
   ngOnInit() {
@@ -78,16 +75,17 @@ export class ProfileStatsComponent implements OnInit {
         this.theme = 'dark';
       }
     });
-    this.initYearVsMean();
     // initialize default pie-chart view
-    // this.banguminUserService.getUserProfileStats('hi')
-    //   .subscribe((res) => {
-    //     if (res) {
-    //       const defaultArr = res
-    //         .filter((stat) => (this.selectedTypeListForDefault.length === 0) ? true : this.selectedTypeListForDefault.includes(stat.typ));
-    //       this.countByTypeData = _.map(_.countBy(defaultArr, 'typ'), (val, key) => ({name: key, value: val}));
-    //     }
-    //   });
+    this.banguminUserService.getUserProfileStats('hi')
+      .subscribe((res) => {
+        if (res) {
+          const defaultArr = res;
+          this.countByTypeData = _.map(_.countBy(defaultArr, 'typ'), (val, key) => ({name: key, value: val}));
+          this.typeList = _.map(this.countByTypeData, 'name');
+
+          this.initYearVsMean();
+        }
+      });
   }
 
   switchType(graph: string) {
@@ -145,11 +143,6 @@ export class ProfileStatsComponent implements OnInit {
   }
 
   private initYearVsMean() {
-    // todo: how to initialize the chart?
-    // this.yearVsMeanData.push({
-    //   'name': '',
-    //   'series': []
-    // });
     // initialize the chart with all types
     this.banguminUserService.getUserProfileStats('hi')
       .subscribe((res) => {
@@ -188,7 +181,7 @@ export class ProfileStatsComponent implements OnInit {
       if (res) {
         const thisTypeArr = res.filter((stat) => (stat.typ === this.triggerValue));
         this.groupAndCountByYear(thisTypeArr, this.triggerValue);
-        }
+      }
     });
   }
 
@@ -207,8 +200,8 @@ export class ProfileStatsComponent implements OnInit {
         row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
         row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
         row.value = _(tmpArr)
-                      .reject((row) => !row.rate)
-                      .meanBy('rate');
+          .reject((row) => !row.rate)
+          .meanBy('rate');
       }
     });
     this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];

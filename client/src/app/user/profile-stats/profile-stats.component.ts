@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
-import {take} from 'rxjs/operators';
+import {flatMap, take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {MatSelect} from '@angular/material';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-profile-stats',
@@ -29,13 +30,16 @@ export class ProfileStatsComponent implements OnInit {
   typeList;
   selectedTypeListForscoreVsCount;
   selectedTypeListForyearVsMean;
+  selectedTypeListForDefault;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
   yearVsMeanData = [];
+  triggerValue;
 
   @ViewChild('yearVsMeanSelect')
   yearVsMeanSelect: MatSelect;
+  countByTypeData;
 
   constructor(
     private banguminUserService: BanguminUserService
@@ -61,6 +65,7 @@ export class ProfileStatsComponent implements OnInit {
     this.typeList = ['Real', 'Anime'];
     this.selectedTypeListForscoreVsCount = this.typeList;
     this.selectedTypeListForyearVsMean = this.typeList;
+    this.selectedTypeListForDefault = this.typeList;
   }
 
   ngOnInit() {
@@ -73,44 +78,33 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
     this.initYearVsMean();
-    this.scoreVsCountData = [
-      {
-        'name': 'Germany',
-        'value': 40632
-      },
-      {
-        'name': 'United States',
-        'value': 49737
-      },
-      {
-        'name': 'France',
-        'value': 36745
-      },
-      {
-        'name': 'United Kingdom',
-        'value': 36240
-      },
-      {
-        'name': 'Spain',
-        'value': 33000
-      },
-      {
-        'name': 'Italy',
-        'value': 35800
-      }
-    ];
+    // initialize default pie-chart view
+    // this.banguminUserService.getUserProfileStats('hi')
+    //   .subscribe((res) => {
+    //     if (res) {
+    //       const defaultArr = res
+    //         .filter((stat) => (this.selectedTypeListForDefault.length === 0) ? true : this.selectedTypeListForDefault.includes(stat.typ));
+    //       this.countByTypeData = _.map(_.countBy(defaultArr, 'typ'), (val, key) => ({name: key, value: val}));
+    //     }
+    //   });
   }
 
   switchType(graph: string) {
     // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
     // tmp hack: use 0.0000001 instead
     if (graph === 'scoreVsCount') {
-      const arr = this.banguminUserService.getUserProfileStats('hi')
-        .filter((stat) => {
-          if (this.selectedTypeListForscoreVsCount.length === 0) {
-            return true;
-          } else {
-            return this.selectedTypeListForscoreVsCount.includes(stat.typ);
+      this.banguminUserService.getUserProfileStats('hi')
+        .subscribe((res) => {
+          if (res) {
+            const arr = res
+              .filter((stat) => {
+                if (this.selectedTypeListForscoreVsCount.length === 0) {
+                  return true;
+                } else {
+                  return this.selectedTypeListForscoreVsCount.includes(stat.typ);
+                }
+              });
+            this.groupAndCountByRate(arr);
           }
         });
     }
@@ -126,7 +120,7 @@ export class ProfileStatsComponent implements OnInit {
 
     return `
       <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val">$${val}</span>
+      <span class="tooltip-val">${val}</span>
     `;
   }
 
@@ -148,39 +142,50 @@ export class ProfileStatsComponent implements OnInit {
 
   private initYearVsMean() {
     // todo: how to initialize the chart?
-    this.yearVsMeanData.push({
-      'name': '',
-      'series': []
-    });
+    // this.yearVsMeanData.push({
+    //   'name': '',
+    //   'series': []
+    // });
     // initialize the chart with all types
-    const arr = this.banguminUserService.getUserProfileStats('hi')
-      .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
-    const arrByType = _.groupBy(arr, (row) => {
-      return row.typ;
-    });
-    Object.keys(arrByType).forEach((type) => {
-      this.groupAndCountByYear(arrByType[type], type);
-    });
+    this.banguminUserService.getUserProfileStats('hi')
+      .subscribe((res) => {
+        if (res) {
+          const arr = res
+            .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
+          const arrByType = _.groupBy(arr, (row) => {
+            return row.typ;
+          });
+          Object.keys(arrByType).forEach((type) => {
+            this.groupAndCountByYear(arrByType[type], type);
+          });
+        }
+      });
 
     // edit the chart on change of type selection
     this.yearVsMeanSelect.optionSelectionChanges
-      .subscribe((res) => {
-        if (res && res.isUserInput) {
-          const triggerValue = res.source.value;
-          // selected a value
-          if (this.selectedTypeListForyearVsMean.includes(triggerValue)) {
-            const thisTypeArr = this.banguminUserService.getUserProfileStats('hi')
-              .filter((stat) => (stat.typ === triggerValue));
-            this.groupAndCountByYear(thisTypeArr, triggerValue);
-          } else {
-            // deselected a value
-            const newArr = _.filter(this.yearVsMeanData, (row) => {
-              return row.name !== triggerValue;
-            });
-            this.yearVsMeanData = [...newArr];
+      .pipe(
+        flatMap((res) => {
+          if (res && res.isUserInput) {
+            this.triggerValue = res.source.value;
+            // selected a value
+            if (this.selectedTypeListForyearVsMean.includes(this.triggerValue)) {
+              return this.banguminUserService.getUserProfileStats('hi');
+            } else {
+              // deselected a value
+              const newArr = _.filter(this.yearVsMeanData, (row) => {
+                return row.name !== this.triggerValue;
+              });
+              this.yearVsMeanData = [...newArr];
+            }
+            return of();
           }
+        })
+      ).subscribe((res: [any]) => {
+      if (res) {
+        const thisTypeArr = res.filter((stat) => (stat.typ === this.triggerValue));
+        this.groupAndCountByYear(thisTypeArr, this.triggerValue);
         }
-      });
+    });
   }
 
   private getYearArr(minYear, maxYear) {

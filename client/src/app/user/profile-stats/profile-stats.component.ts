@@ -144,6 +144,8 @@ export class ProfileStatsComponent implements OnInit {
 
   private initYearVsMean() {
     // initialize the chart with all types
+    this.selectedTypeListForyearVsMean = this.typeList;
+
     this.banguminUserService.getUserProfileStats('hi')
       .subscribe((res) => {
         if (res) {

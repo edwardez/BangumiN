@@ -23,29 +23,26 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
     * `npm run start-dev`
 
 
-# Highlights
-* Responsive design
-* Front end is written in [Angular Material](https://material.angular.io/) and [Flex layout](https://github.com/angular/flex-layout)
-* User score statistics 
-* Progressive Web App 
-* i18n
-* and more...
-
+# Highlighted Features
+* Search, show and manage your subjects
+* Data visualization for subjects and user
+* Spoiler Box: Safely post spoilers
 
 
 # Roadmap
 
-
-
-
 | Plan | Status & deadline | Comment |
 | --- | --- | --- |
-| Basic functionality(Profile, Subject, progress Management, search) | In progress,planned 2018 Q2  |  |
-| User statistics | 2018 Q2 |  |
-| Upgrade to Angular v6 | 2018 Q2 | Blocked by dependencies, might be deferred |
-| PWA improvment(server-side rendering, cache, lazy loading, etc.) | 2018 Q2-Q3 | Q2: basic optimization, Q3: further improvement |
-| public database, subject historical statistics, etc. | 2018 Q3 | Anonymous spider no longer works for all subjects(restricted subjects), need to figure out a way to fix this |
-| Accessibility  | 2018 Q3 |  |
+| Basic functionality: Progress Management | In progress, planned 2018 Q3 | Basic implementation is done, needs to rewrite episode management using virtual scroll |
+| Basic functionality: Search | Not started, 2018 Q3 | Needs a completely rewrite |
+| Basic functionality: Subject Info | Done | Needs further css tweak |
+| User data visualization | 2018 Q3 | In progress |
+| Subject data visualization | 2018 Q3 | Not started |
+| Pipeline | 2018 Q3 | Extract data from Bangumi and store in our database. Subject pipeline: through API;User pipeline: through API;User record pipeline: through web crawler |
+| Multiple Themes | Done | Available: Blue, Bangumi Pink, Night |
+| PWA improvement(server-side rendering, cache, lazy loading, etc.) | 2018 Q3 | Needs further improvement  |
+| Accessibility | 2018 Q3-Q4 | Not started |
+| Test | 2018 Q4 | Time is not enough and functionalities change very fast, wait until website stabilizes |
+| Continuous integration | 2018 Q3-Q4 | Basic implementation before website is in prod |
 | Drag and drop | TBD | Blocked by https://github.com/angular/material2/issues/8963 |
-
 

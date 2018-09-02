@@ -14,24 +14,24 @@ SPIDER_MODULES = ['bgm.spiders']
 NEWSPIDER_MODULE = 'bgm.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'bgm (+http://www.yourdomain.com)'
+# USER_AGENT = 'bgm (+http://www.yourdomain.com)'
 ITEM_PIPELINES = {
-    #'bgm.pipelines.UserPipeline': 300,
-    #'bgm.pipelines.RecordPipeline': 400,
-    #'bgm.pipelines.SubjectPipeline': 500
-    'bgm.pipelines.TsvPipeline':300
+    # 'bgm.pipelines.UserPipeline': 300,
+    # 'bgm.pipelines.RecordPipeline': 400,
+    # 'bgm.pipelines.SubjectPipeline': 500
+    'bgm.pipelines.TsvPipeline': 300
 }
 RETRY_TIMES = 10
-LOG_LEVEL='INFO'
-DUPEFILTER_CLASS='scrapy.dupefilters.BaseDupeFilter'
+LOG_LEVEL = 'INFO'
+DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None
-#}
+# }
 
-#REDIRECT_ENABLED = True
+# REDIRECT_ENABLED = True
 
-#LOG_FILE = 'scrapy.log'
+# LOG_FILE = 'scrapy.log'
 
 MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'bgm'
@@ -45,5 +45,5 @@ MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
 UPLOAD_TO_AZURE_STORAGE = False
 AZURE_ACCOUNT_NAME = "ikely"  # this is the subdomain to https://*.blob.core.windows.net/
 AZURE_ACCOUNT_KEY = ""
-AZURE_CONTAINER = 'bangumi'   # the name of the container (you should have already created it)
+AZURE_CONTAINER = 'bangumi'  # the name of the container (you should have already created it)
 ########################################

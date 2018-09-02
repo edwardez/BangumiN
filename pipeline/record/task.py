@@ -1,9 +1,10 @@
 import json
-from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 import sys
+
+from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'bgm'
@@ -11,6 +12,7 @@ MYSQL_USER = 'bgmer'
 MYSQL_PASSWD = 'sai'
 
 Base = declarative_base()
+
 
 # Declare mapping here
 
@@ -27,20 +29,22 @@ class User(Base):
         return "<Users(uid='%s', name='%s', joindate='%s')>" % (
             self.uid, self.name, self.joindate)
 
+
 class Record(Base):
     __tablename__ = 'record'
 
-    name = Column(String(50), primary_key=True)#, index=True)
-    typ = Column(String(5), nullable = False)
-    iid = Column(Integer, primary_key=True)#, index=True)
-    state = Column(String(7), nullable = False)
-    adddate = Column(Date, nullable = False)
+    name = Column(String(50), primary_key=True)  # , index=True)
+    typ = Column(String(5), nullable=False)
+    iid = Column(Integer, primary_key=True)  # , index=True)
+    state = Column(String(7), nullable=False)
+    adddate = Column(Date, nullable=False)
     rate = Column(Integer)
     tags = Column(String(500))
 
     def __repr__(self):
-        return "<Record(name=%s, iid=%s, typ=%s, state=%s)>"% (self.name,
-        self.iid, self.typ, self.state)
+        return "<Record(name=%s, iid=%s, typ=%s, state=%s)>" % (self.name,
+                                                                self.iid, self.typ, self.state)
+
 
 class Subject(Base):
     __tablename__ = 'subject'
@@ -55,9 +59,8 @@ class Subject(Base):
     votenum = Column(Integer, nullable=False, default=0)
 
     def __repr__(self):
-        return "<Subject(name=%s, id=%s, trueid=%s, type=%s)>"% (self.name,
-        self.id, self.trueid, self.type)
-
+        return "<Subject(name=%s, id=%s, trueid=%s, type=%s)>" % (self.name,
+                                                                  self.id, self.trueid, self.type)
 
 
 engine = create_engine("mysql+mysqldb://" + MYSQL_USER + ":" + MYSQL_PASSWD + "@" +
@@ -72,41 +75,43 @@ session = Session()
 
 def store_users():
     with open("user.json", 'rb') as fr:
-        cnt=0
+        cnt = 0
         while True:
             rec = fr.readline().strip()
-            cnt+=1
+            cnt += 1
             if not rec: break;
 
             user = json.loads(rec)
-            user_instance = User(name = user['name'], nickname = user['nickname'], uid = user['uid'],
-                                 joindate=user['joindate'], activedate = user['activedate'])
+            user_instance = User(name=user['name'], nickname=user['nickname'], uid=user['uid'],
+                                 joindate=user['joindate'], activedate=user['activedate'])
             session.add(user_instance)
-            if cnt%10000==0:
+            if cnt % 10000 == 0:
                 session.commit()
     session.commit()
 
+
 def store_record():
     with open("record.json", 'rb') as fr:
-        cnt=0
+        cnt = 0
         backup = []
         while True:
             rec = fr.readline().strip()
             backup.append(rec)
-            cnt+=1
+            cnt += 1
             if not rec: break;
 
             record = json.loads(rec)
-            tags = record.get('tags',None)
+            tags = record.get('tags', None)
             if tags:
                 tags = u" ".join(tags)
-            record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                    adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
+            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
-            if cnt%100000==0:
+            if cnt % 100000 == 0:
                 try_commit_record(session, backup)
-                backup=[]
+                backup = []
     try_commit_record(session, backup)
+
 
 def try_commit_record(session, backup):
     try:
@@ -114,63 +119,65 @@ def try_commit_record(session, backup):
     except:
         session.rollback()
 
-        if len(backup)<=1: return;
+        if len(backup) <= 1: return;
 
-        h = len(backup)/2
+        h = len(backup) / 2
         for rec in backup[:h]:
             record = json.loads(rec)
-            tags = record.get('tags',None)
+            tags = record.get('tags', None)
             if tags:
                 tags = u" ".join(tags)
 
-            record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                    adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
+            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
         try_commit_record(session, backup[:h])
 
         for rec in backup[h:]:
             record = json.loads(rec)
-            tags = record.get('tags',None)
+            tags = record.get('tags', None)
             if tags:
                 tags = u" ".join(tags)
 
-            record_instance = Record(name = record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                    adddate=record['adddate'], rate=record.get('rate', None), tags = tags)
+            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
         try_commit_record(session, backup[h:])
 
 
 def store_subject():
     with open("subject.json", 'rb') as fr:
-        cnt=0
+        cnt = 0
         while True:
             rec = fr.readline().strip()
-            cnt+=1
+            cnt += 1
             if not rec: break;
 
             subject = json.loads(rec)
 
-            subject_instance = Subject(id = subject['authenticid'],
-                                      trueid = subject['subjectid'],
-                                      name = subject['subjectname'],
-                                      type = subject['subjecttype'],
-                                      date = subject['date'],
-                                      rank = subject['rank'],
-                                      favnum = sum(subject['favnum']),
-                                      votenum = subject['votenum']
-            )
+            subject_instance = Subject(id=subject['authenticid'],
+                                       trueid=subject['subjectid'],
+                                       name=subject['subjectname'],
+                                       type=subject['subjecttype'],
+                                       date=subject['date'],
+                                       rank=subject['rank'],
+                                       favnum=sum(subject['favnum']),
+                                       votenum=subject['votenum']
+                                       )
             session.add(subject_instance)
-            if cnt%10000==0:
+            if cnt % 10000 == 0:
                 session.commit()
     session.commit()
 
+
 def run():
-    if sys.argv[1]=='users':
+    if sys.argv[1] == 'users':
         store_users()
-    elif sys.argv[1]=='record':
+    elif sys.argv[1] == 'record':
         store_record()
-    elif sys.argv[1]=='subject':
+    elif sys.argv[1] == 'subject':
         store_subject()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     run()

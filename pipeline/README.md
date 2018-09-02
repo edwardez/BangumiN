@@ -19,10 +19,11 @@ some industry-strength library is needed if time is given
 
 ## Usage
 
-Execute Each full/partial syncer under subject/user/record. Full scyner syncs from the very first id to the latest one, 
-partial syncer will querying the database and syncing only newest ids that don't exist in database.
+Set database environment variables, execute Each full/partial syncer under subject/user/record. Full scyner syncs 
+from the very first id to the latest one, partial syncer will querying the database and syncing only newest ids 
+that don't exist in database.
 
 ## Caution
 #### Be civil
-Bangumi's API has a rate limit and that limit exists for some reasons. Thus, this pipeline doesn't offer features such 
+Bangumi's API has a rate limit and that limit exists for some reasons. Thus, oboe doesn't offer features such 
 as scraping through proxy pool for now.

@@ -53,11 +53,11 @@ export class CollectionHomeComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.parent.params
       .pipe(
-        filter(params => params && params['id']),
+        filter(params => params && params['userId']),
         switchMap(params => {
           return forkJoin(this.validSubjectTypeArray.map(
             currentSubjectType => {
-              return this.bangumiUserService.getUserCollectionByType(params['id'], currentSubjectType)
+              return this.bangumiUserService.getUserCollectionByType(params['userId'], currentSubjectType)
                 .pipe(
                   takeUntil(this.ngUnsubscribe)
                 );

@@ -11,6 +11,7 @@ import Logger from './utils/logger';
 import oauth from './routes/oauth';
 import auth from './routes/auth';
 import settings from './routes/settings';
+import spoiler from './routes/spoiler';
 
 const logger = Logger(module);
 
@@ -92,7 +93,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/api/user/:id/setting', authenticationMiddleware.isAuthenticated, settings);
+app.use('/api/user/:id', spoiler);
+app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
 app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
 app.all('*', (req, res) => {
   res.status(404).json({error_code: 'not_found'});

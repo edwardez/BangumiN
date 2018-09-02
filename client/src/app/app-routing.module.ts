@@ -37,11 +37,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'user/:id/timeline/spoilers/:postId',
+    path: 'user/:userId/timeline/spoilers/:spoilerId',
     component: SpoilerSingleWrapperComponent,
   },
   {
-    path: 'user/:id',
+    path: 'user/:userId',
     component: ProfileComponent,
     children: [
       {

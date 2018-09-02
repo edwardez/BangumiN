@@ -8,7 +8,7 @@
 
     <quill-editor #editor [formControl]="spoilerTextEditorControl"
                   [format]="'object'" [formats]="['spoiler', 'clean']" [required]="true"
-                  [maxLength]="SpoilerCreationConfig.MAX_SPOILER_LENGTH"
+                  [maxLength]="SpoilerCreationConfig.MAX_SPOILER_TEXT_LENGTH"
                   [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.editor.prompt' | translate"
                   (onEditorCreated)="initializeEditor($event)"
                   class="editor-wrapper"
@@ -36,7 +36,7 @@
 
     <mat-error *ngIf="spoilerTextEditorControl.errors && !spoilerTextEditorControl.errors['required']">
       <p *ngIf="spoilerTextEditorControl.errors['maxLengthError']">
-        {{'error.maximumTextLengthReached' | translate: {maxLength: SpoilerCreationConfig.MAX_SPOILER_LENGTH } }}
+        {{'error.maximumTextLengthReached' | translate: {maxLength: SpoilerCreationConfig.MAX_SPOILER_TEXT_LENGTH } }}
         {{'common.punctuation.comma' | translate }}
         {{'common.punctuation.space' | translate }}
         {{'errorHelper.text.currentLength' | translate: {currentLength:
@@ -119,7 +119,7 @@
 <div mat-dialog-actions class="row">
   <button
     (click)="onSpoilerDialogClose()"
-    mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
+    mat-flat-button color="primary" class="col-5 col-sm-3">
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.cancel' | translate}}
   </button>
   <div class="col-2 col-sm-6"></div>

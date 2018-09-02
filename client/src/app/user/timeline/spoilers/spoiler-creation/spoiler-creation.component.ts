@@ -11,6 +11,7 @@ import {SubjectBase} from '../../../../shared/models/subject/subject-base';
 import {SearchSubjectsResponseSmall} from '../../../../shared/models/search/search-subjects-response-small';
 import {SubjectType} from '../../../../shared/enums/subject-type.enum';
 import {RuntimeConstantsService} from '../../../../shared/services/runtime-constants.service';
+import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
 
 const Parchment = Quill.import('parchment');
 
@@ -45,7 +46,7 @@ class SpoilerClass extends Parchment.Attributor.Class {
 
 export class SpoilerCreationConfig {
   // maximum spoiler text length
-  static readonly MAX_SPOILER_LENGTH = 500;
+  static readonly MAX_SPOILER_TEXT_LENGTH = 500;
   // expect user to tolerate a shorter timeout period here
   static readonly SEARCH_TIME_OUT = 3000;
   static readonly MAX_SEARCH_RESULT = 10;
@@ -90,6 +91,7 @@ export class SpoilerCreationComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService,
               private bangumiSearchService: BangumiSearchService,
+              private banguminSpoilerService: BanguminSpoilerService,
               private formBuilder: FormBuilder,
               private spoilerDialog: MatDialogRef<SpoilerCreationComponent>
   ) {
@@ -163,7 +165,6 @@ export class SpoilerCreationComponent implements OnInit {
     if (this.disableSearch || !searchKeyWord) {
       return;
     }
-    //
 
     this.disableSearch = true;
     this.updateSearchButtonText();
@@ -217,6 +218,9 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   onSpoilerFormSubmit() {
+    //
+    // console.log(this.spoilerForm.value);
+    this.banguminSpoilerService.postNewSpoiler(this.spoilerForm.value).subscribe(console.log);
   }
 
   onSpoilerDialogClose() {

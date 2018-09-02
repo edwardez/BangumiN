@@ -2,11 +2,9 @@
 
 import scrapy
 import re
-from bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
-from bgm.util import *
-from scrapy.http import Request
+from pipeline.record.bgm import Record, Index, Friend, User, SubjectInfo, Subject
+from pipeline.record.bgm.util import *
 import datetime
-import json
 
 mpa = dict([(i, None) for i in range(32)])
 

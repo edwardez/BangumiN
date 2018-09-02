@@ -1,3 +1,6 @@
+# Original repo
+Original repo: https://github.com/wattlebird/Bangumi_Spider
+
 # Bangumi Spider
 
 This is a [scrapy](http://scrapy.org/) based spider used to scrape data from [Bangumi 番组计划](https://bgm.tv). It is especially designed for machine learning task carried out by [Chi](http://ikely.me/chi)

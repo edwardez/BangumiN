@@ -55,7 +55,7 @@ class DataSyncer:
         :param end_id: end id
         :return: None
         """
-        logger.info('Starting scraping from %s to %s', start_id, end_id)
+        logger.info('Starting scraping in range (%s, %s)', start_id, end_id)
         database_response_dict = {}
 
         api_responses = self.requestHandler.run_with_urls(self.requestHandler.generate_url_from_range(start_id, end_id))
@@ -113,8 +113,9 @@ class DataSyncer:
             end_id = self.requestHandler.max_id
         if start_id > end_id:
             raise ValueError('start_id' + str(start_id) + ' is larger than end_id' + str(end_id))
-        for entity_id in range(start_id, end_id, self.scrape_step):
-            self.sync_with_range(entity_id, min(end_id, entity_id + self.scrape_step))
+
+        for current_base_id in range(start_id, end_id, self.scrape_step):
+            self.sync_with_range(current_base_id, min(end_id, current_base_id + self.scrape_step))
 
         logger.info('Finished scraping, affected rows stats: %s', self.stats)
         logger.info(

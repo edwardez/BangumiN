@@ -127,6 +127,7 @@ class RequestHandler:
         once a id that's bigger than maximum id is queried, a json with status 200 and {code: 404} will be returned
         Be warned! if Bangumi's subject id becomes obviously larger than the initial base_id, a StackOverflow might be
         raised, use it at your own risk
+        TODO: refactor this function
         :param base_id: where the search should start from
         :param step: each of the time, we should step forward or step back this number of ids
         :return: current maximum id

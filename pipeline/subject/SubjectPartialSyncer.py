@@ -14,30 +14,30 @@ class SubjectPartialSyncer:
     """
 
     def __init__(self):
-        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 258000, 8)
+        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 259000, 8)
 
     def run(self):
         #  get current subject with maximum id in database
-        current_subject_with_max_id = self.dataSyncer.databaseExecutor.session \
+        current_max_id_subject = self.dataSyncer.databaseExecutor.session \
             .query(Subject) \
             .order_by(Subject.id.desc()) \
             .first()
 
-        current_subject_with_max_id = current_subject_with_max_id \
-            if current_subject_with_max_id is not None else {'id': 0}
+        current_subject_max_id = current_max_id_subject.id \
+            if current_max_id_subject is not None else 0
 
-        max_id_api = max(1, self.dataSyncer.requestHandler.max_id)
-        max_id_db = max(1, current_subject_with_max_id.id)
+        max_api_id = max(1, self.dataSyncer.requestHandler.max_id)
+        max_db_id = max(1, current_subject_max_id)
 
-        if max_id_db < max_id_api:
+        if max_db_id < max_api_id:
             logger.info(
-                'Current max subject id:%s in database is smaller than max id:%s in API, start syncing data from'
-                ' %s to %s', max_id_db, max_id_api, max_id_db, max_id_api)
-            self.dataSyncer.start_scraper(current_subject_with_max_id.id, self.dataSyncer.requestHandler.max_id)
+                'Current max subject id:%s in database is smaller than max id:%s in API, starting syncing data in'
+                ' %s to %s', max_db_id, max_api_id, max_db_id, max_api_id)
+            self.dataSyncer.start_scraper(max_db_id, max_api_id + 1)
         else:
             logger.info(
                 'Nothing to sync as there\'s no new subject. Current max id in API :%s, max id in database: :%s',
-                max_id_api, max_id_db)
+                max_api_id, max_db_id)
 
 
 if __name__ == "__main__":

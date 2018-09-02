@@ -12,7 +12,7 @@ Oboe refers to all BangumiN pipelines. It contains:
 
 ## Note
 
-This is not a efficient/verbose enough solution(considering it was written in few hours!), rewriting using some industry-strength library
+This is not a efficient/verbose enough solution(considering it was initially written in few hours!), rewriting using some industry-strength library
 is needed if time is given
 
 

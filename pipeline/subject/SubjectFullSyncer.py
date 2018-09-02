@@ -14,7 +14,7 @@ class SubjectFullSyncer:
     """
 
     def __init__(self):
-        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 258000, 8)
+        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 258000, 9)
 
     def run(self):
         logger.info('Starting a full sync from API to database in range(%s, %s)', 1,

@@ -14,12 +14,12 @@ class UserFullSyncer:
     """
 
     def __init__(self):
-        self.dataSyncer = DataSyncer('https://api.bgm.tv/user/', User, 430000, 8)
+        self.dataSyncer = DataSyncer('https://api.bgm.tv/user/', User, 430000, 9)
 
     def run(self):
         logger.info('Starting a full sync from API to database in range(%s, %s)', 1,
                     self.dataSyncer.requestHandler.max_id)
-        self.dataSyncer.start_scraper(1, 2)
+        self.dataSyncer.start_scraper(1, self.dataSyncer.requestHandler.max_id)
 
 
 if __name__ == "__main__":

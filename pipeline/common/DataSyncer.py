@@ -119,7 +119,7 @@ class DataSyncer:
 
         logger.info('Finished scraping, affected rows stats: %s', self.stats)
         logger.info(
-            'Note: the stats might not reflect the final database state, i.e. db is manipulated by another session '
+            'Note: the stats might not reflect the final database state, i.e. if db is manipulated by another session '
             'at the same time.')
 
 

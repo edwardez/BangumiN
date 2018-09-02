@@ -13,7 +13,16 @@ Oboe refers to all BangumiN pipelines. It contains:
 
 ## Note
 
-This is not a efficient/verbose enough solution(considering it was initially written in few hours!), rewriting using some industry-strength library
-is needed if time is given
+This is not a efficient/verbose enough solution(considering it was initially written in few hours!), rewriting using 
+some industry-strength library is needed if time is given
 
 
+## Usage
+
+Execute Each full/partial syncer under subject/user/record. Full scyner syncs from the very first id to the latest one, 
+partial syncer will querying the database and syncing only newest ids that don't exist in database.
+
+## Caution
+#### Be civil
+Bangumi's API has a rate limit and that limit exists for some reaons. Thus, this pipeline doesn't offer features such 
+as scraping through proxy pool for now.

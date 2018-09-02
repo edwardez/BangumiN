@@ -46,7 +46,7 @@ class RequestHandler:
                           (aiohttp.ClientError, asyncio.TimeoutError),
                           jitter=backoff.random_jitter,
                           on_giveup=[on_backoff_give_up],
-                          max_tries=2)
+                          max_tries=8)
     async def fetch(self, session, url):
         """
         Single fetch

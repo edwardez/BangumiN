@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 initialize_logger(logger)
 
 
-class DatabaseExecutor:
+class GeneralDatabaseExecutor:
     """
     ORM Database executor, this class assumes the primary key of the model is id
     """

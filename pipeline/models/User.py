@@ -1,3 +1,4 @@
+from dictdiffer import diff
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
@@ -21,7 +22,8 @@ class User(Base):
     user_group = Column(Integer)
 
     def __init__(self, user):
-        self.parse_input(user)
+        parsed_user = self.parse_input(user)
+        self.set_attribute(parsed_user)
 
     def __repr__(self):
         return '<User(id = %s, username = %s)>' % (self.id, self.username)
@@ -29,14 +31,21 @@ class User(Base):
     def update(self, user):
         self.parse_input(user)
 
-    def parse_input(self, user):
-        self.id = user.get('id')
-        self.username = self.truncate_str(user.get('username'), self.MAX_NAME_LENGTH)
-        self.nickname = self.truncate_str(user.get('nickname'), self.MAX_URL_LENGTH)
-        self.url = self.truncate_str(user.get('url'), self.MAX_NAME_LENGTH)
-        self.avatar = self.parse_avatar(user.get('avatar'))
-        self.sign = self.truncate_str(user.get('sign'), self.MAX_SIGN_LENGTH)
-        self.user_group = user.get('usergroup')
+    @staticmethod
+    def parse_input(user):
+        """
+        parse the raw dict into a normalized one
+        :param user: raw user
+        :return: parsed dict
+        """
+        parsed_user = {'id': user.get('id'), 'username': User.truncate_str(user.get('username'), User.MAX_NAME_LENGTH),
+                       'nickname': User.truncate_str(user.get('nickname'), User.MAX_URL_LENGTH),
+                       'url': User.truncate_str(user.get('url'), User.MAX_NAME_LENGTH),
+                       'avatar': User.parse_avatar(user.get('avatar')),
+                       'sign': User.truncate_str(user.get('sign'), User.MAX_SIGN_LENGTH),
+                       'user_group': user.get('usergroup')}
+
+        return parsed_user
 
     @staticmethod
     def truncate_str(raw_str, max_length):
@@ -70,3 +79,26 @@ class User(Base):
         }
 
         return parsed_images
+
+    def set_attribute(self, parsed_user):
+        """
+        Set attribute in user
+        :param parsed_user:
+        :return:
+        """
+        self.id = parsed_user.get('id')
+        self.username = parsed_user.get('username')
+        self.nickname = parsed_user.get('nickname')
+        self.url = parsed_user.get('url')
+        self.avatar = parsed_user.get('avatar')
+        self.sign = parsed_user.get('sign')
+        self.user_group = parsed_user.get('user_group')
+
+    def diff_self_with_input(self, subject_dict):
+        """
+        Diff the input dict with current object
+        :param subject_dict: a dict representation of the subject
+        :return: a dictdiffer object
+        """
+        difference = diff(self.__dict__, subject_dict, ignore={'_sa_instance_state'})
+        return difference

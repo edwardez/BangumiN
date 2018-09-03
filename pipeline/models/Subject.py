@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+from dictdiffer import diff
 from sqlalchemy import Column, Integer, String, Date, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
@@ -37,30 +38,35 @@ class Subject(Base):
     eps_count = Column(Integer)
 
     def __init__(self, subject):
-        self.parse_input(subject)
+        parsed_subject = self.parse_input(subject)
+        self.set_attribute(parsed_subject)
 
     def __repr__(self):
         return '<Subject(id = %s, true_id = %s)>' % (self.id, self.true_id)
 
-    def update(self, subject):
-        self.parse_input(subject)
+    @staticmethod
+    def parse_input(subject):
+        """
+        parse the raw dict into a normalized one
+        :param subject:
+        :return: parsed dict
+        """
+        parsed_subject = {'id': subject.get('id'), 'true_id': subject.get('true_id'),
+                          'url': Subject.truncate_str(subject.get('url'), Subject.MAX_URL_LENGTH),
+                          'subject_type': subject.get('type'),
+                          'name': Subject.truncate_str(subject.get('name'), Subject.MAX_NAME_LENGTH),
+                          'name_cn': Subject.truncate_str(subject.get('name_cn'), Subject.MAX_NAME_LENGTH),
+                          'summary': Subject.truncate_str(subject.get('summary'), Subject.MAX_SUMMARY_LENGTH),
+                          'air_date': Subject.parse_date(subject.get('air_date')),
+                          'air_weekday': subject.get('air_weekday'),
+                          'rating': Subject.parse_rating(subject.get('rating')),
+                          'images': Subject.parse_images(subject.get('images')),
+                          'collection': Subject.parse_collection(subject.get('collection')),
+                          'rank': subject.get('rank'),
+                          'eps': subject.get('eps'), 'eps_count': subject.get('eps_count')}
+        print(parsed_subject)
 
-    def parse_input(self, subject):
-        self.id = subject.get('id')
-        self.true_id = subject.get('true_id')
-        self.url = self.truncate_str(subject.get('url'), self.MAX_URL_LENGTH)
-        self.subject_type = subject.get('type')
-        self.name = self.truncate_str(subject.get('name'), self.MAX_NAME_LENGTH)
-        self.name_cn = self.truncate_str(subject.get('name_cn'), self.MAX_NAME_LENGTH)
-        self.summary = self.truncate_str(subject.get('summary'), self.MAX_SUMMARY_LENGTH)
-        self.air_date = self.parse_date(subject.get('air_date'))
-        self.air_weekday = subject.get('air_weekday')
-        self.rating = self.parse_rating(subject.get('rating'))
-        self.images = self.parse_images(subject.get('images'))
-        self.collection = self.parse_collection(subject.get('collection'))
-        self.rank = subject.get('rank')
-        self.eps = subject.get('eps')
-        self.eps_count = subject.get('eps_count')
+        return parsed_subject
 
     @staticmethod
     def truncate_str(raw_str, max_length):
@@ -173,3 +179,34 @@ class Subject(Base):
         }
 
         return parsed_collection
+
+    def set_attribute(self, parsed_subject):
+        """
+        Set attribute in subject
+        :param parsed_subject:
+        :return:
+        """
+        self.id = parsed_subject.get('id')
+        self.true_id = parsed_subject.get('true_id')
+        self.url = parsed_subject.get('url')
+        self.subject_type = parsed_subject.get('subject_type')
+        self.name = parsed_subject.get('name')
+        self.name_cn = parsed_subject.get('name_cn')
+        self.summary = parsed_subject.get('summary')
+        self.air_date = parsed_subject.get('air_date')
+        self.air_weekday = parsed_subject.get('air_weekday')
+        self.rating = parsed_subject.get('rating')
+        self.images = parsed_subject.get('images')
+        self.collection = parsed_subject.get('collection')
+        self.rank = parsed_subject.get('rank')
+        self.eps = parsed_subject.get('eps')
+        self.eps_count = parsed_subject.get('eps_count')
+
+    def diff_self_with_input(self, subject_dict):
+        """
+        Diff the input dict with current object
+        :param subject_dict: a dict representation of the subject
+        :return: a dictdiffer object
+        """
+        difference = diff(self.__dict__, subject_dict, ignore={'_sa_instance_state'})
+        return difference

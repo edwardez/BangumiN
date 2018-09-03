@@ -1,6 +1,6 @@
 import logging
 
-from common.DatabaseExecutor import DatabaseExecutor
+from common.GeneralDatabaseExecutor import GeneralDatabaseExecutor
 from common.RequestHandler import RequestHandler
 from common.logger import initialize_logger
 
@@ -17,14 +17,14 @@ class DataSyncer:
         """
 
         :param api_url_prefix:
-        :param database_model_class:
+        :param database_model_class: db model class, i.e. Subject, User
         :param base_max_id:
         :param max_concurrent_connections:
         """
         self.max_concurrent_connections = max_concurrent_connections
         self.scrape_step = 1000
         self.databaseModel = database_model_class
-        self.databaseExecutor = DatabaseExecutor(self.databaseModel, self.scrape_step)
+        self.databaseExecutor = GeneralDatabaseExecutor(self.databaseModel, self.scrape_step)
 
         self.requestHandler = RequestHandler(api_url_prefix, base_max_id,
                                              self.max_concurrent_connections)
@@ -32,8 +32,9 @@ class DataSyncer:
         self.stats = {
             'created_entities': 0,
             'updated_entities': 0,
+            'skipped_entities': 0,
             'deleted_entities': 0,
-            'failed_to_get_entities': 0,
+            'failed_to_update_entities': 0,
         }
 
     @staticmethod
@@ -66,10 +67,11 @@ class DataSyncer:
             database_response_dict[db_entity.id] = db_entity
 
         # entities_to_create and entities_to_update contain list of entities
-        # for deleting only id is needed so it's a set
+        # for deleting and skipping, only id is needed so it's a set
         entities_to_create = []
         entities_to_update = []
         entities_to_delete = set()
+        entities_to_skip = set()
 
         for api_response in api_responses:
             # simple precondition to verify response is valid
@@ -77,9 +79,17 @@ class DataSyncer:
                 if api_response.get('id') in database_response_dict.keys():
                     entity = database_response_dict.get(api_response.get('id'))
                     if self.entity_exists(api_response):
-                        # db/API contain entity, overwrite data in db
-                        entity.update(api_response)
-                        entities_to_update.append(entity)
+                        parsed_api_response = entity.parse_input(api_response)
+                        difference = entity.diff_self_with_input(parsed_api_response)
+                        if len(list(difference)) > 0:
+                            # db/API contain entity and it has difference, overwriting data in db
+                            entity.set_attribute(parsed_api_response)
+                            entities_to_update.append(entity)
+                        else:
+                            # db/API contain entity but nothing changes, skipping it
+                            entities_to_skip.add(entity.id)
+
+
                     else:
                         # db contains entity, API doesn't, delete it from database
                         entities_to_delete.add(entity.id)
@@ -92,14 +102,22 @@ class DataSyncer:
         logger.info('Creating %s new instances in range (%s, %s)', len(entities_to_create), start_id, end_id)
         created_entities = self.databaseExecutor.create(entities_to_create)
         self.stats['created_entities'] += created_entities
+
+        skipped_entities = len(entities_to_skip)
+        self.stats['skipped_entities'] += skipped_entities
+        logger.info('Skipping %s existed instances in range (%s, %s) as there\'s no difference', len(entities_to_skip),
+                    start_id, end_id)
+
         logger.info('Updating %s existed instances in range (%s, %s)', len(entities_to_update), start_id, end_id)
         updated_entities = self.databaseExecutor.update(entities_to_update)
         self.stats['updated_entities'] += updated_entities
+
         logger.info('Deleting %s existed instances in range (%s, %s)', len(entities_to_delete), start_id, end_id)
         deleted_entities = self.databaseExecutor.delete(entities_to_delete)
         self.stats['deleted_entities'] += deleted_entities
-        self.stats['failed_to_get_entities'] += \
-            end_id - start_id - deleted_entities - updated_entities - created_entities
+
+        self.stats['failed_to_update_entities'] += \
+            end_id - start_id - deleted_entities - updated_entities - created_entities - skipped_entities
 
     def start_scraper(self, start_id, end_id=None):
         """
@@ -121,6 +139,7 @@ class DataSyncer:
         logger.info(
             'Note: the stats might not reflect the final database state, i.e. if db is manipulated by another session '
             'at the same time.')
+        self.databaseExecutor.session.close()
 
 
 if __name__ == "__main__":

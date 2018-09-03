@@ -24,7 +24,7 @@ from the very first id to the latest one, partial syncer will querying the datab
 that don't exist in database.
 
 #### Example
-`python run_task --help`
+`python run_task.py --help`
 
 
 ## Caution

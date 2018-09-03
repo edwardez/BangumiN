@@ -9,7 +9,7 @@ create table "user"
 	avatar jsonb,
 	sign varchar(200),
 	user_group integer,
-	row_last_modified timestamp with time zone not null
+	row_last_modified timestamp with time zone default clock_timestamp() not null
 )
 ;
 

@@ -16,7 +16,7 @@ class UserPartialSyncer:
     def __init__(self):
         self.dataSyncer = DataSyncer('https://api.bgm.tv/user/', User, 435000, 8)
 
-    def run(self):
+    def calculate_incremental_scraping_range(self):
         #  get current user with maximum id in database
         current_max_id_user = self.dataSyncer.databaseExecutor.session \
             .query(User) \
@@ -26,8 +26,10 @@ class UserPartialSyncer:
         current_user_max_id = current_max_id_user.id \
             if current_max_id_user is not None else 0
 
-        max_api_id = max(1, self.dataSyncer.requestHandler.max_id)
-        max_db_id = max(1, current_user_max_id)
+        return max(1, current_user_max_id), max(1, self.dataSyncer.requestHandler.max_id)
+
+    def run(self):
+        max_db_id, max_api_id = self.calculate_incremental_scraping_range()
 
         if max_db_id < max_api_id:
             logger.info(

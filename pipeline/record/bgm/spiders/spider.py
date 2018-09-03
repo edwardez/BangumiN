@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import datetime
+import logging
 
 import scrapy
 
-from bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
-from bgm.util import *
+logger = logging.getLogger(__name__)
+from record.bgm.items import Record, Index, Friend, User, SubjectInfo, Subject
+from record.bgm.util import *
 
 mpa = dict([(i, None) for i in range(32)])
 
@@ -20,7 +21,7 @@ class UserSpider(scrapy.Spider):
             self.id_max = 400000
         if not hasattr(self, 'id_min'):
             self.id_min = 1
-        self.start_urls = ["http://mirror.bgm.rin.cat/user/" + str(i) for i in
+        self.start_urls = ["https://bgm.tv/user/" + str(i) for i in
                            range(int(self.id_min), int(self.id_max))]
 
     def parse(self, response):
@@ -59,7 +60,7 @@ class IndexSpider(scrapy.Spider):
             self.id_max = 20000
         if not hasattr(self, 'id_min'):
             self.id_min = 1
-        self.start_urls = ["http://mirror.bgm.rin.cat/index/" + str(i) for i in
+        self.start_urls = ["https://bgm.tv/index/" + str(i) for i in
                            range(int(self.id_min), int(self.id_max))]
 
     def parse(self, response):
@@ -84,7 +85,14 @@ class IndexSpider(scrapy.Spider):
 class RecordSpider(scrapy.Spider):
     name = 'record'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user_id_min=None, user_id_max=None, *args, **kwargs):
+        """
+        Initalize spider
+        :param user_id_min: passed in user_id_min
+        :param user_id_max: passed in user_id_max
+        :param args:
+        :param kwargs:
+        """
         super(RecordSpider, self).__init__(*args, **kwargs)
         if hasattr(self, 'userlist'):
             userlist = []
@@ -93,14 +101,22 @@ class RecordSpider(scrapy.Spider):
                     l = fr.readline().strip()
                     if not l: break
                     userlist.append(l)
-            self.start_urls = ["http://mirror.bgm.rin.cat/user/" + i for i in userlist]
+            self.start_urls = ["https://bgm.tv/user/" + i for i in userlist]
+            logger.info('Starting scarping in user list %s', userlist)
         else:
-            if not hasattr(self, 'id_max'):
-                self.id_max = 500000
-            if not hasattr(self, 'id_min'):
-                self.id_min = 1
-            self.start_urls = ["http://mirror.bgm.rin.cat/user/" + str(i) for i in
+            if user_id_min is not None and user_id_max is not None:
+                self.id_min = user_id_min
+                self.id_max = user_id_max
+
+            else:
+                if not hasattr(self, 'id_max'):
+                    self.id_max = 500000
+                if not hasattr(self, 'id_min'):
+                    self.id_min = 1
+
+            self.start_urls = ["https://mirror.bgm.rin.cat/user/" + str(i) for i in
                                range(int(self.id_min), int(self.id_max))]
+            logger.info('Starting scarping in user id range (%s, %s)', self.id_min, self.id_max)
 
     def parse(self, response):
         username = response.url.split('/')[-1]
@@ -110,29 +126,29 @@ class RecordSpider(scrapy.Spider):
             username)
 
         if len(response.xpath(".//*[@id='anime']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/anime/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://bgm.tv/anime/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='game']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/game/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://bgm.tv/game/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='book']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/book/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://bgm.tv/book/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='music']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/music/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://mirror.bgm.rin.cat/music/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='real']")):
-            yield scrapy.Request("http://mirror.bgm.rin.cat/real/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://bgm.tv/real/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
     def merge(self, response):
-        followlinks = response.xpath(".//div[@id='columnA']/div/div[1]/ul/li[2]//@href").extract()  # a list of links
+        followlinks = response.xpath(".//div[@id='columnA']/div/div[1]/ul/li[1]/h2//@href").extract()  # a list of links
         for link in followlinks:
-            yield scrapy.Request(u"http://mirror.bgm.rin.cat" + link, callback=self.parse_recorder,
+            yield scrapy.Request(u"https://bgm.tv" + link, callback=self.parse_recorder,
                                  meta={'uid': response.meta['uid']})
 
     def parse_recorder(self, response):
@@ -187,7 +203,7 @@ class FriendsSpider(scrapy.Spider):
             self.id_max = 400000
         if not hasattr(self, 'id_min'):
             self.id_min = 1
-        self.start_urls = ["http://mirror.bgm.rin.cat/user/" + str(i) + "/friends" for i in
+        self.start_urls = ["https://bgm.tv/user/" + str(i) + "/friends" for i in
                            range(int(self.id_min), int(self.id_max))]
 
     def parse(self, response):
@@ -206,7 +222,7 @@ class SubjectInfoSpider(scrapy.Spider):
             self.id_max = 300000
         if not hasattr(self, 'id_min'):
             self.id_min = 1
-        self.start_urls = ["http://mirror.bgm.rin.cat/subject/" + str(i) for i in
+        self.start_urls = ["https://bgm.tv/subject/" + str(i) for i in
                            range(int(self.id_min), int(self.id_max))]
 
     def parse(self, response):
@@ -243,13 +259,13 @@ class SubjectSpider(scrapy.Spider):
                     l = fr.readline().strip()
                     if not l: break
                     itemlist.append(l)
-            self.start_urls = ["http://mirror.bgm.rin.cat/subject/" + i for i in itemlist]
+            self.start_urls = ["https://bgm.tv/subject/" + i for i in itemlist]
         else:
             if not hasattr(self, 'id_max'):
                 self.id_max = 300000
             if not hasattr(self, 'id_min'):
                 self.id_min = 1
-            self.start_urls = ["http://mirror.bgm.rin.cat/subject/" + str(i) for i in
+            self.start_urls = ["https://bgm.tv/subject/" + str(i) for i in
                                range(int(self.id_min), int(self.id_max))]
 
     def parse(self, response):
@@ -325,10 +341,10 @@ class SubjectSpider(scrapy.Spider):
             if itm.xpath("@class"):
                 relation_type = itm.xpath("span/text()").extract()[0]
                 relations[relation_type] = [itm.xpath("a[@class='title']/@href").
-                                               extract()[0].split('/')[-1]]
+                                                extract()[0].split('/')[-1]]
             else:
                 relations[relation_type].append(itm.xpath("a[@class='title']/@href").
-                                               extract()[0].split('/')[-1])
+                                                extract()[0].split('/')[-1])
         brouche = response.xpath(".//ul[@class='browserCoverSmall clearit']/li")
         if brouche:
             relations['单行本'] = [itm.split('/')[-1] for itm in

@@ -10,8 +10,8 @@
 
 BOT_NAME = 'bgmSpider'
 
-SPIDER_MODULES = ['bgm.spiders']
-NEWSPIDER_MODULE = 'bgm.spiders'
+SPIDER_MODULES = ['record.bgm.spiders']
+NEWSPIDER_MODULE = 'record.bgm.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'bgm (+http://www.yourdomain.com)'
@@ -19,12 +19,16 @@ ITEM_PIPELINES = {
     # 'bgm.pipelines.UserPipeline': 300,
     # 'bgm.pipelines.RecordPipeline': 400,
     # 'bgm.pipelines.SubjectPipeline': 500
-    'bgm.pipelines.TsvPipeline': 300
+    # 'bgm.pipelines.TsvPipeline': 300
+    'record.bgm.pipelines.DBPipeline': 800
 }
+
+MEMUSAGE_WARNING_MB = 1024
 RETRY_TIMES = 10
 LOG_LEVEL = 'INFO'
 DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
+DOWNLOAD_DELAY = 0.05
 # DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None
 # }
@@ -32,12 +36,6 @@ DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 # REDIRECT_ENABLED = True
 
 # LOG_FILE = 'scrapy.log'
-
-MYSQL_HOST = 'localhost'
-MYSQL_DBNAME = 'bgm'
-MYSQL_USER = 'bgmer'
-MYSQL_PASSWD = 'sai'
-MYSQL_SOCKET = '/var/run/mysqld/mysqld.sock'
 
 ########################################
 # The following settings are only applicable to Ronnie Wang's spider setting

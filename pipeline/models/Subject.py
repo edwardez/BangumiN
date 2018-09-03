@@ -64,7 +64,6 @@ class Subject(Base):
                           'collection': Subject.parse_collection(subject.get('collection')),
                           'rank': subject.get('rank'),
                           'eps': subject.get('eps'), 'eps_count': subject.get('eps_count')}
-        print(parsed_subject)
 
         return parsed_subject
 

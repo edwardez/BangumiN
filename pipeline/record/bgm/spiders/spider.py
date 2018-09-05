@@ -85,7 +85,7 @@ class IndexSpider(scrapy.Spider):
 class RecordSpider(scrapy.Spider):
     name = 'record'
 
-    def __init__(self, user_id_min=None, user_id_max=None, *args, **kwargs):
+    def __init__(self, user_id_min=None, user_id_max=None, excluding_list=(), *args, **kwargs):
         """
         Initalize spider
         :param user_id_min: passed in user_id_min
@@ -114,8 +114,8 @@ class RecordSpider(scrapy.Spider):
                 if not hasattr(self, 'id_min'):
                     self.id_min = 1
 
-            self.start_urls = ["https://mirror.bgm.rin.cat/user/" + str(i) for i in
-                               range(int(self.id_min), int(self.id_max))]
+            self.start_urls = ["https://bgm.tv/user/user/" + str(i) for i in
+                               range(int(self.id_min), int(self.id_max)) if i not in excluding_list]
             logger.info('Starting scarping in user id range (%s, %s)', self.id_min, self.id_max)
 
     def parse(self, response):
@@ -138,7 +138,7 @@ class RecordSpider(scrapy.Spider):
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='music']")):
-            yield scrapy.Request("https://mirror.bgm.rin.cat/music/list/" + username, callback=self.merge,
+            yield scrapy.Request("https://bgm.tv/user/music/list/" + username, callback=self.merge,
                                  meta={'uid': uid})
 
         if len(response.xpath(".//*[@id='real']")):

@@ -8,7 +8,7 @@ create table record
 	collection_status integer not null,
 	add_date date not null,
 	rate integer,
-	tags varchar(100) [],
+	tags varchar(1000) [],
 	comment varchar(300),
 	row_last_modified timestamp with time zone default clock_timestamp(),
 	constraint record_pk

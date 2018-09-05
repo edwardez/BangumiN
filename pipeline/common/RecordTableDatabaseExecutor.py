@@ -33,7 +33,7 @@ class RecordTableDatabaseExecutor(GeneralDatabaseExecutor):
 
         try:
             self.session.query(self.EntityModel) \
-                .filter(Tuple(self.EntityModel.subject_id, self.EntityModel.user_id).in_(entities_ids)) \
+                .filter(Tuple(self.EntityModel.user_id, self.EntityModel.subject_id).in_(entities_ids)) \
                 .delete(synchronize_session='fetch')
             self.session.commit()
             deleted_entities = len(entities_ids)

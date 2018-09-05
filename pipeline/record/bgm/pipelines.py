@@ -78,17 +78,19 @@ class DBPipeline(object):
         self.commit_threshold = 1000
         # threshold to abort deleting command: typically 1000k records are not likely getting deleted at the same time
         self.abort_deleting_threshold = 1000000
+        self.optimize_items_seen_dict_threshold = 100000  # optimize_items_seen_dict once 100k records are received
         self.recordTableDatabaseExecutor = RecordTableDatabaseExecutor(Record, self.commit_threshold)
         # a process cycle = process elements until we receive self.commit_threshold number of elements
-        self.received_elements_count = 0  # items received in this process cycle
+        self.received_elements_in_this_cycle_count = 0  # items received in this process cycle
+        self.received_elements_total_count = 0  # items received so far
         self.current_min_user_id = 1  # current min user id in this process cycle
         self.current_max_user_id = 2  # current max user id in this process cycle
         self.items_to_process = []
         self.entities_to_create = []
         self.entities_to_update = []
-        self.entities_seen = set()  # contains the primary key, tuple of entities, tuple(subject_id, user_id)
-        self.entities_to_delete = set()  # contains the primary key, tuple of entities, tuple(subject_id, user_id)
-        self.entities_to_skip = set()  # contains the primary key, tuple of entities, tuple(subject_id, user_id)
+        self.entities_seen = {}  # a nested dict, user_id is the dict ket, each value contains set of subject_id
+        self.entities_might_need_deleting = set()  # contains the primary key, tuple of entities, tuple(subject_id,
+        # user_id)
         #  please refer to scrapy's log for http response summary for failed_to_update entities
         self.stats = {
             'created_entities': 0,
@@ -102,14 +104,14 @@ class DBPipeline(object):
         # process items that're left(in the last cycle, element won't be )
         self.write_to_db()
         # free memory
-        self.entities_seen = set()  # contains the primary key, tuple of entities, tuple(subject_id, user_id)
-        if len(self.entities_to_delete) >= self.abort_deleting_threshold:
+        self.entities_seen = {}
+        if len(self.entities_might_need_deleting) >= self.abort_deleting_threshold:
             logger.error('%s number of records are getting deleted from the database, which is not likely to '
                          'happen! Deleting won\'t be performed')
         else:
             logger.info('Scraping completes, starting deleting entities that are not on web but in db now.')
-            logger.info('Deleting %s existed instances', len(self.entities_to_delete))
-            deleted_entities = self.recordTableDatabaseExecutor.delete(self.entities_to_delete)
+            logger.info('Deleting %s existed instances', len(self.entities_might_need_deleting))
+            deleted_entities = self.recordTableDatabaseExecutor.delete(self.entities_might_need_deleting)
             self.stats['deleted_entities'] += deleted_entities
         logger.info('Finished scraping, affected rows stats: %s', self.stats)
         logger.info(
@@ -118,88 +120,148 @@ class DBPipeline(object):
         self.recordTableDatabaseExecutor.close_session()
 
     def process_item(self, item, spider):
-        self.received_elements_count += 1
+
+        if spider.name != 'record':
+            return item
+
+        self.received_elements_in_this_cycle_count += 1
+        self.received_elements_total_count += 1
         parsed_record = Record.parse_input(item)
 
         # set initial value for min/max id in current process cycle
-        if self.received_elements_count == 1:
+        if self.received_elements_in_this_cycle_count == 1:
             self.current_min_user_id = parsed_record['user_id']
             self.current_max_user_id = parsed_record['user_id'] + 1
 
-        primary_key_from_scrapy_item = (parsed_record['subject_id'], parsed_record['user_id'])
         self.current_min_user_id = min(self.current_min_user_id, parsed_record['user_id'])
         # self.current_max_user_id is the upper-bound that should be included, +1 so it won't be skipped
         self.current_max_user_id = max(self.current_max_user_id, parsed_record['user_id'] + 1)
-        if primary_key_from_scrapy_item not in self.entities_seen:
-            self.entities_seen.add(primary_key_from_scrapy_item)
-            self.items_to_process.append(parsed_record)
+        current_user_id = parsed_record['user_id']
+        if current_user_id not in self.entities_seen:
+            self.entities_seen[current_user_id] = set()
 
-        if self.received_elements_count >= self.commit_threshold:
-            # reset the counter
-            self.received_elements_count = 0  # items received in this process cycle
+            self.items_to_process.append(parsed_record)
+        else:
+            # only if current record is not seen under the user record set before, append it to the process queue
+            # this is needed to handle situations such as duplicated record
+            # i.e. user A marked subject a as status 1 before, then during the scraping, user marks a as status 2
+            # then two status of same subject might be received
+            if parsed_record['subject_id'] not in self.entities_seen[current_user_id]:
+                self.items_to_process.append(parsed_record)
+
+        self.entities_seen[parsed_record['user_id']].add(parsed_record['subject_id'])
+
+        if self.received_elements_in_this_cycle_count >= self.commit_threshold:
             self.write_to_db()
 
-        # logger.info('current self.received_elements_count %s', self.received_elements_count)
+        if self.received_elements_total_count % self.optimize_items_seen_dict_threshold == 0:
+            self.optimize_items_seen_dict(self.current_min_user_id)
 
         return item
 
+    def optimize_items_seen_dict(self, current_min_user_id):
+        """
+        We don't really want to keep a dict which contains all records from all users
+        (bangumi at least has ~6000k records back to 2017!) at the end.
+        Especially, if all records from one user has been processed, all related records for that user can be deleted
+        However, the tricky part is: there's no way to check whether all records from one user has been processed or not
+        that being said, current_min_user_id MIGHT be unreliable
+        Scrapy might return user record out of order, i.e. first record from user#2, first record from user#2...
+        We don't know what's the last record for user #1(== all records from this user can be cleared)
+        Fortunately, the order is 'eventually sequential', that being said, user #2 might come before user #1
+        but user #10000 generally won't come before user #1, so we remove all records for uid < (current_min_user_id
+        - 10000)
+        from the dict
+        :param current_min_user_id:
+        :return:
+        """
+        looking_back_threshold = 10000
+        removed_users = 0
+        logger.info('Starting optimizing entities_seen to freeze memory now.')
+        for user_id in sorted(self.entities_seen.keys()):
+            if user_id < max(current_min_user_id - looking_back_threshold, 1):
+                try:
+                    del self.entities_seen[user_id]
+                    removed_users += 1
+                except KeyError:
+                    # in case user_id is not in self.entities_seen
+                    # however it's unlikely to happen so we log this exception
+                    # "A try/except block is extremely efficient if no exceptions are raised."
+                    logger.warning('Trying to delete %s from entities_seen but it\'s not there.', user_id)
+                    pass
+            else:
+                break
+        logger.info('Deleted %s users from self.items_seen', removed_users)
+
     def write_to_db(self):
+        """
+        Diff record in webpage and db and update/create/skip records
+        :return:
+        """
+        # reset the counter
+        self.received_elements_in_this_cycle_count = 0  # items received in this process cycle
+
+        skipped_entities_count = 0
+        items_to_process = self.items_to_process
+        entities_to_create = self.entities_to_create
+        entities_to_update = self.entities_to_update
+        self.items_to_process = []
+        self.entities_to_create = []
+        self.entities_to_update = []
+
         database_response_entities = self.recordTableDatabaseExecutor.query_range(self.current_min_user_id,
                                                                                   self.current_max_user_id)
 
         database_response_dict = {}
+
+        new_entities_might_need_deleting = set()
+
         for db_entity in database_response_entities:
-            database_response_dict[(db_entity.subject_id, db_entity.user_id)] = db_entity
+            database_response_dict[(db_entity.user_id, db_entity.subject_id)] = db_entity
+            if self.entities_seen.get(db_entity.user_id) is None or db_entity.subject_id not in \
+                    self.entities_seen.get(db_entity.user_id):
+                new_entities_might_need_deleting.add((db_entity.user_id, db_entity.subject_id))
 
         # first we assume all records from db need to be deleted
-        # complexity is O(len(database_response_dict.keys())) every time
-        entities_might_need_deleting = set(database_response_dict.keys()) - self.entities_seen
 
-        for record in self.items_to_process:
-            primary_key_from_scrapy_item = (record['subject_id'], record['user_id'])
+        self.entities_might_need_deleting.update(new_entities_might_need_deleting)
 
-            if database_response_dict.get(primary_key_from_scrapy_item):
+        for record in items_to_process:
+            primary_key_from_scrapy_item = (record['user_id'], record['subject_id'])
 
+            entity_in_db = database_response_dict.get(primary_key_from_scrapy_item)
+            if entity_in_db:
                 # if the record is in scrapy's response, which indicates it's still on web page, remove it from the set
-                if primary_key_from_scrapy_item in entities_might_need_deleting:
-                    entities_might_need_deleting.remove(primary_key_from_scrapy_item)
-                if primary_key_from_scrapy_item in self.entities_to_delete:
-                    self.entities_to_delete.remove(primary_key_from_scrapy_item)
-                entity_in_db = database_response_dict.get(primary_key_from_scrapy_item)
+                try:
+                    self.entities_might_need_deleting.remove(primary_key_from_scrapy_item)
+                except KeyError:
+                    # entity might not exist in deleting set, in such case just ignore the error
+                    pass
                 difference = entity_in_db.diff_self_with_input(record)
                 if len(list(difference)) > 0:
                     # db/API contain entity and it has difference, overwriting data in db
                     entity_in_db.set_attribute(record)
-                    self.entities_to_update.append(entity_in_db)
+                    entities_to_update.append(entity_in_db)
                 else:
                     # db/API contain entity but nothing changes, skipping it
-                    self.entities_to_skip.add((entity_in_db.subject_id, entity_in_db.user_id))
+                    skipped_entities_count += 1
             else:
                 # record has been parsed in self.process_item(), doesn't need to be parsed again
                 entity = Record(record, False)
-                self.entities_to_create.append(entity)
+                entities_to_create.append(entity)
 
         start_id = self.current_min_user_id
         end_id = self.current_max_user_id
-        logger.info('Creating %s new instances in user_id range (%s, %s)', len(self.entities_to_create), start_id,
+        logger.info('Creating %s new instances in user_id range (%s, %s)', len(entities_to_create), start_id,
                     end_id)
-        created_entities = self.recordTableDatabaseExecutor.create(self.entities_to_create)
+        created_entities = self.recordTableDatabaseExecutor.create(entities_to_create)
         self.stats['created_entities'] += created_entities
 
-        skipped_entities = len(self.entities_to_skip)
-        self.stats['skipped_entities'] += skipped_entities
+        self.stats['skipped_entities'] += skipped_entities_count
         logger.info('Skipping %s existed instances in range (%s, %s) as there\'s no difference',
-                    len(self.entities_to_skip),
+                    skipped_entities_count,
                     start_id, end_id)
 
-        logger.info('Updating %s existed instances in range (%s, %s)', len(self.entities_to_update), start_id, end_id)
-        updated_entities = self.recordTableDatabaseExecutor.update(self.entities_to_update)
+        logger.info('Updating %s existed instances in range (%s, %s)', len(entities_to_update), start_id, end_id)
+        updated_entities = self.recordTableDatabaseExecutor.update(entities_to_update)
         self.stats['updated_entities'] += updated_entities
-
-        # update the global entity deleting set
-        self.entities_to_delete.update(entities_might_need_deleting)
-        # finally, reset relevant variables in this process cycle
-        self.items_to_process = []
-        self.entities_to_create = []
-        self.entities_to_update = []
-        self.entities_to_skip = set()

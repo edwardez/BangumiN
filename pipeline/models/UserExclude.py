@@ -5,7 +5,7 @@ Base = declarative_base()
 
 
 class UserExclude(Base):
-    __tablename__ = 'user_exclude'
+    __tablename__ = 'user_exclude_prod'
 
     id = Column('user_id', Integer, primary_key=True)
 

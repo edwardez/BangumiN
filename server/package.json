@@ -45,9 +45,14 @@
     "joi": "^13.4.0",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.4.0",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
     "pm2": "^3.0.0",
+    "reflect-metadata": "^0.1.12",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
+    "sequelize": "^4.38.0",
+    "sequelize-typescript": "^0.6.6",
     "winston": "^3.0.0"
   },
   "devDependencies": {

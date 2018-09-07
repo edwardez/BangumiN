@@ -12,6 +12,7 @@ import oauth from './routes/oauth';
 import auth from './routes/auth';
 import settings from './routes/settings';
 import spoiler from './routes/spoiler';
+import {sequelize} from './common/sequelize';
 
 const logger = Logger(module);
 
@@ -71,6 +72,16 @@ const dynamoDBStoreOptios = {
     writeCapacityUnits: config.env === 'prod' ? 5 : 1,
   },
 };
+
+sequelize.authenticate()
+  .then(
+    (res) => {
+      logger.info('Successfully connected to rds');
+    })
+  .catch((error) => {
+    logger.error('Cannot connect to database, %o', error);
+
+  });
 
 app.use(expressSession({
   secret: config.passport.secret.session,

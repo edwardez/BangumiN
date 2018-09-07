@@ -60,7 +60,7 @@ const spoilerSchema = new dynamoose.Schema({
   spoilerText: {
     default: [{insert: ''}],
     required: true,
-    type: Array,
+    type: [Object],
     trim: true,
     validate: (v: SpoilerTextChunkSchema[]) => {
       const spoilerTextChunkSchema = Joi.object().keys({
@@ -79,7 +79,7 @@ const spoilerSchema = new dynamoose.Schema({
   relatedSubjects: {
     default: [],
     required: true,
-    type: [Number],
+    type: Array,
     trim: true,
     validate: (v: number) => {
       return Joi.array().items(Joi.number().integer().min(0)).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;

@@ -1,12 +1,14 @@
 <div class="row justify-content-center">
   <div class="mt-5"></div>
-  <ng-container *ngIf="spoilerContent">
+  <ng-container>
     <app-spoiler-single-content
+      [bangumiUser]="bangumiUser"
       [spoilerContent]="spoilerContent"
+      [relatedSubjects]="relatedSubjects"
       class="col col-sm-8 col-md-6">
-
     </app-spoiler-single-content>
+
   </ng-container>
-
-
 </div>
+
+<app-page-not-found *ngIf="spoilerContent === null"></app-page-not-found>

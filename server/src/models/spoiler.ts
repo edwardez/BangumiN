@@ -2,12 +2,17 @@ import config from '../config';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
 import Logger from '../utils/logger';
+import {Subject} from './bangumi/subject';
+import {Sequelize} from 'sequelize-typescript';
+import {SubjectBase} from './bangumi/common/SubjectBase';
+import {DEFAULT_SUBJECT_ID, SubjectBaseImpl} from './bangumi/common/SubectBaseImpl';
 
 const logger = Logger(module);
 
 const MAX_RELATED_SUBJECT_NUMBER = 2;
-const SPOILER_ID_LENGTH = 10;
+const SPOILER_ID_LENGTH = 15;
 const MAX_SPOILER_TEXT_LENGTH = 500;
+
 export interface SpoilerTextChunkSchema {
   insert: string;
   attributes?: {
@@ -15,11 +20,20 @@ export interface SpoilerTextChunkSchema {
   };
 }
 
+/**
+ * Related subjects info, received while a new spoiler is created
+ * Only name and subject id will be taken as only these two info can be trusted
+ */
+export interface RelatedSubjectsUserInput {
+  id: number;
+  name: string;
+}
+
 export interface SpoilerSchema {
   userId: string;
   spoilerId: string;
   spoilerText: SpoilerTextChunkSchema[];
-  relatedSubjects: number[];
+  relatedSubjects: RelatedSubjectsUserInput[] | SubjectBase[];
   updatedAt?: number;
   createdAt?: number;
   creationTime?: number;
@@ -60,12 +74,12 @@ const spoilerSchema = new dynamoose.Schema({
   spoilerText: {
     default: [{insert: ''}],
     required: true,
-    type: [Object],
+    type: Array,
     trim: true,
     validate: (v: SpoilerTextChunkSchema[]) => {
       const spoilerTextChunkSchema = Joi.object().keys({
         insert: Joi.string().required(),
-        attributes:  Joi.object().keys({
+        attributes: Joi.object().keys({
           spoiler: Joi.boolean().required(),
         }),
       });
@@ -73,7 +87,7 @@ const spoilerSchema = new dynamoose.Schema({
       // raw spoiler text, which should be shorter than the maximum length
       const spoilerTextRaw = v.map(spoilerTextChunkRaw => String(spoilerTextChunkRaw.insert)).join('');
       return spoilerTextSchema.validate(v).error === null
-        && Joi.string().max(MAX_SPOILER_TEXT_LENGTH).validate(spoilerTextRaw).error === null;
+        && Joi.string().min(1).max(MAX_SPOILER_TEXT_LENGTH).validate(spoilerTextRaw).error === null;
     },
   },
   relatedSubjects: {
@@ -81,8 +95,13 @@ const spoilerSchema = new dynamoose.Schema({
     required: true,
     type: Array,
     trim: true,
-    validate: (v: number) => {
-      return Joi.array().items(Joi.number().integer().min(0)).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;
+    validate: (v:  SubjectBase[]) => {
+      const relatedSubjectSchema = Joi.object().keys({
+        id: Joi.number().integer().min(0).required(),
+        name: Joi.string().default('').required(),
+      }).unknown(true);
+
+      return Joi.array().items(relatedSubjectSchema).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;
     },
   },
   creationTime: {
@@ -135,12 +154,12 @@ export class Spoiler {
    * Create a new spoiler, throw error upon rejection
    * @param spoilerInstance spoilerInstance
    */
-  static createSpoiler(spoilerInstance: SpoilerSchema): Promise<dynamoose.Model<SpoilerModel>> {
+  static createSpoiler(spoilerInstance: SpoilerSchema): any {
     if (!spoilerInstance) {
       throw Error('Expect spoilerInstance to be a truthy value');
     }
 
-    spoilerInstance.spoilerId = generateSpoilerId(SPOILER_ID_LENGTH) ;
+    spoilerInstance.spoilerId = generateSpoilerId(SPOILER_ID_LENGTH);
     spoilerInstance.creationTime = +new Date();
 
     logger.info(`Create new spoiler: ${spoilerInstance.spoilerId}`);
@@ -149,9 +168,10 @@ export class Spoiler {
     Spoiler.deleteProtectedFields(spoilerInstance, ['updatedAt', 'createdAt']);
 
     const newSpoiler = new spoilerModel(spoilerInstance);
-    return newSpoiler.save({
-      overwrite: false,
-    })
+    return newSpoiler
+      .save({
+        overwrite: false,
+      })
       .then((savedSpoiler: SpoilerModel) => {
         logger.info(`Successfully created spoiler: ${savedSpoiler.spoilerId}`);
         return savedSpoiler;
@@ -161,6 +181,7 @@ export class Spoiler {
         logger.error(error.stack);
         throw error;
       });
+
   }
 
   /**
@@ -171,7 +192,9 @@ export class Spoiler {
    *   may still update updatedAt, createdAt and it's out of our control
    * @return A modified spoiler copy
    */
-  static deleteProtectedFields(spoilerInstance: SpoilerSchema | SpoilerModel, fieldsToDelete = ['updatedAt', 'createdAt']): SpoilerSchema | SpoilerModel {
+  static deleteProtectedFields(spoilerInstance: SpoilerSchema | SpoilerModel,
+                               fieldsToDelete = ['updatedAt', 'createdAt']):
+    SpoilerSchema | SpoilerModel {
     if (!spoilerInstance || !spoilerInstance.spoilerId) {
       throw Error('Expect spoilerInstance and spoilerInstance.spoilerId to be a truthy value');
     }

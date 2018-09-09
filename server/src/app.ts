@@ -4,8 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import config from './config';
 import expressSession from 'express-session';
-import passport from './middleware/passportHandler';
-import authenticationMiddleware from './middleware/authenticationHandler';
+import passport from './services/passportHandler';
+import authenticationMiddleware from './services/authenticationHandler';
 import proxy from 'http-proxy-middleware';
 import Logger from './utils/logger';
 import oauth from './routes/oauth';
@@ -13,6 +13,8 @@ import auth from './routes/auth';
 import settings from './routes/settings';
 import spoiler from './routes/spoiler';
 import {sequelize} from './common/sequelize';
+import subject from './routes/bangumi/subject';
+import user from './routes/bangumi/user';
 
 const logger = Logger(module);
 
@@ -107,6 +109,8 @@ app.use('/oauth', oauth);
 app.use('/api/user/:id', spoiler);
 app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
 app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
+app.use('/api/bgm/subject', authenticationMiddleware.isAuthenticated, subject);
+app.use('/api/bgm/user',  user);
 app.all('*', (req, res) => {
   res.status(404).json({error_code: 'not_found'});
 });
@@ -122,7 +126,7 @@ const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
 const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
   res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
     error: err.code === undefined ? 'unclassified' : err.code,
-    error_description: err.message,
+    error_description: config.env === 'dev' ? err.message :  'Internal Error',
   });
 };
 

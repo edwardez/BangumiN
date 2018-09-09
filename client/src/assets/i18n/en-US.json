@@ -211,7 +211,20 @@
   "posts": {
     "bangumin": {
       "spoilerBox": {
-        "name": "Spoiler Box"
+        "name": "Spoiler Box",
+        "single": {
+          "card": {
+            "relatedSubjects": {
+              "name": "Related Subjetcs",
+              "result": {
+                "userDefined": {
+                  "tooltip": "Link not avaliable: user-defined subject"
+                },
+                "none": "User didn't tag related subjects"
+              }
+            }
+          }
+        }
       }
     }
   },

@@ -1,6 +1,6 @@
 import * as express from 'express';
-import getUserProfile from '../middleware/userProfileHandler';
-import {AppError} from '../middleware/errorHandler';
+import getUserProfile from '../services/userProfileHandler';
+import {AppError} from '../services/errorHandler';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router();

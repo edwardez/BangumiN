@@ -1,4 +1,4 @@
-import {Observable, of, throwError as observableThrowError} from 'rxjs';
+import {forkJoin, Observable, of, throwError as observableThrowError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
@@ -10,7 +10,6 @@ import {UserProgress} from '../../models/progress/user-progress';
 import {AuthenticationService} from '../auth.service';
 import {SubjectType} from '../../enums/subject-type.enum';
 import {SubjectProgress} from '../../models/progress/subject-progress';
-import {forkJoin} from 'rxjs/index';
 import {BangumiSubjectService} from './bangumi-subject.service';
 import * as PriorityQueue from 'js-priority-queue';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
@@ -124,6 +123,30 @@ export class BangumiUserService {
     return collectionStatus;
   }
 
+  /**
+   * Get user info from web api
+   * if useBangumiAPI is set to false, BangumiN's API will be used
+   * @param username user name, can be integer or string
+   * @param useBangumiAPI whether Bangumi's official API should be called
+   */
+  public getUserInfoFromHttp(username: string | number, useBangumiAPI = false): Observable<BangumiUser> {
+    let httpRequest: Observable<any>;
+
+    if (useBangumiAPI) {
+      httpRequest = this.http.get(`${environment.BANGUMI_API_URL}/user/${username}`);
+    } else {
+      const options = {withCredentials: true};
+      httpRequest = this.http.get(`${environment.BACKEND_API_URL}/bgm/user/${username}`, options);
+    }
+
+
+    return httpRequest.pipe(
+      map(bangumiUserFromHttp => {
+        return new BangumiUser().deserialize(bangumiUserFromHttp);
+      })
+    );
+  }
+
 
   /**
    get user info
@@ -133,7 +156,7 @@ export class BangumiUserService {
    */
   getUserSettings(username?: string): Observable<any> {
     if (username) {
-      return this.http.get(`${this.BANGUMI_API_URL}/user/${username}`);
+      return this.getUserInfoFromHttp(username, true);
     }
 
     return this.storageService.getBangumiUser().pipe(
@@ -142,14 +165,12 @@ export class BangumiUserService {
         bangumiUserFromStorage => {
           // if user info is in localStorage and username has at least 1 string
           if (bangumiUserFromStorage && bangumiUserFromStorage.username.length >= 1) {
-            return this.http.get(`${this.BANGUMI_API_URL}/user/${bangumiUserFromStorage.username}`)
-              .pipe(
-                map(bangumiUserFromHttp => {
-                  const bangumiUser: BangumiUser = new BangumiUser().deserialize(bangumiUserFromHttp);
-                  this.storageService.setBangumiUser(bangumiUser);
-                  return bangumiUser;
-                })
-              );
+            return this.getUserInfoFromHttp(bangumiUserFromStorage.username, true).pipe(
+              map(bangumiUserFromHttp => {
+                this.storageService.setBangumiUser(bangumiUserFromHttp);
+                return bangumiUserFromHttp;
+              })
+            );
           }
 
           // else return an empty Observable

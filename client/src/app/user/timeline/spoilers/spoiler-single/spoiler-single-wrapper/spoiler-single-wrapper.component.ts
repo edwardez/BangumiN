@@ -3,6 +3,10 @@ import {ActivatedRoute} from '@angular/router';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {BanguminSpoilerService} from '../../../../../shared/services/bangumin/bangumin-spoiler.service';
+import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
+import {BangumiUser} from '../../../../../shared/models/BangumiUser';
+import {SubjectBase} from '../../../../../shared/models/subject/subject-base';
+import {BangumiUserService} from '../../../../../shared/services/bangumi/bangumi-user.service';
 
 @Component({
   selector: 'app-spoiler-single-wrapper',
@@ -11,10 +15,13 @@ import {BanguminSpoilerService} from '../../../../../shared/services/bangumin/ba
 })
 export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
 
-  spoilerContent;
+  spoilerContent: SpoilerExisted;
+  bangumiUser: BangumiUser;
+  relatedSubjects: SubjectBase[];
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private activatedRoute: ActivatedRoute,
+              private bangumiUserService: BangumiUserService,
               private banguminSpoilerService: BanguminSpoilerService,) {
   }
 
@@ -27,11 +34,16 @@ export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
         switchMap(params => {
             const userId = params['userId'];
             const spoilerId = params['spoilerId'];
-            return this.banguminSpoilerService.getSpoiler(userId, spoilerId);
+          return this.banguminSpoilerService.getSingleAlienSpoilerBasicInfo(userId, spoilerId);
           },
-        ))
-      .subscribe(res => {
-        this.spoilerContent = res;
+        ),
+        switchMap((spoilerExisted) => {
+          this.spoilerContent = spoilerExisted;
+          return this.banguminSpoilerService.getSpoilerRelatedSubjectInfo(spoilerExisted.userId, spoilerExisted.relatedSubjects);
+        }))
+      .subscribe(spoilerExisted => {
+        this.bangumiUser = spoilerExisted[0] as BangumiUser;
+        this.relatedSubjects = spoilerExisted[1] as SubjectBase[];
       });
   }
 

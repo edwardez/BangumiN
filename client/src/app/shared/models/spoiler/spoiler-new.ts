@@ -2,9 +2,19 @@ import {Serializable} from '../Serializable';
 import {SpoilerBase} from './spoiler-base';
 import {SubjectBase} from '../subject/subject-base';
 
+
+/**
+ * Related subjects info, received while a new spoiler is created
+ * Only name and subject id will be taken as only these two info can be trusted
+ */
+export interface RelatedSubjectsUserInput {
+  id: number;
+  name: string;
+}
+
 export class SpoilerNew extends SpoilerBase implements Serializable<SpoilerNew> {
 
-  relatedSubjects: number[];
+  relatedSubjects: RelatedSubjectsUserInput[];
   spoilerTextHtml: string;
 
   constructor(spoilerText?: any[], relatedSubjects?: SubjectBase[]) {
@@ -12,9 +22,12 @@ export class SpoilerNew extends SpoilerBase implements Serializable<SpoilerNew> 
     this.relatedSubjects = SpoilerNew.normalizeRelatedSubjects(relatedSubjects || []);
   }
 
-  static normalizeRelatedSubjects(relatedSubjects?: SubjectBase[]): number[] {
+  static normalizeRelatedSubjects(relatedSubjects?: SubjectBase[]): RelatedSubjectsUserInput[] {
     return relatedSubjects.map((relatedSubject: SubjectBase) => {
-      return relatedSubject.id;
+      return {
+        id: relatedSubject.id,
+        name: relatedSubject.subjectName.preferred
+      };
     });
   }
 

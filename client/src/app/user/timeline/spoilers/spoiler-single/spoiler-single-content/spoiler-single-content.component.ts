@@ -1,6 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SpoilerNew} from '../../../../../shared/models/spoiler/spoiler-new';
 import {SpoilerTextChunkSchema} from '../../../../../shared/models/spoiler/spoiler-base';
+import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
+import {RuntimeConstantsService} from '../../../../../shared/services/runtime-constants.service';
+import {environment} from '../../../../../../environments/environment';
+import {BangumiUser} from '../../../../../shared/models/BangumiUser';
+import {SubjectBase} from '../../../../../shared/models/subject/subject-base';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-spoiler-single-content',
@@ -10,11 +15,28 @@ import {SpoilerTextChunkSchema} from '../../../../../shared/models/spoiler/spoil
 export class SpoilerSingleContentComponent implements OnInit {
 
   @Input()
-  spoilerContent: SpoilerNew;
+  bangumiUser: BangumiUser;
 
+  @Input()
+  relatedSubjects: SubjectBase[];
+  spoilerContentReceived: SpoilerExisted;
   spoilerHtml: string;
+  currentLanguage: string;
+  defaultSubjectId = RuntimeConstantsService.defaultSubjectId;
 
-  constructor() {
+  constructor(private translateService: TranslateService) {
+  }
+
+  get spoilerContent(): SpoilerExisted {
+    return this.spoilerContentReceived;
+  }
+
+  @Input()
+  set spoilerContent(spoilerContent: SpoilerExisted) {
+    if (spoilerContent) {
+      this.spoilerContentReceived = spoilerContent;
+      this.spoilerHtml = SpoilerSingleContentComponent.spoilerDeltaToHtml(spoilerContent.spoilerText);
+    }
   }
 
   static spoilerDeltaToHtml(spoilerText: SpoilerTextChunkSchema[]): string {
@@ -34,7 +56,12 @@ export class SpoilerSingleContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.spoilerHtml = SpoilerSingleContentComponent.spoilerDeltaToHtml(this.spoilerContent.spoilerText);
+    this.currentLanguage = this.translateService.currentLang;
+  }
+
+  // Convert a link from bangumi to BangumiN, for now a new window will be spawned
+  convertToBangumiNLink(bangumiUrl: string): string {
+    return bangumiUrl.replace(/^https?:\/\/bgm\.tv/, environment.FRONTEND_URL);
   }
 
 

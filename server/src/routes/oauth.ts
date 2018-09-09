@@ -6,7 +6,7 @@ import config from '../config';
 import joi from 'joi';
 import Logger from '../utils/logger';
 import requestPromise from 'request-promise';
-import authenticationMiddleware from '../middleware/authenticationHandler';
+import authenticationMiddleware from '../services/authenticationHandler';
 
 const router = express.Router();
 

@@ -8,6 +8,7 @@ declare function connect_dynamodb(connect: (options?: session.SessionOptions) =>
 
 declare namespace connect_dynamodb {
 
+  // noinspection TsLint
   export interface configOptions {
     // Optional DynamoDB table name, defaults to 'sessions'
     table?: string;

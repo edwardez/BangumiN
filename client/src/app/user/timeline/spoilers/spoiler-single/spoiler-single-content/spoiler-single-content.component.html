@@ -1,27 +1,119 @@
 <mat-card class="spoiler-card">
-  <mat-card-header>
-    <div mat-card-avatar class="avatar-image"
-         [ngStyle]="{'background-image':  'url(' + 'https://lain.bgm.tv/pic/user/l/icon.jpg' + ')' }"></div>
+  <mat-card-header *ngIf="bangumiUser">
+    <a mat-card-avatar
+       [href]="bangumiUser.url" [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.medium + ')' }"
+       target="_blank" rel="noopener"
+       class="avatar-image"
+    ></a>
 
-    <mat-card-title>Name</mat-card-title>
+    <mat-card-title class="mb-1">
+      {{bangumiUser.nickname}}
+    </mat-card-title>
+
+    <mat-card-subtitle>@{{bangumiUser.username}}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content [innerHtml]="spoilerHtml">
 
+  <ng-container *ngIf="!bangumiUser">
+    <div class="ph-item p-0 m-0 no-gutters">
+
+      <div class="ph-col-1 flex-grow-0">
+        <div class="ph-avatar avatar-content-loader"></div>
+      </div>
+
+      <div class="align-self-center">
+        <div class="ph-row">
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <mat-card-content *ngIf="!spoilerContentReceived">
+    <div class="ph-item p-0 m-0">
+      <div class="ph-col-12 pl-0">
+        <div class="ph-row">
+          <div class="ph-col-12"></div>
+          <div class="ph-col-12"></div>
+          <div class="ph-col-12"></div>
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+        </div>
+      </div>
+    </div>
   </mat-card-content>
+
+  <ng-container *ngIf="spoilerContent">
+    <mat-card-content *ngIf="spoilerHtml" [innerHtml]="spoilerHtml">
+
+    </mat-card-content>
+
+    <small *ngIf="spoilerContent.createdAt"
+           class="foreground-color-secondary-text">
+      {{spoilerContent.createdAt.toLocaleString(currentLanguage, {hour12: false})}}
+    </small>
+
+  </ng-container>
 
   <mat-divider></mat-divider>
 
-  <p>Related subjects</p>
 
-  <div class="row">
-    <div>
-      <img class="col-4 img-fluid" src="https://lain.bgm.tv/pic/user/l/icon.jpg">
+  <ng-container *ngIf="relatedSubjects">
+    <p>{{'posts.bangumin.spoilerBox.single.card.relatedSubjects.name' | translate}}</p>
+    <div *ngFor="let subject of relatedSubjects"
+         class="mb-1 mb-sm-2">
+      <div class="row no-gutters" *ngIf="subject.id !== defaultSubjectId">
+
+        <a class="col-2 col-md-2 col-lg-1" [href]="convertToBangumiNLink(subject.url)" target="_blank" rel="noopener">
+          <img class="image-grid" [src]="subject.images.grid">
+        </a>
+
+        <p class="col spoiled-title">
+          {{subject.subjectName.preferred}}
+        </p>
+      </div>
+
+      <div *ngIf="subject.id === defaultSubjectId"
+           class="row">
+        <div
+          [matTooltip]="'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.userDefined.tooltip' | translate"
+          class="col-2 col-md-2 col-lg-1">
+          <img class="image-grid" [src]="subject.images.grid">
+        </div>
+
+
+        <p class="col spoiled-title">
+          {{subject.subjectName.preferred}}
+        </p>
+      </div>
     </div>
 
-    <p class="col-8 spoiled-title">
-      Lorem ipsum
-    </p>
+    <small *ngIf="relatedSubjects?.length === 0"
+           class="foreground-color-secondary-text">
+      {{'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.none' | translate}}
+    </small>
+
+  </ng-container>
+
+  <div *ngIf="!relatedSubjects"
+       class="ph-item p-0 ml-0 mb-0 mb-0 mt-2  no-gutters">
+
+    <div class="col-2 col-lg-1 pl-0 flex-grow-0">
+      <div class="ph-picture image-grid"></div>
+    </div>
+
+    <div class="col-10 col-lg-11 align-self-center">
+      <div class="ph-row">
+        <div class="ph-col-4"></div>
+        <div class="ph-col-8 empty"></div>
+      </div>
+    </div>
+
   </div>
+
   <mat-card-actions>
 
   </mat-card-actions>

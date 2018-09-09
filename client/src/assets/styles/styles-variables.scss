@@ -24,7 +24,6 @@ $container-max-widths: (
   lg: 1800px
 );
 
-
 $dark-primary-text: rgba(black, 0.87);
 $light-primary-text: white;
 
@@ -99,6 +98,10 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   @include angular-material-typography($custom-typography);
 
   // Use mat-color to extract individual colors from a palette as necessary.
+
+  .foreground-color-secondary-text {
+    color: mat-color($foreground, secondary-text);
+  }
 
   .color-bangumin-theme-foreground {
     color: mat-color($foreground, text)

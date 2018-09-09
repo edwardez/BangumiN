@@ -218,8 +218,6 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   onSpoilerFormSubmit() {
-    //
-    // console.log(this.spoilerForm.value);
     this.banguminSpoilerService.postNewSpoiler(this.spoilerForm.value).subscribe(console.log);
   }
 

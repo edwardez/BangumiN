@@ -211,7 +211,20 @@
   "posts": {
     "bangumin": {
       "spoilerBox": {
-        "name": "剧透箱"
+        "name": "剧透箱",
+        "single": {
+          "card": {
+            "relatedSubjects": {
+              "name": "相关作品",
+              "result": {
+                "userDefined": {
+                  "tooltip": "用户自定义条目，无对应链接"
+                },
+                "none": "用户未标记相关作品"
+              }
+            }
+          }
+        }
       }
     }
   },

@@ -7,6 +7,7 @@ import {SubjectLarge} from '../../models/subject/subject-large';
 import {SubjectMedium} from '../../models/subject/subject-medium';
 import {map} from 'rxjs/operators';
 import {SubjectEpisodes} from '../../models/subject/subject-episodes';
+import {SubjectBase} from '../../models/subject/subject-base';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,33 @@ export class BangumiSubjectService {
   constructor(private http: HttpClient) {
   }
 
-  public getSubject(subject_id: string, responseGroup = 'small'):
+  /**get subject info
+   * if useBangumiAPI is set to false, BangumiN's API will be used
+   * @param subject_id id
+   * @param responseGroup size of response
+   * @param useBangumiAPI whether Bangumi's official API should be called
+   */
+  public getSubject(subject_id: string | number, responseGroup = 'small', useBangumiAPI = false):
     Observable<SubjectMedium> | Observable<SubjectLarge> | Observable<SubjectSmall> {
+    let httpRequest: Observable<any>;
 
-    return this.http.get(`${environment.BANGUMI_API_URL}/subject/${subject_id}?responseGroup=${responseGroup}`)
+    if (useBangumiAPI) {
+      // base doesn't exist on Bangumi's API
+      if (responseGroup === 'base') {
+        responseGroup = 'small';
+      }
+      httpRequest = this.http.get(`${environment.BANGUMI_API_URL}/subject/${subject_id}?responseGroup=${responseGroup}`);
+    } else {
+      const options = {withCredentials: true};
+      httpRequest = this.http.get(`${environment.BACKEND_API_URL}/bgm/subject/${subject_id}?responseGroup=${responseGroup}`, options);
+    }
+
+    return httpRequest
       .pipe(
         map(res => {
           switch (responseGroup) {
+            case 'base':
+              return new SubjectBase().deserialize(res);
             case 'small ':
               return new SubjectSmall().deserialize(res);
             case 'medium':

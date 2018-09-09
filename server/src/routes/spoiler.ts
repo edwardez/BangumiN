@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as dynamooseSpoilerModel from '../models/spoiler';
 import Logger from '../utils/logger';
-import authenticationMiddleware from '../middleware/authenticationHandler';
+import authenticationMiddleware from '../services/authenticationHandler';
 
 const router = express.Router();
 const logger = Logger(module);

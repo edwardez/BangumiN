@@ -53,6 +53,7 @@
     "request-promise": "^4.2.2",
     "sequelize": "^4.38.0",
     "sequelize-typescript": "^0.6.6",
+    "snakecase-keys": "^1.2.0",
     "winston": "^3.0.0"
   },
   "devDependencies": {

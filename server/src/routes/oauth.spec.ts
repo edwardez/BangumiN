@@ -1,4 +1,4 @@
-import authenticationMiddleware from '../middleware/authenticationHandler';
+import authenticationMiddleware from '../services/authenticationHandler';
 import server from '../index';
 import request from 'supertest';
 import config from '../config';

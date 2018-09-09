@@ -5,14 +5,15 @@ import {HelpHomeComponent} from './help/help-home/help-home.component';
 import {AboutHomeComponent} from './about/about-home/about-home.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {TosComponent} from './tos/tos.component';
-import {PageNotFoundComponent} from '../common/page-not-found/page-not-found.component';
+import {PageNotFoundModule} from '../common/page-not-found/page-not-found.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    BanguminSharedModule
+    BanguminSharedModule,
+    PageNotFoundModule
   ],
-  declarations: [HelpHomeComponent, AboutHomeComponent, PrivacyComponent, TosComponent, PageNotFoundComponent]
+  declarations: [HelpHomeComponent, AboutHomeComponent, PrivacyComponent, TosComponent]
 })
 export class DocumentsModule {
 }

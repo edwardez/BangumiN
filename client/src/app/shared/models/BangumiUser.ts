@@ -41,9 +41,13 @@ export class BangumiUser implements Serializable<BangumiUser> {
 
   deserialize(input) {
     this.user_id = BangumiUser.getUserId(input);
+    this.id = this.user_id;
+    this.url = input.url ? input.url.replace(/^http:/, 'https:') : '';
+    this.sign = input.sign || '';
     this.avatar = input.avatar === undefined ? new Avatar() : new Avatar().deserialize(input.avatar);
     this.nickname = input.nickname === undefined ? '' : input.nickname;
     this.username = input.username === undefined ? '' : input.username;
+
     return this;
   }
 

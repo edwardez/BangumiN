@@ -11,6 +11,7 @@ export class RuntimeConstantsService {
 
   static defaultUserId = null;
   static defaultSubjectId = 0;
+  static defaultSpoilerId = '0';
   static defaultAppLanguage = 'zh-Hans';
   static defaultBangumiLanguage = 'original';
   static defaultAppTheme = 'bangumin-material-blue-teal';

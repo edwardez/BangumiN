@@ -4,7 +4,6 @@ import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-exist
 import {RuntimeConstantsService} from '../../../../../shared/services/runtime-constants.service';
 import {environment} from '../../../../../../environments/environment';
 import {BangumiUser} from '../../../../../shared/models/BangumiUser';
-import {SubjectBase} from '../../../../../shared/models/subject/subject-base';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -17,8 +16,6 @@ export class SpoilerSingleContentComponent implements OnInit {
   @Input()
   bangumiUser: BangumiUser;
 
-  @Input()
-  relatedSubjects: SubjectBase[];
   spoilerContentReceived: SpoilerExisted;
   spoilerHtml: string;
   currentLanguage: string;

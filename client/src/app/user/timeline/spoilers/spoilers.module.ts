@@ -8,6 +8,7 @@ import {QuillModule} from 'ngx-quill';
 import {SpoilerCreationComponent} from './spoiler-creation/spoiler-creation.component';
 import {ResponsiveDialogService} from '../../../shared/services/dialog/responsive-dialog.service';
 import {ReactiveFormsModule} from '@angular/forms';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     BanguminSharedModule,
     SpoilersRoutingModule,
     SpoilerSingleModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InfiniteScrollModule
   ],
   declarations:
     [

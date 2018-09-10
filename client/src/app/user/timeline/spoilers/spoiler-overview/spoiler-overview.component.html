@@ -1,12 +1,24 @@
-<div class="mt-5 "></div>
-<div class="row justify-content-center no-gutters">
+<div class="mt-2"></div>
 
+<ng-container *ngIf="userSpoilers">
+  <div infinite-scroll
+       [infiniteScrollDisabled]="infiniteScrollDisabled"
+       (scrolled)="onScrollDown()">
+    <div *ngFor="let userSpoiler of userSpoilers"
+         class="row justify-content-center no-gutters mt-2 mt-md-3">
 
-  <!--<app-spoiler-single-content class="col-12 col-sm-8 col-md-6"></app-spoiler-single-content>-->
+      <app-spoiler-single-content
+        [bangumiUser]="bangumiUser"
+        [spoilerContent]="userSpoiler"
+        class="col col-sm-8 col-md-6">
+      </app-spoiler-single-content>
 
+    </div>
+  </div>
 
+</ng-container>
 
-</div>
+<div class="mb-2"></div>
 
 <!--TODO: remove this.blur() after https://github.com/angular/material2/issues/8420 is resolved-->
 <button onclick="this.blur()" (click)="openDialog();"

@@ -3,7 +3,7 @@ import * as dynamooseSpoilerModel from '../models/spoiler';
 import Logger from '../utils/logger';
 import authenticationMiddleware from '../services/authenticationHandler';
 
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const logger = Logger(module);
 
 // root url: /api/user/:id
@@ -34,10 +34,19 @@ router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 
   dynamooseSpoilerModel.Spoiler.findSpoiler(spoilerId)
     .then((response) => {
-      res.json(response);
+
+      if (response) {
+        return res.json(response);
+      }
+
+      return res.status(404).json({
+        request: req.originalUrl,
+        code: 404,
+        error: 'Not Found',
+      });
     })
     .catch((error) => {
-      res.status(500);
+      return res.status(500);
     });
 
 });
@@ -48,19 +57,21 @@ router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res: any, next: any) => {
   const requestUserId = req.params.userId;
   const sessionUserID = req.user.id;
+  const createdAtStart: number = Number(req.query.createdAtStart);
+  const createdAtEnd: number = Number(req.query.createdAtEnd);
 
   // currently, list all spoilers are considered private and only user themself can view all of their spoilers
   if (requestUserId !== sessionUserID) {
-    res.status(500);
+    return res.status(500).json({});
   }
 
   const newSpoiler: dynamooseSpoilerModel.SpoilerSchema = req.body;
-  dynamooseSpoilerModel.Spoiler.createSpoiler(newSpoiler)
+  dynamooseSpoilerModel.Spoiler.findSpoilers(sessionUserID, createdAtStart, createdAtEnd)
     .then((response) => {
-      res.json(response);
+      return res.json({spoilers : response, userId: requestUserId, lastKey: response.lastKey});
     })
     .catch((error) => {
-      res.status(500);
+      return res.status(500).json({});
     });
 
 });

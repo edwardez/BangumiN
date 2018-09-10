@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {map, switchMap, take} from 'rxjs/operators';
+import {catchError, map, switchMap, take} from 'rxjs/operators';
 import {BanguminUserService} from './bangumin-user.service';
 import {BanguminUserSchema} from '../../models/user/BanguminUser';
 import {RelatedSubjectsUserInput, SpoilerNew} from '../../models/spoiler/spoiler-new';
-import {forkJoin, Observable, of} from 'rxjs';
+import {forkJoin, Observable, of, throwError as observableThrowError} from 'rxjs';
 import {BangumiUserService} from '../bangumi/bangumi-user.service';
 import {BangumiSubjectService} from '../bangumi/bangumi-subject.service';
 import {RuntimeConstantsService} from '../runtime-constants.service';
@@ -28,14 +28,30 @@ export class BanguminSpoilerService {
    * create new spoiler
    * @param newSpoiler new spoiler
    */
-  public postNewSpoiler(newSpoiler: any): Observable<any> {
+  public postNewSpoiler(newSpoiler: any): Observable<SpoilerExisted> {
     const options = {withCredentials: true};
     return this.banguminUserService.userSubject.pipe(
       take(1),
       switchMap((userSubject: BanguminUserSchema) =>
-        this.http.post(`${environment.BACKEND_API_URL}/user/${userSubject.id}/spoiler`, new SpoilerNew().deserialize(newSpoiler), options))
+        this.http.post<SpoilerExisted>
+        (`${environment.BACKEND_API_URL}/user/${userSubject.id}/spoiler`, new SpoilerNew().deserialize(newSpoiler), options)),
+      map(spoilerExisted => new SpoilerExisted().deserialize(spoilerExisted)),
     );
-    //
+  }
+
+  /**
+   * get all spoilers under a userId
+   * @param userId user id
+   * @param createdAtStart createdAt of spoiler should be newer than this value
+   * @param createdAtEnd createdAt of spoiler should be older than this value
+   */
+  public getSpoilersBasicInfo(userId: number | string, createdAtStart = 0, createdAtEnd = Date.now()): Observable<SpoilerExisted[]> {
+    const options = {withCredentials: true};
+    return this.http.get<SpoilerExisted[]>
+    (`${environment.BACKEND_API_URL}/user/${userId}/spoilers?createdAtStart=${createdAtStart}&createdAtEnd=${createdAtEnd}`, options)
+      .pipe(
+        map(userSpoilers => userSpoilers['spoilers'].map(userSpoiler => new SpoilerExisted().deserialize(userSpoiler)))
+      );
   }
 
   /**
@@ -47,15 +63,26 @@ export class BanguminSpoilerService {
     const options = {withCredentials: true};
     return this.http.get<SpoilerExisted>(`${environment.BACKEND_API_URL}/user/${userId}/spoiler/${spoilerId}`, options)
       .pipe(
-        map(spoilerExisted => new SpoilerExisted().deserialize(spoilerExisted))
+        map(spoilerExisted => new SpoilerExisted().deserialize(spoilerExisted)),
+        catchError(error => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw observableThrowError(error);
+        })
       );
   }
 
-  public getSpoilerRelatedSubjectInfo(userId: string | number, relatedSubjects: RelatedSubjectsUserInput[]) {
-    const options = {withCredentials: true};
-
+  public getSpoilerAllRelatedInfo(userId: string | number, relatedSubjects: RelatedSubjectsUserInput[]) {
     const requestAllObservables: {}[] = [this.bangumiUserService.getUserInfoFromHttp(userId)];
+    // if there's no related subject, an empty array will be emitted
+    requestAllObservables.push(this.getSpoilerRelatedSubjectInfo(relatedSubjects));
 
+    return forkJoin(requestAllObservables);
+
+  }
+
+  public getSpoilerRelatedSubjectInfo(relatedSubjects: RelatedSubjectsUserInput[]) {
     const requestSubjectsObservables = relatedSubjects.map((relatedSubject) => {
       if (relatedSubject.id === RuntimeConstantsService.defaultSubjectId) {
         return of(new SubjectBase(relatedSubject.id, undefined, undefined, relatedSubject.name, relatedSubject.name));
@@ -65,9 +92,9 @@ export class BanguminSpoilerService {
     });
 
     // if there's no related subject, an empty array will be emitted
-    requestAllObservables.push(requestSubjectsObservables.length === 0 ? of([]) : forkJoin(requestSubjectsObservables));
-
-    return forkJoin(requestAllObservables);
+    return requestSubjectsObservables.length === 0 ? of([]) : forkJoin(requestSubjectsObservables);
 
   }
+
+
 }

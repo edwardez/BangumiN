@@ -106,7 +106,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/oauth', oauth);
-app.use('/api/user/:id', spoiler);
+app.use('/api/user/:userId', spoiler);
 app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
 app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
 app.use('/api/bgm/subject', authenticationMiddleware.isAuthenticated, subject);

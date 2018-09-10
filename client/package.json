@@ -39,6 +39,7 @@
     "js-priority-queue": "^0.1.5",
     "lodash": "^4.17.10",
     "ngx-cookie": "^4.0.2",
+    "ngx-infinite-scroll": "^6.0.1",
     "ngx-quill": "^3.4.0",
     "npm": "^6.4.1",
     "placeholder-loading": "^0.1.4",

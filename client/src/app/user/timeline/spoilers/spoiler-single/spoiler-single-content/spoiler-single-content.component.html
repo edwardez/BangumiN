@@ -58,12 +58,12 @@
 
   </ng-container>
 
-  <mat-divider></mat-divider>
 
-
-  <ng-container *ngIf="relatedSubjects">
+  <ng-container
+    *ngIf="spoilerContentReceived?.relatedSubjectsBaseDetails && spoilerContentReceived?.relatedSubjectsBaseDetails?.length !== 0">
+    <mat-divider></mat-divider>
     <p>{{'posts.bangumin.spoilerBox.single.card.relatedSubjects.name' | translate}}</p>
-    <div *ngFor="let subject of relatedSubjects"
+    <div *ngFor="let subject of spoilerContentReceived?.relatedSubjectsBaseDetails"
          class="mb-1 mb-sm-2">
       <div class="row no-gutters" *ngIf="subject.id !== defaultSubjectId">
 
@@ -91,14 +91,14 @@
       </div>
     </div>
 
-    <small *ngIf="relatedSubjects?.length === 0"
+    <small *ngIf="spoilerContentReceived?.relatedSubjectsBaseDetails?.length === 0"
            class="foreground-color-secondary-text">
       {{'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.none' | translate}}
     </small>
 
   </ng-container>
 
-  <div *ngIf="!relatedSubjects"
+  <div *ngIf="!spoilerContentReceived?.relatedSubjectsBaseDetails"
        class="ph-item p-0 ml-0 mb-0 mb-0 mt-2  no-gutters">
 
     <div class="col-2 col-lg-1 pl-0 flex-grow-0">

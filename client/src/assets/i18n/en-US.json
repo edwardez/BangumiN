@@ -271,6 +271,16 @@
                   }
                 }
               },
+              "afterSubmission": {
+                "success": {
+                  "snackBar": {
+                    "message": "Successfully posted",
+                    "action": {
+                      "open": "open"
+                    }
+                  }
+                }
+              },
               "option": {
                 "tagSubject": {
                   "name": "Enter and select the subject that you want to spoil(Maximum: {{maximumCount}})",

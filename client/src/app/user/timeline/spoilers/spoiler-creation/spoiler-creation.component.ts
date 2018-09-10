@@ -12,6 +12,8 @@ import {SearchSubjectsResponseSmall} from '../../../../shared/models/search/sear
 import {SubjectType} from '../../../../shared/enums/subject-type.enum';
 import {RuntimeConstantsService} from '../../../../shared/services/runtime-constants.service';
 import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
+import {SnackBarService} from '../../../../shared/services/snackBar/snack-bar.service';
+import {Router} from '@angular/router';
 
 const Parchment = Quill.import('parchment');
 
@@ -93,7 +95,9 @@ export class SpoilerCreationComponent implements OnInit {
               private bangumiSearchService: BangumiSearchService,
               private banguminSpoilerService: BanguminSpoilerService,
               private formBuilder: FormBuilder,
-              private spoilerDialog: MatDialogRef<SpoilerCreationComponent>
+              private router: Router,
+              private spoilerDialog: MatDialogRef<SpoilerCreationComponent>,
+              private snackBarService: SnackBarService,
   ) {
   }
 
@@ -218,7 +222,22 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   onSpoilerFormSubmit() {
-    this.banguminSpoilerService.postNewSpoiler(this.spoilerForm.value).subscribe(console.log);
+    this.banguminSpoilerService.postNewSpoiler(this.spoilerForm.value)
+      .subscribe(spoilerExisted => {
+        if (spoilerExisted && spoilerExisted.spoilerId) {
+          this.snackBarService
+            .openSimpleSnackBar('profile.tabs.timeline.spoilerBox.creation.dialog.afterSubmission.success.snackBar.message',
+              'profile.tabs.timeline.spoilerBox.creation.dialog.afterSubmission.success.snackBar.action.open', undefined)
+            .subscribe(
+              snackBarRefOnSuccess => {
+                snackBarRefOnSuccess.onAction().subscribe(res => {
+                  this.spoilerDialog.close();
+                  this.router.navigate(['./user', spoilerExisted.userId, 'timeline', 'spoilers', spoilerExisted.spoilerId]);
+                });
+              }
+            );
+        }
+      });
   }
 
   onSpoilerDialogClose() {

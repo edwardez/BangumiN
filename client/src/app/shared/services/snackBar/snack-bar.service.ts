@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import {switchMap, take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
@@ -17,12 +17,16 @@ export class SnackBarService {
   /**
    * open a snackBar
    */
-  public openSimpleSnackBar(translationLabel: string, config = {duration: 4000}, action?: ''): Observable<any> {
-    return this.translateService.get(translationLabel)
+  public openSimpleSnackBar(messageTranslationLabel = '', actionTranslationLabel = '',
+                            config = {duration: 4000},): Observable<MatSnackBarRef<SimpleSnackBar>> {
+    return this.translateService.get([messageTranslationLabel, actionTranslationLabel])
       .pipe(
         take(1),
         switchMap(translatedString => {
-          return of(this.snackBar.open(translatedString, action, config));
+          console.log(translatedString);
+          const message = translatedString[messageTranslationLabel];
+          const action = translatedString[actionTranslationLabel];
+          return of(this.snackBar.open(message, action, config));
         })
       );
 

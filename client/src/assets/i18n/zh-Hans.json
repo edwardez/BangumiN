@@ -271,6 +271,16 @@
                   }
                 }
               },
+              "afterSubmission": {
+                "success": {
+                  "snackBar": {
+                    "message": "发布成功",
+                    "action": {
+                      "open": "查看"
+                    }
+                  }
+                }
+              },
               "option": {
                 "tagSubject": {
                   "name": "输入并选择你要剧透的作品(最多{{maximumCount}}个)",

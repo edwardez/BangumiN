@@ -2,16 +2,14 @@ import config from '../config';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
 import Logger from '../utils/logger';
-import {Subject} from './bangumi/subject';
-import {Sequelize} from 'sequelize-typescript';
 import {SubjectBase} from './bangumi/common/SubjectBase';
-import {DEFAULT_SUBJECT_ID, SubjectBaseImpl} from './bangumi/common/SubectBaseImpl';
 
 const logger = Logger(module);
 
 const MAX_RELATED_SUBJECT_NUMBER = 2;
 const SPOILER_ID_LENGTH = 15;
 const MAX_SPOILER_TEXT_LENGTH = 500;
+const SPOILERS_PER_PAGE = 10;
 
 export interface SpoilerTextChunkSchema {
   insert: string;
@@ -64,8 +62,8 @@ const spoilerSchema = new dynamoose.Schema({
     trim: true,
     index: {
       global: true,
-      rangeKey: 'creationTime',
-      name: 'userId-creationTime-index',
+      rangeKey: 'createdAt',
+      name: 'userId-createdAt-index',
       project: true, // ProjectionType: ALL
       throughput: config.env === 'prod' ? 5 : 1,
     },
@@ -95,7 +93,7 @@ const spoilerSchema = new dynamoose.Schema({
     required: true,
     type: Array,
     trim: true,
-    validate: (v:  SubjectBase[]) => {
+    validate: (v: SubjectBase[]) => {
       const relatedSubjectSchema = Joi.object().keys({
         id: Joi.number().integer().min(0).required(),
         name: Joi.string().default('').required(),
@@ -103,15 +101,7 @@ const spoilerSchema = new dynamoose.Schema({
 
       return Joi.array().items(relatedSubjectSchema).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;
     },
-  },
-  creationTime: {
-    default: +new Date(),
-    type: Number,
-    trim: true,
-    validate: (v: number) => {
-      return Joi.date().timestamp().validate(v).error === null;
-    },
-  },
+  }
 
 }, {
   timestamps: true,
@@ -151,16 +141,47 @@ export class Spoiler {
   }
 
   /**
+   * Find all spoilers under a user and return
+   * @param userId user id, can be string or number, number will be converted to string
+   * @param createdAtStart returns all items which has a createdAt > the specified value
+   *  @param createdAtEnd returns all items which has a createdAt < the specified value
+   * @param limit: number of items to return
+   * @param hiddenFields list of fields that shouldn't be returned
+   */
+  static findSpoilers(userId: string | number, createdAtStart = 0, createdAtEnd = Date.now(), limit = SPOILERS_PER_PAGE,
+                      hiddenFields: string[] = []): Promise<dynamoose.QueryResult<dynamoose.Model<SpoilerModel>>> {
+    if (!userId) {
+      throw Error('Expect userId to be a truthy value');
+    }
+
+    const id = userId.toString();
+    return spoilerModel
+      .query('userId')
+      .eq(id)
+      .where('createdAt')
+      .gt(createdAtStart)
+      .where('createdAt')
+      .lt(createdAtStart > createdAtEnd ? createdAtStart : createdAtEnd)
+      .descending()
+      .limit(limit)
+      .exec()
+      .catch((error) => {
+        logger.error(`Failed to execute find spoiler step for user id:${id}`);
+        logger.error(error.stack);
+        throw error;
+      });
+  }
+
+  /**
    * Create a new spoiler, throw error upon rejection
    * @param spoilerInstance spoilerInstance
    */
-  static createSpoiler(spoilerInstance: SpoilerSchema): any {
+  static createSpoiler(spoilerInstance: SpoilerSchema): Promise<dynamoose.Model<SpoilerModel>> {
     if (!spoilerInstance) {
       throw Error('Expect spoilerInstance to be a truthy value');
     }
 
     spoilerInstance.spoilerId = generateSpoilerId(SPOILER_ID_LENGTH);
-    spoilerInstance.creationTime = +new Date();
 
     logger.info(`Create new spoiler: ${spoilerInstance.spoilerId}`);
 

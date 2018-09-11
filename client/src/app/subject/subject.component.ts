@@ -51,7 +51,6 @@ export class SubjectComponent implements OnInit, OnDestroy {
     this.route
       .params
       .pipe(
-        takeUntil(this.ngUnsubscribe),
         filter(params => !!params['id']),
         switchMap(params => {
             return forkJoin(
@@ -59,7 +58,9 @@ export class SubjectComponent implements OnInit, OnDestroy {
               this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
             );
           },
-        ))
+        ),
+        takeUntil(this.ngUnsubscribe),
+      )
       .subscribe(res => {
         this.subject = res[0];
         this.titleService.title = this.subject.name;

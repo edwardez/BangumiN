@@ -9,13 +9,14 @@ import {SettingsComponent} from './settings/settings.component';
 import {FullSearchComponent} from './search/full-search/full-search.component';
 import {CollectionHomeComponent} from './user/collection/collection-home/collection-home.component';
 import {SubjectComponent} from './subject/subject.component';
+// noinspection TsLint
 import {SpoilerSingleWrapperComponent} from './user/timeline/spoilers/spoiler-single/spoiler-single-wrapper/spoiler-single-wrapper.component';
 import {PageNotFoundComponent} from './common/page-not-found/page-not-found.component';
 import {TosComponent} from './documents/tos/tos.component';
 import {PrivacyComponent} from './documents/privacy/privacy.component';
 import {AboutHomeComponent} from './documents/about/about-home/about-home.component';
 import {HelpHomeComponent} from './documents/help/help-home/help-home.component';
-//
+
 const routes: Routes = [
   {
     path: '',

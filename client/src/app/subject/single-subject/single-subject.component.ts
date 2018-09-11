@@ -66,13 +66,13 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
       undefined, undefined, rating, this.collectionResponse.privacy);
 
     this.bangumiCollectionService.upsertSubjectCollectionStatus(this.subject.id.toString(), collectionRequest).pipe(
-      takeUntil(this.ngUnsubscribe),
       catchError(error => {
         this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
           .pipe(take(1)).subscribe(() => {
         });
         return error;
-      })
+      }),
+      takeUntil(this.ngUnsubscribe),
     ).subscribe(res => {
       this.currentRating = rating;
     });

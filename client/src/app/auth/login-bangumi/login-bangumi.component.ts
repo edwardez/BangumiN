@@ -36,7 +36,6 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
       if (bangumiCallBackData['result'] === 'success') {
         this.authenticationService.verifyAndSetBangumiActivationInfo(bangumiCallBackData['userInfo'])
           .pipe(
-            takeUntil(this.ngUnsubscribe),
             switchMap(
               res => {
                 loginResultTranslationLabel = 'login.loginSuccess';
@@ -54,7 +53,8 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
                   duration: 3000
                 });
               });
-            })
+            }),
+            takeUntil(this.ngUnsubscribe),
           )
           .subscribe(res => {
           });

@@ -9,6 +9,15 @@ import {TitleService} from '../../shared/services/page/title.service';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthenticationService} from '../../shared/services/auth.service';
 
+/**
+ * Tab index is different from the bangumi type number and it's currently not configurable, add a index here to set index
+ */
+enum TabIndex {
+  all = 0,
+  anime = 1,
+  real = 2,
+  book = 3,
+}
 
 @Component({
   selector: 'app-progress',
@@ -117,13 +126,4 @@ export class ProgressComponent implements OnInit, OnDestroy {
 
 }
 
-/**
- * Tab index is different from the bangumi type number and it's currently not configurable, add a index here to set index
- */
-enum TabIndex {
-  all = 0,
-  anime = 1,
-  real = 2,
-  book = 3,
-}
 

@@ -2,6 +2,9 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "extends": [
+    "rxjs-tslint-rules"
+  ],
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,
@@ -138,6 +141,8 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "rxjs-no-unsafe-takeuntil": true,
+    "rxjs-no-subject-unsubscribe": true
   }
 }

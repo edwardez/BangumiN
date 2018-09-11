@@ -49,7 +49,8 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
 
   getBangumiActivationInfo() {
     const userInfo = this.cookieService.getObject('userInfo') || {bangumiProfile: {}, banguminSettings: {}};
-    if (typeof userInfo['bangumiActivationInfo']['access_token'] === 'string' && typeof userInfo['bangumiActivationInfo']['refresh_token'] === 'string') {
+    if (typeof userInfo['bangumiActivationInfo']['access_token'] === 'string' &&
+      typeof userInfo['bangumiActivationInfo']['refresh_token'] === 'string') {
       window.opener.postMessage(
         {
           type: 'bangumiCallBack',

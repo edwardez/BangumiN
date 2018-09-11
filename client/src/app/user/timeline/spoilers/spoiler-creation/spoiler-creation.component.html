@@ -123,7 +123,7 @@
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.cancel' | translate}}
   </button>
   <div class="col-2 col-sm-6"></div>
-  <button [disabled]="spoilerForm.invalid"
+  <button [disabled]="spoilerForm.invalid || duringSpoilerSubmission"
           (click)="onSpoilerFormSubmit()"
           mat-flat-button cdkFocusInitial color="primary" class="col-5 col-sm-3">
     {{'profile.tabs.timeline.spoilerBox.creation.dialog.button.submit' | translate}}

@@ -66,9 +66,9 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res
   }
 
   const newSpoiler: dynamooseSpoilerModel.SpoilerSchema = req.body;
-  dynamooseSpoilerModel.Spoiler.findSpoilers(sessionUserID, createdAtStart, createdAtEnd)
+  dynamooseSpoilerModel.Spoiler.findSpoilers(requestUserId, createdAtStart, createdAtEnd)
     .then((response) => {
-      return res.json({spoilers : response, userId: requestUserId, lastKey: response.lastKey});
+      return res.json({spoilers : response, userId: requestUserId, lastKey: response.lastKey || null});
     })
     .catch((error) => {
       return res.status(500).json({});

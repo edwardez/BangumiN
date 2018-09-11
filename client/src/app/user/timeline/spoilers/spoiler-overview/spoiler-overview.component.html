@@ -14,7 +14,14 @@
       </app-spoiler-single-content>
 
     </div>
+
   </div>
+
+  <div *ngIf="!endOfContent" class="row justify-content-center no-gutters mt-2 mt-md-3">
+    <mat-spinner [diameter]="25"></mat-spinner>
+  </div>
+
+  <app-back-to-top *ngIf="endOfContent"></app-back-to-top>
 
 </ng-container>
 

@@ -20,7 +20,8 @@
         "book": ""
       },
       "update": "Update",
-      "modify": "Modify"
+      "modify": "Modify",
+      "backToTop": "Back to top"
     },
     "book": {
       "volume": "",

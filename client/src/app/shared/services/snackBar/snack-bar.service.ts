@@ -23,7 +23,6 @@ export class SnackBarService {
       .pipe(
         take(1),
         switchMap(translatedString => {
-          console.log(translatedString);
           const message = translatedString[messageTranslationLabel];
           const action = translatedString[actionTranslationLabel];
           return of(this.snackBar.open(message, action, config));

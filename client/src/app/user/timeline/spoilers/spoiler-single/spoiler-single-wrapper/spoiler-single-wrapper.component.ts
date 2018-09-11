@@ -30,7 +30,6 @@ export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
     this.activatedRoute
       .params
       .pipe(
-        takeUntil(this.ngUnsubscribe),
         filter(params => params['userId'] && params['spoilerId']),
         switchMap(params => {
             const userId = params['userId'];
@@ -46,6 +45,7 @@ export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
           }
           return this.banguminSpoilerService.getSpoilerAllRelatedInfo(spoilerExisted.userId, spoilerExisted.relatedSubjects);
         }),
+        takeUntil(this.ngUnsubscribe),
       )
       .subscribe(spoilerExisted => {
         if (spoilerExisted && spoilerExisted.length >= 2) {

@@ -44,13 +44,18 @@ export class BanguminSpoilerService {
    * @param userId user id
    * @param createdAtStart createdAt of spoiler should be newer than this value
    * @param createdAtEnd createdAt of spoiler should be older than this value
+   * @return userSpoilersBasicInfo: object {lastKey: lastElement}
    */
-  public getSpoilersBasicInfo(userId: number | string, createdAtStart = 0, createdAtEnd = Date.now()): Observable<SpoilerExisted[]> {
+  public getSpoilersBasicInfo(userId: number | string, createdAtStart = 0, createdAtEnd = Date.now()): Observable<any> {
     const options = {withCredentials: true};
     return this.http.get<SpoilerExisted[]>
     (`${environment.BACKEND_API_URL}/user/${userId}/spoilers?createdAtStart=${createdAtStart}&createdAtEnd=${createdAtEnd}`, options)
       .pipe(
-        map(userSpoilers => userSpoilers['spoilers'].map(userSpoiler => new SpoilerExisted().deserialize(userSpoiler)))
+        map(userSpoilersBasicInfo => {
+          userSpoilersBasicInfo['spoilers'] =
+            userSpoilersBasicInfo['spoilers'].map(userSpoiler => new SpoilerExisted().deserialize(userSpoiler));
+          return userSpoilersBasicInfo;
+        })
       );
   }
 

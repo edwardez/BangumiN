@@ -9,6 +9,7 @@ import {SpoilerCreationComponent} from './spoiler-creation/spoiler-creation.comp
 import {ResponsiveDialogService} from '../../../shared/services/dialog/responsive-dialog.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {BackToTopModule} from '../../../common/utilities/back-to-top/back-to-top.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
     SpoilersRoutingModule,
     SpoilerSingleModule,
     ReactiveFormsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    BackToTopModule
   ],
   declarations:
     [

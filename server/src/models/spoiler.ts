@@ -153,15 +153,12 @@ export class Spoiler {
     if (!userId) {
       throw Error('Expect userId to be a truthy value');
     }
-
     const id = userId.toString();
     return spoilerModel
       .query('userId')
       .eq(id)
       .where('createdAt')
-      .gt(createdAtStart)
-      .where('createdAt')
-      .lt(createdAtStart > createdAtEnd ? createdAtStart : createdAtEnd)
+      .between(createdAtStart, createdAtStart > createdAtEnd ? createdAtStart : createdAtEnd)
       .descending()
       .limit(limit)
       .exec()

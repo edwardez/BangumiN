@@ -4,8 +4,8 @@ import {SpoilerCreationComponent} from '../spoiler-creation/spoiler-creation.com
 import {ResponsiveDialogService} from '../../../../shared/services/dialog/responsive-dialog.service';
 import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
 import {ActivatedRoute} from '@angular/router';
-import {filter, switchMap, take, takeUntil, tap} from 'rxjs/operators';
-import {forkJoin, Subject} from 'rxjs';
+import {concatMap, filter, switchMap, take} from 'rxjs/operators';
+import {forkJoin, of, Subject} from 'rxjs';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 import {SpoilerExisted} from '../../../../shared/models/spoiler/spoiler-existed';
 import {BangumiUserService} from '../../../../shared/services/bangumi/bangumi-user.service';
@@ -17,6 +17,7 @@ import {BangumiUserService} from '../../../../shared/services/bangumi/bangumi-us
 })
 export class SpoilerOverviewComponent implements OnInit, OnDestroy {
 
+  endOfContent = false;
   infiniteScrollDisabled = false;
   bangumiUser: BangumiUser;
   userSpoilers: SpoilerExisted[] = [];
@@ -36,36 +37,20 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
       .parent.parent
       .params
       .pipe(
-        takeUntil(this.ngUnsubscribe),
         filter(params => params['userId']),
-        tap(params => {
-            this.bangumiUserService.getUserInfoFromHttp(params['userId'])
-              .pipe(take(1))
-              .subscribe(bangumiUser => {
-                this.bangumiUser = bangumiUser;
-              });
-          }
-        ),
-        switchMap(params => {
-            return this.banguminSpoilerService.getSpoilersBasicInfo(params['userId']);
-          },
-        ),
-        switchMap(userSpoilers => {
-          this.userSpoilers = userSpoilers;
-          // TODO: optimize requests(might contain duplicates)
-          return forkJoin(
-            this.userSpoilers.map(userSpoiler => this.banguminSpoilerService.getSpoilerRelatedSubjectInfo(userSpoiler.relatedSubjects)));
-        })
       )
-      .subscribe(res => {
-        this.userSpoilers.forEach(userSpoiler => {
-          userSpoiler.relatedSubjectsBaseDetails = res[this.userSpoilers.indexOf(userSpoiler)];
-        });
+      .subscribe(params => {
+        this.bangumiUserService.getUserInfoFromHttp(params['userId'])
+          .pipe(take(1))
+          .subscribe(bangumiUser => {
+            this.bangumiUser = bangumiUser;
+          });
+        this.getSpoilersInfo(params['userId']);
       });
   }
 
   openDialog(): void {
-    const dialogRef = this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
+    this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
       sizeConfig: {
         onLtSmScreen: {
           width: '50vw',
@@ -73,7 +58,13 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
           maxHeight: '80vh',
         }
       }
-    }).subscribe();
+    }).pipe(
+      concatMap(dialogRef => dialogRef.afterClosed())
+    )
+      .subscribe(result => {
+        this.getSpoilersInfo(this.bangumiUser.id, false, +this.userSpoilers[0].createdAt + 1,
+          +new Date());
+      });
   }
 
   ngOnDestroy(): void {
@@ -81,28 +72,66 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  /**
+   * On scroll down, call api to get more spoilers
+   * TODO: refactor the code using a pure rxjs way(i.e. get user from observable, use concatMap to control sequential requests)
+   */
   onScrollDown() {
+
     if (this.bangumiUser) {
-      this.getSpoilersInfo(this.bangumiUser.id, undefined, +this.userSpoilers[this.userSpoilers.length - 1].createdAt);
+      this.getSpoilersInfo(this.bangumiUser.id, true, undefined, +this.userSpoilers[this.userSpoilers.length - 1].createdAt);
     }
 
   }
 
-  getSpoilersInfo(userId: string | number, createdAtStart = 0, createdAtEnd = Date.now()) {
+  /**
+   * get spoilers and update the spoiler array
+   * @param userId user id
+   * @param appendNewSpoilers If set to true, new spoilers will be appended to the end of the array, other wise it'll be prepended to the
+   *     top
+   * @param createdAtStart get spoilers after this time
+   * @param createdAtEnd get spoilers before this time
+   */
+  getSpoilersInfo(userId: string | number, appendNewSpoilers = true, createdAtStart = 0, createdAtEnd = Date.now()) {
+
     let newUserSpoilers: SpoilerExisted[] = [];
     this.banguminSpoilerService.getSpoilersBasicInfo(userId, createdAtStart, createdAtEnd).pipe(
       switchMap(userSpoilers => {
-          newUserSpoilers = userSpoilers;
-          this.userSpoilers.push(...newUserSpoilers);
+
+        newUserSpoilers = userSpoilers['spoilers'];
+        if (newUserSpoilers.length !== 0) {
+          // this response contains data, but it's the end of response, set relevant flags
+          if (!userSpoilers['lastKey']) {
+            this.setEndOfContentFlag();
+          }
           // TODO: optimize requests(might contain duplicates)
+          if (appendNewSpoilers) {
+            this.userSpoilers.push(...newUserSpoilers);
+          } else {
+            this.userSpoilers.unshift(...newUserSpoilers);
+          }
           return forkJoin(
             newUserSpoilers.map(userSpoiler => this.banguminSpoilerService.getSpoilerRelatedSubjectInfo(userSpoiler.relatedSubjects)));
+        } else {
+          // this response contains empty response,  set relevant flags and return null to indicate "don't proceed"
+          this.setEndOfContentFlag();
+          return of(null);
+        }
+
         }
       )).subscribe(res => {
-      newUserSpoilers.forEach(userSpoiler => {
-        userSpoiler.relatedSubjectsBaseDetails = res[newUserSpoilers.indexOf(userSpoiler)];
-      });
+      if (res) {
+        newUserSpoilers.forEach(userSpoiler => {
+          userSpoiler.relatedSubjectsBaseDetails = res[newUserSpoilers.indexOf(userSpoiler)];
+        });
+      }
+
     });
+  }
+
+  setEndOfContentFlag(): void {
+    this.infiniteScrollDisabled = true;
+    this.endOfContent = true;
   }
 
 

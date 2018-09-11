@@ -20,7 +20,8 @@
         "book": "看"
       },
       "update": "更新",
-      "modify": "修改"
+      "modify": "修改",
+      "backToTop": "回到顶部"
     },
     "book": {
       "volume": "卷",

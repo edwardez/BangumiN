@@ -79,7 +79,7 @@ export class SelectedRelatedSubject {
 export class SpoilerCreationComponent implements OnInit {
 
   disableSearch = false;
-
+  duringSpoilerSubmission = false;
   bangumiUser: BangumiUser;
   spoilerEditor: Quill;
   spoilerForm: FormGroup;
@@ -222,20 +222,17 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   onSpoilerFormSubmit() {
+    this.duringSpoilerSubmission = true;
     this.banguminSpoilerService.postNewSpoiler(this.spoilerForm.value)
+      .pipe(
+        catchError(error => {
+          this.duringSpoilerSubmission = false;
+          throw new error;
+        })
+      )
       .subscribe(spoilerExisted => {
         if (spoilerExisted && spoilerExisted.spoilerId) {
-          this.snackBarService
-            .openSimpleSnackBar('profile.tabs.timeline.spoilerBox.creation.dialog.afterSubmission.success.snackBar.message',
-              'profile.tabs.timeline.spoilerBox.creation.dialog.afterSubmission.success.snackBar.action.open', undefined)
-            .subscribe(
-              snackBarRefOnSuccess => {
-                snackBarRefOnSuccess.onAction().subscribe(res => {
-                  this.spoilerDialog.close();
-                  this.router.navigate(['./user', spoilerExisted.userId, 'timeline', 'spoilers', spoilerExisted.spoilerId]);
-                });
-              }
-            );
+          this.spoilerDialog.close();
         }
       });
   }

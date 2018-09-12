@@ -4,12 +4,11 @@ import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, switchMap, take, tap} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import {concat} from 'rxjs';
+import {concat, Subject} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {LayoutService} from '../../shared/services/layout/layout.service';
-import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-nav',

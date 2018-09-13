@@ -29,16 +29,27 @@
       "volumeNumber": "Vol.",
       "chapterNumber": "Chap."
     },
-    "snakBar": {
+    "snackBar": {
+      "success": {
+        "copy": "Successfully copied"
+      },
       "error": {
         "submit": {
           "general": "Failed to submit"
+        },
+        "copy": {
+          "then": {
+            "openNewWindow": "Failed to copy, opening a new window to show text."
+          }
         }
       }
     },
     "punctuation": {
       "comma": ",",
       "space": " "
+    },
+    "noun": {
+      "spoiler": "Spoiler"
     }
   },
   "nav": {
@@ -222,6 +233,20 @@
                   "tooltip": "Link not avaliable: user-defined subject"
                 },
                 "none": "User didn't tag related subjects"
+              }
+            },
+            "menu": {
+              "delete": "Delete this spoiler",
+              "shareToTwitter": "Share to Twitter",
+              "shareToWeibo": "Share to Weibo",
+              "copyContentAndLink": "Copy content and link",
+              "copyLink": "Copy link"
+            },
+            "deletionDialog": {
+              "title": "Are you sure that you want to delete this spoiler?",
+              "action": {
+                "cancel": "Cancel",
+                "delete": "Delete"
               }
             }
           }

@@ -37,6 +37,11 @@ app-spoiler-creation .mat-dialog-container {
   font-size: unset;
 }
 
+// hide default mat-card-header-text style for spoiler
+app-spoiler-single-content .mat-card-header-text {
+  display: none;
+}
+
 // helper styles
 .line-breaker {
   white-space: pre-line;

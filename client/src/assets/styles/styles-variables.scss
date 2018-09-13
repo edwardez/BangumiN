@@ -99,6 +99,10 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
   // Use mat-color to extract individual colors from a palette as necessary.
 
+  .warn-color {
+    color: mat-color($warn);
+  }
+
   .foreground-color-secondary-text {
     color: mat-color($foreground, secondary-text);
   }

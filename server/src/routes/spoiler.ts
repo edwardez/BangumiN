@@ -52,6 +52,25 @@ router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 });
 
 /**
+ * delete a spoiler
+ */
+router.delete('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
+  const userId = req.params.userId;
+  const spoilerId = req.params.spoilerId;
+
+  dynamooseSpoilerModel.Spoiler.deleteSpoiler(spoilerId, req.user.id)
+    .then((response) => {
+
+      return res.status(200).json(response || {});
+
+    })
+    .catch((error) => {
+      return res.status(500).json({});
+    });
+
+});
+
+/**
  * get all spoilers for a user
  */
 router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res: any, next: any) => {

@@ -1,16 +1,55 @@
 <mat-card class="spoiler-card">
-  <mat-card-header *ngIf="bangumiUser">
+
+  <mat-card-header *ngIf="bangumiUser" class="d-flex align-items-center">
     <a mat-card-avatar
        [href]="bangumiUser.url" [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.medium + ')' }"
        target="_blank" rel="noopener"
        class="avatar-image"
     ></a>
 
-    <mat-card-title class="mb-1">
-      {{bangumiUser.nickname}}
-    </mat-card-title>
+    <div class="d-flex flex-grow-1 ml-2 ml-xl-3">
+      <div class="align-self-center">
+        <div>
+          {{bangumiUser.nickname}}
+        </div>
+        <small class="foreground-color-secondary-text">
+          @{{bangumiUser.username}}
+        </small>
 
-    <mat-card-subtitle>@{{bangumiUser.username}}</mat-card-subtitle>
+      </div>
+      <div class="flex-grow-1">
+
+      </div>
+
+      <div>
+        <ng-container *ngIf="spoilerContentReceived.relatedSubjectsBaseDetails !== undefined">
+          <button mat-icon-button
+                  (click)="openBottomSheet()"
+                  class="d-inline-block d-sm-none"
+          >
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="appMenu"
+            class="d-sm-inline-block d-none"
+          >
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <mat-menu #appMenu="matMenu">
+            <app-share-spoiler-menu [spoilerContent]="spoilerContentReceived"
+                                    [spoilerLink]="generateSpoilerLink()"></app-share-spoiler-menu>
+
+          </mat-menu>
+        </ng-container>
+
+      </div>
+    </div>
+
+    <div class="mat-card-header-text">
+    </div>
+
+
   </mat-card-header>
 
   <ng-container *ngIf="!bangumiUser">
@@ -55,7 +94,6 @@
            class="foreground-color-secondary-text">
       {{spoilerContent.createdAt.toLocaleString(currentLanguage, {hour12: false})}}
     </small>
-
   </ng-container>
 
 

@@ -1,10 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {SpoilerTextChunkSchema} from '../../../../../shared/models/spoiler/spoiler-base';
 import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
 import {RuntimeConstantsService} from '../../../../../shared/services/runtime-constants.service';
 import {environment} from '../../../../../../environments/environment';
 import {BangumiUser} from '../../../../../shared/models/BangumiUser';
 import {TranslateService} from '@ngx-translate/core';
+import {MatBottomSheet, MatMenuTrigger} from '@angular/material';
+import {DeviceWidth} from '../../../../../shared/enums/device-width.enum';
+import {ShareBottomSheetComponent} from '../share-bottom-sheet/share-bottom-sheet.component';
 
 @Component({
   selector: 'app-spoiler-single-content',
@@ -16,12 +19,18 @@ export class SpoilerSingleContentComponent implements OnInit {
   @Input()
   bangumiUser: BangumiUser;
 
+  @Input()
+  deviceWidth: DeviceWidth;
+
+  @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
+
   spoilerContentReceived: SpoilerExisted;
   spoilerHtml: string;
   currentLanguage: string;
   defaultSubjectId = RuntimeConstantsService.defaultSubjectId;
 
-  constructor(private translateService: TranslateService) {
+  constructor(private translateService: TranslateService,
+              private bottomSheet: MatBottomSheet) {
   }
 
   get spoilerContent(): SpoilerExisted {
@@ -52,6 +61,7 @@ export class SpoilerSingleContentComponent implements OnInit {
     return paragraphTagStart + generatedHtml + paragraphTagEnd;
   }
 
+
   ngOnInit() {
     this.currentLanguage = this.translateService.currentLang;
   }
@@ -59,6 +69,19 @@ export class SpoilerSingleContentComponent implements OnInit {
   // Convert a link from bangumi to BangumiN, for now a new window will be spawned
   convertToBangumiNLink(bangumiUrl: string): string {
     return bangumiUrl.replace(/^https?:\/\/bgm\.tv/, environment.FRONTEND_URL);
+  }
+
+  openBottomSheet(): void {
+    this.bottomSheet.open(ShareBottomSheetComponent, {
+      data: {
+        spoilerLink: this.generateSpoilerLink(),
+        spoilerContent: this.spoilerContentReceived,
+      }
+    });
+  }
+
+  generateSpoilerLink() {
+    return `${window.location.origin}/user/${this.bangumiUser.id}/timeline/spoilers/${this.spoilerContentReceived.spoilerId}`;
   }
 
 

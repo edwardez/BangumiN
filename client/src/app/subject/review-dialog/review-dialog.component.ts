@@ -102,7 +102,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
 
     this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subjectId, collectionRequest).pipe(
       catchError(error => {
-        this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
+        this.snackBarService.openSimpleSnackBar('common.snackBar.error.submit.general')
           .pipe(take(1)).subscribe(() => {
         });
         return error;

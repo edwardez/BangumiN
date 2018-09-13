@@ -40,6 +40,17 @@ export class BanguminSpoilerService {
   }
 
   /**
+   * delete  spoiler
+   * @param spoilerId spoiler Id
+   * @param userId user id
+   */
+  public deleteSpoiler(spoilerId: string, userId: string): Observable<any> {
+    const options = {withCredentials: true};
+    return this.http.delete
+    (`${environment.BACKEND_API_URL}/user/${userId}/spoiler/${spoilerId}`, options);
+  }
+
+  /**
    * get all spoilers under a userId
    * @param userId user id
    * @param createdAtStart createdAt of spoiler should be newer than this value

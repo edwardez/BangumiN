@@ -1,26 +1,9 @@
 import {NgModule} from '@angular/core';
 
 import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatStepperModule,
-  MatToolbarModule,
+  MatAutocompleteModule, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
+  MatDialogModule, MatExpansionModule, MatIconModule, MatInputModule, MatListModule, MatProgressBarModule, MatProgressSpinnerModule,
+  MatRadioModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatStepperModule, MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu';
@@ -54,6 +37,7 @@ import {RouterModule} from '@angular/router';
     MatProgressBarModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MatBottomSheetModule,
     LayoutModule,
     TranslateModule,
     RouterModule
@@ -82,6 +66,7 @@ import {RouterModule} from '@angular/router';
     MatProgressBarModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MatBottomSheetModule,
     LayoutModule,
     TranslateModule,
     RouterModule

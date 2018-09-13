@@ -141,6 +141,31 @@ export class Spoiler {
   }
 
   /**
+   * Delete spoiler and return
+   * @param spoilerID spoiler id, can be string or number, number will be converted to string
+   * @param requestUserId User who requests to delete
+   */
+  static deleteSpoiler(spoilerID: string, requestUserId: string | number): Promise<dynamoose.Model<SpoilerModel>> {
+    if (!spoilerID) {
+      throw Error('Expect spoilerID to be a truthy value');
+    }
+
+    const id = String(spoilerID);
+    return spoilerModel.get(id)
+      .then((existedSpoiler: SpoilerModel) => {
+        if (existedSpoiler && existedSpoiler.userId === String(requestUserId)) {
+          return existedSpoiler.delete();
+        }
+        throw 'error';
+      })
+      .catch((error) => {
+        logger.error(`Failed to execute delete spoiler step for id:${id}`);
+        logger.error(error.stack);
+        throw error;
+      });
+  }
+
+  /**
    * Find all spoilers under a user and return
    * @param userId user id, can be string or number, number will be converted to string
    * @param createdAtStart returns all items which has a createdAt > the specified value

@@ -29,16 +29,27 @@
       "volumeNumber": "第",
       "chapterNumber": "第"
     },
-    "snakBar": {
+    "snackBar": {
+      "success": {
+        "copy": "复制成功"
+      },
       "error": {
         "submit": {
           "general": "提交失败"
+        },
+        "copy": {
+          "then": {
+            "openNewWindow": "复制失败，在新窗口中打开文本..."
+          }
         }
       }
     },
     "punctuation": {
       "comma": "，",
       "space": " "
+    },
+    "noun": {
+      "spoiler": "剧透"
     }
   },
   "nav": {
@@ -222,6 +233,20 @@
                   "tooltip": "用户自定义条目，无对应链接"
                 },
                 "none": "用户未标记相关作品"
+              }
+            },
+            "menu": {
+              "delete": "删除这条剧透",
+              "shareToTwitter": "分享到Twitter",
+              "shareToWeibo": "分享到微博",
+              "copyContentAndLink": "复制内容和链接",
+              "copyLink": "复制链接"
+            },
+            "deletionDialog": {
+              "title": "确定要删除这条剧透吗？",
+              "action": {
+                "cancel": "取消",
+                "delete": "删除"
               }
             }
           }

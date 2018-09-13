@@ -62,8 +62,9 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
       concatMap(dialogRef => dialogRef.afterClosed())
     )
       .subscribe(result => {
-        this.getSpoilersInfo(this.bangumiUser.id, false, +this.userSpoilers[0].createdAt + 1,
-          +new Date());
+        const createdAtEnd = this.userSpoilers.length >= 1 ? +this.userSpoilers[0].createdAt + 1 : undefined;
+        this.getSpoilersInfo(this.bangumiUser.id, false, createdAtEnd,
+          undefined);
       });
   }
 
@@ -79,7 +80,8 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
   onScrollDown() {
 
     if (this.bangumiUser) {
-      this.getSpoilersInfo(this.bangumiUser.id, true, undefined, +this.userSpoilers[this.userSpoilers.length - 1].createdAt);
+      const createdAtEnd = this.userSpoilers.length >= 1 ? +this.userSpoilers[this.userSpoilers.length - 1].createdAt : undefined;
+      this.getSpoilersInfo(this.bangumiUser.id, true, undefined, createdAtEnd);
     }
 
   }

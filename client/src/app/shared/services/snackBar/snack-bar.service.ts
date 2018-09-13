@@ -21,12 +21,13 @@ export class SnackBarService {
                             config = {duration: 4000},): Observable<MatSnackBarRef<SimpleSnackBar>> {
     return this.translateService.get([messageTranslationLabel, actionTranslationLabel])
       .pipe(
-        take(1),
         switchMap(translatedString => {
-          const message = translatedString[messageTranslationLabel];
-          const action = translatedString[actionTranslationLabel];
-          return of(this.snackBar.open(message, action, config));
-        })
+            const message = translatedString[messageTranslationLabel];
+            const action = translatedString[actionTranslationLabel];
+            return of(this.snackBar.open(message, action, config));
+          },
+        ),
+        take(1),
       );
 
   }

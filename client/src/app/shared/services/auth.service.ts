@@ -14,6 +14,7 @@ import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-toke
 import {MatSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import {BanguminUserService} from './bangumin/bangumin-user.service';
+import {Router} from '@angular/router';
 
 
 interface AccessData {
@@ -43,6 +44,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private banguminUserService: BanguminUserService,
+              private router: Router,
               private storageService: StorageService,
               private translateService: TranslateService,
               private snackBar: MatSnackBar) {
@@ -189,7 +191,10 @@ export class AuthenticationService {
    */
   public logout(): void {
     this.storageService.clear();
-    location.reload(true);
+    this.router.navigate(['../', 'login']).then(res => {
+      location.reload(true);
+    });
+
   }
 
 

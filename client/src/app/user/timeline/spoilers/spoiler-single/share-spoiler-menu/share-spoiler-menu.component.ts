@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {CopyEvent, ShareableStringGeneratorService} from '../../../../../shared/services/utils/shareable-string-generator.service';
 import {map} from 'rxjs/operators';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';
+// tslint:disable-next-line:max-line-length
 import {SpoilerDeletionConfirmationDialogComponent} from '../spoiler-deletion-confirmation-dialog/spoiler-deletion-confirmation-dialog.component';
 import {MatDialog} from '@angular/material';
 
@@ -47,23 +48,21 @@ export class ShareSpoilerMenuComponent implements OnInit {
     this.canDelete = this.authenticationService.userSubject.pipe(
       map(userSubject => userSubject.id === Number(this.spoilerContent.userId))
     );
-    // this.deleteSpoiler()
   }
 
-  handleCopyCallback(event: CopyEvent, text: Observable<string>) {
-    this.shareableStringGeneratorService.handleCopyCallback(event, text).subscribe();
+  handleCopyCallback(event: CopyEvent, text: Observable<string> | string) {
+    this.shareableStringGeneratorService.handleCopyCallback(event, text instanceof Observable ? text : of(text), this.spoilerLink)
+      .subscribe();
   }
 
-  convertToObservable(data: any) {
-    return of(data);
-  }
 
   deleteSpoiler() {
-    this.dialog.open(SpoilerDeletionConfirmationDialogComponent, {
+    const dialogRef = this.dialog.open(SpoilerDeletionConfirmationDialogComponent, {
       data: this.spoilerContent
     });
   }
 
+  // placeholder method
   dismissSheet(): void {
   }
 

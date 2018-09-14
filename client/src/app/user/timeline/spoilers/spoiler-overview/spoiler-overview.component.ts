@@ -4,7 +4,7 @@ import {SpoilerCreationComponent} from '../spoiler-creation/spoiler-creation.com
 import {ResponsiveDialogService} from '../../../../shared/services/dialog/responsive-dialog.service';
 import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
 import {ActivatedRoute} from '@angular/router';
-import {concatMap, filter, switchMap, take} from 'rxjs/operators';
+import {concatMap, filter, map, switchMap, take, takeUntil} from 'rxjs/operators';
 import {forkJoin, of, Subject} from 'rxjs';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 import {SpoilerExisted} from '../../../../shared/models/spoiler/spoiler-existed';
@@ -21,6 +21,8 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
   infiniteScrollDisabled = false;
   bangumiUser: BangumiUser;
   userSpoilers: SpoilerExisted[] = [];
+  storedSpoilers: Set<string> = new Set();
+  SPOILERS_PER_QUERY = 10;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -38,15 +40,41 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
       .params
       .pipe(
         filter(params => params['userId']),
+        take(1),
       )
       .subscribe(params => {
         this.bangumiUserService.getUserInfoFromHttp(params['userId'])
-          .pipe(take(1))
           .subscribe(bangumiUser => {
             this.bangumiUser = bangumiUser;
           });
         this.getSpoilersInfo(params['userId']);
       });
+
+    this.listenToSpoilerDeletionSubject();
+  }
+
+  /**
+   * Listen to the spoiler deletion event and update spoiler array accordingly
+   */
+  listenToSpoilerDeletionSubject() {
+    this.banguminSpoilerService.spoilerDeletionSubject.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(spoilerDeletionResult => {
+      if (this.userSpoilers && spoilerDeletionResult.spoilerId && spoilerDeletionResult.isSuccessful) {
+        for (let i = 0; i < this.userSpoilers.length; i++) {
+          if (this.userSpoilers[i].spoilerId === spoilerDeletionResult.spoilerId) {
+            this.userSpoilers.splice(i, 1);
+            // if total number of spoilers are less than half of spoilers per query and we haven't reached end of content, trying to load
+            // more spoilers
+            if (this.userSpoilers.length <= this.SPOILERS_PER_QUERY / 2 && !this.endOfContent) {
+              this.getOlderSpoilers();
+            }
+            // spoiler id is unique and only one spoiler can currently be deleted, break the loop
+            break;
+          }
+        }
+      }
+    });
   }
 
   openDialog(): void {
@@ -61,10 +89,13 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
     }).pipe(
       concatMap(dialogRef => dialogRef.afterClosed())
     )
-      .subscribe(result => {
-        const createdAtEnd = this.userSpoilers.length >= 1 ? +this.userSpoilers[0].createdAt + 1 : undefined;
-        this.getSpoilersInfo(this.bangumiUser.id, false, createdAtEnd,
-          undefined);
+      .subscribe(spoilerCreationResult => {
+        if (spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
+          const createdAtStart = this.userSpoilers.length >= 1 ? +this.userSpoilers[0].createdAt + 1 : undefined;
+          this.getSpoilersInfo(this.bangumiUser.id, false, createdAtStart,
+            undefined);
+        }
+
       });
   }
 
@@ -78,12 +109,14 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
    * TODO: refactor the code using a pure rxjs way(i.e. get user from observable, use concatMap to control sequential requests)
    */
   onScrollDown() {
+    this.getOlderSpoilers();
+  }
 
+  getOlderSpoilers() {
     if (this.bangumiUser) {
       const createdAtEnd = this.userSpoilers.length >= 1 ? +this.userSpoilers[this.userSpoilers.length - 1].createdAt : undefined;
       this.getSpoilersInfo(this.bangumiUser.id, true, undefined, createdAtEnd);
     }
-
   }
 
   /**
@@ -97,15 +130,24 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
   getSpoilersInfo(userId: string | number, appendNewSpoilers = true, createdAtStart = 0, createdAtEnd = Date.now()) {
 
     let newUserSpoilers: SpoilerExisted[] = [];
-    this.banguminSpoilerService.getSpoilersBasicInfo(userId, createdAtStart, createdAtEnd).pipe(
+    this.banguminSpoilerService.getSpoilersBasicInfo(userId, createdAtStart, createdAtEnd, this.SPOILERS_PER_QUERY).pipe(
+      map(
+        userSpoilers => {
+          // in rare cases if duplications are accidentally added, filter them out
+          userSpoilers['spoilers'] = userSpoilers['spoilers'].filter((spoiler: SpoilerExisted) => {
+            const isSpoilerAlreadyStored = this.storedSpoilers.has(spoiler.spoilerId);
+            this.storedSpoilers.add(spoiler.spoilerId);
+            return !isSpoilerAlreadyStored;
+          });
+          return userSpoilers;
+        }
+      ),
       switchMap(userSpoilers => {
 
         newUserSpoilers = userSpoilers['spoilers'];
+        this.setEndOfContentFlag(userSpoilers['lastKey'], createdAtStart);
         if (newUserSpoilers.length !== 0) {
           // this response contains data, but it's the end of response, set relevant flags
-          if (!userSpoilers['lastKey']) {
-            this.setEndOfContentFlag();
-          }
           // TODO: optimize requests(might contain duplicates)
           if (appendNewSpoilers) {
             this.userSpoilers.push(...newUserSpoilers);
@@ -116,7 +158,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
             newUserSpoilers.map(userSpoiler => this.banguminSpoilerService.getSpoilerRelatedSubjectInfo(userSpoiler.relatedSubjects)));
         } else {
           // this response contains empty response,  set relevant flags and return null to indicate "don't proceed"
-          this.setEndOfContentFlag();
+          // only if we're querying until the end of spoilers so add a guard `createdAtStart === 0`
           return of(null);
         }
 
@@ -131,9 +173,18 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  setEndOfContentFlag(): void {
-    this.infiniteScrollDisabled = true;
-    this.endOfContent = true;
+  /**
+   * CHeck if all available soilers have been added, if so, disable the loader
+   * @param lastKey last key of the spoiler(see dynamodb for lasyKey definition)
+   * @param createdAtStart the createdAtStart paramter in querying
+   * @param oldestTimeStamp In Theory, the oldest timestamp of spoilers(users can't post a spoiler before this time)
+   */
+  setEndOfContentFlag(lastKey: Object, createdAtStart: number, oldestTimeStamp = 0): void {
+    if (!lastKey && createdAtStart === oldestTimeStamp) {
+      this.infiniteScrollDisabled = true;
+      this.endOfContent = true;
+    }
+
   }
 
 

@@ -1,21 +1,33 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {catchError, map, switchMap, take} from 'rxjs/operators';
+import {catchError, map, switchMap, take, tap} from 'rxjs/operators';
 import {BanguminUserService} from './bangumin-user.service';
 import {BanguminUserSchema} from '../../models/user/BanguminUser';
 import {RelatedSubjectsUserInput, SpoilerNew} from '../../models/spoiler/spoiler-new';
-import {forkJoin, Observable, of, throwError as observableThrowError} from 'rxjs';
+import {forkJoin, Observable, of, ReplaySubject, Subject, throwError as observableThrowError} from 'rxjs';
 import {BangumiUserService} from '../bangumi/bangumi-user.service';
 import {BangumiSubjectService} from '../bangumi/bangumi-subject.service';
 import {RuntimeConstantsService} from '../runtime-constants.service';
 import {SubjectBase} from '../../models/subject/subject-base';
 import {SpoilerExisted} from '../../models/spoiler/spoiler-existed';
 
+export interface SpoilerDeletionResult {
+  'spoilerId': string;
+  'isSuccessful': boolean;
+}
+
+export interface SpoilerCreationResult {
+  'spoilerId': string;
+  'isSuccessful': boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class BanguminSpoilerService {
+
+  spoilerDeletionSubject: Subject<SpoilerDeletionResult> = new ReplaySubject<SpoilerDeletionResult>();
 
   constructor(
     private banguminUserService: BanguminUserService,
@@ -47,7 +59,14 @@ export class BanguminSpoilerService {
   public deleteSpoiler(spoilerId: string, userId: string): Observable<any> {
     const options = {withCredentials: true};
     return this.http.delete
-    (`${environment.BACKEND_API_URL}/user/${userId}/spoiler/${spoilerId}`, options);
+    (`${environment.BACKEND_API_URL}/user/${userId}/spoiler/${spoilerId}`, options).pipe(
+      tap(res => {
+        this.spoilerDeletionSubject.next({
+          'spoilerId': spoilerId,
+          'isSuccessful': true
+        });
+      })
+    );
   }
 
   /**
@@ -55,12 +74,14 @@ export class BanguminSpoilerService {
    * @param userId user id
    * @param createdAtStart createdAt of spoiler should be newer than this value
    * @param createdAtEnd createdAt of spoiler should be older than this value
+   * @param limit the number of spoilers to return, currently it's set to 10 in back-end
    * @return userSpoilersBasicInfo: object {lastKey: lastElement}
    */
-  public getSpoilersBasicInfo(userId: number | string, createdAtStart = 0, createdAtEnd = Date.now()): Observable<any> {
+  public getSpoilersBasicInfo(userId: number | string, createdAtStart = 0, createdAtEnd = Date.now(), limit = 10): Observable<any> {
     const options = {withCredentials: true};
     return this.http.get<SpoilerExisted[]>
-    (`${environment.BACKEND_API_URL}/user/${userId}/spoilers?createdAtStart=${createdAtStart}&createdAtEnd=${createdAtEnd}`, options)
+    (`${environment.BACKEND_API_URL}/user/${userId}/spoilers?createdAtStart=${createdAtStart}&createdAtEnd=${createdAtEnd}&limit=${limit}`,
+      options)
       .pipe(
         map(userSpoilersBasicInfo => {
           userSpoilersBasicInfo['spoilers'] =

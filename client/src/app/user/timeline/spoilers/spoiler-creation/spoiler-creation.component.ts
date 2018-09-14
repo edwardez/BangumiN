@@ -232,7 +232,10 @@ export class SpoilerCreationComponent implements OnInit {
       )
       .subscribe(spoilerExisted => {
         if (spoilerExisted && spoilerExisted.spoilerId) {
-          this.spoilerDialog.close();
+          this.spoilerDialog.close({
+            'spoilerId': spoilerExisted.spoilerId,
+            'isSuccessful': true
+          });
         }
       });
   }

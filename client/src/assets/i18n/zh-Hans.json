@@ -31,7 +31,12 @@
     },
     "snackBar": {
       "success": {
-        "copy": "复制成功"
+        "copy": {
+          "result": "复制成功",
+          "then": {
+            "openNewWindow": "查看链接"
+          }
+        }
       },
       "error": {
         "submit": {

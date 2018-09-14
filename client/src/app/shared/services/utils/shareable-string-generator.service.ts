@@ -11,6 +11,7 @@ export interface CopyEvent {
   content?: string;
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -151,10 +152,11 @@ export class ShareableStringGeneratorService {
    * else open content in new window
    * @param event CopyEvent
    * @param copyableText copyableText
+   * @param spoilerLink link of the spoiler
    */
-  handleCopyCallback(event: CopyEvent, copyableText: Observable<string>): Observable<any> {
+  handleCopyCallback(event: CopyEvent, copyableText: Observable<string>, spoilerLink: string): Observable<any> {
     if (event.isSuccess) {
-      return this.snackBarService.openSimpleSnackBar('common.snackBar.success.copy');
+      return this.snackBarService.openSimpleSnackBar('common.snackBar.success.copy.result');
     } else {
       return this.snackBarService.openSimpleSnackBar('common.snackBar.error.copy.then.openNewWindow')
         .pipe(

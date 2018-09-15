@@ -36,7 +36,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activatedRoute
-      .parent.parent
+      .parent
       .params
       .pipe(
         filter(params => params['userId']),
@@ -64,6 +64,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.userSpoilers.length; i++) {
           if (this.userSpoilers[i].spoilerId === spoilerDeletionResult.spoilerId) {
             this.userSpoilers.splice(i, 1);
+            this.storedSpoilers.delete(spoilerDeletionResult.spoilerId);
             // if total number of spoilers are less than half of spoilers per query and we haven't reached end of content, trying to load
             // more spoilers
             if (this.userSpoilers.length <= this.SPOILERS_PER_QUERY / 2 && !this.endOfContent) {

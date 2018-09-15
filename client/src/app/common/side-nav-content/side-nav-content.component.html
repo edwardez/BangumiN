@@ -1,12 +1,13 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" class="mat-sidenav-xs">
     <mat-nav-list *ngIf="userID !== undefined">
-      <a mat-list-item routerLink="./progress" (click)="sidenav.close()">{{'progress.name' | translate}}</a>
-      <a mat-list-item [routerLink]="['./user', userID]" (click)="sidenav.close()">{{'profile.name' | translate}}</a>
+      <a mat-list-item [routerLink]="['./user', userID, 'statistics']" (click)="sidenav.close()">{{'nav.menu.myStatistics.name'
+        | translate}}</a>
+      <a mat-list-item [routerLink]="['./user', userID, 'timeline','spoilers']" (click)="sidenav.close()">{{'nav.menu.spoilerBox.name'
+        | translate}}</a>
       <mat-divider></mat-divider>
       <a mat-list-item routerLink="./about" (click)="sidenav.close()">{{'footer.about.name' | translate}}</a>
       <a mat-list-item routerLink="./help" (click)="sidenav.close()">{{'footer.help.name' | translate}}</a>
-
     </mat-nav-list>
   </mat-sidenav>
 

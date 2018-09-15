@@ -3,11 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppGuard} from './app.guard';
 import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
-import {ProgressComponent} from './home/progress/progress.component';
-import {ProfileComponent} from './user/profile.component';
 import {SettingsComponent} from './settings/settings.component';
 import {FullSearchComponent} from './search/full-search/full-search.component';
-import {CollectionHomeComponent} from './user/collection/collection-home/collection-home.component';
 import {SubjectComponent} from './subject/subject.component';
 // tslint:disable-next-line:max-line-length
 import {SpoilerSingleWrapperComponent} from './user/timeline/spoilers/spoiler-single/spoiler-single-wrapper/spoiler-single-wrapper.component';
@@ -16,6 +13,7 @@ import {TosComponent} from './documents/tos/tos.component';
 import {PrivacyComponent} from './documents/privacy/privacy.component';
 import {AboutHomeComponent} from './documents/about/about-home/about-home.component';
 import {HelpHomeComponent} from './documents/help/help-home/help-home.component';
+import {WelcomeComponent} from './home/welcome/welcome.component';
 
 const routes: Routes = [
   {
@@ -27,10 +25,10 @@ const routes: Routes = [
     path: '',
     canActivate: [AppGuard],
     children: [
-      {
-        path: 'progress',
-        component: ProgressComponent
-      },
+      // {
+      //   path: 'progress',
+      //   component: ProgressComponent
+      // },
       {
         path: 'settings',
         component: SettingsComponent
@@ -43,11 +41,11 @@ const routes: Routes = [
   },
   {
     path: 'user/:userId',
-    component: ProfileComponent,
+    // component: ProfileComponent,
     children: [
       {
         path: '',
-        component: CollectionHomeComponent,
+        loadChildren: 'app/user/timeline/spoilers/spoilers.module#SpoilersModule'
       },
       {
         path: 'statistics',
@@ -64,6 +62,10 @@ const routes: Routes = [
         pathMatch: 'full'
       },
     ]
+  },
+  {
+    path: 'welcome',
+    component: WelcomeComponent
   },
   {
     path: 'search',

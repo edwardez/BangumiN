@@ -154,7 +154,7 @@ export class BanguminUserService {
       {typ: 'anime', rate: 4, adddate: '2017-09-24'},
       {typ: 'anime', rate: 4, adddate: '2018-09-24'},
       {typ: 'real', rate: 6, adddate: '2016-09-24'},
-      {typ: 'anime', rate: 7, adddate: '2017-09-24'},
+      {typ: 'anime', rate: null, adddate: '2017-09-24'},
       {typ: 'real', rate: 8, adddate: '2018-09-24'},
       {typ: 'anime', rate: 9, adddate: '2017-09-24'}
     ]);

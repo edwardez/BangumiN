@@ -76,6 +76,7 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
     // initialize default pie-chart view
+    // todo: get current user first, then get stats(nested subscribe)
     this.banguminUserService.getUserProfileStats('hi')
       .subscribe((res) => {
         if (res) {

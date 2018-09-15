@@ -84,7 +84,7 @@ export class ProfileStatsComponent implements OnInit {
     });
 
     this.activatedRoute
-      .parent.parent
+      .parent
       .params
       .pipe(
         filter(params => {
@@ -164,8 +164,8 @@ export class ProfileStatsComponent implements OnInit {
 
   private initYearVsMean() {
     // initialize the chart with all types
-    this.selectedTypeListForyearVsMean = this.typeList;
-
+    // this.selectedTypeListForyearVsMean = this.typeList;
+    this.selectedTypeListForyearVsMean = ['book', 'anime'];
     const arr = this.targetUserStatsArr
       .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
     const arrByType = _.groupBy(arr, (row) => {
@@ -178,6 +178,7 @@ export class ProfileStatsComponent implements OnInit {
     // edit the chart on change of type selection
     // use optionSelectionChanges instead of selectionChange since we want to modify the chart minimally,
     // i.e. instead of re-filtering the whole array with selectedList, only add/remove target subjectType from the chart.
+    // todo: store selectedList in observable, use pairwise() to filter out trigger value
     this.yearVsMeanSelect.optionSelectionChanges
       .subscribe(res => {
         if (res && res.isUserInput) {

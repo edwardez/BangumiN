@@ -64,8 +64,8 @@
       }
     },
     "menu": {
-      "myStats": {
-        "name": "My statstics"
+      "myStatistics": {
+        "name": "My statistics"
       },
       "spoilerBox": {
         "name": "Spoiler Box"

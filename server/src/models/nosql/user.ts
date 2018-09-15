@@ -1,7 +1,7 @@
-import config from '../config';
+import config from '../../config/index';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
-import Logger from '../utils/logger';
+import Logger from '../../utils/logger';
 
 const logger = Logger(module);
 

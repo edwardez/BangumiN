@@ -1,9 +1,8 @@
 import * as express from 'express';
 
 import Logger from '../../utils/logger';
-import {findSubjectById} from '../../services/bangumi/subjectService';
-import {findUserById, findUserByIdOrUserName} from '../../services/bangumi/userService';
-import {User} from '../../models/bangumi/user';
+import {findUserByIdOrUserName} from '../../services/bangumi/userService';
+import {User} from '../../models/relational/bangumi/user';
 
 const router = express.Router();
 const logger = Logger(module);
@@ -11,7 +10,7 @@ const logger = Logger(module);
 // root url: /api/bangumi/user
 
 /**
- * get  multiple subjects info
+ * get user info
  */
 router.get('/:userId', (req: any, res: any, next: any) => {
   const userId = req.params.userId;
@@ -31,5 +30,6 @@ router.get('/:userId', (req: any, res: any, next: any) => {
   );
 
 });
+
 
 export default router;

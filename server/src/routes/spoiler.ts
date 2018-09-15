@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as dynamooseSpoilerModel from '../models/spoiler';
+import * as dynamooseSpoilerModel from '../models/nosql/spoiler';
 import Logger from '../utils/logger';
 import authenticationMiddleware from '../services/authenticationHandler';
 

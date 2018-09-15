@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as dynamooseUserModel from '../models/user';
+import * as dynamooseUserModel from '../models/nosql/user';
 import Logger from '../utils/logger';
 
 const router = express.Router();

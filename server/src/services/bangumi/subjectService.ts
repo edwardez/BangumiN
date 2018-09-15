@@ -1,4 +1,4 @@
-import {Subject} from '../../models/bangumi/subject';
+import {Subject} from '../../models/relational/bangumi/subject';
 import * as Promise from 'bluebird';
 
 function findSubjectById(id: number): Promise<Subject> {

@@ -240,13 +240,12 @@ export class ProfileStatsComponent implements OnInit {
     });
     const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
     yearArr.forEach((row) => {
-      const tmpArr = arrByYear[row.name];
+      let tmpArr = arrByYear[row.name];
       if (tmpArr) {
         row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
         row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
-        row.value = _(tmpArr)
-          .reject((thisRow) => !thisRow.rate)
-          .meanBy('rate');
+        tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
+        row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
       }
     });
     this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];

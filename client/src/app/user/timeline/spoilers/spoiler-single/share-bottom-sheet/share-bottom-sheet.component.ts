@@ -57,10 +57,11 @@ export class ShareBottomSheetComponent implements OnInit {
 
   }
 
-  handleCopyCallback(event: CopyEvent, text: Observable<string>) {
-    this.shareableStringGeneratorService.handleCopyCallback(event, text).subscribe(res => {
-      this.bottomSheetRef.dismiss();
-    });
+  handleCopyCallback(event: CopyEvent, text: Observable<string> | string) {
+    this.shareableStringGeneratorService.handleCopyCallback(event, text instanceof Observable ? text : of(text), this.spoilerLink)
+      .subscribe(res => {
+        this.bottomSheetRef.dismiss();
+      });
   }
 
   deleteSpoiler() {
@@ -76,9 +77,6 @@ export class ShareBottomSheetComponent implements OnInit {
     this.bottomSheetRef.dismiss();
   }
 
-  convertToObservable(data: any) {
-    return of(data);
-  }
 
 
 }

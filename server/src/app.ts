@@ -15,6 +15,7 @@ import spoiler from './routes/spoiler';
 import {sequelize} from './common/sequelize';
 import subject from './routes/bangumi/subject';
 import user from './routes/bangumi/user';
+import stats from './routes/stats';
 
 const logger = Logger(module);
 
@@ -105,10 +106,11 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
 app.use('/oauth', oauth);
 app.use('/api/user/:userId', spoiler);
 app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
-app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
+app.use('/api/stats', stats);
 app.use('/api/bgm/subject', authenticationMiddleware.isAuthenticated, subject);
 app.use('/api/bgm/user',  user);
 app.all('*', (req, res) => {

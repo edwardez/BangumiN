@@ -1,9 +1,11 @@
 import {Sequelize} from 'sequelize-typescript';
 import config from '../config/web';
-import {Subject} from '../models/bangumi/subject';
-import {User} from '../models/bangumi/user';
+import {Subject} from '../models/relational/bangumi/subject';
+import {User} from '../models/relational/bangumi/user';
 
 import Logger from '../utils/logger';
+import {Record} from '../models/relational/bangumi/record';
+
 const logger = Logger(module);
 
 const sequelize = new Sequelize({
@@ -22,5 +24,6 @@ const sequelize = new Sequelize({
 
 sequelize.addModels([Subject]);
 sequelize.addModels([User]);
+sequelize.addModels([Record]);
 
 export {sequelize};

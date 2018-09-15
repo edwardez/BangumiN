@@ -3,7 +3,7 @@ import {Strategy as OAuth2Strategy} from 'passport-oauth2';
 import config from '../config/components/passport';
 import request from 'request';
 import Logger from '../utils/logger';
-import * as dynamooseUserModel from '../models/user';
+import * as dynamooseUserModel from '../models/nosql/user';
 
 const logger = Logger(module);
 

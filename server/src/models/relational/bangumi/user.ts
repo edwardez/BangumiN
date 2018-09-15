@@ -1,7 +1,7 @@
 import {Column, DataType, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import snakecase_keys from 'snakecase-keys';
 
-import {Avatar} from './common/avatar';
+import {Avatar} from './common/Avatar';
 
 export interface BangumiUserSchema{
   id: number;

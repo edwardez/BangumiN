@@ -19,6 +19,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
   receiveMessageHandler;
   bangumiAuthWaitDialog;
   openedBangumiPopup;
+  disableLoginButton = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   receiveMessage: any = (event: any) => {
@@ -99,6 +100,14 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
           receiveMessageHandler: this.receiveMessageHandler
         }
       });
+    this.bangumiAuthWaitDialog.afterOpen().subscribe(
+      res => {
+        this.disableLoginButton = true;
+      }
+    );
+    this.bangumiAuthWaitDialog.afterClosed().subscribe(res => {
+      this.disableLoginButton = false;
+    });
   }
 
   removePostMessageListener() {

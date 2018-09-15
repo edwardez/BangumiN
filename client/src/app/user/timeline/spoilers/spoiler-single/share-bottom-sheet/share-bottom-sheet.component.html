@@ -17,8 +17,8 @@
   </a>
 
   <a ngxClipboard mat-list-item
-     (cbOnSuccess)="handleCopyCallback($event, convertToObservable(spoilerLink))"
-     (cbOnError)="handleCopyCallback($event, convertToObservable(spoilerLink))"
+     (cbOnSuccess)="handleCopyCallback($event, spoilerLink)"
+     (cbOnError)="handleCopyCallback($event, spoilerLink)"
      [cbContent]="spoilerLink">
     <span mat-line>{{'posts.bangumin.spoilerBox.single.card.menu.copyLink' | translate}}</span>
   </a>

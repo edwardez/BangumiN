@@ -136,21 +136,26 @@
 
   </ng-container>
 
-  <div *ngIf="!spoilerContentReceived?.relatedSubjectsBaseDetails"
-       class="ph-item p-0 ml-0 mb-0 mb-0 mt-2  no-gutters">
+  <ng-container *ngIf="!spoilerContentReceived?.relatedSubjectsBaseDetails">
+    <ng-container *ngFor="let relatedSubject of spoilerContentReceived?.relatedSubjects">
 
-    <div class="col-2 col-lg-1 pl-0 flex-grow-0">
-      <div class="ph-picture image-grid"></div>
-    </div>
+      <div
+        class="ph-item p-0 ml-0 mb-0 mb-0 mt-2  no-gutters">
 
-    <div class="col-10 col-lg-11 align-self-center">
-      <div class="ph-row">
-        <div class="ph-col-4"></div>
-        <div class="ph-col-8 empty"></div>
+        <div class="col-2 col-lg-1 pl-0 flex-grow-0">
+          <div class="ph-picture image-grid"></div>
+        </div>
+        <div class="col-10 col-lg-11 align-self-center">
+          <div class="ph-row">
+            <div class="ph-col-4"></div>
+            <div class="ph-col-8 empty"></div>
+          </div>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </ng-container>
+
+  </ng-container>
 
   <mat-card-actions>
 

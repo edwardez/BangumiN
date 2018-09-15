@@ -5,6 +5,7 @@ import {flatMap, take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {MatSelect} from '@angular/material';
 import {of} from 'rxjs';
+import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 
 @Component({
   selector: 'app-profile-stats',
@@ -42,7 +43,8 @@ export class ProfileStatsComponent implements OnInit {
   countByTypeData;
 
   constructor(
-    private banguminUserService: BanguminUserService
+    private banguminUserService: BanguminUserService,
+    private bangumiStatsService: BangumiStatsService
   ) {
     this.view = [800, 500];
     // options
@@ -76,7 +78,7 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
     // initialize default pie-chart view
-    // todo: get current user first, then get stats(nested subscribe)
+    // todo: get target user by url, then get stats(nested subscribe)
     this.banguminUserService.getUserProfileStats('hi')
       .subscribe((res) => {
         if (res) {

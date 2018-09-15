@@ -1,11 +1,13 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
-import {flatMap, take} from 'rxjs/operators';
+import {filter, flatMap, take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {MatSelect} from '@angular/material';
 import {of} from 'rxjs';
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
+import {ActivatedRoute} from '@angular/router';
+import {SubjectType} from '../../shared/enums/subject-type.enum';
 
 @Component({
   selector: 'app-profile-stats',
@@ -42,9 +44,13 @@ export class ProfileStatsComponent implements OnInit {
   yearVsMeanSelect: MatSelect;
   countByTypeData;
 
+  targetUser;
+  targetUserStatsArr;
+
   constructor(
     private banguminUserService: BanguminUserService,
-    private bangumiStatsService: BangumiStatsService
+    private bangumiStatsService: BangumiStatsService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.view = [800, 500];
     // options
@@ -77,18 +83,42 @@ export class ProfileStatsComponent implements OnInit {
         this.theme = 'dark';
       }
     });
-    // initialize default pie-chart view
-    // todo: get target user by url, then get stats(nested subscribe)
-    this.banguminUserService.getUserProfileStats('hi')
-      .subscribe((res) => {
-        if (res) {
-          const defaultArr = res;
-          this.countByTypeData = _.map(_.countBy(defaultArr, 'typ'), (val, key) => ({name: key, value: val}));
-          this.typeList = _.map(this.countByTypeData, 'name');
 
-          this.initYearVsMean();
-        }
+    this.activatedRoute
+      .parent.parent
+      .params
+      .pipe(
+        filter(params => {
+          this.targetUser = params['userId'];
+          return this.targetUser;
+        })
+      )
+      .subscribe(params => {
+        this.bangumiStatsService.getUserStats(this.targetUser)
+          .subscribe(res => {
+            if (res) {
+              const defaultArr = res.stats;
+              // cache stats array
+              this.targetUserStatsArr = res.stats;
+              this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
+              this.typeList = _.map(this.countByTypeData, 'name');
+
+              this.initYearVsMean();
+            }
+          });
       });
+    // initialize default pie-chart view
+    // // todo: get target user by url, then get stats(nested subscribe)
+    // this.banguminUserService.getUserProfileStats('hi')
+    //   .subscribe((res) => {
+    //     if (res) {
+    //       const defaultArr = res;
+    //       this.countByTypeData = _.map(_.countBy(defaultArr, 'typ'), (val, key) => ({name: key, value: val}));
+    //       this.typeList = _.map(this.countByTypeData, 'name');
+    //
+    //       this.initYearVsMean();
+    //     }
+    //   });
   }
 
   switchType(graph: string) {
@@ -149,19 +179,29 @@ export class ProfileStatsComponent implements OnInit {
     // initialize the chart with all types
     this.selectedTypeListForyearVsMean = this.typeList;
 
-    this.banguminUserService.getUserProfileStats('hi')
-      .subscribe((res) => {
-        if (res) {
-          const arr = res
-            .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
-          const arrByType = _.groupBy(arr, (row) => {
-            return row.typ;
-          });
-          Object.keys(arrByType).forEach((type) => {
-            this.groupAndCountByYear(arrByType[type], type);
-          });
-        }
-      });
+    const arr = this.targetUserStatsArr
+      .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
+    const arrByType = _.groupBy(arr, (row) => {
+      return SubjectType[row.subjectType];
+    });
+    Object.keys(arrByType).forEach((type) => {
+      this.groupAndCountByYear(arrByType[type], type);
+    });
+
+
+    // this.banguminUserService.getUserProfileStats('hi')
+    //   .subscribe((res) => {
+    //     if (res) {
+    //       const arr = res
+    //         .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(stat.typ));
+    //       const arrByType = _.groupBy(arr, (row) => {
+    //         return row.typ;
+    //       });
+    //       Object.keys(arrByType).forEach((type) => {
+    //         this.groupAndCountByYear(arrByType[type], type);
+    //       });
+    //     }
+    //   });
 
     // edit the chart on change of type selection
     this.yearVsMeanSelect.optionSelectionChanges
@@ -196,7 +236,7 @@ export class ProfileStatsComponent implements OnInit {
 
   private groupAndCountByYear(arr, type: string) {
     const arrByYear = _.groupBy(arr, (row) => {
-      return day(row.adddate).year();
+      return day(row.addDate).year();
     });
     const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
     yearArr.forEach((row) => {
@@ -205,7 +245,7 @@ export class ProfileStatsComponent implements OnInit {
         row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
         row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
         row.value = _(tmpArr)
-          .reject((row) => !row.rate)
+          .reject((thisRow) => !thisRow.rate)
           .meanBy('rate');
       }
     });

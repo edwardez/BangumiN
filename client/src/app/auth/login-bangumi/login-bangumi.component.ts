@@ -40,7 +40,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
             switchMap(
               res => {
                 loginResultTranslationLabel = 'login.loginSuccess';
-                this.router.navigate(['/progress']);
+                this.router.navigate(['/welcome']);
                 return this.translateService.get(loginResultTranslationLabel);
               }
             ),
@@ -51,7 +51,7 @@ export class LoginBangumiComponent implements OnInit, OnDestroy {
             finalize(() => {
               this.translateService.get(loginResultTranslationLabel).subscribe(res => {
                 this.snackBar.open(res, '', {
-                  duration: 3000
+                  duration: 2000
                 });
               });
             }),

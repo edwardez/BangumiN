@@ -64,6 +64,12 @@
       }
     },
     "menu": {
+      "myStatistics": {
+        "name": "我的统计"
+      },
+      "spoilerBox": {
+        "name": "剧透箱"
+      },
       "login": {
         "name": "登陆"
       },

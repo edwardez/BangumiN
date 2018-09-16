@@ -3,8 +3,8 @@ import {Subject} from 'rxjs';
 import {DeviceWidth} from './shared/enums/device-width.enum';
 import {takeUntil} from 'rxjs/operators';
 import {LayoutService} from './shared/services/layout/layout.service';
-import {StorageService} from './shared/services/storage.service';
 import {BanguminUserService} from './shared/services/bangumin/bangumin-user.service';
+import {GoogleAnalyticsService} from './shared/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -25,15 +25,17 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private banguminUserService: BanguminUserService,
     private layoutService: LayoutService,
-    private storageService: StorageService) {
+    private googleAnalyticsService: GoogleAnalyticsService) {
   }
 
   ngOnInit(): void {
     this.updateDeviceWidth();
     this.setAppInitialSettings();
+    this.googleAnalyticsService.subscribe();
   }
 
   ngOnDestroy(): void {
+    this.googleAnalyticsService.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

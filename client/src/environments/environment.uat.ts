@@ -20,5 +20,6 @@ export const environment = {
   progressPageMaxEpisodeCountMobile: 5,
   progressPageMaxEpisodeCountDesktop: 30,
   invalidEpisode: '-1',
-  invalidVolume: '-1'
+  invalidVolume: '-1',
+  googleAnalyticsTrackingId: 'UA-125851644-2'
 };

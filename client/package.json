@@ -54,6 +54,7 @@
     "@angular/compiler-cli": "6.1.7",
     "@angular/language-service": "^6.1.7",
     "@biesbjerg/ngx-translate-extract": "^2.3.4",
+    "@types/google.analytics": "0.0.39",
     "@types/jasmine": "^2.8.8",
     "@types/jasminewd2": "~2.0.2",
     "@types/js-priority-queue": "0.0.5",

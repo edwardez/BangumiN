@@ -32,7 +32,6 @@ export class ProfileStatsComponent implements OnInit {
 
   typeList;
   selectedTypeListForscoreVsCount;
-  selectedTypeListForyearVsMean;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
@@ -71,7 +70,6 @@ export class ProfileStatsComponent implements OnInit {
     };
 
     this.selectedTypeListForscoreVsCount = this.typeList;
-    this.selectedTypeListForyearVsMean = this.typeList;
 
     this.initSelectFormGroup();
   }
@@ -175,11 +173,10 @@ export class ProfileStatsComponent implements OnInit {
 
   private initYearVsMean() {
     // initialize the chart with all types
-    this.selectedTypeListForyearVsMean = this.typeList;
-    // this.selectedTypeListForyearVsMean = ['book', 'anime'];
+    const selectedTypeListForyearVsMean = this.subjectSelectFormGroup.value.subjectTypeSelect;
     const arr = this.targetUserStatsArr
-      .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ?
-        true : this.selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
+      .filter((stat) => (selectedTypeListForyearVsMean.length === 0) ?
+        true : selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
     const arrByType = _.groupBy(arr, (row) => {
       return SubjectType[row.subjectType];
     });

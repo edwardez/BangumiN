@@ -57,11 +57,21 @@
   <!--</mat-select>-->
   <!--</mat-form-field>-->
 
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--#yearVsMeanSelect="matSelect"-->
+<!--[(value)]="selectedTypeListForyearVsMean"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+
+<form [formGroup]="subjectSelectFormGroup">
   <mat-form-field>
     <mat-select
-      #yearVsMeanSelect="matSelect"
-      [(value)]="selectedTypeListForyearVsMean"
+      [formControl]="subjectSelectFormGroup.get('subjectTypeSelect')"
       multiple>
       <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
     </mat-select>
   </mat-form-field>
+</form>

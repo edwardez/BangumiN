@@ -5,13 +5,15 @@ import {ProfileStatsRoutingModule} from './profile-stats-routing.module';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {ProfileStatsComponent} from './profile-stats.component';
 import {BanguminSharedModule} from '../../bangumin-shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     BanguminSharedModule,
     ProfileStatsRoutingModule,
-    NgxChartsModule
+    NgxChartsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ProfileStatsComponent,

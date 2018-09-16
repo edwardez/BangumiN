@@ -12,7 +12,7 @@ export function googleAnalyticsHeadScripts() {
   googleAnalyticsSecondScript.innerHTML = `
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());a
+    gtag('js', new Date());
     gtag('config', '${environment.googleAnalyticsTrackingId}');
     `;
 

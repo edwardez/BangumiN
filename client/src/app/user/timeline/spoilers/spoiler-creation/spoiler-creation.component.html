@@ -62,9 +62,8 @@
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input
-            [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate: {maximumCount: SpoilerCreationConfig.MAX_RELATED_SUBJECT_NUMBER}"
             #subjectInput
-
+            [placeholder]="'profile.tabs.timeline.spoilerBox.creation.dialog.option.tagSubject.name' | translate: {maximumCount: SpoilerCreationConfig.MAX_RELATED_SUBJECT_NUMBER}"
             [matAutocomplete]="auto"
             [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="[]"

@@ -61,6 +61,12 @@
     "search": {
       "placeholder": {
         "name": "Search"
+      },
+      "autocomplete": {
+        "searchKeywordInSubject": "Subject \"{{value}}\"",
+        "searchKeywordInUser": "User \"{{value}}\"",
+        "jumpToSubjectId": "Subject id: {{value}}",
+        "jumpToUserId": "User id: {{value}}"
       }
     },
     "menu": {

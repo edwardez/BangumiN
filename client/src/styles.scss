@@ -37,6 +37,10 @@ app-spoiler-creation .mat-dialog-container {
   font-size: unset;
 }
 
+.search-suggestion-panel {
+  top: -3px;
+}
+
 // hide default mat-card-header-text style for spoiler
 app-spoiler-single-content .mat-card-header-text {
   display: none;

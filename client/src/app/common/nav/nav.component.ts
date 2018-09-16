@@ -17,7 +17,6 @@ import {LayoutService} from '../../shared/services/layout/layout.service';
 })
 export class NavComponent implements OnInit, OnDestroy {
   bangumiUser: BangumiUser;
-  searchKeywords = '';
   isAuthenticated = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -36,8 +35,6 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser();
-
-    this.updateSearchBarText();
     this.updateUserInfo();
 
   }
@@ -45,21 +42,6 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  /**
-   * this function will update text in search bar according to route params
-   */
-  updateSearchBarText() {
-    this.route
-      .queryParams
-      .pipe(
-        filter(params => params['keywords'] !== undefined)
-      ).subscribe(
-      params => {
-        this.searchKeywords = decodeURI(params['keywords']);
-      }
-    );
   }
 
   /**
@@ -108,10 +90,6 @@ export class NavComponent implements OnInit, OnDestroy {
       .then(() => {
       });
 
-  }
-
-  doFullSearch(query: string) {
-    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
   login() {

@@ -115,6 +115,10 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
     color: mat-color($foreground, text)
   }
 
+  .background-background-color-card {
+    background-color: mat-color($background, card);
+  }
+
   .background-color-bangumin-theme-accent {
     background-color: mat-color($accent);
   }

@@ -12,11 +12,11 @@
   </div>
 
   <div class="flex-grow-1 flex-shrink-1"></div>
-  <div class="search-container d-flex align-content-center justify-content-end align-items-center mr-2"
-       *ngIf="isAuthenticated">
-    <input type="search" aria-label="search" placeholder="{{'nav.search.placeholder.name' | translate}}" #searchBar
-           (keyup.enter)="doFullSearch(searchBar.value)" value="{{searchKeywords}}">
-  </div>
+
+  <app-nav-search-bar *ngIf="isAuthenticated"
+                      class="search-container d-flex align-content-center justify-content-end align-items-center mr-2">
+
+  </app-nav-search-bar>
 
 
   <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">

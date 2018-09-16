@@ -61,6 +61,12 @@
     "search": {
       "placeholder": {
         "name": "搜索"
+      },
+      "autocomplete": {
+        "searchKeywordInSubject": "作品名 \"{{value}}\"",
+        "searchKeywordInUser": "用户名 \"{{value}}\"",
+        "jumpToSubjectId": "作品id: {{value}}",
+        "jumpToUserId": "用户id: {{value}}"
       }
     },
     "menu": {

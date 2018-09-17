@@ -7,6 +7,8 @@ import {SearchSubjectsResponseSmall} from '../../models/search/search-subjects-r
 import {SubjectType} from '../../enums/subject-type.enum';
 import {BanguminStyleUserBatchSearchResponse} from '../../models/search/bangumin-style-batch-search-response';
 import {BangumiUser} from '../../models/BangumiUser';
+import {SearchSubjectsResponseMedium} from '../../models/search/search-subjects-response-medium';
+import {SearchSubjectsResponseLarge} from '../../models/search/search-subjects-response-large';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +18,23 @@ export class BangumiSearchService {
   constructor(private http: HttpClient) {
   }
 
+  static getSearchSubjectsResponseClass(responseGroup = 'small') {
+    switch (responseGroup) {
+      case 'small':
+        return SearchSubjectsResponseSmall;
+      case 'medium':
+        return SearchSubjectsResponseMedium;
+      case 'large':
+        return SearchSubjectsResponseLarge;
+      default:
+        return SearchSubjectsResponseSmall;
+
+    }
+  }
+
 
   /**
-   *search through bangumi API
+   * Search through bangumi API
    * https://github.com/bangumi/api/issues/43 currently this API has a strange behaviour: if the result is empty,
    * the API will take a long time to return a response, as a workaround we set a searchTimeout here then return an empty result
    * another strange behaviour is a html might be returned, but the status code is 200, in that case we also initialize an empty result
@@ -26,11 +42,14 @@ export class BangumiSearchService {
    * @param searchFilterType type of subject
    * @param responseGroup response size, currently only small is supported
    * @param start start token
-   * @param max_results maximum number of resul
+   * @param max_results maximum number of result
    * @param searchTimeout timeout for searching
    */
   public searchSubject(keywords: string, searchFilterType = SubjectType.all, responseGroup = 'small',
-                       start = 0, max_results = 25, searchTimeout = 5000): Observable<SearchSubjectsResponseSmall> {
+                       start = 0, max_results = 25,
+                       searchTimeout = 5000)
+    : Observable<SearchSubjectsResponseSmall | SearchSubjectsResponseMedium | SearchSubjectsResponseLarge> {
+    const SearchResultClass = BangumiSearchService.getSearchSubjectsResponseClass(responseGroup);
     // use replace here to remove redundant white space
     return this.http.get(`${environment.BANGUMI_API_URL}/search/subject/${keywords}?\
     app_id=${environment.BANGUMI_APP_ID}&\
@@ -42,16 +61,16 @@ export class BangumiSearchService {
         timeout(searchTimeout),
         map(
           (response: any) => {
-            let searchResult: SearchSubjectsResponseSmall;
+            let searchResult: SearchSubjectsResponseSmall | SearchSubjectsResponseMedium | SearchSubjectsResponseLarge;
             // parse 404 result into a object that's same as others
             if (response) {
               if (response['code'] === 404) {
-                searchResult = new SearchSubjectsResponseSmall();
+                searchResult = new SearchResultClass();
               } else {
-                searchResult = new SearchSubjectsResponseSmall().deserialize(response, searchFilterType);
+                searchResult = new SearchResultClass().deserialize(response, searchFilterType);
               }
             } else {
-              searchResult = new SearchSubjectsResponseSmall();
+              searchResult = new SearchResultClass();
             }
 
             return searchResult;
@@ -60,7 +79,7 @@ export class BangumiSearchService {
         catchError(error => {
           // in case of status 200 or timeout, we'll handle it silently
           if (error.status === 200 || error.name === 'TimeoutError') {
-            return of(new SearchSubjectsResponseSmall());
+            return of(new SearchResultClass());
           } else {
             return throwError(error);
           }

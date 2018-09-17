@@ -1,3 +1,60 @@
-<p>
-  subject-search works!
-</p>
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-3 col-md-2  mb-2 mb-md-0">
+    <mat-card>
+      <mat-card-content>
+        <mat-radio-group class="d-flex flex-column" [value]="'1'">
+          <mat-radio-button [value]="'1'">
+            category 1
+          </mat-radio-button>
+          <mat-radio-button [value]="'2'">
+            category 2
+          </mat-radio-button>
+        </mat-radio-group>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-12 col-sm-7 col-md-8 mb-1 mb-sm-2 mb-md-3">
+    <mat-card>
+      <mat-card-content>
+        <ng-container *ngIf="currentPageState() !== PageState.InLoading">
+          <div *ngFor="let subject of subjectSearchResults.subjects" class="row no-gutters mb-1 mb-sm-2">
+            <div class="d-flex">
+              <div class="figure">
+                <a [routerLink]="['../subject', subject.id]">
+                  <img class="img-fluid subject-img-small" [src]="subject.images.small"/>
+                </a>
+              </div>
+              <div class="d-flex flex-column justify-content-start ml-1 ml-sm-2 ml-md-3 ml-lg-4 ml-xl-5">
+                <div class="d-flex flex-wrap align-items-center">
+                  <mat-icon>{{getSubjectIcon(subject.type)}}</mat-icon>
+                  <a class="ml-1 subject-link" [routerLink]="['../subject', subject.id]">
+                    {{subject.subjectName.preferred}}</a>
+                  <small>{{subject.subjectName.secondary}}</small>
+                </div>
+                <div class="row">
+                  <app-star-rating *ngIf="subject.rating.score && subject.rating.total >= 10"
+                                   [currentRating]="subject.rating.score" [starCount]="10"
+                                   class="align-self-start col-6"></app-star-rating>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentPageState() === PageState.InLoading">
+          <div *ngIf="!shouldDisableInfiniteScroll()" class="row justify-content-center no-gutters mt-2 mt-md-3">
+            <mat-spinner [diameter]="25"></mat-spinner>
+          </div>
+
+          <!--<app-back-to-top *ngIf="shouldDisableInfiniteScroll()"></app-back-to-top>-->
+        </ng-container>
+
+        <div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

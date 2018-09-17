@@ -14,6 +14,7 @@ import {RuntimeConstantsService} from '../../../../shared/services/runtime-const
 import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
 import {SnackBarService} from '../../../../shared/services/snackBar/snack-bar.service';
 import {Router} from '@angular/router';
+import {CommonUtils} from '../../../../shared/utils/common-utils';
 
 const Parchment = Quill.import('parchment');
 
@@ -174,7 +175,7 @@ export class SpoilerCreationComponent implements OnInit {
     this.updateSearchButtonText();
     this.subjectSearchResult = this.bangumiSearchService.searchSubject(searchKeyWord,
       undefined, 'small', undefined, SpoilerCreationConfig.MAX_SEARCH_RESULT, SpoilerCreationConfig.SEARCH_TIME_OUT).pipe(
-      map(searchResult => {
+      map((searchResult: SearchSubjectsResponseSmall) => {
         const selectedSubjects = this.spoilerForm.get('relatedSubjects').value || [];
         const selectedSubjectsSet = new Set(selectedSubjects.map(subject => subject.id));
         searchResult.subjects = searchResult.subjects.filter(subject =>
@@ -251,31 +252,10 @@ export class SpoilerCreationComponent implements OnInit {
   }
 
   getSubjectIcon(subjectType: SubjectType): string {
-    let subjectMatIcon;
-    switch (subjectType) {
-      case SubjectType.anime:
-        subjectMatIcon = 'live_tv';
-        break;
-      case SubjectType.book:
-        subjectMatIcon = 'book';
-        break;
-      case SubjectType.music:
-        subjectMatIcon = 'music_note';
-        break;
-      case SubjectType.game:
-        subjectMatIcon = 'videogame_asset';
-        break;
-      case SubjectType.real:
-        subjectMatIcon = 'tv';
-        break;
-      default:
-        // use help_outline as a 'question mark' as material icon doesn't have a question mark
-        subjectMatIcon = 'help_outline';
-        break;
-    }
-
-    return subjectMatIcon;
+    return CommonUtils.getSubjectIcon(subjectType);
   }
+
+
 
 
 }

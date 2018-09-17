@@ -11,8 +11,13 @@ const logger = Logger(module);
  */
 router.get('/:subjectId', (req: any, res: any, next: any) => {
   const subjectId = req.params.subjectId;
+  const responseGroup = req.query.responseGroup || 'small';
+  let exclude: string[];
+  if (responseGroup === 'medium' || responseGroup === 'large') {
+    exclude = [];
+  }
 
-  findSubjectById(subjectId).then(
+  findSubjectById(subjectId, exclude).then(
     (subject) => {
       if (subject) {
         return res.json(subject.toJSON());

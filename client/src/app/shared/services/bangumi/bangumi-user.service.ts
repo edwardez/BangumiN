@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../storage.service';
-import {catchError, first, map, switchMap, take} from 'rxjs/operators';
+import {catchError, map, switchMap, take} from 'rxjs/operators';
 import {BangumiUser} from '../../models/BangumiUser';
 import {CollectionWatchingResponseMedium} from '../../models/collection/collection-watching-response-medium';
 import {UserProgress} from '../../models/progress/user-progress';
@@ -11,9 +11,7 @@ import {AuthenticationService} from '../auth.service';
 import {SubjectType} from '../../enums/subject-type.enum';
 import {SubjectProgress} from '../../models/progress/subject-progress';
 import {BangumiSubjectService} from './bangumi-subject.service';
-import * as PriorityQueue from 'js-priority-queue';
-import {SubjectEpisodes} from '../../models/subject/subject-episodes';
-import {Episode} from '../../models/episode/episode';
+// import * as PriorityQueue from 'js-priority-queue';
 import {UserCollectionResponse} from '../../models/collection/user-collection-response';
 
 @Injectable({
@@ -30,57 +28,57 @@ export class BangumiUserService {
   }
 
 
-  /**
-   * Add episode to a heap, sequence number is the 'sort' number from bangumi episode
-   * a heap is needed because
-   * 1. easier to use than an Array, and it's more quickly
-   * 2. we need to find the next/previous episode, while sort number might not be a integer, heap has advantage on handling this
-   * @param {SubjectProgress} subjectProgress
-   * @param {SubjectEpisodes} subjectEpisodes
-   * @param {number} maxEpisodeCount
-   * @returns {module:js-priority-queue.PriorityQueue<Episode>}
-   */
-  static addEpisodeToHeap(subjectProgress: SubjectProgress, subjectEpisodes: SubjectEpisodes, maxEpisodeCount: number)
-    : PriorityQueue<Episode> {
-
-    // calculate the max/min episode sort number(in episodes that user has watched) under each category
-    // this number is needed because we need to show the first unwatched episode to users
-    subjectEpisodes.episodes.reduce((updatedEpisode, currentValue) => {
-      if (subjectProgress.episodesObject[currentValue.id]) {
-        currentValue['userCollectionStatus'] = subjectProgress.episodesObject[currentValue.id].status.id;
-        subjectProgress.episodeSortMinMaxByType[currentValue.type].max =
-          Math.max(subjectProgress.episodeSortMinMaxByType[currentValue.type].max, currentValue.sort);
-        subjectProgress.episodeSortMinMaxByType[currentValue.type].min =
-          Math.min(subjectProgress.episodeSortMinMaxByType[currentValue.type].min, currentValue.sort);
-      }
-      updatedEpisode.push(currentValue);
-
-      return updatedEpisode;
-    }, []);
-
-    const priorityQueue: PriorityQueue<Episode> = new PriorityQueue({
-      comparator: function (a, b) {
-        return a['sort'] - b['sort'];
-      }
-    });
-
-    const totalEpisodesCount: number = subjectEpisodes.episodes.length;
-    for (const subjectEpisode of  subjectEpisodes.episodes) {
-      // break if more than required number of episode is fetched
-      if (priorityQueue.length >= maxEpisodeCount) {
-        break;
-      }
-
-      if (totalEpisodesCount <= maxEpisodeCount ||
-        subjectEpisode.sort >= subjectProgress.episodeSortMinMaxByType[subjectEpisode.type].max) {
-        priorityQueue.queue(subjectEpisode);
-      }
-      // add episode to a priority queue
-
-    }
-
-    return priorityQueue;
-  }
+  // /**
+  //  * Add episode to a heap, sequence number is the 'sort' number from bangumi episode
+  //  * a heap is needed because
+  //  * 1. easier to use than an Array, and it's more quickly
+  //  * 2. we need to find the next/previous episode, while sort number might not be a integer, heap has advantage on handling this
+  //  * @param {SubjectProgress} subjectProgress
+  //  * @param {SubjectEpisodes} subjectEpisodes
+  //  * @param {number} maxEpisodeCount
+  //  * @returns {module:js-priority-queue.PriorityQueue<Episode>}
+  //  */
+  // static addEpisodeToHeap(subjectProgress: SubjectProgress, subjectEpisodes: SubjectEpisodes, maxEpisodeCount: number)
+  //   : PriorityQueue<Episode> {
+  //
+  //   // calculate the max/min episode sort number(in episodes that user has watched) under each category
+  //   // this number is needed because we need to show the first unwatched episode to users
+  //   subjectEpisodes.episodes.reduce((updatedEpisode, currentValue) => {
+  //     if (subjectProgress.episodesObject[currentValue.id]) {
+  //       currentValue['userCollectionStatus'] = subjectProgress.episodesObject[currentValue.id].status.id;
+  //       subjectProgress.episodeSortMinMaxByType[currentValue.type].max =
+  //         Math.max(subjectProgress.episodeSortMinMaxByType[currentValue.type].max, currentValue.sort);
+  //       subjectProgress.episodeSortMinMaxByType[currentValue.type].min =
+  //         Math.min(subjectProgress.episodeSortMinMaxByType[currentValue.type].min, currentValue.sort);
+  //     }
+  //     updatedEpisode.push(currentValue);
+  //
+  //     return updatedEpisode;
+  //   }, []);
+  //
+  //   const priorityQueue: PriorityQueue<Episode> = new PriorityQueue({
+  //     comparator: function (a, b) {
+  //       return a['sort'] - b['sort'];
+  //     }
+  //   });
+  //
+  //   const totalEpisodesCount: number = subjectEpisodes.episodes.length;
+  //   for (const subjectEpisode of  subjectEpisodes.episodes) {
+  //     // break if more than required number of episode is fetched
+  //     if (priorityQueue.length >= maxEpisodeCount) {
+  //       break;
+  //     }
+  //
+  //     if (totalEpisodesCount <= maxEpisodeCount ||
+  //       subjectEpisode.sort >= subjectProgress.episodeSortMinMaxByType[subjectEpisode.type].max) {
+  //       priorityQueue.queue(subjectEpisode);
+  //     }
+  //     // add episode to a priority queue
+  //
+  //   }
+  //
+  //   return priorityQueue;
+  // }
 
   /**
    * for subject that's a show(real/anime) but user hasn't touched them, generate a fake SubjectProgress object
@@ -260,69 +258,69 @@ export class BangumiUserService {
       );
   }
 
-  /**
-   * get ongoing subject info, show progress episode info and store them in required data structure
-   * this method is required because relevant info is not directly available in any single API call
-   * and further calculation is needed
-   * @returns {Observable<any>}
-   */
-  public getOngoingCollectionStatusAndProgress(): Observable<CollectionWatchingResponseMedium[]> {
-    return this.authService.userSubject
-      .pipe(
-        first(), // we only need user id, which is unlikely to be updated, so only first value(in localStorage) is needed,
-        switchMap(userInfo => {
-            const userID: string = userInfo['user_id'].toString();
-            return forkJoin([
-              this.getOngoingTouchedShowProgress(userID),
-              this.getOngoingCollectionStatus(userID)
-            ]).pipe(
-              map(collectionStatus => {
-                return BangumiUserService.generateFakeProgressForUntouchedSubject(collectionStatus);
-              })
-            );
-          }
-        ),
-        switchMap(collectionStatus => {
-          const ongoingAllShowProgress = collectionStatus[0];
-          return this.buildObservableArrayForOngoingCollectionStatusAndProgress(collectionStatus[0])
-            .pipe(
-              map(
-                response => ({
-                  collectionWatchingResponses: collectionStatus[1],
-                  ongoingAllShow: response
-                }))
-            );
-        }),
-        map(
-          response => {
-            // for each show, update its episodeHeap
-            response['ongoingAllShow'].forEach(
-              show => {
-                const priorityQueue: PriorityQueue<Episode> = BangumiUserService.addEpisodeToHeap(
-                  show['subjectProgress'],
-                  show['subjectEpisodes'],
-                  environment.progressPageMaxEpisodeCountDesktop);
-
-                // in collectionWatchingResponses, find the matched response
-                const matchedCollection = response['collectionWatchingResponses'].find(
-                  collection => collection.id === show['subjectProgress'].id);
-                // theoretically we should be able to find one, but if there's no such collection, skip the assignment
-                if (matchedCollection !== undefined) {
-                  matchedCollection.episodeHeap = priorityQueue;
-
-                  if (priorityQueue.length !== 0 && matchedCollection.subject.totalEpisodesCount === 0) {
-                    matchedCollection.subject.totalEpisodesCount = show['subjectEpisodes'].episodes.length;
-                  }
-                }
-
-              }
-            );
-
-            return response['collectionWatchingResponses'];
-          }
-        )
-      );
-  }
+  // /**
+  //  * get ongoing subject info, show progress episode info and store them in required data structure
+  //  * this method is required because relevant info is not directly available in any single API call
+  //  * and further calculation is needed
+  //  * @returns {Observable<any>}
+  //  */
+  // public getOngoingCollectionStatusAndProgress(): Observable<CollectionWatchingResponseMedium[]> {
+  //   return this.authService.userSubject
+  //     .pipe(
+  //       first(), // we only need user id, which is unlikely to be updated, so only first value(in localStorage) is needed,
+  //       switchMap(userInfo => {
+  //           const userID: string = userInfo['user_id'].toString();
+  //           return forkJoin([
+  //             this.getOngoingTouchedShowProgress(userID),
+  //             this.getOngoingCollectionStatus(userID)
+  //           ]).pipe(
+  //             map(collectionStatus => {
+  //               return BangumiUserService.generateFakeProgressForUntouchedSubject(collectionStatus);
+  //             })
+  //           );
+  //         }
+  //       ),
+  //       switchMap(collectionStatus => {
+  //         const ongoingAllShowProgress = collectionStatus[0];
+  //         return this.buildObservableArrayForOngoingCollectionStatusAndProgress(collectionStatus[0])
+  //           .pipe(
+  //             map(
+  //               response => ({
+  //                 collectionWatchingResponses: collectionStatus[1],
+  //                 ongoingAllShow: response
+  //               }))
+  //           );
+  //       }),
+  //       map(
+  //         response => {
+  //           // for each show, update its episodeHeap
+  //           response['ongoingAllShow'].forEach(
+  //             show => {
+  //               const priorityQueue: PriorityQueue<Episode> = BangumiUserService.addEpisodeToHeap(
+  //                 show['subjectProgress'],
+  //                 show['subjectEpisodes'],
+  //                 environment.progressPageMaxEpisodeCountDesktop);
+  //
+  //               // in collectionWatchingResponses, find the matched response
+  //               const matchedCollection = response['collectionWatchingResponses'].find(
+  //                 collection => collection.id === show['subjectProgress'].id);
+  //               // theoretically we should be able to find one, but if there's no such collection, skip the assignment
+  //               if (matchedCollection !== undefined) {
+  //                 matchedCollection.episodeHeap = priorityQueue;
+  //
+  //                 if (priorityQueue.length !== 0 && matchedCollection.subject.totalEpisodesCount === 0) {
+  //                   matchedCollection.subject.totalEpisodesCount = show['subjectEpisodes'].episodes.length;
+  //                 }
+  //               }
+  //
+  //             }
+  //           );
+  //
+  //           return response['collectionWatchingResponses'];
+  //         }
+  //       )
+  //     );
+  // }
 
   private buildObservableArrayForOngoingCollectionStatusAndProgress(ongoingAllShowProgress: UserProgress): any {
     const observableArray = [

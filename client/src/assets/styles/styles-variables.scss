@@ -98,7 +98,6 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
   @include angular-material-typography($custom-typography);
 
   // Use mat-color to extract individual colors from a palette as necessary.
-
   .warn-color {
     color: mat-color($warn);
   }
@@ -129,6 +128,13 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
   .spoiler-text {
     color: mat-color($accent, default-contrast);
+  }
+
+  .text-input {
+    &::placeholder{
+      color: mat-color($foreground, text);
+    }
+    color: mat-color($foreground, text);
   }
 
   quill-editor {

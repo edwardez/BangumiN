@@ -35,17 +35,30 @@
     [rangeFillOpacity]="rangeFillOpacity"
     [roundDomains]=false
     [tooltipDisabled]=false>
+    <ng-template #tooltipTemplate let-model="model">
+      <h4>
+        {{model.series}} IN {{model.name}}
+      </h4>
+      <h4>
+        Mean: {{model.value | number: '1.1-2'}}
+        • Min: {{getYearScoreMinMax(model.series, model.name, 'min')}}
+        • Max: {{getYearScoreMinMax(model.series, model.name, 'max')}}
+      </h4>
+      <h4>
+        Count: {{getYearCount(model.name)}}
+      </h4>
+    </ng-template>
   </ngx-charts-line-chart>
 
-  <!--<ngx-charts-advanced-pie-chart-->
-  <!--[view]="view"-->
-  <!--[scheme]="colorScheme"-->
-  <!--[results]="countByTypeData"-->
-  <!--[animations]=true-->
-  <!--[gradient]="gradient"-->
-  <!--[tooltipDisabled]=false-->
-  <!--[tooltipText]="pieTooltipText">-->
-  <!--</ngx-charts-advanced-pie-chart>-->
+  <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="countByTypeData"
+    [animations]=true
+    [gradient]="gradient"
+    [tooltipDisabled]=false
+    [tooltipText]="pieTooltipText">
+  </ngx-charts-advanced-pie-chart>
 </div>
 
   <!--<mat-form-field>-->
@@ -53,7 +66,7 @@
   <!--[(value)]="selectedTypeListForscoreVsCount"-->
   <!--(selectionChange)="switchType('scoreVsCount')"-->
   <!--multiple>-->
-  <!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
+<!--<mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>-->
   <!--</mat-select>-->
   <!--</mat-form-field>-->
 
@@ -62,16 +75,23 @@
 <!--#yearVsMeanSelect="matSelect"-->
 <!--[(value)]="selectedTypeListForyearVsMean"-->
 <!--multiple>-->
-<!--<mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>-->
+<!--<mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>-->
 <!--</mat-select>-->
 <!--</mat-form-field>-->
 
-<form [formGroup]="subjectSelectFormGroup">
+<form [formGroup]="yearVsMeanFilterFormGroup">
   <mat-form-field>
     <mat-select
-      [formControl]="subjectSelectFormGroup.get('subjectTypeSelect')"
+      [formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"
       multiple>
-      <mat-option *ngFor="let type of typeList" [value]="type">{{type}}</mat-option>
+      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      [formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"
+      multiple>
+      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
     </mat-select>
   </mat-form-field>
 </form>

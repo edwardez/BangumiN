@@ -6,6 +6,7 @@ import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
+import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
@@ -30,7 +31,8 @@ export class ProfileStatsComponent implements OnInit {
   scoreVsCountData;
   theme;
 
-  typeList;
+  subjectTypeList;
+  collectionStatusList;
   selectedTypeListForscoreVsCount;
 
   rangeFillOpacity = 0.15;
@@ -41,9 +43,11 @@ export class ProfileStatsComponent implements OnInit {
   countByTypeData;
 
   targetUser;
+  // raw data - CONST!
   targetUserStatsArr;
 
-  subjectSelectFormGroup: FormGroup;
+  yearVsMeanFilterFormGroup: FormGroup;
+  yearCount = {};
 
   constructor(
     private banguminUserService: BanguminUserService,
@@ -69,9 +73,9 @@ export class ProfileStatsComponent implements OnInit {
       domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
     };
 
-    this.selectedTypeListForscoreVsCount = this.typeList;
+    this.selectedTypeListForscoreVsCount = this.subjectTypeList;
 
-    this.initSelectFormGroup();
+    this.initStatsFormGroup();
   }
 
   ngOnInit() {
@@ -99,8 +103,14 @@ export class ProfileStatsComponent implements OnInit {
               // cache stats array
               this.targetUserStatsArr = res.stats;
               this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
-              this.typeList = _.map(this.countByTypeData, 'name');
-              this.subjectSelectFormGroup.get('subjectTypeSelect').setValue(this.typeList);
+
+              this.subjectTypeList = _.map(this.countByTypeData, 'name');
+              this.collectionStatusList = _.map(
+                _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
+              );
+
+              this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
               this.initYearVsMean();
             }
@@ -109,12 +119,8 @@ export class ProfileStatsComponent implements OnInit {
 
   }
 
-  initSelectFormGroup() {
-    this.subjectSelectFormGroup = this.formBuilder.group(
-      {
-        subjectTypeSelect: [[]]
-      }
-    );
+  getYearCount(year) {
+    return this.yearCount[year];
   }
 
   switchType(graph: string) {
@@ -171,25 +177,54 @@ export class ProfileStatsComponent implements OnInit {
     });
   }
 
-  private initYearVsMean() {
-    // initialize the chart with all types
-    const selectedTypeListForyearVsMean = this.subjectSelectFormGroup.value.subjectTypeSelect;
-    const arr = this.targetUserStatsArr
-      .filter((stat) => (selectedTypeListForyearVsMean.length === 0) ?
-        true : selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
+  getYearScoreMinMax(subjectType, year, minMax) {
+    const typeArr = _.filter(this.yearVsMeanData, row => row.name === subjectType);
+    const yearArr = _.filter(typeArr[0].series, row => row.name === year);
+    return yearArr[0][minMax];
+  }
+
+  private initStatsFormGroup() {
+    this.yearVsMeanFilterFormGroup = this.formBuilder.group(
+      {
+        subjectTypeSelect: [[]],
+        stateSelect: [[]]
+      }
+    );
+  }
+
+  private refreshYearVsMean(data, selectedTypeList) {
+    this.yearVsMeanData = [];
+    const arr = data
+      .filter((stat) => (selectedTypeList.length === 0) ?
+        true : selectedTypeList.includes(SubjectType[stat.subjectType]));
     const arrByType = _.groupBy(arr, (row) => {
       return SubjectType[row.subjectType];
     });
     Object.keys(arrByType).forEach((type) => {
-      this.groupAndCountByYear(arrByType[type], type);
+      this.groupAndCountByYearOfType(arrByType[type], type);
     });
+  }
 
-    // edit the chart on change of type selection
+  private initYearVsMean() {
+    // initialize the chart with all types
+    const selectedTypeListForyearVsMean = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
+    // const arr = this.targetUserStatsArr
+    //   .filter((stat) => (selectedTypeListForyearVsMean.length === 0) ?
+    //     true : selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
+    // const arrByType = _.groupBy(arr, (row) => {
+    //   return SubjectType[row.subjectType];
+    // });
+    // Object.keys(arrByType).forEach((type) => {
+    //   this.groupAndCountByYearOfType(arrByType[type], type);
+    // });
+    this.refreshYearVsMean(this.targetUserStatsArr, selectedTypeListForyearVsMean);
+
+    // edit the chart on change of subjectType selection
     // use formControl.valueChanges instead of selectionChange since we want to modify the chart minimally,
     // i.e. instead of re-filtering the whole array with selectedList, only add/remove target subjectType from the chart.
-    this.subjectSelectFormGroup.controls['subjectTypeSelect'].valueChanges
+    this.yearVsMeanFilterFormGroup.controls['subjectTypeSelect'].valueChanges
       .subscribe(newVal => {
-        const oldVal = this.subjectSelectFormGroup.value.subjectTypeSelect;
+        const oldVal = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
         const triggerValue = (newVal.length < oldVal.length) ?
           _.difference(oldVal, newVal)[0] as string : _.difference(newVal, oldVal)[0] as string;
         const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
@@ -197,7 +232,7 @@ export class ProfileStatsComponent implements OnInit {
         if (action === 'select') {
           const thisTypeArr = this.targetUserStatsArr
             .filter((stat) => (SubjectType[stat.subjectType] === triggerValue));
-          this.groupAndCountByYear(thisTypeArr, triggerValue);
+          this.groupAndCountByYearOfType(thisTypeArr, triggerValue);
         } else {
           // deselected a value
           const newArr = _.filter(this.yearVsMeanData, (row) => {
@@ -206,13 +241,32 @@ export class ProfileStatsComponent implements OnInit {
           this.yearVsMeanData = [...newArr];
         }
       });
+
+    // edit the chart on change of collection status selection
+    this.yearVsMeanFilterFormGroup.controls['stateSelect'].valueChanges
+      .subscribe(newVal => {
+        // const oldVal = this.yearVsMeanFilterFormGroup.value.stateSelect;
+        // const triggerValue = (newVal.length < oldVal.length) ?
+        //   _.difference(oldVal, newVal)[0] as string : _.difference(newVal, oldVal)[0] as string;
+        // const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
+        // // selected a value
+        // if (action === 'select') {
+        //   const newArr = this.targetUserStatsArr
+        //     .filter(stat => CollectionStatusId[stat.collectionStatus] === triggerValue);
+        //   this.refreshYearVsMean(newArr, this.yearVsMeanFilterFormGroup.value.subjectTypeSelect);
+        // } else {
+        //   // deselected a value
+        //   const newArr = _.reject(this.targetUserStatsArr, row => CollectionStatusId[row.collectionStatus] === triggerValue);
+        //   this.refreshYearVsMean(newArr, this.yearVsMeanFilterFormGroup.value.subjectTypeSelect);
+        // }
+        const newArr = this.targetUserStatsArr
+          .filter((stat) => (newVal.length === 0) ?
+            true : newVal.includes(CollectionStatusId[stat.collectionStatus]));
+        this.refreshYearVsMean(newArr, this.yearVsMeanFilterFormGroup.value.subjectTypeSelect);
+      });
   }
 
-  private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
-  }
-
-  private groupAndCountByYear(arr, type: string) {
+  private groupAndCountByYearOfType(arr, type: string) {
     const arrByYear = _.groupBy(arr, (row) => {
       return day(row.addDate).year();
     });
@@ -223,10 +277,16 @@ export class ProfileStatsComponent implements OnInit {
         row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
         row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
         tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
+        // note down the yearCount
+        this.yearCount[row.name] = tmpArr.length;
         row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
       }
     });
     this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
+  }
+
+  private getYearArr(minYear, maxYear) {
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
   }
 
 }

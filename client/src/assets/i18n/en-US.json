@@ -63,10 +63,10 @@
         "name": "Search"
       },
       "autocomplete": {
-        "searchKeywordInSubject": "Subject \"{{value}}\"",
-        "searchKeywordInUser": "User \"{{value}}\"",
+        "searchKeywordInSubject": "Subject with \"{{value}}\"",
+        "searchKeywordInUser": "User with \"{{value}}\"",
         "jumpToSubjectId": "Subject id: {{value}}",
-        "jumpToUserId": "User id: {{value}}"
+        "jumpToUserId": "User @{{value}}"
       }
     },
     "menu": {
@@ -194,6 +194,10 @@
   },
   "search": {
     "empty": "No results",
+    "result": {
+      "invalid": "Invalid search keyword \"{{keyword}}\""
+    },
+
     "category": {
       "all": "All",
       "anime": "Anime",

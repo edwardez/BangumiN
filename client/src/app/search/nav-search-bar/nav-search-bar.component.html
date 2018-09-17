@@ -1,8 +1,7 @@
 <input
   #searchBar
   [matAutocomplete]="searchSuggestionPanel"
-  (keyup.enter)="doFullSearch(searchBar.value)"
-  value="{{searchKeywords}}" placeholder="{{'nav.search.placeholder.name' | translate}}" type="search"
+  placeholder="{{'nav.search.placeholder.name' | translate}}" type="search"
   aria-label="search"
   class="background-background-color-card">
 

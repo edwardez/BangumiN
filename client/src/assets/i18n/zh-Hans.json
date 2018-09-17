@@ -66,7 +66,7 @@
         "searchKeywordInSubject": "作品名 \"{{value}}\"",
         "searchKeywordInUser": "用户名 \"{{value}}\"",
         "jumpToSubjectId": "作品id: {{value}}",
-        "jumpToUserId": "用户id: {{value}}"
+        "jumpToUserId": "用户 @{{value}}"
       }
     },
     "menu": {
@@ -193,6 +193,16 @@
     }
   },
   "search": {
+    "result": {
+      "invalid": "无效的关键字: \"{{keyword}}\"",
+      "numberOfCount": "搜索到{{count}}个结果"
+    },
+    "user": {
+      "filter": {
+        "fullMatch": "完全匹配关键字{{keyword}}",
+        "contain": "含有关键字{{keyword}}"
+      }
+    },
     "empty": "无结果",
     "category": {
       "all": "综合",

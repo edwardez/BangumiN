@@ -4,7 +4,6 @@ import {AppGuard} from './app.guard';
 import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
 import {SettingsComponent} from './settings/settings.component';
-import {FullSearchComponent} from './search/full-search/full-search.component';
 import {SubjectComponent} from './subject/subject.component';
 // tslint:disable-next-line:max-line-length
 import {SpoilerSingleWrapperComponent} from './user/timeline/spoilers/spoiler-single/spoiler-single-wrapper/spoiler-single-wrapper.component';
@@ -14,6 +13,7 @@ import {PrivacyComponent} from './documents/privacy/privacy.component';
 import {AboutHomeComponent} from './documents/about/about-home/about-home.component';
 import {HelpHomeComponent} from './documents/help/help-home/help-home.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
+import {SearchResultComponent} from './search/search-result/search-result.component';
 
 const routes: Routes = [
   {
@@ -36,6 +36,11 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'search',
+    canActivate: [AppGuard],
+    component: SearchResultComponent
+  },
+  {
     path: 'user/:userId/timeline/spoilers/:spoilerId',
     component: SpoilerSingleWrapperComponent,
   },
@@ -45,7 +50,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: 'app/user/timeline/spoilers/spoilers.module#SpoilersModule'
+        redirectTo: 'statistics',
+        pathMatch: 'full'
       },
       {
         path: 'statistics',
@@ -66,10 +72,6 @@ const routes: Routes = [
   {
     path: 'welcome',
     component: WelcomeComponent
-  },
-  {
-    path: 'search',
-    component: FullSearchComponent
   },
   {
     path: 'subject/:id',

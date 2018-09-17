@@ -21,7 +21,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
   infiniteScrollDisabled = false;
   bangumiUser: BangumiUser;
   userSpoilers: SpoilerExisted[] = [];
-  storedSpoilers: Set<string> = new Set();
+  visitedSpoilers: Set<string> = new Set();
   SPOILERS_PER_QUERY = 10;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -64,7 +64,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.userSpoilers.length; i++) {
           if (this.userSpoilers[i].spoilerId === spoilerDeletionResult.spoilerId) {
             this.userSpoilers.splice(i, 1);
-            this.storedSpoilers.delete(spoilerDeletionResult.spoilerId);
+            this.visitedSpoilers.delete(spoilerDeletionResult.spoilerId);
             // if total number of spoilers are less than half of spoilers per query and we haven't reached end of content, trying to load
             // more spoilers
             if (this.userSpoilers.length <= this.SPOILERS_PER_QUERY / 2 && !this.endOfContent) {
@@ -136,9 +136,9 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         userSpoilers => {
           // in rare cases if duplications are accidentally added, filter them out
           userSpoilers['spoilers'] = userSpoilers['spoilers'].filter((spoiler: SpoilerExisted) => {
-            const isSpoilerAlreadyStored = this.storedSpoilers.has(spoiler.spoilerId);
-            this.storedSpoilers.add(spoiler.spoilerId);
-            return !isSpoilerAlreadyStored;
+            const isSpoilerAlreadyVisited = this.visitedSpoilers.has(spoiler.spoilerId);
+            this.visitedSpoilers.add(spoiler.spoilerId);
+            return !isSpoilerAlreadyVisited;
           });
           return userSpoilers;
         }

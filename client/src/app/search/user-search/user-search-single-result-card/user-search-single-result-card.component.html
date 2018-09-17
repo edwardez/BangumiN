@@ -1,0 +1,16 @@
+<mat-card class="p-1 p-sm-2">
+  <mat-card-content class="card-search-result">
+
+    <div class="d-flex flex-wrap justify-content-center align-items-center m-1">
+      <a class="col-12 d-flex justify-content-center" [routerLink]="['/user', user.username, 'statistics']">
+        <img class="search-result-avatar img-fluid" [src]="user.avatar.medium">
+      </a>
+      <div class="col-12 long-text-truncate text-align-center">
+        {{user.nickname}}
+      </div>
+      <div class="col-12 long-text-truncate text-align-center">
+        @{{user.username}}
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

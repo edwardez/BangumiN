@@ -1,0 +1,21 @@
+<div *ngIf="currentPageState() === PageState.InLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="currentPageState() === PageState.IsInvalidQuery">
+  <div
+    [translate]="'search.result.invalid'" [translateParams]="{keyword: queryKeyword}"
+    class="row justify-content-center align-items-center bangumin-height-container">
+  </div>
+
+</div>
+
+<div *ngIf="currentPageState() === PageState.CanProceed">
+  <app-subject-search *ngIf="selectedSearchType === SearchIn.subject"
+                      [queryKeyword]="queryKeyword"></app-subject-search>
+
+  <app-user-search *ngIf="selectedSearchType === SearchIn.user" [queryKeyword]="queryKeyword"></app-user-search>
+
+</div>
+
+

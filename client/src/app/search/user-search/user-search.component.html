@@ -1,0 +1,34 @@
+<div *ngIf="currentPageState() === PageState.CanProceed"
+     class="row justify-content-center">
+  <div infinite-scroll
+       [infiniteScrollDisabled]="shouldDisableInfiniteScroll()"
+       (scrolled)="onScrollDown()"
+       class="col-12 col-sm-10 col-md-9 row no-gutters justify-content-center">
+    <ng-container *ngIf="this.userSearchResults.fullMatch">
+
+      <app-user-search-single-result-card
+        *ngFor="let user of userSearchResults.fullMatch.rows"
+        [user]="user"
+        class="col-5 col-sm-3 m-1 m-sm-2 m-md-3"
+
+      ></app-user-search-single-result-card>
+    </ng-container>
+
+
+    <ng-container *ngIf="this.userSearchResults.partialMatch">
+      <app-user-search-single-result-card
+        *ngFor="let user of userSearchResults.partialMatch.rows"
+        [user]="user"
+        class="col-5 col-sm-3 m-1 m-sm-2 m-md-3"
+
+      ></app-user-search-single-result-card>
+    </ng-container>
+
+  </div>
+</div>
+
+<div *ngIf="!shouldDisableInfiniteScroll()" class="row justify-content-center no-gutters mt-2 mt-md-3">
+  <mat-spinner [diameter]="25"></mat-spinner>
+</div>
+
+<app-back-to-top *ngIf="shouldDisableInfiniteScroll()"></app-back-to-top>

@@ -31,5 +31,4 @@ router.get('/:userId', (req: any, res: any, next: any) => {
 
 });
 
-
 export default router;

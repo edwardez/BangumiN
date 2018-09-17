@@ -14,7 +14,6 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
   Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
-
 }
 
 .mat-card-header-text {
@@ -71,6 +70,10 @@ app-spoiler-single-content .mat-card-header-text {
   border-radius: 5px;
 }
 
-
+.long-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 

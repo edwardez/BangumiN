@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {SearchBarAutoCompleteDefaultOptions, SearchBarAutoCompleteOptionValue, SearchBy, SearchIn} from './search-configs';
+import {SearchBarAutoCompleteDefaultOptions, SearchBarAutoCompleteOptionValue, SearchBy, SearchIn} from '../../shared/enums/search-configs';
 
 
 @Component({
@@ -52,10 +52,6 @@ export class NavSearchBarComponent implements OnInit {
     this.updateSearchBarText();
   }
 
-  doFullSearch(query: string) {
-    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
-  }
-
   onAutoCompleteOptionSelected(event) {
     const autoCompleteOptionValue = event.option.value as SearchBarAutoCompleteOptionValue;
     const searchType = autoCompleteOptionValue.extraInfo;
@@ -78,11 +74,11 @@ export class NavSearchBarComponent implements OnInit {
   }
 
   searchSubjectWithKeyword(keyword: string) {
-    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(keyword)}});
+    this.router.navigate(['/search'], {queryParams: {query: encodeURI(keyword), type: SearchIn.subject}});
   }
 
   searchUserWithKeyword(keyword: string) {
-    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(keyword)}});
+    this.router.navigate(['/search'], {queryParams: {query: encodeURI(keyword), type: SearchIn.user}});
   }
 
   navigateToSpecifiedSubjectId(id: string) {
@@ -100,10 +96,11 @@ export class NavSearchBarComponent implements OnInit {
     this.activatedRoute
       .queryParams
       .pipe(
-        filter(params => params['keywords'] !== undefined)
+        filter(params => params['query'] !== undefined)
       ).subscribe(
       params => {
-        this.searchKeywords = decodeURI(params['keywords']);
+        this.searchKeywords = decodeURI(params['query']);
+        this.searchBarInput.nativeElement.value = this.searchKeywords;
       }
     );
   }

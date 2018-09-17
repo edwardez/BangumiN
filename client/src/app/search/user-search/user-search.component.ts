@@ -20,6 +20,8 @@ export class UserSearchComponent implements OnInit {
   };
 
   RESULTS_LIMIT_PER_QUERY = 25;
+  // maximum number of offset
+  MAX_OFFSET_NUMBER = 200;
   visitedUserIds: Set<number>;
 
   constructor(private bangumiSearchService: BangumiSearchService) {
@@ -57,6 +59,9 @@ export class UserSearchComponent implements OnInit {
     this.visitedUserIds = new Set<number>();
   }
 
+  /**
+   * Perform the initial search for user
+   */
   initiateFistTimeSearch() {
     this.performUserSearch(this.queryKeyword, true, 0)
       .pipe(
@@ -72,6 +77,13 @@ export class UserSearchComponent implements OnInit {
       .subscribe();
   }
 
+  /**
+   * Perform a user search, either full match or partial match will be performed depends on the {@link fullMatch} flag
+   * @param queryKeyword keyword to search
+   * @param fullMatch whether a full match or a partial match(ignores case) should be performed
+   * @param offset Pagination offset
+   * @param limit number of limit
+   */
   performUserSearch(queryKeyword: string, fullMatch = false, offset = 0, limit = this.RESULTS_LIMIT_PER_QUERY) {
     const propertyToUpdate = fullMatch ? 'fullMatch' : 'partialMatch';
     return this.bangumiSearchService.searchUserByNickname(queryKeyword, fullMatch, offset, limit).pipe(
@@ -88,22 +100,28 @@ export class UserSearchComponent implements OnInit {
           this.userSearchResults[propertyToUpdate] = userSearchResultsToAppend;
         }
 
-        if (this.userSearchResults[propertyToUpdate].rows.length >= this.userSearchResults[propertyToUpdate].count) {
+        if (this.userSearchResults[propertyToUpdate].rows.length >= this.userSearchResults[propertyToUpdate].count
+          || this.userSearchResults[propertyToUpdate].rows.length >= this.MAX_OFFSET_NUMBER) {
           this.endOfContent[propertyToUpdate] = true;
         }
-
       })
     );
   }
 
+  // if both match have reached end of content, then infinite scroll should be disabled
   shouldDisableInfiniteScroll() {
     return this.endOfContent.fullMatch && this.endOfContent.partialMatch;
   }
 
+  // on scroll down, perform a search, full match will always be performed first
   onScrollDown() {
     if (!this.endOfContent.fullMatch) {
       this.performUserSearch(this.queryKeyword, true, this.userSearchResults.fullMatch.rows.length)
-        .subscribe();
+        .subscribe(result => {
+          if (this.endOfContent.fullMatch) {
+            return this.performUserSearch(this.queryKeyword, false, 0).subscribe();
+          }
+        });
     } else if (!this.endOfContent.partialMatch) {
       this.performUserSearch(this.queryKeyword, false, this.userSearchResults.partialMatch.rows.length)
         .subscribe();
@@ -111,10 +129,9 @@ export class UserSearchComponent implements OnInit {
 
   }
 
+  // current state of the page
   currentPageState() {
-    if (this.queryKeyword === undefined || this.userSearchResults === undefined || this.userSearchResults.fullMatch === undefined ||
-      this.userSearchResults.partialMatch ===
-      undefined) {
+    if (this.queryKeyword === undefined || this.userSearchResults === undefined || this.userSearchResults.fullMatch === undefined) {
       return PageState.InLoading;
     }
     return PageState.CanProceed;

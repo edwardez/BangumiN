@@ -49,7 +49,7 @@ function findUserByNicknameLike(nickname: string, excludeFullMatchResult = false
     whereClause = {
       nickname: {
         [Sequelize.Op.iLike]: `%${nickname}%`,
-        [Sequelize.Op.ne]: nickname,
+        [Sequelize.Op.notILike]: nickname,
       },
     };
   } else {
@@ -64,7 +64,7 @@ function findUserByNicknameLike(nickname: string, excludeFullMatchResult = false
       limit,
       offset,
       where: whereClause,
-      order: Sequelize.literal('nickname asc'),
+      order: Sequelize.literal('username asc'),
     },
   );
 
@@ -86,6 +86,7 @@ function findUserByNicknameEqual(nickname: string, offset = 0, limit = 25): Prom
           [Sequelize.Op.iLike]: nickname,
         },
       },
+      order: Sequelize.literal('username asc'),
     },
   );
 }

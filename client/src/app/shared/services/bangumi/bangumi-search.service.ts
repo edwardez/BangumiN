@@ -68,135 +68,17 @@ export class BangumiSearchService {
       );
   }
 
+  /**
+   * Perform a user search, either full match or partial match will be performed depends on the {@link fullMatch} flag
+   * currently {@link limit} doesn't work
+   * @param nickname keyword to search
+   * @param fullMatch whether a full match or a partial match(ignores case) should be performed
+   * @param offset Pagination offset
+   * @param limit number of limit
+   */
   public searchUserByNickname(nickname: string, fullMatch = false, offset = 0,
                               limit = 10): Observable<BanguminStyleUserBatchSearchResponse> {
     const options = {withCredentials: true};
-    // return of({
-    //   'count': 389,
-    //   'rows': [{
-    //     'id': 226562,
-    //     'username': '226562',
-    //     'nickname': 'aasssa',
-    //     'url': 'http://bgm.tv/user/226562',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 229933,
-    //     'username': '229933',
-    //     'nickname': 'asssa',
-    //     'url': 'http://bgm.tv/user/229933',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 229936,
-    //     'username': '229936',
-    //     'nickname': 'dssssssss',
-    //     'url': 'http://bgm.tv/user/229936',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/000/22/99/229936.jpg?r=1422070647',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/000/22/99/229936.jpg?r=1422070647',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/000/22/99/229936.jpg?r=1422070647'
-    //     },
-    //     'sign': 'ddddddddddd',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 231396,
-    //     'username': 'hzx443945604',
-    //     'nickname': 'sss',
-    //     'url': 'http://bgm.tv/user/hzx443945604',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': 'gh',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 232340,
-    //     'username': '232340',
-    //     'nickname': 'ssss',
-    //     'url': 'http://bgm.tv/user/232340',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 232822,
-    //     'username': 'cycy25',
-    //     'nickname': 'ctgsss',
-    //     'url': 'http://bgm.tv/user/cycy25',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/000/23/28/232822.jpg?r=1423533481',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/000/23/28/232822.jpg?r=1423533481',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/000/23/28/232822.jpg?r=1423533481'
-    //     },
-    //     'sign': '1234567',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 233408,
-    //     'username': '233408',
-    //     'nickname': 'sssssss',
-    //     'url': 'http://bgm.tv/user/233408',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 235558,
-    //     'username': 'qqqqqqqqqq',
-    //     'nickname': 'afssffsssfsf',
-    //     'url': 'http://bgm.tv/user/qqqqqqqqqq',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': 'qqqqq',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 235815,
-    //     'username': '235815',
-    //     'nickname': 'sss',
-    //     'url': 'http://bgm.tv/user/235815',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }, {
-    //     'id': 235906,
-    //     'username': '235906',
-    //     'nickname': 'wsss',
-    //     'url': 'http://bgm.tv/user/235906',
-    //     'avatar': {
-    //       'large': 'http://lain.bgm.tv/pic/user/l/icon.jpg',
-    //       'small': 'http://lain.bgm.tv/pic/user/s/icon.jpg',
-    //       'medium': 'http://lain.bgm.tv/pic/user/m/icon.jpg'
-    //     },
-    //     'sign': '',
-    //     'user_group': 10
-    //   }]
-    // }).pipe(
-    //     map( response => new BanguminStyleUserBatchSearchResponse().deserialize(response))
-    //   );
     return this.http.get<BangumiUser[]>(
       `${environment.BACKEND_API_URL}/search/user/${nickname}?fullMatch=${fullMatch}&offset=${offset}&limit=${limit}`, options)
       .pipe(

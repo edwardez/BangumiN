@@ -12,6 +12,10 @@ import {switchMap, tap} from 'rxjs/operators';
 })
 export class UserSearchComponent implements OnInit {
 
+  readonly RESULTS_LIMIT_PER_QUERY = 25;
+  // maximum number of offset
+  readonly MAX_OFFSET_NUMBER = 200;
+
   userSearchResults: { fullMatch: BanguminStyleUserBatchSearchResponse, partialMatch: BanguminStyleUserBatchSearchResponse };
 
   endOfContent: {
@@ -19,9 +23,6 @@ export class UserSearchComponent implements OnInit {
     partialMatch: boolean,
   };
 
-  RESULTS_LIMIT_PER_QUERY = 25;
-  // maximum number of offset
-  MAX_OFFSET_NUMBER = 200;
   visitedUserIds: Set<number>;
 
   constructor(private bangumiSearchService: BangumiSearchService) {

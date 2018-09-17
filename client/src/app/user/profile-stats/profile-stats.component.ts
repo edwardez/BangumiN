@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
 import {filter, take} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
-import {MatSelect} from '@angular/material';
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-profile-stats',
@@ -32,24 +32,24 @@ export class ProfileStatsComponent implements OnInit {
 
   typeList;
   selectedTypeListForscoreVsCount;
-  selectedTypeListForyearVsMean;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
   yearVsMeanData = [];
-  triggerValue;
+  // triggerValue;
 
-  @ViewChild('yearVsMeanSelect')
-  yearVsMeanSelect: MatSelect;
   countByTypeData;
 
   targetUser;
   targetUserStatsArr;
 
+  subjectSelectFormGroup: FormGroup;
+
   constructor(
     private banguminUserService: BanguminUserService,
     private bangumiStatsService: BangumiStatsService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder
   ) {
     this.view = [800, 500];
     // options
@@ -70,7 +70,8 @@ export class ProfileStatsComponent implements OnInit {
     };
 
     this.selectedTypeListForscoreVsCount = this.typeList;
-    this.selectedTypeListForyearVsMean = this.typeList;
+
+    this.initSelectFormGroup();
   }
 
   ngOnInit() {
@@ -83,9 +84,7 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
 
-    this.activatedRoute
-      .parent.parent
-      .params
+    this.activatedRoute.parent.params
       .pipe(
         filter(params => {
           this.targetUser = params['userId'];
@@ -101,11 +100,21 @@ export class ProfileStatsComponent implements OnInit {
               this.targetUserStatsArr = res.stats;
               this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
               this.typeList = _.map(this.countByTypeData, 'name');
+              this.subjectSelectFormGroup.get('subjectTypeSelect').setValue(this.typeList);
 
               this.initYearVsMean();
             }
           });
       });
+
+  }
+
+  initSelectFormGroup() {
+    this.subjectSelectFormGroup = this.formBuilder.group(
+      {
+        subjectTypeSelect: [[]]
+      }
+    );
   }
 
   switchType(graph: string) {
@@ -164,10 +173,10 @@ export class ProfileStatsComponent implements OnInit {
 
   private initYearVsMean() {
     // initialize the chart with all types
-    this.selectedTypeListForyearVsMean = this.typeList;
-
+    const selectedTypeListForyearVsMean = this.subjectSelectFormGroup.value.subjectTypeSelect;
     const arr = this.targetUserStatsArr
-      .filter((stat) => (this.selectedTypeListForyearVsMean.length === 0) ? true : this.selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
+      .filter((stat) => (selectedTypeListForyearVsMean.length === 0) ?
+        true : selectedTypeListForyearVsMean.includes(SubjectType[stat.subjectType]));
     const arrByType = _.groupBy(arr, (row) => {
       return SubjectType[row.subjectType];
     });
@@ -176,24 +185,25 @@ export class ProfileStatsComponent implements OnInit {
     });
 
     // edit the chart on change of type selection
-    // use optionSelectionChanges instead of selectionChange since we want to modify the chart minimally,
+    // use formControl.valueChanges instead of selectionChange since we want to modify the chart minimally,
     // i.e. instead of re-filtering the whole array with selectedList, only add/remove target subjectType from the chart.
-    this.yearVsMeanSelect.optionSelectionChanges
-      .subscribe(res => {
-        if (res && res.isUserInput) {
-          this.triggerValue = res.source.value;
-          // selected a value
-          if (this.selectedTypeListForyearVsMean.includes(this.triggerValue)) {
-            const thisTypeArr = this.targetUserStatsArr
-              .filter((stat) => (SubjectType[stat.subjectType] === this.triggerValue));
-            this.groupAndCountByYear(thisTypeArr, this.triggerValue);
-          } else {
-            // deselected a value
-            const newArr = _.filter(this.yearVsMeanData, (row) => {
-              return row.name !== this.triggerValue;
-            });
-            this.yearVsMeanData = [...newArr];
-          }
+    this.subjectSelectFormGroup.controls['subjectTypeSelect'].valueChanges
+      .subscribe(newVal => {
+        const oldVal = this.subjectSelectFormGroup.value.subjectTypeSelect;
+        const triggerValue = (newVal.length < oldVal.length) ?
+          _.difference(oldVal, newVal)[0] as string : _.difference(newVal, oldVal)[0] as string;
+        const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
+        // selected a value
+        if (action === 'select') {
+          const thisTypeArr = this.targetUserStatsArr
+            .filter((stat) => (SubjectType[stat.subjectType] === triggerValue));
+          this.groupAndCountByYear(thisTypeArr, triggerValue);
+        } else {
+          // deselected a value
+          const newArr = _.filter(this.yearVsMeanData, (row) => {
+            return row.name !== triggerValue;
+          });
+          this.yearVsMeanData = [...newArr];
         }
       });
   }

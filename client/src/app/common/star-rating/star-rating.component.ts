@@ -16,6 +16,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
 
   @Input() currentRating = 0;
   @Input() starCount = 10;
+  @Input() maxScore = 10;
   @Input() isEditable = false; // whether edit is allowed
   @Input() isRemovable = false; // whether to show removal button
   @Output() ratingUpdated = new EventEmitter();
@@ -71,7 +72,7 @@ export class StarRatingComponent implements OnInit, ControlValueAccessor {
   }
 
   showIcon(index: number) {
-    if (this.currentRating >= index + 1) {
+    if (Math.round(this.currentRating) / this.maxScore >= (index + 1) / this.starCount) {
       return 'star';
     } else {
       return 'star_border';

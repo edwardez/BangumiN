@@ -52,4 +52,32 @@ export class CommonUtils {
     }
     return subjectMatIcon;
   }
+
+  /**
+   * map a enum type into relevant string
+   * @param {number} type
+   * @returns {string}
+   */
+  static getSubjectTypeName(type: number): string {
+    switch (type) {
+      case SubjectType.book : {
+        return 'search.category.book';
+      }
+      case SubjectType.anime : {
+        return 'search.category.anime';
+      }
+      case SubjectType.music : {
+        return 'search.category.music';
+      }
+      case SubjectType.game : {
+        return 'search.category.game';
+      }
+      case SubjectType.real : {
+        return 'search.category.real';
+      }
+      default : {
+        return 'search.category.all';
+      }
+    }
+  }
 }

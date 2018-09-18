@@ -5,6 +5,7 @@
 @import '~bootstrap/scss/bootstrap-grid';
 @import "~bootstrap/scss/utilities/_spacing";
 @import "~bootstrap/scss/utilities/_display";
+@import "~bootstrap/scss/utilities/_sizing.scss";
 @import "~bootstrap/scss/mixins/_image";
 @import "~bootstrap/scss/_images";
 
@@ -65,6 +66,10 @@ app-spoiler-single-content .mat-card-header-text {
 
 .bangumin-height-container {
   height: 100vh;
+}
+
+.min-width-0 {
+  min-width: 0;
 }
 
 .spoiler-text {

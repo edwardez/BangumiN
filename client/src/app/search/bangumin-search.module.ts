@@ -14,12 +14,14 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {BackToTopModule} from '../common/utilities/back-to-top/back-to-top.module';
 import {StarRatingModule} from '../common/star-rating/star-rating.module';
 import {UserSearchCardContentComponent} from './user-search/user-search-card-content/user-search-card-content.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     BanguminSharedModule,
     RouterModule,
+    ReactiveFormsModule,
     InfiniteScrollModule,
     SharedPipeModule,
     NavSearchBarModule,

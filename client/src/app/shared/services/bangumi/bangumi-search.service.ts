@@ -28,7 +28,6 @@ export class BangumiSearchService {
         return SearchSubjectsResponseLarge;
       default:
         return SearchSubjectsResponseSmall;
-
     }
   }
 
@@ -53,7 +52,7 @@ export class BangumiSearchService {
     // use replace here to remove redundant white space
     return this.http.get(`${environment.BANGUMI_API_URL}/search/subject/${keywords}?\
     app_id=${environment.BANGUMI_APP_ID}&\
-    type=${searchFilterType}&\
+    ${searchFilterType === SubjectType.all ? '' : 'type=' + searchFilterType + '&'}\
     responseGroup=${responseGroup}&\
     start=${start}&\
     max_results=${max_results}`.replace(/\s+/g, ''))

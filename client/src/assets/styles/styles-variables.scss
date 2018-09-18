@@ -133,7 +133,7 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
   .text-input {
     &::placeholder{
-      color: mat-color($foreground, text);
+      color: mat-color($foreground, secondary-text);
     }
     color: mat-color($foreground, text);
   }

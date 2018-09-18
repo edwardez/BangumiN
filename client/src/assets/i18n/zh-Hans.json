@@ -29,6 +29,23 @@
       "volumeNumber": "第",
       "chapterNumber": "第"
     },
+    "role": {
+      "bangumi": {
+        "name": "用户组",
+        "type": {
+          "Administrator": "管理员",
+          "BangumiAdministrator": "Bangumi管理员",
+          "DoujinAdministrator": "天窗管理员",
+          "MutedUser": "禁言用户",
+          "BannedUser": "禁止访问",
+          "CharacterAdministrator": "人物管理员",
+          "WikiAdministrator": "维基管理员",
+          "NormalUser": "一般用户",
+          "Encyclopedist": "维基人"
+        },
+        "explanation": "在Bangumi的用户组"
+      }
+    },
     "snackBar": {
       "success": {
         "copy": {

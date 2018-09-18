@@ -29,6 +29,24 @@
       "volumeNumber": "Vol.",
       "chapterNumber": "Chap."
     },
+    "role": {
+      "bangumi": {
+        "name": "User Group",
+        "type": {
+          "Administrator": "Admin",
+          "BangumiAdministrator": "Bangumi Admin",
+          "DoujinAdministrator": "Doujin Admin",
+          "MutedUser": "Muted User",
+          "BannedUser": "Banned User",
+          "CharacterAdministrator": "Character Admin",
+          "WikiAdministrator": "Wiki Admin",
+          "NormalUser": "Normal User",
+          "Encyclopedist": "Encyclopedist"
+        },
+        "explanation": "User group on Bangumi"
+      }
+
+    },
     "snackBar": {
       "success": {
         "copy": {

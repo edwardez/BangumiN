@@ -12,8 +12,8 @@ import {SearchResultComponent} from './search-result/search-result.component';
 import {LoadingSpinnerModule} from '../common/loading-spinner/loading-spinner.module';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {BackToTopModule} from '../common/utilities/back-to-top/back-to-top.module';
-import {UserSearchSingleResultCardComponent} from './user-search/user-search-single-result-card/user-search-single-result-card.component';
 import {StarRatingModule} from '../common/star-rating/star-rating.module';
+import {UserSearchCardContentComponent} from './user-search/user-search-card-content/user-search-card-content.component';
 
 @NgModule({
   imports: [
@@ -33,7 +33,7 @@ import {StarRatingModule} from '../common/star-rating/star-rating.module';
     UserSearchComponent,
     SubjectSearchComponent,
     SearchResultComponent,
-    UserSearchSingleResultCardComponent,
+    UserSearchCardContentComponent,
 
   ]
 })

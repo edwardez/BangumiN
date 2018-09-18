@@ -1,0 +1,13 @@
+<mat-divider></mat-divider>
+<div class="col-8 mt-1 mb-1 d-flex align-items-center">
+  <a [routerLink]="['/user', user.username, 'statistics']">
+    <img class="search-result-avatar " [src]="user.avatar.medium">
+  </a>
+  <div class="ml-1 ml-sm-2 long-text-truncate">
+    {{user.nickname}}
+    <small class="foreground-color-secondary-text">@{{user.username}}</small>
+  </div>
+</div>
+<div class="col-3 long-text-truncate d-flex align-items-center">
+  {{'common.role.bangumi.type.' + BangumiUserRole[user.userGroup] | translate}}
+</div>

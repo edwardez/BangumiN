@@ -5,10 +5,10 @@ import {environment} from '../../../../environments/environment';
 import {catchError, map, timeout} from 'rxjs/operators';
 import {SearchSubjectsResponseSmall} from '../../models/search/search-subjects-response-small';
 import {SubjectType} from '../../enums/subject-type.enum';
-import {BanguminStyleUserBatchSearchResponse} from '../../models/search/bangumin-style-batch-search-response';
-import {BangumiUser} from '../../models/BangumiUser';
 import {SearchSubjectsResponseMedium} from '../../models/search/search-subjects-response-medium';
 import {SearchSubjectsResponseLarge} from '../../models/search/search-subjects-response-large';
+import {BanguminStyleUserBatchSearchResponse} from '../../models/search/bangumin-style-batch-search-response';
+import {BangumiUser} from '../../models/BangumiUser';
 
 @Injectable({
   providedIn: 'root'

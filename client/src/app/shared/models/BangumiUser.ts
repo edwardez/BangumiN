@@ -1,5 +1,7 @@
 import {Serializable} from './Serializable';
 import {Avatar} from './common/avatar';
+import {BangumiUserRole} from '../enums/bangumi-user-role.enum';
+import {RuntimeConstantsService} from '../services/runtime-constants.service';
 
 interface AvatarType {
   large: string;
@@ -16,6 +18,7 @@ export class BangumiUser implements Serializable<BangumiUser> {
   avatar: Avatar;
   nickname: string;
   username: string;
+  userGroup: BangumiUserRole;
 
 
   // user id coild be from id or user_id, if neither of them have a value, then use a empty one
@@ -37,6 +40,7 @@ export class BangumiUser implements Serializable<BangumiUser> {
     this.avatar = new Avatar();
     this.nickname = '';
     this.username = '';
+    this.userGroup = BangumiUserRole.NormalUser;
   }
 
   deserialize(input) {
@@ -47,7 +51,9 @@ export class BangumiUser implements Serializable<BangumiUser> {
     this.avatar = input.avatar === undefined ? new Avatar() : new Avatar().deserialize(input.avatar);
     this.nickname = input.nickname === undefined ? '' : input.nickname;
     this.username = input.username === undefined ? '' : input.username;
-
+    const rawUserGroup = input.user_group || BangumiUserRole.NormalUser;
+    this.userGroup =
+      RuntimeConstantsService.validUserGroupValues.indexOf(rawUserGroup) !== -1 ? rawUserGroup : BangumiUserRole.NormalUser;
     return this;
   }
 

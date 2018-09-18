@@ -47,6 +47,7 @@ export class ProfileStatsComponent implements OnInit {
   targetUserStatsArr;
 
   yearVsMeanFilterFormGroup: FormGroup;
+  scoreVsCountFilterFormGroup: FormGroup;
   yearCount = {};
 
   constructor(
@@ -103,108 +104,26 @@ export class ProfileStatsComponent implements OnInit {
               // cache stats array
               this.targetUserStatsArr = res.stats;
               this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
-
+              // initialize filter list value
               this.subjectTypeList = _.map(this.countByTypeData, 'name');
               this.collectionStatusList = _.map(
                 _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
               );
-
+              // initialize filter form groups
               this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
               this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+              this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
+              this.initScoreVsCount();
               this.initYearVsMean();
             }
           });
       });
-
   }
 
   getYearCount(year) {
     return this.yearCount[year];
-  }
-
-  switchType(graph: string) {
-    // value can't be exact 0 due to https://github.com/swimlane/ngx-charts/issues/498
-    // tmp hack: use 0.0000001 instead
-    if (graph === 'scoreVsCount') {
-      this.banguminUserService.getUserProfileStats('hi')
-        .subscribe((res) => {
-          if (res) {
-            const arr = res
-              .filter((stat) => {
-                if (this.selectedTypeListForscoreVsCount.length === 0) {
-                  return true;
-                } else {
-                  return this.selectedTypeListForscoreVsCount.includes(stat.typ);
-                }
-              });
-            this.groupAndCountByRate(arr);
-          }
-        });
-    }
-  }
-
-  calendarAxisTickFormatting(year) {
-    if (Math.floor(year) !== year) {
-      return '';
-    }
-    return day().set('year', year).year();
-  }
-
-  pieTooltipText({data}) {
-    const label = data.name;
-    const val = data.value;
-
-    return `
-      <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val">${val}</span>
-    `;
-  }
-
-  private groupAndCountByRate(arr) {
-    // TODO: fixed xAxis ticks
-    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    const countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
-    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
-    if (diff.length !== 0) {
-      diff.forEach((axis) => {
-        countedArr.push({name: axis, value: 0.000001});
-      });
-    }
-
-    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
-      return a.name - b.name;
-    });
-  }
-
-  getYearScoreMinMax(subjectType, year, minMax) {
-    const typeArr = _.filter(this.yearVsMeanData, row => row.name === subjectType);
-    const yearArr = _.filter(typeArr[0].series, row => row.name === year);
-    return yearArr[0][minMax];
-  }
-
-  private initStatsFormGroup() {
-    this.yearVsMeanFilterFormGroup = this.formBuilder.group(
-      {
-        subjectTypeSelect: [[]],
-        stateSelect: [[]]
-      }
-    );
-  }
-
-  private refreshYearVsMean(newYearVsMeanData, selectedTypeList) {
-    this.yearVsMeanData = [];
-    // const arr = data
-    //   .filter((stat) => (selectedTypeList.length === 0) ?
-    //     true : selectedTypeList.includes(SubjectType[stat.subjectType]));
-    const arr = newYearVsMeanData
-      .filter(stat => selectedTypeList.includes(SubjectType[stat.subjectType]));
-    const arrByType = _.groupBy(arr, (row) => {
-      return SubjectType[row.subjectType];
-    });
-    Object.keys(arrByType).forEach((type) => {
-      this.groupAndCountByYearOfType(arrByType[type], type);
-    });
   }
 
   private initYearVsMean() {
@@ -242,6 +161,113 @@ export class ProfileStatsComponent implements OnInit {
           .filter(stat => newStateList.includes(CollectionStatusId[stat.collectionStatus]));
         this.refreshYearVsMean(newArr, this.yearVsMeanFilterFormGroup.value.subjectTypeSelect);
       });
+  }
+
+  private refreshYearVsMean(newYearVsMeanData, selectedTypeList) {
+    this.yearVsMeanData = [];
+    const arr = newYearVsMeanData
+      .filter(stat => selectedTypeList.includes(SubjectType[stat.subjectType]));
+    const arrByType = _.groupBy(arr, (row) => {
+      return SubjectType[row.subjectType];
+    });
+    Object.keys(arrByType).forEach((type) => {
+      this.groupAndCountByYearOfType(arrByType[type], type);
+    });
+  }
+
+  private initScoreVsCount() {
+    const arr = this.filterBySubjectTypeAndState(
+      this.scoreVsCountFilterFormGroup.value.subjectTypeSelect,
+      this.scoreVsCountFilterFormGroup.value.stateSelect
+    );
+    this.groupAndCountByRate(arr);
+
+    // edit the chart on change of subjectType selection
+    this.scoreVsCountFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .subscribe(newTypeList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          newTypeList,
+          this.scoreVsCountFilterFormGroup.value.stateSelect
+        );
+        this.groupAndCountByRate(newArr);
+      });
+
+    // edit the chart on change of collection status selection
+    this.scoreVsCountFilterFormGroup.controls['stateSelect'].valueChanges
+      .subscribe(newStateList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          this.scoreVsCountFilterFormGroup.value.subjectTypeSelect,
+          newStateList
+        );
+        this.groupAndCountByRate(newArr);
+      });
+  }
+
+  private filterBySubjectTypeAndState(subjectTypeList, stateList) {
+    return this.targetUserStatsArr.filter(stat => {
+      return subjectTypeList.includes(SubjectType[stat.subjectType])
+        && stateList.includes(CollectionStatusId[stat.collectionStatus]);
+    });
+  }
+
+  calendarAxisTickFormatting(year) {
+    if (Math.floor(year) !== year) {
+      return '';
+    }
+    return day().set('year', year).year();
+  }
+
+  pieTooltipText({data}) {
+    const label = data.name;
+    const val = data.value;
+
+    return `
+      <span class="tooltip-label">${label}</span>
+      <span class="tooltip-val">${val}</span>
+    `;
+  }
+
+  getYearScoreMinMax(subjectType, year, minMax) {
+    const typeArr = _.filter(this.yearVsMeanData, row => row.name === subjectType);
+    const yearArr = _.filter(typeArr[0].series, row => row.name === year);
+    return yearArr[0][minMax];
+  }
+
+  private groupAndCountByRate(newScoreVsCountData) {
+    // reject record with null rate
+    const arr = newScoreVsCountData.filter(stat => stat.rate);
+    // TODO: fixed xAxis ticks
+    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    let countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
+    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
+    // hack fix when no data is available, show empty chart instead of all "0.00000001"
+    if (diff.length === 10) {
+      countedArr = [];
+    } else if (diff.length !== 0) {
+      diff.forEach((axis) => {
+        countedArr.push({name: axis, value: 0.000001});
+      });
+    }
+
+    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
+      return a.name - b.name;
+    });
+  }
+
+  private initStatsFormGroup() {
+    this.yearVsMeanFilterFormGroup = this.formBuilder.group(
+      {
+        subjectTypeSelect: [[]],
+        stateSelect: [[]]
+      }
+    );
+
+    this.scoreVsCountFilterFormGroup = this.formBuilder.group(
+      {
+        subjectTypeSelect: [[]],
+        stateSelect: [[]]
+      }
+    );
   }
 
   private groupAndCountByYearOfType(arr, type: string) {

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '../../environments/environment';
 import {TitleService} from '../shared/services/page/title.service';
-import {take, tap} from 'rxjs/operators';
+import {take, takeUntil, tap} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../shared/services/bangumin/bangumin-user.service';
 import {StorageService} from '../shared/services/storage.service';
@@ -81,15 +81,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onSettingsFormChange() {
     this.settingsForm.valueChanges
       .pipe(tap(formValues => {
-        // only set language if it's different from current settings
-        if (this.translateService.currentLang !== formValues.appLanguage) {
-          this.translateService.use(formValues.appLanguage).subscribe(translatedObjects => {
-            // also update the title
-            this.titleService.title = translatedObjects.settings.name;
-          });
+          // only set language if it's different from current settings
+          if (this.translateService.currentLang !== formValues.appLanguage) {
+            this.translateService.use(formValues.appLanguage).subscribe(translatedObjects => {
+              // also update the title
+              this.titleService.title = translatedObjects.settings.name;
+            });
 
-        }
-      }))
+          }
+        },
+        takeUntil(this.ngUnsubscribe)
+      ))
       .subscribe(formValues => {
         const newUserSettings = new BanguminUser().deserialize(formValues);
         newUserSettings.id = this.userSettings.id;

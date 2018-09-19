@@ -11,7 +11,12 @@
       | translate}}</a>
   </div>
 
+  <div *ngIf="!isAuthenticated">
+    <a mat-button [routerLink]="['./login']" class="mr-2">{{'nav.menu.login.name' | translate}}</a>
+  </div>
+
   <div class="flex-grow-1 flex-shrink-1"></div>
+
 
   <app-nav-search-bar *ngIf="isAuthenticated"
                       class="search-container d-flex align-content-center justify-content-end align-items-center mr-2">

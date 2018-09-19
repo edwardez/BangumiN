@@ -101,7 +101,7 @@ router.get(
         return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
       }
 
-      req.login(user, (loginError: any) => {
+      return req.login(user, (loginError: any) => {
         if (loginError) {
           logger.error('loginError occurred during authentication of user %o: %o', user, loginError);
           return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);

@@ -105,9 +105,11 @@
     }
   },
   "login": {
-    "welcomeTitle": "欢迎!",
-    "welcomeText": "BangumiN是一个第三方的bangumi网页客户端，您需要一个bangumi账号以开始使用，如果您没有账号，可以先去<a href=\"https://bgm.tv/signup\" target=\"_blank\">官方网站</a>注册一个。",
-    "oauthRedirect": "登陆",
+    "heroExplanation": "在BangumiN，你可以安全的发表剧透并分享给他人，还可以查看你或者作品在Bangumi的数据统计。",
+    "signInUsingBangumi": "使用Bangumi账号登陆",
+    "signInUsingBangumiNotice": "1. 点击登陆代表你同意我们的<a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">服务条款</a>和<a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">隐私协议</a>",
+    "signUpBangumi": "注册一个Bangumi账号",
+    "signUpBangumiNotice": "2. BangumiN与Bangumi无直接关系，在注册Bangumi账号后你需要回到BangumiN进行登录",
     "waitForBangumiAuth": {
       "title": "正在登录中",
       "content": "在认证期间请不要关闭本窗口，请在新打开的窗口完成登录认证",

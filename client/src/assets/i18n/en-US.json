@@ -106,9 +106,11 @@
     }
   },
   "login": {
-    "welcomeTitle": "Welcome!",
-    "welcomeText": "BangumiN is a third-party bangumi web client, you'll need a bangumi account to get started. If you don't have one, you can register a new account <a href=\"https://bgm.tv/signup\" target=\"_blank\">here</a>.",
-    "oauthRedirect": "Login",
+    "heroExplanation": "With BangumiN, you can safely post spoilers in consideration of others, and view data visualization for users and subjects in the way you want.",
+    "signInUsingBangumi": "Use Bangumi account to login",
+    "signInUsingBangumiNotice": "1. By clicking login, you agree to our <a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">Terms</a> and <a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">Privacy Policy</a>",
+    "signUpBangumi": "Sign up a Bangumi account",
+    "signUpBangumiNotice": "2. BangumiN is not directly relevant to Bangumi, after signing up you need to go back to BangumiN to log in",
     "waitForBangumiAuth": {
       "title": "Login in progress",
       "content": "Please complete the login process in the newly opened window, please don't close this window before login is completed.",

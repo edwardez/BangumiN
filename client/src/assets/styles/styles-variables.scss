@@ -98,6 +98,10 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
   @include angular-material-typography($custom-typography);
 
+  .primary-color {
+    color: mat-color($primary);
+  }
+
   // Use mat-color to extract individual colors from a palette as necessary.
   .warn-color {
     color: mat-color($warn);

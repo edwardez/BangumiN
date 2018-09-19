@@ -71,6 +71,7 @@ const routes: Routes = [
   },
   {
     path: 'welcome',
+    canActivate: [AppGuard],
     component: WelcomeComponent
   },
   {

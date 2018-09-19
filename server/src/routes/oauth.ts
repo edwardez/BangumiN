@@ -91,11 +91,26 @@ router.get(
 );
 
 router.get(
-  '/bangumi/callback',
-  passport.authenticate('bangumi-oauth', {
-    failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
-    session: true,
-  }),
+  '/bangumi/callback', (req: any, res, next) => {
+    return passport.authenticate('bangumi-oauth', {
+      failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
+      session: true,
+    }, (error, user, info) => {
+      if (error) {
+        logger.error('Error occurred during authentication of user %o: %o', user, error);
+        return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
+      }
+
+      req.login(user, (loginError: any) => {
+        if (loginError) {
+          logger.error('loginError occurred during authentication of user %o: %o', user, loginError);
+          return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
+        }
+        return next();
+      });
+    })(req, res, next);
+  },
+
   (req: any, res: any) => {
     res.cookie('userInfo', JSON.stringify(req.user), {
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +

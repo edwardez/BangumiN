@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog} from '@angular/material';
 import {CopyEvent, ShareableStringGeneratorService} from '../../../../../shared/services/utils/shareable-string-generator.service';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {SpoilerDeletionConfirmationDialogComponent} from '../spoiler-deletion-confirmation-dialog/spoiler-deletion-confirmation-dialog.component';
 
 
@@ -52,7 +52,13 @@ export class ShareBottomSheetComponent implements OnInit {
     this.copyableText = this.shareableStringGeneratorService.generateCopyableText(relatesSubjectsNames, spoilerLink,
       spoilerContent.spoilerText);
     this.canDelete = this.authenticationService.userSubject.pipe(
-      map(userSubject => userSubject.id === Number(spoilerContent.userId))
+      map(userSubject => {
+        if (userSubject) {
+          return userSubject.id === Number(spoilerContent.userId);
+        }
+        return false;
+      }),
+      take(1)
     );
 
   }
@@ -76,7 +82,6 @@ export class ShareBottomSheetComponent implements OnInit {
   dismissSheet(): void {
     this.bottomSheetRef.dismiss();
   }
-
 
 
 }

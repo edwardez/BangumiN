@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
 import {Observable, of} from 'rxjs';
 import {CopyEvent, ShareableStringGeneratorService} from '../../../../../shared/services/utils/shareable-string-generator.service';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';
 // tslint:disable-next-line:max-line-length
 import {SpoilerDeletionConfirmationDialogComponent} from '../spoiler-deletion-confirmation-dialog/spoiler-deletion-confirmation-dialog.component';
@@ -45,9 +45,16 @@ export class ShareSpoilerMenuComponent implements OnInit {
       this.spoilerContent.spoilerText);
     this.copyableText = this.shareableStringGeneratorService.generateCopyableText(relatesSubjectsNames, this.spoilerLink,
       this.spoilerContent.spoilerText);
-    this.canDelete = this.authenticationService.userSubject.pipe(
-      map(userSubject => userSubject.id === Number(this.spoilerContent.userId))
-    );
+    this.canDelete = this.authenticationService.userSubject
+      .pipe(
+        map(userSubject => {
+          if (userSubject) {
+            return userSubject.id === Number(this.spoilerContent.userId);
+          }
+          return false;
+        }),
+        take(1)
+      );
   }
 
   handleCopyCallback(event: CopyEvent, text: Observable<string> | string) {

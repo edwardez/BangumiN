@@ -103,27 +103,26 @@
     <p>{{'posts.bangumin.spoilerBox.single.card.relatedSubjects.name' | translate}}</p>
     <div *ngFor="let subject of spoilerContentReceived?.relatedSubjectsBaseDetails"
          class="mb-1 mb-sm-2">
-      <div class="row no-gutters" *ngIf="subject.id !== defaultSubjectId">
+      <div class="d-flex" *ngIf="subject.id !== defaultSubjectId">
 
-        <a class="col-2 col-md-2 col-lg-1" [href]="convertToBangumiNLink(subject.url)" target="_blank" rel="noopener">
+        <a [href]="convertToBangumiNLink(subject.url)" target="_blank" rel="noopener">
           <img class="image-grid" [src]="subject.images.grid">
         </a>
 
-        <p class="col spoiled-title">
+        <p class="spoiled-title ml-1 ml-sm-2 ml-md-3">
           {{subject.subjectName.preferred}}
         </p>
       </div>
 
       <div *ngIf="subject.id === defaultSubjectId"
-           class="row">
+           class="d-flex">
         <div
-          [matTooltip]="'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.userDefined.tooltip' | translate"
-          class="col-2 col-md-2 col-lg-1">
+          [matTooltip]="'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.userDefined.tooltip' | translate">
           <img class="image-grid" [src]="subject.images.grid">
         </div>
 
 
-        <p class="col spoiled-title">
+        <p class="spoiled-title ml-1 ml-sm-2 ml-md-3">
           {{subject.subjectName.preferred}}
         </p>
       </div>

@@ -113,7 +113,7 @@ app.use('/api/user/:userId', spoiler);
 app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
 app.use('/api/stats', stats);
 app.use('/api/search', authenticationMiddleware.isAuthenticated, search);
-app.use('/api/bgm/subject', authenticationMiddleware.isAuthenticated, subject);
+app.use('/api/bgm/subject', subject);
 app.use('/api/bgm/user',  user);
 app.all('*', (req, res) => {
   res.status(404).json({error_code: 'not_found'});

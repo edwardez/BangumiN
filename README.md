@@ -34,8 +34,9 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
 | Plan | Status & deadline | Comment |
 | --- | --- | --- |
 | ~~Basic functionality: Progress Management~~ | N/A | ~~Basic implementation is done, needs to rewrite episode management using virtual scroll~~ Won't be implemented for now due to  restriction of Bangumi|
-| Basic functionality: Search | Not started, 2018 Q3 | Needs a completely rewrite |
+| Basic functionality: Search | Done | Needs a completely rewrite |
 | Basic functionality: Subject Info | Done | Needs further css tweak |
+| Spoiler Box | Done |  |
 | User data visualization | 2018 Q3 | In progress |
 | Subject data visualization | 2018 Q3 | Not started |
 | Pipeline | Done | Extract data from Bangumi and store in our database. Subject pipeline: through API;User pipeline: through API;User record pipeline: through web crawler |

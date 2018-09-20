@@ -1,10 +1,8 @@
 import {AppError} from './errorHandler';
 import config from '../config/components/passport';
 import requestPromise from 'request-promise';
-import Logger from '../utils/logger';
+import {logger} from '../utils/logger';
 import joi from 'joi';
-
-const logger = Logger(module);
 
 /**
  * verify that profile is valid

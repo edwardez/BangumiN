@@ -1,11 +1,10 @@
 import * as express from 'express';
 
-import Logger from '../utils/logger';
+import {logger} from '../utils/logger';
 import {Record} from '../models/relational/bangumi/record';
 import {getSubjectStatsById, getUserStatsByIdOrUsername} from '../services/bangumi/statsService';
 
 const router = express.Router();
-const logger = Logger(module);
 
 /**
  * get user stats info

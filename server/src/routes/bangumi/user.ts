@@ -1,11 +1,8 @@
 import * as express from 'express';
-
-import Logger from '../../utils/logger';
 import {findUserByIdOrUserName} from '../../services/bangumi/userService';
 import {User} from '../../models/relational/bangumi/user';
 
 const router = express.Router();
-const logger = Logger(module);
 
 // root url: /api/bangumi/user
 

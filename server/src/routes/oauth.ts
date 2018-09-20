@@ -4,13 +4,11 @@ import passport from 'passport';
 import csrf from 'csurf';
 import config from '../config';
 import joi from 'joi';
-import Logger from '../utils/logger';
+import {logger} from '../utils/logger';
 import requestPromise from 'request-promise';
 import authenticationMiddleware from '../services/authenticationHandler';
 
 const router = express.Router();
-
-const logger = Logger(module);
 
 /**
  * verify bangumi user refresh token request is in the correct format

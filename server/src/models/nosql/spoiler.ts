@@ -1,10 +1,8 @@
 import config from '../../config/index';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
-import Logger from '../../utils/logger';
+import {logger} from '../../utils/logger';
 import {SubjectBase} from '../relational/bangumi/common/SubjectBase';
-
-const logger = Logger(module);
 
 const MAX_RELATED_SUBJECT_NUMBER = 2;
 const SPOILER_ID_LENGTH = 15;
@@ -101,7 +99,7 @@ const spoilerSchema = new dynamoose.Schema({
 
       return Joi.array().items(relatedSubjectSchema).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;
     },
-  }
+  },
 
 }, {
   timestamps: true,

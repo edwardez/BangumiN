@@ -26,6 +26,13 @@ if (error) {
 }
 
 const config = {
+  region: {
+    default: envVars.AWS_REGION,
+  },
+  credentials: {
+    accessKeyID: envVars.AWS_ACCESS_KEY_ID,
+    secretAccessKey: envVars.AWS_SECRET_ACCESS_KEY,
+  },
   dynamodb: {
     accessKeyID: envVars.AWS_ACCESS_KEY_ID,
     secretAccessKey: envVars.AWS_SECRET_ACCESS_KEY,

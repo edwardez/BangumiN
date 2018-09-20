@@ -1,10 +1,8 @@
 import * as express from 'express';
 import * as dynamooseSpoilerModel from '../models/nosql/spoiler';
-import Logger from '../utils/logger';
 import authenticationMiddleware from '../services/authenticationHandler';
 
 const router = express.Router({mergeParams: true});
-const logger = Logger(module);
 
 // root url: /api/user/:id
 

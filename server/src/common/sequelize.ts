@@ -2,11 +2,8 @@ import {Sequelize} from 'sequelize-typescript';
 import config from '../config/web';
 import {Subject} from '../models/relational/bangumi/subject';
 import {User} from '../models/relational/bangumi/user';
-
-import Logger from '../utils/logger';
+import {logger} from '../utils/logger';
 import {Record} from '../models/relational/bangumi/record';
-
-const logger = Logger(module);
 
 const sequelize = new Sequelize({
   dialect: 'postgres',

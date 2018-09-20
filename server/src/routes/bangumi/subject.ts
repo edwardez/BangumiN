@@ -1,9 +1,7 @@
 import * as express from 'express';
-import Logger from '../../utils/logger';
 import {findSubjectById} from '../../services/bangumi/subjectService';
 
 const router = express.Router();
-const logger = Logger(module);
 
 // root url: /api/bangumi/subject
 /**

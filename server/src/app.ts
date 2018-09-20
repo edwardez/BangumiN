@@ -8,7 +8,7 @@ import expressSession from 'express-session';
 import passport from './services/passportHandler';
 import authenticationMiddleware from './services/authenticationHandler';
 import proxy from 'http-proxy-middleware';
-import Logger from './utils/logger';
+import {logger} from './utils/logger';
 import oauth from './routes/oauth';
 import auth from './routes/auth';
 import settings from './routes/settings';
@@ -19,8 +19,6 @@ import user from './routes/bangumi/user';
 import stats from './routes/stats';
 import search from './routes/search';
 
-const logger = Logger(module);
-
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
 const app = express();
@@ -29,7 +27,6 @@ const app = express();
 if (config.env !== 'development') {
   app.set('trust proxy', 1); // trust first proxy
 }
-
 
 // enable cors
 const corsOption = {
@@ -40,7 +37,6 @@ const corsOption = {
 };
 
 app.use(cors(corsOption));
-
 
 const dynamoDBStoreOptios = {
   table: `BangumiN_${config.env}_sessions`,

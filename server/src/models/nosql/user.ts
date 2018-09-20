@@ -1,9 +1,7 @@
 import config from '../../config/index';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
-import Logger from '../../utils/logger';
-
-const logger = Logger(module);
+import {logger} from '../../utils/logger';
 
 export interface UserSchema {
   id: string;
@@ -192,7 +190,8 @@ export class User {
    *   may still update updatedAt, createdAt and it's out of our control
    * @return a  modified user settings copy
    */
-  static deleteProtectedFields(userInstance: UserSchema | UserModel, fieldsToDelete = ['loggedInAt', 'updatedAt', 'createdAt']): UserSchema | UserModel {
+  static deleteProtectedFields(userInstance: UserSchema | UserModel, fieldsToDelete = ['loggedInAt', 'updatedAt', 'createdAt']):
+    UserSchema | UserModel {
     if (!userInstance || !userInstance.id) {
       throw Error('Expect userInstance and userInstance.id to be a truthy value');
     }

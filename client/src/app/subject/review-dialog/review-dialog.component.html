@@ -1,10 +1,11 @@
-<h1 mat-dialog-title>{{'subject.tabs.overview.review.modal.title' | translate}}: {{data.name}}</h1>
+<h1 mat-dialog-title>{{'subject.tabs.overview.review.modal.title' | translate}}:
+  {{data.subject.subjectName.preferred}}</h1>
 
 
-<form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" novalidate>
+<form [formGroup]="ratingForm" (ngSubmit)="onSubmit()" novalidate *ngIf="ratingForm">
   <div mat-dialog-content class="d-flex flex-column">
     <app-star-rating
-      [(currentRating)]="this.data.rating"
+      [(currentRating)]="collectionResponse.rating"
       formControlName="rating"
       [starCount]="10" [isEditable]="true" [isRemovable]="true" (ratingUpdated)="onRatingChanged($event)"
       *ngIf="ratingForm.value.collectionStatus !== 'wish'"></app-star-rating>
@@ -71,11 +72,16 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
-    <button mat-button type="submit" [disabled]="ratingForm.invalid">{{'subject.tabs.overview.review.modal.submit' |
+    <button mat-button type="submit" [disabled]="ratingForm.invalid || duringSubmit">
+      {{'subject.tabs.overview.review.modal.submit' |
       translate}}
     </button>
-
   </div>
 </form>
+
+<div *ngIf="!ratingForm">
+  <app-loading-spinner [fullHeight]="false"></app-loading-spinner>
+
+</div>
 
 

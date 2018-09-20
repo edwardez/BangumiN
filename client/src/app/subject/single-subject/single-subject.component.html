@@ -48,21 +48,11 @@
 
           <p>{{'subject.tabs.overview.review.rank' | translate}}: {{subject.rank}}</p>
 
-          <p *ngIf="this.collectionResponse.status.isTouched">{{'subject.tabs.overview.review.myScore' | translate}}:
-            <span *ngIf="currentRating !== 0">{{currentRating}}</span>
-          </p>
-          <app-star-rating [(currentRating)]="currentRating" [starCount]="10" [isEditable]="true"
-                           (ratingUpdated)="onRatingChanged($event)"
-                           *ngIf="this.collectionResponse.status.isTouched"></app-star-rating>
+
         </mat-card-content>
         <mat-card-actions>
           <button mat-button (click)="openDialog()">
-            <ng-container *ngIf="!this.collectionResponse.status.isTouched">
-              {{'common.action.addToCollection' | translate}}
-            </ng-container>
-            <ng-container *ngIf="this.collectionResponse.status.isTouched">
-              {{'common.action.editCollection' | translate}}
-            </ng-container>
+            {{'common.action.editCollection' | translate}}
           </button>
         </mat-card-actions>
       </mat-card>

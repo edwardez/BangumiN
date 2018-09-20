@@ -11,6 +11,7 @@ import {StaffListComponent} from './staff-list/staff-list.component';
 import {ScoreSpinnerComponent} from './score-spinner/score-spinner.component';
 import {SubjectEpisodeComponent} from './subject-episode/subject-episode.component';
 import {SubjectComponent} from './subject.component';
+import {LoadingSpinnerModule} from '../common/loading-spinner/loading-spinner.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import {SubjectComponent} from './subject.component';
     SharedPipeModule,
     FormsModule,
     ReactiveFormsModule,
-    StarRatingModule
+    StarRatingModule,
+    LoadingSpinnerModule
   ],
   declarations: [
     SingleSubjectComponent,

@@ -9,8 +9,10 @@ import {environment} from '../../../environments/environment';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
 import {Subject} from 'rxjs';
 import {CollectionRequest} from '../../shared/models/collection/collection-request';
-import {catchError, take, takeUntil} from 'rxjs/operators';
+import {catchError, finalize, take, takeUntil} from 'rxjs/operators';
 import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
+import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
+import {CollectionResponse} from '../../shared/models/collection/collection-response';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class InstantStateMatcher implements ErrorStateMatcher {
@@ -29,8 +31,10 @@ export class InstantStateMatcher implements ErrorStateMatcher {
 export class ReviewDialogComponent implements OnInit, OnDestroy {
 
 
-  ratingForm: FormGroup;
   subjectType: string;
+  duringSubmit = false;
+  collectionResponse: CollectionResponse;
+  ratingForm: FormGroup;
   separatorKeysCodes = [ENTER, COMMA, SPACE];
   matcher = new InstantStateMatcher();
 
@@ -41,13 +45,16 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
 
   constructor(public dialogRef: MatDialogRef<SingleSubjectComponent>,
               private formBuilder: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: ReviewDialogData,
               private bangumiCollectionService: BangumiCollectionService,
               private snackBarService: SnackBarService) {
     this.commentMaxLength = environment.commentMaxLength;
     this.tagsMaxNumber = environment.tagsMaxNumber;
-    this.subjectType = SubjectType[data.type];
-    this.initializeRatingForm();
+    this.subjectType = SubjectType[data.subject.type];
+    this.bangumiCollectionService.getSubjectCollectionStatus(this.data.subject.id).subscribe(collectionResponse => {
+      this.collectionResponse = collectionResponse;
+      this.initializeRatingForm(collectionResponse);
+    });
   }
 
   get collectionStatus() {
@@ -80,32 +87,36 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  initializeRatingForm() {
+  initializeRatingForm(collectionResponse: CollectionResponse) {
     this.ratingForm = this.formBuilder.group(
       {
-        'rating': [<number>this.data.rating],
+        'rating': [<number>collectionResponse.rating],
         'tag': '',
-        'tagsArray': this.formBuilder.array(this.data.tags, Validators.maxLength(10)),
-        'collectionStatus': [<string>this.data.statusType],
-        'comment': [<string>this.data.comment, Validators.maxLength(this.commentMaxLength)],
-        'privacy': <boolean>(this.data.privacy.toString() !== '0'),
+        'tagsArray': this.formBuilder.array(collectionResponse.tags, Validators.maxLength(10)),
+        'collectionStatus': [<string>collectionResponse.status.type],
+        'comment': [<string>collectionResponse.comment, Validators.maxLength(this.commentMaxLength)],
+        'privacy': <boolean>(collectionResponse.privacy.toString() !== '0'),
       }
     );
   }
 
   onSubmit() {
+    this.duringSubmit = true;
     const ratingModel = this.ratingForm.value;
 
     const collectionRequest: CollectionRequest = new CollectionRequest(
       ratingModel.collectionStatus, ratingModel.comment, ratingModel.tagsArray, ratingModel.rating, ratingModel.privacy === false ? 0 : 1);
 
 
-    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subjectId, collectionRequest).pipe(
+    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.data.subject.id, collectionRequest).pipe(
       catchError(error => {
         this.snackBarService.openSimpleSnackBar('common.snackBar.error.submit.general')
           .pipe(take(1)).subscribe(() => {
         });
         return error;
+      }),
+      finalize(() => {
+        this.duringSubmit = false;
       }),
       takeUntil(this.ngUnsubscribe),
     ).subscribe(res => {
@@ -119,7 +130,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
   }
 
   onRatingChanged(rating) {
-    this.data.rating = rating;
+
     this.ratingForm.patchValue(
       {
         'rating': rating

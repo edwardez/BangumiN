@@ -13,32 +13,41 @@
     </div>
 
     <div>
-      <mat-tab-group>
-        <mat-tab label="{{'subject.tabs.overview.name' | translate}}">
-          <app-single-subject [subject]="subject" [collectionResponse]="collectionResponse"
-                              [currentRating]="currentRating"></app-single-subject>
-        </mat-tab>
-        <mat-tab label="{{'subject.tabs.episode.name' | translate}}"
-                 *ngIf="subject.type === SubjectType.anime || subject.type === SubjectType.real">
+      <nav mat-tab-nav-bar>
+        <!--wait https://github.com/angular/angular/issues/20995 to be resolved before using ngFor here-->
+        <!--set [routerLink]="['./']" will let mat-tab always match the first tab, passing routerLinkActiveOptions
+         to only allow exact match-->
+        <a mat-tab-link
+           [routerLink]="['./']"
+           routerLinkActive
+           #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{exact: true}"
+           [active]="rla.isActive"
 
-        </mat-tab>
+        >
+          {{'subject.tabs.overview.name' | translate}}
+        </a>
 
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.character.length >= 1"
-                 label="{{'subject.tabs.overview.info.characters' | translate}}">
+        <a mat-tab-link
+           [routerLink]="['statistics']"
+           routerLinkActive
+           #rlaStats="routerLinkActive"
+           [routerLinkActiveOptions]="{exact: true}"
+           [active]="rlaStats.isActive"
+        >
+          {{'profile.tabs.statistics.name' | translate}}
+        </a>
+      </nav>
 
-          <app-character-list [allCharacters]="subject.character"></app-character-list>
 
-
-        </mat-tab>
-        <mat-tab *ngIf="LayoutService.xs(currentDeviceWidth) && subject.staff.length >= 1"
-                 label="{{'subject.tabs.overview.info.staff' | translate}}">
-          <app-staff-list [allStaff]="subject.staff"></app-staff-list>
-        </mat-tab>
-
-
-      </mat-tab-group>
+      <router-outlet></router-outlet>
     </div>
 
   </div>
 
+</div>
+
+
+<div *ngIf="!subject">
+  <app-loading-spinner></app-loading-spinner>
 </div>

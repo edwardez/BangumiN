@@ -7,11 +7,10 @@ import {TitleService} from '../shared/services/page/title.service';
 import {ResponsiveDialogService} from '../shared/services/dialog/responsive-dialog.service';
 import {LayoutService} from '../shared/services/layout/layout.service';
 import {SnackBarService} from '../shared/services/snackBar/snack-bar.service';
-import {forkJoin, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {SubjectType} from '../shared/enums/subject-type.enum';
 import {DeviceWidth} from '../shared/enums/device-width.enum';
 import {SubjectLarge} from '../shared/models/subject/subject-large';
-import {CollectionResponse} from '../shared/models/collection/collection-response';
 
 @Component({
   selector: 'app-subject',
@@ -23,17 +22,30 @@ export class SubjectComponent implements OnInit, OnDestroy {
   currentDeviceWidth: DeviceWidth;
   subject: SubjectLarge;
   currentRating = 0;
-  collectionResponse: CollectionResponse;
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
               private reviewDialogService: ResponsiveDialogService,
               private layoutService: LayoutService,
               private snackBarService: SnackBarService) {
+    this.activatedRoute
+      .params
+      .pipe(
+        filter(params => !!params['subjectId']),
+        switchMap(params => {
+          return this.bangumiSubjectService.getSubject(params['subjectId'], 'large');
+          },
+        ),
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(res => {
+        this.subject = res;
+        this.titleService.title = this.subject.name;
+      });
   }
 
 
@@ -47,26 +59,6 @@ export class SubjectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getDeviceWidth();
-
-    this.route
-      .params
-      .pipe(
-        filter(params => !!params['id']),
-        switchMap(params => {
-            return forkJoin(
-              this.bangumiSubjectService.getSubject(params['id'], 'large'),
-              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
-            );
-          },
-        ),
-        takeUntil(this.ngUnsubscribe),
-      )
-      .subscribe(res => {
-        this.subject = res[0];
-        this.titleService.title = this.subject.name;
-        this.collectionResponse = res[1];
-        this.currentRating = this.collectionResponse.rating;
-      });
   }
 
 

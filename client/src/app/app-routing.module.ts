@@ -14,6 +14,7 @@ import {AboutHomeComponent} from './documents/about/about-home/about-home.compon
 import {HelpHomeComponent} from './documents/help/help-home/help-home.component';
 import {WelcomeComponent} from './home/welcome/welcome.component';
 import {SearchResultComponent} from './search/search-result/search-result.component';
+import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
 
 const routes: Routes = [
   {
@@ -25,10 +26,6 @@ const routes: Routes = [
     path: '',
     canActivate: [AppGuard],
     children: [
-      // {
-      //   path: 'progress',
-      //   component: ProgressComponent
-      // },
       {
         path: 'settings',
         component: SettingsComponent
@@ -46,7 +43,6 @@ const routes: Routes = [
   },
   {
     path: 'user/:userId',
-    // component: ProfileComponent,
     children: [
       {
         path: '',
@@ -75,8 +71,23 @@ const routes: Routes = [
     component: WelcomeComponent
   },
   {
-    path: 'subject/:id',
-    component: SubjectComponent
+    path: 'subject/:subjectId',
+    component: SubjectComponent,
+    children: [
+      {
+        path: '',
+        component: SingleSubjectComponent
+      },
+      {
+        path: 'statistics',
+        loadChildren: 'app/subject/subject-statistics/subject-statistics.module#SubjectStatisticsModule'
+      },
+      {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full'
+      },
+    ]
   },
   {
     path: 'login',

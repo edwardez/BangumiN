@@ -45,7 +45,7 @@ export class BangumiCollectionService {
    * get user collection status
    * only collection that's being watched will be returned per api
    */
-  public getSubjectCollectionStatus(subjectId: string): Observable<CollectionResponse> {
+  public getSubjectCollectionStatus(subjectId: number): Observable<CollectionResponse> {
     return this.http.get(`${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}`)
       .pipe(
         map(res => {
@@ -65,7 +65,7 @@ export class BangumiCollectionService {
    * it's a 'upsert' action per doc so :action will be fixed to update
    */
   public upsertSubjectCollectionStatus(
-    subjectId: string, collectionRequest: CollectionRequest,
+    subjectId: number, collectionRequest: CollectionRequest,
     action = 'update'): Observable<CollectionResponse> {
     const collectionRequestBody = new URLSearchParams();
 

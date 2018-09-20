@@ -154,7 +154,7 @@ export class BangumiUserService {
    */
   getUserSettings(username?: string): Observable<any> {
     if (username) {
-      return this.getUserInfoFromHttp(username, true);
+      return this.getUserInfoFromHttp(username, false);
     }
 
     return this.storageService.getBangumiUser().pipe(

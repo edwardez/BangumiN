@@ -32,4 +32,4 @@ router.get('/:subjectId', (req: any, res: any, next: any) => {
   // return res.json(userId);
 });
 
-export default router;
+export const subject = router;

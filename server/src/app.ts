@@ -9,15 +9,15 @@ import passport from './services/passportHandler';
 import authenticationMiddleware from './services/authenticationHandler';
 import proxy from 'http-proxy-middleware';
 import {logger} from './utils/logger';
-import oauth from './routes/oauth';
-import auth from './routes/auth';
-import settings from './routes/settings';
-import spoiler from './routes/spoiler';
+import {oauth} from './routes/oauth';
+import {auth} from './routes/auth';
+import {settings} from './routes/settings';
+import {spoiler} from './routes/spoiler';
 import {sequelize} from './common/sequelize';
-import subject from './routes/bangumi/subject';
-import user from './routes/bangumi/user';
-import stats from './routes/stats';
-import search from './routes/search';
+import {subject} from './routes/bangumi/subject';
+import {user} from './routes/bangumi/user';
+import {stats} from './routes/stats';
+import {search} from './routes/search';
 
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 

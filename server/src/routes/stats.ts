@@ -72,4 +72,4 @@ router.get('/subject/:subjectId', (req: any, res: any, next: any) => {
 
 });
 
-export default router;
+export const stats = router;

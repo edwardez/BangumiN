@@ -8,4 +8,4 @@ router.get('/csrf/token', (req: any, res: any, next: any) => {
   res.send({csrfToken: req.csrfToken()});
 });
 
-export default router;
+export const auth = router;

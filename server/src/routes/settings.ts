@@ -38,4 +38,4 @@ router.get('/', (req: any, res: any, next: any) => {
 
 });
 
-export default router;
+export const settings = router;

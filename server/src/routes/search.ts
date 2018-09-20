@@ -37,4 +37,4 @@ router.get('/user/:nickname', (req: any, res: any, next: any) => {
 
 });
 
-export default router;
+export const search = router;

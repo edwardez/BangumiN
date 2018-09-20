@@ -93,4 +93,4 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res
 
 });
 
-export default router;
+export const spoiler = router;

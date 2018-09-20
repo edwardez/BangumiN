@@ -136,4 +136,4 @@ router.get('/json', csrfProtection, (req: any, res: any) => {
   res.json({csrfToken: req.csrfToken()});
 });
 
-export default router;
+export const oauth = router;

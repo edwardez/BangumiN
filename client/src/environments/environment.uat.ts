@@ -3,6 +3,7 @@ export const environment = {
   environmentType: 'uat',
   displayBuildVersion: true,
   FRONTEND_URL: 'https://dogfood.bangumin.tv',
+  BACKEND_URL: 'https://api.dogfood.bangumin.tv',
   BANGUMI_API_URL: 'https://api.dogfood.bangumin.tv/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: 'https://api.dogfood.bangumin.tv/proxy/oauth/bangumi',
   BACKEND_API_URL: 'https://api.dogfood.bangumin.tv',

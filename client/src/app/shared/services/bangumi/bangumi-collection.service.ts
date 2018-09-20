@@ -94,7 +94,7 @@ export class BangumiCollectionService {
 
     return this.http.post<CollectionResponse>
     (`${environment.BANGUMI_API_URL}/collection/${subjectId}/update?app_id=${environment.BANGUMI_APP_ID}`,
-      collectionRequestBody.toString(), {headers: headers})
+      collectionRequestBody.toString(), {headers: headers, withCredentials: true})
       .pipe(
         map(res => {
             if (res['code'] && res['code'] !== 200) {

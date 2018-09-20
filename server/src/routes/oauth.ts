@@ -116,6 +116,10 @@ router.get(
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
         config.cookieDomain,
     });
+    res.cookie('userInfo', JSON.stringify(req.user), {
+      domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
+        config.cookieDomain,
+    });
     res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=success`);
   },
 );

@@ -3,6 +3,7 @@ export const environment = {
   environmentType: 'dev',
   displayBuildVersion: false,
   FRONTEND_URL: 'http://127.0.0.1:4200',
+  BACKEND_URL: 'http://127.0.0.1:8081',
   BANGUMI_API_URL: 'http://127.0.0.1:8081/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: 'http://127.0.0.1:8081/proxy/oauth/bangumi',
   BACKEND_API_URL: 'http://127.0.0.1:8081/api',

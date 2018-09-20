@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import csurf from 'csurf';
 import helmet from 'helmet';
 import config from './config';
 import expressSession from 'express-session';
@@ -29,42 +30,17 @@ if (config.env !== 'development') {
   app.set('trust proxy', 1); // trust first proxy
 }
 
+
 // enable cors
 const corsOption = {
   origin: config.frontEndUrl,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  exposedHeaders: ['Authorization'],
+  exposedHeaders: ['Authorization', 'x-xsrf-token'],
 };
 
 app.use(cors(corsOption));
 
-app.use('/proxy/api/bangumi', proxy({
-  target: 'https://api.bgm.tv',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/proxy/api/bangumi': '', // rewrite path
-  },
-  logProvider: () => logger,
-}));
-
-app.use('/proxy/oauth/bangumi', proxy({
-  target: 'https://bgm.tv',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/proxy/oauth/bangumi': '/oauth', // rewrite path
-  },
-  logProvider: () => logger,
-}));
-
-// rest API requirements
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true,
-}));
-
-// TODO: enable csrf support before in production
-// app.use(csrf({ cookie: false }));
 
 const dynamoDBStoreOptios = {
   table: `BangumiN_${config.env}_sessions`,
@@ -104,21 +80,61 @@ app.use(expressSession({
 // security setup
 app.use(helmet());
 
+const csrfProtection = csurf();
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
-app.use('/oauth', oauth);
-app.use('/api/user/:userId', spoiler);
-app.use('/api/user/:userId/setting', authenticationMiddleware.isAuthenticated, settings);
-app.use('/api/stats', stats);
-app.use('/api/search', authenticationMiddleware.isAuthenticated, search);
-app.use('/api/bgm/subject', subject);
-app.use('/api/bgm/user',  user);
-app.all('*', (req, res) => {
+app.use('/proxy/oauth/bangumi', csrfProtection, (req: any, res: any, next: any) => {
+  // remove our auth details before sending data to Bangumi
+  // TODO: Figure out the best practice to handle this situation
+  delete req.headers['x-xsrf-token'];
+  delete req.headers['cookie'];
+  req.cookie = {};
+  req.session.cookie = {};
+  return next();
+}, proxy({
+  target: 'https://bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/oauth/bangumi': '/oauth', // rewrite path
+  },
+  logProvider: () => logger,
+}));
+
+app.use('/proxy/api/bangumi', csrfProtection, (req: any, res: any, next: any) => {
+  delete req.headers['x-xsrf-token'];
+  delete req.headers['cookie'];
+  req.cookie = {};
+  req.session.cookie = {};
+  return next();
+}, proxy({
+  target: 'https://api.bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/api/bangumi': '', // rewrite path
+  },
+  logProvider: () => logger,
+}));
+
+// create application/json parser
+const jsonParser = bodyParser.json();
+
+// create application/x-www-form-urlencoded parser
+const urlencodedParser = bodyParser.urlencoded({extended: true});
+
+app.use('/auth', jsonParser, csrfProtection, auth);
+app.use('/oauth', jsonParser, csrfProtection, oauth);
+app.use('/api/user/:userId', jsonParser, csrfProtection, spoiler);
+app.use('/api/user/:userId/setting', jsonParser, csrfProtection, authenticationMiddleware.isAuthenticated, settings);
+app.use('/api/stats', jsonParser, csrfProtection, stats);
+app.use('/api/search', jsonParser, csrfProtection, authenticationMiddleware.isAuthenticated, search);
+app.use('/api/bgm/subject', jsonParser, csrfProtection, subject);
+app.use('/api/bgm/user', jsonParser, csrfProtection, user);
+app.all('*', jsonParser, (req, res) => {
   res.status(404).json({error_code: 'not_found'});
 });
-
+//
 // define error-handling middleware last, after other app.use() & routes calls;
 const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
   logger.error('%o', err.stack);
@@ -130,7 +146,7 @@ const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
 const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
   res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
     error: err.code === undefined ? 'unclassified' : err.code,
-    error_description: config.env === 'dev' ? err.message :  'Internal Error',
+    error_description: config.env === 'dev' ? err.message : 'Internal Error',
   });
 };
 

@@ -3,6 +3,7 @@ export const environment = {
   environmentType: 'prod',
   displayBuildVersion: false,
   FRONTEND_URL: 'https://bangumin.tv',
+  BACKEND_URL: 'https://api.bangumin.tv',
   BANGUMI_API_URL: 'https://api.bangumin.tv/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: 'https://api.bangumin.tv/proxy/oauth/bangumi',
   BACKEND_API_URL: 'https://api.bangumin.tv',

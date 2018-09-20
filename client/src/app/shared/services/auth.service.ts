@@ -237,7 +237,7 @@ export class AuthenticationService {
 
     return this.http.post(
       `${environment.BANGUMI_OAUTH_URL}/token_status`,
-      collectionRequestBody.toString(), {headers: headers})
+      collectionRequestBody.toString(), {headers: headers, withCredentials: true})
       .pipe(
         tap(authInfo => {
           if (authInfo['access_token'] === undefined

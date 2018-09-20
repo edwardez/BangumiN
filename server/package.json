@@ -54,7 +54,8 @@
     "sequelize": "^4.38.0",
     "sequelize-typescript": "^0.6.6",
     "snakecase-keys": "^1.2.0",
-    "winston": "^3.0.0"
+    "winston": "^3.1.0",
+    "winston-cloudwatch": "^2.0.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

@@ -1,12 +1,12 @@
 import * as express from 'express';
 import asyncHandler from 'express-async-handler';
 import passport from 'passport';
-import csrf from 'csurf';
 import config from '../config';
 import joi from 'joi';
 import {logger} from '../utils/logger';
 import requestPromise from 'request-promise';
 import authenticationMiddleware from '../services/authenticationHandler';
+import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
 
 const router = express.Router();
 
@@ -53,8 +53,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
     refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
   } catch (err) {
     logger.error('Request cannot be verified: %o', req.body);
-    logger.error(err.stack);
-    return res.sendStatus(400);
+    throw new CustomizedError(BanguminErrorCode.ValidationError, err);
   }
 
   const options = {
@@ -76,8 +75,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
     req.refreshedTokenInfo = response;
   } catch (err) {
     logger.error('Response cannot be parsed or verified: %o', response);
-    logger.error(err);
-    return res.sendStatus(400);
+    throw new CustomizedError(BanguminErrorCode.BangumiServerResponseError, err);
   }
 
   return next();
@@ -130,10 +128,5 @@ router.post(
   asyncHandler(refreshUserAccessToken),
   (req: any, res: any) => res.json(req.refreshedTokenInfo),
 );
-
-const csrfProtection = csrf({cookie: true});
-router.get('/json', csrfProtection, (req: any, res: any) => {
-  res.json({csrfToken: req.csrfToken()});
-});
 
 export const oauth = router;

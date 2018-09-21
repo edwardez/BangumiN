@@ -18,6 +18,7 @@ import {subject} from './routes/bangumi/subject';
 import {user} from './routes/bangumi/user';
 import {stats} from './routes/stats';
 import {search} from './routes/search';
+import {generalErrorHandler, specificErrorHandler} from './services/errorHandler';
 
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
@@ -130,23 +131,8 @@ app.use('/api/bgm/user', jsonParser, csrfProtection, user);
 app.all('*', jsonParser, (req, res) => {
   res.status(404).json({error_code: 'not_found'});
 });
-//
-// define error-handling middleware last, after other app.use() & routes calls;
-const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
-  logger.error('%o', err.stack);
-  next(err);
-};
 
-// error handler, send stacktrace only during development
-// eslint-disable-next-line no-unused-vars
-const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
-  res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
-    error: err.code === undefined ? 'unclassified' : err.code,
-    error_description: config.env === 'dev' ? err.message : 'Internal Error',
-  });
-};
-
-app.use(logErrors);
+app.use(specificErrorHandler);
 app.use(generalErrorHandler);
 
 const server = app.listen(config.server.port, config.server.host);

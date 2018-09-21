@@ -36,6 +36,9 @@ class Subject(Base):
     rank = Column(Integer)
     eps = Column(Integer)
     eps_count = Column(Integer)
+    characters = Column(JSONB)
+    staff = Column(JSONB)
+
 
     def __init__(self, subject):
         parsed_subject = self.parse_input(subject)
@@ -63,7 +66,8 @@ class Subject(Base):
                           'images': Subject.parse_images(subject.get('images')),
                           'collection': Subject.parse_collection(subject.get('collection')),
                           'rank': subject.get('rank'),
-                          'eps': subject.get('eps'), 'eps_count': subject.get('eps_count')}
+                          'eps': subject.get('eps'), 'eps_count': subject.get('eps_count'),
+                          'characters': subject.get('crt'), 'staff': subject.get('staff'), }
 
         return parsed_subject
 
@@ -91,14 +95,14 @@ class Subject(Base):
             return None
 
         try:
-            parsed_date = datetime.strptime(raw_date, '%Y-%m-%d')
+            parsed_date = datetime.strptime(raw_date, '%Y-%m-%d').date()
             return parsed_date
         except ValueError as valueError:
             # '0000-00-00' is the most common case, we don't want to flood log with same message
             try:
                 # trying to fix some common errors
                 raw_date = raw_date.replace('-00', '-01')
-                parsed_date = datetime.strptime(raw_date, '%Y-%m-%d')
+                parsed_date = datetime.strptime(raw_date, '%Y-%m-%d').date()
                 return parsed_date
             except ValueError as valueErrorRetry:
                 if not raw_date.startswith('0000'):
@@ -200,6 +204,8 @@ class Subject(Base):
         self.rank = parsed_subject.get('rank')
         self.eps = parsed_subject.get('eps')
         self.eps_count = parsed_subject.get('eps_count')
+        self.characters = parsed_subject.get('characters')
+        self.staff = parsed_subject.get('staff')
 
     def diff_self_with_input(self, subject_dict):
         """

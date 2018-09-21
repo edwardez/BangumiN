@@ -13,7 +13,8 @@ class DataSyncer:
     Scrape Bangumi info through API and save in the rds
     """
 
-    def __init__(self, api_url_prefix, database_model_class, base_max_id, max_concurrent_connections=8):
+    def __init__(self, api_url_prefix, database_model_class, base_max_id, max_concurrent_connections=8,
+                 api_url_suffix=''):
         """
 
         :param api_url_prefix:
@@ -27,7 +28,7 @@ class DataSyncer:
         self.databaseExecutor = GeneralDatabaseExecutor(self.databaseModel, self.scrape_step)
 
         self.requestHandler = RequestHandler(api_url_prefix, base_max_id,
-                                             self.max_concurrent_connections)
+                                             self.max_concurrent_connections, api_url_suffix)
         #  failed_to_get_entities, i.e. an exception was returned, which indicates we failed to get response
         self.stats = {
             'created_entities': 0,

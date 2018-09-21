@@ -433,7 +433,16 @@
     "unauthorized": "Your authroization expires, you'll be redirected to login page to authorize again.",
     "inputEmpty": "Input is empty",
     "maximumTextLengthReached": "Maximum: {{maxLength}} characters",
-    "maximumTagLengthReached": "Maximum: {{maxLength}} tags"
+    "maximumTagLengthReached": "Maximum: {{maxLength}} tags",
+    "httpResponse": {
+      "UnclassifiedInternalError": "Request failed: unknown error",
+      "ValidationError": "Request failed: illegal parameters",
+      "BangumiServerResponseError": "Request failed: cannot connect to Bangumi server",
+      "RequestResourceNotFoundError": "Request faled: resource couldn't be found",
+      "RDSResponseError": "Request faled: app error",
+      "NoSQLResponseError": "Request faled: app error",
+      "UnauthorizedError": "You're not authorized to do this"
+    }
   },
   "errorHelper": {
     "text": {

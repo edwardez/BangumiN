@@ -438,7 +438,16 @@
     "unauthorized": "您的授权已过期，请在登录页面重新授权",
     "inputEmpty": "输入为空",
     "maximumTextLengthReached": "最多只能输入{{maxLength}}个字",
-    "maximumTagLengthReached": "最多只能选择{{maxLength}}个标签"
+    "maximumTagLengthReached": "最多只能选择{{maxLength}}个标签",
+    "httpResponse": {
+      "UnclassifiedInternalError": "请求失败：未知错误",
+      "ValidationError": "请求失败：参数异常",
+      "BangumiServerResponseError": "请求失败：Bangumi服务器异常",
+      "RequestResourceNotFoundError": "请求失败：资源不存在",
+      "RDSResponseError": "请求失败：程序异常",
+      "NoSQLResponseError": "请求失败：程序异常",
+      "UnauthorizedError": "无权进行此操作"
+    }
   },
   "errorHelper": {
     "text": {

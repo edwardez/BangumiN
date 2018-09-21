@@ -14,7 +14,7 @@ class SubjectPartialSyncer:
     """
 
     def __init__(self):
-        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 259000, 9)
+        self.dataSyncer = DataSyncer('https://api.bgm.tv/subject/', Subject, 259000, 9, '?responseGroup=medium')
 
     def run(self):
         #  get current subject with maximum id in database

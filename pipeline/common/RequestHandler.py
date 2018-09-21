@@ -23,8 +23,9 @@ class RequestHandler:
     A general-purpose request handler for BangumiN
     """
 
-    def __init__(self, api_url_prefix, base_max_id, max_concurrent_connections=10):
+    def __init__(self, api_url_prefix, base_max_id, max_concurrent_connections=10, api_url_suffix=''):
         self.API_URL_PREFIX = api_url_prefix
+        self.API_URL_SUFFIX = api_url_suffix
         self.max_concurrent_connections = max_concurrent_connections
         logger.info('Starting calculating current max id in API.')
         self.find_max_id_base_step = 10000
@@ -88,7 +89,8 @@ class RequestHandler:
         for original_id in ids:
             if not isinstance(original_id, int):
                 raise TypeError('Each subject_id must be an integer')
-            urls.append({'original_url': self.API_URL_PREFIX + str(original_id), 'original_id': original_id})
+            urls.append({'original_url': self.API_URL_PREFIX + str(original_id) + self.API_URL_SUFFIX,
+                         'original_id': original_id})
         return urls
 
     def generate_url_from_range(self, min_id, max_id):
@@ -102,7 +104,7 @@ class RequestHandler:
             raise ValueError('min_id must be smaller than max_id')
         urls = []
         for i in range(min_id, max_id):
-            urls.append({'original_url': self.API_URL_PREFIX + str(i), 'original_id': i})
+            urls.append({'original_url': self.API_URL_PREFIX + str(i) + self.API_URL_SUFFIX, 'original_id': i})
         return urls
 
     def are_all_responses_not_found(self, ids):

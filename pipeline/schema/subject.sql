@@ -16,6 +16,8 @@ create table subject
 	rank integer,
 	eps integer,
 	eps_count integer,
+	characters jsonb,
+	staff jsonb,
 	row_last_modified timestamp with time zone default clock_timestamp() not null,
 	true_id integer
 )

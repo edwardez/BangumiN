@@ -2,6 +2,7 @@ import config from '../../config/index';
 import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
 import {logger} from '../../utils/logger';
+import {BanguminErrorCode, CustomError} from '../../services/errorHandler';
 
 export interface UserSchema {
   id: string;
@@ -90,7 +91,9 @@ export class User {
    */
   static findUser(userID: string | number, hiddenFields: string[] = []): Promise<dynamoose.Model<UserModel>> {
     if (!userID) {
-      throw Error('Expect userID to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userID to be a' +
+        ' truthy value');
     }
 
     const id = userID.toString();
@@ -100,7 +103,6 @@ export class User {
       })
       .catch((error) => {
         logger.error(`Failed to execute find user step for id:${id}`);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -111,7 +113,8 @@ export class User {
    */
   static createUser(userInstance: UserSchema): Promise<dynamoose.Model<UserModel>> {
     if (!userInstance || !userInstance.id) {
-      throw Error('Expect userInstance and userInstance.id to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userInstance and userInstance.id to be a truthy value');
     }
 
     logger.info(`Create new user: ${userInstance.id}`);
@@ -124,7 +127,6 @@ export class User {
       })
       .catch((error) => {
         logger.error(`Cannot save user: ${userInstance.id}`);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -135,7 +137,8 @@ export class User {
    */
   static logInOrSignUpUser(userID: string | number): Promise<dynamoose.Model<UserModel>> {
     if (!userID) {
-      throw Error('Expect userID to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userID to be a truthy value');
     }
 
     const id = userID.toString();
@@ -162,7 +165,8 @@ export class User {
   static updateUser(userSettings: UserSchema, protectedSettings = ['loggedInAt', 'updatedAt', 'createdAt'])
     : Promise<dynamoose.Model<UserModel>> {
     if (!userSettings || !userSettings.id) {
-      throw Error('Expect userSettings and userSettings.id to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userSettings and userSettings.id to be a truthy value');
     }
 
     const copiedUserSettings = User.deleteProtectedFields(userSettings, protectedSettings);
@@ -175,7 +179,6 @@ export class User {
         return updatedUser;
       }).catch((error) => {
         logger.error('Failed to update user settings as %o', userSettings);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -193,7 +196,8 @@ export class User {
   static deleteProtectedFields(userInstance: UserSchema | UserModel, fieldsToDelete = ['loggedInAt', 'updatedAt', 'createdAt']):
     UserSchema | UserModel {
     if (!userInstance || !userInstance.id) {
-      throw Error('Expect userInstance and userInstance.id to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userInstance and userInstance.id to be a truthy value');
     }
     fieldsToDelete.forEach(Reflect.deleteProperty.bind(null, userInstance));
     return userInstance;

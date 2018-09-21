@@ -1,4 +1,4 @@
-import {BanguminErrorCode, CustomizedError} from './errorHandler';
+import {BanguminErrorCode, CustomError} from './errorHandler';
 import config from '../config/components/passport';
 import requestPromise from 'request-promise';
 import {logger} from '../utils/logger';
@@ -53,7 +53,7 @@ export default async function getUserProfile(req: any, res: any, next: any) {
     req.bangumin.userProfile = userProfile;
   } catch (err) {
     logger.error('Response cannot be parsed or verified: %o', response);
-    return next(new CustomizedError(BanguminErrorCode.ValidationError, err));
+    return next(new CustomError(BanguminErrorCode.ValidationError, err));
   }
 
   return next();

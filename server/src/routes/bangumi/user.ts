@@ -2,7 +2,7 @@ import * as express from 'express';
 import {findUserByIdOrUserName} from '../../services/bangumi/userService';
 import {User} from '../../models/relational/bangumi/user';
 import {celebrate, Joi} from 'celebrate';
-import {BanguminErrorCode, CustomizedError} from '../../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../../services/errorHandler';
 
 const router = express.Router();
 
@@ -31,7 +31,10 @@ router.get('/:userId', celebrate({
       });
     },
   ).catch((error) => {
-    throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      throw new error;
+    }
+    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
   });
 
 });

@@ -2,7 +2,7 @@ import * as express from 'express';
 import {Record} from '../models/relational/bangumi/record';
 import {getSubjectStatsById, getUserStatsByIdOrUsername} from '../services/bangumi/statsService';
 import {celebrate, Joi} from 'celebrate';
-import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 
 const router = express.Router();
 
@@ -29,11 +29,14 @@ router.get('/user/:userIdOrUsername', celebrate({
         );
       }
 
-      throw new CustomizedError(BanguminErrorCode.RequestResourceNotFoundError,
+      throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
         new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested user id stats doesn\'t exist');
     },
   ).catch((error) => {
-    throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      throw new error;
+    }
+    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
   });
 
 });
@@ -57,11 +60,14 @@ router.get('/subject/:subjectId', celebrate({
         });
       }
 
-      throw new CustomizedError(BanguminErrorCode.RequestResourceNotFoundError,
+      throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
         new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested subject id stats doesn\'t exist');
     },
   ).catch((error) => {
-    throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      throw new error;
+    }
+    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
   });
 
 });

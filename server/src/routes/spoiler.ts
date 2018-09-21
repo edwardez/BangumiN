@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as dynamooseSpoilerModel from '../models/nosql/spoiler';
 import authenticationMiddleware from '../services/authenticationHandler';
-import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 import {celebrate, Joi} from 'celebrate';
 
 const router = express.Router({mergeParams: true});
@@ -25,7 +25,10 @@ router.post('/spoiler', authenticationMiddleware.isAuthenticated, celebrate({
       res.json(response);
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -56,7 +59,10 @@ router.get('/spoiler/:spoilerId', celebrate({
       });
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -80,7 +86,10 @@ router.delete('/spoiler/:spoilerId', celebrate({
 
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -105,7 +114,8 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
 
   // currently, list all spoilers are considered private and only user themself can view all of their spoilers
   if (requestUserId !== sessionUserID) {
-    return res.status(500).json({});
+    throw new CustomError(BanguminErrorCode.UnauthorizedError, new Error(BanguminErrorCode[BanguminErrorCode.UnauthorizedError]),
+      'You\'re not authorized to visit this resource');
   }
 
   const newSpoiler: dynamooseSpoilerModel.SpoilerSchema = req.body;
@@ -114,7 +124,7 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
       return res.json({spoilers: response, userId: requestUserId, lastKey: response.lastKey || null});
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });

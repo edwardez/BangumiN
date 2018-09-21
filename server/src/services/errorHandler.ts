@@ -4,7 +4,7 @@ import {logger} from '../utils/logger';
 /**
  * A customized class to handle error
  */
-export class CustomizedError extends Error {
+export class CustomError extends Error {
   public name: string;
   public customizedErrorCode: BanguminErrorCode;
   public customizedErrorMessage: string;
@@ -37,6 +37,7 @@ export enum BanguminErrorCode {
   RequestResourceNotFoundError = 4,
   RDSResponseError = 5,
   NoSQLResponseError = 6,
+  UnauthorizedError = 7,
 }
 
 /**
@@ -52,21 +53,28 @@ const specificErrorHandler = function errorHandler(err: any, req: any, res: any,
     if (err.name === 'ValidationError' || err.customizedErrorCode === BanguminErrorCode.ValidationError) {
       logger.error('%o', err.stack);
       return res.status(400).json({
-        error: BanguminErrorCode.ValidationError,
+        code: BanguminErrorCode.ValidationError,
         message: err.customizedErrorMessage || 'Input is not valid',
+      });
+    }
+    if (err.customizedErrorCode === BanguminErrorCode.UnauthorizedError) {
+      logger.error('%o', err.stack);
+      return res.status(500).json({
+        code: err.customizedErrorCode,
+        message: err.customizedErrorMessage || 'UnauthorizedError',
       });
     }
     if (err.customizedErrorCode === BanguminErrorCode.RDSResponseError) {
       logger.error('%o', err.stack);
       return res.status(500).json({
-        error: BanguminErrorCode.RDSResponseError,
+        code: err.customizedErrorCode,
         message: err.customizedErrorMessage || 'Error occurred during querying database',
       });
     }
     if (err.customizedErrorCode === BanguminErrorCode.RequestResourceNotFoundError) {
       logger.error('%o', err.stack);
       return res.status(404).json({
-        error: BanguminErrorCode.RequestResourceNotFoundError,
+        code: err.customizedErrorCode,
         message: err.customizedErrorMessage || 'Requested resource couldn\'t be found',
       });
     }

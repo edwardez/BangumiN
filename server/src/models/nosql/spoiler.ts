@@ -3,6 +3,7 @@ import dynamoose from 'dynamoose';
 import * as Joi from 'joi';
 import {logger} from '../../utils/logger';
 import {SubjectBase} from '../relational/bangumi/common/SubjectBase';
+import {BanguminErrorCode, CustomError} from '../../services/errorHandler';
 
 const MAX_RELATED_SUBJECT_NUMBER = 2;
 const SPOILER_ID_LENGTH = 15;
@@ -123,7 +124,8 @@ export class Spoiler {
    */
   static findSpoiler(spoilerID: string | number, hiddenFields: string[] = []): Promise<dynamoose.Model<SpoilerModel>> {
     if (!spoilerID) {
-      throw Error('Expect spoilerID to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect spoilerID to be a truthy value');
     }
 
     const id = spoilerID.toString();
@@ -133,7 +135,6 @@ export class Spoiler {
       })
       .catch((error) => {
         logger.error(`Failed to execute find spoiler step for id:${id}`);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -145,20 +146,28 @@ export class Spoiler {
    */
   static deleteSpoiler(spoilerID: string, requestUserId: string | number): Promise<dynamoose.Model<SpoilerModel>> {
     if (!spoilerID) {
-      throw Error('Expect spoilerID to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect spoilerID to be a truthy value');
     }
 
     const id = String(spoilerID);
     return spoilerModel.get(id)
       .then((existedSpoiler: SpoilerModel) => {
-        if (existedSpoiler && existedSpoiler.userId === String(requestUserId)) {
-          return existedSpoiler.delete();
+        if (existedSpoiler) {
+          if (existedSpoiler.userId === String(requestUserId)) {
+            return existedSpoiler.delete();
+          }
+
+          throw new CustomError(BanguminErrorCode.UnauthorizedError, new Error(BanguminErrorCode[BanguminErrorCode.UnauthorizedError]),
+            'Cannot delete spoilers that don\'t belong to your self');
         }
-        throw 'error';
+
+        throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
+          new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]),);
+
       })
       .catch((error) => {
         logger.error(`Failed to execute delete spoiler step for id:${id}`);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -174,7 +183,8 @@ export class Spoiler {
   static findSpoilers(userId: string | number, createdAtStart = 0, createdAtEnd = Date.now(), limit = SPOILERS_PER_PAGE,
                       hiddenFields: string[] = []): Promise<dynamoose.QueryResult<dynamoose.Model<SpoilerModel>>> {
     if (!userId) {
-      throw Error('Expect userId to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect userId to be a truthy value');
     }
     const id = userId.toString();
     return spoilerModel
@@ -187,7 +197,6 @@ export class Spoiler {
       .exec()
       .catch((error) => {
         logger.error(`Failed to execute find spoiler step for user id:${id}`);
-        logger.error(error.stack);
         throw error;
       });
   }
@@ -198,7 +207,8 @@ export class Spoiler {
    */
   static createSpoiler(spoilerInstance: SpoilerSchema): Promise<dynamoose.Model<SpoilerModel>> {
     if (!spoilerInstance) {
-      throw Error('Expect spoilerInstance to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect spoilerInstance to be a truthy value');
     }
 
     spoilerInstance.spoilerId = generateSpoilerId(SPOILER_ID_LENGTH);
@@ -219,7 +229,6 @@ export class Spoiler {
       })
       .catch((error) => {
         logger.error(`Cannot save spoiler: ${spoilerInstance.spoilerId}`);
-        logger.error(error.stack);
         throw error;
       });
 
@@ -237,7 +246,8 @@ export class Spoiler {
                                fieldsToDelete = ['updatedAt', 'createdAt']):
     SpoilerSchema | SpoilerModel {
     if (!spoilerInstance || !spoilerInstance.spoilerId) {
-      throw Error('Expect spoilerInstance and spoilerInstance.spoilerId to be a truthy value');
+      throw new CustomError(BanguminErrorCode.ValidationError, new Error(BanguminErrorCode[BanguminErrorCode.ValidationError]),
+        'Expect spoilerInstance and spoilerInstance.spoilerId to be a truthy value');
     }
     fieldsToDelete.forEach(Reflect.deleteProperty.bind(null, spoilerInstance));
     return spoilerInstance;

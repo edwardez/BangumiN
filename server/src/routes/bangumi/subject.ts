@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {findSubjectById} from '../../services/bangumi/subjectService';
 import {celebrate, Joi} from 'celebrate';
-import {BanguminErrorCode, CustomizedError} from '../../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../../services/errorHandler';
 
 const router = express.Router();
 
@@ -38,7 +38,10 @@ router.get('/:subjectId',
         });
       },
     ).catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.RDSResponseError, error);
     });
 
   });

@@ -1,6 +1,8 @@
 import * as express from 'express';
 import * as dynamooseSpoilerModel from '../models/nosql/spoiler';
 import authenticationMiddleware from '../services/authenticationHandler';
+import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {celebrate, Joi} from 'celebrate';
 
 const router = express.Router({mergeParams: true});
 
@@ -9,7 +11,12 @@ const router = express.Router({mergeParams: true});
 /**
  * create a new spoiler
  */
-router.post('/spoiler', authenticationMiddleware.isAuthenticated, (req: any, res: any, next: any) => {
+router.post('/spoiler', authenticationMiddleware.isAuthenticated, celebrate({
+  body: {
+    spoilerText: Joi.array(),
+    relatedSubjects: Joi.array(),
+  },
+}), (req: any, res: any, next: any) => {
 
   const newSpoiler: dynamooseSpoilerModel.SpoilerSchema = req.body;
   newSpoiler.userId = req.user.id;
@@ -18,7 +25,7 @@ router.post('/spoiler', authenticationMiddleware.isAuthenticated, (req: any, res
       res.json(response);
     })
     .catch((error) => {
-      res.status(500);
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -26,7 +33,12 @@ router.post('/spoiler', authenticationMiddleware.isAuthenticated, (req: any, res
 /**
  * get a spoiler
  */
-router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
+router.get('/spoiler/:spoilerId', celebrate({
+  params: {
+    spoilerId: Joi.number(),
+    userId: Joi.string(),
+  },
+}), (req: any, res: any, next: any) => {
   const userId = req.params.userId;
   const spoilerId = req.params.spoilerId;
 
@@ -44,7 +56,7 @@ router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
       });
     })
     .catch((error) => {
-      return res.status(500);
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -52,7 +64,12 @@ router.get('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 /**
  * delete a spoiler
  */
-router.delete('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
+router.delete('/spoiler/:spoilerId', celebrate({
+  params: {
+    spoilerId: Joi.number(),
+    userId: Joi.string(),
+  },
+}), (req: any, res: any, next: any) => {
   const userId = req.params.userId;
   const spoilerId = req.params.spoilerId;
 
@@ -63,7 +80,7 @@ router.delete('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 
     })
     .catch((error) => {
-      return res.status(500).json({});
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -71,9 +88,18 @@ router.delete('/spoiler/:spoilerId', (req: any, res: any, next: any) => {
 /**
  * get all spoilers for a user
  */
-router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res: any, next: any) => {
-  const requestUserId = req.params.userId;
-  const sessionUserID = req.user.id;
+router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
+  params: {
+    userId: Joi.string(),
+  },
+  query: {
+    createdAtStart: Joi.date(),
+    createdAtEnd: Joi.date(),
+    limit: Joi.number(),
+  },
+}), (req: any, res: any, next: any) => {
+  const requestUserId: string = String(req.params.userId);
+  const sessionUserID: string = req.user.id;
   const createdAtStart: number = Number(req.query.createdAtStart);
   const createdAtEnd: number = Number(req.query.createdAtEnd);
 
@@ -85,10 +111,10 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, (req: any, res
   const newSpoiler: dynamooseSpoilerModel.SpoilerSchema = req.body;
   dynamooseSpoilerModel.Spoiler.findSpoilers(requestUserId, createdAtStart, createdAtEnd)
     .then((response) => {
-      return res.json({spoilers : response, userId: requestUserId, lastKey: response.lastKey || null});
+      return res.json({spoilers: response, userId: requestUserId, lastKey: response.lastKey || null});
     })
     .catch((error) => {
-      return res.status(500).json({});
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });

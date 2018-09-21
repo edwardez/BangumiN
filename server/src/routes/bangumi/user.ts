@@ -1,6 +1,8 @@
 import * as express from 'express';
 import {findUserByIdOrUserName} from '../../services/bangumi/userService';
 import {User} from '../../models/relational/bangumi/user';
+import {celebrate, Joi} from 'celebrate';
+import {BanguminErrorCode, CustomizedError} from '../../services/errorHandler';
 
 const router = express.Router();
 
@@ -9,7 +11,11 @@ const router = express.Router();
 /**
  * get user info
  */
-router.get('/:userId', (req: any, res: any, next: any) => {
+router.get('/:userId', celebrate({
+  params: {
+    userId: Joi.string().alphanum(),
+  },
+}), (req: any, res: any, next: any) => {
   const userId = req.params.userId;
 
   findUserByIdOrUserName(userId).then(
@@ -24,7 +30,9 @@ router.get('/:userId', (req: any, res: any, next: any) => {
         error: 'Not Found',
       });
     },
-  );
+  ).catch((error) => {
+    throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+  });
 
 });
 

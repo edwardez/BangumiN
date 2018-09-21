@@ -1,12 +1,22 @@
 import * as express from 'express';
 import * as dynamooseUserModel from '../models/nosql/user';
+import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {celebrate, Joi} from 'celebrate';
 
 const router = express.Router();
 
 /**
  * post updated user settings to database
  */
-router.post('/', (req: any, res: any, next: any) => {
+router.post('/', celebrate({
+  body: {
+    id: Joi.string().regex(/^\d+$/).required(),
+    appLanguage: Joi.string(),
+    bangumiLanguage: Joi.string(),
+    appTheme: Joi.string(),
+    showA11YViolationTheme: Joi.boolean(),
+  },
+}), (req: any, res: any, next: any) => {
   const id = req.user.id;
   const newUserSettings: dynamooseUserModel.UserSchema = req.body;
   // users are only allowed to update their own settings
@@ -17,7 +27,7 @@ router.post('/', (req: any, res: any, next: any) => {
       res.json(response);
     })
     .catch((error) => {
-      res.status(500);
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -33,7 +43,7 @@ router.get('/', (req: any, res: any, next: any) => {
       res.json(response);
     })
     .catch((error) => {
-      res.status(500);
+      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });

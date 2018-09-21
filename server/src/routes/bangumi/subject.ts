@@ -1,5 +1,7 @@
 import * as express from 'express';
 import {findSubjectById} from '../../services/bangumi/subjectService';
+import {celebrate, Joi} from 'celebrate';
+import {BanguminErrorCode, CustomizedError} from '../../services/errorHandler';
 
 const router = express.Router();
 
@@ -7,29 +9,38 @@ const router = express.Router();
 /**
  * get  multiple subjects info
  */
-router.get('/:subjectId', (req: any, res: any, next: any) => {
-  const subjectId = req.params.subjectId;
-  const responseGroup = req.query.responseGroup || 'small';
-  let exclude: string[];
-  if (responseGroup === 'medium' || responseGroup === 'large') {
-    exclude = [];
-  }
-
-  findSubjectById(subjectId, exclude).then(
-    (subject) => {
-      if (subject) {
-        return res.json(subject.toJSON());
-      }
-
-      return res.json({
-        request: req.originalUrl.replace(/^\/api\/bgm/, ''),
-        code: 404,
-        error: 'Not Found',
-      });
+router.get('/:subjectId',
+  celebrate({
+    params: {
+      subjectId: Joi.number().min(0).max(Number.MAX_SAFE_INTEGER),
     },
-  );
+    query: {
+      responseGroup: Joi.string().valid(['base', 'small', 'medium', 'large']),
+    },
+  }), (req: any, res: any, next: any) => {
+    const subjectId = req.params.subjectId;
+    const responseGroup = req.query.responseGroup || 'small';
+    let exclude: string[];
+    if (responseGroup === 'medium' || responseGroup === 'large') {
+      exclude = [];
+    }
 
-  // return res.json(userId);
-});
+    findSubjectById(subjectId, exclude).then(
+      (subject) => {
+        if (subject) {
+          return res.json(subject.toJSON());
+        }
+
+        return res.json({
+          request: req.originalUrl.replace(/^\/api\/bgm/, ''),
+          code: 404,
+          error: 'Not Found',
+        });
+      },
+    ).catch((error) => {
+      throw new CustomizedError(BanguminErrorCode.RDSResponseError, error);
+    });
+
+  });
 
 export const subject = router;

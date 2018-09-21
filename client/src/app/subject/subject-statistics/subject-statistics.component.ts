@@ -7,7 +7,8 @@ import * as _ from 'lodash';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
-import {filter} from 'rxjs/operators';
+import {filter, switchMap} from 'rxjs/operators';
+import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 
 @Component({
   selector: 'app-subject-statistics',
@@ -37,22 +38,21 @@ export class SubjectStatisticsComponent implements OnInit {
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
-  yearVsMeanData = [];
+  yearVsAccumulatedMeanData = [];
   // triggerValue;
-
-  countByTypeData;
 
   targetSubject;
   // raw data - CONST!
   targetSubjectStatsArr;
 
-  yearVsMeanFilterFormGroup: FormGroup;
+  yearVsAccumulatedMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
-  yearCount = {};
+  yearAccumulatedCount = {};
 
   constructor(
     private banguminUserService: BanguminUserService,
     private bangumiStatsService: BangumiStatsService,
+    private bangumiSubjectService: BangumiSubjectService,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
@@ -80,41 +80,39 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.params
+    this.activatedRoute.parent.parent.params
       .pipe(
-        filter(params => {
-          this.targetSubject = params['subjectId'];
-          return this.targetSubject;
-        })
+        filter(params => params['subjectId']),
+        switchMap(params => {
+            return this.bangumiSubjectService.getSubject(params['subjectId'], 'small');
+          },
+        )
       )
       .subscribe(params => {
-        this.bangumiStatsService.getSubjectStats(this.targetSubject)
+        this.targetSubject = params;
+        this.bangumiStatsService.getSubjectStats(this.targetSubject.id)
           .subscribe(res => {
             if (res) {
               const defaultArr = res.stats;
               // cache stats array
               this.targetSubjectStatsArr = res.stats;
-              this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
               // initialize filter list value
-              this.subjectTypeList = _.map(this.countByTypeData, 'name');
               this.collectionStatusList = _.map(
                 _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
               );
               // initialize filter form groups
-              this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
-              this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.yearVsAccumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
               this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
-              this.initScoreVsCount();
-              this.initYearVsMean();
+              // this.initScoreVsCount();
+              this.initYearVsAccumulatedMean();
             }
           });
       });
   }
 
-  getYearCount(year) {
-    return this.yearCount[year];
+  getAccumulatedYearCount(year) {
+    return this.yearAccumulatedCount[year];
   }
 
   calendarAxisTickFormatting(year) {
@@ -134,59 +132,25 @@ export class SubjectStatisticsComponent implements OnInit {
     `;
   }
 
-  getYearScoreMinMax(subjectType, year, minMax) {
-    const typeArr = _.filter(this.yearVsMeanData, row => row.name === subjectType);
-    const yearArr = _.filter(typeArr[0].series, row => row.name === year);
-    return yearArr[0][minMax];
-  }
-
-  private initYearVsMean() {
+  private initYearVsAccumulatedMean() {
     // initialize the chart with all types
-    const selectedTypeListForyearVsMean = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
-    this.refreshYearVsMean(this.targetSubjectStatsArr, selectedTypeListForyearVsMean);
-
-    // edit the chart on change of subjectType selection
-    // use formControl.valueChanges instead of selectionChange since we want to modify the chart minimally,
-    // i.e. instead of re-filtering the whole array with selectedList, only add/remove target subjectType from the chart.
-    this.yearVsMeanFilterFormGroup.controls['subjectTypeSelect'].valueChanges
-      .subscribe(newVal => {
-        const oldVal = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
-        const triggerValue = (newVal.length < oldVal.length) ?
-          _.difference(oldVal, newVal)[0] as string : _.difference(newVal, oldVal)[0] as string;
-        const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
-        // selected a value
-        if (action === 'select') {
-          const thisTypeArr = this.targetSubjectStatsArr
-            .filter((stat) => (SubjectType[stat.subjectType] === triggerValue));
-          this.groupAndCountByYearOfType(thisTypeArr, triggerValue);
-        } else {
-          // deselected a value
-          const newArr = _.filter(this.yearVsMeanData, (row) => {
-            return row.name !== triggerValue;
-          });
-          this.yearVsMeanData = [...newArr];
-        }
-      });
+    // const selectedTypeListForyearVsMean = this.yearVsAccumulatedMeanFilterFormGroup.value.subjectTypeSelect;
+    this.refreshYearVsAccumulatedMean(this.targetSubjectStatsArr);
 
     // edit the chart on change of collection status selection
-    this.yearVsMeanFilterFormGroup.controls['stateSelect'].valueChanges
+    this.yearVsAccumulatedMeanFilterFormGroup.controls['stateSelect'].valueChanges
       .subscribe(newStateList => {
         const newArr = this.targetSubjectStatsArr
           .filter(stat => newStateList.includes(CollectionStatusId[stat.collectionStatus]));
-        this.refreshYearVsMean(newArr, this.yearVsMeanFilterFormGroup.value.subjectTypeSelect);
+        // refresh count array
+        this.yearAccumulatedCount = [];
+        this.refreshYearVsAccumulatedMean(newArr);
       });
   }
 
-  private refreshYearVsMean(newYearVsMeanData, selectedTypeList) {
-    this.yearVsMeanData = [];
-    const arr = newYearVsMeanData
-      .filter(stat => selectedTypeList.includes(SubjectType[stat.subjectType]));
-    const arrByType = _.groupBy(arr, (row) => {
-      return SubjectType[row.subjectType];
-    });
-    Object.keys(arrByType).forEach((type) => {
-      this.groupAndCountByYearOfType(arrByType[type], type);
-    });
+  private refreshYearVsAccumulatedMean(newYearVsAccumulatedMeanData) {
+    this.yearVsAccumulatedMeanData = [];
+    this.groupAndCountByYear(newYearVsAccumulatedMeanData);
   }
 
   private initScoreVsCount() {
@@ -195,16 +159,6 @@ export class SubjectStatisticsComponent implements OnInit {
       this.scoreVsCountFilterFormGroup.value.stateSelect
     );
     this.groupAndCountByRate(arr);
-
-    // edit the chart on change of subjectType selection
-    this.scoreVsCountFilterFormGroup.controls['subjectTypeSelect'].valueChanges
-      .subscribe(newTypeList => {
-        const newArr = this.filterBySubjectTypeAndState(
-          newTypeList,
-          this.scoreVsCountFilterFormGroup.value.stateSelect
-        );
-        this.groupAndCountByRate(newArr);
-      });
 
     // edit the chart on change of collection status selection
     this.scoreVsCountFilterFormGroup.controls['stateSelect'].valueChanges
@@ -246,7 +200,7 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private initStatsFormGroup() {
-    this.yearVsMeanFilterFormGroup = this.formBuilder.group(
+    this.yearVsAccumulatedMeanFilterFormGroup = this.formBuilder.group(
       {
         subjectTypeSelect: [[]],
         stateSelect: [[]]
@@ -261,27 +215,31 @@ export class SubjectStatisticsComponent implements OnInit {
     );
   }
 
-  private groupAndCountByYearOfType(arr, type: string) {
+  private groupAndCountByYear(arr) {
     const arrByYear = _.groupBy(arr, (row) => {
       return day(row.addDate).year();
     });
     const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
     yearArr.forEach(row => {
-      let tmpArr = arrByYear[row.name];
-      if (tmpArr) {
-        row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
-        row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
-        tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
-        // note down the yearCount
-        this.yearCount[row.name] = tmpArr.length;
-        row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
-      }
+      // have to consider year with no data, since we are storing accumulated data
+      let tmpArr = arrByYear[row.name] || [];
+      tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
+      // note down the yearAccumulatedCount
+      this.yearAccumulatedCount[row.name] = (this.yearAccumulatedCount[row.name - 1] || 0) + tmpArr.length;
+      const curMean = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
+      const prevYearData = _.filter(yearArr, tmp => tmp.name === (row.name - 1));
+      const prevAccumulatedMean = (prevYearData.length === 0) ? 0 : prevYearData[0].value;
+      const prevAccumulatedCount = this.yearAccumulatedCount[row.name - 1] || 0;
+      const curAccumulatedCount = tmpArr.length + prevAccumulatedCount;
+      row.value = (curAccumulatedCount === 0) ? 0 :
+        ((curMean * tmpArr.length
+          + prevAccumulatedCount * prevAccumulatedMean) / curAccumulatedCount);
     });
-    this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
+    this.yearVsAccumulatedMeanData = [{name: this.targetSubject.subjectName.preferred, series: yearArr}];
   }
 
   private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0}));
   }
 
 }

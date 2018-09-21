@@ -11,11 +11,11 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-profile-stats',
-  templateUrl: './profile-stats.component.html',
-  styleUrls: ['./profile-stats.component.scss'],
+  templateUrl: './profile-statistics.component.html',
+  styleUrls: ['./profile-statistics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProfileStatsComponent implements OnInit {
+export class ProfileStatisticsComponent implements OnInit {
   // todo: options for each chart
   view;
   showXAxis;

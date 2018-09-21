@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {ProfileStatsRoutingModule} from './profile-stats-routing.module';
+import {ProfileStatisticsRoutingModule} from './profile-statistics-routing.module';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {ProfileStatsComponent} from './profile-stats.component';
+import {ProfileStatisticsComponent} from './profile-statistics.component';
 import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 
@@ -11,13 +11,13 @@ import {ReactiveFormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     BanguminSharedModule,
-    ProfileStatsRoutingModule,
+    ProfileStatisticsRoutingModule,
     NgxChartsModule,
     ReactiveFormsModule
   ],
   declarations: [
-    ProfileStatsComponent,
+    ProfileStatisticsComponent,
   ]
 })
-export class ProfileStatsModule {
+export class ProfileStatisticsModule {
 }

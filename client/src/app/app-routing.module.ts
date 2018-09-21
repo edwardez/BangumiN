@@ -51,7 +51,7 @@ const routes: Routes = [
       },
       {
         path: 'statistics',
-        loadChildren: 'app/user/profile-stats/profile-stats.module#ProfileStatsModule'
+        loadChildren: 'app/user/profile-statistics/profile-statistics.module#ProfileStatisticsModule'
       },
 
       {

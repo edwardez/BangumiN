@@ -1,18 +1,20 @@
 <mat-toolbar color="primary" class="d-flex fixed-header mat-elevation-z6 helper-toolbar">
-  <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated">
+  <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated"
+          tabindex="0">
     <mat-icon>menu</mat-icon>
   </button>
   <div class="d-none d-sm-block">BangumiN</div>
 
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
-    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'statistics']">{{'nav.menu.myStatistics.name' |
+    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'statistics']" tabindex="0">{{'nav.menu.myStatistics.name'
+      |
       translate}}</a>
-    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'timeline','spoilers']">{{'nav.menu.spoilerBox.name'
+    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'timeline','spoilers']" tabindex="0">{{'nav.menu.spoilerBox.name'
       | translate}}</a>
   </div>
 
   <div *ngIf="!isAuthenticated">
-    <a mat-button [routerLink]="['./login']" class="mr-2">{{'nav.menu.login.name' | translate}}</a>
+    <a mat-button [routerLink]="['./login']" class="mr-2" tabindex="0">{{'nav.menu.login.name' | translate}}</a>
   </div>
 
   <div class="flex-grow-1 flex-shrink-1"></div>
@@ -23,10 +25,12 @@
 
   </app-nav-search-bar>
 
+  <div class="helper-mat-toolbar-item helper-cursor-pointer" tabindex="0">
+    <a [matMenuTriggerFor]="menu">
+      <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.large}}>
+    </a>
+  </div>
 
-  <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
-    <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.large}}>
-  </a>
 
 </mat-toolbar>
 

@@ -1,30 +1,30 @@
 <div
   [class]="theme">
-  <ngx-charts-bar-vertical
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="scoreVsCountData"
-    [gradient]="gradient"
-    [showGridLines]="showGridLines"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel">
-    <ng-template #tooltipTemplate let-model="model">
-      <!-- todo: left align -->
-      <h4>Score: {{model.name}}</h4>
-      <h4>Count: {{model.value}}</h4>
-    </ng-template>
-  </ngx-charts-bar-vertical>
+  <!--<ngx-charts-bar-vertical-->
+  <!--[view]="view"-->
+  <!--[scheme]="colorScheme"-->
+  <!--[results]="scoreVsCountData"-->
+  <!--[gradient]="gradient"-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[legend]="showLegend"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel">-->
+  <!--<ng-template #tooltipTemplate let-model="model">-->
+  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
+  <!--<h4>Score: {{model.name}}</h4>-->
+  <!--<h4>Count: {{model.value}}</h4>-->
+  <!--</ng-template>-->
+  <!--</ngx-charts-bar-vertical>-->
 
   <ngx-charts-line-chart
     [view]="view"
     [scheme]="colorScheme"
     [schemeType]="schemeType"
-    [results]="yearVsMeanData"
+    [results]="yearVsAccumulatedMeanData"
     [animations]=true
     [legend]="showLegend"
     [gradient]="gradient"
@@ -43,15 +43,13 @@
     <ng-template #tooltipTemplate let-model="model">
       <!-- todo: left align -->
       <h3>
-        {{model.series}} IN {{model.name}}
+        {{model.series.substring(0, 10)}} AT {{model.name}}
       </h3>
       <h4>
-        Mean: {{model.value | number: '1.1-2'}}
-        • Min: {{getYearScoreMinMax(model.series, model.name, 'min')}}
-        • Max: {{getYearScoreMinMax(model.series, model.name, 'max')}}
+        Accumulated Mean: {{model.value | number: '1.1-2'}}
       </h4>
       <h4>
-        Count: {{getYearCount(model.name)}}
+        Accumulated Count: {{getAccumulatedYearCount(model.name)}}
       </h4>
     </ng-template>
   </ngx-charts-line-chart>
@@ -67,34 +65,20 @@
   <!--</ngx-charts-advanced-pie-chart>-->
 </div>
 
-<form [formGroup]="scoreVsCountFilterFormGroup">
-  <mat-form-field>
-    <mat-select
-      [formControl]="scoreVsCountFilterFormGroup.get('subjectTypeSelect')"
-      multiple>
-      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      [formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"
-      multiple>
-      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+<!--<form [formGroup]="scoreVsCountFilterFormGroup">-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--</form>-->
 
-<form [formGroup]="yearVsMeanFilterFormGroup">
+<form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
   <mat-form-field>
     <mat-select
-      [formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"
-      multiple>
-      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      [formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"
+      [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
       multiple>
       <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
     </mat-select>

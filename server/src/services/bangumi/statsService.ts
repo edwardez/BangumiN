@@ -39,7 +39,8 @@ function getUserStatsById(userId: number,
 }
 
 function getSubjectStatsById(subjectId: number,
-                             excludingAttributes = ['tags', 'nickname', 'rowLastModified', 'userId', 'subjectId', 'username', 'comment'])
+                             excludingAttributes = ['tags', 'nickname', 'rowLastModified', 'userId',
+                               'subjectId', 'subjectType', 'username', 'comment'])
   : Promise<Record[]> {
   return Record.findAll(
     {

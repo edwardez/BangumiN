@@ -4,6 +4,7 @@ import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {SubjectStatisticsComponent} from './subject-statistics.component';
 import {SubjectStatisticsRoutingModule} from './subject-statistics-routing.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import {SubjectStatisticsRoutingModule} from './subject-statistics-routing.modul
     BanguminSharedModule,
     NgxChartsModule,
     SubjectStatisticsRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     SubjectStatisticsComponent

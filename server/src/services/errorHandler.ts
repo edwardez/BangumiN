@@ -67,6 +67,8 @@ function responseLoggerAndGenerator(error: CustomError, response: Response, stat
 const specificErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
   if (err) {
     if (err.name === 'ValidationError' || err.customizedErrorCode === BanguminErrorCode.ValidationError) {
+      // if customizedErrorCode is not set, then set it to ValidationError(ValidationError might not come from CustomError)
+      err.customizedErrorCode = err.customizedErrorCode || BanguminErrorCode.ValidationError;
       return responseLoggerAndGenerator(err, res, HttpStatus.BAD_REQUEST,
         err.customizedErrorMessage || 'Input is not' +
         ' valid');

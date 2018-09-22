@@ -1,102 +1,128 @@
 <div
   [class]="theme">
-  <ngx-charts-bar-vertical
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="scoreVsCountData"
-    [gradient]="gradient"
-    [showGridLines]="showGridLines"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel">
-    <ng-template #tooltipTemplate let-model="model">
-      <!-- todo: left align -->
-      <h4>Score: {{model.name}}</h4>
-      <h4>Count: {{model.value}}</h4>
-    </ng-template>
-  </ngx-charts-bar-vertical>
-
-  <ngx-charts-line-chart
-    [view]="view"
-    [scheme]="colorScheme"
-    [schemeType]="schemeType"
-    [results]="yearVsMeanData"
-    [animations]=true
-    [legend]="showLegend"
-    [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [showXAxisLabel]="showXAxisLabel"
-    [xAxisTickFormatting]="calendarAxisTickFormatting"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]=false
-    [showGridLines]="showGridLines"
-    [rangeFillOpacity]="rangeFillOpacity"
-    [roundDomains]=false
-    [tooltipDisabled]=false>
-    <ng-template #tooltipTemplate let-model="model">
-      <!-- todo: left align -->
-      <h3>
-        {{model.series}} IN {{model.name}}
-      </h3>
-      <h4>
-        Mean: {{model.value | number: '1.1-2'}}
-        • Min: {{getYearScoreMinMax(model.series, model.name, 'min')}}
-        • Max: {{getYearScoreMinMax(model.series, model.name, 'max')}}
-      </h4>
-      <h4>
-        Count: {{getYearCount(model.name)}}
-      </h4>
-    </ng-template>
-  </ngx-charts-line-chart>
-
-  <!--<ngx-charts-advanced-pie-chart-->
+  <!--<ngx-charts-bar-vertical-->
   <!--[view]="view"-->
   <!--[scheme]="colorScheme"-->
-  <!--[results]="countByTypeData"-->
-  <!--[animations]=true-->
+  <!--[results]="scoreVsCountData"-->
   <!--[gradient]="gradient"-->
-  <!--[tooltipDisabled]=false-->
-  <!--[tooltipText]="pieTooltipText">-->
-  <!--</ngx-charts-advanced-pie-chart>-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[legend]="showLegend"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel">-->
+  <!--<ng-template #tooltipTemplate let-model="model">-->
+  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
+  <!--<h4>Score: {{model.name}}</h4>-->
+  <!--<h4>Count: {{model.value}}</h4>-->
+  <!--</ng-template>-->
+  <!--</ngx-charts-bar-vertical>-->
+
+  <!--<ngx-charts-line-chart-->
+  <!--[view]="view"-->
+  <!--[scheme]="colorScheme"-->
+  <!--[schemeType]="schemeType"-->
+  <!--[results]="yearVsMeanData"-->
+  <!--[animations]=true-->
+  <!--[legend]="showLegend"-->
+  <!--[gradient]="gradient"-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[xAxisTickFormatting]="calendarAxisTickFormatting"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel"-->
+  <!--[timeline]=false-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[rangeFillOpacity]="rangeFillOpacity"-->
+  <!--[roundDomains]=false-->
+  <!--[tooltipDisabled]=false>-->
+  <!--<ng-template #tooltipTemplate let-model="model">-->
+  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
+  <!--<h3>-->
+  <!--{{model.series}} IN {{model.name}}-->
+  <!--</h3>-->
+  <!--<h4>-->
+  <!--Mean: {{model.value | number: '1.1-2'}}-->
+  <!--• Min: {{getYearScoreMinMax(model.series, model.name, 'min')}}-->
+  <!--• Max: {{getYearScoreMinMax(model.series, model.name, 'max')}}-->
+  <!--</h4>-->
+  <!--<h4>-->
+  <!--Count: {{getYearCount(model.name)}}-->
+  <!--</h4>-->
+  <!--</ng-template>-->
+  <!--</ngx-charts-line-chart>-->
+
+  <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="countByTypeData"
+    [animations]=true
+    [gradient]="gradient"
+    [tooltipDisabled]=false
+    [tooltipText]="pieTooltipText">
+  </ngx-charts-advanced-pie-chart>
+
+  <ngx-charts-number-card
+    [view]="view"
+    [scheme]="colorScheme"
+    cardColor="#232837"
+    emptyColor="#1e222e"
+    [results]="descStatData"
+    [animations]=true>
+  </ngx-charts-number-card>
 </div>
 
-<form [formGroup]="scoreVsCountFilterFormGroup">
+<form [formGroup]="descStatFilterFormGroup">
   <mat-form-field>
     <mat-select
-      [formControl]="scoreVsCountFilterFormGroup.get('subjectTypeSelect')"
+      [formControl]="descStatFilterFormGroup.get('subjectTypeSelect')"
       multiple>
       <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
     <mat-select
-      [formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"
+      [formControl]="descStatFilterFormGroup.get('stateSelect')"
       multiple>
       <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
     </mat-select>
   </mat-form-field>
 </form>
 
-<form [formGroup]="yearVsMeanFilterFormGroup">
-  <mat-form-field>
-    <mat-select
-      [formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"
-      multiple>
-      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      [formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"
-      multiple>
-      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+<!--<form [formGroup]="scoreVsCountFilterFormGroup">-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="scoreVsCountFilterFormGroup.get('subjectTypeSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--</form>-->
+
+<!--<form [formGroup]="yearVsMeanFilterFormGroup">-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--</form>-->

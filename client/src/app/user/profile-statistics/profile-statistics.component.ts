@@ -41,11 +41,14 @@ export class ProfileStatisticsComponent implements OnInit {
   // triggerValue;
 
   countByTypeData;
+  // mean, median, stdDev
+  descStatData;
 
   targetUser;
   // raw data - CONST!
   targetUserStatsArr;
 
+  descStatFilterFormGroup: FormGroup;
   yearVsMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
   yearCount = {};
@@ -110,16 +113,69 @@ export class ProfileStatisticsComponent implements OnInit {
                 _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
               );
               // initialize filter form groups
+              this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
               this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
               this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
               this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
               this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
+              this.initDescStat(defaultArr);
               this.initScoreVsCount();
               this.initYearVsMean();
             }
           });
       });
+  }
+
+  private initDescStat(userStat: any[]) {
+    const arr = this.filterBySubjectTypeAndState(
+      this.descStatFilterFormGroup.value.subjectTypeSelect,
+      this.descStatFilterFormGroup.value.stateSelect
+    );
+    this.refreshDescStat(arr);
+
+    // edit the number cards on change of subjectType selection
+    this.descStatFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .subscribe(newTypeList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          newTypeList,
+          this.descStatFilterFormGroup.value.stateSelect
+        );
+        this.refreshDescStat(newArr);
+      });
+
+    // edit the number cards on change of collection status selection
+    this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
+      .subscribe(newStateList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          this.descStatFilterFormGroup.value.subjectTypeSelect,
+          newStateList
+        );
+        this.refreshDescStat(newArr);
+      });
+  }
+
+  private refreshDescStat(userStat: any[]) {
+    // filter null rate
+    userStat = userStat.filter(stat => stat.rate);
+    const len = userStat.length;
+    let mean, median, stdDev;
+    if (len === 0) {
+      mean = 0;
+      median = 0;
+      stdDev = 0;
+    } else {
+      mean = _.meanBy(userStat, 'rate');
+      const middle = (len + 1) / 2, sorted = userStat.sort();
+      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
+      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
+    }
+    this.descStatData = [
+      {name: 'Mean', value: mean},
+      {name: 'Median', value: median},
+      {name: 'Standard Deviation', value: stdDev}
+    ];
   }
 
   getYearCount(year) {
@@ -255,6 +311,13 @@ export class ProfileStatisticsComponent implements OnInit {
   }
 
   private initStatsFormGroup() {
+    this.descStatFilterFormGroup = this.formBuilder.group(
+      {
+        subjectTypeSelect: [[]],
+        stateSelect: [[]]
+      }
+    );
+
     this.yearVsMeanFilterFormGroup = this.formBuilder.group(
       {
         subjectTypeSelect: [[]],

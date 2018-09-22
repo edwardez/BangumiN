@@ -10,6 +10,7 @@ import {ResponsiveDialogService} from '../../../shared/services/dialog/responsiv
 import {ReactiveFormsModule} from '@angular/forms';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {BackToTopModule} from '../../../common/utilities/back-to-top/back-to-top.module';
+import {SpoilerCreationGuideComponent} from './spoiler-creation-guide/spoiler-creation-guide.component';
 
 @NgModule({
   imports: [
@@ -25,11 +26,13 @@ import {BackToTopModule} from '../../../common/utilities/back-to-top/back-to-top
   declarations:
     [
       SpoilerOverviewComponent,
-      SpoilerCreationComponent
+      SpoilerCreationComponent,
+      SpoilerCreationGuideComponent
     ],
   entryComponents:
     [
-      SpoilerCreationComponent
+      SpoilerCreationComponent,
+      SpoilerCreationGuideComponent
     ],
   providers: [
     ResponsiveDialogService // TODO: use the root service instance after figuring out how to open lazy load dialog via a global service

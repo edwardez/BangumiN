@@ -1,5 +1,7 @@
 import config from '../config/web';
 import {logger} from '../utils/logger';
+import {Response} from 'express';
+import * as HttpStatus from 'http-status-codes';
 
 /**
  * A customized class to handle error
@@ -14,7 +16,7 @@ export class CustomError extends Error {
    * Initialize a new Error object
    * @param customizedErrorCode see {@link BanguminErrorCode}
    * @param originalError the original error object
-   * @param customizedErrorMessage This message will be attched to the response so any sensitive info shouldn't be included
+   * @param customizedErrorMessage This message will be attached to the response so any sensitive info shouldn't be included
    */
   constructor(customizedErrorCode: BanguminErrorCode, originalError: Error, customizedErrorMessage?: string) {
     super(customizedErrorMessage || originalError.message);
@@ -41,6 +43,21 @@ export enum BanguminErrorCode {
 }
 
 /**
+ * Logger an error response, then return a express {@link Response}
+ * @param error CustomError object
+ * @param response express {@link Response}
+ * @param statusCode Http Status Code
+ * @param message Message that will be attached to the response
+ */
+function responseLoggerAndGenerator(error: CustomError, response: Response, statusCode: number, message: string): Response {
+  logger.error('%o', error.stack);
+  return response.status(statusCode).json({
+    message,
+    code: error.customizedErrorCode,
+  });
+}
+
+/**
  * A handler which tries to handle exception and returns more specific error code
  * @param err error object
  * @param req request
@@ -48,35 +65,23 @@ export enum BanguminErrorCode {
  * @param next next middleware
  */
 const specificErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
-  logger.error('%o', err.stack);
   if (err) {
     if (err.name === 'ValidationError' || err.customizedErrorCode === BanguminErrorCode.ValidationError) {
-      logger.error('%o', err.stack);
-      return res.status(400).json({
-        code: BanguminErrorCode.ValidationError,
-        message: err.customizedErrorMessage || 'Input is not valid',
-      });
+      return responseLoggerAndGenerator(err, res, HttpStatus.BAD_REQUEST,
+        err.customizedErrorMessage || 'Input is not' +
+        ' valid');
     }
     if (err.customizedErrorCode === BanguminErrorCode.UnauthorizedError) {
-      logger.error('%o', err.stack);
-      return res.status(500).json({
-        code: err.customizedErrorCode,
-        message: err.customizedErrorMessage || 'UnauthorizedError',
-      });
+      return responseLoggerAndGenerator(err, res, HttpStatus.BAD_REQUEST,
+        err.customizedErrorMessage || 'UnauthorizedError');
     }
     if (err.customizedErrorCode === BanguminErrorCode.RDSResponseError) {
-      logger.error('%o', err.stack);
-      return res.status(500).json({
-        code: err.customizedErrorCode,
-        message: err.customizedErrorMessage || 'Error occurred during querying database',
-      });
+      return responseLoggerAndGenerator(err, res, HttpStatus.INTERNAL_SERVER_ERROR,
+        err.customizedErrorMessage || 'Error occurred during querying database');
     }
     if (err.customizedErrorCode === BanguminErrorCode.RequestResourceNotFoundError) {
-      logger.error('%o', err.stack);
-      return res.status(404).json({
-        code: err.customizedErrorCode,
-        message: err.customizedErrorMessage || 'Requested resource couldn\'t be found',
-      });
+      return responseLoggerAndGenerator(err, res, HttpStatus.NOT_FOUND,
+        err.customizedErrorMessage || 'Requested resource couldn\'t be found');
     }
 
     return next(err);

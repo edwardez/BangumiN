@@ -1,29 +1,56 @@
-<div class="mt-2"></div>
-
-<ng-container *ngIf="userSpoilers">
+<ng-container *ngIf="userSpoilers && bangumiUser">
   <div infinite-scroll
        [infiniteScrollDisabled]="infiniteScrollDisabled"
-       (scrolled)="onScrollDown()">
-    <div *ngFor="let userSpoiler of userSpoilers"
-         class="row justify-content-center no-gutters mt-2 mt-md-3">
+       (scrolled)="onScrollDown()"
+       class="row no-gutters mt-2 flex-md-nowrap">
 
-      <app-spoiler-single-content
-        [bangumiUser]="bangumiUser"
-        [spoilerContent]="userSpoiler"
-        class="col col-sm-8 col-md-6">
-      </app-spoiler-single-content>
+    <div
+      class="mat-headline col-12 col-md-3 mt-md-3 ml-md-2 row no-gutters justify-content-center align-items-center align-items-md-start order-1">
+      <div [translate]="'posts.bangumin.spoilerBox.headline'" [translateParams]="{name: bangumiUser.nickname}">
+      </div>
+      <button mat-icon-button (click)="openSpoilerCreationGuideDialog()" class="d-lg-none">
+        <mat-icon>help_outline</mat-icon>
+      </button>
+    </div>
 
+    <div
+      class="col-12 col-md-6 row justify-content-center no-gutters order-3 order-md-2">
+
+      <div *ngIf="userSpoilers.length === 0" [innerHtml]="'posts.bangumin.spoilerBox.emptySpoilerBoxPrompt' | translate"
+           class="align-self-end text-align-center">
+
+      </div>
+
+      <ng-container *ngIf="userSpoilers.length !== 0">
+        <app-spoiler-single-content
+          *ngFor="let userSpoiler of userSpoilers"
+          [bangumiUser]="bangumiUser"
+          [spoilerContent]="userSpoiler"
+          class="col-12 mt-2 mt-md-3 pl-sm-2 pr-sm-2 pl-md-0 pr-md-0">
+        </app-spoiler-single-content>
+      </ng-container>
+
+
+    </div>
+
+    <div class="col-12 col-md-3 mt-2 mt-md-3 ml-md-2 row justify-content-center order-2 order-md-3 ">
+      <div>
+        <button mat-button (click)="openSpoilerCreationGuideDialog()" class="d-none d-md-block">
+          <mat-icon>help_outline</mat-icon>
+          {{'posts.bangumin.spoilerBox.guideDialogTriggerButton.name' | translate}}
+        </button>
+      </div>
     </div>
 
   </div>
 
-  <div *ngIf="!endOfContent" class="row justify-content-center no-gutters mt-2 mt-md-3">
-    <mat-spinner [diameter]="25"></mat-spinner>
-  </div>
-
-  <app-back-to-top *ngIf="endOfContent"></app-back-to-top>
-
 </ng-container>
+
+<div *ngIf="!endOfContent" class="row justify-content-center no-gutters mt-2 mt-md-3">
+  <mat-spinner [diameter]="25"></mat-spinner>
+</div>
+
+<app-back-to-top *ngIf="endOfContent"></app-back-to-top>
 
 <div class="mb-2"></div>
 

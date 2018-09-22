@@ -39,7 +39,7 @@ router.get('/:subjectId',
       },
     ).catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.RDSResponseError, error);
     });

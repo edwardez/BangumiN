@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {of, Subject} from 'rxjs';
 import {BanguminSpoilerService} from '../../../../../shared/services/bangumin/bangumin-spoiler.service';
 import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
 import {BangumiUser} from '../../../../../shared/models/BangumiUser';
 import {SubjectBase} from '../../../../../shared/models/subject/subject-base';
 import {BangumiUserService} from '../../../../../shared/services/bangumi/bangumi-user.service';
+import {AuthenticationService} from '../../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-spoiler-single-wrapper',
@@ -21,6 +22,7 @@ export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private activatedRoute: ActivatedRoute,
+              private authenticationService: AuthenticationService,
               private bangumiUserService: BangumiUserService,
               private banguminSpoilerService: BanguminSpoilerService,
   ) {
@@ -59,6 +61,14 @@ export class SpoilerSingleWrapperComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  isAuthenticated() {
+    return this.authenticationService
+      .isAuthenticated()
+      .pipe(
+        take(1)
+      );
   }
 
 }

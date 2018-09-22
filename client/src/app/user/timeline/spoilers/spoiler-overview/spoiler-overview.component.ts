@@ -9,6 +9,8 @@ import {forkJoin, of, Subject} from 'rxjs';
 import {BangumiUser} from '../../../../shared/models/BangumiUser';
 import {SpoilerExisted} from '../../../../shared/models/spoiler/spoiler-existed';
 import {BangumiUserService} from '../../../../shared/services/bangumi/bangumi-user.service';
+import {SpoilerCreationGuideComponent} from '../spoiler-creation-guide/spoiler-creation-guide.component';
+import {TitleService} from '../../../../shared/services/page/title.service';
 
 @Component({
   selector: 'app-spoiler-overview',
@@ -29,7 +31,8 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private bangumiUserService: BangumiUserService,
               private banguminSpoilerService: BanguminSpoilerService,
-              private spoilerCreationDialogService: ResponsiveDialogService,
+              private responsiveDialogService: ResponsiveDialogService,
+              private titleService: TitleService,
   ) {
   }
 
@@ -46,6 +49,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         this.bangumiUserService.getUserInfoFromHttp(params['userId'])
           .subscribe(bangumiUser => {
             this.bangumiUser = bangumiUser;
+            this.titleService.setTitleByTranslationLabel('posts.bangumin.spoilerBox.headline', {name: bangumiUser.nickname});
           });
         this.getSpoilersInfo(params['userId']);
       });
@@ -79,7 +83,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
   }
 
   openDialog(): void {
-    this.spoilerCreationDialogService.openDialog(SpoilerCreationComponent, {
+    this.responsiveDialogService.openDialog(SpoilerCreationComponent, {
       sizeConfig: {
         onLtSmScreen: {
           width: '50vw',
@@ -88,7 +92,8 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         }
       }
     }).pipe(
-      concatMap(dialogRef => dialogRef.afterClosed())
+      concatMap(dialogRef => dialogRef.afterClosed()),
+      take(1),
     )
       .subscribe(spoilerCreationResult => {
         if (spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
@@ -98,6 +103,18 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         }
 
       });
+  }
+
+  openSpoilerCreationGuideDialog(): void {
+    this.responsiveDialogService.openDialog(SpoilerCreationGuideComponent, {
+      sizeConfig: {
+        onLtSmScreen: {}
+      }
+    })
+      .pipe(
+        take(1),
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

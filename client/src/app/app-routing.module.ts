@@ -56,6 +56,7 @@ const routes: Routes = [
 
       {
         path: 'timeline/spoilers',
+        canActivate: [AppGuard],
         loadChildren: 'app/user/timeline/spoilers/spoilers.module#SpoilersModule'
       },
       {

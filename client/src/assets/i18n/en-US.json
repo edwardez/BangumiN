@@ -284,6 +284,18 @@
     "bangumin": {
       "spoilerBox": {
         "name": "Spoiler Box",
+        "headline": "{{name}}'s spoiler box'",
+        "emptySpoilerBoxPrompt": "<p>There's no spoilers.</p><p class='d-inline-flex flex-wrap align-items-center'>Click <i class='material-icons'>add</i> to create your first spoiler. When you do, spoilers will show up here.</p>",
+        "guideDialogTriggerButton": {
+          "name": "How to use?"
+        },
+        "guideDialog": {
+          "title": "How do I use Spoiler Box?",
+          "content": "<p class='d-inline-flex flex-wrap align-items-center'><span>1. Click </span><i class='material-icons'>add</i><span> on the right bottom corner to pop up the dialog.</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>2. (Required) Enter your spoiler, use </span><i class='material-icons ml-1 mr-1'>visibility</i><span> to select the highlight text that you want to hide.</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'>3. (Optional) Tag related subjects</p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>4. After posting, click  </span><i class='material-icons'>more_horiz</i><span> on the card to share.</span></p>",
+          "action": {
+            "ok": "OK"
+          }
+        },
         "single": {
           "card": {
             "relatedSubjects": {

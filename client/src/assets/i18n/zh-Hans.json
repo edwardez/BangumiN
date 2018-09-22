@@ -289,6 +289,18 @@
     "bangumin": {
       "spoilerBox": {
         "name": "剧透箱",
+        "headline": "{{name}}的剧透箱",
+        "emptySpoilerBoxPrompt": "<p>没有已发表的剧透</p><p class='d-inline-flex flex-wrap align-items-center'>点击右下角的 <i class='material-icons'>add</i> 来编写第一条剧透. 发布完成后，剧透将出现在这里。</p>",
+        "guideDialogTriggerButton": {
+          "name": "如何使用？"
+        },
+        "guideDialog": {
+          "title": "如何使用剧透箱？",
+          "content": "<p class='d-inline-flex flex-wrap align-items-center'><span>1. 点击右下角的 </span><i class='material-icons'>add</i><span> 打开发布对话框。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>2. (必须) 输入剧透，使用 </span><i class='material-icons ml-1 mr-1'>visibility</i><span> 选择并高亮你想要隐藏的内容。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'>3. (可选) 标记和剧透相关的作品</p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>4. 发布成功后对话框会自动关闭，点击剧透卡片上的  </span><i class='material-icons'>more_horiz</i><span> 来分享剧透。</span></p>",
+          "action": {
+            "ok": "OK"
+          }
+        },
         "single": {
           "card": {
             "relatedSubjects": {

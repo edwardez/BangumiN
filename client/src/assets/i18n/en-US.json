@@ -321,6 +321,11 @@
                 "delete": "Delete"
               }
             }
+          },
+          "guestPrompt": {
+            "message": "This spoiler is sent through BangumiN. With BangumiN, you can safely share your spoilers with others.",
+            "learnMoreButton": "Learn more"
+
           }
         }
       }

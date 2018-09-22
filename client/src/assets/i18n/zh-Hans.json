@@ -326,6 +326,10 @@
                 "delete": "删除"
               }
             }
+          },
+          "guestPrompt": {
+            "message": "这条剧透通过BangumiN发送。在BangumiN，你可以安全的分享剧透给别人。",
+            "learnMoreButton": "了解更多"
           }
         }
       }

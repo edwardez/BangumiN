@@ -36,7 +36,6 @@ export class NavComponent implements OnInit, OnDestroy {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser();
     this.updateUserInfo();
-
   }
 
   ngOnDestroy(): void {

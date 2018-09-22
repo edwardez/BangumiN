@@ -3,6 +3,8 @@ import * as dynamooseSpoilerModel from '../models/nosql/spoiler';
 import authenticationMiddleware from '../services/authenticationHandler';
 import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 import {celebrate, Joi} from 'celebrate';
+import {findUserByIdOrUserName} from '../services/bangumi/userService';
+import {User} from '../models/relational/bangumi/user';
 
 const router = express.Router({mergeParams: true});
 
@@ -26,7 +28,7 @@ router.post('/spoiler', authenticationMiddleware.isAuthenticated, celebrate({
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
@@ -60,7 +62,7 @@ router.get('/spoiler/:spoilerId', celebrate({
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
@@ -87,7 +89,7 @@ router.delete('/spoiler/:spoilerId', celebrate({
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
@@ -99,7 +101,7 @@ router.delete('/spoiler/:spoilerId', celebrate({
  */
 router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
   params: {
-    userId: Joi.string(),
+    userId: Joi.string().alphanum(),
   },
   query: {
     createdAtStart: Joi.date(),
@@ -107,6 +109,30 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
     limit: Joi.number(),
   },
 }), (req: any, res: any, next: any) => {
+  const requestUserId: string = String(req.params.userId);
+  if (isNaN(Number(requestUserId))) {
+    return findUserByIdOrUserName(requestUserId).then(
+      (user: User) => {
+        if (user) {
+          // convert string-based username to userId
+          req.params.userId = user.id;
+          return next();
+        }
+
+        throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
+          new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]));
+
+      },
+    ).catch((error) => {
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        return next(error);
+      }
+      throw new CustomError(BanguminErrorCode.RDSResponseError, error);
+    });
+  }
+
+  return next();
+}, (req: any, res: any, next: any) => {
   const requestUserId: string = String(req.params.userId);
   const sessionUserID: string = req.user.id;
   const createdAtStart: number = Number(req.query.createdAtStart);

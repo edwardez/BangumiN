@@ -34,7 +34,7 @@ router.get('/user/:userIdOrUsername', celebrate({
     },
   ).catch((error) => {
     if (error instanceof CustomError || error.name === 'ValidationError') {
-      throw new error;
+      return next(error);
     }
     throw new CustomError(BanguminErrorCode.RDSResponseError, error);
   });
@@ -65,7 +65,7 @@ router.get('/subject/:subjectId', celebrate({
     },
   ).catch((error) => {
     if (error instanceof CustomError || error.name === 'ValidationError') {
-      throw new error;
+      return next(error);
     }
     throw new CustomError(BanguminErrorCode.RDSResponseError, error);
   });

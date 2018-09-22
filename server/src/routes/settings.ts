@@ -28,7 +28,7 @@ router.post('/', celebrate({
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
@@ -47,7 +47,7 @@ router.get('/', (req: any, res: any, next: any) => {
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
-        throw new error;
+        return next(error);
       }
       throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });

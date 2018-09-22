@@ -54,7 +54,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   } catch (error) {
     logger.error('Request cannot be verified: %o', req.body);
     if (error instanceof CustomError || error.name === 'ValidationError') {
-      throw new error;
+      return next(error);
     }
     throw new CustomError(BanguminErrorCode.ValidationError, error);
   }
@@ -79,7 +79,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   } catch (error) {
     logger.error('Response cannot be parsed or verified: %o', response);
     if (error instanceof CustomError || error.name === 'ValidationError') {
-      throw new error;
+      return next(error);
     }
     throw new CustomError(BanguminErrorCode.BangumiServerResponseError, error);
   }

@@ -74,7 +74,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
             if (this.userSpoilers.length <= this.SPOILERS_PER_QUERY / 2 && !this.endOfContent) {
               this.getOlderSpoilers();
             }
-            // spoiler id is unique and only one spoiler can currently be deleted, break the loop
+            // spoiler id is unique and only one spoiler can currently be deleted, break the loop after the first deletion event is handled
             break;
           }
         }
@@ -161,7 +161,6 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
         }
       ),
       switchMap(userSpoilers => {
-
         newUserSpoilers = userSpoilers['spoilers'];
         this.setEndOfContentFlag(userSpoilers['lastKey'], createdAtStart);
         if (newUserSpoilers.length !== 0) {

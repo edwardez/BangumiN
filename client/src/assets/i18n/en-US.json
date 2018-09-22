@@ -285,7 +285,7 @@
       "spoilerBox": {
         "name": "Spoiler Box",
         "headline": "{{name}}'s spoiler box'",
-        "emptySpoilerBoxPrompt": "<p>There's no spoilers.</p><p class='d-inline-flex flex-wrap align-items-center'>Click <i class='material-icons'>add</i> to create your first spoiler. When you do, spoilers will show up here.</p>",
+        "emptySpoilerBoxPrompt": "<p>There's no spoilers.</p><p>Click <i class='material-icons'>add</i> to create your first spoiler. When you do, spoilers will show up here.</p>",
         "guideDialogTriggerButton": {
           "name": "How to use?"
         },

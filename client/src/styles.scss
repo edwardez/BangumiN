@@ -41,6 +41,13 @@ app-spoiler-creation .mat-dialog-container {
   top: -3px;
 }
 
+.material-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: bottom;
+}
+
 //use material 2018 spec
 .mat-card {
   border-radius: 8px !important;

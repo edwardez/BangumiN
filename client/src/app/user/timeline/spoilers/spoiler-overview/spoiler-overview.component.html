@@ -8,7 +8,7 @@
       class="mat-headline col-12 col-md-3 mt-md-3 ml-md-2 row no-gutters justify-content-center align-items-center align-items-md-start order-1">
       <div [translate]="'posts.bangumin.spoilerBox.headline'" [translateParams]="{name: bangumiUser.nickname}">
       </div>
-      <button mat-icon-button (click)="openSpoilerCreationGuideDialog()" class="d-lg-none">
+      <button mat-icon-button (click)="openSpoilerCreationGuideDialog()" class="d-md-none">
         <mat-icon>help_outline</mat-icon>
       </button>
     </div>
@@ -16,7 +16,8 @@
     <div
       class="col-12 col-md-6 row justify-content-center no-gutters order-3 order-md-2">
 
-      <div *ngIf="userSpoilers.length === 0" [innerHtml]="'posts.bangumin.spoilerBox.emptySpoilerBoxPrompt' | translate"
+      <div *ngIf="userSpoilers.length === 0 && endOfContent"
+           [innerHtml]="'posts.bangumin.spoilerBox.emptySpoilerBoxPrompt' | translate"
            class="align-self-end text-align-center">
 
       </div>

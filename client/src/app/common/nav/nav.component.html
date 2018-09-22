@@ -3,13 +3,19 @@
           tabindex="0">
     <mat-icon>menu</mat-icon>
   </button>
-  <div class="d-none d-sm-block">BangumiN</div>
+  <div class="d-none d-sm-flex">
+    <a mat-button class="pr-1 pl-1" [routerLink]="['/welcome']">
+      BangumiN
+    </a>
+    <span class="mat-caption align-self-end">beta</span>
+  </div>
+
 
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
-    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'statistics']" tabindex="0">{{'nav.menu.myStatistics.name'
+    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'statistics']" tabindex="0">{{'nav.menu.myStatistics.name'
       |
       translate}}</a>
-    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id, 'timeline','spoilers']" tabindex="0">{{'nav.menu.spoilerBox.name'
+    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'timeline','spoilers']" tabindex="0">{{'nav.menu.spoilerBox.name'
       | translate}}</a>
   </div>
 

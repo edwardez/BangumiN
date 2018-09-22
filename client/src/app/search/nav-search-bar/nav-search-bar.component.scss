@@ -3,7 +3,6 @@ input {
   color: black;
   border: none;
   border-radius: 3px;
-  //background-color: white;
   padding: 5px 16px;
   margin-left: 8px;
   width: 350px;
@@ -19,7 +18,9 @@ input {
   }
 
   @media (max-width: 480px) {
-    width: 250px;
+    width: unset;
+    max-width: unset;
+    margin-left: unset;
   }
 }
 

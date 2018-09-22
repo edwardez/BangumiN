@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as dynamooseUserModel from '../models/nosql/user';
-import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 import {celebrate, Joi} from 'celebrate';
 
 const router = express.Router();
@@ -27,7 +27,10 @@ router.post('/', celebrate({
       res.json(response);
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });
@@ -43,7 +46,10 @@ router.get('/', (req: any, res: any, next: any) => {
       res.json(response);
     })
     .catch((error) => {
-      throw new CustomizedError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        throw new error;
+      }
+      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
     });
 
 });

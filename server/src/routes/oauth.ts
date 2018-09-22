@@ -6,7 +6,7 @@ import joi from 'joi';
 import {logger} from '../utils/logger';
 import requestPromise from 'request-promise';
 import authenticationMiddleware from '../services/authenticationHandler';
-import {BanguminErrorCode, CustomizedError} from '../services/errorHandler';
+import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 
 const router = express.Router();
 
@@ -51,9 +51,12 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   let refreshToken;
   try {
     refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
-  } catch (err) {
+  } catch (error) {
     logger.error('Request cannot be verified: %o', req.body);
-    throw new CustomizedError(BanguminErrorCode.ValidationError, err);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      throw new error;
+    }
+    throw new CustomError(BanguminErrorCode.ValidationError, error);
   }
 
   const options = {
@@ -73,9 +76,12 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   try {
     response = await requestPromise(options);
     req.refreshedTokenInfo = response;
-  } catch (err) {
+  } catch (error) {
     logger.error('Response cannot be parsed or verified: %o', response);
-    throw new CustomizedError(BanguminErrorCode.BangumiServerResponseError, err);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      throw new error;
+    }
+    throw new CustomError(BanguminErrorCode.BangumiServerResponseError, error);
   }
 
   return next();

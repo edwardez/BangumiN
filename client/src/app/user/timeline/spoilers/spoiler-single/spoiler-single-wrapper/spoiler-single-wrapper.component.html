@@ -9,7 +9,8 @@
 
   <div class="w-100"></div>
 
-  <div class="col col-sm-8 col-md-6 d-flex flex-column mt-sm-3 mt-5" *ngIf="!(isAuthenticated() | async)">
+  <div class="col col-sm-8 col-md-6 d-flex flex-column mt-sm-3 mt-5"
+       *ngIf="!(isAuthenticated() | async) && spoilerExisted !== null">
     <p class="foreground-color-secondary-text">{{'posts.bangumin.spoilerBox.single.guestPrompt.message' |
       translate}}</p>
     <button mat-raised-button color="primary" [routerLink]="['/login']">

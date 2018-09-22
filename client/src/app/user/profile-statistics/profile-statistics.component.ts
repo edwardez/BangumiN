@@ -1,13 +1,16 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
-import {filter, take} from 'rxjs/operators';
+import {take, takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
+import {BangumiUser} from '../../shared/models/BangumiUser';
 
 @Component({
   selector: 'app-profile-stats',
@@ -15,9 +18,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./profile-statistics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProfileStatisticsComponent implements OnInit {
+export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   // todo: options for each chart
-  view;
   showXAxis;
   showYAxis;
   gradient;
@@ -42,21 +44,22 @@ export class ProfileStatisticsComponent implements OnInit {
 
   countByTypeData;
 
-  targetUser;
+  targetUser: BangumiUser;
   // raw data - CONST!
   targetUserStatsArr;
 
   yearVsMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   yearCount = {};
 
   constructor(
+    private bangumiUserService: BangumiUserService,
     private banguminUserService: BanguminUserService,
     private bangumiStatsService: BangumiStatsService,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
-    this.view = [800, 500];
     // options
     this.gradient = false;
     this.showLegend = true;
@@ -90,14 +93,10 @@ export class ProfileStatisticsComponent implements OnInit {
     });
 
     this.activatedRoute.parent.params
-      .pipe(
-        filter(params => {
-          this.targetUser = params['userId'];
-          return this.targetUser;
-        })
-      )
       .subscribe(params => {
-        this.bangumiStatsService.getUserStats(this.targetUser)
+        const targetUserId = params['userId'];
+        this.getUserProfile(targetUserId);
+        this.bangumiStatsService.getUserStats(targetUserId)
           .subscribe(res => {
             if (res) {
               const defaultArr = res.stats;
@@ -122,8 +121,21 @@ export class ProfileStatisticsComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    // unsubscribe, we can also first() in subscription
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   getYearCount(year) {
     return this.yearCount[year];
+  }
+
+
+  private getUserProfile(userId: string) {
+    this.bangumiUserService.getUserInfoFromHttp(userId).subscribe(bangumiUser => {
+      this.targetUser = bangumiUser;
+    });
   }
 
   private initYearVsMean() {
@@ -135,6 +147,9 @@ export class ProfileStatisticsComponent implements OnInit {
     // use formControl.valueChanges instead of selectionChange since we want to modify the chart minimally,
     // i.e. instead of re-filtering the whole array with selectedList, only add/remove target subjectType from the chart.
     this.yearVsMeanFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newVal => {
         const oldVal = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
         const triggerValue = (newVal.length < oldVal.length) ?
@@ -156,6 +171,9 @@ export class ProfileStatisticsComponent implements OnInit {
 
     // edit the chart on change of collection status selection
     this.yearVsMeanFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.targetUserStatsArr
           .filter(stat => newStateList.includes(CollectionStatusId[stat.collectionStatus]));
@@ -184,6 +202,9 @@ export class ProfileStatisticsComponent implements OnInit {
 
     // edit the chart on change of subjectType selection
     this.scoreVsCountFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newTypeList => {
         const newArr = this.filterBySubjectTypeAndState(
           newTypeList,
@@ -194,6 +215,9 @@ export class ProfileStatisticsComponent implements OnInit {
 
     // edit the chart on change of collection status selection
     this.scoreVsCountFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.filterBySubjectTypeAndState(
           this.scoreVsCountFilterFormGroup.value.subjectTypeSelect,

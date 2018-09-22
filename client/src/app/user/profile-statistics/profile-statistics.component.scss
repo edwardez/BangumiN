@@ -155,3 +155,20 @@ app-profile-stats .dark {
   }
 
 }
+
+.responsive-container-chart-height-low {
+  display: grid;
+  height: 30vh;
+}
+
+.responsive-container-chart-height-high {
+  display: grid;
+  height: 50vh;
+}
+
+.user-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

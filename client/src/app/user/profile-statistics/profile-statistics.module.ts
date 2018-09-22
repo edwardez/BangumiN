@@ -6,6 +6,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {ProfileStatisticsComponent} from './profile-statistics.component';
 import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {LoadingSpinnerModule} from '../../common/loading-spinner/loading-spinner.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     BanguminSharedModule,
     ProfileStatisticsRoutingModule,
     NgxChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoadingSpinnerModule
   ],
   declarations: [
     ProfileStatisticsComponent,

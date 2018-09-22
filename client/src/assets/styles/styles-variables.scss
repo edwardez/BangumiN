@@ -73,6 +73,19 @@ label {
   margin-bottom: 0;
 }
 
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .col-lg-5-half {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 45.8333333% !important;
+    max-width: 45.8333333% !important;
+  }
+}
+
+
 // Angular customization
 $bangumi-pink-blue-primary: mat-palette($mat-bangumi-pink, 200, 100, 700);
 $bangumi-pink-blue-accent: mat-palette($mat-blue, A200, A100, A400);

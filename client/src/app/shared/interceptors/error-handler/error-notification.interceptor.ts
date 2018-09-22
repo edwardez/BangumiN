@@ -19,7 +19,8 @@ export class ErrorNotificationInterceptor implements HttpInterceptor {
     Object.keys(BanguminErrorCode)
       .filter((banguminErrorCode: string) => {
         const numericCode = Number(banguminErrorCode);
-        return !isNaN(numericCode) && BanguminErrorCode[banguminErrorCode] !== BanguminErrorCode.UnclassifiedInternalError;
+        console.log(numericCode);
+        return !isNaN(numericCode) && numericCode !== BanguminErrorCode.UnclassifiedInternalError;
       })
       .map(k => Number(k));
 
@@ -55,7 +56,6 @@ export class ErrorNotificationInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(Object.values(BanguminErrorCode));
     return next.handle(request).pipe(
       catchError(error => {
           if (error instanceof HttpErrorResponse) {

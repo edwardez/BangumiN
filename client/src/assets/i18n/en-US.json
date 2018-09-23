@@ -8,11 +8,11 @@
       "dropped": "Drop"
     },
     "statusFullname": {
-      "wish": "??/?",
-      "collect": "???",
-      "do": "???",
-      "on_hold": "??",
-      "dropped": "??"
+      "wish": "Wish",
+      "collect": "Collected",
+      "do": "In progress",
+      "on_hold": "On hold",
+      "dropped": "Dropped"
     },
     "action": {
       "addToCollection": "Add to collection",
@@ -31,12 +31,12 @@
       "backToTop": "Back to top"
     },
     "category": {
-      "all": "??",
-      "anime": "??",
-      "book": "??",
-      "music": "??",
-      "game": "??",
-      "real": "???"
+      "all": "All",
+      "anime": "Anime",
+      "book": "Book",
+      "music": "Music",
+      "game": "Game",
+      "real": "Real"
     },
     "book": {
       "volume": "",

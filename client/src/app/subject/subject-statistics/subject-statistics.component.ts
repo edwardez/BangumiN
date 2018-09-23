@@ -4,7 +4,6 @@ import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import * as _ from 'lodash';
-import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
 import {filter, switchMap} from 'rxjs/operators';
@@ -32,9 +31,9 @@ export class SubjectStatisticsComponent implements OnInit {
   scoreVsCountData;
   theme;
 
-  subjectTypeList;
   collectionStatusList;
-  selectedTypeListForscoreVsCount;
+  countByStateData;
+  descStatData;
 
   rangeFillOpacity = 0.15;
   schemeType = 'ordinal';
@@ -45,6 +44,7 @@ export class SubjectStatisticsComponent implements OnInit {
   // raw data - CONST!
   targetSubjectStatsArr;
 
+  descStatFilterFormGroup: FormGroup;
   yearVsAccumulatedMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
   yearAccumulatedCount = {};
@@ -74,8 +74,6 @@ export class SubjectStatisticsComponent implements OnInit {
       domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
     };
 
-    this.selectedTypeListForscoreVsCount = this.subjectTypeList;
-
     this.initStatsFormGroup();
   }
 
@@ -96,16 +94,22 @@ export class SubjectStatisticsComponent implements OnInit {
               const defaultArr = res.stats;
               // cache stats array
               this.targetSubjectStatsArr = res.stats;
+              this.countByStateData = _.map(
+                _.countBy(defaultArr, 'collectionStatus'),
+                (val, key) => ({name: CollectionStatusId[key], value: val})
+              );
               // initialize filter list value
               this.collectionStatusList = _.map(
                 _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
               );
               // initialize filter form groups
+              this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
               this.yearVsAccumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
               this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
-              // this.initScoreVsCount();
-              this.initYearVsAccumulatedMean();
+              this.initDescStat();
+              this.initScoreVsCount();
+              // this.initYearVsAccumulatedMean();
             }
           });
       });
@@ -132,6 +136,44 @@ export class SubjectStatisticsComponent implements OnInit {
     `;
   }
 
+  private initDescStat() {
+    const arr = this.filterByState(
+      this.descStatFilterFormGroup.value.stateSelect
+    );
+    this.refreshDescStat(arr);
+
+    // edit the number cards on change of collection status selection
+    this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
+      .subscribe(newStateList => {
+        const newArr = this.filterByState(
+          newStateList
+        );
+        this.refreshDescStat(newArr);
+      });
+  }
+
+  private refreshDescStat(userStat: any[]) {
+    // filter null rate
+    userStat = userStat.filter(stat => stat.rate);
+    const len = userStat.length;
+    let mean, median, stdDev;
+    if (len === 0) {
+      mean = 0;
+      median = 0;
+      stdDev = 0;
+    } else {
+      mean = _.meanBy(userStat, 'rate');
+      const middle = (len + 1) / 2, sorted = userStat.sort();
+      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
+      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
+    }
+    this.descStatData = [
+      {name: 'Mean', value: mean.toFixed(2)},
+      {name: 'Median', value: median},
+      {name: 'Standard Deviation', value: stdDev.toFixed(2)}
+    ];
+  }
+
   private initYearVsAccumulatedMean() {
     // initialize the chart with all types
     // const selectedTypeListForyearVsMean = this.yearVsAccumulatedMeanFilterFormGroup.value.subjectTypeSelect;
@@ -154,27 +196,20 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private initScoreVsCount() {
-    const arr = this.filterBySubjectTypeAndState(
-      this.scoreVsCountFilterFormGroup.value.subjectTypeSelect,
-      this.scoreVsCountFilterFormGroup.value.stateSelect
-    );
+    const arr = this.filterByState(this.scoreVsCountFilterFormGroup.value.stateSelect);
     this.groupAndCountByRate(arr);
 
     // edit the chart on change of collection status selection
     this.scoreVsCountFilterFormGroup.controls['stateSelect'].valueChanges
       .subscribe(newStateList => {
-        const newArr = this.filterBySubjectTypeAndState(
-          this.scoreVsCountFilterFormGroup.value.subjectTypeSelect,
-          newStateList
-        );
+        const newArr = this.filterByState(newStateList);
         this.groupAndCountByRate(newArr);
       });
   }
 
-  private filterBySubjectTypeAndState(subjectTypeList, stateList) {
+  private filterByState(stateList) {
     return this.targetSubjectStatsArr.filter(stat => {
-      return subjectTypeList.includes(SubjectType[stat.subjectType])
-        && stateList.includes(CollectionStatusId[stat.collectionStatus]);
+      return stateList.includes(CollectionStatusId[stat.collectionStatus]);
     });
   }
 
@@ -200,16 +235,20 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private initStatsFormGroup() {
+    this.descStatFilterFormGroup = this.formBuilder.group(
+      {
+        stateSelect: [[]]
+      }
+    );
+
     this.yearVsAccumulatedMeanFilterFormGroup = this.formBuilder.group(
       {
-        subjectTypeSelect: [[]],
         stateSelect: [[]]
       }
     );
 
     this.scoreVsCountFilterFormGroup = this.formBuilder.group(
       {
-        subjectTypeSelect: [[]],
         stateSelect: [[]]
       }
     );

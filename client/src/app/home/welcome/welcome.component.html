@@ -15,7 +15,8 @@
     </mat-card-content>
     <mat-card-actions class="d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-button>{{'welcome.learnMore' | translate}}</button>
+      <a mat-button [routerLink]="['/user', bangumiUser.id, 'statistics']">{{'welcome.card.stats.learnMore'
+        | translate}}</a>
     </mat-card-actions>
   </mat-card>
 
@@ -30,7 +31,8 @@
     </mat-card-content>
     <mat-card-actions class="d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-button>{{'welcome.learnMore' | translate}}</button>
+      <a mat-button [routerLink]="['/user', bangumiUser.id, 'timeline','spoilers']">{{'welcome.card.spoilerBox.learnMore'
+        | translate}}</a>
     </mat-card-actions>
   </mat-card>
 
@@ -46,7 +48,7 @@
     </mat-card-content>
     <mat-card-actions class="d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-button>{{'welcome.learnMore' | translate}}</button>
+      <div>{{'welcome.card.search.learnMore' | translate}}</div>
     </mat-card-actions>
   </mat-card>
 </div>

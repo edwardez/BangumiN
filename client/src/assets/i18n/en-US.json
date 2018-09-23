@@ -142,15 +142,18 @@
     "card": {
       "stats": {
         "title": "Statistics",
-        "content": "Check your tailored statistics on BangumiN: Distribution of your score, historical data... and more"
+        "content": "Check your tailored statistics on BangumiN: Distribution of your score, historical data... and more",
+        "learnMore": "Go to my statistics"
       },
       "spoilerBox": {
         "title": "Spoiler Box",
-        "content": "Post your spoilers with masks, then safely share your spoilers to Twitter, Weibo... or wherever you want"
+        "content": "Post your spoilers with masks, then safely share your spoilers to Twitter, Weibo... or wherever you want",
+        "learnMore": "Go to my spoiler box"
       },
       "search": {
         "title": "Search",
-        "content": "Search for a subject or a user, then check the statistics. You can also manage your subject collection status on Bangumi."
+        "content": "Search for a subject or a user, then check the statistics. You can also manage your subject collection status on Bangumi.",
+        "learnMore": "Start searching using the top search bar"
       }
     }
   },
@@ -230,9 +233,16 @@
   "search": {
     "empty": "No results",
     "result": {
-      "invalid": "Invalid search keyword \"{{keyword}}\""
+      "invalid": "Invalid search keyword \"{{keyword}}\"",
+      "numberOfCount": "Number of results: {{count}}"
     },
-
+    "user": {
+      "title": "Search: {{keyword}}",
+      "filter": {
+        "fullMatch": "Fully matches {{keyword}}",
+        "contain": "Contains {{keyword}}"
+      }
+    },
     "category": {
       "all": "All",
       "anime": "Anime",
@@ -242,6 +252,7 @@
       "real": "Real"
     },
     "subject": {
+      "title": "Search: {{keyword}}",
       "action": {
         "collect": "Collect",
         "more": "More Info"

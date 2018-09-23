@@ -11,6 +11,12 @@ label {
   margin-bottom: 0;
 }
 
+a.mat-button {
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+
 @media (min-width: map-get($grid-breakpoints, 'lg')) {
   .col-lg-5-half {
     position: relative;

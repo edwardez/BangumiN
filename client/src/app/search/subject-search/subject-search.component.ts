@@ -7,6 +7,7 @@ import {CommonUtils} from '../../shared/utils/common-utils';
 import {takeUntil, tap} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
+import {TitleService} from '../../shared/services/page/title.service';
 
 @Component({
   selector: 'app-subject-search',
@@ -24,7 +25,8 @@ export class SubjectSearchComponent implements OnInit, OnDestroy {
   subjectSearchResults: SearchSubjectsResponseLarge;
 
   constructor(private bangumiSearchService: BangumiSearchService,
-              private formBuilder: FormBuilder,) {
+              private formBuilder: FormBuilder,
+              private titleService: TitleService,) {
     this.initializeSubjectSearchFilterForm();
   }
 
@@ -38,6 +40,7 @@ export class SubjectSearchComponent implements OnInit, OnDestroy {
   set queryKeyword(queryKeyword: string) {
     this.resetClassVariableMembers();
     this._queryKeyword = queryKeyword;
+    this.titleService.setTitleByTranslationLabel('search.subject.title', {'keyword': decodeURI(this._queryKeyword)});
     this.performSubjectSearch(this.queryKeyword, this.subjectSearchFilterForm.get('subjectTypeFilter').value, 'large', 0,
       this.PER_QUERY_COUNT_LIMIT).subscribe();
   }

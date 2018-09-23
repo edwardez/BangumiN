@@ -61,7 +61,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
 
   deserialize(input) {
     this.id = input.id || RuntimeConstantsService.defaultSubjectId;
-    this.url = input.url === undefined ? '' : input.url.replace(/^http:/, 'https:');
+    this.url = input.url ? input.url.replace(/^http:/, 'https:') : '';
     this.type = input.type || 0;
     this.name = input.name || '';
     this.nameCN = input.name_cn || '';
@@ -71,7 +71,7 @@ export class SubjectBase implements Serializable<SubjectBase> {
     // will not start with 00, any dates that start with 00 should be a invalid one
     this.airDate = input.air_date && !input.air_date.startsWith('00') ? input.air_date : null;
     this.airWeekday = input.air_weekday || null;
-    this.images = input.images === undefined ? new Images() : new Images().deserialize(input.images);
+    this.images = input.images ? new Images().deserialize(input.images) : new Images();
     return this;
   }
 

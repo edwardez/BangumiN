@@ -141,15 +141,18 @@
     "card": {
       "stats": {
         "title": "统计",
-        "content": "查看你在Bangumi数据的统计图：分数分布，历史数据...等等。"
+        "content": "查看你在Bangumi数据的统计图：分数分布，历史数据...等等。",
+        "learnMore": "前往我的统计"
       },
       "spoilerBox": {
         "title": "剧透箱",
-        "content": "发布感想并遮住剧透，然后安全地分享到微博，Twitter...或任何地方。"
+        "content": "发布感想并遮住剧透，然后安全地分享到微博，Twitter...或任何地方。",
+        "learnMore": "前往我的剧透箱"
       },
       "search": {
         "title": "搜索",
-        "content": "搜索并查看作品或用户的历史统计数据，并管理条目在Bangumi的收藏状态。"
+        "content": "搜索并查看作品或用户的历史统计数据，并管理条目在Bangumi的收藏状态。",
+        "learnMore": "在右上角搜索以开始"
       }
     }
   },

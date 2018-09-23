@@ -28,6 +28,7 @@
     [animations]=true
     [legend]="showLegend"
     [gradient]="gradient"
+    [autoScale]=true
     [xAxis]="showXAxis"
     [yAxis]="showYAxis"
     [showXAxisLabel]="showXAxisLabel"
@@ -43,7 +44,7 @@
     <ng-template #tooltipTemplate let-model="model">
       <!-- todo: left align -->
       <h3>
-        {{model.series.substring(0, 10)}} AT {{model.name}}
+        {{model.series.substring(0, 10)}} UNTIL {{model.name}}
       </h3>
       <h4>
         Accumulated Mean: {{model.value | number: '1.1-2'}}

@@ -1,3 +1,29 @@
+<ngx-charts-number-card
+  [view]="view"
+  [scheme]="colorScheme"
+  cardColor="#232837"
+  emptyColor="#1e222e"
+  [results]="descStatData"
+  [animations]=true>
+</ngx-charts-number-card>
+
+<form [formGroup]="descStatFilterFormGroup">
+  <mat-form-field>
+    <mat-select
+      [formControl]="descStatFilterFormGroup.get('subjectTypeSelect')"
+      multiple>
+      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      [formControl]="descStatFilterFormGroup.get('stateSelect')"
+      multiple>
+      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
+
 <div *ngIf="targetUserStatsArr && targetUser"
      class="row flex-wrap justify-content-center no-gutters pl-0 pr-0 pl-sm-3 pr-sm-3 pl-md-4 pr-md-4 pl-lg-0 pr-lg-0">
 

@@ -20,45 +20,53 @@
   <!--</ng-template>-->
   <!--</ngx-charts-bar-vertical>-->
 
-  <ngx-charts-line-chart
-    [view]="view"
+  <!--<ngx-charts-line-chart-->
+  <!--[view]="view"-->
+  <!--[scheme]="colorScheme"-->
+  <!--[schemeType]="schemeType"-->
+  <!--[results]="yearVsAccumulatedMeanData"-->
+  <!--[animations]=true-->
+  <!--[legend]="showLegend"-->
+  <!--[gradient]="gradient"-->
+  <!--[autoScale]=true-->
+  <!--[xAxis]="showXAxis"-->
+  <!--[yAxis]="showYAxis"-->
+  <!--[showXAxisLabel]="showXAxisLabel"-->
+  <!--[xAxisTickFormatting]="calendarAxisTickFormatting"-->
+  <!--[showYAxisLabel]="showYAxisLabel"-->
+  <!--[xAxisLabel]="xAxisLabel"-->
+  <!--[yAxisLabel]="yAxisLabel"-->
+  <!--[timeline]=false-->
+  <!--[showGridLines]="showGridLines"-->
+  <!--[rangeFillOpacity]="rangeFillOpacity"-->
+  <!--[roundDomains]=false-->
+  <!--[tooltipDisabled]=false>-->
+  <!--<ng-template #tooltipTemplate let-model="model">-->
+  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
+  <!--<h3>-->
+  <!--{{model.series.substring(0, 10)}} UNTIL {{model.name}}-->
+  <!--</h3>-->
+  <!--<h4>-->
+  <!--Accumulated Mean: {{model.value | number: '1.1-2'}}-->
+  <!--</h4>-->
+  <!--<h4>-->
+  <!--Accumulated Count: {{getAccumulatedYearCount(model.name)}}-->
+  <!--</h4>-->
+  <!--</ng-template>-->
+  <!--</ngx-charts-line-chart>-->
+
+  <ngx-charts-number-card
     [scheme]="colorScheme"
-    [schemeType]="schemeType"
-    [results]="yearVsAccumulatedMeanData"
-    [animations]=true
-    [legend]="showLegend"
-    [gradient]="gradient"
-    [autoScale]=true
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [showXAxisLabel]="showXAxisLabel"
-    [xAxisTickFormatting]="calendarAxisTickFormatting"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]=false
-    [showGridLines]="showGridLines"
-    [rangeFillOpacity]="rangeFillOpacity"
-    [roundDomains]=false
-    [tooltipDisabled]=false>
-    <ng-template #tooltipTemplate let-model="model">
-      <!-- todo: left align -->
-      <h3>
-        {{model.series.substring(0, 10)}} UNTIL {{model.name}}
-      </h3>
-      <h4>
-        Accumulated Mean: {{model.value | number: '1.1-2'}}
-      </h4>
-      <h4>
-        Accumulated Count: {{getAccumulatedYearCount(model.name)}}
-      </h4>
-    </ng-template>
-  </ngx-charts-line-chart>
+    cardColor="#232837"
+    emptyColor="#1e222e"
+    [results]="descStatData"
+    [animations]=true>
+  </ngx-charts-number-card>
 
   <!--<ngx-charts-advanced-pie-chart-->
   <!--[view]="view"-->
   <!--[scheme]="colorScheme"-->
-  <!--[results]="countByTypeData"-->
+  <!--[results]="countByStateData"-->
   <!--[animations]=true-->
   <!--[gradient]="gradient"-->
   <!--[tooltipDisabled]=false-->
@@ -76,12 +84,12 @@
 <!--</mat-form-field>-->
 <!--</form>-->
 
-<form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
-  <mat-form-field>
-    <mat-select
-      [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
-      multiple>
-      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+<!--<form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">-->
+<!--<mat-form-field>-->
+<!--<mat-select-->
+<!--[formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"-->
+<!--multiple>-->
+<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--</form>-->

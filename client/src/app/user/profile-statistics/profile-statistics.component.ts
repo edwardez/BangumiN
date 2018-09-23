@@ -121,7 +121,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
               this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
               this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
-              this.initDescStat(defaultArr);
+              this.initDescStat();
               this.initScoreVsCount();
               this.initYearVsMean();
             }
@@ -239,7 +239,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     return day().set('year', year).year();
   }
 
-  private initDescStat(userStat: any[]) {
+  private initDescStat() {
     const arr = this.filterBySubjectTypeAndState(
       this.descStatFilterFormGroup.value.subjectTypeSelect,
       this.descStatFilterFormGroup.value.stateSelect
@@ -360,9 +360,9 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       'statistics.descriptiveChart.name.standardDeviation'];
     this.translateService.get(numberChartNames).subscribe(res => {
       this.descStatData = [
-        {name: res[numberChartNames[0]], value: mean},
+        {name: res[numberChartNames[0]], value: mean.toFixed(2)},
         {name: res[numberChartNames[1]], value: median},
-        {name: res[numberChartNames[2]], value: stdDev}
+        {name: res[numberChartNames[2]], value: stdDev.toFixed(2)}
       ];
     });
 

@@ -230,9 +230,16 @@
   "search": {
     "empty": "No results",
     "result": {
-      "invalid": "Invalid search keyword \"{{keyword}}\""
+      "invalid": "Invalid search keyword \"{{keyword}}\"",
+      "numberOfCount": "Number of results: {{count}}"
     },
-
+    "user": {
+      "title": "Search: {{keyword}}",
+      "filter": {
+        "fullMatch": "Fully matches {{keyword}}",
+        "contain": "Contains {{keyword}}"
+      }
+    },
     "category": {
       "all": "All",
       "anime": "Anime",
@@ -242,6 +249,7 @@
       "real": "Real"
     },
     "subject": {
+      "title": "Search: {{keyword}}",
       "action": {
         "collect": "Collect",
         "more": "More Info"

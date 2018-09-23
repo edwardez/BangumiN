@@ -4,6 +4,7 @@ import {BangumiSearchService} from '../../shared/services/bangumi/bangumi-search
 import {BanguminStyleUserBatchSearchResponse} from '../../shared/models/search/bangumin-style-batch-search-response';
 import {of} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
+import {TitleService} from '../../shared/services/page/title.service';
 
 @Component({
   selector: 'app-user-search',
@@ -25,7 +26,8 @@ export class UserSearchComponent implements OnInit {
 
   visitedUserIds: Set<number>;
 
-  constructor(private bangumiSearchService: BangumiSearchService) {
+  constructor(private bangumiSearchService: BangumiSearchService,
+              private titleService: TitleService) {
   }
 
   private _queryKeyword: string;
@@ -38,6 +40,7 @@ export class UserSearchComponent implements OnInit {
   set queryKeyword(queryKeyword: string) {
     this.resetClassVariableMembers();
     this._queryKeyword = queryKeyword;
+    this.titleService.setTitleByTranslationLabel('search.user.title', {'keyword': decodeURI(this._queryKeyword)});
     this.initiateFistTimeSearch();
   }
 

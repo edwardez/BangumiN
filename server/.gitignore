@@ -55,3 +55,6 @@ env.*
 
 # ruby-version file
 **/.ruby-version
+
+.elasticbeanstalk/
+

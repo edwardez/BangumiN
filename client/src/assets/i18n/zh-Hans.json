@@ -232,6 +232,7 @@
       "numberOfCount": "搜索到{{count}}个结果"
     },
     "user": {
+      "title": "搜索: {{keyword}}",
       "filter": {
         "fullMatch": "完全匹配关键字{{keyword}}",
         "contain": "含有关键字{{keyword}}"
@@ -247,6 +248,7 @@
       "real": "三次元"
     },
     "subject": {
+      "title": "搜索: {{keyword}}",
       "action": {
         "collect": "收藏",
         "more": "详细"

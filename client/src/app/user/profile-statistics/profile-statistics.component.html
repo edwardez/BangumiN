@@ -1,36 +1,10 @@
-<ngx-charts-number-card
-  [view]="view"
-  [scheme]="colorScheme"
-  cardColor="#232837"
-  emptyColor="#1e222e"
-  [results]="descStatData"
-  [animations]=true>
-</ngx-charts-number-card>
-
-<form [formGroup]="descStatFilterFormGroup">
-  <mat-form-field>
-    <mat-select
-      [formControl]="descStatFilterFormGroup.get('subjectTypeSelect')"
-      multiple>
-      <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      [formControl]="descStatFilterFormGroup.get('stateSelect')"
-      multiple>
-      <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
-
 <div *ngIf="targetUserStatsArr && targetUser"
      class="row flex-wrap justify-content-center no-gutters pl-0 pr-0 pl-sm-3 pr-sm-3 pl-md-4 pr-md-4 pl-lg-0 pr-lg-0">
 
-  <div class="col-12">
-    <div class="d-flex flex-column align-items-center">
+  <div class="col-11">
+    <div class="d-flex justify-content-center  align-items-center">
       <img [src]="targetUser.avatar.medium" class="user-avatar">
-      <div>{{targetUser.nickname}}'s statistics</div>
+      <div [translate]="'statistics.headline'" [translateParams]="{name: targetUser.nickname}" class="pl-1"></div>
     </div>
 
   </div>
@@ -42,28 +16,64 @@
           [scheme]="colorScheme"
           [results]="countByTypeData"
           [animations]=true
-          [gradient]="gradient"
+          [gradient]="false"
           [tooltipDisabled]=false
-          [tooltipText]="pieTooltipText">
+          [label]="'statistics.summaryChart.label' | translate"
+        >
+          <ng-template #tooltipTemplate let-model="model">
+            <span [translate]="'common.category.' + model.name" class="tooltip-label"></span>
+            <span class="tooltip-val">{{model.value}}</span>
+          </ng-template>
         </ngx-charts-advanced-pie-chart>
       </div>
-
     </mat-card-content>
   </mat-card>
 
 
-  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-none d-md-block">
+  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2">
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
-        <ngx-charts-advanced-pie-chart
+        <ngx-charts-number-card
           [scheme]="colorScheme"
-          [results]="countByTypeData"
-          [animations]=true
-          [gradient]="gradient"
-          [tooltipDisabled]=false
-          [tooltipText]="pieTooltipText">
-        </ngx-charts-advanced-pie-chart>
+          cardColor="#232837"
+          emptyColor="#1e222e"
+          [results]="descStatData"
+          [animations]=true>
+        </ngx-charts-number-card>
+
+
       </div>
+
+      <form class="row no-gutters justify-content-center align-items-center ml-1" [formGroup]="descStatFilterFormGroup">
+        <div class="col-1">
+          <mat-icon>filter_list</mat-icon>
+        </div>
+        <mat-form-field class="col">
+          <mat-select
+            [formControl]="descStatFilterFormGroup.get('subjectTypeSelect')"
+            multiple>
+            <ng-container *ngFor="let type of allValidSubjectTypeList">
+              <mat-option *ngIf="userCurrentSubjectTypeList.indexOf(type) !== -1" [value]="type">{{'common.category.' +
+                type | translate}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <div class="col-1"></div>
+        <mat-form-field class="col">
+          <mat-select
+            [formControl]="descStatFilterFormGroup.get('stateSelect')"
+            multiple>
+
+            <ng-container *ngFor="let status of allValidCollectionStatusList">
+              <mat-option *ngIf="collectionStatusList.indexOf(status) !== -1" [value]="status">
+                {{'common.statusFullname.' + status | translate}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <div class="col-1"></div>
+      </form>
 
     </mat-card-content>
   </mat-card>
@@ -72,106 +82,142 @@
   <div class="w-100"></div>
 
   <mat-card class="col-12 col-lg-5-half flex-lg-grow-1 mt-2 ">
+    <mat-card-header>
+      <mat-card-title class="text-align-center">{{'statistics.countBarChart.title' | translate}}</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
       <div class="responsive-container-chart-height-high">
         <ngx-charts-bar-vertical
-
           [scheme]="colorScheme"
           [results]="scoreVsCountData"
-          [gradient]="gradient"
-          [showGridLines]="showGridLines"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel">
+          [gradient]="false"
+          [showGridLines]="true"
+          [legendTitle]="'statistics.common.legend' | translate"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'statistics.countBarChart.score' | translate"
+          [yAxisLabel]="'statistics.countBarChart.count' | translate">
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
-            <h4>Score: {{model.name}}</h4>
-            <h4>Count: {{model.value}}</h4>
+            <h4>{{'statistics.countBarChart.score' | translate}}: {{model.name}}</h4>
+            <h4>{{'statistics.countBarChart.count' | translate}}: {{model.value}}</h4>
           </ng-template>
         </ngx-charts-bar-vertical>
       </div>
 
-
-      <form [formGroup]="scoreVsCountFilterFormGroup">
-        <mat-form-field>
+      <form class="row no-gutters justify-content-center align-items-center ml-1"
+            [formGroup]="scoreVsCountFilterFormGroup">
+        <div class="col-1">
+          <mat-icon>filter_list</mat-icon>
+        </div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="scoreVsCountFilterFormGroup.get('subjectTypeSelect')"
             multiple>
-            <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
+            <ng-container *ngFor="let type of userCurrentSubjectTypeList">
+              <mat-option [value]="type">{{type}}
+              </mat-option>
+            </ng-container>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <div class="col-1"></div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"
             multiple>
-            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+            <ng-container *ngFor="let status of allValidCollectionStatusList">
+              <mat-option *ngIf="collectionStatusList.indexOf(status) !== -1" [value]="status">
+                {{'common.statusFullname.' + status | translate}}
+              </mat-option>
+            </ng-container>
           </mat-select>
         </mat-form-field>
+        <div class="col-1"></div>
       </form>
     </mat-card-content>
   </mat-card>
 
 
   <mat-card class="col-12 col-lg-5-half flex-lg-grow-1 ml-lg-2 mt-2">
+    <mat-card-header>
+      <mat-card-title class="text-align-center">{{'statistics.meanScorePerYearBarChart.title' | translate}}
+      </mat-card-title>
+    </mat-card-header>
     <mat-card-content>
       <div class="responsive-container-chart-height-high">
         <ngx-charts-line-chart
-
           [scheme]="colorScheme"
           [schemeType]="schemeType"
           [results]="yearVsMeanData"
           [animations]=true
-          [legend]="showLegend"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [showXAxisLabel]="showXAxisLabel"
+          [legend]="true"
+          [gradient]="false"
+          [legendTitle]="'statistics.common.legend' | translate"
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
           [xAxisTickFormatting]="calendarAxisTickFormatting"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'statistics.meanScorePerYearBarChart.year' | translate"
+          [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
           [timeline]=false
-          [showGridLines]="showGridLines"
+          [showGridLines]="true"
           [rangeFillOpacity]="rangeFillOpacity"
           [roundDomains]=false
           [tooltipDisabled]=false>
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{model.series}} IN {{model.name}}
+              {{'common.category.' + model.series | translate}}{{'statistics.meanScorePerYearBarChart.tooltip.in' |
+              translate}} {{model.name}} {{'statistics.meanScorePerYearBarChart.tooltip.wholeYear' | translate}}
             </h3>
             <h4>
-              Mean: {{model.value | number: '1.1-2'}}
-              • Min: {{getYearScoreMinMax(model.series, model.name, 'min')}}
-              • Max: {{getYearScoreMinMax(model.series, model.name, 'max')}}
+              {{'statistics.meanScorePerYearBarChart.tooltip.mean' | translate}}: {{model.value | number: '1.1-2'}}
+              • {{'statistics.meanScorePerYearBarChart.tooltip.min' | translate}}: {{getYearScoreMinMax(model.series,
+              model.name, 'min')}}
+              • {{'statistics.meanScorePerYearBarChart.tooltip.max' | translate}}: {{getYearScoreMinMax(model.series,
+              model.name, 'max')}}
             </h4>
             <h4>
-              Count: {{getYearCount(model.name)}}
+              {{'statistics.meanScorePerYearBarChart.tooltip.count' | translate}}: {{getYearCount(model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>
       </div>
 
 
-      <form [formGroup]="yearVsMeanFilterFormGroup">
-        <mat-form-field>
+      <form class="row no-gutters justify-content-center align-items-center ml-1"
+            [formGroup]="yearVsMeanFilterFormGroup">
+        <div class="col-1">
+          <mat-icon>filter_list</mat-icon>
+        </div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"
             multiple>
-            <mat-option *ngFor="let type of subjectTypeList" [value]="type">{{type}}</mat-option>
+            <ng-container *ngFor="let type of allValidSubjectTypeList">
+              <mat-option *ngIf="userCurrentSubjectTypeList.indexOf(type) !== -1" [value]="type">{{'common.category.' +
+                type | translate}}
+              </mat-option>
+            </ng-container>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <div class="col-1"></div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"
             multiple>
-            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+            <ng-container *ngFor="let status of allValidCollectionStatusList">
+              <mat-option *ngIf="collectionStatusList.indexOf(status) !== -1" [value]="status">
+                {{'common.statusFullname.' + status | translate}}
+              </mat-option>
+            </ng-container>
           </mat-select>
         </mat-form-field>
+        <div class="col-1"></div>
       </form>
     </mat-card-content>
   </mat-card>

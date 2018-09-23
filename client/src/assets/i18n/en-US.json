@@ -7,6 +7,13 @@
       "on_hold": "Hold",
       "dropped": "Drop"
     },
+    "statusFullname": {
+      "wish": "??/?",
+      "collect": "???",
+      "do": "???",
+      "on_hold": "??",
+      "dropped": "??"
+    },
     "action": {
       "addToCollection": "Add to collection",
       "editCollection": "Edit collection",
@@ -22,6 +29,14 @@
       "update": "Update",
       "modify": "Modify",
       "backToTop": "Back to top"
+    },
+    "category": {
+      "all": "??",
+      "anime": "??",
+      "book": "??",
+      "music": "??",
+      "game": "??",
+      "real": "???"
     },
     "book": {
       "volume": "",
@@ -403,6 +418,40 @@
             }
           }
         }
+      }
+    }
+  },
+  "statistics": {
+    "headline": "{{name}}'s statistics",
+    "common": {
+      "legend": "Legend"
+    },
+    "summaryChart": {
+      "label": "total"
+    },
+    "descriptiveChart": {
+      "name": {
+        "mean": "Mean",
+        "median": "Median",
+        "standardDeviation": "Standard Deviation"
+      }
+    },
+    "countBarChart": {
+      "title": "Subject counts",
+      "score": "Score",
+      "count": "Count"
+    },
+    "meanScorePerYearBarChart": {
+      "title": "Average score by year",
+      "score": "Mean Score",
+      "year": "Year",
+      "tooltip": {
+        "in": " in",
+        "wholeYear": "",
+        "mean": "Mean",
+        "min": "Min",
+        "max": "Max",
+        "count": "Count"
       }
     }
   },

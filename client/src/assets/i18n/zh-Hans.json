@@ -7,6 +7,13 @@
       "on_hold": "搁置",
       "dropped": "抛弃"
     },
+    "statusFullname": {
+      "wish": "想看/玩",
+      "collect": "完成",
+      "do": "进行中",
+      "on_hold": "搁置",
+      "dropped": "抛弃"
+    },
     "action": {
       "addToCollection": "加入收藏",
       "editCollection": "修改收藏",
@@ -22,6 +29,14 @@
       "update": "更新",
       "modify": "修改",
       "backToTop": "回到顶部"
+    },
+    "category": {
+      "all": "综合",
+      "anime": "动画",
+      "book": "书籍",
+      "music": "音乐",
+      "game": "游戏",
+      "real": "三次元"
     },
     "book": {
       "volume": "卷",
@@ -407,6 +422,40 @@
             }
           }
         }
+      }
+    }
+  },
+  "statistics": {
+    "headline": "{{name}}的统计",
+    "common": {
+      "legend": "图例"
+    },
+    "summaryChart": {
+      "label": "总计"
+    },
+    "descriptiveChart": {
+      "name": {
+        "mean": "平均数",
+        "median": "中位数",
+        "standardDeviation": "标准差"
+      }
+    },
+    "countBarChart": {
+      "title": "标记作品数量",
+      "score": "分数",
+      "count": "合计"
+    },
+    "meanScorePerYearBarChart": {
+      "title": "每年平均分",
+      "score": "平均分",
+      "year": "年份",
+      "tooltip": {
+        "in": ":",
+        "wholeYear": "全年",
+        "mean": "平均数",
+        "min": "最小",
+        "max": "最大",
+        "count": "总数"
       }
     }
   },

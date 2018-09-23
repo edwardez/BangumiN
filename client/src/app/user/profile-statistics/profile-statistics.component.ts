@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
 import {take, takeUntil} from 'rxjs/operators';
@@ -11,31 +11,27 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
+import {TitleService} from '../../shared/services/page/title.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-stats',
   templateUrl: './profile-statistics.component.html',
-  styleUrls: ['./profile-statistics.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./profile-statistics.component.scss']
 })
 export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   // todo: options for each chart
-  view;
-  showXAxis;
-  showYAxis;
-  gradient;
-  showLegend;
-  showGridLines;
-  showXAxisLabel;
-  xAxisLabel;
-  showYAxisLabel;
-  yAxisLabel;
   colorScheme;
   scoreVsCountData;
-  theme;
 
-  subjectTypeList;
+  // if user has no record under some subject type, that type won't be included
+  userCurrentSubjectTypeList;
+  // all subject types on Bangumi
+  readonly allValidSubjectTypeList: string[] = Object.keys(SubjectType).filter(k => isNaN(Number(k)));
+  // if user has no status record(i.e. user never drops subject), that status won't be included
   collectionStatusList;
+  // all collection status types on Bangumi
+  readonly allValidCollectionStatusList: string[] = Object.keys(CollectionStatusId).filter(k => isNaN(Number(k)));
   selectedTypeListForscoreVsCount;
 
   rangeFillOpacity = 0.15;
@@ -54,36 +50,44 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   descStatFilterFormGroup: FormGroup;
   yearVsMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
   yearCount = {};
 
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   constructor(
+    private activatedRoute: ActivatedRoute,
     private bangumiUserService: BangumiUserService,
     private banguminUserService: BanguminUserService,
     private bangumiStatsService: BangumiStatsService,
-    private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private titleService: TitleService,
+    private translateService: TranslateService
   ) {
-    // options
-    this.gradient = false;
-    this.showLegend = true;
-    this.showGridLines = true;
-    // todo: translate legend and label
-    this.xAxisLabel = 'Score';
-    this.showXAxisLabel = true;
-    this.showXAxis = true;
-
-    this.yAxisLabel = 'Count';
-    this.showYAxisLabel = true;
-    this.showYAxis = true;
-
     this.colorScheme = {
       domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
     };
 
-    this.selectedTypeListForscoreVsCount = this.subjectTypeList;
+    this.selectedTypeListForscoreVsCount = this.userCurrentSubjectTypeList;
 
     this.initStatsFormGroup();
+  }
+
+  get AllSubjectTypes() {
+    return Object.keys(SubjectType).filter(k => isNaN(Number(k)));
+  }
+
+  get AllCollectionStatuses() {
+    return Object.keys(CollectionStatusId).filter(k => isNaN(Number(k)));
+  }
+
+  ngOnDestroy(): void {
+    // unsubscribe, we can also first() in subscription
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  getYearCount(year) {
+    return this.yearCount[year];
   }
 
   ngOnInit() {
@@ -91,9 +95,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       .pipe(
         take(1)
       ).subscribe(settings => {
-      if (settings && settings.appTheme === 'bangumin-material-dark-pink-blue-grey') {
-        this.theme = 'dark';
-      }
     });
 
     this.activatedRoute.parent.params
@@ -108,16 +109,16 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
               this.targetUserStatsArr = res.stats;
               this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
               // initialize filter list value
-              this.subjectTypeList = _.map(this.countByTypeData, 'name');
+              this.userCurrentSubjectTypeList = _.map(this.countByTypeData, 'name');
               this.collectionStatusList = _.map(
                 _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
               );
               // initialize filter form groups
-              this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
               this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
               this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.subjectTypeList);
+              this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
               this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
               this.initDescStat(defaultArr);
@@ -128,71 +129,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    // unsubscribe, we can also first() in subscription
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+  pieTooltipVariables({data}) {
+    const pieSegmentName = data.name;
+    const pieSegmentValue = data.value;
 
-  getYearCount(year) {
-    return this.yearCount[year];
-  }
-
-  private initDescStat(userStat: any[]) {
-    const arr = this.filterBySubjectTypeAndState(
-      this.descStatFilterFormGroup.value.subjectTypeSelect,
-      this.descStatFilterFormGroup.value.stateSelect
-    );
-    this.refreshDescStat(arr);
-
-    // edit the number cards on change of subjectType selection
-    this.descStatFilterFormGroup.controls['subjectTypeSelect'].valueChanges
-      .subscribe(newTypeList => {
-        const newArr = this.filterBySubjectTypeAndState(
-          newTypeList,
-          this.descStatFilterFormGroup.value.stateSelect
-        );
-        this.refreshDescStat(newArr);
-      });
-
-    // edit the number cards on change of collection status selection
-    this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
-      .subscribe(newStateList => {
-        const newArr = this.filterBySubjectTypeAndState(
-          this.descStatFilterFormGroup.value.subjectTypeSelect,
-          newStateList
-        );
-        this.refreshDescStat(newArr);
-      });
-  }
-
-  private refreshDescStat(userStat: any[]) {
-    // filter null rate
-    userStat = userStat.filter(stat => stat.rate);
-    const len = userStat.length;
-    let mean, median, stdDev;
-    if (len === 0) {
-      mean = 0;
-      median = 0;
-      stdDev = 0;
-    } else {
-      mean = _.meanBy(userStat, 'rate');
-      const middle = (len + 1) / 2, sorted = userStat.sort();
-      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
-      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
-    }
-    this.descStatData = [
-      {name: 'Mean', value: mean},
-      {name: 'Median', value: median},
-      {name: 'Standard Deviation', value: stdDev}
-    ];
-  }
-
-
-  private getUserProfile(userId: string) {
-    this.bangumiUserService.getUserInfoFromHttp(userId).subscribe(bangumiUser => {
-      this.targetUser = bangumiUser;
-    });
+    return {pieSegmentName, pieSegmentValue};
   }
 
   private initYearVsMean() {
@@ -298,14 +239,32 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     return day().set('year', year).year();
   }
 
-  pieTooltipText({data}) {
-    const label = data.name;
-    const val = data.value;
+  private initDescStat(userStat: any[]) {
+    const arr = this.filterBySubjectTypeAndState(
+      this.descStatFilterFormGroup.value.subjectTypeSelect,
+      this.descStatFilterFormGroup.value.stateSelect
+    );
+    this.refreshDescStat(arr);
 
-    return `
-      <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val">${val}</span>
-    `;
+    // edit the number cards on change of subjectType selection
+    this.descStatFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .subscribe(newTypeList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          newTypeList,
+          this.descStatFilterFormGroup.value.stateSelect
+        );
+        this.refreshDescStat(newArr);
+      });
+
+    // edit the number cards on change of collection status selection
+    this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
+      .subscribe(newStateList => {
+        const newArr = this.filterBySubjectTypeAndState(
+          this.descStatFilterFormGroup.value.subjectTypeSelect,
+          newStateList
+        );
+        this.refreshDescStat(newArr);
+      });
   }
 
   getYearScoreMinMax(subjectType, year, minMax) {
@@ -379,6 +338,41 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
   private getYearArr(minYear, maxYear) {
     return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+  }
+
+  private refreshDescStat(userStat: any[]) {
+    // filter null rate
+    userStat = userStat.filter(stat => stat.rate);
+    const len = userStat.length;
+    let mean, median, stdDev;
+    if (len === 0) {
+      mean = 0;
+      median = 0;
+      stdDev = 0;
+    } else {
+      mean = _.meanBy(userStat, 'rate');
+      const middle = (len + 1) / 2, sorted = userStat.sort();
+      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
+      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
+    }
+
+    const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
+      'statistics.descriptiveChart.name.standardDeviation'];
+    this.translateService.get(numberChartNames).subscribe(res => {
+      this.descStatData = [
+        {name: res[numberChartNames[0]], value: mean},
+        {name: res[numberChartNames[1]], value: median},
+        {name: res[numberChartNames[2]], value: stdDev}
+      ];
+    });
+
+  }
+
+  private getUserProfile(userId: string) {
+    this.bangumiUserService.getUserInfoFromHttp(userId).subscribe(bangumiUser => {
+      this.targetUser = bangumiUser;
+      this.titleService.setTitleByTranslationLabel('statistics.headline', {name: this.targetUser.nickname});
+    });
   }
 
 }

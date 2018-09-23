@@ -120,5 +120,6 @@ $bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-
 
 .bangumin-material-dark-pink-blue-grey {
   @include angular-material-theme($bangumin-material-dark-pink-blue-grey-theme);
-  @include bangumi-component-theme($bangumin-material-dark-pink-blue-grey-theme)
+  @include bangumi-component-theme($bangumin-material-dark-pink-blue-grey-theme);
+  @import "ngx-charts-theme.dark";
 }

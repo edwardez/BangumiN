@@ -1,3 +1,5 @@
+@import "../../../../src/assets/styles/styles-variables";
+
 app-profile-stats .dark {
   /**
    * Backgrounds
@@ -158,12 +160,38 @@ app-profile-stats .dark {
 
 .responsive-container-chart-height-low {
   display: grid;
-  height: 30vh;
+  height: 20vh;
+
+  @media (min-height: 700px) and (max-height: 800px) {
+    height: 25vh;
+  }
+
+  @media (min-height: 400px) and (max-height: 700px) {
+    height: 30vh;
+  }
+
+  @media (max-height: 400px) {
+    height: 40vh;
+  }
+
+
 }
 
 .responsive-container-chart-height-high {
   display: grid;
-  height: 50vh;
+  height: 40vh;
+
+  @media (min-height: 700px) and (max-height: 800px) {
+    height: 45vh;
+  }
+
+  @media (min-height: 400px) and (max-height: 700px) {
+    height: 50vh;
+  }
+
+  @media (max-height: 400px) {
+    height: 60vh;
+  }
 }
 
 .user-avatar {

@@ -1,0 +1,124 @@
+@import "styles-variables";
+
+* {
+  &:active,
+  :focus {
+    outline: none !important;
+  }
+}
+
+label {
+  margin-bottom: 0;
+}
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .col-lg-5-half {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 45.8333333% !important;
+    max-width: 45.8333333% !important;
+  }
+}
+
+// Angular customization
+$bangumi-pink-blue-primary: mat-palette($mat-bangumi-pink, 200, 100, 700);
+$bangumi-pink-blue-accent: mat-palette($mat-blue, A200, A100, A400);
+$bangumi-pink-theme: mat-light-theme($bangumi-pink-blue-primary, $bangumi-pink-blue-accent);
+
+$bangumin-material-blue-teal-primary: mat-palette($mat-blue);
+$bangumin-material-blue-teal-accent: mat-palette($mat-teal, A200, A100, A400);
+$bangumin-material-blue-teal-theme: mat-light-theme($bangumin-material-blue-teal-primary, $bangumin-material-blue-teal-accent);
+
+$bangumin-material-dark-pink-blue-grey-primary: mat-palette($mat-pink);
+$bangumin-material-dark-pink-blue-grey-accent: mat-palette($mat-blue-grey, A200, A100, A400);
+$bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-dark-pink-blue-grey-primary, $bangumin-material-dark-pink-blue-grey-accent);
+
+// bangumin-own component color
+// naming conventions: css name - namespace - type of color
+@mixin bangumi-component-theme($theme) {
+  // Extract whichever individual palettes you need from the theme.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  @include angular-material-typography($custom-typography);
+
+  .primary-color {
+    color: mat-color($primary);
+  }
+
+  // Use mat-color to extract individual colors from a palette as necessary.
+  .warn-color {
+    color: mat-color($warn);
+  }
+
+  .foreground-color-secondary-text {
+    color: mat-color($foreground, secondary-text);
+  }
+
+  .color-bangumin-theme-foreground {
+    color: mat-color($foreground, text)
+  }
+
+  .mat-icon.mat-icon-color-foreground {
+    color: mat-color($foreground, text)
+  }
+
+  .background-background-color-card {
+    background-color: mat-color($background, card);
+  }
+
+  .background-color-bangumin-theme-accent {
+    background-color: mat-color($accent);
+  }
+
+  .mat-divider.quill-invalid {
+    border-top-color: mat-color($warn);
+  }
+
+  .spoiler-text {
+    color: mat-color($accent, default-contrast);
+  }
+
+  .text-input {
+    &::placeholder {
+      color: mat-color($foreground, secondary-text);
+    }
+    color: mat-color($foreground, text);
+  }
+
+  quill-editor {
+    @include quill-color-mixin($theme);
+  }
+
+  ngx-loading-bar {
+    #loading-bar {
+      color: mat-color($primary, default-contrast) !important;
+
+      .bar {
+        background: mat-color($primary, default-contrast) !important;
+      }
+    }
+  }
+
+}
+
+.bangumi-pink-blue {
+  @include angular-material-theme($bangumi-pink-theme);
+  @include bangumi-component-theme($bangumi-pink-theme)
+}
+
+.bangumin-material-blue-teal {
+  @include angular-material-theme($bangumin-material-blue-teal-theme);
+  @include bangumi-component-theme($bangumin-material-blue-teal-theme)
+}
+
+.bangumin-material-dark-pink-blue-grey {
+  @include angular-material-theme($bangumin-material-dark-pink-blue-grey-theme);
+  @include bangumi-component-theme($bangumin-material-dark-pink-blue-grey-theme)
+}

@@ -65,7 +65,7 @@ function responseLoggerAndGenerator(error: CustomError, response: Response, stat
  * @param next next middleware
  */
 const specificErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
-  if (err) {
+  if (err && !res.headersSent) {
     if (err.name === 'ValidationError' || err.customizedErrorCode === BanguminErrorCode.ValidationError) {
       // if customizedErrorCode is not set, then set it to ValidationError(ValidationError might not come from CustomError)
       err.customizedErrorCode = err.customizedErrorCode || BanguminErrorCode.ValidationError;
@@ -96,13 +96,16 @@ const specificErrorHandler = function errorHandler(err: any, req: any, res: any,
 // general error handler, send detailed error message to response only during development
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
+  logger.error('%o', err);
+  if (!res.headersSent) {
+    res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
+      errors: {
+        code: BanguminErrorCode.UnclassifiedInternalError,
+        message: config.env === 'dev' ? err.message : 'Internal Error',
+      },
+    });
+  }
 
-  res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
-    errors: {
-      code: BanguminErrorCode.UnclassifiedInternalError,
-      message: config.env === 'dev' ? err.message : 'Internal Error',
-    },
-  });
 };
 
 export {generalErrorHandler, specificErrorHandler};

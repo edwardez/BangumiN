@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import config from './config';
 import expressSession from 'express-session';
 import passport from './services/passportHandler';
+import RateLimit from 'express-rate-limit';
 import authenticationMiddleware from './services/authenticationHandler';
 import proxy from 'http-proxy-middleware';
 import {logger} from './utils/logger';
@@ -28,6 +29,15 @@ const app = express();
 if (config.env !== 'development') {
   app.set('trust proxy', 1); // trust first proxy
 }
+
+// set rate limit
+const limiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300, // 300 requests
+});
+
+//  apply to all requests
+app.use(limiter);
 
 // enable cors
 const corsOption = {

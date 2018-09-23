@@ -29,14 +29,14 @@ router.get('/user/:userIdOrUsername', celebrate({
         );
       }
 
-      throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
-        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested user id stats doesn\'t exist');
+      next(new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
+        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested user id stats doesn\'t exist'));
     },
   ).catch((error) => {
     if (error instanceof CustomError || error.name === 'ValidationError') {
       return next(error);
     }
-    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
+    return next(new CustomError(BanguminErrorCode.RDSResponseError, error));
   });
 
 });
@@ -60,14 +60,15 @@ router.get('/subject/:subjectId', celebrate({
         });
       }
 
-      throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
-        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested subject id stats doesn\'t exist');
+      return next(new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
+        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'Requested subject id stats doesn\'t exist'));
     },
   ).catch((error) => {
     if (error instanceof CustomError || error.name === 'ValidationError') {
       return next(error);
     }
-    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
+
+    return next(new CustomError(BanguminErrorCode.RDSResponseError, error));
   });
 
 });

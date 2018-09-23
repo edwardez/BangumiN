@@ -127,7 +127,7 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
       if (error instanceof CustomError || error.name === 'ValidationError') {
         return next(error);
       }
-      throw new CustomError(BanguminErrorCode.RDSResponseError, error);
+      return next(new CustomError(BanguminErrorCode.RDSResponseError, error));
     });
   }
 
@@ -150,7 +150,10 @@ router.get('/spoilers', authenticationMiddleware.isAuthenticated, celebrate({
       return res.json({spoilers: response, userId: requestUserId, lastKey: response.lastKey || null});
     })
     .catch((error) => {
-      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      if (error instanceof CustomError || error.name === 'ValidationError') {
+        return next(error);
+      }
+      return next(new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB'));
     });
 
 });

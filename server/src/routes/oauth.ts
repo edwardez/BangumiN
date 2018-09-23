@@ -31,7 +31,7 @@ function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
 
   const {error, value: tokenVars} = joi.validate(req.body, tokenSchema);
   if (error) {
-    throw error;
+    throw new CustomError(BanguminErrorCode.ValidationError, error);
   }
 
   const {refreshToken} = tokenVars;
@@ -56,7 +56,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
     if (error instanceof CustomError || error.name === 'ValidationError') {
       return next(error);
     }
-    throw new CustomError(BanguminErrorCode.ValidationError, error);
+    return next(new CustomError(BanguminErrorCode.ValidationError, error));
   }
 
   const options = {
@@ -81,7 +81,7 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
     if (error instanceof CustomError || error.name === 'ValidationError') {
       return next(error);
     }
-    throw new CustomError(BanguminErrorCode.BangumiServerResponseError, error);
+    return next(new CustomError(BanguminErrorCode.BangumiServerResponseError, error));
   }
 
   return next();

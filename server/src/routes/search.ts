@@ -38,14 +38,16 @@ router.get('/user/:nickname', celebrate({
         });
       }
 
-      throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
-        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]), 'User with specified nickname doesn\'t exist');
+      return next(new CustomError(BanguminErrorCode.RequestResourceNotFoundError,
+        new Error(BanguminErrorCode[BanguminErrorCode.RequestResourceNotFoundError]),
+        'User with specified nickname doesn\'t exist'));
+
     },
   ).catch((error) => {
     if (error instanceof CustomError || error.name === 'ValidationError') {
       return next(error);
     }
-    throw new CustomError(BanguminErrorCode.RDSResponseError, error);
+    return next(new CustomError(BanguminErrorCode.RDSResponseError, error));
   });
 
 });

@@ -2,6 +2,7 @@ import * as Promise from 'bluebird';
 import {Record} from '../../models/relational/bangumi/record';
 import {findUserByIdOrUserName} from './userService';
 import {User} from '../../models/relational/bangumi/user';
+import {BanguminErrorCode, CustomError} from '../errorHandler';
 
 function getUserStatsByIdOrUsername(userIdOrName: number | string,
                                     excludingAttributes = ['tags', 'nickname', 'rowLastModified', 'userId', 'username', 'comment'])
@@ -11,7 +12,7 @@ function getUserStatsByIdOrUsername(userIdOrName: number | string,
       .then<Record[]>(
         (user: User) => {
           if (!user) {
-            throw new Error('Invalid User');
+            throw new CustomError(BanguminErrorCode.RequestResourceNotFoundError, new Error('Invalid User'));
           }
           return getUserStatsById(user.id, excludingAttributes);
         },
@@ -22,7 +23,7 @@ function getUserStatsByIdOrUsername(userIdOrName: number | string,
     return getUserStatsById(userIdOrName, excludingAttributes);
   }
 
-  throw new Error('invalid type');
+  throw new CustomError(BanguminErrorCode.ValidationError, new Error('Invalid User name type'));
 }
 
 function getUserStatsById(userId: number,

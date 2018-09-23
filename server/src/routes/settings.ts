@@ -30,7 +30,7 @@ router.post('/', celebrate({
       if (error instanceof CustomError || error.name === 'ValidationError') {
         return next(error);
       }
-      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+      return next(new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB'));
     });
 
 });
@@ -49,7 +49,8 @@ router.get('/', (req: any, res: any, next: any) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {
         return next(error);
       }
-      throw new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB');
+
+      return next(new CustomError(BanguminErrorCode.NoSQLResponseError, error, 'Error occurred during querying dynamoDB'));
     });
 
 });

@@ -117,8 +117,9 @@
           <mat-select
             [formControl]="scoreVsCountFilterFormGroup.get('subjectTypeSelect')"
             multiple>
-            <ng-container *ngFor="let type of userCurrentSubjectTypeList">
-              <mat-option [value]="type">{{type}}
+            <ng-container *ngFor="let type of allValidSubjectTypeList">
+              <mat-option *ngIf="userCurrentSubjectTypeList.indexOf(type) !== -1" [value]="type">{{'common.category.' +
+                type | translate}}
               </mat-option>
             </ng-container>
           </mat-select>

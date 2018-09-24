@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FullSearchComponent} from './full-search/full-search.component';
 import {BanguminSharedModule} from '../bangumin-shared.module';
 import {RouterModule} from '@angular/router';
 import {SharedPipeModule} from '../shared/pipe/shared-pipe.module';
@@ -30,8 +29,6 @@ import {ReactiveFormsModule} from '@angular/forms';
     StarRatingModule
   ],
   declarations: [
-    FullSearchComponent,
-
     UserSearchComponent,
     SubjectSearchComponent,
     SearchResultComponent,

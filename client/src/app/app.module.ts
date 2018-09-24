@@ -63,7 +63,7 @@ import {DocumentsModule} from './documents/documents.module';
         }
       }
     ),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   entryComponents: [],
   providers: [],

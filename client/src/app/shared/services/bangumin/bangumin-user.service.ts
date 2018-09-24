@@ -24,6 +24,12 @@ export class BanguminUserService {
               private overlayContainer: OverlayContainer) {
   }
 
+  // update meta theme-color in index.html
+  static updateMetaThemeColor(themeColor: string) {
+    const metaThemeColor = document.querySelector('meta[name=theme-color]');
+    metaThemeColor.setAttribute('content', RuntimeConstantsService.appThemeColor[themeColor]);
+  }
+
 
   /**
    * post user Settings to the server and store the response in local storage
@@ -123,7 +129,6 @@ export class BanguminUserService {
    * fallback to en-US if user browser doesn't contain languages that we currently support
    */
   public getDefaultLanguage() {
-    this.translateService.addLangs(Object.keys(environment.availableLanguages));
     const browserLang = this.translateService.getBrowserLang();
     let defaultLang: string;
     if (browserLang.match(/en/)) {
@@ -170,6 +175,7 @@ export class BanguminUserService {
     this.overlayContainer.getContainerElement()
       .classList.add(settings.appTheme);
     document.body.classList.add(settings.appTheme);
+    BanguminUserService.updateMetaThemeColor(settings.appTheme);
   }
 
   /**
@@ -206,7 +212,7 @@ export class BanguminUserService {
     this.overlayContainer.getContainerElement().classList.add(newTheme);
     document.body.classList.remove(oldTheme);
     document.body.classList.add(newTheme);
-
+    BanguminUserService.updateMetaThemeColor(newTheme);
   }
 
   /**

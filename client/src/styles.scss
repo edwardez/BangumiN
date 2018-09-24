@@ -71,6 +71,10 @@ app-spoiler-single-content .mat-card-header-text {
   text-decoration: none;
 }
 
+.user-select-none {
+  user-select: none;
+}
+
 .bangumin-height-container {
   height: 100vh;
 }

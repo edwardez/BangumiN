@@ -96,7 +96,7 @@ const specificErrorHandler = function errorHandler(err: any, req: any, res: any,
 // general error handler, send detailed error message to response only during development
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
-  logger.error('%o', err);
+  logger.error('%o', err.stack);
   if (!res.headersSent) {
     res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
       errors: {

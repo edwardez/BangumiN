@@ -132,8 +132,12 @@
       "cancel": "Cancel authentication"
     },
     "loginSuccess": "Successfully logged in",
+    "alreadyLoggedIn": "You already logged in, redirecting to the homepage",
     "loginFailure": "Login failed, please try again later.",
-    "waitForActivationPrompt": "Activation in progress, this window will be closed shortly."
+    "waitForActivationPrompt": "Activation in progress, this window will be closed shortly.",
+    "activationSuccessful": "Successfully activated",
+    "windowStillOpenQuestion": "Window doesn't close?",
+    "promptUserToCLoseWindow": "Click here or in-app browser close button"
   },
   "welcome": {
     "name": "Welcome",

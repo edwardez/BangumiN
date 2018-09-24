@@ -131,8 +131,12 @@
       "cancel": "取消认证"
     },
     "loginSuccess": "登录成功",
-    "loginFailure": "登录失败，请稍后重试",
-    "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭"
+    "alreadyLoggedIn": "已登陆用户，转向主界面",
+    "loginFailure": "登录失败，请尝试重试",
+    "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭...",
+    "activationSuccessful": "激活成功",
+    "windowStillOpenQuestion": "窗口没有关闭？",
+    "promptUserToCLoseWindow": "点击这里或应用内浏览器关闭按钮"
   },
   "welcome": {
     "name": "欢迎",

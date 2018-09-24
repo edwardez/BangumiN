@@ -16,9 +16,10 @@ export class RuntimeConstantsService {
   static readonly maxCacheAge = 200000;  // in milliseconds
   static readonly nonCacheableUrls: Array<string | RegExp> = [/http.*api\/user\/\d+\/setting/, /oauth/, /auth/, /assets/];
   static readonly validUserGroupValues: number[] = Object.keys(BangumiUserRole).map(k => BangumiUserRole[k])
-    .filter(v => typeof v === 'number');
+    .filter(v => !isNaN(Number(v)));
 
   static defaultUserId = null;
+  static defaultBangumiUserId = null;
   static defaultSubjectId = 0;
   static defaultSpoilerId = '0';
   static defaultAppLanguage = 'zh-Hans';

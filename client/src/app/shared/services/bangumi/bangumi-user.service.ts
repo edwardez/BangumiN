@@ -5,8 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../storage.service';
 import {catchError, map, switchMap, take} from 'rxjs/operators';
 import {BangumiUser} from '../../models/BangumiUser';
-import {AuthenticationService} from '../auth.service';
-import {BangumiSubjectService} from './bangumi-subject.service';
+import {RuntimeConstantsService} from '../runtime-constants.service';
 
 // import * as PriorityQueue from 'js-priority-queue';
 
@@ -18,9 +17,7 @@ export class BangumiUserService {
   BANGUMI_API_URL = environment.BANGUMI_API_URL;
 
   constructor(private http: HttpClient,
-              private storageService: StorageService,
-              private bangumiSubjectService: BangumiSubjectService,
-              private authService: AuthenticationService) {
+              private storageService: StorageService,) {
   }
 
   /**
@@ -42,7 +39,10 @@ export class BangumiUserService {
 
     return httpRequest.pipe(
       map(bangumiUserFromHttp => {
-        return new BangumiUser().deserialize(bangumiUserFromHttp);
+        if (bangumiUserFromHttp) {
+          return new BangumiUser().deserialize(bangumiUserFromHttp);
+        }
+        return new BangumiUser();
       })
     );
   }
@@ -64,13 +64,25 @@ export class BangumiUserService {
       switchMap(
         bangumiUserFromStorage => {
           // if user info is in localStorage and username has at least 1 string
+          // first use our api to avoid reaching bangumi API rate limit
           if (bangumiUserFromStorage && bangumiUserFromStorage.username.length >= 1) {
-            return this.getUserInfoFromHttp(bangumiUserFromStorage.username, false).pipe(
-              map(bangumiUserFromHttp => {
-                this.storageService.setBangumiUser(bangumiUserFromHttp);
-                return bangumiUserFromHttp;
-              })
-            );
+            return this.getUserInfoFromHttp(bangumiUserFromStorage.username, false)
+              .pipe(
+                switchMap(
+                  bangumiUserFromHttp => {
+                    if (bangumiUserFromHttp.id !== RuntimeConstantsService.defaultBangumiUserId) {
+                      return of(bangumiUserFromHttp);
+                    } else {
+                      // if the user cannot be found, probably it's not cached in our db yet, then use Bangumi's API
+                      return this.getUserInfoFromHttp(bangumiUserFromStorage.username, true);
+                    }
+                  }
+                ),
+                map(bangumiUserFromHttp => {
+                  this.storageService.setBangumiUser(bangumiUserFromHttp);
+                  return bangumiUserFromHttp;
+                })
+              );
           }
 
           // else return an empty Observable

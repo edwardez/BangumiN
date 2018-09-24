@@ -82,11 +82,11 @@ export class NavSearchBarComponent implements OnInit {
   }
 
   navigateToSpecifiedSubjectId(id: string) {
-    this.router.navigate(['/subject', id]);
+    this.router.navigate(['/subject', (id || '1').replace(/ /g, '')]);
   }
 
   navigateToSpecifiedUserId(id: string) {
-    this.router.navigate(['/user', id, 'statistics']);
+    this.router.navigate(['/user', (id || '1').replace(/ /g, ''), 'statistics']);
   }
 
   /**
@@ -111,9 +111,17 @@ export class NavSearchBarComponent implements OnInit {
    * @param searchValue User-entered search value
    */
   shouldShowCurrentAutoCompleteOption(option: SearchBarAutoCompleteDefaultOptions, searchValue: string) {
+    const trimmedSearchValue = (searchValue || '').replace(/ /g, '');
     if (option.searchIn === SearchIn.subject && option.searchBy === SearchBy.id) {
-      // subject id must be pure digits
-      return RegExp(/^\d+$/).test(searchValue);
+      // subject id must be pure digits, cannot be 0
+      // for testing 0, use string equal since it's faster https://jsperf.com/regex-or-vs-string-equals/8
+      return RegExp(/^\d+$|^[^0]$/).test(trimmedSearchValue) && trimmedSearchValue !== '0';
+    }
+
+    if (option.searchIn === SearchIn.user && option.searchBy === SearchBy.id) {
+      // user id must be pure alphanum
+      // for testing 0, use string equal since it's faster https://jsperf.com/regex-or-vs-string-equals/8
+      return RegExp(/^[a-zA-Z0-9]*$/).test(trimmedSearchValue) && trimmedSearchValue !== '0';
     }
 
     return true;

@@ -1,0 +1,145 @@
+{
+  "index": "/index.html",
+  "appData": "0.1.0",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assetsInstallPrefetchUpdatePrefetch",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/i18n/**",
+          "/assets/styles/**"
+        ]
+      }
+    },
+    {
+      "name": "assetsInstallLazyUpdateLazy",
+      "installMode": "lazy",
+      "updateMode": "lazy",
+      "resources": {
+        "files": [
+          "/assets/analytics/**",
+          "/assets/icons/**",
+          "/assets/images/**",
+          "/assets/materialIcons/**"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "proxyBangumiRegularAPI",
+      "urls": [
+        "https://api.bangumin.tv/proxy/api/bangumi/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "7d",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "proxyBangumiOAuthAPI",
+      "urls": [
+        "https://api.bangumin.tv/proxy/oauth/bangumi/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 1,
+        "maxAge": "1s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "authAPI",
+      "urls": [
+        "https://api.bangumin.tv/auth/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 1,
+        "maxAge": "1s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "oauthAPI",
+      "urls": [
+        "https://api.bangumin.tv/oauth/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 1,
+        "maxAge": "1s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "spoilerAPI",
+      "urls": [
+        "https://api.bangumin.tv/api/user/*/spoilers",
+        "https://api.bangumin.tv/api/user/*/spoiler/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "7d",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "settingAPI",
+      "urls": [
+        "https://api.bangumin.tv/api/user/*/setting/**"
+      ],
+      "cacheConfig": {
+        "timeout": "10s",
+        "maxSize": 10,
+        "maxAge": "7d",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "statsAPI",
+      "urls": [
+        "https://api.bangumin.tv/api/stats/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "15d",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "searchAPI",
+      "urls": [
+        "https://api.bangumin.tv/api/search/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "7d",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "scrapedBangumiAPI",
+      "urls": [
+        "https://api.bangumin.tv/api/bgm/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "7d",
+        "strategy": "performance"
+      }
+    }
+  ]
+}

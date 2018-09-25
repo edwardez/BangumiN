@@ -13,7 +13,7 @@ const sequelize = new Sequelize({
   username: config.rds.userName,
   password: config.rds.password,
   port: config.rds.port,
-  logging: config.env === 'dev' ? logger.info : false,
+  logging: logger.info,
   dialectOptions: {
     ssl: true,
   },

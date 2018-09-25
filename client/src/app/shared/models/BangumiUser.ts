@@ -21,11 +21,20 @@ export class BangumiUser implements Serializable<BangumiUser> {
   userGroup: BangumiUserRole;
 
 
-  // user id coild be from id or user_id, if neither of them have a value, then use a empty one
+  constructor() {
+    this.user_id = RuntimeConstantsService.defaultBangumiUserId;
+    this.id = RuntimeConstantsService.defaultBangumiUserId;
+    this.avatar = new Avatar();
+    this.nickname = '';
+    this.username = '';
+    this.userGroup = BangumiUserRole.NormalUser;
+  }
+
+  // user id could be from id or user_id, if neither of them have a value, then use a empty one
   static getUserId(input) {
-    if (input.id === undefined) {
-      if (input.user_id === undefined) {
-        return undefined;
+    if (!input.id) {
+      if (!input.user_id) {
+        return RuntimeConstantsService.defaultBangumiUserId;
       }
 
       return input.user_id;
@@ -33,14 +42,6 @@ export class BangumiUser implements Serializable<BangumiUser> {
 
     return input.id;
 
-  }
-
-  constructor() {
-    this.user_id = 0;
-    this.avatar = new Avatar();
-    this.nickname = '';
-    this.username = '';
-    this.userGroup = BangumiUserRole.NormalUser;
   }
 
   deserialize(input) {

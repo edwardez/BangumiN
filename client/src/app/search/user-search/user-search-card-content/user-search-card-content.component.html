@@ -1,7 +1,7 @@
 <mat-divider></mat-divider>
 <div class="col-8 mt-1 mb-1 d-flex align-items-center">
   <a [routerLink]="['/user', user.username, 'statistics']">
-    <img class="search-result-avatar " [src]="user.avatar.medium">
+    <img class="medium-rounded-avatar" [src]="user.avatar.medium">
   </a>
   <div class="ml-1 ml-sm-2 long-text-truncate">
     {{user.nickname}}

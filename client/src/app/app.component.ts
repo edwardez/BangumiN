@@ -7,6 +7,8 @@ import {BanguminUserService} from './shared/services/bangumin/bangumin-user.serv
 import {GoogleAnalyticsService} from './shared/services/analytics/google-analytics.service';
 import {BanguminCsrfService} from './shared/services/bangumin/bangumin-csrf.service';
 import {CookieService} from 'ngx-cookie';
+import {environment} from '../environments/environment';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +16,6 @@ import {CookieService} from 'ngx-cookie';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
-  // @HostBinding('class.') lightTheme = true;
 
   title = 'BangumiN';
 
@@ -29,7 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private banguminCsrfService: BanguminCsrfService,
     private cookieService: CookieService,
     private layoutService: LayoutService,
-    private googleAnalyticsService: GoogleAnalyticsService) {
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -46,6 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setAppInitialSettings(): void {
+    const availableLanguages = Object.keys(environment.availableLanguages);
+    this.translateService.addLangs(availableLanguages);
     this.banguminUserService.updateUserSettingsEfficiently();
   }
 

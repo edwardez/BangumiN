@@ -8,7 +8,7 @@
       class="mat-headline col-12 col-md-3 row no-gutters  justify-content-center align-items-center align-items-md-start order-1 mt-md-3 md-2">
       <div [translate]="'posts.bangumin.spoilerBox.headline'" [translateParams]="{name: bangumiUser.nickname}">
       </div>
-      <button mat-icon-button (click)="openSpoilerCreationGuideDialog()" class="d-md-none">
+      <button mat-icon-button (click)="openSpoilerCreationGuideDialog()" class="d-md-none primary-color">
         <mat-icon>help_outline</mat-icon>
       </button>
     </div>
@@ -37,7 +37,7 @@
     <div class="col-12 col-md-3 row no-gutters justify-content-center order-2 order-md-3 mt-2 mt-md-3 md-2 ">
       <div>
         <button mat-button (click)="openSpoilerCreationGuideDialog()" class="d-none d-md-block">
-          <mat-icon>help_outline</mat-icon>
+          <mat-icon class="primary-color">help_outline</mat-icon>
           {{'posts.bangumin.spoilerBox.guideDialogTriggerButton.name' | translate}}
         </button>
       </div>

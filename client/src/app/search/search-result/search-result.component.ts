@@ -11,7 +11,6 @@ import {PageState} from '../../shared/enums/page-state.enum';
 export class SearchResultComponent implements OnInit {
   selectedSearchType: SearchIn;
   queryKeyword: string;
-  MAX_KEYWORD_LENGTH = 50;
 
   constructor(private activatedRoute: ActivatedRoute) {
   }
@@ -33,10 +32,6 @@ export class SearchResultComponent implements OnInit {
       .queryParams
       .subscribe((searchConfig: { query: string, type: string }) => {
         this.queryKeyword = searchConfig.query;
-        if (this.queryKeyword) {
-          // slice keyword that's too long
-          this.queryKeyword = this.queryKeyword.slice(0, this.MAX_KEYWORD_LENGTH);
-        }
         if (searchConfig.type === SearchIn.subject.toString()) {
           this.selectedSearchType = SearchIn.subject;
         } else if (searchConfig.type === SearchIn.user.toString()) {

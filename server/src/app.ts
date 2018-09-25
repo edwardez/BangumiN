@@ -24,16 +24,15 @@ import {generalErrorHandler, specificErrorHandler} from './services/errorHandler
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
 const app = express();
-
 // if environment is not development, trust the first proxy
-if (config.env !== 'development') {
+if (config.env !== 'dev') {
   app.set('trust proxy', 1); // trust first proxy
 }
 
 // set rate limit
 const limiter = new RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // 300 requests
+  max: config.env === 'dev' ? 10000 : 300, // 300 requests
 });
 
 //  apply to all requests
@@ -55,8 +54,8 @@ const dynamoDBStoreOptios = {
     accessKeyId: config.dynamodb.accessKeyID,
     secretAccessKey: config.dynamodb.secretAccessKey,
     region: config.dynamodb.region,
-    readCapacityUnits: config.env === 'prod' ? 5 : 1,
-    writeCapacityUnits: config.env === 'prod' ? 5 : 1,
+    readCapacityUnits: config.env === 'prod' ? 30 : 1,
+    writeCapacityUnits: config.env === 'prod' ? 30 : 1,
   },
 };
 
@@ -80,7 +79,7 @@ app.use(expressSession({
     domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') + config.cookieDomain,
     httpOnly: true,
     maxAge: config.cookieExpireIn,
-    secure: config.cookieSecure,
+    secure: 'auto',
   },
 }));
 

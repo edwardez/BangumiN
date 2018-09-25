@@ -105,7 +105,7 @@ router.get(
 
       return req.login(user, (loginError: any) => {
         if (loginError) {
-          logger.error('loginError occurred during authentication of user %o: %o', user, loginError);
+          logger.error('loginError occurred during authentication of user %o: error %o, info %o', user, loginError, info);
           return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
         }
         return next();
@@ -114,10 +114,6 @@ router.get(
   },
 
   (req: any, res: any) => {
-    res.cookie('userInfo', JSON.stringify(req.user), {
-      domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
-        config.cookieDomain,
-    });
     res.cookie('userInfo', JSON.stringify(req.user), {
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
         config.cookieDomain,

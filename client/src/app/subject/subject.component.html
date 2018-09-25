@@ -1,7 +1,7 @@
-<div class="row justify-content-center align-items-start" *ngIf="subject">
+<div class="row no-gutters justify-content-center align-items-start" *ngIf="subject">
 
 
-  <div class="col-11 col-sm-10 col-md-9">
+  <div class="col-12 col-sm-10">
     <div class="d-flex justify-content-start align-items-center">
       <h2>{{subject.name}}</h2>
       <a
@@ -45,9 +45,4 @@
 
   </div>
 
-</div>
-
-
-<div *ngIf="!subject">
-  <app-loading-spinner></app-loading-spinner>
 </div>

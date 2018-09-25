@@ -131,8 +131,12 @@
       "cancel": "取消认证"
     },
     "loginSuccess": "登录成功",
-    "loginFailure": "登录失败，请稍后重试",
-    "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭"
+    "alreadyLoggedIn": "已登陆用户，转向主界面",
+    "loginFailure": "登录失败，请尝试重试",
+    "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭...",
+    "activationSuccessful": "激活成功",
+    "windowStillOpenQuestion": "窗口没有关闭？",
+    "promptUserToCLoseWindow": "点击这里或应用内浏览器关闭按钮"
   },
   "welcome": {
     "name": "欢迎",
@@ -316,7 +320,7 @@
         },
         "guideDialog": {
           "title": "如何使用剧透箱？",
-          "content": "<p class='d-inline-flex flex-wrap align-items-center'><span>1. 点击右下角的 </span><i class='material-icons'>add</i><span> 打开发布对话框。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>2. (必须) 输入剧透，使用 </span><i class='material-icons ml-1 mr-1'>visibility</i><span> 选择并高亮你想要隐藏的内容。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'>3. (可选) 标记和剧透相关的作品</p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>4. 发布成功后对话框会自动关闭，点击剧透卡片上的  </span><i class='material-icons'>more_horiz</i><span> 来分享剧透。</span></p>",
+          "content": "<p class='d-inline-flex flex-wrap align-items-center'><span>1. 点击右下角的 </span><i class='material-icons'>add</i><span> 打开发布对话框。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>2. (必须) 输入剧透，使用 </span><i class='material-icons ml-1 mr-1'>visibility_off</i><span> 选择并高亮你想要隐藏的内容。</span></p><br/><p class='d-inline-flex flex-wrap align-items-center'>3. (可选) 标记和剧透相关的作品</p><br/><p class='d-inline-flex flex-wrap align-items-center'><span>4. 发布成功后对话框会自动关闭，点击剧透卡片上的  </span><i class='material-icons'>more_horiz</i><span> 来分享剧透。</span></p>",
           "action": {
             "ok": "OK"
           }

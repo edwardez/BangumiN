@@ -6,6 +6,7 @@ import {filter, first} from 'rxjs/operators';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {environment} from '../../../environments/environment';
 import {BuildVersion} from '../../../environments/build-version';
+import {BangumiUser} from '../../shared/models/BangumiUser';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -14,7 +15,8 @@ import {BuildVersion} from '../../../environments/build-version';
 })
 export class SideNavContentComponent implements OnInit {
 
-  userID: string;
+  bangumiUser: BangumiUser;
+  userId: number;
 
   @Input()
   currentDeviceWidth: DeviceWidth;
@@ -23,18 +25,27 @@ export class SideNavContentComponent implements OnInit {
 
   constructor(private sidenavService: SidenavService,
               private authenticationService: AuthenticationService) {
+
+
+  }
+
+
+  ngOnInit() {
+
+    this.sidenavService
+      .setSidenav(this.sidenav);
     this.authenticationService.userSubject.pipe(
       filter(res => res !== null),
       first()
     ).subscribe(res => {
-      this.userID = res.user_id.toString();
+      // TODO: fix digest cycle error
+      Promise.resolve(null).then(() => {
+        this.bangumiUser = res;
+        this.userId = res.id;
+      });
     });
 
-  }
 
-  ngOnInit() {
-    this.sidenavService
-      .setSidenav(this.sidenav);
   }
 
   get Environment() {
@@ -53,6 +64,11 @@ export class SideNavContentComponent implements OnInit {
       return '';
     }
 
+  }
+
+  logout() {
+    this.sidenav.close();
+    this.authenticationService.logout();
   }
 
 }

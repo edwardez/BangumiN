@@ -1,4 +1,19 @@
 <div class="row justify-content-center align-items-center bangumin-height-container">
-  <mat-spinner></mat-spinner>
-  <p>{{'login.waitForActivationPrompt' | translate}}</p>
+  <ng-container *ngIf="activationStage === ActivationStage.InProgress">
+    <mat-spinner></mat-spinner>
+    <p>{{'login.waitForActivationPrompt' | translate}}</p>
+  </ng-container>
+  <ng-container *ngIf="activationStage === ActivationStage.Failure">
+    <p>{{'login.loginFailure' | translate}}</p>
+  </ng-container>
+  <ng-container *ngIf="activationStage === ActivationStage.Success">
+    <div class="d-flex flex-column align-items-center">
+      <p class="mb-3">{{'login.activationSuccessful' | translate}}</p>
+      <p class="mb-1">{{'login.windowStillOpenQuestion' | translate}}</p>
+      <button mat-raised-button (click)="closeWindow()" color="primary">{{'login.promptUserToCLoseWindow' |
+        translate}}
+      </button>
+    </div>
+  </ng-container>
+
 </div>

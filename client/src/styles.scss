@@ -71,6 +71,10 @@ app-spoiler-single-content .mat-card-header-text {
   text-decoration: none;
 }
 
+.user-select-none {
+  user-select: none;
+}
+
 .bangumin-height-container {
   height: 100vh;
 }
@@ -101,4 +105,10 @@ app-spoiler-single-content .mat-card-header-text {
   text-overflow: ellipsis;
 }
 
+.medium-rounded-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 

@@ -232,7 +232,6 @@ export class AuthenticationService {
   public verifyAndSetBangumiActivationInfo(userInfo: UserInfo): Observable<any> {
     const collectionRequestBody = new URLSearchParams();
     collectionRequestBody.set('access_token', userInfo.bangumiActivationInfo.access_token);
-
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http.post(

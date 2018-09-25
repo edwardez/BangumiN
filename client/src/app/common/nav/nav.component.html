@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="d-flex fixed-header mat-elevation-z6 helper-toolbar">
+<mat-toolbar color="primary" class="d-flex pl-1 pl-sm-2 fixed-header mat-elevation-z6 helper-toolbar">
   <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated"
           tabindex="0">
     <mat-icon>menu</mat-icon>
@@ -7,7 +7,7 @@
     <a mat-button class="pr-1 pl-1" [routerLink]="['/welcome']">
       BangumiN
     </a>
-    <span class="mat-caption align-self-end">beta</span>
+    <span class="mat-caption align-self-end user-select-none">beta</span>
   </div>
 
 
@@ -31,9 +31,9 @@
 
   </app-nav-search-bar>
 
-  <div class="helper-mat-toolbar-item helper-cursor-pointer" tabindex="0">
+  <div class="helper-mat-toolbar-item helper-cursor-pointer d-none d-sm-block" tabindex="0">
     <a [matMenuTriggerFor]="menu">
-      <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.large}}>
+      <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.medium}}>
     </a>
   </div>
 

@@ -19,7 +19,8 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/robots.txt"
+              "src/robots.txt",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss"
@@ -99,7 +100,8 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/robots.txt"
+              "src/robots.txt",
+              "src/manifest.json"
             ]
           }
         },

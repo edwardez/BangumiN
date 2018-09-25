@@ -46,7 +46,9 @@ export class BangumiCollectionService {
    * only collection that's being watched will be returned per api
    */
   public getSubjectCollectionStatus(subjectId: number): Observable<CollectionResponse> {
-    return this.http.get(`${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}`)
+    // collection status should never be cached, add a timestamp to ensure this
+    return this.http.get(
+      `${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}&timestamp=${+new Date()}`)
       .pipe(
         map(res => {
             if (res['code'] && res['code'] !== 200) {

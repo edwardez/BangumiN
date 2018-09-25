@@ -14,7 +14,8 @@ export class RuntimeConstantsService {
     'bangumi-pink-blue': '#f09199',
   };
   static readonly maxCacheAge = 200000;  // in milliseconds
-  static readonly nonCacheableUrls: Array<string | RegExp> = [/http.*api\/user\/\d+\/setting/, /oauth/, /auth/, /assets/];
+  static readonly nonCacheableUrls: Array<string | RegExp> = [/http.*api\/user\/\d+\/setting/, /oauth/, /auth/, /assets/,
+    /http.*proxy\/api\/bangumi\/collection/];
   static readonly validUserGroupValues: number[] = Object.keys(BangumiUserRole).map(k => BangumiUserRole[k])
     .filter(v => !isNaN(Number(v)));
 

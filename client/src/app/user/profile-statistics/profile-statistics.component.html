@@ -14,14 +14,14 @@
       <div class="responsive-container-chart-height-low">
         <ngx-charts-advanced-pie-chart
           [scheme]="colorScheme"
-          [results]="countByTypeData"
+          [results]="countByTypeDataTranslated"
           [animations]=true
           [gradient]="false"
           [tooltipDisabled]=false
           [label]="'statistics.summaryChart.label' | translate"
         >
           <ng-template #tooltipTemplate let-model="model">
-            <span [translate]="'common.category.' + model.name" class="tooltip-label"></span>
+            <span [translate]="model.name" class="tooltip-label"></span>
             <span class="tooltip-val">{{model.value}}</span>
           </ng-template>
         </ngx-charts-advanced-pie-chart>

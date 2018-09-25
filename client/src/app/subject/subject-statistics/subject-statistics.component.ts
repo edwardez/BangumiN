@@ -9,6 +9,7 @@ import * as day from 'dayjs';
 import {filter, switchMap} from 'rxjs/operators';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {TranslateService} from '@ngx-translate/core';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-subject-statistics',
@@ -65,36 +66,35 @@ export class SubjectStatisticsComponent implements OnInit {
       .pipe(
         filter(params => params['subjectId']),
         switchMap(params => {
-            return this.bangumiSubjectService.getSubject(params['subjectId'], 'small');
-          },
-        )
+          const subjectId = params['subjectId'];
+          return forkJoin([this.bangumiSubjectService.getSubject(subjectId, 'small'), this.bangumiStatsService.getSubjectStats(subjectId),
+            this.translateService.get('common.statusFullname')]);
+        }),
       )
-      .subscribe(params => {
-        this.targetSubject = params;
-        this.bangumiStatsService.getSubjectStats(this.targetSubject.id)
-          .subscribe(res => {
-            if (res) {
-              const defaultArr = res.stats;
-              // cache stats array
-              this.targetSubjectStatsArr = res.stats;
-              this.countByStateData = _.map(
-                _.countBy(defaultArr, 'collectionStatus'),
-                (val, key) => ({name: CollectionStatusId[key], value: val})
-              );
-              // initialize filter list value
-              this.collectionStatusList = _.map(
-                _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
-              );
-              // initialize filter form groups
-              this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.yearVsAccumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+      .subscribe(res => {
+        if (res) {
+          this.targetSubject = res[0];
+          const defaultArr = res[1].stats;
+          const translatedStatusFullName = res[2];
+          // cache stats array
+          this.targetSubjectStatsArr = res[1].stats;
+          this.countByStateData = _.map(
+            _.countBy(defaultArr, 'collectionStatus'),
+            (val, key) => ({name: translatedStatusFullName[CollectionStatusId[key]], value: val})
+          );
+          // initialize filter list value
+          this.collectionStatusList = _.map(
+            _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
+          );
+          // initialize filter form groups
+          this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+          this.yearVsAccumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+          this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
-              this.initDescStat();
-              this.initScoreVsCount();
-              this.initYearVsAccumulatedMean();
-            }
-          });
+          this.initDescStat();
+          this.initScoreVsCount();
+          this.initYearVsAccumulatedMean();
+        }
       });
   }
 

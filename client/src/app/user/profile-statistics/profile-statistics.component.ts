@@ -39,7 +39,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   yearVsMeanData = [];
   // triggerValue;
 
-  countByTypeData;
+  countByTypeDataTranslated;
   // mean, median, stdDev
   descStatData;
 
@@ -109,9 +109,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
             const defaultArr = res.stats;
             // cache stats array
             this.targetUserStatsArr = res.stats;
-            this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
+            this.countByTypeDataTranslated = _.map(_.countBy(defaultArr, 'subjectType'),
+              (val, key) => ({name: this.localTranslatedSubjectType[SubjectType[key]], value: val}));
+            const countByTypeDataRaw = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
             // initialize filter list value
-            this.userCurrentSubjectTypeList = _.map(this.countByTypeData, 'name');
+            this.userCurrentSubjectTypeList = _.map(countByTypeDataRaw, 'name');
             this.collectionStatusList = _.map(
               _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
             );

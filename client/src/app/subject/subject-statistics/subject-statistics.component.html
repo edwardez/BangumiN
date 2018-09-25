@@ -18,7 +18,7 @@
   </mat-card>
 
 
-  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-none d-md-block">
+  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-md-block">
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-number-card
@@ -33,7 +33,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="col-12 col-lg-5-half  mt-2 d-none d-md-block">
+  <mat-card class="col-12 col-lg-5-half  mt-2 d-md-block">
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-bar-vertical
@@ -45,30 +45,37 @@
           [yAxis]="true"
           [showXAxisLabel]="true"
           [showYAxisLabel]="true"
-          [xAxisLabel]="true"
-          [yAxisLabel]="true">
+          [xAxisLabel]="'statistics.countBarChart.score' | translate"
+          [yAxisLabel]="'statistics.countBarChart.count' | translate">
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
-            <h4>Score: {{model.name}}</h4>
-            <h4>Count: {{model.value}}</h4>
+            <h4>{{'statistics.countBarChart.score' | translate}}: {{model.name}}</h4>
+            <h4>{{'statistics.countBarChart.count' | translate}}: {{model.value}}</h4>
           </ng-template>
         </ngx-charts-bar-vertical>
       </div>
 
 
-      <form [formGroup]="scoreVsCountFilterFormGroup">
-        <mat-form-field>
+      <form class="row no-gutters justify-content-center align-items-center ml-1"
+            [formGroup]="scoreVsCountFilterFormGroup">
+        <div class="col-1">
+          <mat-icon>filter_list</mat-icon>
+        </div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"
             multiple>
-            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+            <mat-option *ngFor="let status of collectionStatusList" [value]="status">
+              {{'common.statusFullname.' + status | translate}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="col-1"></div>
       </form>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-none d-md-block">
+  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-md-block">
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-line-chart
@@ -84,13 +91,14 @@
           [showXAxisLabel]="true"
           [xAxisTickFormatting]="calendarAxisTickFormatting"
           [showYAxisLabel]="true"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
+          [xAxisLabel]="'statistics.meanScorePerYearBarChart.year' | translate"
+          [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
           [timeline]=false
           [showGridLines]="true"
           [rangeFillOpacity]="rangeFillOpacity"
           [roundDomains]=false
-          [tooltipDisabled]=false>
+          [tooltipDisabled]=false
+          class="ml-1">
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
@@ -107,14 +115,21 @@
       </div>
 
 
-      <form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
-        <mat-form-field>
+      <form class="row no-gutters justify-content-center align-items-center ml-1"
+            [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
+        <div class="col-1">
+          <mat-icon>filter_list</mat-icon>
+        </div>
+        <mat-form-field class="col">
           <mat-select
             [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
             multiple>
-            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+            <mat-option *ngFor="let status of collectionStatusList" [value]="status">
+              {{'common.statusFullname.' + status | translate}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="col-1"></div>
       </form>
     </mat-card-content>
   </mat-card>

@@ -8,6 +8,7 @@ import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
 import {filter, switchMap} from 'rxjs/operators';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-statistics',
@@ -41,11 +42,12 @@ export class SubjectStatisticsComponent implements OnInit {
   yearAccumulatedCount = {};
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private banguminUserService: BanguminUserService,
     private bangumiStatsService: BangumiStatsService,
     private bangumiSubjectService: BangumiSubjectService,
-    private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService,
   ) {
     // todo: translate legend and label
     this.xAxisLabel = 'Score';
@@ -90,7 +92,7 @@ export class SubjectStatisticsComponent implements OnInit {
 
               this.initDescStat();
               this.initScoreVsCount();
-              // this.initYearVsAccumulatedMean();
+              this.initYearVsAccumulatedMean();
             }
           });
       });
@@ -148,11 +150,16 @@ export class SubjectStatisticsComponent implements OnInit {
       median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
       stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
     }
-    this.descStatData = [
-      {name: 'Mean', value: mean.toFixed(2)},
-      {name: 'Median', value: median},
-      {name: 'Standard Deviation', value: stdDev.toFixed(2)}
-    ];
+
+    const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
+      'statistics.descriptiveChart.name.standardDeviation'];
+    this.translateService.get(numberChartNames).subscribe(res => {
+      this.descStatData = [
+        {name: res[numberChartNames[0]], value: mean.toFixed(2)},
+        {name: res[numberChartNames[1]], value: median},
+        {name: res[numberChartNames[2]], value: stdDev.toFixed(2)}
+      ];
+    });
   }
 
   private initYearVsAccumulatedMean() {

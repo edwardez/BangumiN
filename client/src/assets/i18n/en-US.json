@@ -468,6 +468,15 @@
         "max": "Max",
         "count": "Count"
       }
+    },
+    "subjectCountBarChart": {
+      "title": "Score distribution"
+    },
+    "subjectAccumulatedMeanLineChart": {
+      "title": "Accumulated Mean",
+      "accumulatedMean": "Accumulated Mean",
+      "accumulatedCOunt": "Accumulated Count",
+      "until": "until"
     }
   },
   "footer": {

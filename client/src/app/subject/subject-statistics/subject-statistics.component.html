@@ -34,6 +34,10 @@
   </mat-card>
 
   <mat-card class="col-12 col-lg-5-half  mt-2 d-md-block">
+    <mat-card-header>
+      <mat-card-title class="text-align-center">{{'statistics.subjectCountBarChart.title' | translate}}
+      </mat-card-title>
+    </mat-card-header>
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-bar-vertical
@@ -77,6 +81,10 @@
 
   <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-md-block">
     <mat-card-content>
+      <mat-card-header>
+        <mat-card-title class="text-align-center">{{'statistics.subjectAccumulatedMeanLineChart.title' | translate}}
+        </mat-card-title>
+      </mat-card-header>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
@@ -102,13 +110,16 @@
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{model.series.substring(0, 10)}} UNTIL {{model.name}}
+              {{model.series.substring(0, 10)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
+              {{model.name}}
             </h3>
             <h4>
-              Accumulated Mean: {{model.value | number: '1.1-2'}}
+              {{'statistics.subjectAccumulatedMeanLineChart.accumulatedMean' | translate}}: {{model.value | number:
+              '1.1-2'}}
             </h4>
             <h4>
-              Accumulated Count: {{getAccumulatedYearCount(model.name)}}
+              {{'statistics.subjectAccumulatedMeanLineChart.accumulatedCOunt' | translate}}:
+              {{getAccumulatedYearCount(model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>

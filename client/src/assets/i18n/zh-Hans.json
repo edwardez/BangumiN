@@ -466,6 +466,15 @@
         "max": "最大",
         "count": "总数"
       }
+    },
+    "subjectCountBarChart": {
+      "title": "评分分布"
+    },
+    "subjectAccumulatedMeanLineChart": {
+      "title": "累积平均分",
+      "accumulatedMean": "累积平均分",
+      "accumulatedCOunt": "累积打分人数",
+      "until": "截止"
     }
   },
   "footer": {

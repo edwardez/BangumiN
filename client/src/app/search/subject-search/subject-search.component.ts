@@ -144,7 +144,6 @@ export class SubjectSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('sss');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

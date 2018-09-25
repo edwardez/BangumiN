@@ -32,7 +32,7 @@ if (config.env !== 'dev') {
 // set rate limit
 const limiter = new RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // 300 requests
+  max: config.env === 'dev' ? 10000 : 300, // 300 requests
 });
 
 //  apply to all requests

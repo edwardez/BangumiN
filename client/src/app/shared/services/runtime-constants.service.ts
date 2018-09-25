@@ -29,6 +29,5 @@ export class RuntimeConstantsService {
 
 
   constructor() {
-    console.log(RuntimeConstantsService.validUserGroupValues);
   }
 }

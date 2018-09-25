@@ -6,6 +6,7 @@ import {filter, first} from 'rxjs/operators';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {environment} from '../../../environments/environment';
 import {BuildVersion} from '../../../environments/build-version';
+import {BangumiUser} from '../../shared/models/BangumiUser';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -14,7 +15,7 @@ import {BuildVersion} from '../../../environments/build-version';
 })
 export class SideNavContentComponent implements OnInit {
 
-  userID: string;
+  bangumiUser: BangumiUser;
 
   @Input()
   currentDeviceWidth: DeviceWidth;
@@ -27,7 +28,7 @@ export class SideNavContentComponent implements OnInit {
       filter(res => res !== null),
       first()
     ).subscribe(res => {
-      this.userID = res.user_id.toString();
+      this.bangumiUser = res;
     });
 
   }
@@ -53,6 +54,11 @@ export class SideNavContentComponent implements OnInit {
       return '';
     }
 
+  }
+
+  logout() {
+    this.sidenav.close();
+    this.authenticationService.logout();
   }
 
 }

@@ -1,17 +1,34 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="over" class="mat-sidenav-xs">
-    <mat-nav-list *ngIf="userID !== undefined">
-      <a mat-list-item [routerLink]="['./user', userID, 'statistics']" (click)="sidenav.close()">{{'nav.menu.myStatistics.name'
-        | translate}}</a>
-      <a mat-list-item [routerLink]="['./user', userID, 'timeline','spoilers']" (click)="sidenav.close()">{{'nav.menu.spoilerBox.name'
-        | translate}}</a>
+    <ng-container *ngIf="bangumiUser && bangumiUser.id">
+      <div class="d-flex flex-column align-items-center mt-2 ml-1">
+        <img class="medium-rounded-avatar" [src]="bangumiUser.avatar.medium">
+        <div id="name-area" class="d-flex justify-content-center">
+          <span class="long-text-truncate">{{bangumiUser.nickname}}</span>
+        </div>
+      </div>
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="./about" (click)="sidenav.close()">{{'footer.about.name' | translate}}</a>
-      <a mat-list-item routerLink="./help" (click)="sidenav.close()">{{'footer.help.name' | translate}}</a>
-    </mat-nav-list>
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="['./user', bangumiUser.id, 'statistics']" (click)="sidenav.close()">{{'nav.menu.myStatistics.name'
+          | translate}}</a>
+        <a mat-list-item [routerLink]="['./user', bangumiUser.id, 'timeline','spoilers']" (click)="sidenav.close()">{{'nav.menu.spoilerBox.name'
+          | translate}}</a>
+        <a mat-list-item routerLink="./settings" (click)="sidenav.close()">
+          <span>{{'nav.menu.settings.name' | translate}}</span>
+        </a>
+        <a mat-list-item (click)="logout()">
+          <span>{{'nav.menu.logout.name' | translate}}</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="./about" (click)="sidenav.close()">{{'footer.about.name' | translate}}</a>
+        <a mat-list-item routerLink="./help" (click)="sidenav.close()">{{'footer.help.name' | translate}}</a>
+      </mat-nav-list>
+    </ng-container>
+
   </mat-sidenav>
 
   <mat-sidenav-content class="mat-sidenav-content-lt-md mat-sidenav-content-gt-sm d-flex flex-column">
+    <app-nav [currentDeviceWidth]="currentDeviceWidth"></app-nav>
     <router-outlet></router-outlet>
     <small *ngIf="Environment.displayBuildVersion" class="build-version-footer">{{displayBuildVersion()}}</small>
     <div class="d-none d-sm-flex flex-column justify-content-end flex-grow-1">
@@ -24,7 +41,6 @@
     </div>
 
   </mat-sidenav-content>
-
 
 </mat-sidenav-container>
 

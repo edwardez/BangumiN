@@ -1,14 +1,17 @@
+@import "../../../assets/styles/styles-variables";
+
 mat-sidenav {
   position: fixed;
   top: 64px;
   bottom: 0;
   left: 0;
   padding: 0;
+  width: map-get($grid-breakpoints, 'sm')/5;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: map-get($grid-breakpoints, 'sm') - 1px) {
   .mat-sidenav-xs {
-    top: 56px;
+    top: 0;
   }
 
   .mat-sidenav-content-lt-md {
@@ -17,7 +20,7 @@ mat-sidenav {
   }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: map-get($grid-breakpoints, 'sm')) {
   .mat-sidenav-content-gt-sm {
     min-height: 100vh;
     padding-top: 80px;
@@ -32,3 +35,8 @@ mat-sidenav {
   width: 100%;
   text-align: left;
 }
+
+#name-area {
+  width: map-get($grid-breakpoints, 'sm')/5;
+}
+

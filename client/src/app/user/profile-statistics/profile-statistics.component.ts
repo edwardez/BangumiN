@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as _ from 'lodash';
 import * as day from 'dayjs';
-import {take, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
@@ -91,12 +91,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.banguminUserService.getUserSettings()
-      .pipe(
-        take(1)
-      ).subscribe(settings => {
-    });
-
     this.activatedRoute.parent.params
       .subscribe(params => {
         const targetUserId = params['userId'];
@@ -333,7 +327,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
         row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
       }
     });
-    this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
+    this.yearVsMeanData = [...this.yearVsMeanData, {name: type + '22', series: yearArr}];
   }
 
   private getYearArr(minYear, maxYear) {
@@ -355,7 +349,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
       stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
     }
-
     const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
       'statistics.descriptiveChart.name.standardDeviation'];
     this.translateService.get(numberChartNames).subscribe(res => {

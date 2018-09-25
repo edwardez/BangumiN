@@ -8,7 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {forkJoin, Subject} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {TitleService} from '../../shared/services/page/title.service';
@@ -51,6 +51,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   yearVsMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
   yearCount = {};
+  localTranslatedSubjectType;
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -95,31 +96,38 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         const targetUserId = params['userId'];
         this.getUserProfile(targetUserId);
-        this.bangumiStatsService.getUserStats(targetUserId)
-          .subscribe(res => {
-            if (res) {
-              const defaultArr = res.stats;
-              // cache stats array
-              this.targetUserStatsArr = res.stats;
-              this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
-              // initialize filter list value
-              this.userCurrentSubjectTypeList = _.map(this.countByTypeData, 'name');
-              this.collectionStatusList = _.map(
-                _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
-              );
-              // initialize filter form groups
-              this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-              this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-              this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-              this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-              this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+        forkJoin([
+          this.translateService.get('common.category'),
+          this.bangumiStatsService.getUserStats(targetUserId)
+        ]).subscribe(response => {
+          if (response[0]) {
+            this.localTranslatedSubjectType = response[0];
+          }
 
-              this.initDescStat();
-              this.initScoreVsCount();
-              this.initYearVsMean();
-            }
-          });
+          if (response[1]) {
+            const res = response[1];
+            const defaultArr = res.stats;
+            // cache stats array
+            this.targetUserStatsArr = res.stats;
+            this.countByTypeData = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
+            // initialize filter list value
+            this.userCurrentSubjectTypeList = _.map(this.countByTypeData, 'name');
+            this.collectionStatusList = _.map(
+              _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
+            );
+            // initialize filter form groups
+            this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+            this.yearVsMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.yearVsMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+            this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+
+            this.initDescStat();
+            this.initScoreVsCount();
+            this.initYearVsMean();
+          }
+        });
       });
   }
 
@@ -155,7 +163,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
         } else {
           // deselected a value
           const newArr = _.filter(this.yearVsMeanData, (row) => {
-            return row.name !== triggerValue;
+            // convert changed type into user's language for comparison
+            return row.name !== this.localTranslatedSubjectType[triggerValue];
           });
           this.yearVsMeanData = [...newArr];
         }
@@ -327,7 +336,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
         row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
       }
     });
-    this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
+    // translate subjectType into user's language
+    this.yearVsMeanData = [...this.yearVsMeanData, {name: this.localTranslatedSubjectType[type], series: yearArr}];
   }
 
   private getYearArr(minYear, maxYear) {

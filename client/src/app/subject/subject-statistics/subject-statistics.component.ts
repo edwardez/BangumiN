@@ -90,7 +90,7 @@ export class SubjectStatisticsComponent implements OnInit {
 
               this.initDescStat();
               this.initScoreVsCount();
-              // this.initYearVsAccumulatedMean();
+              this.initYearVsAccumulatedMean();
             }
           });
       });

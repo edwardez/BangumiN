@@ -327,7 +327,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
         row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
       }
     });
-    this.yearVsMeanData = [...this.yearVsMeanData, {name: type + '22', series: yearArr}];
+    this.yearVsMeanData = [...this.yearVsMeanData, {name: type, series: yearArr}];
   }
 
   private getYearArr(minYear, maxYear) {

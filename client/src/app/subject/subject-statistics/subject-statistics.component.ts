@@ -17,19 +17,10 @@ import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subje
 })
 export class SubjectStatisticsComponent implements OnInit {
   // todo: options for each chart
-  view;
-  showXAxis;
-  showYAxis;
-  gradient;
-  showLegend;
-  showGridLines;
-  showXAxisLabel;
   xAxisLabel;
-  showYAxisLabel;
   yAxisLabel;
   colorScheme;
   scoreVsCountData;
-  theme;
 
   collectionStatusList;
   countByStateData;
@@ -56,19 +47,9 @@ export class SubjectStatisticsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
-    this.view = [800, 500];
-    // options
-    this.gradient = false;
-    this.showLegend = true;
-    this.showGridLines = true;
     // todo: translate legend and label
     this.xAxisLabel = 'Score';
-    this.showXAxisLabel = true;
-    this.showXAxis = true;
-
     this.yAxisLabel = 'Count';
-    this.showYAxisLabel = true;
-    this.showYAxis = true;
 
     this.colorScheme = {
       domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']

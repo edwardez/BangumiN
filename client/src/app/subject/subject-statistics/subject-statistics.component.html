@@ -1,95 +1,125 @@
-<div
-  [class]="theme">
-  <!--<ngx-charts-bar-vertical-->
-  <!--[view]="view"-->
-  <!--[scheme]="colorScheme"-->
-  <!--[results]="scoreVsCountData"-->
-  <!--[gradient]="gradient"-->
-  <!--[showGridLines]="showGridLines"-->
-  <!--[xAxis]="showXAxis"-->
-  <!--[yAxis]="showYAxis"-->
-  <!--[legend]="showLegend"-->
-  <!--[showXAxisLabel]="showXAxisLabel"-->
-  <!--[showYAxisLabel]="showYAxisLabel"-->
-  <!--[xAxisLabel]="xAxisLabel"-->
-  <!--[yAxisLabel]="yAxisLabel">-->
-  <!--<ng-template #tooltipTemplate let-model="model">-->
-  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
-  <!--<h4>Score: {{model.name}}</h4>-->
-  <!--<h4>Count: {{model.value}}</h4>-->
-  <!--</ng-template>-->
-  <!--</ngx-charts-bar-vertical>-->
+<div *ngIf="targetSubjectStatsArr"
+     class="row flex-wrap justify-content-center no-gutters pl-0 pr-0 pl-sm-3 pr-sm-3 pl-md-4 pr-md-4 pl-lg-0 pr-lg-0">
 
-  <!--<ngx-charts-line-chart-->
-  <!--[view]="view"-->
-  <!--[scheme]="colorScheme"-->
-  <!--[schemeType]="schemeType"-->
-  <!--[results]="yearVsAccumulatedMeanData"-->
-  <!--[animations]=true-->
-  <!--[legend]="showLegend"-->
-  <!--[gradient]="gradient"-->
-  <!--[autoScale]=true-->
-  <!--[xAxis]="showXAxis"-->
-  <!--[yAxis]="showYAxis"-->
-  <!--[showXAxisLabel]="showXAxisLabel"-->
-  <!--[xAxisTickFormatting]="calendarAxisTickFormatting"-->
-  <!--[showYAxisLabel]="showYAxisLabel"-->
-  <!--[xAxisLabel]="xAxisLabel"-->
-  <!--[yAxisLabel]="yAxisLabel"-->
-  <!--[timeline]=false-->
-  <!--[showGridLines]="showGridLines"-->
-  <!--[rangeFillOpacity]="rangeFillOpacity"-->
-  <!--[roundDomains]=false-->
-  <!--[tooltipDisabled]=false>-->
-  <!--<ng-template #tooltipTemplate let-model="model">-->
-  <!--&lt;!&ndash; todo: left align &ndash;&gt;-->
-  <!--<h3>-->
-  <!--{{model.series.substring(0, 10)}} UNTIL {{model.name}}-->
-  <!--</h3>-->
-  <!--<h4>-->
-  <!--Accumulated Mean: {{model.value | number: '1.1-2'}}-->
-  <!--</h4>-->
-  <!--<h4>-->
-  <!--Accumulated Count: {{getAccumulatedYearCount(model.name)}}-->
-  <!--</h4>-->
-  <!--</ng-template>-->
-  <!--</ngx-charts-line-chart>-->
+  <mat-card class="col-12 col-lg-5-half  mt-2 d-none d-md-block">
+    <mat-card-content>
+      <div class="responsive-container-chart-height-low">
+        <ngx-charts-advanced-pie-chart
+          [scheme]="colorScheme"
+          [results]="countByStateData"
+          [animations]=true
+          [gradient]="false"
+          [tooltipDisabled]=false
+          [tooltipText]="pieTooltipText">
+        </ngx-charts-advanced-pie-chart>
+      </div>
 
-  <ngx-charts-number-card
-    [scheme]="colorScheme"
-    cardColor="#232837"
-    emptyColor="#1e222e"
-    [results]="descStatData"
-    [animations]=true>
-  </ngx-charts-number-card>
+    </mat-card-content>
+  </mat-card>
 
-  <!--<ngx-charts-advanced-pie-chart-->
-  <!--[view]="view"-->
-  <!--[scheme]="colorScheme"-->
-  <!--[results]="countByStateData"-->
-  <!--[animations]=true-->
-  <!--[gradient]="gradient"-->
-  <!--[tooltipDisabled]=false-->
-  <!--[tooltipText]="pieTooltipText">-->
-  <!--</ngx-charts-advanced-pie-chart>-->
+
+  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-none d-md-block">
+    <mat-card-content>
+      <div class="responsive-container-chart-height-low">
+        <ngx-charts-number-card
+          [scheme]="colorScheme"
+          cardColor="#232837"
+          emptyColor="#1e222e"
+          [results]="descStatData"
+          [animations]=true>
+        </ngx-charts-number-card>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="col-12 col-lg-5-half  mt-2 d-none d-md-block">
+    <mat-card-content>
+      <div class="responsive-container-chart-height-low">
+        <ngx-charts-bar-vertical
+          [scheme]="colorScheme"
+          [results]="scoreVsCountData"
+          [gradient]="false"
+          [showGridLines]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="true"
+          [yAxisLabel]="true">
+          <ng-template #tooltipTemplate let-model="model">
+            <!-- todo: left align -->
+            <h4>Score: {{model.name}}</h4>
+            <h4>Count: {{model.value}}</h4>
+          </ng-template>
+        </ngx-charts-bar-vertical>
+      </div>
+
+
+      <form [formGroup]="scoreVsCountFilterFormGroup">
+        <mat-form-field>
+          <mat-select
+            [formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"
+            multiple>
+            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="col-12 col-lg-5-half ml-lg-2 mt-2 d-none d-md-block">
+    <mat-card-content>
+      <div class="responsive-container-chart-height-low">
+        <ngx-charts-line-chart
+          [scheme]="colorScheme"
+          [schemeType]="schemeType"
+          [results]="yearVsAccumulatedMeanData"
+          [animations]=true
+          [legend]="true"
+          [gradient]="false"
+          [autoScale]=true
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
+          [xAxisTickFormatting]="calendarAxisTickFormatting"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [timeline]=false
+          [showGridLines]="true"
+          [rangeFillOpacity]="rangeFillOpacity"
+          [roundDomains]=false
+          [tooltipDisabled]=false>
+          <ng-template #tooltipTemplate let-model="model">
+            <!-- todo: left align -->
+            <h3>
+              {{model.series.substring(0, 10)}} UNTIL {{model.name}}
+            </h3>
+            <h4>
+              Accumulated Mean: {{model.value | number: '1.1-2'}}
+            </h4>
+            <h4>
+              Accumulated Count: {{getAccumulatedYearCount(model.name)}}
+            </h4>
+          </ng-template>
+        </ngx-charts-line-chart>
+      </div>
+
+
+      <form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
+        <mat-form-field>
+          <mat-select
+            [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
+            multiple>
+            <mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
 
-<!--<form [formGroup]="scoreVsCountFilterFormGroup">-->
-<!--<mat-form-field>-->
-<!--<mat-select-->
-<!--[formControl]="scoreVsCountFilterFormGroup.get('stateSelect')"-->
-<!--multiple>-->
-<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
-<!--</mat-select>-->
-<!--</mat-form-field>-->
-<!--</form>-->
-
-<!--<form [formGroup]="yearVsAccumulatedMeanFilterFormGroup">-->
-<!--<mat-form-field>-->
-<!--<mat-select-->
-<!--[formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"-->
-<!--multiple>-->
-<!--<mat-option *ngFor="let status of collectionStatusList" [value]="status">{{status}}</mat-option>-->
-<!--</mat-select>-->
-<!--</mat-form-field>-->
-<!--</form>-->
+<div *ngIf="!targetSubjectStatsArr">
+  <app-loading-spinner></app-loading-spinner>
+</div>

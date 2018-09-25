@@ -16,6 +16,7 @@ import {BangumiUser} from '../../shared/models/BangumiUser';
 export class SideNavContentComponent implements OnInit {
 
   bangumiUser: BangumiUser;
+  userId: number;
 
   @Input()
   currentDeviceWidth: DeviceWidth;
@@ -24,18 +25,27 @@ export class SideNavContentComponent implements OnInit {
 
   constructor(private sidenavService: SidenavService,
               private authenticationService: AuthenticationService) {
+
+
+  }
+
+
+  ngOnInit() {
+
+    this.sidenavService
+      .setSidenav(this.sidenav);
     this.authenticationService.userSubject.pipe(
       filter(res => res !== null),
       first()
     ).subscribe(res => {
-      this.bangumiUser = res;
+      // TODO: fix digest cycle error
+      Promise.resolve(null).then(() => {
+        this.bangumiUser = res;
+        this.userId = res.id;
+      });
     });
 
-  }
 
-  ngOnInit() {
-    this.sidenavService
-      .setSidenav(this.sidenav);
   }
 
   get Environment() {

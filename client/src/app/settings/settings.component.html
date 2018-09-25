@@ -3,7 +3,7 @@
 
     <div class="row ml-0 mr-0 justify-content-center align-content-start bangumin-height-container">
 
-      <mat-card class="card col-11 col-sm-7 d-flex flex-column justify-content-center align-content-center"
+      <mat-card class="card col-11 col-sm-9 col-md-7 d-flex flex-column justify-content-center align-content-center"
       >
         <h3 class="text-align-center">{{'settings.category.language.name' | translate}}</h3>
         <mat-card-content class="align-self-start">
@@ -46,14 +46,15 @@
       </mat-card>
 
 
-      <mat-card class="card col-11 col-sm-7 d-flex flex-column justify-content-center align-content-center mt-3">
+      <mat-card
+        class="card col-11 col-sm-9 col-md-7 d-flex flex-column justify-content-center align-content-center mt-3">
         <h3 class="text-align-center">{{'settings.category.appearance.name' | translate}}</h3>
         <mat-card-content class="align-self-start">
           <h4>{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
 
 
           <div class="mt-3">
-            <mat-radio-group formControlName="appTheme">
+            <mat-radio-group class="d-flex flex-column flex-md-row" formControlName="appTheme">
               <ng-container *ngFor="let appTheme of availableAppThemes">
                 <mat-radio-button
                   class="mr-3"
@@ -81,7 +82,7 @@
                 class="mr-2"
 
               >
-                {{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}
+                <span class="long-text-wrap">{{'settings.category.appearance.colorTheme.showA11YViolationTheme.name' | translate}}</span>
               </mat-slide-toggle>
               <mat-icon
                 matTooltip="{{'settings.category.appearance.colorTheme.showA11YViolationTheme.tooltip.explanation' | translate}}"

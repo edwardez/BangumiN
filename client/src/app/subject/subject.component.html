@@ -3,7 +3,10 @@
 
   <div class="col-12 col-sm-10">
     <div class="d-flex justify-content-start align-items-center">
-      <h2>{{subject.name}}</h2>
+      <h2>{{subject.subjectName.preferred}}</h2>
+      <div class="mat-caption foreground-color-secondary-text">
+        {{subject.subjectName.secondary}}
+      </div>
       <a
         *ngIf="subject.url" href={{subject.url}} target="_blank"
         matTooltip="{{'subject.tabs.overview.openInBangumi' | translate}}"
@@ -11,6 +14,7 @@
         <mat-icon class="icon-center">open_in_new</mat-icon>
       </a>
     </div>
+
 
     <div>
       <nav mat-tab-nav-bar>

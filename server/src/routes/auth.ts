@@ -10,7 +10,6 @@ router.get('/csrf/token', (req: any, res: any, next: any) => {
 
 router.post('/logout', (req: any, res: any, next: any) => {
   req.logout();
-  console.log(res.headers);
   res.redirect(`${config.frontEndUrl}/login`);
 });
 

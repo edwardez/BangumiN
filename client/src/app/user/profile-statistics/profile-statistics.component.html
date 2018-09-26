@@ -172,7 +172,7 @@
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{'common.category.' + model.series | translate}}{{'statistics.meanScorePerYearBarChart.tooltip.in' |
+              {{model.series}}{{'statistics.meanScorePerYearBarChart.tooltip.in' |
               translate}} {{model.name}} {{'statistics.meanScorePerYearBarChart.tooltip.wholeYear' | translate}}
             </h3>
             <h4>

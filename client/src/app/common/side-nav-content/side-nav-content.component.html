@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav mode="over" class="mat-sidenav-xs">
     <ng-container>
       <div class="d-flex flex-column align-items-center mt-2 ml-1">
-        <img class="medium-rounded-avatar" [src]="bangumiUser?.avatar?.medium">
+        <img *ngIf="bangumiUser" class="medium-rounded-avatar" [src]="bangumiUser?.avatar?.medium">
         <div id="name-area" class="d-flex justify-content-center">
           <span class="long-text-truncate">{{bangumiUser?.nickname}}</span>
         </div>

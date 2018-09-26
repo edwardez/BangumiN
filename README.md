@@ -37,11 +37,11 @@ If you find any bugs, security flaws or any other exceptions, feel free to repor
 | Basic functionality: Search | Done | Needs a completely rewrite |
 | Basic functionality: Subject Info | Done | Needs further css tweak |
 | Spoiler Box | Done |  |
-| User data visualization | 2018 Q3 | In progress |
-| Subject data visualization | 2018 Q3 | Not started |
+| User data visualization | Done | Done |
+| Subject data visualization | Done | Done |
 | Pipeline | Done | Extract data from Bangumi and store in our database. Subject pipeline: through API;User pipeline: through API;User record pipeline: through web crawler |
 | Multiple Themes | Done | Available: Blue, Bangumi Pink, Night |
-| PWA improvement(server-side rendering, cache, lazy loading, etc.) | 2018 Q3 | Needs further improvement  |
+| PWA improvement(server-side rendering, cache, lazy loading, etc.) | Done | Needs further improvement  |
 | Accessibility | 2018 Q3-Q4 | Not started |
 | Test | 2018 Q4 | Time is not enough and functionalities change very fast, wait until website stabilizes |
 | Continuous integration | 2018 Q3-Q4 | Basic implementation before website is in prod |

@@ -133,20 +133,20 @@ export class SubjectStatisticsComponent implements OnInit {
       });
   }
 
-  private refreshDescStat(userStat: any[]) {
+  private refreshDescStat(subjectStat: any[]) {
     // filter null rate
-    userStat = userStat.filter(stat => stat.rate);
-    const len = userStat.length;
+    subjectStat = subjectStat.filter(stat => stat.rate);
+    const len = subjectStat.length;
     let mean, median, stdDev;
     if (len === 0) {
       mean = 0;
       median = 0;
       stdDev = 0;
     } else {
-      mean = _.meanBy(userStat, 'rate');
-      const middle = (len + 1) / 2, sorted = userStat.sort();
+      mean = _.meanBy(subjectStat, 'rate');
+      const middle = (len + 1) / 2, sorted = _.sortBy(subjectStat, 'rate');
       median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
-      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
+      stdDev = Math.sqrt(_.sum(_.map(subjectStat, (i) => Math.pow((i.rate - mean), 2))) / len);
     }
     this.descStatData = [
       {name: 'Mean', value: mean.toFixed(2)},

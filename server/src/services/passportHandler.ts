@@ -3,7 +3,6 @@ import {Strategy as OAuth2Strategy} from 'passport-oauth2';
 import config from '../config/components/passport';
 import request from 'request';
 import * as dynamooseUserModel from '../models/nosql/user';
-import {logger} from '../utils/logger';
 
 // oauth strategy for bangumi
 const bangumiOauth = new OAuth2Strategy(
@@ -61,8 +60,6 @@ bangumiOauth.userProfile = function userProfile(accessToken: string, done: any) 
 passport.use('bangumi-oauth', bangumiOauth);
 
 passport.serializeUser((user: any, done) => {
-
-  logger.info('%o', user);
   done(null, {id: user['bangumiActivationInfo']['user_id'].toString()});
 });
 

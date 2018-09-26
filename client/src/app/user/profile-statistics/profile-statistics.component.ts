@@ -357,7 +357,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       stdDev = 0;
     } else {
       mean = _.meanBy(userStat, 'rate');
-      const middle = (len + 1) / 2, sorted = userStat.sort();
+      const middle = (len + 1) / 2, sorted = _.sortBy(userStat, 'rate');
       median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
       stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
     }

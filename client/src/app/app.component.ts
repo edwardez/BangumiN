@@ -1,11 +1,14 @@
-import {Component, HostBinding, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs/index';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
+import {Subject} from 'rxjs';
 import {DeviceWidth} from './shared/enums/device-width.enum';
 import {takeUntil} from 'rxjs/operators';
 import {LayoutService} from './shared/services/layout/layout.service';
-import {StorageService} from './shared/services/storage.service';
 import {BanguminUserService} from './shared/services/bangumin/bangumin-user.service';
-import {OverlayContainer} from '@angular/cdk/overlay';
+import {GoogleAnalyticsService} from './shared/services/analytics/google-analytics.service';
+import {BanguminCsrfService} from './shared/services/bangumin/bangumin-csrf.service';
+import {CookieService} from 'ngx-cookie';
+import {environment} from '../environments/environment';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +16,6 @@ import {OverlayContainer} from '@angular/cdk/overlay';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
-  // @HostBinding('class.') lightTheme = true;
 
   title = 'BangumiN';
 
@@ -25,21 +26,29 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private banguminUserService: BanguminUserService,
+    private banguminCsrfService: BanguminCsrfService,
+    private cookieService: CookieService,
     private layoutService: LayoutService,
-    private storageService: StorageService) {
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
+    this.getXsrfToken();
     this.updateDeviceWidth();
     this.setAppInitialSettings();
+    this.googleAnalyticsService.subscribe();
   }
 
   ngOnDestroy(): void {
+    this.googleAnalyticsService.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
   setAppInitialSettings(): void {
+    const availableLanguages = Object.keys(environment.availableLanguages);
+    this.translateService.addLangs(availableLanguages);
     this.banguminUserService.updateUserSettingsEfficiently();
   }
 
@@ -52,6 +61,14 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(observedDeviceWidth => {
         this.currentDeviceWidth = observedDeviceWidth;
       });
+  }
+
+  getXsrfToken() {
+    this.banguminCsrfService.getCsrfToken().subscribe( response => {
+      if (response && response.csrfToken) {
+        this.cookieService.put('XSRF-TOKEN', response.csrfToken);
+      }
+    });
   }
 
 

@@ -1,0 +1,81 @@
+<div class="row ml-0 mr-0 justify-content-center">
+  <div class="col-12 col-sm-3 col-md-3  mb-2 mb-md-0">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="subjectSearchFilterForm">
+          <mat-radio-group class="d-flex flex-column" formControlName="subjectTypeFilter">
+            <mat-radio-button *ngFor="let subjectType of getAllSubjectTypes()" [value]="subjectType">
+              {{getSubjectTypeName(subjectType) | translate}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-12 col-sm-8 col-md-7 mb-1 mb-sm-2 mb-md-3">
+    <mat-card
+      infinite-scroll
+      [infiniteScrollDisabled]="disableInfiniteScroll"
+      [infiniteScrollDistance]="0"
+      (scrolled)="onScrollDown()">
+      <mat-card-content>
+
+        <ng-container *ngIf="currentPageState() !== PageState.InLoading">
+          <div *ngFor="let subject of subjectSearchResults.subjects"
+               class="d-flex subject-result-row mb-3 mb-sm-4 mb-md-5">
+
+            <div class="figure">
+              <a [routerLink]="['../subject', subject.id]">
+                <img class="subject-img-small img-thumbnail" [src]="subject.images.small"/>
+              </a>
+            </div>
+
+            <div class="d-flex flex-column justify-content-start min-width-0 ml-1 ml-sm-2 ml-md-3 ml-lg-4">
+              <div class="d-flex flex-nowrap align-items-center">
+                <mat-icon>{{getSubjectIcon(subject.type)}}</mat-icon>
+                <div class="d-flex min-width-0">
+                  <a class="ml-1 subject-link long-text-truncate" [routerLink]="['../subject', subject.id]">
+                    {{subject.subjectName.preferred}}</a>
+                  <span
+                    class="d-none d-sm-block mat-caption align-self-end foreground-color-secondary-text long-text-truncate">
+                    {{subject.subjectName.secondary}}</span>
+                </div>
+              </div>
+
+              <div class="d-block d-sm-none mat-caption foreground-color-secondary-text long-text-truncate">
+                {{subject.subjectName.secondary}}
+              </div>
+              <div>
+                {{subject.airDate}}
+              </div>
+
+              <div class="d-flex pl-0 pr-0  min-width-0">
+                <app-star-rating *ngIf="subject.rating.score && subject.rating.total >= 10"
+                                 [currentRating]="subject.rating.score" [starCount]="5"
+                                 id="rating-star"
+                                 class="align-self-start min-width-0"></app-star-rating>
+              </div>
+            </div>
+
+          </div>
+        </ng-container>
+
+        <div *ngIf="!disableInfiniteScroll" class="row justify-content-center no-gutters mt-2 mt-md-3">
+          <mat-spinner [diameter]="25"></mat-spinner>
+        </div>
+
+        <div *ngIf="subjectSearchResults && subjectSearchResults.count === 0"
+             [translate]="'search.result.numberOfCount'" [translateParams]="{count: subjectSearchResults.count}"
+             class="text-align-center"
+        >
+        </div>
+
+        <app-back-to-top *ngIf="disableInfiniteScroll"></app-back-to-top>
+
+        <div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

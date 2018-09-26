@@ -3,6 +3,7 @@ export const environment = {
   environmentType: 'uat',
   displayBuildVersion: true,
   FRONTEND_URL: 'https://dogfood.bangumin.tv',
+  BACKEND_URL: 'https://api.dogfood.bangumin.tv',
   BANGUMI_API_URL: 'https://api.dogfood.bangumin.tv/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: 'https://api.dogfood.bangumin.tv/proxy/oauth/bangumi',
   BACKEND_API_URL: 'https://api.dogfood.bangumin.tv',
@@ -20,5 +21,6 @@ export const environment = {
   progressPageMaxEpisodeCountMobile: 5,
   progressPageMaxEpisodeCountDesktop: 30,
   invalidEpisode: '-1',
-  invalidVolume: '-1'
+  invalidVolume: '-1',
+  googleAnalyticsTrackingId: 'UA-125851644-2'
 };

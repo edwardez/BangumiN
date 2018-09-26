@@ -3,9 +3,10 @@ export const environment = {
   environmentType: 'prod',
   displayBuildVersion: false,
   FRONTEND_URL: 'https://bangumin.tv',
+  BACKEND_URL: 'https://api.bangumin.tv',
   BANGUMI_API_URL: 'https://api.bangumin.tv/proxy/api/bangumi',
   BANGUMI_OAUTH_URL: 'https://api.bangumin.tv/proxy/oauth/bangumi',
-  BACKEND_API_URL: 'https://api.bangumin.tv',
+  BACKEND_API_URL: 'https://api.bangumin.tv/api',
   BACKEND_AUTH_URL: 'https://api.bangumin.tv/auth',
   BACKEND_OAUTH_URL: 'https://api.bangumin.tv/oauth',
   BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
@@ -25,5 +26,6 @@ export const environment = {
   progressPageMaxEpisodeCountMobile: 5,
   progressPageMaxEpisodeCountDesktop: 30,
   invalidEpisode: '-1',
-  invalidVolume: '-1'
+  invalidVolume: '-1',
+  googleAnalyticsTrackingId: 'UA-125851644-1'
 };

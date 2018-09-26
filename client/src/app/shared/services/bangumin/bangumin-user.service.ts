@@ -13,12 +13,21 @@ import {RuntimeConstantsService} from '../runtime-constants.service';
   providedIn: 'root'
 })
 export class BanguminUserService {
+  // a static copy of userSubject result, the subject version should be used if possible
+  static currentBanguminUserSettings: BanguminUserSchema = new BanguminUser();
+
   userSubject: Subject<BanguminUser> = new BehaviorSubject<BanguminUser>(null);
 
   constructor(private http: HttpClient,
               private storageService: StorageService,
               private translateService: TranslateService,
               private overlayContainer: OverlayContainer) {
+  }
+
+  // update meta theme-color in index.html
+  static updateMetaThemeColor(themeColor: string) {
+    const metaThemeColor = document.querySelector('meta[name=theme-color]');
+    metaThemeColor.setAttribute('content', RuntimeConstantsService.appThemeColor[themeColor]);
   }
 
 
@@ -108,6 +117,7 @@ export class BanguminUserService {
     // subscribe to userSubject, only update settings if there are any differences
     this.userSubject.pipe(
       filter(banguminUser => !!banguminUser),
+      tap(banguminUser => BanguminUserService.currentBanguminUserSettings = banguminUser),
       pairwise()
     ).subscribe(banguminUser => {
       this.updateUserSettings(banguminUser[0], banguminUser[1]);
@@ -119,7 +129,6 @@ export class BanguminUserService {
    * fallback to en-US if user browser doesn't contain languages that we currently support
    */
   public getDefaultLanguage() {
-    this.translateService.addLangs(Object.keys(environment.availableLanguages));
     const browserLang = this.translateService.getBrowserLang();
     let defaultLang: string;
     if (browserLang.match(/en/)) {
@@ -134,27 +143,26 @@ export class BanguminUserService {
   }
 
   // todo: switch case for different filter type(e.g. byYear, byType, byState, etc)
-  public getUserProfileStats(username: string, typeList = []): any {
+  public getUserProfileStats(username: string): any {
     // todo: cache with subject in the future
-    return [
-      {typ: 'Real', rate: 8},
-      {typ: 'Anime', rate: 7},
-      {typ: 'Real', rate: 4},
-      {typ: 'Real', rate: 7},
-      {typ: 'Real', rate: 6},
-      {typ: 'Anime', rate: 10},
-      {typ: 'Anime', rate: 2},
-      {typ: 'Anime', rate: 5},
-      {typ: 'Anime', rate: 1},
-      {typ: 'Real', rate: 2},
-      {typ: 'Anime', rate: 3},
-      {typ: 'Anime', rate: 4},
-      {typ: 'Anime', rate: 4},
-      {typ: 'Real', rate: 6},
-      {typ: 'Anime', rate: 7},
-      {typ: 'Real', rate: 8},
-      {typ: 'Anime', rate: 9}
-    ].filter((stat) => (typeList.length === 0) ? true : typeList.includes(stat.typ));
+    return of([{typ: 'real', rate: 8, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 7, adddate: '2017-09-24'},
+      {typ: 'real', rate: 4, adddate: '2018-09-24'},
+      {typ: 'real', rate: 7, adddate: '2016-09-24'},
+      {typ: 'real', rate: 6, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 10, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 2, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 5, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 1, adddate: '2017-09-24'},
+      {typ: 'real', rate: 2, adddate: '2016-09-24'},
+      {typ: 'anime', rate: 3, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 4, adddate: '2017-09-24'},
+      {typ: 'anime', rate: 4, adddate: '2018-09-24'},
+      {typ: 'real', rate: 6, adddate: '2016-09-24'},
+      {typ: 'anime', rate: null, adddate: '2017-09-24'},
+      {typ: 'real', rate: 8, adddate: '2018-09-24'},
+      {typ: 'anime', rate: 9, adddate: '2017-09-24'}
+    ]);
   }
 
 
@@ -167,6 +175,7 @@ export class BanguminUserService {
     this.overlayContainer.getContainerElement()
       .classList.add(settings.appTheme);
     document.body.classList.add(settings.appTheme);
+    BanguminUserService.updateMetaThemeColor(settings.appTheme);
   }
 
   /**
@@ -203,7 +212,7 @@ export class BanguminUserService {
     this.overlayContainer.getContainerElement().classList.add(newTheme);
     document.body.classList.remove(oldTheme);
     document.body.classList.add(newTheme);
-
+    BanguminUserService.updateMetaThemeColor(newTheme);
   }
 
   /**

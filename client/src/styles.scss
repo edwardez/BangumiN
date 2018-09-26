@@ -1,41 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
-//@import "assets/material-icons/material-icons.css";
-@import '~@angular/material/theming';
+//@import "assets/material-icons/material-icons.css"; // we're using cdn now, don't need to import it manually at this time
+@import "assets/styles/styles-customization";
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+@import "~bootstrap/scss/utilities/_spacing";
+@import "~bootstrap/scss/utilities/_display";
+@import "~bootstrap/scss/utilities/_sizing.scss";
+@import "~bootstrap/scss/mixins/_image";
+@import "~bootstrap/scss/_images";
 
-@include mat-core();
-@import 'app/shared/theme/variables.scss';
+
 @import "~placeholder-loading/src/scss/placeholder-loading";
-@import '~quill/dist/quill.snow.css'; // TODO: figure out a way to lazy load this css only if user enters specific component
-
-
-$bangumi-pink-blue-primary: mat-palette($mat-bangumi-pink, 200, 100, 700);
-$bangumi-pink-blue-accent: mat-palette($mat-blue, A200, A100, A400);
-$bangumi-pink-theme: mat-light-theme($bangumi-pink-blue-primary, $bangumi-pink-blue-accent);
-
-$bangumin-material-blue-teal-primary: mat-palette($mat-blue);
-$bangumin-material-blue-teal-accent: mat-palette($mat-teal, A200, A100, A400);
-$bangumin-material-blue-teal-theme: mat-light-theme($bangumin-material-blue-teal-primary, $bangumin-material-blue-teal-accent);
-
-$bangumin-material-dark-pink-blue-grey-primary: mat-palette($mat-pink);
-$bangumin-material-dark-pink-blue-grey-accent:  mat-palette($mat-blue-grey, A200, A100, A400);
-$bangumin-material-dark-pink-blue-grey-theme: mat-dark-theme($bangumin-material-dark-pink-blue-grey-primary, $bangumin-material-dark-pink-blue-grey-accent);
-
-.bangumi-pink-blue {
-  @include angular-material-theme($bangumi-pink-theme);
-}
-
-.bangumin-material-blue-teal {
-  @include angular-material-theme($bangumin-material-blue-teal-theme);
-}
-
-.bangumin-material-dark-pink-blue-grey {
-  @include angular-material-theme($bangumin-material-dark-pink-blue-grey-theme);
-}
 
 body {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
+.mat-card-header-text {
+  width: 100%;
+}
+
+//override default border for placeholder
+.ph-item {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+//customize angular material style
+app-spoiler-creation .mat-dialog-container {
+  padding: 10px;
+}
+
+.bangumin-footer {
+  font-weight: normal;
+  font-size: unset;
+}
+
+.search-suggestion-panel {
+  top: -3px;
+}
+
+.material-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: bottom;
+}
+
+//use material 2018 spec
+.mat-card {
+  border-radius: 8px !important;
+}
+
+// hide default mat-card-header-text style for spoiler
+app-spoiler-single-content .mat-card-header-text {
+  display: none;
+}
+
+// helper styles
 .line-breaker {
   white-space: pre-line;
 }
@@ -44,60 +67,48 @@ body {
   text-align: center;
 }
 
-.container {
+.no-text-decoration {
+  text-decoration: none;
+}
+
+.user-select-none {
+  user-select: none;
+}
+
+.bangumin-height-container {
   height: 100vh;
 }
 
-//override default border
-.ph-item {
-  border: none !important;
+.min-width-0 {
+  min-width: 0;
 }
 
-$marginKey: "has-margin";
-$paddingKey: "has-padding";
-$positions: (
-    ("top", "top"),
-    ("right", "right"),
-    ("bottom", "bottom"),
-    ("left", "left")
-);
-
-$sizeUnit: rem;
-$separator: "-";
-$sizes: (
-    ("none", 0),
-    ("xxs", 0.125),
-    ("xs", 0.25),
-    ("sm", 0.5),
-    ("md", 1),
-    ("lg", 2),
-    ("xl", 4),
-    ("xxl", 8),
-);
-
-@function sizeValue($key, $value) {
-  @return if($key == "none", 0, $value + $sizeUnit);
+.min-height-100-vh{
+  min-height: 100vh;
 }
 
-@each $size in $sizes {
-  $sizeKey: nth($size, 1);
-  $sizeValue: nth($size, 2);
-  .#{$marginKey}#{$separator}#{$sizeKey} {
-    margin: sizeValue($sizeKey, $sizeValue);
-  }
-  .#{$paddingKey}#{$separator}#{$sizeKey} {
-    padding: sizeValue($sizeKey, $sizeValue);
-  }
-  @each $position in $positions {
-    $posKey: nth($position, 1);
-    $posValue: nth($position, 2);
-    .#{$marginKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
-      margin-#{$posValue}: sizeValue($sizeKey, $sizeValue);
-    }
-    .#{$paddingKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
-      padding-#{$posValue}: sizeValue($sizeKey, $sizeValue);
-    }
-  }
+.min-height-75-vh{
+  min-height: 75vh;
 }
 
+.spoiler-text {
+  line-height: 2em;
+  padding: 0.28em;
+  box-decoration-break: clone;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.long-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.medium-rounded-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 

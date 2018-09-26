@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-8 col-md-7">
+      <h3 class="text-align-center">{{'help.name' | translate}}</h3>
+      <mat-accordion>
+        <mat-expansion-panel id="supported-browsers">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'help.supportedBrowsers.name' | translate}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{'help.supportedBrowsers.brief' | translate}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <table id="full-width-table">
+            <tr>
+              <th>{{'help.supportedBrowsers.body.browser' | translate}}</th>
+              <th>{{'help.supportedBrowsers.body.browserVersion' | translate}}</th>
+              <th>{{'help.supportedBrowsers.body.operatingSystem' | translate}}</th>
+            </tr>
+            <tr>
+              <td>Firefox</td>
+              <td>{{'help.supportedBrowsers.body.latest' | translate}}</td>
+              <td>{{'help.supportedBrowsers.body.allSupportedPlatforms' | translate}}</td>
+            </tr>
+            <tr>
+              <td>Chrome</td>
+              <td>{{'help.supportedBrowsers.body.latest' | translate}}</td>
+              <td>{{'help.supportedBrowsers.body.allSupportedPlatforms' | translate}}</td>
+            </tr>
+            <tr>
+              <td>Safari</td>
+              <td>{{'help.supportedBrowsers.body.twoMostRecentMajorVersions' | translate}}</td>
+              <td>{{'help.supportedBrowsers.body.allSupportedPlatforms' | translate}}(iOS: 11.3+)</td>
+            </tr>
+          </table>
+          <br/>
+          <section>
+            {{'help.supportedBrowsers.body.explanation' | translate}}
+          </section>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </div>
+  </div>
+</div>

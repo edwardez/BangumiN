@@ -1,15 +1,39 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="container">
-  <mat-card class="card" fxFlex="0 1 80%" fxLayout="column" fxLayoutAlign="center center">
-    <mat-card-header>
-      <mat-card-title>{{'login.welcomeTitle' | translate}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p [innerHTML]="'login.welcomeText' | translate"></p>
-    </mat-card-content>
-    <mat-card-actions>
-      <a (click)="redirectToBangumi()">
-        <button mat-raised-button color="primary">{{'login.oauthRedirect' | translate}}</button>
-      </a>
-    </mat-card-actions>
-  </mat-card>
+<div class="row no-gutters min-height-75-vh">
+  <div class="col-12 col-sm-5 offset-sm-1 d-flex flex-column no-gutters justify-content-center">
+    <div class="mat-display-1 mb-2 text-align-center">Care about yourself</div>
+    <div class="mat-display-1 text-align-center">Care about others</div>
+    <div class="text-align-center">
+      {{'login.heroExplanation' | translate}}
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 d-flex flex-column no-gutters justify-content-center align-items-center mt-1 mt-sm-0">
+    <a [href]="backendOauthUrl">
+      <button [disabled]="disableLoginButton" mat-raised-button color="primary">
+        <div class="d-flex">
+          <div> {{'login.signInUsingBangumi' |
+            translate}}
+          </div>
+          <div class="mat-caption align-self-start">1</div>
+        </div>
+      </button>
+    </a>
+    <a href="https://bgm.tv/signup" target="_blank" rel="noreferrer" class="mt-2 mt-sm-3 mt-md-5">
+      <button mat-raised-button color="primary">
+        <div class="d-flex">
+          <div>
+            {{'login.signUpBangumi' | translate}}
+          </div>
+          <div class="mat-caption align-self-start">2</div>
+        </div>
+      </button>
+    </a>
+    <div [innerHTML]="'login.signInUsingBangumiNotice'| translate" class="mat-caption text-align-center foreground-color-secondary-text mt-1">
+
+    </div>
+    <div class="mat-caption text-align-center foreground-color-secondary-text mt-1">
+      {{'login.signUpBangumiNotice'| translate}}
+    </div>
+  </div>
+
 </div>

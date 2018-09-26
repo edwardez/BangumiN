@@ -1,16 +1,14 @@
 import * as express from 'express';
 import asyncHandler from 'express-async-handler';
 import passport from 'passport';
-import csrf from 'csurf';
 import config from '../config';
 import joi from 'joi';
-import Logger from '../utils/logger';
+import {logger} from '../utils/logger';
 import requestPromise from 'request-promise';
-import authenticationMiddleware from '../middleware/authenticationHandler';
+import authenticationMiddleware from '../services/authenticationHandler';
+import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 
 const router = express.Router();
-
-const logger = Logger(module);
 
 /**
  * verify bangumi user refresh token request is in the correct format
@@ -28,12 +26,12 @@ function verifyBangumiUserRefreshAccessTokenRequest(req: any, res: any) {
     redirectUrl: joi.string()
       .valid(config.passport.oauth.bangumi.callbackURL)
       .required(),
-    userId: joi.string().valid(req.user.id).required(),
+    userId: [joi.string().valid(req.user.id.toString()).required(), joi.number().valid(Number(req.user.id)).required()],
   }).unknown().required();
 
   const {error, value: tokenVars} = joi.validate(req.body, tokenSchema);
   if (error) {
-    throw error;
+    throw new CustomError(BanguminErrorCode.ValidationError, error);
   }
 
   const {refreshToken} = tokenVars;
@@ -53,10 +51,12 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   let refreshToken;
   try {
     refreshToken = verifyBangumiUserRefreshAccessTokenRequest(req, res);
-  } catch (err) {
+  } catch (error) {
     logger.error('Request cannot be verified: %o', req.body);
-    logger.error(err);
-    return res.sendStatus(400);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      return next(error);
+    }
+    return next(new CustomError(BanguminErrorCode.ValidationError, error));
   }
 
   const options = {
@@ -76,10 +76,12 @@ export const refreshUserAccessToken = async function refreshUserAccessToken(req:
   try {
     response = await requestPromise(options);
     req.refreshedTokenInfo = response;
-  } catch (err) {
+  } catch (error) {
     logger.error('Response cannot be parsed or verified: %o', response);
-    logger.error(err);
-    return res.sendStatus(400);
+    if (error instanceof CustomError || error.name === 'ValidationError') {
+      return next(error);
+    }
+    return next(new CustomError(BanguminErrorCode.BangumiServerResponseError, error));
   }
 
   return next();
@@ -91,11 +93,26 @@ router.get(
 );
 
 router.get(
-  '/bangumi/callback',
-  passport.authenticate('bangumi-oauth', {
-    failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
-    session: true,
-  }),
+  '/bangumi/callback', (req: any, res, next) => {
+    return passport.authenticate('bangumi-oauth', {
+      failureRedirect: `${config.frontEndUrl}/activate?type=bangumi&result=failure`,
+      session: true,
+    }, (error, user, info) => {
+      if (error) {
+        logger.error('Error occurred during authentication of user %o: %o', user, error);
+        return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
+      }
+
+      return req.login(user, (loginError: any) => {
+        if (loginError) {
+          logger.error('loginError occurred during authentication of user %o: error %o, info %o', user, loginError, info);
+          return res.redirect(`${config.frontEndUrl}/activate?type=bangumi&result=failure`);
+        }
+        return next();
+      });
+    })(req, res, next);
+  },
+
   (req: any, res: any) => {
     res.cookie('userInfo', JSON.stringify(req.user), {
       domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') +
@@ -114,9 +131,4 @@ router.post(
   (req: any, res: any) => res.json(req.refreshedTokenInfo),
 );
 
-const csrfProtection = csrf({cookie: true});
-router.get('/json', csrfProtection, (req: any, res: any) => {
-  res.json({csrfToken: req.csrfToken()});
-});
-
-export default router;
+export const oauth = router;

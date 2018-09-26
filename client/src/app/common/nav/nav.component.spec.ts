@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NavComponent} from './nav.component';
-import {BanguminSharedModule} from '../../../bangumin-shared.module';
+import {BanguminSharedModule} from '../../bangumin-shared.module';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {StorageService} from '../../shared/services/storage.service';
 import {AuthenticationService} from '../../shared/services/auth.service';

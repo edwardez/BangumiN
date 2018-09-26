@@ -1,0 +1,44 @@
+@import "../../../../src/assets/styles/styles-variables";
+
+.responsive-container-chart-height-low {
+  display: grid;
+  height: 20vh;
+
+  @media (min-height: 700px) and (max-height: 800px) {
+    height: 25vh;
+  }
+
+  @media (min-height: 400px) and (max-height: 700px) {
+    height: 30vh;
+  }
+
+  @media (max-height: 400px) {
+    height: 40vh;
+  }
+
+
+}
+
+.responsive-container-chart-height-high {
+  display: grid;
+  height: 30vh;
+
+  @media (min-height: 700px) and (max-height: 800px) {
+    height: 35vh;
+  }
+
+  @media (min-height: 400px) and (max-height: 700px) {
+    height: 40vh;
+  }
+
+  @media (max-height: 400px) {
+    height: 50vh;
+  }
+}
+
+.user-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

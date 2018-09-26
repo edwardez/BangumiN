@@ -5,10 +5,12 @@ import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
 
 import 'hammerjs';
+import {googleAnalyticsHeadScripts} from './assets/analytics/google-analytics';
 
 if (environment.production) {
   enableProdMode();
 }
+googleAnalyticsHeadScripts();
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));

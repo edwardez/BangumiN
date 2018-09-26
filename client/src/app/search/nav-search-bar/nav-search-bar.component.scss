@@ -1,0 +1,26 @@
+// search bar style is modified from AIO
+input {
+  color: black;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 16px;
+  margin-left: 8px;
+  min-width: 200px;
+  max-width: 400px;
+  height: 60%;
+  -webkit-appearance: none;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: 480px) {
+    width: unset;
+    max-width: unset;
+    margin-left: unset;
+  }
+}
+

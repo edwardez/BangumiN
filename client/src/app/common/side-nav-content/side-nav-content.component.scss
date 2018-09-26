@@ -1,23 +1,30 @@
+@import "../../../assets/styles/styles-variables";
+
 mat-sidenav {
   position: fixed;
   top: 64px;
   bottom: 0;
   left: 0;
   padding: 0;
+  width: map-get($grid-breakpoints, 'sm')/5;
 }
 
-.mat-sidenav-content-lt-md {
-  min-height: 100vh;
-  padding: 80px 1rem 1rem;
+@media only screen and (max-width: map-get($grid-breakpoints, 'sm') - 1px) {
+  .mat-sidenav-xs {
+    top: 0;
+  }
+
+  .mat-sidenav-content-lt-md {
+    min-height: 100vh;
+    padding: 80px 0.5rem 0.5rem;
+  }
 }
 
-.mat-sidenav-content-gt-sm {
-  min-height: 100vh;
-  padding: 80px 3rem 1rem;
-}
-
-.mat-sidenav-xs {
-  top: 56px;
+@media only screen and (min-width: map-get($grid-breakpoints, 'sm')) {
+  .mat-sidenav-content-gt-sm {
+    min-height: 100vh;
+    padding-top: 80px;
+  }
 }
 
 .build-version-footer {
@@ -28,3 +35,8 @@ mat-sidenav {
   width: 100%;
   text-align: left;
 }
+
+#name-area {
+  width: map-get($grid-breakpoints, 'sm')/5;
+}
+

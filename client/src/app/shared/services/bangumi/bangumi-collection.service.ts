@@ -45,8 +45,10 @@ export class BangumiCollectionService {
    * get user collection status
    * only collection that's being watched will be returned per api
    */
-  public getSubjectCollectionStatus(subjectId: string): Observable<CollectionResponse> {
-    return this.http.get(`${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}`)
+  public getSubjectCollectionStatus(subjectId: number): Observable<CollectionResponse> {
+    // collection status should never be cached, add a timestamp to ensure this
+    return this.http.get(
+      `${environment.BANGUMI_API_URL}/collection/${subjectId}?app_id=${environment.BANGUMI_APP_ID}&timestamp=${+new Date()}`)
       .pipe(
         map(res => {
             if (res['code'] && res['code'] !== 200) {
@@ -65,7 +67,7 @@ export class BangumiCollectionService {
    * it's a 'upsert' action per doc so :action will be fixed to update
    */
   public upsertSubjectCollectionStatus(
-    subjectId: string, collectionRequest: CollectionRequest,
+    subjectId: number, collectionRequest: CollectionRequest,
     action = 'update'): Observable<CollectionResponse> {
     const collectionRequestBody = new URLSearchParams();
 
@@ -94,7 +96,7 @@ export class BangumiCollectionService {
 
     return this.http.post<CollectionResponse>
     (`${environment.BANGUMI_API_URL}/collection/${subjectId}/update?app_id=${environment.BANGUMI_APP_ID}`,
-      collectionRequestBody.toString(), {headers: headers})
+      collectionRequestBody.toString(), {headers: headers, withCredentials: true})
       .pipe(
         map(res => {
             if (res['code'] && res['code'] !== 200) {

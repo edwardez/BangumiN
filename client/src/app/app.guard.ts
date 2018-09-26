@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthenticationService} from './shared/services/auth.service';
 import {map} from 'rxjs/operators';
+import {StorageService} from './shared/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class AppGuard implements CanActivate {
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService
   ) {
   }
 
@@ -25,6 +27,8 @@ export class AppGuard implements CanActivate {
           return true;
         }
 
+        // else user is not authenticated, clear storage and redirect
+        this.storageService.clear();
         this.router.navigate(['/login']);
         return false;
       })

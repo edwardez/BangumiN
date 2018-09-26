@@ -1,0 +1,34 @@
+<mat-nav-list>
+  <ng-container *ngIf="canDelete | async">
+    <a mat-list-item (click)="deleteSpoiler()">
+      <span mat-line class="warn-color">{{'posts.bangumin.spoilerBox.single.card.menu.delete' | translate}}</span>
+    </a>
+    <mat-divider class="m-2"></mat-divider>
+  </ng-container>
+
+  <a mat-list-item [href]="twitterShareLink | async" (click)="dismissSheet()"
+     target="_blank" rel="noopener">
+    <span mat-line>{{'posts.bangumin.spoilerBox.single.card.menu.shareToTwitter' | translate}}</span>
+  </a>
+
+  <a mat-list-item [href]="weiboShareLink | async" (click)="dismissSheet()"
+     target="_blank" rel="noopener">
+    <span mat-line>{{'posts.bangumin.spoilerBox.single.card.menu.shareToWeibo' | translate}}</span>
+  </a>
+
+  <a ngxClipboard mat-list-item
+     (cbOnSuccess)="handleCopyCallback($event, spoilerLink)"
+     (cbOnError)="handleCopyCallback($event, spoilerLink)"
+     [cbContent]="spoilerLink">
+    <span mat-line>{{'posts.bangumin.spoilerBox.single.card.menu.copyLink' | translate}}</span>
+  </a>
+
+  <a ngxClipboard mat-list-item
+     (cbOnSuccess)="handleCopyCallback($event, copyableText)"
+     (cbOnError)="handleCopyCallback($event, copyableText)"
+     [cbContent]="copyableText | async">
+    <span mat-line>
+       {{'posts.bangumin.spoilerBox.single.card.menu.copyContentAndLink' | translate}}
+    </span>
+  </a>
+</mat-nav-list>

@@ -40,7 +40,7 @@ declare namespace OAuth2Strategy {
     tokenURL: string;
     clientID: string;
     clientSecret: string;
-    callbackURL: string;
+    callbackURL?: string;
   }
 
   interface StrategyOptions extends _StrategyOptionsBase {

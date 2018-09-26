@@ -1,7 +1,7 @@
 import {Serializable} from '../Serializable';
 import {SubjectWatchingCollectionMedium} from '../subject/subject-watching-collection-medium';
-import * as PriorityQueue from 'js-priority-queue';
-import {Episode} from '../episode/episode';
+
+// import * as PriorityQueue from 'js-priority-queue';
 
 export class CollectionWatchingResponseMedium implements Serializable<CollectionWatchingResponseMedium> {
   /** 番剧标题 */
@@ -24,7 +24,8 @@ export class CollectionWatchingResponseMedium implements Serializable<Collection
    */
   lastTouch?: number;
   subject?: SubjectWatchingCollectionMedium;
-  episodeHeap?: PriorityQueue<Episode>;
+
+  // episodeHeap?: PriorityQueue<Episode>;
 
 
   deserialize(input) {
@@ -35,7 +36,7 @@ export class CollectionWatchingResponseMedium implements Serializable<Collection
     this.lastTouch = input.lasttouch || 0;
     this.subject = input.subject === undefined ?
       new SubjectWatchingCollectionMedium() : new SubjectWatchingCollectionMedium().deserialize(input.subject);
-    this.episodeHeap = new PriorityQueue<Episode>(); // by default, subject doesn't have episode
+    // this.episodeHeap = new PriorityQueue<Episode>(); // by default, subject doesn't have episode
     return this;
   }
 }

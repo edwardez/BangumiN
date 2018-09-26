@@ -13,7 +13,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {DashboardComponent} from './home/dashboard/dashboard.component';
 
 import {InterceptorsModule} from './shared/interceptors/interceptors.module';
-import {BanguminSharedModule} from '../bangumin-shared.module';
+import {BanguminSharedModule} from './bangumin-shared.module';
 import {BanguminHomeModule} from './home/home.module';
 import {BanguminCommonComponentModule} from './common/common.module';
 import {CookieModule} from 'ngx-cookie';
@@ -23,6 +23,8 @@ import {BanguminSettingsModule} from './settings/bangumin-settings.module';
 import {BanguminSubjectModule} from './subject/bangumin-subject.module';
 import {JwtModule} from '@auth0/angular-jwt';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
+import {DocumentsModule} from './documents/documents.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BanguminSettingsModule,
     BanguminSubjectModule,
     BanguminSearchModule,
+    DocumentsModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {
@@ -51,6 +54,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     }),
     InterceptorsModule.forRoot(
     ),
+    LoadingBarHttpClientModule,
     TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -59,7 +63,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         }
       }
     ),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   entryComponents: [],
   providers: [],

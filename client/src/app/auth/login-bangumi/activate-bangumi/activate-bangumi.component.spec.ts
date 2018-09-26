@@ -1,13 +1,12 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ActivateBangumiComponent} from './activate-bangumi.component';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../../shared/services/auth.service';
 import {AppRoutingModule} from '../../../app-routing.module';
 import {ProgressComponent} from '../../../home/progress/progress.component';
-import {ProfileComponent} from '../../../home/profile/profile.component';
+import {ProfileComponent} from '../../../user/profile.component';
 import {LoginBangumiComponent} from '../login-bangumi.component';
-import {BanguminSharedModule} from '../../../../bangumin-shared.module';
+import {BanguminSharedModule} from '../../../bangumin-shared.module';
 import {APP_BASE_HREF} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {StorageService} from '../../../shared/services/storage.service';

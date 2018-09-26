@@ -1,0 +1,44 @@
+<div
+  class="row ml-0 mr-0 justify-content-center">
+  <mat-card
+    infinite-scroll
+    [infiniteScrollDisabled]="shouldDisableInfiniteScroll()"
+    (scrolled)="onScrollDown()"
+    class="col-11 col-sm-8 col-md-6 mb-1 mb-sm-2 mb-md-3 mb-lg-4 mb-xl-5">
+    <mat-card-content>
+      <div class="row no-gutters">
+        <div class="col-8 ">User</div>
+        <div class="col-3 d-inline-flex">
+          <div class="d-inline-flex align-items-center">
+            {{'common.role.bangumi.name' | translate}}
+            <mat-icon [inline]="true" matTooltip="{{'common.role.bangumi.explanation'|translate}}">info
+            </mat-icon>
+          </div>
+
+        </div>
+
+        <ng-container *ngIf="currentPageState() === PageState.CanProceed">
+          <app-user-search-card-content *ngFor="let user of userSearchResults.fullMatch.rows"
+                                        [user]="user"
+                                        class="col-12 no-gutters"></app-user-search-card-content>
+          <ng-container *ngIf="this.userSearchResults.partialMatch">
+            <app-user-search-card-content *ngFor="let user of userSearchResults.partialMatch.rows"
+                                          [user]="user"
+                                          class="col-12 no-gutters"></app-user-search-card-content>
+          </ng-container>
+        </ng-container>
+
+      </div>
+
+      <div *ngIf="!shouldDisableInfiniteScroll()" class="row justify-content-center no-gutters mt-2 mt-md-3">
+        <mat-spinner [diameter]="25"></mat-spinner>
+      </div>
+
+      <app-back-to-top *ngIf="shouldDisableInfiniteScroll()"></app-back-to-top>
+    </mat-card-content>
+
+
+  </mat-card>
+</div>
+
+

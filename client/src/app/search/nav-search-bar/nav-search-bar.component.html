@@ -1,0 +1,26 @@
+<input
+  #searchBar
+  [matAutocomplete]="searchSuggestionPanel"
+  placeholder="{{'nav.search.placeholder.name' | translate}}" type="search"
+  aria-label="search"
+  class="background-background-color-card text-input flex-grow-1">
+
+<mat-autocomplete #searchSuggestionPanel
+                  [class]="'search-suggestion-panel'"
+                  (optionSelected)="onAutoCompleteOptionSelected($event)">
+  <ng-container *ngIf="searchBar.value">
+    <ng-container *ngFor="let availableSearchMethod of availableSearchMethods">
+      <mat-option *ngIf="shouldShowCurrentAutoCompleteOption(availableSearchMethod, searchBar.value)"
+                  [value]="{inputValue: searchBar.value, autoCompleteType: 'default', extraInfo: availableSearchMethod}"
+      >
+        <div class="d-flex align-items-center">
+          <mat-icon *ngIf="availableSearchMethod.searchBy === SearchBy.keyword">search</mat-icon>
+          <mat-icon *ngIf="availableSearchMethod.searchBy === SearchBy.id">subdirectory_arrow_right</mat-icon>
+          <div [translate]="availableSearchMethod.translationLabel" [translateParams]="{value: searchBar.value}"></div>
+        </div>
+      </mat-option>
+    </ng-container>
+
+  </ng-container>
+
+</mat-autocomplete>

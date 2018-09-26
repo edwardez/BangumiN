@@ -4,12 +4,11 @@ import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, switchMap, take, tap} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import {concat} from 'rxjs';
+import {concat, Subject} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {LayoutService} from '../../shared/services/layout/layout.service';
-import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-nav',
@@ -18,7 +17,6 @@ import {Subject} from 'rxjs/index';
 })
 export class NavComponent implements OnInit, OnDestroy {
   bangumiUser: BangumiUser;
-  searchKeywords = '';
   isAuthenticated = false;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -37,30 +35,12 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // initialize a dummy user
     this.bangumiUser = new BangumiUser();
-
-    this.updateSearchBarText();
     this.updateUserInfo();
-
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  /**
-   * this function will update text in search bar according to route params
-   */
-  updateSearchBarText() {
-    this.route
-      .queryParams
-      .pipe(
-        filter(params => params['keywords'] !== undefined)
-      ).subscribe(
-      params => {
-        this.searchKeywords = decodeURI(params['keywords']);
-      }
-    );
   }
 
   /**
@@ -109,10 +89,6 @@ export class NavComponent implements OnInit, OnDestroy {
       .then(() => {
       });
 
-  }
-
-  doFullSearch(query: string) {
-    this.router.navigate(['/search'], {queryParams: {keywords: encodeURI(query)}});
   }
 
   login() {

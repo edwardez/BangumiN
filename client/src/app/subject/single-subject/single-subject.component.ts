@@ -1,21 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
-import {catchError, filter, switchMap, take, takeUntil} from 'rxjs/operators';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {SubjectLarge} from '../../shared/models/subject/subject-large';
-import {forkJoin} from 'rxjs';
 import {BangumiCollectionService} from '../../shared/services/bangumi/bangumi-collection.service';
-import {CollectionResponse} from '../../shared/models/collection/collection-response';
 import {TitleService} from '../../shared/services/page/title.service';
 import {ReviewDialogData} from '../../shared/models/review/reviewDialogData';
-import {ReviewDialogService} from '../../shared/services/dialog/review-dialog.service';
+import {DialogConfig, ResponsiveDialogService} from '../../shared/services/dialog/responsive-dialog.service';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
-import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {Subject} from 'rxjs/index';
 import {LayoutService} from '../../shared/services/layout/layout.service';
 import {SnackBarService} from '../../shared/services/snackBar/snack-bar.service';
-import {CollectionRequest} from '../../shared/models/collection/collection-request';
 
+import {DeviceWidth} from '../../shared/enums/device-width.enum';
+import {ReviewDialogComponent} from '../review-dialog/review-dialog.component';
 
 @Component({
   selector: 'app-single-subject',
@@ -25,16 +23,16 @@ import {CollectionRequest} from '../../shared/models/collection/collection-reque
 export class SingleSubjectComponent implements OnInit, OnDestroy {
 
   subject: SubjectLarge;
-  collectionResponse: CollectionResponse;
-  currentRating = 0;
+
   currentDeviceWidth: DeviceWidth;
+
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
               private bangumiSubjectService: BangumiSubjectService,
               private bangumiCollectionService: BangumiCollectionService,
               private titleService: TitleService,
-              private reviewDialogService: ReviewDialogService,
+              private reviewDialogService: ResponsiveDialogService,
               private layoutService: LayoutService,
               private snackBarService: SnackBarService
   ) {
@@ -48,48 +46,23 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
     return LayoutService;
   }
 
+
   ngOnInit() {
-
-
     this.getDeviceWidth();
-
-    this.route
+    this.activatedRoute
       .params
       .pipe(
-        takeUntil(this.ngUnsubscribe),
-        filter(params => params['id'] !== undefined),
+        filter(params => !!params['subjectId']),
         switchMap(params => {
-            return forkJoin(
-              this.bangumiSubjectService.getSubject(params['id'], 'large'),
-              this.bangumiCollectionService.getSubjectCollectionStatus(params['id']),
-            );
+            return this.bangumiSubjectService.getSubject(params['subjectId'], 'large');
           },
-        ))
+        ),
+        takeUntil(this.ngUnsubscribe),
+      )
       .subscribe(res => {
-        this.subject = res[0];
+        this.subject = res;
         this.titleService.title = this.subject.name;
-        this.collectionResponse = res[1];
-        this.currentRating = this.collectionResponse.rating;
       });
-
-
-  }
-
-  onRatingChanged(rating) {
-    const collectionRequest = new CollectionRequest(this.collectionResponse.status.type,
-      undefined, undefined, rating, this.collectionResponse.privacy);
-
-    this.bangumiCollectionService.upsertSubjectCollectionStatus(this.subject.id.toString(), collectionRequest).pipe(
-      takeUntil(this.ngUnsubscribe),
-      catchError(error => {
-        this.snackBarService.openSimpleSnackBar('common.snakBar.error.submit.general')
-          .pipe(take(1)).subscribe(() => {
-        });
-        return error;
-      })
-    ).subscribe(res => {
-      this.currentRating = rating;
-    });
   }
 
   /*
@@ -101,19 +74,21 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
 
     // construct review dialog data
     const reviewDialogData: ReviewDialogData = {
-      subjectId: this.subject.id,
-      rating: this.currentRating,
-      tags: this.collectionResponse.tags,
-      statusType: this.collectionResponse.status.type,
-      comment: this.collectionResponse.comment,
-      privacy: this.collectionResponse.privacy,
-      type: this.subject.type,
-      name: this.subject.name
+      subject: this.subject,
+    };
+
+    const dialogConfig: DialogConfig<ReviewDialogData> = {
+      matDialogConfig: {
+        data: reviewDialogData,
+      },
+      sizeConfig: {
+        onLtSmScreen: null
+      }
     };
 
 
     // open the dialog
-    const dialogRefObservable = this.reviewDialogService.openReviewDialog(reviewDialogData);
+    const dialogRefObservable = this.reviewDialogService.openDialog(ReviewDialogComponent, dialogConfig);
 
     dialogRefObservable
       .pipe(
@@ -121,8 +96,7 @@ export class SingleSubjectComponent implements OnInit, OnDestroy {
         filter(result => result !== undefined && result['rating'] !== undefined),
       )
       .subscribe(result => {
-        this.currentRating = result['rating'];
-        this.collectionResponse = new CollectionResponse().deserialize(result);
+        // this.currentRating = result['rating'];
       });
 
 

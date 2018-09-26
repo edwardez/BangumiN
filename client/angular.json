@@ -19,11 +19,11 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/robots.txt"
+              "src/robots.txt",
+              "src/manifest.json"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/normalize.css/normalize.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -100,7 +100,8 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/robots.txt"
+              "src/robots.txt",
+              "src/manifest.json"
             ]
           }
         },

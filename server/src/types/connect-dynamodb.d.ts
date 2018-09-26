@@ -8,6 +8,7 @@ declare function connect_dynamodb(connect: (options?: session.SessionOptions) =>
 
 declare namespace connect_dynamodb {
 
+  // tslint:disable-next-line
   export interface configOptions {
     // Optional DynamoDB table name, defaults to 'sessions'
     table?: string;
@@ -29,9 +30,9 @@ declare namespace connect_dynamodb {
     writeCapacityUnits?: number;
   }
 
-  // noinspection TsLint
+  // tslint:disable-next-line
   function DynamoDBStore(options?: configOptions): void;
 
   const prototype: {};
-//
+
 }

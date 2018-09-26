@@ -1,0 +1,162 @@
+<mat-card class="spoiler-card">
+
+  <mat-card-header *ngIf="bangumiUser" class="d-flex align-items-center">
+    <a mat-card-avatar
+       [href]="bangumiUser.url" [ngStyle]="{'background-image':  'url(' + bangumiUser.avatar.medium + ')' }"
+       target="_blank" rel="noopener"
+       class="avatar-image"
+    ></a>
+
+    <div class="d-flex flex-grow-1 ml-2 ml-xl-3">
+      <div class="align-self-center">
+        <div>
+          {{bangumiUser.nickname}}
+        </div>
+        <small class="foreground-color-secondary-text">
+          @{{bangumiUser.username}}
+        </small>
+
+      </div>
+      <div class="flex-grow-1">
+
+      </div>
+
+      <div>
+        <ng-container *ngIf="spoilerContentReceived.relatedSubjectsBaseDetails !== undefined">
+          <button mat-icon-button
+                  (click)="openBottomSheet()"
+                  class="d-inline-block d-sm-none"
+          >
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="appMenu"
+            class="d-sm-inline-block d-none"
+          >
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          <mat-menu #appMenu="matMenu">
+            <app-share-spoiler-menu [spoilerContent]="spoilerContentReceived"
+                                    [spoilerLink]="generateSpoilerLink()"></app-share-spoiler-menu>
+
+          </mat-menu>
+        </ng-container>
+
+      </div>
+    </div>
+
+    <div class="mat-card-header-text">
+    </div>
+
+
+  </mat-card-header>
+
+  <ng-container *ngIf="!bangumiUser">
+    <div class="ph-item p-0 m-0 no-gutters">
+
+      <div class="ph-col-1 flex-grow-0">
+        <div class="ph-avatar avatar-content-loader"></div>
+      </div>
+
+      <div class="align-self-center">
+        <div class="ph-row">
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <mat-card-content *ngIf="!spoilerContentReceived">
+    <div class="ph-item p-0 m-0">
+      <div class="ph-col-12 pl-0">
+        <div class="ph-row">
+          <div class="ph-col-12"></div>
+          <div class="ph-col-12"></div>
+          <div class="ph-col-12"></div>
+          <div class="ph-col-4"></div>
+          <div class="ph-col-8 empty"></div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <ng-container *ngIf="spoilerContent">
+    <mat-card-content *ngIf="spoilerHtml" [innerHtml]="spoilerHtml">
+
+    </mat-card-content>
+
+    <small *ngIf="spoilerContent.createdAt"
+           class="foreground-color-secondary-text">
+      {{spoilerContent.createdAt.toLocaleString(currentLanguage, {hour12: false})}}
+    </small>
+  </ng-container>
+
+
+  <ng-container
+    *ngIf="spoilerContentReceived?.relatedSubjectsBaseDetails && spoilerContentReceived?.relatedSubjectsBaseDetails?.length !== 0">
+    <mat-divider></mat-divider>
+    <p>{{'posts.bangumin.spoilerBox.single.card.relatedSubjects.name' | translate}}</p>
+    <div *ngFor="let subject of spoilerContentReceived?.relatedSubjectsBaseDetails"
+         class="mb-1 mb-sm-2">
+      <div class="d-flex" *ngIf="subject.id !== defaultSubjectId">
+
+        <a [href]="convertToBangumiNLink(subject.url)" target="_blank" rel="noopener">
+          <img class="image-grid" [src]="subject.images.grid">
+        </a>
+
+        <p class="spoiled-title ml-1 ml-sm-2 ml-md-3">
+          {{subject.subjectName.preferred}}
+        </p>
+      </div>
+
+      <div *ngIf="subject.id === defaultSubjectId"
+           class="d-flex">
+        <div
+          [matTooltip]="'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.userDefined.tooltip' | translate">
+          <img class="image-grid" [src]="subject.images.grid">
+        </div>
+
+
+        <p class="spoiled-title ml-1 ml-sm-2 ml-md-3">
+          {{subject.subjectName.preferred}}
+        </p>
+      </div>
+    </div>
+
+    <small *ngIf="spoilerContentReceived?.relatedSubjectsBaseDetails?.length === 0"
+           class="foreground-color-secondary-text">
+      {{'posts.bangumin.spoilerBox.single.card.relatedSubjects.result.none' | translate}}
+    </small>
+
+  </ng-container>
+
+  <ng-container *ngIf="!spoilerContentReceived?.relatedSubjectsBaseDetails">
+    <ng-container *ngFor="let relatedSubject of spoilerContentReceived?.relatedSubjects">
+
+      <div
+        class="ph-item p-0 ml-0 mb-0 mb-0 mt-2  no-gutters">
+
+        <div class="col-2 col-lg-1 pl-0 flex-grow-0">
+          <div class="ph-picture image-grid"></div>
+        </div>
+        <div class="col-10 col-lg-11 align-self-center">
+          <div class="ph-row">
+            <div class="ph-col-4"></div>
+            <div class="ph-col-8 empty"></div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </ng-container>
+
+  <mat-card-actions>
+
+  </mat-card-actions>
+</mat-card>

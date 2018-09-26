@@ -14,6 +14,7 @@ import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-toke
 import {MatSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import {BanguminUserService} from './bangumin/bangumin-user.service';
+import {Router} from '@angular/router';
 
 
 interface AccessData {
@@ -43,6 +44,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient,
               private banguminUserService: BanguminUserService,
+              private router: Router,
               private storageService: StorageService,
               private translateService: TranslateService,
               private snackBar: MatSnackBar) {
@@ -189,7 +191,10 @@ export class AuthenticationService {
    */
   public logout(): void {
     this.storageService.clear();
-    location.reload(true);
+    this.router.navigate(['../', 'login']).then(res => {
+      location.reload(true);
+    });
+
   }
 
 
@@ -227,12 +232,11 @@ export class AuthenticationService {
   public verifyAndSetBangumiActivationInfo(userInfo: UserInfo): Observable<any> {
     const collectionRequestBody = new URLSearchParams();
     collectionRequestBody.set('access_token', userInfo.bangumiActivationInfo.access_token);
-
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
     return this.http.post(
       `${environment.BANGUMI_OAUTH_URL}/token_status`,
-      collectionRequestBody.toString(), {headers: headers})
+      collectionRequestBody.toString(), {headers: headers, withCredentials: true})
       .pipe(
         tap(authInfo => {
           if (authInfo['access_token'] === undefined

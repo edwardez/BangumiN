@@ -1,26 +1,42 @@
-<mat-toolbar color="primary" class="fixed-header mat-elevation-z6 helper-toolbar" fxLayoutGap="10px">
-  <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated">
+<mat-toolbar color="primary" class="d-flex pl-1 pl-sm-2 fixed-header mat-elevation-z6 helper-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated"
+          tabindex="0">
     <mat-icon>menu</mat-icon>
   </button>
-  <div fxShow fxHide.xs>BangumiN</div>
+  <div class="d-none d-sm-flex">
+    <a mat-button class="pr-1 pl-1" [routerLink]="['/welcome']">
+      BangumiN
+    </a>
+    <span class="mat-caption align-self-end user-select-none">beta</span>
+  </div>
+
 
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
-    <a mat-button routerLink="./progress">{{'progress.name' | translate}}</a>
-    <a mat-button [routerLink]="['./user', this.bangumiUser.user_id]">{{'profile.name' | translate}}</a>
-    <a mat-button routerLink="./spoilers">{{'posts.bangumin.spoilerBox.name' | translate}}</a>
+    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'statistics']" tabindex="0">{{'nav.menu.myStatistics.name'
+      |
+      translate}}</a>
+    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'timeline','spoilers']" tabindex="0">{{'nav.menu.spoilerBox.name'
+      | translate}}</a>
   </div>
 
-  <div fxFlex="1 1 auto"></div>
-
-  <div class="search-container" fxLayoutAlign="end center" *ngIf="isAuthenticated">
-    <input type="search" aria-label="search" placeholder="{{'nav.search.placeholder.name' | translate}}" #searchBar
-           (keyup.enter)="doFullSearch(searchBar.value)" value="{{searchKeywords}}">
+  <div *ngIf="!isAuthenticated">
+    <a mat-button [routerLink]="['./login']" class="mr-2" tabindex="0">{{'nav.menu.login.name' | translate}}</a>
   </div>
 
+  <div class="flex-grow-1 flex-shrink-1"></div>
 
-  <a class="helper-mat-toolbar-item helper-cursor-pointer" [matMenuTriggerFor]="menu">
-    <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.large}}>
-  </a>
+
+  <app-nav-search-bar *ngIf="isAuthenticated"
+                      class="search-container d-flex align-content-center justify-content-end align-items-center mr-2">
+
+  </app-nav-search-bar>
+
+  <div class="helper-mat-toolbar-item helper-cursor-pointer d-none d-sm-block" tabindex="0">
+    <a [matMenuTriggerFor]="menu">
+      <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.medium}}>
+    </a>
+  </div>
+
 
 </mat-toolbar>
 

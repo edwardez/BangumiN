@@ -1,27 +1,42 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import csurf from 'csurf';
 import helmet from 'helmet';
 import config from './config';
 import expressSession from 'express-session';
-import passport from './middleware/passportHandler';
-import authenticationMiddleware from './middleware/authenticationHandler';
+import passport from './services/passportHandler';
+import RateLimit from 'express-rate-limit';
+import authenticationMiddleware from './services/authenticationHandler';
 import proxy from 'http-proxy-middleware';
-import Logger from './utils/logger';
-import oauth from './routes/oauth';
-import auth from './routes/auth';
-import settings from './routes/settings';
-
-const logger = Logger(module);
+import {logger} from './utils/logger';
+import {oauth} from './routes/oauth';
+import {auth} from './routes/auth';
+import {settings} from './routes/settings';
+import {spoiler} from './routes/spoiler';
+import {sequelize} from './common/sequelize';
+import {subject} from './routes/bangumi/subject';
+import {user} from './routes/bangumi/user';
+import {stats} from './routes/stats';
+import {search} from './routes/search';
+import {generalErrorHandler, specificErrorHandler} from './services/errorHandler';
 
 const dynamoDBStore = require('connect-dynamodb')({session: expressSession});
 
 const app = express();
-
 // if environment is not development, trust the first proxy
-if (config.env !== 'development') {
+if (config.env !== 'dev') {
   app.set('trust proxy', 1); // trust first proxy
 }
+
+// set rate limit
+const limiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: config.env === 'dev' ? 10000 : 300, // 300 requests
+});
+
+//  apply to all requests
+app.use(limiter);
 
 // enable cors
 const corsOption = {
@@ -33,43 +48,26 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
-app.use('/proxy/api/bangumi', proxy({
-  target: 'https://api.bgm.tv',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/proxy/api/bangumi': '', // rewrite path
-  },
-  logProvider: () => logger,
-}));
-
-app.use('/proxy/oauth/bangumi', proxy({
-  target: 'https://bgm.tv',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/proxy/oauth/bangumi': '/oauth', // rewrite path
-  },
-  logProvider: () => logger,
-}));
-
-// rest API requirements
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true,
-}));
-
-// TODO: enable csrf support before in production
-// app.use(csrf({ cookie: false }));
-
 const dynamoDBStoreOptios = {
   table: `BangumiN_${config.env}_sessions`,
   AWSConfigJSON: {
     accessKeyId: config.dynamodb.accessKeyID,
     secretAccessKey: config.dynamodb.secretAccessKey,
     region: config.dynamodb.region,
-    readCapacityUnits: config.env === 'prod' ? 5 : 1,
-    writeCapacityUnits: config.env === 'prod' ? 5 : 1,
+    readCapacityUnits: config.env === 'prod' ? 30 : 1,
+    writeCapacityUnits: config.env === 'prod' ? 30 : 1,
   },
 };
+
+sequelize.authenticate()
+  .then(
+    (res) => {
+      logger.info('Successfully connected to rds');
+    })
+  .catch((error) => {
+    logger.error('Cannot connect to database, %o', error);
+
+  });
 
 app.use(expressSession({
   secret: config.passport.secret.session,
@@ -81,39 +79,69 @@ app.use(expressSession({
     domain: (config.cookieDomain === '127.0.0.1' ? '' : '.') + config.cookieDomain,
     httpOnly: true,
     maxAge: config.cookieExpireIn,
-    secure: config.cookieSecure,
+    secure: 'auto',
   },
 }));
 
 // security setup
 app.use(helmet());
 
+const csrfProtection = csurf();
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/oauth', oauth);
-app.use('/api/user/:id/setting', authenticationMiddleware.isAuthenticated, settings);
-app.use('/auth', authenticationMiddleware.isAuthenticated, auth);
-app.all('*', (req, res) => {
+app.use('/proxy/oauth/bangumi', csrfProtection, (req: any, res: any, next: any) => {
+  // remove our auth details before sending data to Bangumi
+  // TODO: Figure out the best practice to handle this situation
+  delete req.headers['x-xsrf-token'];
+  delete req.headers['cookie'];
+  req.cookie = {};
+  req.session.cookie = {};
+  return next();
+}, proxy({
+  target: 'https://bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/oauth/bangumi': '/oauth', // rewrite path
+  },
+  logProvider: () => logger,
+}));
+
+app.use('/proxy/api/bangumi', csrfProtection, (req: any, res: any, next: any) => {
+  delete req.headers['x-xsrf-token'];
+  delete req.headers['cookie'];
+  req.cookie = {};
+  req.session.cookie = {};
+  return next();
+}, proxy({
+  target: 'https://api.bgm.tv',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/proxy/api/bangumi': '', // rewrite path
+  },
+  logProvider: () => logger,
+}));
+
+// create application/json parser
+const jsonParser = bodyParser.json();
+
+// create application/x-www-form-urlencoded parser
+const urlencodedParser = bodyParser.urlencoded({extended: true});
+
+app.use('/auth', jsonParser, csrfProtection, auth);
+app.use('/oauth', jsonParser, csrfProtection, oauth);
+app.use('/api/user/:userId', jsonParser, csrfProtection, spoiler);
+app.use('/api/user/:userId/setting', jsonParser, csrfProtection, authenticationMiddleware.isAuthenticated, settings);
+app.use('/api/stats', jsonParser, csrfProtection, stats);
+app.use('/api/search', jsonParser, csrfProtection, authenticationMiddleware.isAuthenticated, search);
+app.use('/api/bgm/subject', jsonParser, csrfProtection, subject);
+app.use('/api/bgm/user', jsonParser, csrfProtection, user);
+app.all('*', jsonParser, (req, res) => {
   res.status(404).json({error_code: 'not_found'});
 });
 
-// define error-handling middleware last, after other app.use() & routes calls;
-const logErrors = function logErrors(err: any, req: any, res: any, next: any) {
-  logger.error('%o', err.stack);
-  next(err);
-};
-
-// error handler, send stacktrace only during development
-// eslint-disable-next-line no-unused-vars
-const generalErrorHandler = function errorHandler(err: any, req: any, res: any, next: any) {
-  res.status(res.statusCode === 200 ? 500 : res.statusCode).json({
-    error: err.code === undefined ? 'unclassified' : err.code,
-    error_description: err.message,
-  });
-};
-
-app.use(logErrors);
+app.use(specificErrorHandler);
 app.use(generalErrorHandler);
 
 const server = app.listen(config.server.port, config.server.host);

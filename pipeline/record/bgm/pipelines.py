@@ -265,3 +265,6 @@ class DBPipeline(object):
         logger.info('Updating %s existed instances in range (%s, %s)', len(entities_to_update), start_id, end_id)
         updated_entities = self.recordTableDatabaseExecutor.update(entities_to_update)
         self.stats['updated_entities'] += updated_entities
+
+        logger.info('Number of instances that might need deleting after checking range (%s, %s): %s', start_id, end_id,
+                    len(self.entities_might_need_deleting))

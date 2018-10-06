@@ -23,7 +23,7 @@ class RecordTableDatabaseExecutor(GeneralDatabaseExecutor):
         """
         super().__init__(Record, commit_threshold)
 
-    def delete(self, entities_ids, batch_size=1):
+    def delete(self, entities_ids, batch_size=500):
         """
         Delete entities according to the entities_ids set/list
         :param entities_ids: Expect to be a list/set of entities_ids that'll be delete, i.e. ((1,2), (1,3))

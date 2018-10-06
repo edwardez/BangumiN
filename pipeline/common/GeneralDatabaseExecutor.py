@@ -97,10 +97,11 @@ class GeneralDatabaseExecutor:
         :return: number of deleted
         """
         deleted_entities = 0
-        num_of_iteration = len(entities_ids) // batch_size + 1
+        entities_ids_list = list(entities_ids)
+        num_of_iteration = len(entities_ids_list) // batch_size + 1
         for i in range(num_of_iteration):
             logger.info('Starting deleting iteration number %s', i)
-            batch_ids = entities_ids[i * batch_size:(i + 1) * batch_size]
+            batch_ids = entities_ids_list[i * batch_size:(i + 1) * batch_size]
             try:
                 self.session.query(self.EntityModel) \
                     .filter(self.EntityModel.id.in_(batch_ids)) \

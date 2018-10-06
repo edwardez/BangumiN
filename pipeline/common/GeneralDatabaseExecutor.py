@@ -93,7 +93,7 @@ class GeneralDatabaseExecutor:
         """
         Delete entities according to the entities_ids set/list
         :param entities_ids: Expect to be a list/set of entities_ids that'll be delete
-         :param batch_size: Number of records to delete in batch
+        :param batch_size: Number of records to delete in batch
         :return: number of deleted
         """
         deleted_entities = 0

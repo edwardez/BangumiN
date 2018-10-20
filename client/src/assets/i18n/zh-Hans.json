@@ -109,7 +109,7 @@
         "name": "剧透箱"
       },
       "login": {
-        "name": "登陆"
+        "name": "登录"
       },
       "logout": {
         "name": "登出"
@@ -120,9 +120,9 @@
     }
   },
   "login": {
-    "heroExplanation": "在BangumiN，你可以安全的发表剧透并分享给他人，还可以查看你或者作品在Bangumi的数据统计。",
-    "signInUsingBangumi": "使用Bangumi账号登陆",
-    "signInUsingBangumiNotice": "1. 点击登陆代表您同意我们的<a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">服务条款</a>和<a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">隐私协议</a>",
+    "heroExplanation": "在BangumiN，您可以安全的发表剧透并分享给他人，还可以查看您或者作品在Bangumi的数据统计。",
+    "signInUsingBangumi": "使用Bangumi账号登录",
+    "signInUsingBangumiNotice": "1. 点击登录代表您同意我们的<a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">服务条款</a>和<a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">隐私协议</a>",
     "signUpBangumi": "注册一个Bangumi账号",
     "signUpBangumiNotice": "2. BangumiN与Bangumi无直接关系，在注册Bangumi账号后您需要回到BangumiN进行登录",
     "waitForBangumiAuth": {
@@ -131,7 +131,7 @@
       "cancel": "取消认证"
     },
     "loginSuccess": "登录成功",
-    "alreadyLoggedIn": "已登陆用户，转向主界面",
+    "alreadyLoggedIn": "已登录用户，转向主界面",
     "loginFailure": "登录失败，请尝试重试",
     "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭...",
     "activationSuccessful": "激活成功",

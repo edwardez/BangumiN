@@ -28,4 +28,5 @@ yarn-error.log
 .build-analytics
 
 # rollup-test output
-/modules/rollup-test/dist/
+/modules/rollup-test/dist
+.ruby-version

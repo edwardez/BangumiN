@@ -18,14 +18,18 @@ router.get('/user/:userIdOrUsername', celebrate({
     req.params.userIdOrUsername);
 
   getUserStatsByIdOrUsername(userIdOrUsername).then(
-    (userstats: Record[]) => {
-      if (userstats) {
+    (userStats: Record[]) => {
+      if (userStats) {
         return res.json(
           {
             ...(typeof userIdOrUsername === 'number' ? {userId: userIdOrUsername} : {userName: userIdOrUsername}),
-            stats: userstats.map(userstat => userstat.toJSON()),
-          }
-          ,
+            lastModified: +userStats[0].rowLastModified,
+            stats: userStats.map((userRecordInstance) => {
+              const userRecord = userRecordInstance.toJSON();
+              delete userRecord.rowLastModified;
+              return userRecord;
+            }),
+          },
         );
       }
 
@@ -52,11 +56,16 @@ router.get('/subject/:subjectId', celebrate({
   const subjectId = req.params.subjectId;
 
   getSubjectStatsById(subjectId).then(
-    (userstats: Record[]) => {
-      if (userstats) {
+    (subjectStats: Record[]) => {
+      if (subjectStats) {
         return res.json({
           subjectId,
-          stats: userstats.map(userstat => userstat.toJSON()),
+          lastModified: +subjectStats[0].rowLastModified,
+          stats: subjectStats.map((subjectRecordInstance) => {
+            const userRecord = subjectRecordInstance.toJSON();
+            delete userRecord.rowLastModified;
+            return userRecord;
+          }),
         });
       }
 

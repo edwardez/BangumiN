@@ -32,6 +32,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "celebrate": "^8.0.2",
+    "change-case": "^3.0.2",
     "connect-dynamodb": "^2.0.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",

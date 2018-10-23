@@ -441,8 +441,8 @@
     "updateTime": {
       "last": "Newest data: {{time}}",
       "explanation": {
-        "subject": "Last time someone has updated status for this subject: {{time}}. Data is updated on a monthly basis so delay might happen..",
-        "user": "Last time this user has some public activities: {{time}}. Data is updated on a monthly basis so delay might happen."
+        "subject": "Last time BangumiN captured new data for this subject: {{time}}. Data is updated on a monthly basis so delay might happen. This time won't be updated if there's no new record.",
+        "user": "Last time BangumiN captured new data for this user: {{time}}. Data is updated on a monthly basis so delay might happen. This time won't be updated if there's no new activity."
       }
     },
     "common": {

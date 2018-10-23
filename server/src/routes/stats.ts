@@ -23,7 +23,7 @@ router.get('/user/:userIdOrUsername', celebrate({
         return res.json(
           {
             ...(typeof userIdOrUsername === 'number' ? {userId: userIdOrUsername} : {userName: userIdOrUsername}),
-            lastModified: +userStats[0].rowLastModified,
+            lastModified: userStats.length === 0 ? null : +userStats[0].rowLastModified,
             stats: userStats.map((userRecordInstance) => {
               const userRecord = userRecordInstance.toJSON();
               delete userRecord.rowLastModified;
@@ -60,7 +60,7 @@ router.get('/subject/:subjectId', celebrate({
       if (subjectStats) {
         return res.json({
           subjectId,
-          lastModified: +subjectStats[0].rowLastModified,
+          lastModified: subjectStats.length === 0 ? null : +subjectStats[0].rowLastModified,
           stats: subjectStats.map((subjectRecordInstance) => {
             const userRecord = subjectRecordInstance.toJSON();
             delete userRecord.rowLastModified;

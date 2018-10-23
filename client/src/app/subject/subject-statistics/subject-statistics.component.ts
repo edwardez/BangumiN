@@ -10,6 +10,7 @@ import {filter, switchMap} from 'rxjs/operators';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {TranslateService} from '@ngx-translate/core';
 import {forkJoin} from 'rxjs';
+import {RecordSchema} from '../../shared/models/stats/record-schema';
 
 @Component({
   selector: 'app-subject-statistics',
@@ -37,6 +38,7 @@ export class SubjectStatisticsComponent implements OnInit {
   // raw data - CONST!
   targetSubjectStatsArr;
 
+  lastUpdateTime: number;
   descStatFilterFormGroup: FormGroup;
   yearVsAccumulatedMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
@@ -74,7 +76,8 @@ export class SubjectStatisticsComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.targetSubject = res[0];
-          const defaultArr = res[1].stats;
+          const defaultArr = res[1].stats as RecordSchema[];
+          this.lastUpdateTime = res[1].lastModified;
           const translatedStatusFullName = res[2];
           // cache stats array
           this.targetSubjectStatsArr = res[1].stats;
@@ -117,6 +120,10 @@ export class SubjectStatisticsComponent implements OnInit {
       <span class="tooltip-label">${label}</span>
       <span class="tooltip-val">${val}</span>
     `;
+  }
+
+  getLastUpdateTime() {
+    return this.bangumiStatsService.getLastUpdateTime(this.lastUpdateTime);
   }
 
   private initDescStat() {

@@ -1,12 +1,19 @@
-<div *ngIf="targetUserStatsArr && targetUser"
+<div *ngIf="targetUserStatsArr && targetUser && lastUpdateTime"
      class="row flex-wrap justify-content-center no-gutters pl-0 pr-0 pl-sm-3 pr-sm-3 pl-md-4 pr-md-4 pl-lg-0 pr-lg-0">
 
   <div class="col-11">
-    <div class="d-flex justify-content-center  align-items-center">
+    <div class="d-flex justify-content-center align-items-center">
       <img [src]="targetUser.avatar.medium" class="user-avatar">
-      <div [translate]="'statistics.headline'" [translateParams]="{name: targetUser.nickname}" class="pl-1"></div>
+      <div [translate]="'statistics.headline'" [translateParams]="{name: targetUser.nickname}"
+           class="pl-1 long-text-truncate"></div>
+      <div class="flex-grow-1"></div>
+      <div [translate]="'statistics.updateTime.last'" [translateParams]="{time: getLastUpdateTime()}"
+           class="mr-2 flex-shrink-0">
+      </div>
+      <mat-icon [matTooltip]="'statistics.updateTime.explanation.user' | translate: {time: getLastUpdateTime()}">
+        help_outline
+      </mat-icon>
     </div>
-
   </div>
 
   <mat-card class="col-12 col-lg-5-half  mt-2 d-none d-md-block">

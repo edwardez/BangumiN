@@ -13,6 +13,7 @@ import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.ser
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {TitleService} from '../../shared/services/page/title.service';
 import {TranslateService} from '@ngx-translate/core';
+import {RecordSchema} from '../../shared/models/stats/record-schema';
 
 @Component({
   selector: 'app-profile-stats',
@@ -52,6 +53,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   scoreVsCountFilterFormGroup: FormGroup;
   yearCount = {};
   localTranslatedSubjectType;
+  lastUpdateTime: number;
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -106,7 +108,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
           if (response[1]) {
             const res = response[1];
-            const defaultArr = res.stats;
+            const defaultArr = res.stats as RecordSchema[];
+            this.lastUpdateTime = res.lastModified;
             // cache stats array
             this.targetUserStatsArr = res.stats;
             this.countByTypeDataTranslated = _.map(_.countBy(defaultArr, 'subjectType'),
@@ -139,6 +142,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
     return {pieSegmentName, pieSegmentValue};
   }
+
+  getLastUpdateTime() {
+    return this.bangumiStatsService.getLastUpdateTime(this.lastUpdateTime);
+  }
+
 
   private initYearVsMean() {
     // initialize the chart with all types

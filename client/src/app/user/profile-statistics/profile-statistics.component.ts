@@ -1,5 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import * as _ from 'lodash';
+import _countBy from 'lodash/countBy';
+import _difference from 'lodash/difference';
+import _groupBy from 'lodash/groupBy';
+import _map from 'lodash/map';
+import _max from 'lodash/max';
+import _maxBy from 'lodash/maxBy';
+import _meanBy from 'lodash/meanBy';
+import _min from 'lodash/min';
+import _minBy from 'lodash/minBy';
+import _reject from 'lodash/reject';
+import _range from 'lodash/range';
+import _uniqBy from 'lodash/uniqBy';
 import * as day from 'dayjs';
 import {takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
@@ -112,13 +123,13 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
             this.lastUpdateTime = res.lastModified;
             // cache stats array
             this.targetUserStatsArr = res.stats;
-            this.countByTypeDataTranslated = _.map(_.countBy(defaultArr, 'subjectType'),
+            this.countByTypeDataTranslated = _map(_countBy(defaultArr, 'subjectType'),
               (val, key) => ({name: this.localTranslatedSubjectType[SubjectType[key]], value: val}));
-            const countByTypeDataRaw = _.map(_.countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
+            const countByTypeDataRaw = _map(_countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
             // initialize filter list value
-            this.userCurrentSubjectTypeList = _.map(countByTypeDataRaw, 'name');
-            this.collectionStatusList = _.map(
-              _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
+            this.userCurrentSubjectTypeList = countByTypeDataRaw.map(typeData => typeData['name']);
+            this.collectionStatusList = _uniqBy(defaultArr, 'collectionStatus').map(
+              row => CollectionStatusId[row['collectionStatus']]
             );
             // initialize filter form groups
             this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
@@ -147,6 +158,18 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     return this.bangumiStatsService.getLastUpdateTime(this.lastUpdateTime);
   }
 
+  calendarAxisTickFormatting(year) {
+    if (Math.floor(year) !== year) {
+      return '';
+    }
+    return day().set('year', year).year();
+  }
+
+  getYearScoreMinMax(subjectType, year, minMax) {
+    const typeArr = this.yearVsMeanData.filter(row => row.name === subjectType);
+    const yearArr = typeArr[0].series.filter(row => row.name === year);
+    return yearArr[0][minMax];
+  }
 
   private initYearVsMean() {
     // initialize the chart with all types
@@ -163,7 +186,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       .subscribe(newVal => {
         const oldVal = this.yearVsMeanFilterFormGroup.value.subjectTypeSelect;
         const triggerValue = (newVal.length < oldVal.length) ?
-          _.difference(oldVal, newVal)[0] as string : _.difference(newVal, oldVal)[0] as string;
+          _difference(oldVal, newVal)[0] as string : _difference(newVal, oldVal)[0] as string;
         const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
         // selected a value
         if (action === 'select') {
@@ -172,7 +195,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
           this.groupAndCountByYearOfType(thisTypeArr, triggerValue);
         } else {
           // deselected a value
-          const newArr = _.filter(this.yearVsMeanData, (row) => {
+          const newArr = this.yearVsMeanData.filter((row) => {
             // convert changed type into user's language for comparison
             return row.name !== this.localTranslatedSubjectType[triggerValue];
           });
@@ -196,7 +219,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     this.yearVsMeanData = [];
     const arr = newYearVsMeanData
       .filter(stat => selectedTypeList.includes(SubjectType[stat.subjectType]));
-    const arrByType = _.groupBy(arr, (row) => {
+    const arrByType = _groupBy(arr, (row) => {
       return SubjectType[row.subjectType];
     });
     Object.keys(arrByType).forEach((type) => {
@@ -245,13 +268,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  calendarAxisTickFormatting(year) {
-    if (Math.floor(year) !== year) {
-      return '';
-    }
-    return day().set('year', year).year();
-  }
-
   private initDescStat() {
     const arr = this.filterBySubjectTypeAndState(
       this.descStatFilterFormGroup.value.subjectTypeSelect,
@@ -280,19 +296,13 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       });
   }
 
-  getYearScoreMinMax(subjectType, year, minMax) {
-    const typeArr = _.filter(this.yearVsMeanData, row => row.name === subjectType);
-    const yearArr = _.filter(typeArr[0].series, row => row.name === year);
-    return yearArr[0][minMax];
-  }
-
   private groupAndCountByRate(newScoreVsCountData) {
     // reject record with null rate
     const arr = newScoreVsCountData.filter(stat => stat.rate);
     // TODO: fixed xAxis ticks
     const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
-    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
+    let countedArr = _map(_countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
+    const diff = _difference(xAxisTicks, countedArr.map(t => t.name));
     // hack fix when no data is available, show empty chart instead of all "0.00000001"
     if (diff.length === 10) {
       countedArr = [];
@@ -331,19 +341,19 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   private groupAndCountByYearOfType(arr, type: string) {
-    const arrByYear = _.groupBy(arr, (row) => {
+    const arrByYear = _groupBy(arr, (row) => {
       return day(row.addDate).year();
     });
-    const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
+    const yearArr = this.getYearArr(_min(Object.keys(arrByYear)), _max(Object.keys(arrByYear)));
     yearArr.forEach(row => {
       let tmpArr = arrByYear[row.name];
       if (tmpArr) {
-        row.min = (_.minBy(tmpArr, 'rate')) ? +_.minBy(tmpArr, 'rate').rate : 0;
-        row.max = (_.maxBy(tmpArr, 'rate')) ? +_.maxBy(tmpArr, 'rate').rate : 0;
-        tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
+        row.min = (_minBy(tmpArr, 'rate')) ? +_minBy(tmpArr, 'rate').rate : 0;
+        row.max = (_maxBy(tmpArr, 'rate')) ? +_maxBy(tmpArr, 'rate').rate : 0;
+        tmpArr = _reject(tmpArr, (thisRow) => !thisRow.rate);
         // note down the yearCount
         this.yearCount[row.name] = tmpArr.length;
-        row.value = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
+        row.value = (tmpArr.length === 0) ? 0 : _meanBy(tmpArr, 'rate');
       }
     });
     // translate subjectType into user's language
@@ -351,34 +361,13 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
   }
 
-  private refreshDescStat(userStat: any[]) {
-    // filter null rate
-    userStat = userStat.filter(stat => stat.rate);
-    const len = userStat.length;
-    let mean, median, stdDev;
-    if (len === 0) {
-      mean = 0;
-      median = 0;
-      stdDev = 0;
-    } else {
-      mean = _.meanBy(userStat, 'rate');
-      const middle = (len + 1) / 2, sorted = _.sortBy(userStat, 'rate');
-      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
-      stdDev = Math.sqrt(_.sum(_.map(userStat, (i) => Math.pow((i.rate - mean), 2))) / len);
-    }
-    const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
-      'statistics.descriptiveChart.name.standardDeviation'];
-    this.translateService.get(numberChartNames).subscribe(res => {
-      this.descStatData = [
-        {name: res[numberChartNames[0]], value: mean.toFixed(2)},
-        {name: res[numberChartNames[1]], value: median},
-        {name: res[numberChartNames[2]], value: stdDev.toFixed(2)}
-      ];
+  private refreshDescStat(subjectStat: any[]) {
+    this.bangumiStatsService.calculateDescriptiveChartData(subjectStat).subscribe(descStatData => {
+      this.descStatData = descStatData;
     });
-
   }
 
   private getUserProfile(userId: string) {

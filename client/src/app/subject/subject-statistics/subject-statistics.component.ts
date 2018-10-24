@@ -3,7 +3,16 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
-import * as _ from 'lodash';
+import _countBy from 'lodash/countBy';
+import _difference from 'lodash/difference';
+import _groupBy from 'lodash/groupBy';
+import _map from 'lodash/map';
+import _max from 'lodash/max';
+import _meanBy from 'lodash/meanBy';
+import _min from 'lodash/min';
+import _reject from 'lodash/reject';
+import _range from 'lodash/range';
+import _uniqBy from 'lodash/uniqBy';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
 import {filter, switchMap} from 'rxjs/operators';
@@ -81,13 +90,13 @@ export class SubjectStatisticsComponent implements OnInit {
           const translatedStatusFullName = res[2];
           // cache stats array
           this.targetSubjectStatsArr = res[1].stats;
-          this.countByStateData = _.map(
-            _.countBy(defaultArr, 'collectionStatus'),
+          this.countByStateData = _map(
+            _countBy(defaultArr, 'collectionStatus'),
             (val, key) => ({name: translatedStatusFullName[CollectionStatusId[key]], value: val})
           );
           // initialize filter list value
-          this.collectionStatusList = _.map(
-            _.uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
+          this.collectionStatusList = _map(
+            _uniqBy(defaultArr, 'collectionStatus'), row => CollectionStatusId[row['collectionStatus']]
           );
           // initialize filter form groups
           this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
@@ -143,29 +152,8 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private refreshDescStat(subjectStat: any[]) {
-    // filter null rate
-    subjectStat = subjectStat.filter(stat => stat.rate);
-    const len = subjectStat.length;
-    let mean, median, stdDev;
-    if (len === 0) {
-      mean = 0;
-      median = 0;
-      stdDev = 0;
-    } else {
-      mean = _.meanBy(subjectStat, 'rate');
-      const middle = (len + 1) / 2, sorted = _.sortBy(subjectStat, 'rate');
-      median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
-      stdDev = Math.sqrt(_.sum(_.map(subjectStat, (i) => Math.pow((i.rate - mean), 2))) / len);
-    }
-
-    const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
-      'statistics.descriptiveChart.name.standardDeviation'];
-    this.translateService.get(numberChartNames).subscribe(res => {
-      this.descStatData = [
-        {name: res[numberChartNames[0]], value: mean.toFixed(2)},
-        {name: res[numberChartNames[1]], value: median},
-        {name: res[numberChartNames[2]], value: stdDev.toFixed(2)}
-      ];
+    this.bangumiStatsService.calculateDescriptiveChartData(subjectStat).subscribe(descStatData => {
+      this.descStatData = descStatData;
     });
   }
 
@@ -213,8 +201,8 @@ export class SubjectStatisticsComponent implements OnInit {
     const arr = newScoreVsCountData.filter(stat => stat.rate);
     // TODO: fixed xAxis ticks
     const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let countedArr = _.map(_.countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
-    const diff = _.difference(xAxisTicks, countedArr.map(t => t.name));
+    let countedArr = _map(_countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
+    const diff = _difference(xAxisTicks, countedArr.map(t => t.name));
     // hack fix when no data is available, show empty chart instead of all "0.00000001"
     if (diff.length === 10) {
       countedArr = [];
@@ -250,18 +238,18 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private groupAndCountByYear(arr) {
-    const arrByYear = _.groupBy(arr, (row) => {
+    const arrByYear = _groupBy(arr, (row) => {
       return day(row.addDate).year();
     });
-    const yearArr = this.getYearArr(_.min(Object.keys(arrByYear)), _.max(Object.keys(arrByYear)));
+    const yearArr = this.getYearArr(_min(Object.keys(arrByYear)), _max(Object.keys(arrByYear)));
     yearArr.forEach(row => {
       // have to consider year with no data, since we are storing accumulated data
       let tmpArr = arrByYear[row.name] || [];
-      tmpArr = _.reject(tmpArr, (thisRow) => !thisRow.rate);
+      tmpArr = _reject(tmpArr, (thisRow) => !thisRow.rate);
       // note down the yearAccumulatedCount
       this.yearAccumulatedCount[row.name] = (this.yearAccumulatedCount[row.name - 1] || 0) + tmpArr.length;
-      const curMean = (tmpArr.length === 0) ? 0 : _.meanBy(tmpArr, 'rate');
-      const prevYearData = _.filter(yearArr, tmp => tmp.name === (row.name - 1));
+      const curMean = (tmpArr.length === 0) ? 0 : _meanBy(tmpArr, 'rate');
+      const prevYearData = yearArr.filter(tmp => tmp.name === (row.name - 1));
       const prevAccumulatedMean = (prevYearData.length === 0) ? 0 : prevYearData[0].value;
       const prevAccumulatedCount = this.yearAccumulatedCount[row.name - 1] || 0;
       const curAccumulatedCount = tmpArr.length + prevAccumulatedCount;
@@ -273,7 +261,7 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private getYearArr(minYear, maxYear) {
-    return _.range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0}));
+    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0}));
   }
 
 }

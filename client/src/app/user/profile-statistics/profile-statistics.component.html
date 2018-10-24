@@ -8,7 +8,7 @@
            class="pl-1 long-text-truncate"></div>
       <div class="flex-grow-1"></div>
       <div [translate]="'statistics.updateTime.last'" [translateParams]="{time: getLastUpdateTime()}"
-           class="mr-2 flex-shrink-0">
+           class="mr-2 flex-shrink-0 d-none d-sm-block">
       </div>
       <mat-icon [matTooltip]="'statistics.updateTime.explanation.user' | translate: {time: getLastUpdateTime()}">
         help_outline

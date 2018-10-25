@@ -27,7 +27,6 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
   encapsulation: ViewEncapsulation.None
 })
 export class SubjectStatisticsComponent implements OnInit {
-  // todo: options for each chart
   colorScheme = BangumiStatsService.colorScheme;
   scoreVsCountData;
 

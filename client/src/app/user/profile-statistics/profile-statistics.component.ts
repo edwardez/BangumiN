@@ -32,7 +32,6 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
   styleUrls: ['./profile-statistics.component.scss']
 })
 export class ProfileStatisticsComponent implements OnInit, OnDestroy {
-  // todo: options for each chart
   colorScheme = BangumiStatsService.colorScheme;
   scoreVsCountData;
 

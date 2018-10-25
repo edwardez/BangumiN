@@ -10,6 +10,7 @@ export const environment = {
   BACKEND_AUTH_URL: 'https://api.bangumin.tv/auth',
   BACKEND_OAUTH_URL: 'https://api.bangumin.tv/oauth',
   BANGUMI_APP_ID: 'bgm1065aa2020942ce2',
+  COOKIE_DOMAIN: '.bangumin.tv',
   whitelistedDomains: ['api.bangumin.tv'],
   blacklistedRoutes: ['api.bangumin.tv/oauth', 'api.bangumin.tv/auth'],
   availableLanguages: {

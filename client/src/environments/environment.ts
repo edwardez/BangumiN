@@ -10,6 +10,7 @@ export const environment = {
   BACKEND_AUTH_URL: 'http://127.0.0.1:8081/auth',
   BACKEND_OAUTH_URL: 'http://127.0.0.1:8081/oauth',
   BANGUMI_APP_ID: 'bgm2535b10d2c3d3e8d',
+  COOKIE_DOMAIN: '127.0.0.1',
   whitelistedDomains: ['127.0.0.1:8081'],
   blacklistedRoutes: ['127.0.0.1:8081/api', '127.0.0.1:8081/oauth', '127.0.0.1:8081/auth'],
   availableLanguages: {

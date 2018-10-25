@@ -8,6 +8,7 @@ import {MatSnackBar} from '@angular/material';
 import {StorageService} from '../../../shared/services/storage.service';
 import {TranslateService} from '@ngx-translate/core';
 import {SnackBarService} from '../../../shared/services/snackBar/snack-bar.service';
+import {environment} from '../../../../environments/environment';
 
 
 enum QueryParamsType {
@@ -94,7 +95,7 @@ export class ActivateBangumiComponent implements OnInit, OnDestroy {
                 // get userInfo from cookie, then remove it in consideration of security
                 const userInfo: UserInfo = (this.cookieService.getObject('userInfo') ||
                   {bangumiActivationInfo: {}, banguminSettings: {}}) as UserInfo;
-                this.cookieService.remove('userInfo');
+                this.cookieService.remove('userInfo', {domain: environment.COOKIE_DOMAIN});
                 let queryParamsCheckResult: QueryParamsCheckResult;
                 if (isAuthenticated) {
                   if (ActivateBangumiComponent.isValidActivationCookie(userInfo)) {

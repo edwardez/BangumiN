@@ -10,6 +10,7 @@ export const environment = {
   BACKEND_AUTH_URL: 'https://api.dogfood.bangumin.tv/auth',
   BACKEND_OAUTH_URL: 'https://api.dogfood.bangumin.tv/oauth',
   BANGUMI_APP_ID: 'bgm1155aa5769e3a21f',
+  COOKIE_DOMAIN: '.dogfood.bangumin.tv',
   whitelistedDomains: ['api.dogfood.bangumin.tv'],
   blacklistedRoutes: ['api.dogfood.bangumin.tv/oauth', 'api.dogfood.bangumin.tv/auth'],
   availableLanguages: {

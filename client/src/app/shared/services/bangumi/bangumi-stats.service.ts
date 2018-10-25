@@ -7,9 +7,12 @@ import {SubjectStatsSchema} from '../../models/stats/subject-stats-schema';
 import {TranslateService} from '@ngx-translate/core';
 import {RecordSchema} from '../../models/stats/record-schema';
 import {map} from 'rxjs/operators';
-import meanBy from 'lodash/meanBy';
-import sortBy from 'lodash/sortBy';
-import sum from 'lodash/sum';
+import _meanBy from 'lodash/meanBy';
+import _sortBy from 'lodash/sortBy';
+import _sum from 'lodash/sum';
+import _map from 'lodash/map';
+import _countBy from 'lodash/countBy';
+import _difference from 'lodash/difference';
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +44,10 @@ export class BangumiStatsService {
       median = 0;
       stdDev = 0;
     } else {
-      mean = meanBy(records, 'rate');
-      const middle = (len + 1) / 2, sorted = sortBy(records, 'rate');
+      mean = _meanBy(records, 'rate');
+      const middle = (len + 1) / 2, sorted = _sortBy(records, 'rate');
       median = (sorted.length % 2) ? sorted[middle - 1].rate : (sorted[middle - 1.5].rate + sorted[middle - 0.5].rate) / 2;
-      stdDev = Math.sqrt(sum(records.map((i) => Math.pow((i.rate - mean), 2))) / len);
+      stdDev = Math.sqrt(_sum(records.map((i) => Math.pow((i.rate - mean), 2))) / len);
     }
     const numberChartNames = ['statistics.descriptiveChart.name.mean', 'statistics.descriptiveChart.name.median',
       'statistics.descriptiveChart.name.standardDeviation'];
@@ -56,6 +59,32 @@ export class BangumiStatsService {
           {name: res[numberChartNames[2]], value: stdDev.toFixed(2)}
         ])
       );
+  }
+
+  /**
+   * Groups and counts score data then return data which will be used in count bar chart
+   * @param scoreVsCountData Raw score vs count data
+   */
+  public groupAndCountByRate(scoreVsCountData: { collectionStatus: number, addDate: string, rate: number }[])
+    : { name: string, value: number }[] {
+    // reject record with null rate
+    const arr = scoreVsCountData.filter(stat => stat.rate);
+    // TODO: fixed xAxis ticks
+    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    let countedArr = _map(_countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
+    const diff = _difference(xAxisTicks, countedArr.map(t => t.name));
+    // hack fix when no data is available, show empty chart instead of all "0.00000001"
+    if (diff.length === 10) {
+      countedArr = [];
+    } else if (diff.length !== 0) {
+      diff.forEach((axis) => {
+        countedArr.push({name: axis, value: 0.000001});
+      });
+    }
+
+    return countedArr.sort(function (a: any, b: any) {
+      return a.name - b.name;
+    });
   }
 
   /**

@@ -4,7 +4,6 @@ import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.
 import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import _countBy from 'lodash/countBy';
-import _difference from 'lodash/difference';
 import _groupBy from 'lodash/groupBy';
 import _map from 'lodash/map';
 import _max from 'lodash/max';
@@ -197,24 +196,7 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private groupAndCountByRate(newScoreVsCountData) {
-    // reject record with null rate
-    const arr = newScoreVsCountData.filter(stat => stat.rate);
-    // TODO: fixed xAxis ticks
-    const xAxisTicks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let countedArr = _map(_countBy(arr, 'rate'), (val, key) => ({name: key, value: val}));
-    const diff = _difference(xAxisTicks, countedArr.map(t => t.name));
-    // hack fix when no data is available, show empty chart instead of all "0.00000001"
-    if (diff.length === 10) {
-      countedArr = [];
-    } else if (diff.length !== 0) {
-      diff.forEach((axis) => {
-        countedArr.push({name: axis, value: 0.000001});
-      });
-    }
-
-    this.scoreVsCountData = countedArr.sort(function (a: any, b: any) {
-      return a.name - b.name;
-    });
+    this.scoreVsCountData = this.bangumiStatsService.groupAndCountByRate(newScoreVsCountData);
   }
 
   private initStatsFormGroup() {

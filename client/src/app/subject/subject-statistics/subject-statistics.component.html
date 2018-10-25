@@ -99,7 +99,7 @@
       <div class="responsive-container-chart-height-low">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
-          [schemeType]="schemeType"
+          [schemeType]="'ordinal'"
           [results]="yearVsAccumulatedMeanData"
           [animations]=true
           [legend]="false"
@@ -114,7 +114,7 @@
           [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
           [timeline]=false
           [showGridLines]="true"
-          [rangeFillOpacity]="rangeFillOpacity"
+          [rangeFillOpacity]="0.15"
           [roundDomains]=false
           [tooltipDisabled]=false
           class="ml-1">

@@ -19,6 +19,10 @@ import _difference from 'lodash/difference';
 })
 export class BangumiStatsService {
 
+  static readonly colorScheme = {
+    domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
+  };
+
   constructor(private http: HttpClient,
               private translateService: TranslateService) {
   }
@@ -62,7 +66,7 @@ export class BangumiStatsService {
   }
 
   /**
-   * Groups and counts score data then return data which will be used in count bar chart
+   * Groups and counts score data by rate then return data which will be used in count bar chart
    * @param scoreVsCountData Raw score vs count data
    */
   public groupAndCountByRate(scoreVsCountData: { collectionStatus: number, addDate: string, rate: number }[])

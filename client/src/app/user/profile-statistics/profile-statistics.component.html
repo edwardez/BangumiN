@@ -156,7 +156,7 @@
       <div class="responsive-container-chart-height-high">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
-          [schemeType]="schemeType"
+          [schemeType]="'ordinal'"
           [results]="yearVsMeanData"
           [animations]=true
           [legend]="true"
@@ -171,7 +171,7 @@
           [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
           [timeline]=false
           [showGridLines]="true"
-          [rangeFillOpacity]="rangeFillOpacity"
+          [rangeFillOpacity]="0.15"
           [roundDomains]=false
           [tooltipDisabled]=false>
           <ng-template #tooltipTemplate let-model="model">

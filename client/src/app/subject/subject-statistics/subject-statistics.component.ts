@@ -28,17 +28,13 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
 })
 export class SubjectStatisticsComponent implements OnInit {
   // todo: options for each chart
-  xAxisLabel;
-  yAxisLabel;
-  colorScheme;
+  colorScheme = BangumiStatsService.colorScheme;
   scoreVsCountData;
 
   collectionStatusList;
   countByStateData;
   descStatData;
 
-  rangeFillOpacity = 0.15;
-  schemeType = 'ordinal';
   yearVsAccumulatedMeanData = [];
   // triggerValue;
 
@@ -60,18 +56,10 @@ export class SubjectStatisticsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
   ) {
-    // todo: translate legend and label
-    this.xAxisLabel = 'Score';
-    this.yAxisLabel = 'Count';
-
-    this.colorScheme = {
-      domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
-    };
-
-    this.initStatsFormGroup();
   }
 
   ngOnInit() {
+    this.initStatsFormGroup();
     this.activatedRoute.parent.parent.params
       .pipe(
         filter(params => params['subjectId']),

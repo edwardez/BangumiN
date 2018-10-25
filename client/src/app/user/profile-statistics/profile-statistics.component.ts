@@ -33,7 +33,7 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
 })
 export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   // todo: options for each chart
-  colorScheme;
+  colorScheme = BangumiStatsService.colorScheme;
   scoreVsCountData;
 
   // if user has no record under some subject type, that type won't be included
@@ -46,8 +46,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   readonly allValidCollectionStatusList: string[] = Object.keys(CollectionStatusId).filter(k => isNaN(Number(k)));
   selectedTypeListForscoreVsCount;
 
-  rangeFillOpacity = 0.15;
-  schemeType = 'ordinal';
   yearVsMeanData = [];
   // triggerValue;
 
@@ -77,21 +75,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private translateService: TranslateService
   ) {
-    this.colorScheme = {
-      domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
-    };
+    this.colorScheme = BangumiStatsService.colorScheme;
 
     this.selectedTypeListForscoreVsCount = this.userCurrentSubjectTypeList;
 
     this.initStatsFormGroup();
-  }
-
-  get AllSubjectTypes() {
-    return Object.keys(SubjectType).filter(k => isNaN(Number(k)));
-  }
-
-  get AllCollectionStatuses() {
-    return Object.keys(CollectionStatusId).filter(k => isNaN(Number(k)));
   }
 
   ngOnDestroy(): void {

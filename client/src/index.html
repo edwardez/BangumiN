@@ -13,12 +13,98 @@
 
   <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style type="text/css">
+    @keyframes lds-bars {
+      0%, 100% {
+        opacity: 1
+      }
+      50% {
+        opacity: .5
+      }
+    }
+
+    @-webkit-keyframes lds-bars {
+      0%, 100% {
+        opacity: 1
+      }
+      50% {
+        opacity: .5
+      }
+    }
+
+    .lds-css {
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .lds-bars {
+      align-self: center;
+      width: 250px !important;
+      height: 200px !important;
+      -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+      transform: translate(-100px, -100px) scale(1) translate(100px, 100px)
+    }
+
+    .lds-bars div {
+      position: absolute;
+      width: 20px;
+      height: 80px;
+      top: 60px;
+      -webkit-animation: lds-bars 1.2s cubic-bezier(.5, 0, .5, 1) infinite;
+      animation: lds-bars 1.2s cubic-bezier(.5, 0, .5, 1) infinite
+    }
+
+    .lds-bars div:nth-child(1) {
+      left: 30px;
+      background: #f09199;
+      -webkit-animation-delay: -.6s;
+      animation-delay: -.6s
+    }
+
+    .lds-bars div:nth-child(2) {
+      left: 70px;
+      background: #ffe691;
+      -webkit-animation-delay: -.4s;
+      animation-delay: -.4s
+    }
+
+    .lds-bars div:nth-child(3) {
+      left: 110px;
+      background: #95d5ee;
+      -webkit-animation-delay: -.2s;
+      animation-delay: -.2s
+    }
+
+    .lds-bars div:nth-child(4) {
+      left: 150px;
+      background: #585872
+    }
+
+    .lds-bars div:nth-child(5) {
+      left: 190px;
+      background: #9e4446;
+      -webkit-animation-delay: .2s;
+      animation-delay: .2s
+    }
+  </style>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2196f3">
 </head>
 <body>
-<app-root></app-root>
+<app-root>
+  <div class="lds-css">
+    <div class="lds-bars">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</app-root>
+
 <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 </html>

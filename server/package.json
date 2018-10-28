@@ -4,6 +4,10 @@
   "description": "server for BangumiN",
   "author": "edward",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardez/BangumiN.git"
+  },
   "main": "dist/src/index.js",
   "scripts": {
     "start": "NODE_ENV=prod node dist/src/index.js",

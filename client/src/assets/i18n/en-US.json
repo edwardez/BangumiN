@@ -125,7 +125,7 @@
     "signInUsingBangumi": "Use Bangumi account to login",
     "signInUsingBangumiNotice": "1. By clicking login, you agree to our <a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">Terms</a> and <a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">Privacy Policy</a>",
     "signUpBangumi": "Sign up a Bangumi account",
-    "signUpBangumiNotice": "2. BangumiN is not directly relevant to Bangumi, after signing up you need to go back to BangumiN to log in",
+    "signUpBangumiNotice": "2. BangumiN is not affiliated to Bangumi, after signing up you need to go back to BangumiN to log in",
     "waitForBangumiAuth": {
       "title": "Login in progress",
       "content": "Please complete the login process in the newly opened window, please don't close this window before login is completed.",
@@ -463,13 +463,13 @@
       "score": "Score",
       "count": "Count"
     },
-    "meanScorePerYearBarChart": {
-      "title": "Average score by year",
+    "userAccumulatedMeanLineChart": {
+      "title": "Accumulated Mean",
       "score": "Mean Score",
       "year": "Year",
       "tooltip": {
         "in": " in",
-        "wholeYear": "",
+        "until": "until{{untilTime}}",
         "mean": "Mean",
         "min": "Min",
         "max": "Max",
@@ -481,6 +481,8 @@
     },
     "subjectAccumulatedMeanLineChart": {
       "title": "Accumulated Mean",
+      "score": "Mean Score",
+      "year": "Year",
       "accumulatedMean": "Accumulated Mean",
       "accumulatedCOunt": "Accumulated Count",
       "until": "until"

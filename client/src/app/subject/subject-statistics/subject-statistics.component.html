@@ -100,7 +100,7 @@
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [schemeType]="'ordinal'"
-          [results]="yearVsAccumulatedMeanData"
+          [results]="accumulatedMeanData"
           [animations]=true
           [legend]="false"
           [gradient]="false"
@@ -110,14 +110,14 @@
           [showXAxisLabel]="true"
           [xAxisTickFormatting]="calendarAxisTickFormatting"
           [showYAxisLabel]="true"
-          [xAxisLabel]="'statistics.meanScorePerYearBarChart.year' | translate"
-          [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
+          [xAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.year' | translate"
+          [yAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.score' | translate"
           [timeline]=false
           [showGridLines]="true"
           [rangeFillOpacity]="0.15"
           [roundDomains]=false
           [tooltipDisabled]=false
-          class="ml-1">
+        >
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
@@ -130,7 +130,7 @@
             </h4>
             <h4>
               {{'statistics.subjectAccumulatedMeanLineChart.accumulatedCOunt' | translate}}:
-              {{getAccumulatedYearCount(model.name)}}
+              {{getScoringCountUntil(accumulatedMeanData, model.series,model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>

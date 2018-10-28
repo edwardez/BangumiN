@@ -3,18 +3,12 @@ import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
 import _groupBy from 'lodash/groupBy';
 import _map from 'lodash/map';
-import _max from 'lodash/max';
-import _maxBy from 'lodash/maxBy';
-import _meanBy from 'lodash/meanBy';
-import _min from 'lodash/min';
-import _minBy from 'lodash/minBy';
-import _reject from 'lodash/reject';
 import _range from 'lodash/range';
 import _uniqBy from 'lodash/uniqBy';
 import * as day from 'dayjs';
 import {takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
-import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
+import {AccumulatedMeanDataSchema, AccumulatedMeanPoint, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
@@ -25,6 +19,7 @@ import {BangumiUser} from '../../shared/models/BangumiUser';
 import {TitleService} from '../../shared/services/page/title.service';
 import {TranslateService} from '@ngx-translate/core';
 import {RecordSchema} from '../../shared/models/stats/record-schema';
+
 
 @Component({
   selector: 'app-profile-stats',
@@ -45,7 +40,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   readonly allValidCollectionStatusList: string[] = Object.keys(CollectionStatusId).filter(k => isNaN(Number(k)));
   selectedTypeListForscoreVsCount;
 
-  yearVsMeanData = [];
+  accumulatedMeanData: AccumulatedMeanDataSchema[] = [];
+  yearAccumulatedCount = {};
   // triggerValue;
 
   countByTypeDataTranslated;
@@ -59,7 +55,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   descStatFilterFormGroup: FormGroup;
   yearVsMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
-  yearCount = {};
   localTranslatedSubjectType;
   lastUpdateTime: number;
 
@@ -88,7 +83,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   getYearCount(year) {
-    return this.yearCount[year];
+    return this.yearAccumulatedCount[year];
   }
 
   ngOnInit() {
@@ -145,6 +140,13 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     return this.bangumiStatsService.getLastUpdateTime(this.lastUpdateTime);
   }
 
+  /**
+   * Get count of score for a user until a specific pointTime
+   */
+  getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: number) {
+    return BangumiStatsService.getScoringCountUntil(accumulatedMeanData, lineType, pointTime);
+  }
+
   calendarAxisTickFormatting(year) {
     if (Math.floor(year) !== year) {
       return '';
@@ -152,11 +154,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     return day().set('year', year).year();
   }
 
-  getYearScoreMinMax(subjectType, year, minMax) {
-    const typeArr = this.yearVsMeanData.filter(row => row.name === subjectType);
-    const yearArr = typeArr[0].series.filter(row => row.name === year);
-    return yearArr[0][minMax];
-  }
 
   private initYearVsMean() {
     // initialize the chart with all types
@@ -182,11 +179,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
           this.groupAndCountByYearOfType(thisTypeArr, triggerValue);
         } else {
           // deselected a value
-          const newArr = this.yearVsMeanData.filter((row) => {
+          const newArr = this.accumulatedMeanData.filter((row) => {
             // convert changed type into user's language for comparison
             return row.name !== this.localTranslatedSubjectType[triggerValue];
           });
-          this.yearVsMeanData = [...newArr];
+          this.accumulatedMeanData = [...newArr];
         }
       });
 
@@ -203,7 +200,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   private refreshYearVsMean(newYearVsMeanData, selectedTypeList) {
-    this.yearVsMeanData = [];
+    this.accumulatedMeanData = [];
     const arr = newYearVsMeanData
       .filter(stat => selectedTypeList.includes(SubjectType[stat.subjectType]));
     const arrByType = _groupBy(arr, (row) => {
@@ -310,28 +307,13 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private groupAndCountByYearOfType(arr, type: string) {
-    const arrByYear = _groupBy(arr, (row) => {
-      return day(row.addDate).year();
-    });
-    const yearArr = this.getYearArr(_min(Object.keys(arrByYear)), _max(Object.keys(arrByYear)));
-    yearArr.forEach(row => {
-      let tmpArr = arrByYear[row.name];
-      if (tmpArr) {
-        row.min = (_minBy(tmpArr, 'rate')) ? +_minBy(tmpArr, 'rate').rate : 0;
-        row.max = (_maxBy(tmpArr, 'rate')) ? +_maxBy(tmpArr, 'rate').rate : 0;
-        tmpArr = _reject(tmpArr, (thisRow) => !thisRow.rate);
-        // note down the yearCount
-        this.yearCount[row.name] = tmpArr.length;
-        row.value = (tmpArr.length === 0) ? 0 : _meanBy(tmpArr, 'rate');
-      }
-    });
-    // translate subjectType into user's language
-    this.yearVsMeanData = [...this.yearVsMeanData, {name: this.localTranslatedSubjectType[type], series: yearArr}];
+  private groupAndCountByYearOfType(allRecords: { collectionStatus: number, addDate: string, rate: number }[], type: string) {
+    this.accumulatedMeanData = [...this.accumulatedMeanData,
+      {name: this.localTranslatedSubjectType[type], series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
   }
 
-  private getYearArr(minYear, maxYear) {
-    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, min: 0, max: 0}));
+  private initAccumulatedMeanByYear(minYear, maxYear): AccumulatedMeanPoint[] {
+    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, count: 0}));
   }
 
   private refreshDescStat(subjectStat: any[]) {

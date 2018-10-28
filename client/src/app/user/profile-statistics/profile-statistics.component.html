@@ -22,7 +22,7 @@
         <ngx-charts-advanced-pie-chart
           [scheme]="colorScheme"
           [results]="countByTypeDataTranslated"
-          [animations]=true
+          [animations]="true"
           [gradient]="false"
           [tooltipDisabled]=false
           [label]="'statistics.summaryChart.label' | translate"
@@ -45,7 +45,7 @@
           cardColor="#232837"
           emptyColor="#1e222e"
           [results]="descStatData"
-          [animations]=true>
+          [animations]="true">
         </ngx-charts-number-card>
       </div>
 
@@ -149,7 +149,7 @@
 
   <mat-card class="col-12 col-lg-5-half flex-lg-grow-1 ml-lg-2 mt-2">
     <mat-card-header>
-      <mat-card-title class="text-align-center">{{'statistics.meanScorePerYearBarChart.title' | translate}}
+      <mat-card-title class="text-align-center">{{'statistics.userAccumulatedMeanLineChart.title' | translate}}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -157,8 +157,8 @@
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [schemeType]="'ordinal'"
-          [results]="yearVsMeanData"
-          [animations]=true
+          [results]="accumulatedMeanData"
+          [animations]="true"
           [legend]="true"
           [gradient]="false"
           [legendTitle]="'statistics.common.legend' | translate"
@@ -167,28 +167,27 @@
           [showXAxisLabel]="true"
           [xAxisTickFormatting]="calendarAxisTickFormatting"
           [showYAxisLabel]="true"
-          [xAxisLabel]="'statistics.meanScorePerYearBarChart.year' | translate"
-          [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
+          [xAxisLabel]="'statistics.userAccumulatedMeanLineChart.year' | translate"
+          [yAxisLabel]="'statistics.userAccumulatedMeanLineChart.score' | translate"
           [timeline]=false
           [showGridLines]="true"
+          [autoScale]="true"
           [rangeFillOpacity]="0.15"
           [roundDomains]=false
           [tooltipDisabled]=false>
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{model.series}}{{'statistics.meanScorePerYearBarChart.tooltip.in' |
-              translate}} {{model.name}} {{'statistics.meanScorePerYearBarChart.tooltip.wholeYear' | translate}}
+              {{model.series}}{{'statistics.userAccumulatedMeanLineChart.tooltip.in' |
+              translate}} {{'statistics.userAccumulatedMeanLineChart.tooltip.until' | translate: {untilTime:model.name}
+              }}
             </h3>
             <h4>
-              {{'statistics.meanScorePerYearBarChart.tooltip.mean' | translate}}: {{model.value | number: '1.1-2'}}
-              • {{'statistics.meanScorePerYearBarChart.tooltip.min' | translate}}: {{getYearScoreMinMax(model.series,
-              model.name, 'min')}}
-              • {{'statistics.meanScorePerYearBarChart.tooltip.max' | translate}}: {{getYearScoreMinMax(model.series,
-              model.name, 'max')}}
+              {{'statistics.userAccumulatedMeanLineChart.tooltip.mean' | translate}}: {{model.value | number: '1.1-2'}}
             </h4>
             <h4>
-              {{'statistics.meanScorePerYearBarChart.tooltip.count' | translate}}: {{getYearCount(model.name)}}
+              {{'statistics.userAccumulatedMeanLineChart.tooltip.count' | translate}}:
+              {{getScoringCountUntil(accumulatedMeanData, model.series,model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>

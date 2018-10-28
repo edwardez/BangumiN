@@ -13,6 +13,21 @@ import _sum from 'lodash/sum';
 import _map from 'lodash/map';
 import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
+import _groupBy from 'lodash/groupBy';
+import _min from 'lodash/min';
+import _range from 'lodash/range';
+
+
+export interface AccumulatedMeanDataSchema {
+  name: string;
+  series: AccumulatedMeanPoint[];
+}
+
+export interface AccumulatedMeanPoint {
+  name: number;
+  value: number;
+  count: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +47,62 @@ export class BangumiStatsService {
     // if parsed date is invalid: 1. getTime() returns NaN or getFullYear() returns a number that's smaller than the time that BangumiN
     // starts collecting data(not possible)
     return !(isNaN(date.getTime()) || date.getFullYear() < BangumiNInitialYear);
+  }
+
+  /**
+   * Get count of score for a user until a specific pointTime
+   * @param accumulatedMeanData Accumulated mean data
+   * @param lineType Type of the line, type name is translated, for example, in user accumulated mean line chart, each line represents a
+   *     subject type
+   * @param pointTime Time that the point refers to on a line, score counts until this time will be returned
+   */
+  static getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: number) {
+    const targetAccumulatedMeanData: AccumulatedMeanDataSchema = accumulatedMeanData.find(d => d.name === lineType) ||
+      {name: lineType, series: [{name: pointTime, count: 0, value: 0}]};
+    return targetAccumulatedMeanData.series.find(d => d.name === pointTime).count;
+  }
+
+  /**
+   * Initialize an array which contains name, value and count from the minYear to maxYear
+   * i.e. [{name: 2010, value: 0, count: 0}, {name: 2011, value: 0, count: 0}]
+   * @param minYear Start point of year
+   * @param maxYear End point of year
+   */
+  static initAccumulatedMeanByYear(minYear: number, maxYear: number): AccumulatedMeanPoint[] {
+    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, count: 0}));
+  }
+
+  /**
+   * Calculates descriptive chart data, mean, median and standard deviation are calculated and names are translated to corresponding labels
+   * If rate of a record is null, it will be excluded
+   * @param allRecords All score records
+   */
+  static calculateAccumulatedMean(allRecords: { collectionStatus: number, addDate: string, rate: number }[]): AccumulatedMeanPoint[] {
+    const accumulatedCountByYear = {};
+    const recordsByYear = _groupBy(
+      allRecords.filter(record => record.rate),
+      (row) => {
+        return new Date(row.addDate).getFullYear();
+      });
+    const accumulatedMeanByYear = BangumiStatsService.initAccumulatedMeanByYear(+_min(Object.keys(recordsByYear)),
+      new Date().getFullYear());
+    accumulatedMeanByYear.forEach(row => {
+      const currentYear = row.name;
+      // have to consider year with no data, since we are storing accumulated data
+      const recordsInCurrentYear = recordsByYear[currentYear] || [];
+      // note down the yearAccumulated Count
+      accumulatedCountByYear[currentYear] = (accumulatedCountByYear[currentYear - 1] || 0) + recordsInCurrentYear.length;
+      const currentMean = (recordsInCurrentYear.length === 0) ? 0 : _meanBy(recordsInCurrentYear, 'rate');
+      const lastYearData = accumulatedMeanByYear.filter(currentMeanData => currentMeanData.name === (currentYear - 1))[0];
+      const meanUntilLastYear = lastYearData ? lastYearData.value : 0;
+      const countsUntilLastYear = accumulatedCountByYear[currentYear - 1] || 0;
+      const countsUntilCurrentYear = recordsInCurrentYear.length + countsUntilLastYear;
+      row.value = countsUntilCurrentYear ?
+        ((currentMean * recordsInCurrentYear.length
+          + countsUntilLastYear * meanUntilLastYear) / countsUntilCurrentYear) : 0;
+      row.count = accumulatedCountByYear[currentYear];
+    });
+    return accumulatedMeanByYear;
   }
 
   /**
@@ -65,6 +136,7 @@ export class BangumiStatsService {
       );
   }
 
+
   /**
    * Groups and counts score data by rate then return data which will be used in count bar chart
    * @param scoreVsCountData Raw score vs count data
@@ -90,6 +162,7 @@ export class BangumiStatsService {
       return a.name - b.name;
     });
   }
+
 
   /**
    * Calculates last update time then converts to locale string

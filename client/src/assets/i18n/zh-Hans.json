@@ -461,13 +461,13 @@
       "score": "分数",
       "count": "合计"
     },
-    "meanScorePerYearBarChart": {
-      "title": "每年平均分",
+    "userAccumulatedMeanLineChart": {
+      "title": "累积平均分",
       "score": "平均分",
       "year": "年份",
       "tooltip": {
         "in": ":",
-        "wholeYear": "全年",
+        "until": "截止{{untilTime}}",
         "mean": "平均数",
         "min": "最小",
         "max": "最大",
@@ -479,6 +479,8 @@
     },
     "subjectAccumulatedMeanLineChart": {
       "title": "累积平均分",
+      "score": "平均分",
+      "year": "年份",
       "accumulatedMean": "累积平均分",
       "accumulatedCOunt": "累积打分人数",
       "until": "截止"

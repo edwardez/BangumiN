@@ -1,16 +1,10 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
-import {BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
+import {AccumulatedMeanDataSchema, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import _countBy from 'lodash/countBy';
-import _groupBy from 'lodash/groupBy';
 import _map from 'lodash/map';
-import _max from 'lodash/max';
-import _meanBy from 'lodash/meanBy';
-import _min from 'lodash/min';
-import _reject from 'lodash/reject';
-import _range from 'lodash/range';
 import _uniqBy from 'lodash/uniqBy';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
@@ -34,7 +28,7 @@ export class SubjectStatisticsComponent implements OnInit {
   countByStateData;
   descStatData;
 
-  yearVsAccumulatedMeanData = [];
+  accumulatedMeanData = [];
   // triggerValue;
 
   targetSubject;
@@ -96,8 +90,11 @@ export class SubjectStatisticsComponent implements OnInit {
       });
   }
 
-  getAccumulatedYearCount(year) {
-    return this.yearAccumulatedCount[year];
+  /**
+   * Get count of score for a user until a specific pointTime
+   */
+  getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: number) {
+    return BangumiStatsService.getScoringCountUntil(accumulatedMeanData, lineType, pointTime);
   }
 
   calendarAxisTickFormatting(year) {
@@ -160,7 +157,7 @@ export class SubjectStatisticsComponent implements OnInit {
   }
 
   private refreshYearVsAccumulatedMean(newYearVsAccumulatedMeanData) {
-    this.yearVsAccumulatedMeanData = [];
+    this.accumulatedMeanData = [];
     this.groupAndCountByYear(newYearVsAccumulatedMeanData);
   }
 
@@ -206,31 +203,9 @@ export class SubjectStatisticsComponent implements OnInit {
     );
   }
 
-  private groupAndCountByYear(arr) {
-    const arrByYear = _groupBy(arr, (row) => {
-      return day(row.addDate).year();
-    });
-    const yearArr = this.getYearArr(_min(Object.keys(arrByYear)), _max(Object.keys(arrByYear)));
-    yearArr.forEach(row => {
-      // have to consider year with no data, since we are storing accumulated data
-      let tmpArr = arrByYear[row.name] || [];
-      tmpArr = _reject(tmpArr, (thisRow) => !thisRow.rate);
-      // note down the yearAccumulatedCount
-      this.yearAccumulatedCount[row.name] = (this.yearAccumulatedCount[row.name - 1] || 0) + tmpArr.length;
-      const curMean = (tmpArr.length === 0) ? 0 : _meanBy(tmpArr, 'rate');
-      const prevYearData = yearArr.filter(tmp => tmp.name === (row.name - 1));
-      const prevAccumulatedMean = (prevYearData.length === 0) ? 0 : prevYearData[0].value;
-      const prevAccumulatedCount = this.yearAccumulatedCount[row.name - 1] || 0;
-      const curAccumulatedCount = tmpArr.length + prevAccumulatedCount;
-      row.value = (curAccumulatedCount === 0) ? 0 :
-        ((curMean * tmpArr.length
-          + prevAccumulatedCount * prevAccumulatedMean) / curAccumulatedCount);
-    });
-    this.yearVsAccumulatedMeanData = [{name: this.targetSubject.subjectName.preferred, series: yearArr}];
-  }
-
-  private getYearArr(minYear, maxYear) {
-    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0}));
+  private groupAndCountByYear(allRecords: { collectionStatus: number, addDate: string, rate: number }[]) {
+    this.accumulatedMeanData =
+      [{name: this.targetSubject.subjectName.preferred, series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
   }
 
 }

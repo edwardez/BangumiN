@@ -123,7 +123,7 @@ export class NavSearchBarComponent implements OnInit {
 
     if (option.searchIn === SearchIn.user && option.searchBy === SearchBy.id) {
       // user id must be pure alphanum, cannot start with 9
-      return /^[a-zA-Z1-9][a-zA-Z0-9]*$/.test(trimmedSearchValue);
+      return /^[a-zA-Z1-9][a-zA-Z0-9_]*$/.test(trimmedSearchValue);
     }
 
     return true;

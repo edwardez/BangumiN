@@ -3,12 +3,11 @@ import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
 import _groupBy from 'lodash/groupBy';
 import _map from 'lodash/map';
-import _range from 'lodash/range';
 import _uniqBy from 'lodash/uniqBy';
 import * as day from 'dayjs';
 import {takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
-import {AccumulatedMeanDataSchema, AccumulatedMeanPoint, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
+import {AccumulatedMeanDataSchema, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
@@ -41,8 +40,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   selectedTypeListForscoreVsCount;
 
   accumulatedMeanData: AccumulatedMeanDataSchema[] = [];
-  yearAccumulatedCount = {};
-  // triggerValue;
 
   countByTypeDataTranslated;
   // mean, median, stdDev
@@ -69,10 +66,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private translateService: TranslateService
   ) {
-    this.colorScheme = BangumiStatsService.colorScheme;
-
     this.selectedTypeListForscoreVsCount = this.userCurrentSubjectTypeList;
-
     this.initStatsFormGroup();
   }
 
@@ -80,10 +74,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     // unsubscribe, we can also first() in subscription
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  getYearCount(year) {
-    return this.yearAccumulatedCount[year];
   }
 
   ngOnInit() {
@@ -261,6 +251,9 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
     // edit the number cards on change of subjectType selection
     this.descStatFilterFormGroup.controls['subjectTypeSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newTypeList => {
         const newArr = this.filterBySubjectTypeAndState(
           newTypeList,
@@ -271,6 +264,9 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
     // edit the number cards on change of collection status selection
     this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.filterBySubjectTypeAndState(
           this.descStatFilterFormGroup.value.subjectTypeSelect,
@@ -310,10 +306,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   private groupAndCountByYearOfType(allRecords: { collectionStatus: number, addDate: string, rate: number }[], type: string) {
     this.accumulatedMeanData = [...this.accumulatedMeanData,
       {name: this.localTranslatedSubjectType[type], series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
-  }
-
-  private initAccumulatedMeanByYear(minYear, maxYear): AccumulatedMeanPoint[] {
-    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, count: 0}));
   }
 
   private refreshDescStat(subjectStat: any[]) {

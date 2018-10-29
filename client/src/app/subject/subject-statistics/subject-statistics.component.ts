@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {AccumulatedMeanDataSchema, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
@@ -8,10 +8,10 @@ import _map from 'lodash/map';
 import _uniqBy from 'lodash/uniqBy';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import * as day from 'dayjs';
-import {filter, switchMap} from 'rxjs/operators';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {TranslateService} from '@ngx-translate/core';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subject} from 'rxjs';
 import {RecordSchema} from '../../shared/models/stats/record-schema';
 
 @Component({
@@ -20,7 +20,7 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
   styleUrls: ['./subject-statistics.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SubjectStatisticsComponent implements OnInit {
+export class SubjectStatisticsComponent implements OnInit, OnDestroy {
   colorScheme = BangumiStatsService.colorScheme;
   scoreVsCountData;
 
@@ -40,6 +40,8 @@ export class SubjectStatisticsComponent implements OnInit {
   yearVsAccumulatedMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
   yearAccumulatedCount = {};
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,6 +92,12 @@ export class SubjectStatisticsComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    // unsubscribe, we can also first() in subscription
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   /**
    * Get count of score for a user until a specific pointTime
    */
@@ -126,6 +134,9 @@ export class SubjectStatisticsComponent implements OnInit {
 
     // edit the number cards on change of collection status selection
     this.descStatFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.filterByState(
           newStateList
@@ -147,6 +158,9 @@ export class SubjectStatisticsComponent implements OnInit {
 
     // edit the chart on change of collection status selection
     this.yearVsAccumulatedMeanFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.targetSubjectStatsArr
           .filter(stat => newStateList.includes(CollectionStatusId[stat.collectionStatus]));
@@ -167,6 +181,9 @@ export class SubjectStatisticsComponent implements OnInit {
 
     // edit the chart on change of collection status selection
     this.scoreVsCountFilterFormGroup.controls['stateSelect'].valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(newStateList => {
         const newArr = this.filterByState(newStateList);
         this.groupAndCountByRate(newArr);

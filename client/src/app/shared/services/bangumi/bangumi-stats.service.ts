@@ -16,6 +16,7 @@ import _difference from 'lodash/difference';
 import _groupBy from 'lodash/groupBy';
 import _min from 'lodash/min';
 import _range from 'lodash/range';
+import _isEmpty from 'lodash/isEmpty';
 
 
 export interface AccumulatedMeanDataSchema {
@@ -84,6 +85,10 @@ export class BangumiStatsService {
       (row) => {
         return new Date(row.addDate).getFullYear();
       });
+    // is there's no record after filtering, return empty array
+    if (_isEmpty(recordsByYear)) {
+      return [];
+    }
     const accumulatedMeanByYear = BangumiStatsService.initAccumulatedMeanByYear(+_min(Object.keys(recordsByYear)),
       new Date().getFullYear());
     accumulatedMeanByYear.forEach(row => {

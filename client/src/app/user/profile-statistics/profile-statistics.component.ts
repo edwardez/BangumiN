@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
 import _groupBy from 'lodash/groupBy';
+import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import _uniqBy from 'lodash/uniqBy';
 import * as day from 'dayjs';
@@ -47,7 +48,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
   targetUser: BangumiUser;
   // raw data - CONST!
-  targetUserStatsArr;
+  targetUserStatsArr: RecordSchema[];
 
   descStatFilterFormGroup: FormGroup;
   yearVsMeanFilterFormGroup: FormGroup;
@@ -165,8 +166,10 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
         const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
         // selected a value
         if (action === 'select') {
+          const currentStateList = this.yearVsMeanFilterFormGroup.value.stateSelect;
           const thisTypeArr = this.targetUserStatsArr
-            .filter((stat) => (SubjectType[stat.subjectType] === triggerValue));
+            .filter((stat) => (SubjectType[stat.subjectType] === triggerValue &&
+              currentStateList.includes(CollectionStatusId[stat.collectionStatus])));
           this.groupAndCountByYearOfType(thisTypeArr, triggerValue);
         } else {
           // deselected a value
@@ -305,8 +308,11 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   private groupAndCountByYearOfType(allRecords: { collectionStatus: number, addDate: string, rate: number }[], type: string) {
-    this.accumulatedMeanData = [...this.accumulatedMeanData,
-      {name: this.localTranslatedSubjectType[type], series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
+    const accumulatedMeanByYear = BangumiStatsService.calculateAccumulatedMean(allRecords);
+    if (!_isEmpty(accumulatedMeanByYear)) {
+      this.accumulatedMeanData = [...this.accumulatedMeanData,
+        {name: this.localTranslatedSubjectType[type], series: accumulatedMeanByYear}];
+    }
   }
 
   private refreshDescStat(subjectStat: any[]) {

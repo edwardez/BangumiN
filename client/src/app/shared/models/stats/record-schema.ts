@@ -7,9 +7,9 @@ export interface RecordSchema {
   username?: string;
   nickname?: string;
   subjectType?: SubjectType;
-  collectionStatus?: CollectionStatusId;
-  addDate?: string;
-  rate?: number;
+  collectionStatus: CollectionStatusId;
+  addDate: string;
+  rate: number;
   tags?: string[];
   comment?: string;
 }

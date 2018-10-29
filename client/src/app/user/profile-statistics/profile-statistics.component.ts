@@ -79,6 +79,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.parent.params
       .subscribe(params => {
+        this.ngUnsubscribe.next();
         const targetUserId = params['userId'];
         this.getUserProfile(targetUserId);
         forkJoin([

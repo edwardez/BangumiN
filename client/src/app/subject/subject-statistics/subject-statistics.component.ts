@@ -65,6 +65,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe(res => {
+        this.ngUnsubscribe.next();
         if (res) {
           this.targetSubject = res[0];
           const defaultArr = res[1].stats as RecordSchema[];

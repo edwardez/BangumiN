@@ -473,7 +473,7 @@
         "mean": "Mean",
         "min": "Min",
         "max": "Max",
-        "count": "Count"
+        "count": "Scored count"
       }
     },
     "subjectCountBarChart": {

@@ -471,7 +471,7 @@
         "mean": "平均数",
         "min": "最小",
         "max": "最大",
-        "count": "总数"
+        "count": "打分总数"
       }
     },
     "subjectCountBarChart": {

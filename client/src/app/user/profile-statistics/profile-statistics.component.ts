@@ -155,8 +155,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
   private initAccumulatedMean() {
     // initialize the chart with all types
-    const selectedTypeListForaccumulatedMean = this.accumulatedMeanFilterFormGroup.value.subjectTypeSelect;
-    this.refreshAccumulatedMean(this.targetUserStatsArr, selectedTypeListForaccumulatedMean);
+    const selectedTypeListForAccumulatedMean = this.accumulatedMeanFilterFormGroup.value.subjectTypeSelect;
+    this.refreshAccumulatedMean(this.targetUserStatsArr, selectedTypeListForAccumulatedMean);
 
     // edit the chart on change of subjectType selection
     // use formControl.valueChanges instead of selectionChange since we want to modify the chart minimally,
@@ -167,21 +167,21 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
       )
       .subscribe(newVal => {
         const oldVal = this.accumulatedMeanFilterFormGroup.value.subjectTypeSelect;
-        const triggerValue = (newVal.length < oldVal.length) ?
-          _difference(oldVal, newVal)[0] as string : _difference(newVal, oldVal)[0] as string;
-        const action = (newVal.length < oldVal.length) ? 'deSelect' : 'select';
-        // selected a value
-        if (action === 'select') {
+        const changedSubjectType = (newVal.length > oldVal.length) ?
+          _difference(newVal, oldVal)[0] as string : _difference(oldVal, newVal)[0] as string;
+
+        // User selects a new value
+        if (newVal.length > oldVal.length) {
           const currentStateList = this.accumulatedMeanFilterFormGroup.value.stateSelect;
           const thisTypeArr = this.targetUserStatsArr
-            .filter((stat) => (SubjectType[stat.subjectType] === triggerValue &&
+            .filter((stat) => (SubjectType[stat.subjectType] === changedSubjectType &&
               currentStateList.includes(CollectionStatusId[stat.collectionStatus])));
-          this.calculatedAccumulatedMeanPoints(thisTypeArr, triggerValue);
+          this.calculatedAccumulatedMeanPoints(thisTypeArr, changedSubjectType);
         } else {
-          // deselected a value
+          // User deselects a value
           const newArr = this.accumulatedMeanData.filter((row) => {
             // convert changed type into user's language for comparison
-            return row.name !== this.localTranslatedSubjectType[triggerValue];
+            return row.name !== this.localTranslatedSubjectType[changedSubjectType];
           });
           this.accumulatedMeanData = [...newArr];
         }

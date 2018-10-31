@@ -13,7 +13,7 @@ import _sum from 'lodash/sum';
 import _map from 'lodash/map';
 import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
-import _range from 'lodash/range';
+import {CommonUtils} from '../../utils/common-utils';
 
 
 export interface AccumulatedMeanDataSchema {
@@ -54,20 +54,29 @@ export class BangumiStatsService {
    *     subject type
    * @param pointTime Time that the point refers to on a line, score counts until this time will be returned
    */
-  static getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: number) {
+  static getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: Date) {
     const targetAccumulatedMeanData: AccumulatedMeanDataSchema = accumulatedMeanData.find(d => d.name === lineType) ||
       {name: lineType, series: [{name: pointTime, count: 0, value: 0}]};
     return targetAccumulatedMeanData.series.find(d => d.name === pointTime).count;
   }
 
   /**
-   * Initialize an array which contains name, value and count from the minYear to maxYear
-   * i.e. [{name: 2010, value: 0, count: 0}, {name: 2011, value: 0, count: 0}]
-   * @param minYear Start point of year
-   * @param maxYear End point of year
+   * Check decimals for the percentage number(in range 0 ~100), if the current decimals are larger than {@param maxDecimals}, then format
+   * it according to {@param maxDecimals}
+   * @param percentage
+   * @param maxDecimals
+   * @param maxPrecision
    */
-  static initAccumulatedMeanByYear(minYear: number, maxYear: number): AccumulatedMeanPoint[] {
-    return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, count: 0}));
+  static formatFloatingPoint(percentage: number, maxDecimals = 2, maxPrecision = 1) {
+    return CommonUtils.getPrecision(percentage) >= maxDecimals ? Number(percentage).toFixed(maxPrecision) : percentage;
+  }
+
+  /**
+   * Format date into a simple format like yyyy-mm-dd
+   * @param date A date object
+   */
+  static formatDateToSimpleString(date: Date) {
+    return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
   }
 
 
@@ -75,8 +84,6 @@ export class BangumiStatsService {
    * Calculates descriptive chart data, mean, median and standard deviation are calculated and names are translated to corresponding labels
    * If rate of a record is null, it will be excluded
    * @param sortedRecords All score records, sorted by addedAt(guaranteed by server side handling)
-   * @param startDate
-   * @param endDate
    */
   static calculateAccumulatedMean(sortedRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[]):
     AccumulatedMeanPoint[] {

@@ -22,7 +22,8 @@
         <ngx-charts-advanced-pie-chart
           [scheme]="colorScheme"
           [results]="countByTypeDataTranslated"
-          [animations]="true"
+          [percentageFormatting]="formatStateData"
+          [animations]="false"
           [gradient]="false"
           [tooltipDisabled]=false
           [label]="'statistics.summaryChart.label' | translate"
@@ -157,6 +158,7 @@
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [schemeType]="'ordinal'"
+          [curve]="lineCurveType"
           [results]="accumulatedMeanData"
           [animations]="false"
           [legend]="true"
@@ -179,7 +181,7 @@
             <!-- todo: left align -->
             <h3>
               {{model.series}} {{'statistics.userAccumulatedMeanLineChart.tooltip.until' | translate:
-              {untilTime:model.name}
+              {untilTime: formatDateToSimpleString(model.name)}
               }}
             </h3>
             <h4>
@@ -187,7 +189,7 @@
             </h4>
             <h4>
               {{'statistics.userAccumulatedMeanLineChart.tooltip.count' | translate}}:
-              {{getScoringCountUntil(accumulatedMeanData, model.series,model.name)}}
+              {{getScoringCountUntil(accumulatedMeanData, model.series, model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>
@@ -195,13 +197,13 @@
 
 
       <form class="row no-gutters justify-content-center align-items-center ml-1"
-            [formGroup]="yearVsMeanFilterFormGroup">
+            [formGroup]="accumulatedMeanFilterFormGroup">
         <div class="col-1">
           <mat-icon>filter_list</mat-icon>
         </div>
         <mat-form-field class="col">
           <mat-select
-            [formControl]="yearVsMeanFilterFormGroup.get('subjectTypeSelect')"
+            [formControl]="accumulatedMeanFilterFormGroup.get('subjectTypeSelect')"
             multiple>
             <ng-container *ngFor="let type of allValidSubjectTypeList">
               <mat-option *ngIf="userCurrentSubjectTypeList.indexOf(type) !== -1" [value]="type">{{'common.category.' +
@@ -213,7 +215,7 @@
         <div class="col-1"></div>
         <mat-form-field class="col">
           <mat-select
-            [formControl]="yearVsMeanFilterFormGroup.get('stateSelect')"
+            [formControl]="accumulatedMeanFilterFormGroup.get('stateSelect')"
             multiple>
             <ng-container *ngFor="let status of allValidCollectionStatusList">
               <mat-option *ngIf="collectionStatusList.indexOf(status) !== -1" [value]="status">

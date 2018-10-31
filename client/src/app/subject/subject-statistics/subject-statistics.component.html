@@ -19,9 +19,9 @@
           [scheme]="colorScheme"
           [results]="countByStateData"
           [label]="'statistics.summaryChart.label' | translate"
+          [percentageFormatting]="formatStateData"
           [animations]=false
           [gradient]="false"
-          [percentageFormatting]="formatStateData"
           [tooltipDisabled]=false
           [tooltipText]="pieTooltipText">
         </ngx-charts-advanced-pie-chart>
@@ -111,7 +111,7 @@
           [xAxis]="true"
           [yAxis]="true"
           [showXAxisLabel]="true"
-          [xAxisTickFormatting]="calendarAxisTickFormatting"
+          [xAxisTickFormatting]="formatDateToSimpleString"
           [showYAxisLabel]="true"
           [xAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.year' | translate"
           [yAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.score' | translate"
@@ -125,7 +125,7 @@
             <!-- todo: left align -->
             <h3>
               {{model.series.substring(0, 12)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
-              {{calendarAxisTickFormatting(model.name)}}
+              {{formatDateToSimpleString(model.name)}}
             </h3>
             <h4>
               {{'statistics.subjectAccumulatedMeanLineChart.accumulatedMean' | translate}}: {{model.value | number:
@@ -141,13 +141,13 @@
 
 
       <form class="row no-gutters justify-content-center align-items-center ml-1"
-            [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
+            [formGroup]="accumulatedMeanFilterFormGroup">
         <div class="col-1">
           <mat-icon>filter_list</mat-icon>
         </div>
         <mat-form-field class="col">
           <mat-select
-            [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
+            [formControl]="accumulatedMeanFilterFormGroup.get('stateSelect')"
             multiple>
             <mat-option *ngFor="let status of collectionStatusList" [value]="status">
               {{'common.statusFullname.' + status | translate}}

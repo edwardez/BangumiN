@@ -38,9 +38,8 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
 
   lastUpdateTime: number;
   descStatFilterFormGroup: FormGroup;
-  yearVsAccumulatedMeanFilterFormGroup: FormGroup;
+  accumulatedMeanFilterFormGroup: FormGroup;
   scoreVsCountFilterFormGroup: FormGroup;
-  yearAccumulatedCount = {};
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -84,12 +83,12 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
           );
           // initialize filter form groups
           this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-          this.yearVsAccumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+          this.accumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
           this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
 
           this.initDescStat();
           this.initScoreVsCount();
-          this.initYearVsAccumulatedMean();
+          this.initAccumulatedMean();
         }
       });
   }
@@ -103,12 +102,12 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
   /**
    * Get count of score for a user until a specific pointTime
    */
-  getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: number) {
+  getScoringCountUntil(accumulatedMeanData: AccumulatedMeanDataSchema[], lineType: string, pointTime: Date) {
     return BangumiStatsService.getScoringCountUntil(accumulatedMeanData, lineType, pointTime);
   }
 
-  calendarAxisTickFormatting(addedAt: Date) {
-    return addedAt.getFullYear() + '/' + (addedAt.getMonth() + 1) + '/' + addedAt.getDate();
+  formatDateToSimpleString(addedAt: Date) {
+    return BangumiStatsService.formatDateToSimpleString(addedAt);
   }
 
   pieTooltipText({data}) {
@@ -122,7 +121,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
   }
 
   formatStateData(percentage) {
-    return Math.round(percentage);
+    return BangumiStatsService.formatFloatingPoint(percentage);
   }
 
   getLastUpdateTime() {
@@ -154,28 +153,25 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initYearVsAccumulatedMean() {
+  private initAccumulatedMean() {
     // initialize the chart with all types
-    // const selectedTypeListForyearVsMean = this.yearVsAccumulatedMeanFilterFormGroup.value.subjectTypeSelect;
-    this.refreshYearVsAccumulatedMean(this.targetSubjectStatsArr);
+    this.refreshAccumulatedMean(this.targetSubjectStatsArr);
 
     // edit the chart on change of collection status selection
-    this.yearVsAccumulatedMeanFilterFormGroup.controls['stateSelect'].valueChanges
+    this.accumulatedMeanFilterFormGroup.controls['stateSelect'].valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(newStateList => {
         const newArr = this.targetSubjectStatsArr
           .filter(stat => newStateList.includes(CollectionStatusId[stat.collectionStatus]));
-        // refresh count array
-        this.yearAccumulatedCount = [];
-        this.refreshYearVsAccumulatedMean(newArr);
+        this.refreshAccumulatedMean(newArr);
       });
   }
 
-  private refreshYearVsAccumulatedMean(newYearVsAccumulatedMeanData) {
+  private refreshAccumulatedMean(newAccumulatedMeanData) {
     this.accumulatedMeanData = [];
-    this.groupAndCountByYear(newYearVsAccumulatedMeanData);
+    this.calculateAccumulatedMeanPoints(newAccumulatedMeanData);
   }
 
   private initScoreVsCount() {
@@ -210,7 +206,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.yearVsAccumulatedMeanFilterFormGroup = this.formBuilder.group(
+    this.accumulatedMeanFilterFormGroup = this.formBuilder.group(
       {
         stateSelect: [[]]
       }
@@ -223,7 +219,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private groupAndCountByYear(allRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[]) {
+  private calculateAccumulatedMeanPoints(allRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[]) {
     this.accumulatedMeanData =
       [{name: this.targetSubject.subjectName.preferred, series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
   }

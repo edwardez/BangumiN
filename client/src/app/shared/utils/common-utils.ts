@@ -80,4 +80,21 @@ export class CommonUtils {
       }
     }
   }
+
+  /**
+   * Count precision/decimals for a number, i.e. 1.234 has 3 decimals
+   * @param floatingPointNumber A floating point number
+   */
+  static getPrecision(floatingPointNumber: number) {
+    if (!isFinite(floatingPointNumber)) {
+      return 0;
+    }
+    let exponent = 1;
+    let precision = 0;
+    while (Math.round(floatingPointNumber * exponent) / exponent !== floatingPointNumber) {
+      exponent *= 10;
+      precision++;
+    }
+    return precision;
+  }
 }

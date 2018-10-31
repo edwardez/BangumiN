@@ -22,10 +22,12 @@ router.get('/user/:userIdOrUsername', celebrate({
   getUserStatsByIdOrUsername(userIdOrUsername).then(
     (userStats: Record[]) => {
       if (userStats) {
+        const lastModified = userStats.length === 0 ? null : _.maxBy(userStats, record => record.rowLastModified).rowLastModified;
+
         return res.json(
           {
             ...(typeof userIdOrUsername === 'number' ? {userId: userIdOrUsername} : {userName: userIdOrUsername}),
-            lastModified: userStats.length === 0 ? null : +userStats[0].rowLastModified,
+            lastModified,
             stats: userStats.map((userRecordInstance) => {
               const userRecord = userRecordInstance.toJSON();
               delete userRecord.rowLastModified;

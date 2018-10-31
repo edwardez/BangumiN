@@ -18,13 +18,14 @@ import {CommonUtils} from '../../../../shared/utils/common-utils';
 
 const Parchment = Quill.import('parchment');
 
-class SpoilerClass extends Parchment.Attributor.Class {
+// TODO: fix IntelliJ warning(currently there's no warning in compiler)
+class SpoilerClass extends (Parchment.Attributor.Class) {
   constructor(attrName = 'spoiler', keyName = 'background-color-bangumin-theme-accent') {
     super(attrName, keyName, {scope: Parchment.Scope.INLINE});
   }
 
   add(node, value) {
-    if (!this.canAdd(node, value)) {
+    if (!super.canAdd(node, value)) {
       return false;
     }
     node.classList.add(`background-color-bangumin-theme-accent`);
@@ -33,7 +34,7 @@ class SpoilerClass extends Parchment.Attributor.Class {
     return true;
   }
 
-  remove(node, id) {
+  remove(node) {
     node.classList.remove(`background-color-bangumin-theme-accent`);
     node.classList.remove(`spoiler-text`);
     node.classList.remove(`color-bangumin-theme-foreground`);
@@ -42,7 +43,7 @@ class SpoilerClass extends Parchment.Attributor.Class {
     }
   }
 
-  value(node) {
+  value(node: HTMLElement): boolean {
     return true;
   }
 }
@@ -254,8 +255,6 @@ export class SpoilerCreationComponent implements OnInit {
   getSubjectIcon(subjectType: SubjectType): string {
     return CommonUtils.getSubjectIcon(subjectType);
   }
-
-
 
 
 }

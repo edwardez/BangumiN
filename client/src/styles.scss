@@ -48,10 +48,6 @@ app-spoiler-creation .mat-dialog-container {
   vertical-align: bottom;
 }
 
-//use material 2018 spec
-.mat-card {
-  border-radius: 8px !important;
-}
 
 // hide default mat-card-header-text style for spoiler
 app-spoiler-single-content .mat-card-header-text {

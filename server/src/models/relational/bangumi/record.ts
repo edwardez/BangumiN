@@ -1,6 +1,7 @@
 import {Column, DataType, Model, PrimaryKey, Sequelize, Table} from 'sequelize-typescript';
 import snakecase_keys from 'snakecase-keys';
 import {DataTypes} from 'sequelize';
+import dayjs from 'dayjs';
 
 export interface RecordSchema{
   subjectId: number;
@@ -9,11 +10,11 @@ export interface RecordSchema{
   nickname: string;
   subjectType: number;
   collectionStatus: number;
-  addDate: Date;
+  addDate: number;
   rate: number;
   tags: string[];
   comment: string;
-  rowLastModified: Date;
+  rowLastModified: number;
 }
 
 @Table({
@@ -51,8 +52,12 @@ export class Record extends Model<Record> implements RecordSchema{
 
   @Column({
     field: 'add_date',
+    get() {
+      const addDate = this.getDataValue('addDate');
+      return dayjs(addDate).valueOf();
+    },
   })
-  addDate: Date;
+  addDate: number;
 
   @Column
   rate: number;
@@ -65,7 +70,11 @@ export class Record extends Model<Record> implements RecordSchema{
 
   @Column({
     field: 'row_last_modified',
+    get() {
+      const rowLastModified = this.getDataValue('rowLastModified');
+      return dayjs(rowLastModified).valueOf();
+    },
   })
-  rowLastModified: Date;
+  rowLastModified: number;
 
 }

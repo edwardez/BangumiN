@@ -1,4 +1,6 @@
 import * as express from 'express';
+import _ from 'lodash';
+import dayjs from 'dayjs';
 import {Record} from '../models/relational/bangumi/record';
 import {getSubjectStatsById, getUserStatsByIdOrUsername} from '../services/bangumi/statsService';
 import {celebrate, Joi} from 'celebrate';
@@ -54,13 +56,14 @@ router.get('/subject/:subjectId', celebrate({
   },
 }), (req: any, res: any, next: any) => {
   const subjectId = req.params.subjectId;
-
   getSubjectStatsById(subjectId).then(
     (subjectStats: Record[]) => {
       if (subjectStats) {
+        const lastModified = subjectStats.length === 0 ? null : _.maxBy(subjectStats, record => record.rowLastModified).rowLastModified;
+
         return res.json({
           subjectId,
-          lastModified: subjectStats.length === 0 ? null : +subjectStats[0].rowLastModified,
+          lastModified,
           stats: subjectStats.map((subjectRecordInstance) => {
             const userRecord = subjectRecordInstance.toJSON();
             delete userRecord.rowLastModified;

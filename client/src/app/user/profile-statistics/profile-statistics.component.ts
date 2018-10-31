@@ -307,7 +307,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private groupAndCountByYearOfType(allRecords: { collectionStatus: number, addDate: string, rate: number }[], type: string) {
+  private groupAndCountByYearOfType(allRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[],
+                                    type: string) {
     const accumulatedMeanByYear = BangumiStatsService.calculateAccumulatedMean(allRecords);
     if (!_isEmpty(accumulatedMeanByYear)) {
       this.accumulatedMeanData = [...this.accumulatedMeanData,

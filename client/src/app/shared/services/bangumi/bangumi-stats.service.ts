@@ -5,7 +5,7 @@ import {environment} from '../../../../environments/environment';
 import {UserStatsSchema} from '../../models/stats/user-stats-schema';
 import {SubjectStatsSchema} from '../../models/stats/subject-stats-schema';
 import {TranslateService} from '@ngx-translate/core';
-import {RecordSchema} from '../../models/stats/record-schema';
+import {Records, RecordSchema} from '../../models/stats/record-schema';
 import {map} from 'rxjs/operators';
 import _meanBy from 'lodash/meanBy';
 import _sortBy from 'lodash/sortBy';
@@ -13,10 +13,7 @@ import _sum from 'lodash/sum';
 import _map from 'lodash/map';
 import _countBy from 'lodash/countBy';
 import _difference from 'lodash/difference';
-import _groupBy from 'lodash/groupBy';
-import _min from 'lodash/min';
 import _range from 'lodash/range';
-import _isEmpty from 'lodash/isEmpty';
 
 
 export interface AccumulatedMeanDataSchema {
@@ -25,7 +22,7 @@ export interface AccumulatedMeanDataSchema {
 }
 
 export interface AccumulatedMeanPoint {
-  name: number;
+  name: number | Date;
   value: number;
   count: number;
 }
@@ -73,41 +70,43 @@ export class BangumiStatsService {
     return _range(+minYear, (+maxYear + 1)).map((year) => ({name: year, value: 0, count: 0}));
   }
 
+
   /**
    * Calculates descriptive chart data, mean, median and standard deviation are calculated and names are translated to corresponding labels
    * If rate of a record is null, it will be excluded
-   * @param allRecords All score records
+   * @param sortedRecords All score records, sorted by addedAt(guaranteed by server side handling)
+   * @param startDate
+   * @param endDate
    */
-  static calculateAccumulatedMean(allRecords: { collectionStatus: number, addDate: string, rate: number }[]): AccumulatedMeanPoint[] {
-    const accumulatedCountByYear = {};
-    const recordsByYear = _groupBy(
-      allRecords.filter(record => record.rate),
-      (row) => {
-        return new Date(row.addDate).getFullYear();
-      });
-    // is there's no record after filtering, return empty array
-    if (_isEmpty(recordsByYear)) {
-      return [];
+  static calculateAccumulatedMean(sortedRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[]):
+    AccumulatedMeanPoint[] {
+    const accumulatedMeanPoints: AccumulatedMeanPoint[] = [];
+    let mostRecentAddedAtMsec = 0;
+    let mostRecentPoint: AccumulatedMeanPoint = {name: new Date(0), count: 0, value: 0}; // a dummy initial point
+    for (let i = 0; i < sortedRecords.length; i++) {
+      const currentRecord = sortedRecords[i];
+      // filter invalid records(rate is null)
+      if (!currentRecord.rate) {
+        continue;
+      }
+      const mostRecentMean = mostRecentPoint.value;
+      const mostRecentCount = mostRecentPoint.count;
+      if (currentRecord.addDate > mostRecentAddedAtMsec) {
+        mostRecentPoint = {
+          name: currentRecord.addedAt,
+          count: mostRecentCount + 1,
+          value: (mostRecentMean * mostRecentCount + currentRecord.rate) / (mostRecentCount + 1)
+        };
+        accumulatedMeanPoints.push(mostRecentPoint);
+        mostRecentAddedAtMsec = currentRecord.addDate;
+      } else if (currentRecord.addDate === mostRecentAddedAtMsec) {
+        mostRecentPoint.value = (mostRecentPoint.count * mostRecentMean + currentRecord.rate) / (mostRecentCount + 1);
+        mostRecentPoint.count += 1;
+      } else {
+        console.error(`Invalid record ${currentRecord}`);
+      }
     }
-    const accumulatedMeanByYear = BangumiStatsService.initAccumulatedMeanByYear(+_min(Object.keys(recordsByYear)),
-      new Date().getFullYear());
-    accumulatedMeanByYear.forEach(row => {
-      const currentYear = row.name;
-      // have to consider year with no data, since we are storing accumulated data
-      const recordsInCurrentYear = recordsByYear[currentYear] || [];
-      // note down the yearAccumulated Count
-      accumulatedCountByYear[currentYear] = (accumulatedCountByYear[currentYear - 1] || 0) + recordsInCurrentYear.length;
-      const currentMean = (recordsInCurrentYear.length === 0) ? 0 : _meanBy(recordsInCurrentYear, 'rate');
-      const lastYearData = accumulatedMeanByYear.filter(currentMeanData => currentMeanData.name === (currentYear - 1))[0];
-      const meanUntilLastYear = lastYearData ? lastYearData.value : 0;
-      const countsUntilLastYear = accumulatedCountByYear[currentYear - 1] || 0;
-      const countsUntilCurrentYear = recordsInCurrentYear.length + countsUntilLastYear;
-      row.value = countsUntilCurrentYear ?
-        ((currentMean * recordsInCurrentYear.length
-          + countsUntilLastYear * meanUntilLastYear) / countsUntilCurrentYear) : 0;
-      row.count = accumulatedCountByYear[currentYear];
-    });
-    return accumulatedMeanByYear;
+    return accumulatedMeanPoints;
   }
 
   /**
@@ -189,7 +188,13 @@ export class BangumiStatsService {
    */
   public getUserStats(userIdOrUsername: string | number): Observable<UserStatsSchema> {
     return this.http.get<UserStatsSchema>
-    (`${environment.BACKEND_API_URL}/stats/user/${userIdOrUsername}`);
+    (`${environment.BACKEND_API_URL}/stats/user/${userIdOrUsername}`)
+      .pipe(
+        map(userStats => {
+          userStats.stats = Records.buildAddedAt(userStats.stats);
+          return userStats;
+        })
+      );
   }
 
 
@@ -199,6 +204,12 @@ export class BangumiStatsService {
    */
   public getSubjectStats(subjectId: number): Observable<SubjectStatsSchema> {
     return this.http.get<SubjectStatsSchema>
-    (`${environment.BACKEND_API_URL}/stats/subject/${subjectId}`);
+    (`${environment.BACKEND_API_URL}/stats/subject/${subjectId}`)
+      .pipe(
+        map(subjectStats => {
+          subjectStats.stats = Records.buildAddedAt(subjectStats.stats);
+          return subjectStats;
+        })
+      );
   }
 }

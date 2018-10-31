@@ -19,8 +19,9 @@
           [scheme]="colorScheme"
           [results]="countByStateData"
           [label]="'statistics.summaryChart.label' | translate"
-          [animations]=true
+          [animations]=false
           [gradient]="false"
+          [percentageFormatting]="formatStateData"
           [tooltipDisabled]=false
           [tooltipText]="pieTooltipText">
         </ngx-charts-advanced-pie-chart>
@@ -54,6 +55,7 @@
         <ngx-charts-bar-vertical
           [scheme]="colorScheme"
           [results]="scoreVsCountData"
+          [animations]="false"
           [gradient]="false"
           [showGridLines]="true"
           [xAxis]="true"
@@ -100,8 +102,9 @@
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [schemeType]="'ordinal'"
+          [curve]="lineCurveType"
           [results]="accumulatedMeanData"
-          [animations]=true
+          [animations]=false
           [legend]="false"
           [gradient]="false"
           [autoScale]=true
@@ -112,7 +115,7 @@
           [showYAxisLabel]="true"
           [xAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.year' | translate"
           [yAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.score' | translate"
-          [timeline]=false
+          [timeline]=true
           [showGridLines]="true"
           [rangeFillOpacity]="0.15"
           [roundDomains]=false
@@ -121,8 +124,8 @@
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{model.series.substring(0, 10)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
-              {{model.name}}
+              {{model.series.substring(0, 12)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
+              {{calendarAxisTickFormatting(model.name)}}
             </h3>
             <h4>
               {{'statistics.subjectAccumulatedMeanLineChart.accumulatedMean' | translate}}: {{model.value | number:

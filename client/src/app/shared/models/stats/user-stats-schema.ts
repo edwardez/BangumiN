@@ -5,3 +5,5 @@ export interface UserStatsSchema {
   lastModified: number;
   stats: RecordSchema[];
 }
+
+

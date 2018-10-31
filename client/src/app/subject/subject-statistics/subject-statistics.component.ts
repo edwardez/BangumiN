@@ -6,8 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 import _countBy from 'lodash/countBy';
 import _map from 'lodash/map';
 import _uniqBy from 'lodash/uniqBy';
+import {curveBasis} from 'd3-shape';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
-import * as day from 'dayjs';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {BangumiSubjectService} from '../../shared/services/bangumi/bangumi-subject.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -22,6 +22,7 @@ import {RecordSchema} from '../../shared/models/stats/record-schema';
 })
 export class SubjectStatisticsComponent implements OnInit, OnDestroy {
   colorScheme = BangumiStatsService.colorScheme;
+  lineCurveType = curveBasis;
   scoreVsCountData;
 
   collectionStatusList;
@@ -106,11 +107,8 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
     return BangumiStatsService.getScoringCountUntil(accumulatedMeanData, lineType, pointTime);
   }
 
-  calendarAxisTickFormatting(year) {
-    if (Math.floor(year) !== year) {
-      return '';
-    }
-    return day().set('year', year).year();
+  calendarAxisTickFormatting(addedAt: Date) {
+    return addedAt.getFullYear() + '/' + (addedAt.getMonth() + 1) + '/' + addedAt.getDate();
   }
 
   pieTooltipText({data}) {
@@ -121,6 +119,10 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
       <span class="tooltip-label">${label}</span>
       <span class="tooltip-val">${val}</span>
     `;
+  }
+
+  formatStateData(percentage) {
+    return Math.round(percentage);
   }
 
   getLastUpdateTime() {
@@ -221,7 +223,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private groupAndCountByYear(allRecords: { collectionStatus: number, addDate: string, rate: number }[]) {
+  private groupAndCountByYear(allRecords: { collectionStatus: number, addDate: number, addedAt: Date, rate: number }[]) {
     this.accumulatedMeanData =
       [{name: this.targetSubject.subjectName.preferred, series: BangumiStatsService.calculateAccumulatedMean(allRecords)}];
   }

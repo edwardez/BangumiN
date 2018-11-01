@@ -500,6 +500,11 @@
       "accumulatedMean": "累积平均分",
       "accumulatedCOunt": "累积打分人数",
       "until": "截止"
+    },
+    "exception": {
+      "userNotFound": {
+        "explanation": "<div>我们尝试获得Bangumi用户<a href=\"https://bgm.tv/user/{{targetUserId}}\" target=\"_blank\" rel=\"noopener\">@{{targetUserId}}</a>的数据但或者该用户不存在，或者没有标记过任何作品，或者由于隐私保护设定我们无法访问。<br/> 如果以上情况均不适用，相关数据应该很快就会出现。</div>"
+      }
     }
   },
   "footer": {

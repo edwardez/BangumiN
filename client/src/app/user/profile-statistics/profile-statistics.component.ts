@@ -5,20 +5,21 @@ import _groupBy from 'lodash/groupBy';
 import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import _uniqBy from 'lodash/uniqBy';
-import {takeUntil} from 'rxjs/operators';
+import {catchError, takeUntil} from 'rxjs/operators';
 import {BanguminUserService} from '../../shared/services/bangumin/bangumin-user.service';
 import {AccumulatedMeanDataSchema, BangumiStatsService} from '../../shared/services/bangumi/bangumi-stats.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CollectionStatusId} from '../../shared/enums/collection-status-id';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {forkJoin, Subject} from 'rxjs';
+import {forkJoin, Subject, throwError} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {TitleService} from '../../shared/services/page/title.service';
 import {TranslateService} from '@ngx-translate/core';
 import {RecordSchema} from '../../shared/models/stats/record-schema';
 import {curveBasis} from 'd3-shape';
+import {PageState} from '../../shared/enums/page-state.enum';
 
 
 @Component({
@@ -27,6 +28,8 @@ import {curveBasis} from 'd3-shape';
   styleUrls: ['./profile-statistics.component.scss']
 })
 export class ProfileStatisticsComponent implements OnInit, OnDestroy {
+  pageState = PageState.InLoading;
+
   colorScheme = BangumiStatsService.colorScheme;
   lineCurveType = curveBasis;
   scoreVsCountData;
@@ -47,6 +50,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   // mean, median, stdDev
   descStatData;
 
+  targetUserId: string;
   targetUser: BangumiUser;
   // raw data - CONST!
   targetUserStatsArr: RecordSchema[];
@@ -68,8 +72,6 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     private titleService: TitleService,
     private translateService: TranslateService
   ) {
-    this.selectedTypeListForscoreVsCount = this.userCurrentSubjectTypeList;
-    this.initStatsFormGroup();
   }
 
   ngOnDestroy(): void {
@@ -78,48 +80,8 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  ngOnInit() {
-    this.activatedRoute.parent.params
-      .subscribe(params => {
-        this.ngUnsubscribe.next();
-        const targetUserId = params['userId'];
-        this.getUserProfile(targetUserId);
-        forkJoin([
-          this.translateService.get('common.category'),
-          this.bangumiStatsService.getUserStats(targetUserId)
-        ]).subscribe(response => {
-          if (response[0]) {
-            this.localTranslatedSubjectType = response[0];
-          }
-
-          if (response[1]) {
-            const res = response[1];
-            const defaultArr = res.stats as RecordSchema[];
-            this.lastUpdateTime = res.lastModified;
-            // cache stats array
-            this.targetUserStatsArr = res.stats;
-            this.countByTypeDataTranslated = _map(_countBy(defaultArr, 'subjectType'),
-              (val, key) => ({name: this.localTranslatedSubjectType[SubjectType[key]], value: val}));
-            const countByTypeDataRaw = _map(_countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
-            // initialize filter list value
-            this.userCurrentSubjectTypeList = countByTypeDataRaw.map(typeData => typeData['name']);
-            this.collectionStatusList = _uniqBy(defaultArr, 'collectionStatus').map(
-              row => CollectionStatusId[row['collectionStatus']]
-            );
-            // initialize filter form groups
-            this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-            this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-            this.accumulatedMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-            this.accumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-            this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
-            this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
-
-            this.initDescStat();
-            this.initScoreVsCount();
-            this.initAccumulatedMean();
-          }
-        });
-      });
+  get PageState() {
+    return PageState;
   }
 
   pieTooltipVariables({data}) {
@@ -150,6 +112,63 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
 
   formatStateData(percentage) {
     return BangumiStatsService.formatFloatingPoint(percentage);
+  }
+
+  ngOnInit() {
+    this.activatedRoute.parent.params
+      .subscribe(params => {
+        this.SetClassMemberInitialValue();
+        this.targetUserId = params['userId'];
+        this.getUserProfile(this.targetUserId);
+        forkJoin([
+          this.translateService.get('common.category'),
+          this.bangumiStatsService.getUserStats(this.targetUserId).pipe(
+            catchError(error => {
+              if (error && error.status === 404) {
+                this.pageState = PageState.DoesNotExist;
+              }
+              return throwError(error);
+            })
+          )
+        ]).subscribe(response => {
+          if (response[0]) {
+            this.localTranslatedSubjectType = response[0];
+          }
+
+          if (response[1]) {
+            const res = response[1];
+            const defaultArr = res.stats as RecordSchema[];
+            this.lastUpdateTime = res.lastModified;
+            // cache stats array
+            if (_isEmpty(defaultArr)) {
+              // user stats is empty, we don't need to proceed
+              this.targetUserStatsArr = undefined; // reset value
+              this.pageState = PageState.DoesNotExist;
+              return;
+            }
+            this.targetUserStatsArr = res.stats;
+            this.countByTypeDataTranslated = _map(_countBy(defaultArr, 'subjectType'),
+              (val, key) => ({name: this.localTranslatedSubjectType[SubjectType[key]], value: val}));
+            const countByTypeDataRaw = _map(_countBy(defaultArr, 'subjectType'), (val, key) => ({name: SubjectType[key], value: val}));
+            // initialize filter list value
+            this.userCurrentSubjectTypeList = countByTypeDataRaw.map(typeData => typeData['name']);
+            this.collectionStatusList = _uniqBy(defaultArr, 'collectionStatus').map(
+              row => CollectionStatusId[row['collectionStatus']]
+            );
+            // initialize filter form groups
+            this.descStatFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.descStatFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+            this.accumulatedMeanFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.accumulatedMeanFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+            this.scoreVsCountFilterFormGroup.get('subjectTypeSelect').setValue(this.userCurrentSubjectTypeList);
+            this.scoreVsCountFilterFormGroup.get('stateSelect').setValue(this.collectionStatusList);
+
+            this.initDescStat();
+            this.initScoreVsCount();
+            this.initAccumulatedMean();
+          }
+        });
+      });
   }
 
 
@@ -328,11 +347,46 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private SetClassMemberInitialValue() {
+    // TODO: change how these values are reset if user switches to a different profile
+    this.scoreVsCountData = undefined;
+    this.userCurrentSubjectTypeList = undefined;
+    this.collectionStatusList = undefined;
+    this.selectedTypeListForscoreVsCount = undefined;
+    this.accumulatedMeanData = [];
+    this.countByTypeDataTranslated = undefined;
+    this.descStatData = undefined;
+    this.targetUserId = undefined;
+    this.targetUser = undefined;
+    this.targetUserStatsArr = undefined;
+    this.descStatFilterFormGroup = undefined;
+    this.accumulatedMeanFilterFormGroup = undefined;
+    this.scoreVsCountFilterFormGroup = undefined;
+    this.localTranslatedSubjectType = undefined;
+    this.lastUpdateTime = undefined;
+    this.ngUnsubscribe.next();
+    this.pageState = PageState.InLoading;
+    this.targetUserStatsArr = undefined; // reset value
+
+
+    this.selectedTypeListForscoreVsCount = this.userCurrentSubjectTypeList;
+    this.initStatsFormGroup();
+  }
+
   private getUserProfile(userId: string) {
-    this.bangumiUserService.getUserInfoFromHttp(userId).subscribe(bangumiUser => {
-      this.targetUser = bangumiUser;
-      this.titleService.setTitleByTranslationLabel('statistics.headline', {name: this.targetUser.nickname});
-    });
+    this.bangumiUserService.getUserInfoFromHttp(userId)
+      .pipe(
+        catchError(error => {
+          if (error && error.status === 404) {
+            this.pageState = PageState.DoesNotExist;
+          }
+          return throwError(error);
+        })
+      )
+      .subscribe(bangumiUser => {
+        this.targetUser = bangumiUser;
+        this.titleService.setTitleByTranslationLabel('statistics.headline', {name: this.targetUser.nickname});
+      });
   }
 
 }

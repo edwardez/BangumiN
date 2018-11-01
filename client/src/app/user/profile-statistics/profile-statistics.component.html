@@ -234,5 +234,9 @@
 
 
 <div *ngIf="!targetUserStatsArr || !targetUser">
-  <app-loading-spinner></app-loading-spinner>
+  <app-loading-spinner *ngIf="pageState !== PageState.DoesNotExist"></app-loading-spinner>
+  <div *ngIf="pageState === PageState.DoesNotExist"
+       class="d-flex justify-content-center align-items-center min-height-75-vh"
+       [innerHtml]=" 'statistics.exception.userNotFound.explanation'| translate:{targetUserId: targetUserId}">
+  </div>
 </div>

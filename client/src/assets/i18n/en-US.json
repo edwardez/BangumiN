@@ -501,6 +501,11 @@
       "accumulatedMean": "Accumulated Mean",
       "accumulatedCOunt": "Accumulated Count",
       "until": "until"
+    },
+    "exception": {
+      "userNotFound": {
+        "explanation": "<div>We're trying to get data from Bangumi user <a href=\"https://bgm.tv/user/{{targetUserId}}\" target=\"_blank\" rel=\"noopener\">@{{targetUserId}}</a> but user doesn't exist, or the user exists but there's no data, or due to privacy protection settings we're not able to access.<br/> If none of the above conditions apply, stay tuned! Relevant data should show up very soon.</div>"
+      }
     }
   },
   "footer": {

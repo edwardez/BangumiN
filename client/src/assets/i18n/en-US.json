@@ -195,6 +195,21 @@
             }
           }
         }
+      },
+      "privacy":{
+        "name":"Privacy",
+        "personalData":{
+          "name":"Personal Data",
+          "stopCrawling":{
+            "name":"Remove my statistical data",
+            "tooltip": {
+              "explanation": "Once selected, we will stop crawling your score in Bangumi, you will not be able to continue to view your statistics, and your statistical data will be removed from other statistics."
+            },
+            "explanationDialog": {
+              "content": "We will process your request. <br/>Please note that data cleanup does not happen immediately, and it may take up to several weeks for us to process your request, during this time you can revert this change at any time in settings. <br/>This option only affect whether you can view your statistics or whether your records are included in other statistics, other BangumiN functionalities won't be affected. <br/>Your data on bgm.tv will not be changed by this option, and we cannot prevent others from crawling your data on bgm.tv."
+            }
+          }
+        }
       }
     }
   },

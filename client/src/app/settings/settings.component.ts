@@ -11,6 +11,7 @@ import {MatDialog, MatSlideToggleChange} from '@angular/material';
 import {RuntimeConstantsService} from '../shared/services/runtime-constants.service';
 import {Subject} from 'rxjs';
 import {AuthenticationService} from '../shared/services/auth.service';
+import {StopCrawlingExplanationDialogComponent} from './stop-crawling-explanation-dialog/stop-crawling-explanation-dialog.component';
 
 @Component({
   selector: 'app-settings',
@@ -22,6 +23,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   availableLanguage = environment.availableLanguages;
   availableAppThemes = environment.availableAppThemes;
   showA11YViolationTheme = false;
+  stopCrawling = false;
   settingsForm: FormGroup;
   userSettings: BanguminUser;
 
@@ -72,6 +74,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       bangumiLanguage: [userSettings.bangumiLanguage],
       appTheme: [userSettings.appTheme],
       showA11YViolationTheme: showA11YViolationTheme,
+      stopCrawling: [userSettings.stopCrawling]
     });
 
 
@@ -80,7 +83,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onSettingsFormChange() {
     this.settingsForm.valueChanges
-      .pipe(tap(formValues => {
+      .pipe(
+        tap(formValues => {
           // only set language if it's different from current settings
           if (this.translateService.currentLang !== formValues.appLanguage) {
             this.translateService.use(formValues.appLanguage).subscribe(translatedObjects => {
@@ -113,7 +117,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
 
+  showStopCrawlingExplanationDialog() {
+    this.dialog.open(StopCrawlingExplanationDialogComponent, {});
   }
 
   setLanguage(lang: string) {

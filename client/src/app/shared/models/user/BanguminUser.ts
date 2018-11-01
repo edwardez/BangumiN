@@ -8,6 +8,7 @@ export interface BanguminUserSchema {
   bangumiLanguage?: string;
   appTheme: string;
   showA11YViolationTheme: boolean;
+  stopCrawling: boolean;
 }
 
 export class BanguminUser implements Serializable<BanguminUser>, BanguminUserSchema {
@@ -16,6 +17,7 @@ export class BanguminUser implements Serializable<BanguminUser>, BanguminUserSch
   bangumiLanguage?: string;
   appTheme: string;
   showA11YViolationTheme: boolean;
+  stopCrawling: boolean;
 
   constructor() {
     this.id = RuntimeConstantsService.defaultUserId;
@@ -23,6 +25,7 @@ export class BanguminUser implements Serializable<BanguminUser>, BanguminUserSch
     this.bangumiLanguage = RuntimeConstantsService.defaultBangumiLanguage;
     this.appTheme = RuntimeConstantsService.defaultAppTheme;
     this.showA11YViolationTheme = RuntimeConstantsService.defaultShowA11YViolationTheme;
+    this.stopCrawling = false;
   }
 
   deserialize(input) {
@@ -31,6 +34,7 @@ export class BanguminUser implements Serializable<BanguminUser>, BanguminUserSch
     this.bangumiLanguage = input.bangumiLanguage || RuntimeConstantsService.defaultBangumiLanguage;
     this.appTheme = input.appTheme || RuntimeConstantsService.defaultAppTheme;
     this.showA11YViolationTheme = input.showA11YViolationTheme || RuntimeConstantsService.defaultShowA11YViolationTheme;
+    this.stopCrawling = input.stopCrawling === true || false;
     return this;
   }
 

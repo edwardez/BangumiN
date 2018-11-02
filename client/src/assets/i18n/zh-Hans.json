@@ -294,6 +294,7 @@
             "cancel": "取消",
             "submit": "提交",
             "privacy": "仅自己可见",
+            "spoiler": "此评论含有剧透",
             "error": {
               "comment": {
                 "maxLength": "最多只能输入{{commentMaxLength}}个字"

@@ -115,7 +115,7 @@ export class ProfileStatisticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.params
+    this.activatedRoute.params
       .subscribe(params => {
         this.SetClassMemberInitialValue();
         this.targetUserId = params['userId'];

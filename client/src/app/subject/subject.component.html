@@ -26,7 +26,7 @@
            routerLinkActive
            #rla="routerLinkActive"
            [routerLinkActiveOptions]="{exact: true}"
-           [active]="rla.isActive"
+           [active]="rla.isActive || !rlaStats.isActive"
 
         >
           {{'subject.tabs.overview.name' | translate}}

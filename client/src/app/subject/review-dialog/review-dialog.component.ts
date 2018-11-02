@@ -96,6 +96,7 @@ export class ReviewDialogComponent implements OnInit, OnDestroy {
         'collectionStatus': [<string>collectionResponse.status.type],
         'comment': [<string>collectionResponse.comment, Validators.maxLength(this.commentMaxLength)],
         'privacy': <boolean>(collectionResponse.privacy.toString() !== '0'),
+        'spoiler': this.data.enableSpoilerFlag,
       }
     );
   }

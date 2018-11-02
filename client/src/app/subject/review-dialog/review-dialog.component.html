@@ -67,8 +67,13 @@
       commentMaxLength} }}
     </mat-error>
 
-    <mat-checkbox formControlName="privacy">{{'subject.tabs.overview.review.modal.privacy' | translate}}
-    </mat-checkbox>
+    <div class="d-flex flex-wrap">
+      <mat-checkbox formControlName="privacy" class="mr-2 mr-sm-3">{{'subject.tabs.overview.review.modal.privacy' | translate}}
+      </mat-checkbox>
+      <mat-checkbox formControlName="spoiler">{{'subject.tabs.overview.review.modal.spoiler' | translate}}
+      </mat-checkbox>
+    </div>
+
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>{{'subject.tabs.overview.review.modal.cancel' | translate}}</button>
@@ -81,7 +86,6 @@
 
 <div *ngIf="!ratingForm">
   <app-loading-spinner [fullHeight]="false"></app-loading-spinner>
-
 </div>
 
 

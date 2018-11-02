@@ -31,7 +31,6 @@ export interface AccumulatedMeanPoint {
   providedIn: 'root'
 })
 export class BangumiStatsService {
-
   static readonly colorScheme = {
     domain: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
   };
@@ -115,6 +114,7 @@ export class BangumiStatsService {
     }
     return accumulatedMeanPoints;
   }
+
 
   /**
    * Calculates descriptive chart data, mean, median and standard deviation are calculated and names are translated to corresponding labels

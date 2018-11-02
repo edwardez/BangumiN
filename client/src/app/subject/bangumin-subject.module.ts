@@ -12,6 +12,7 @@ import {ScoreSpinnerComponent} from './score-spinner/score-spinner.component';
 import {SubjectEpisodeComponent} from './subject-episode/subject-episode.component';
 import {SubjectComponent} from './subject.component';
 import {LoadingSpinnerModule} from '../common/loading-spinner/loading-spinner.module';
+import { SubjectSpoilerCreationComponent } from './subject-spoiler-creation/subject-spoiler-creation.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {LoadingSpinnerModule} from '../common/loading-spinner/loading-spinner.mo
     ScoreSpinnerComponent,
     SubjectEpisodeComponent,
     SubjectComponent,
+    SubjectSpoilerCreationComponent,
   ],
   entryComponents: [
     ReviewDialogComponent

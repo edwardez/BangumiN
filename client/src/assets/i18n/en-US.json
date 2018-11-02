@@ -294,6 +294,7 @@
             "cancel": "Cancel",
             "submit": "Submit",
             "privacy": "Only visible to yourself",
+            "spoiler": "Review contains spoiler",
             "error": {
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"

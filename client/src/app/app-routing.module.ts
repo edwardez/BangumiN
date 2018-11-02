@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {AppGuard} from './app.guard';
 import {LoginBangumiComponent} from './auth/login-bangumi/login-bangumi.component';
 import {ActivateBangumiComponent} from './auth/login-bangumi/activate-bangumi/activate-bangumi.component';
@@ -15,6 +15,7 @@ import {HelpHomeComponent} from './documents/help/help-home/help-home.component'
 import {WelcomeComponent} from './home/welcome/welcome.component';
 import {SearchResultComponent} from './search/search-result/search-result.component';
 import {SingleSubjectComponent} from './subject/single-subject/single-subject.component';
+import {SubjectSpoilerCreationComponent} from './subject/subject-spoiler-creation/subject-spoiler-creation.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
         component: SingleSubjectComponent
       },
       {
+        path: 'spoil',
+        component: SubjectSpoilerCreationComponent
+      },
+      {
         path: 'statistics',
         loadChildren: 'app/subject/subject-statistics/subject-statistics.module#SubjectStatisticsModule'
       },
@@ -120,9 +125,11 @@ const routes: Routes = [
   }
 ];
 
-
+export const routingConfiguration: ExtraOptions = {
+  paramsInheritanceStrategy: 'always'
+};
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routingConfiguration)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

@@ -55,7 +55,7 @@ export class SubjectStatisticsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initStatsFormGroup();
-    this.activatedRoute.parent.parent.params
+    this.activatedRoute.params
       .pipe(
         filter(params => params['subjectId']),
         switchMap(params => {

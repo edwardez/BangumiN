@@ -1,0 +1,75 @@
+[全平台]BangumiN: 一款基于PWA，专注数据可视化和剧透分享的app
+
+
+[b]BangumiN[/b]（访问网址: [b][url=https://bangumin.tv]https://bangumin.tv[/url][/b], 读作： Bangumi-N或者Bangu-min），是一款基于PWA，专注数据可视化和剧透分享的app
+
+
+[size=25]功能介绍[/size]
+
+[b][size=20]剧透箱[/size][/b]
+您是否曾经有过在发售日第一时间打完游戏，或者新番播出日第一时间看完动画，想分享感受到社交媒体或其他平台上但因担心剧透而不了了之，或者只能写一些泛泛而谈的沮丧经历？使用BangumiN，您只需在BangumiN的剧透箱中发表一条新剧透并标记可能剧透的内容，即可安全的分享到您想分享的地方，甚至还可以搜索并添加相关的条目，在分享时我们就会为您自动打上话题tag。分享剧透从未如此安全和优雅。
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtf5i2l6j31kw14q7jn.jpg[/img]
+
+[img]https://wx4.sinaimg.cn/large/007kYSBAly1fvmu1m0879j30dw0q740q.jpg[/img]
+
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtfbknjaj31kw0q546q.jpg[/img]
+
+
+[b][size=20]数据可视化[/size][/b]
+您是否曾经思考过查看自己在Bangumi的数据统计，甚至想要精确到查看某个特定分类，特定状态下所有条目？使用BangumiN，您可以详细的查看某个用户或者某个条目的可视化数据，这些图表简单易懂并高度可定制，比如: "我所有标记为看过的动画在2017年的平均分"或"我所有标记为抛弃的游戏的评分分布图"
+
+查看用户数据统计
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmtgz3nfoj31kw0wqk3p.jpg[/img]
+
+查看条目数据统计
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmth5rf9gj31kw0wqtwp.jpg[/img]
+
+此外，您也可以通过搜索用户名的方式来查看某个特定用户或特定条目的数据统计。
+
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmth90bi9j31120h80uz.jpg[/img]
+* 数据可视化的一部分数据是从Bangumi网页抓取的，如果Bangumi管理员未来禁止这一行为，我们无法保证此功能的可用性。
+
+
+[b][size=20]PWA[/size][/b]
+BangumiN基于PWA(渐进式Web应用)的标准构建，支持PWA的各种特性
+
+- 优化访问: 在网络状况不好，甚至离线时，您仍可使用部分网站的功能
+- 安全: BangumiN已启用强制加密访问以保证数据传输安全，服务器和客户端代码开源并接受社区检验，如果您发现了安全漏洞，欢迎告知。
+- 原生app体验： 在Android上，您更可以通过点击网站下方的安装提示或通过在菜单中选择"添加到主屏幕"来安装BangumiN，从而像使用原生Android app一样使用BangumiN
+
+
+[b][size=20]条目状态管理[/size][/b]
+您可以通过BangumiN搜索条目，然后进行条目状态管理，在BangumiN对条目状态做出的修改都将及时反应到主站上。
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmthfp298j31kw109x1m.jpg[/img]
+
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmthjmj6fj31kw0yhqsi.jpg[/img]
+* 评论与实际游戏无关，仅为演示效果
+
+
+[b][size=20]适配各种平台，各种尺寸的屏幕[/size][/b]
+[img]https://wx4.sinaimg.cn/large/007kYSBAly1fvmthnd41uj31kw0xe4iw.jpg[/img]
+* 评论与实际游戏，动画无关，仅为演示效果
+
+BangumiN全面适配各种尺寸的屏幕，无论是手机，电脑还是平板，均可顺畅的使用BangumiN。
+BangumiN基于网页，不受操作系统限制，您可以使用任何我们支持的浏览器进行访问。
+
+
+[b][size=20]多主题[/size][/b]
+我们目前提供三套配色，您可以随时前往设置进行切换
+
+蓝绿(默认配色)：
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmti7stdhj31kw0wqnlv.jpg[/img]
+
+红黑(夜间模式[mask], macOS Mojave ready[/mask]):
+[img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fvmtiazx6yj31kw0wqty6.jpg[/img]
+
+粉蓝(Bangumi经典配色)*:
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmtiesfdbj31kw0wq1hd.jpg[/img]
+
+* Bangumi Pink 配色因不符合无障碍标准默认不予显示，如果有需要，请在设置里手动打开
+
+主题配色目前处于试验期，欢迎提交您觉得更美观的配色(如果是非material标准调色板的配色，请确保配色至少已通过WCAG AA测试)
+
+
+[b][size=20]其他[/size][/b]
+多语言支持，自定义条目名语言（中文/原文），同步自己在不同设备上发表的剧透和设置...限于篇幅限制我们无法介绍所有功能，还有更多的特性等待您使用BangumiN时[url=https://bangumin.tv]进行探索[/url]。

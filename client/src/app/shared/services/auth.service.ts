@@ -9,7 +9,6 @@ import {environment} from '../../../environments/environment';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
 import {BanguminUser, BanguminUserSchema} from '../models/user/BanguminUser';
-import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
 import {MatSnackBar} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
@@ -51,7 +50,23 @@ export class AuthenticationService {
   }
 
   /**
-   * whether expiration deadline has passed, a millisecond epoch time should be passed in
+   * Checks if user already authenticated.
+   * An authenticated user should have a non-empty token
+   * @description Should return Observable with true or false values
+   * @returns Observable<boolean>
+   * @memberOf AuthenticationService
+   */
+  public isAuthenticated(): Observable<boolean> {
+    return this.storageService
+      .getAccessToken()
+      .pipe(
+        map(accessToken => {
+          return accessToken != null;
+        }));
+  }
+
+  /**
+   * Checks whether expiration deadline has passed, a millisecond epoch time should be passed in
    * @param {number} expirationTime
    * @returns {boolean}
    */
@@ -61,42 +76,6 @@ export class AuthenticationService {
     }
 
     return of((expirationTime > Date.now() / 1000));
-  }
-
-  /**
-   * Check, if user already authenticated.
-   * Check whether
-   * 1. token exists
-   * 2. if token exists, whether it is expired and return
-   true or false
-   * @description Should return Observable with true or false values
-   * @returns Observable<boolean>
-   * @memberOf AuthenticationService
-   */
-  public isAuthenticated(): Observable<boolean> {
-    const isAuthenticated = forkJoin(
-      this.storageService
-        .getAccessToken()
-        .pipe(
-          map(accessToken => {
-            return accessToken != null;
-          })),
-      this.storageService
-        .getBangumiAccessTokenExpirationTime()
-        .pipe(
-          switchMap(expirationTime => {
-            return this.isTokenValid(expirationTime);
-          })
-        )
-    );
-
-    return isAuthenticated.pipe(
-      map(resultArray => {
-        return resultArray.reduce((a, b) => a && b);
-      })
-    );
-
-
   }
 
   /**

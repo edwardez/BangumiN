@@ -1,20 +1,20 @@
 [全平台]BangumiN: 一款基于PWA，专注数据可视化和剧透分享的app
 
+[b]BangumiN[/b]（访问网址: [b][url=https://bangumin.tv]https://bangumin.tv[/url][/b], [URL=https://github.com/edwardez/BangumiN/tree/develop]源代码[/url], 读作: Bangumi-N或者Bangu-min），是一款基于PWA，专注数据可视化和剧透分享的app
+
+
 ---
 更新: 2018-11-01
 [新!]改变平均分折线图的显示方式，现在最高可以精确到天，并且可以任意选择并查看某个时间段的数据
-[新!]发布超合金组件 go/BangumiN 在bangumi上添加前往对应BangumiN页面的按钮 https://bgm.tv/dev/app/720
+[新!]发布脚本与超合金组件([url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url]): go/BangumiN 在bangumi上添加前往对应BangumiN页面的按钮
 [新!]在统计页面添加"最后更新"标签
 [新!]网站初次加载时添加一个加载动画，优化用户体验
 [新!]设置里添加"移除我的统计数据"选项，您现在可以禁止BangumiN抓取您的数据
-[优化]优化网站访问速度，最高可有2～3倍的速度提升
+[优化]优化网站访问速度，特别是之前访问较慢的用户现在最高可有2～3倍的速度提升
 [优化]网站升级到Angular 7，适配Material Design 2018的标准
 [优化]少数情况下网站长时间运行后速度可能过慢
 [修复]其他各种bug修复
 ---
-
-[b]BangumiN[/b]（访问网址: [b][url=https://bangumin.tv]https://bangumin.tv[/url][/b], 读作： Bangumi-N或者Bangu-min），是一款基于PWA，专注数据可视化和剧透分享的app
-
 
 [size=25]功能介绍[/size]
 
@@ -22,10 +22,18 @@
 您是否曾经有过在发售日第一时间打完游戏，或者新番播出日第一时间看完动画，想分享感受到社交媒体或其他平台上但因担心剧透而不了了之，或者只能写一些泛泛而谈的沮丧经历？使用BangumiN，您只需在BangumiN的剧透箱中发表一条新剧透并标记可能剧透的内容，即可安全的分享到您想分享的地方，甚至还可以搜索并添加相关的条目，在分享时我们就会为您自动打上话题tag。分享剧透从未如此安全和优雅。
 [img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtf5i2l6j31kw14q7jn.jpg[/img]
 
-[img]https://wx4.sinaimg.cn/large/007kYSBAly1fvmu1m0879j30dw0q740q.jpg[/img]
+[img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fwusic1ns0j31cq0lojvc.jpg[/img]
 
 [img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtfbknjaj31kw0q546q.jpg[/img]
 
+此外，在安装脚本后(需要登录，[url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url], )，您更可以从Bangumi的收藏盒通过点击"发表剧透"一键直达BangumiN发来表新的剧透，剧透内容将会被同步回Bangumi
+在bangumi点击链接
+[img]https://wx3.sinaimg.cn/mw690/007kYSBAly1fwus4xjehnj30fm0n240a.jpg[/img]
+-> 前往BangumiN
+[img]https://wx3.sinaimg.cn/mw690/007kYSBAly1fwus5qrkyej311s0mu0w5.jpg[/img]
+-> 发表后，bangumi上的对应条目吐槽会自动被更新
+[img]https://wx4.sinaimg.cn/mw690/007kYSBAly1fwusmn9r3yj30ry0kedio.jpg[/img]
+[i]"发表剧透"目前处于早期实验阶段，有一些已知的bug(我们计划在接下来一段时间内逐渐完善)，欢迎试用并反馈意见[/i]
 
 [b][size=20]数据可视化[/size][/b]
 您是否曾经思考过查看自己在Bangumi的数据统计，甚至想要精确到查看某个特定分类，特定状态下所有条目？使用BangumiN，您可以详细的查看某个用户或者某个条目的可视化数据，这些图表简单易懂并高度可定制，比如: "我所有标记为看过的动画在2017年的平均分"或"我所有标记为抛弃的游戏的评分分布图"
@@ -39,6 +47,11 @@
 此外，您也可以通过搜索用户名的方式来查看某个特定用户或特定条目的数据统计。
 
 [img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmth90bi9j31120h80uz.jpg[/img]
+
+此外，在安装脚本后([url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url])，您甚至可以无需登录，从bangumi一键直达BangumiN
+[img]https://wx1.sinaimg.cn/large/007kYSBAly1fwus4xb9eaj313a0220t1.jpg[/img]
+[img]https://wx4.sinaimg.cn/large/007kYSBAly1fwus4xbyafj30wo0463yu.jpg[/img]
+
 * 数据可视化的一部分数据是从Bangumi网页抓取的，如果Bangumi管理员未来禁止这一行为，我们无法保证此功能的可用性。
 
 
@@ -84,8 +97,8 @@ BangumiN基于网页，不受操作系统限制，您可以使用任何我们支
 
 [b][size=20][new!]隐私权[/size][/b]
 虽然BangumiN收集的Bangumi条目和用户数据均来自公开的互联网，我们也理解有些用户不希望让人看到自己的数据统计的心情，您随时可以前往BangumiN的设置界面选择禁止我们抓取数据。
-***图***
-请注意，此选项不会立即生效，我们可能需要长达几周的时间来处理您的请求(清除或抓取您的数据)，在此期间您随时可以在设置页面里撤回此更改。
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fwus8gzlfkj316e0a2wf1.jpg[/img]
+请注意，此选项不会立即生效，我们可能需要长达几周的时间来处理您的请求(清除或再次开始抓取您的数据)，在此期间您随时可以在设置页面里撤回此更改。
 此选项仅影响您是否可以查看自己的统计页面和其他的统计中是否包含您的数据，其他的BangumiN功能不受影响。
 您在bgm.tv的数据不会受到此选项的影响，此外，我们无法阻止他人从bgm.tv抓取并使用您的数据。
 
@@ -104,25 +117,29 @@ Q: 我想更改网站的显示语言
 A: Bangumi的显示语言取决于您浏览器和系统设置的偏好语言，未登录用户可以修改浏览器偏好语言，登陆后在设置里可以更改。
 [img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fvmtimph68j31h60t8ahc.jpg[/img]
 
+Q: 没明白剧透箱是干嘛的
+A: 写一段剧透->标记可能剧透的地方->发表->得到可以分享的链接和文字(剧透文字会被自动遮盖)->分享到你想分享的地方
+发表到剧透箱的内容默认不会被同步到Bangumi(或者其他任意的地方，除非您主动要求)，您可以分享对应剧透箱的链接给别人，对方打开后即可看见内容
+
 Q: 是怎么想到要做剧透箱这样的一个功能的?
-A: 原创意归功于fusetter，当我们第一次看到fusetter的时候觉得这就是我们想要的分享剧透的方法，但是fusetter和我们想象中形态的还是有很多差距，所以就自己做了一个。
+A: 原创意归功于[url=https://fusetter.com]fusetter[/url]，当我们第一次看到fusetter的时候觉得这就是我们想要的分享剧透的方法，但是fusetter和我们想象中形态的还是有很多差距，所以就自己做了一个。
+
+Q: 数据好像不太对
+A: 除搜索之外其他都是缓存的Bangumi数据，可能有延迟，统计数据一个月更新一次。您可以在数据统计界面的"最新数据"标签处看到上次数据更新时间
+
+[img]https://wx3.sinaimg.cn/large/007kYSBAly1fwuscpptojj31kw05l0uq.jpg[/img]
+
+Q: 我不想让BangumiN抓取我的数据，但我不想登陆BangumiN后再设置，有什么办法吗？
+A: 通过我们的联系方式提出请求 [url]https://bangumin.tv/about[/url] ，或直接回复此贴
 
 Q: 代码在哪里公开?
 A: [url]https://github.com/edwardez/bangumin[/url]
 
 Q: 我该如何对BangumiN做出贡献？
-A: 欢迎在github提出issue或pull request(另，我们也觉得现在网站不好看，欢迎设计师朋友提出建议:P)
+A: 欢迎在github提出issue或pull request(另，我们也觉得现在网站不太好看，欢迎设计师朋友提出建议:P)
 
 Q: 如何联系你们？
 A: 参见我们的联系方式 [url]https://bangumin.tv/about[/url] ，或直接回复此贴
-
-Q: 数据好像不太对
-A: 除搜索之外其他都是缓存的Bangumi数据，可能有延迟，统计数据一个月更新一次。您可以在数据统计界面的"最新数据"标签处看到上次数据更新时间
-
-***图***
-
-Q: 我不想让BangumiN抓取我的登陆，但我不想登陆BangumiN后再设置，有什么办法吗？
-A: 通过我们的联系方式提出请求 [url]https://bangumin.tv/about[/url] ，或直接回复此贴
 
 
 =========
@@ -137,7 +154,8 @@ A: 通过我们的联系方式提出请求 [url]https://bangumin.tv/about[/url] 
 短期（近期重点）
 
 - 稳定性: 修复beta版中可能出现的问题
-- [新!]我们正在研究显示创作人员的数据统计的可能性，并计划在近期推出相关功能
+- [新!]我们正在讨论与设计显示创作人员(监督，声优…etc)的数据统计界面，并计划在近期推出相关功能
+- [新!]完善剧透发表功能
 
 中期（完成日期待定）
 

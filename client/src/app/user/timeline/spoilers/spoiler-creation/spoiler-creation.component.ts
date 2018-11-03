@@ -229,7 +229,7 @@ export class SpoilerCreationComponent implements OnInit {
       .pipe(
         catchError(error => {
           this.duringSpoilerSubmission = false;
-          throw new error;
+          return throwError(error);
         })
       )
       .subscribe(spoilerExisted => {

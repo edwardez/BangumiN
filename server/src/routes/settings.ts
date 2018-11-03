@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as dynamooseUserModel from '../models/nosql/user';
 import {BanguminErrorCode, CustomError} from '../services/errorHandler';
 import {celebrate, Joi} from 'celebrate';
+import {SettingService} from '../services/bangumin/settingService';
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.post('/', celebrate({
     bangumiLanguage: Joi.string(),
     appTheme: Joi.string(),
     showA11YViolationTheme: Joi.boolean(),
+    stopCrawling: Joi.boolean(),
   },
 }), (req: any, res: any, next: any) => {
   const id = req.user.id;
@@ -24,7 +26,10 @@ router.post('/', celebrate({
   dynamooseUserModel.User
     .updateUser(newUserSettings)
     .then((response) => {
-      res.json(response);
+      return SettingService.updateUserExcludeSettings(newUserSettings.stopCrawling, Number(newUserSettings.id))
+        .then((r) => {
+          return res.json(response);
+        });
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {

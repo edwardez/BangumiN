@@ -10,6 +10,7 @@ export interface UserSchema {
   bangumiLanguage?: string;
   appTheme?: string;
   showA11YViolationTheme?: boolean;
+  stopCrawling?: boolean;
   loggedInAt?: number;
   updatedAt?: number;
   createdAt?: number;
@@ -53,6 +54,14 @@ const userSchema = new dynamoose.Schema({
     },
   },
   showA11YViolationTheme: {
+    default: false,
+    type: Boolean,
+    trim: true,
+    validate: (v: boolean) => {
+      return Joi.boolean().validate(v).error === null;
+    },
+  },
+  stopCrawling: {
     default: false,
     type: Boolean,
     trim: true,

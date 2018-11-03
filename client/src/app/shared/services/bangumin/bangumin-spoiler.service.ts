@@ -46,7 +46,8 @@ export class BanguminSpoilerService {
       take(1),
       switchMap((userSubject: BanguminUserSchema) =>
         this.http.post<SpoilerExisted>
-        (`${environment.BACKEND_API_URL}/user/${userSubject.id}/spoiler`, new SpoilerNew().deserialize(newSpoiler), options)),
+        (`${environment.BACKEND_API_URL}/user/${userSubject.id}/spoiler`,
+          new SpoilerNew(newSpoiler.spoilerText, newSpoiler.relatedSubjects, newSpoiler.relatedReviewSubjectId), options)),
       map(spoilerExisted => new SpoilerExisted().deserialize(spoilerExisted)),
     );
   }

@@ -29,7 +29,7 @@ export class AppGuard implements CanActivate {
 
         // else user is not authenticated, clear storage and redirect
         this.storageService.clear();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], {replaceUrl: true});
         return false;
       })
     );

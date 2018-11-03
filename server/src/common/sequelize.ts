@@ -1,9 +1,10 @@
 import {Sequelize} from 'sequelize-typescript';
 import config from '../config/web';
+import {logger} from '../utils/logger';
 import {Subject} from '../models/relational/bangumi/subject';
 import {User} from '../models/relational/bangumi/user';
-import {logger} from '../utils/logger';
 import {Record} from '../models/relational/bangumi/record';
+import {UserExclude} from '../models/relational/bangumin/userExclude';
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -22,5 +23,6 @@ const sequelize = new Sequelize({
 sequelize.addModels([Subject]);
 sequelize.addModels([User]);
 sequelize.addModels([Record]);
+sequelize.addModels([UserExclude]);
 
 export {sequelize};

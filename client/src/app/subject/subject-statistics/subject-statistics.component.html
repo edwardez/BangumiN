@@ -1,19 +1,31 @@
 <div *ngIf="targetSubjectStatsArr"
      class="row no-gutters flex-wrap justify-content-center">
 
+  <div class="col-11">
+    <div class="d-flex justify-content-end">
+      <div [translate]="'statistics.updateTime.last'" [translateParams]="{time: getLastUpdateTime()}"
+           class="mr-2 flex-shrink-0">
+      </div>
+      <mat-icon [matTooltip]="'statistics.updateTime.explanation.subject' | translate: {time: getLastUpdateTime()}">
+        access_time
+      </mat-icon>
+    </div>
+  </div>
+
   <mat-card class="col-12 col-lg-5-half  mt-2 d-none d-md-block">
     <mat-card-content>
       <div class="responsive-container-chart-height-low">
         <ngx-charts-advanced-pie-chart
           [scheme]="colorScheme"
           [results]="countByStateData"
-          [animations]=true
+          [label]="'statistics.summaryChart.label' | translate"
+          [percentageFormatting]="formatStateData"
+          [animations]=false
           [gradient]="false"
           [tooltipDisabled]=false
           [tooltipText]="pieTooltipText">
         </ngx-charts-advanced-pie-chart>
       </div>
-
     </mat-card-content>
   </mat-card>
 
@@ -43,6 +55,7 @@
         <ngx-charts-bar-vertical
           [scheme]="colorScheme"
           [results]="scoreVsCountData"
+          [animations]="false"
           [gradient]="false"
           [showGridLines]="true"
           [xAxis]="true"
@@ -88,30 +101,31 @@
       <div class="responsive-container-chart-height-low">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
-          [schemeType]="schemeType"
-          [results]="yearVsAccumulatedMeanData"
-          [animations]=true
-          [legend]="true"
+          [schemeType]="'ordinal'"
+          [curve]="lineCurveType"
+          [results]="accumulatedMeanData"
+          [animations]=false
+          [legend]="false"
           [gradient]="false"
           [autoScale]=true
           [xAxis]="true"
           [yAxis]="true"
           [showXAxisLabel]="true"
-          [xAxisTickFormatting]="calendarAxisTickFormatting"
+          [xAxisTickFormatting]="formatDateToSimpleString"
           [showYAxisLabel]="true"
-          [xAxisLabel]="'statistics.meanScorePerYearBarChart.year' | translate"
-          [yAxisLabel]="'statistics.meanScorePerYearBarChart.score' | translate"
-          [timeline]=false
+          [xAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.year' | translate"
+          [yAxisLabel]="'statistics.subjectAccumulatedMeanLineChart.score' | translate"
+          [timeline]=true
           [showGridLines]="true"
-          [rangeFillOpacity]="rangeFillOpacity"
+          [rangeFillOpacity]="0.15"
           [roundDomains]=false
           [tooltipDisabled]=false
-          class="ml-1">
+        >
           <ng-template #tooltipTemplate let-model="model">
             <!-- todo: left align -->
             <h3>
-              {{model.series.substring(0, 10)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
-              {{model.name}}
+              {{model.series.substring(0, 12)}} {{'statistics.subjectAccumulatedMeanLineChart.until' | translate}}
+              {{formatDateToSimpleString(model.name)}}
             </h3>
             <h4>
               {{'statistics.subjectAccumulatedMeanLineChart.accumulatedMean' | translate}}: {{model.value | number:
@@ -119,7 +133,7 @@
             </h4>
             <h4>
               {{'statistics.subjectAccumulatedMeanLineChart.accumulatedCOunt' | translate}}:
-              {{getAccumulatedYearCount(model.name)}}
+              {{getScoringCountUntil(accumulatedMeanData, model.series,model.name)}}
             </h4>
           </ng-template>
         </ngx-charts-line-chart>
@@ -127,13 +141,13 @@
 
 
       <form class="row no-gutters justify-content-center align-items-center ml-1"
-            [formGroup]="yearVsAccumulatedMeanFilterFormGroup">
+            [formGroup]="accumulatedMeanFilterFormGroup">
         <div class="col-1">
           <mat-icon>filter_list</mat-icon>
         </div>
         <mat-form-field class="col">
           <mat-select
-            [formControl]="yearVsAccumulatedMeanFilterFormGroup.get('stateSelect')"
+            [formControl]="accumulatedMeanFilterFormGroup.get('stateSelect')"
             multiple>
             <mat-option *ngFor="let status of collectionStatusList" [value]="status">
               {{'common.statusFullname.' + status | translate}}

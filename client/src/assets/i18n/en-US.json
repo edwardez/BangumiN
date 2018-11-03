@@ -125,7 +125,7 @@
     "signInUsingBangumi": "Use Bangumi account to login",
     "signInUsingBangumiNotice": "1. By clicking login, you agree to our <a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">Terms</a> and <a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">Privacy Policy</a>",
     "signUpBangumi": "Sign up a Bangumi account",
-    "signUpBangumiNotice": "2. BangumiN is not directly relevant to Bangumi, after signing up you need to go back to BangumiN to log in",
+    "signUpBangumiNotice": "2. BangumiN is not affiliated to Bangumi, after signing up you need to go back to BangumiN to log in",
     "waitForBangumiAuth": {
       "title": "Login in progress",
       "content": "Please complete the login process in the newly opened window, please don't close this window before login is completed.",
@@ -192,6 +192,21 @@
             "name": "Show themes that violate accessibility guidlines",
             "tooltip": {
               "explanation": "Some themes(like Bangumi's Pink theme) violate accessibility guideline, some people (i.e. have a visual impairment? might have difficulty in using them. These theme options are hidden by default. By toggling this slider you confirm that you've read relevant explanations."
+            }
+          }
+        }
+      },
+      "privacy":{
+        "name":"Privacy",
+        "personalData":{
+          "name":"Personal Data",
+          "stopCrawling":{
+            "name":"Remove my statistical data",
+            "tooltip": {
+              "explanation": "Once selected, we will stop crawling your score in Bangumi, you will not be able to continue to view your statistics, and your statistical data will be removed from other statistics."
+            },
+            "explanationDialog": {
+              "content": "We will process your request. <br/>Please note that data cleanup does not happen immediately, and it may take up to several weeks for us to process your request, during this time you can revert this change at any time in settings. <br/>This option only affect whether you can view your statistics or whether your records are included in other statistics, other BangumiN functionalities won't be affected. <br/>Your data on bgm.tv will not be changed by this option, and we cannot prevent others from crawling your data on bgm.tv."
             }
           }
         }
@@ -275,10 +290,18 @@
           "modal": {
             "title": "Edit collection",
             "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
+            "commentWithSpoiler": "Spoilers({{commentCurrentLength}}/{{commentMaxLength}})",
             "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
             "cancel": "Cancel",
             "submit": "Submit",
             "privacy": "Only visible to yourself",
+            "spoiler": "Review contains spoiler",
+            "prompt": {
+              "spoiler": {
+                "labeInCommentArea": "This line won't be replaced.\nSecond and subsequent lines will be replaced with masks",
+                "textUnderCommentArea": "Spoiler mode is tunred on. First line won't be masked, Second and subsequent lines will be replaced with masks."
+              }
+            },
             "error": {
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"
@@ -438,6 +461,13 @@
   },
   "statistics": {
     "headline": "{{name}}'s statistics",
+    "updateTime": {
+      "last": "Newest data: {{time}}",
+      "explanation": {
+        "subject": "Last time BangumiN captured new data for this subject: {{time}}. Data is updated on a monthly basis so delay might happen. This time won't be updated if there's no new record.",
+        "user": "Last time BangumiN captured new data for this user: {{time}}. Data is updated on a monthly basis so delay might happen. This time won't be updated if there's no new activity."
+      }
+    },
     "common": {
       "legend": "Legend"
     },
@@ -456,17 +486,17 @@
       "score": "Score",
       "count": "Count"
     },
-    "meanScorePerYearBarChart": {
-      "title": "Average score by year",
+    "userAccumulatedMeanLineChart": {
+      "title": "Accumulated Mean",
       "score": "Mean Score",
       "year": "Year",
       "tooltip": {
         "in": " in",
-        "wholeYear": "",
+        "until": "until{{untilTime}}",
         "mean": "Mean",
         "min": "Min",
         "max": "Max",
-        "count": "Count"
+        "count": "Scored count"
       }
     },
     "subjectCountBarChart": {
@@ -474,9 +504,16 @@
     },
     "subjectAccumulatedMeanLineChart": {
       "title": "Accumulated Mean",
+      "score": "Mean Score",
+      "year": "Year",
       "accumulatedMean": "Accumulated Mean",
       "accumulatedCOunt": "Accumulated Count",
       "until": "until"
+    },
+    "exception": {
+      "userNotFound": {
+        "explanation": "<div>We're trying to get data from Bangumi user <a href=\"https://bgm.tv/user/{{targetUserId}}\" target=\"_blank\" rel=\"noopener\">@{{targetUserId}}</a> but user doesn't exist, or the user exists but there's no data, or due to privacy protection settings we're not able to access.<br/> If none of the above conditions apply, stay tuned! Relevant data should show up very soon.</div>"
+      }
     }
   },
   "footer": {

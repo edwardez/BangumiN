@@ -1,3 +1,3 @@
 export enum PageState {
-  IsInvalidQuery, InLoading, CanProceed
+  IsInvalidQuery, InLoading, CanProceed, DoesNotExist
 }

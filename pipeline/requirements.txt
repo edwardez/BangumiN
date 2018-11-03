@@ -41,7 +41,7 @@ pytest==3.7.1
 pytest-runner==4.2
 python-dateutil==2.7.3
 queuelib==1.5.0
-requests==2.19.1
+requests==2.20.0
 requests-oauthlib==1.0.0
 Scrapy==1.5.1
 service-identity==17.0.0

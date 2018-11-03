@@ -23,24 +23,29 @@ class RecordTableDatabaseExecutor(GeneralDatabaseExecutor):
         """
         super().__init__(Record, commit_threshold)
 
-    def delete(self, entities_ids):
+    def delete(self, entities_ids, batch_size=500):
         """
         Delete entities according to the entities_ids set/list
         :param entities_ids: Expect to be a list/set of entities_ids that'll be delete, i.e. ((1,2), (1,3))
+        :param batch_size: Number of records to delete in batch
         :return: number of deleted
         """
         deleted_entities = 0
-
-        try:
-            self.session.query(self.EntityModel) \
-                .filter(Tuple(self.EntityModel.user_id, self.EntityModel.subject_id).in_(entities_ids)) \
-                .delete(synchronize_session='fetch')
-            self.session.commit()
-            deleted_entities = len(entities_ids)
-        except Exception as exception:
-            self.session.rollback()
-            logger.error('Skipping due to unhandled exception')
-            logger.error(exception)
+        entities_ids_list = list(entities_ids)
+        num_of_iteration = len(entities_ids_list) // batch_size + 1
+        for i in range(num_of_iteration):
+            logger.info('Starting deleting iteration number %s', i)
+            batch_ids = entities_ids_list[i * batch_size:(i + 1) * batch_size]
+            try:
+                self.session.query(self.EntityModel) \
+                    .filter(Tuple(self.EntityModel.user_id, self.EntityModel.subject_id).in_(batch_ids)) \
+                    .delete(synchronize_session='fetch')
+                self.session.commit()
+                deleted_entities += len(batch_ids)
+            except Exception as exception:
+                self.session.rollback()
+                logger.error('Skipping due to unhandled exception')
+                logger.error(exception)
         return deleted_entities
 
     def query_range(self, min_id, max_id):

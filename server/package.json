@@ -4,6 +4,10 @@
   "description": "server for BangumiN",
   "author": "edward",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardez/BangumiN.git"
+  },
   "main": "dist/src/index.js",
   "scripts": {
     "start": "NODE_ENV=prod node dist/src/index.js",
@@ -32,10 +36,12 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "celebrate": "^8.0.2",
+    "change-case": "^3.0.2",
     "connect-dynamodb": "^2.0.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "csurf": "^1.9.0",
+    "dayjs": "^1.7.7",
     "dotenv": "^6.0.0",
     "dynamoose": "^0.8.7",
     "express": "^4.16.3",
@@ -46,6 +52,7 @@
     "http-proxy-middleware": "^0.18.0",
     "http-status-codes": "^1.3.0",
     "joi": "^13.4.0",
+    "lodash": "^4.17.11",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.4.0",
     "pg": "^7.4.3",
@@ -72,6 +79,7 @@
     "@types/http-proxy-middleware": "^0.17.5",
     "@types/jest": "^23.3.0",
     "@types/joi": "^13.4.5",
+    "@types/lodash": "^4.14.117",
     "@types/node": "^10.10.3",
     "@types/passport": "^0.4.6",
     "@types/passport-oauth2": "^1.4.6",

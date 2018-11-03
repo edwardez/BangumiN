@@ -43,6 +43,7 @@ export const logger = winston.createLogger({
     new winstonCloudWatch({
       logGroupName: `BangumiN-${config.env}`,
       logStreamName: 'regularLogger',
+      level: config.logger.level,
       awsRegion: config.region.default,
       accessKeyId: config.credentials.accessKeyID,
       secretAccessKey: config.credentials.secretAccessKey,

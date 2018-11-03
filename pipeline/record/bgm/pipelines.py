@@ -185,13 +185,15 @@ class DBPipeline(object):
                     removed_users += 1
                 except KeyError:
                     # in case user_id is not in self.entities_seen
-                    # however it's unlikely to happen so we log this exception
+                    # however it's unlikely to happen so we log this exception to check what happened
                     # "A try/except block is extremely efficient if no exceptions are raised."
                     logger.warning('Trying to delete %s from entities_seen but it\'s not there.', user_id)
                     pass
             else:
                 break
         logger.info('Deleted %s users from self.items_seen', removed_users)
+        logger.info('Number of instances that might need deleting after optimizing: %s',
+                    len(self.entities_might_need_deleting))
 
     def write_to_db(self):
         """

@@ -191,10 +191,19 @@ export class AuthenticationService {
    */
   public logout(): void {
     this.storageService.clear();
-    this.router.navigate(['../', 'login']).then(res => {
-      location.reload(true);
-    });
+    this.sendLogoutRequest()
+      .pipe(
+        catchError((error) => {
+          this.router.navigate(['../', 'login'])
+            .then(res => {
+              location.reload(true);
+            });
+          throw error;
+        }),
+      )
+      .subscribe(
 
+      );
   }
 
 
@@ -226,6 +235,13 @@ export class AuthenticationService {
     this.storageService
       .setAccessToken(accessToken)
       .setRefreshToken(refreshToken);
+  }
+
+  /**
+   * Send logout request to backend
+   */
+  public sendLogoutRequest(): Observable<any> {
+    return this.http.post(`${environment.BACKEND_AUTH_URL}/logout`, {}, {withCredentials: true});
   }
 
 

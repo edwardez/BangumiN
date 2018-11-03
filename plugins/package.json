@@ -1,0 +1,32 @@
+{
+  "name": "go_bangumin",
+  "version": "0.1.0",
+  "description": "go/BangumiN Plugins for bgm.tv",
+  "main": "index.js",
+  "scripts": {
+    "test": "qunit 'tests/*_spec.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardez/bangumin.git"
+  },
+  "keywords": [
+    "BangumiN",
+    "Bangumi"
+  ],
+  "author": "edward",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edwardez/bangumin/issues"
+  },
+  "homepage": "https://github.com/edwardez/bangumin#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "qunit": "^2.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}

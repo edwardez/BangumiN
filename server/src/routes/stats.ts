@@ -1,4 +1,6 @@
 import * as express from 'express';
+import _ from 'lodash';
+import dayjs from 'dayjs';
 import {Record} from '../models/relational/bangumi/record';
 import {getSubjectStatsById, getUserStatsByIdOrUsername} from '../services/bangumi/statsService';
 import {celebrate, Joi} from 'celebrate';
@@ -18,14 +20,20 @@ router.get('/user/:userIdOrUsername', celebrate({
     req.params.userIdOrUsername);
 
   getUserStatsByIdOrUsername(userIdOrUsername).then(
-    (userstats: Record[]) => {
-      if (userstats) {
+    (userStats: Record[]) => {
+      if (userStats) {
+        const lastModified = userStats.length === 0 ? null : _.maxBy(userStats, record => record.rowLastModified).rowLastModified;
+
         return res.json(
           {
             ...(typeof userIdOrUsername === 'number' ? {userId: userIdOrUsername} : {userName: userIdOrUsername}),
-            stats: userstats.map(userstat => userstat.toJSON()),
-          }
-          ,
+            lastModified,
+            stats: userStats.map((userRecordInstance) => {
+              const userRecord = userRecordInstance.toJSON();
+              delete userRecord.rowLastModified;
+              return userRecord;
+            }),
+          },
         );
       }
 
@@ -50,13 +58,19 @@ router.get('/subject/:subjectId', celebrate({
   },
 }), (req: any, res: any, next: any) => {
   const subjectId = req.params.subjectId;
-
   getSubjectStatsById(subjectId).then(
-    (userstats: Record[]) => {
-      if (userstats) {
+    (subjectStats: Record[]) => {
+      if (subjectStats) {
+        const lastModified = subjectStats.length === 0 ? null : _.maxBy(subjectStats, record => record.rowLastModified).rowLastModified;
+
         return res.json({
           subjectId,
-          stats: userstats.map(userstat => userstat.toJSON()),
+          lastModified,
+          stats: subjectStats.map((subjectRecordInstance) => {
+            const userRecord = subjectRecordInstance.toJSON();
+            delete userRecord.rowLastModified;
+            return userRecord;
+          }),
         });
       }
 

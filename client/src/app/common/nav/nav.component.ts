@@ -9,6 +9,7 @@ import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.ser
 import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {LayoutService} from '../../shared/services/layout/layout.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -16,8 +17,9 @@ import {LayoutService} from '../../shared/services/layout/layout.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit, OnDestroy {
-  bangumiUser: BangumiUser;
   isAuthenticated = false;
+  backendOauthUrl = `${environment.BACKEND_OAUTH_URL}/bangumi`;
+  bangumiUser: BangumiUser;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input()

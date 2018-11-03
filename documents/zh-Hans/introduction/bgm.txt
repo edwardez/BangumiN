@@ -1,0 +1,167 @@
+[全平台]BangumiN: 一款基于PWA，专注数据可视化和剧透分享的app
+
+[b]BangumiN[/b]（访问网址: [b][url=https://bangumin.tv]https://bangumin.tv[/url][/b], [URL=https://github.com/edwardez/BangumiN/tree/develop]源代码[/url], 读作: Bangumi-N或者Bangu-min），是一款基于PWA，专注数据可视化和剧透分享的app
+
+
+---
+更新: 2018-11-01
+[新!]改变平均分折线图的显示方式，现在最高可以精确到天，并且可以任意选择并查看某个时间段的数据
+[新!]发布脚本与超合金组件([url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url]): go/BangumiN 在bangumi上添加前往对应BangumiN页面的按钮
+[新!]在统计页面添加"最后更新"标签
+[新!]网站初次加载时添加一个加载动画，优化用户体验
+[新!]设置里添加"移除我的统计数据"选项，您现在可以禁止BangumiN抓取您的数据
+[优化]优化网站访问速度，特别是之前访问较慢的用户现在最高可有2～3倍的速度提升
+[优化]网站升级到Angular 7，适配Material Design 2018的标准
+[优化]少数情况下网站长时间运行后速度可能过慢
+[修复]其他各种bug修复
+---
+
+[size=25]功能介绍[/size]
+
+[b][size=20]剧透箱[/size][/b]
+您是否曾经有过在发售日第一时间打完游戏，或者新番播出日第一时间看完动画，想分享感受到社交媒体或其他平台上但因担心剧透而不了了之，或者只能写一些泛泛而谈的沮丧经历？使用BangumiN，您只需在BangumiN的剧透箱中发表一条新剧透并标记可能剧透的内容，即可安全的分享到您想分享的地方，甚至还可以搜索并添加相关的条目，在分享时我们就会为您自动打上话题tag。分享剧透从未如此安全和优雅。
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtf5i2l6j31kw14q7jn.jpg[/img]
+
+[img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fwusic1ns0j31cq0lojvc.jpg[/img]
+
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmtfbknjaj31kw0q546q.jpg[/img]
+
+此外，在安装脚本后(需要登录，[url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url], )，您更可以从Bangumi的收藏盒通过点击"发表剧透"一键直达BangumiN发来表新的剧透，剧透内容将会被同步回Bangumi
+在bangumi点击链接
+[img]https://wx3.sinaimg.cn/mw690/007kYSBAly1fwus4xjehnj30fm0n240a.jpg[/img]
+-> 前往BangumiN
+[img]https://wx3.sinaimg.cn/mw690/007kYSBAly1fwus5qrkyej311s0mu0w5.jpg[/img]
+-> 发表后，bangumi上的对应条目吐槽会自动被更新
+[img]https://wx4.sinaimg.cn/mw690/007kYSBAly1fwusmn9r3yj30ry0kedio.jpg[/img]
+[i]"发表剧透"目前处于早期实验阶段，有一些已知的bug(我们计划在接下来一段时间内逐渐完善)，欢迎试用并反馈意见[/i]
+
+[b][size=20]数据可视化[/size][/b]
+您是否曾经思考过查看自己在Bangumi的数据统计，甚至想要精确到查看某个特定分类，特定状态下所有条目？使用BangumiN，您可以详细的查看某个用户或者某个条目的可视化数据，这些图表简单易懂并高度可定制，比如: "我所有标记为看过的动画在2017年的平均分"或"我所有标记为抛弃的游戏的评分分布图"
+
+查看用户数据统计
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmtgz3nfoj31kw0wqk3p.jpg[/img]
+
+查看条目数据统计
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmth5rf9gj31kw0wqtwp.jpg[/img]
+
+此外，您也可以通过搜索用户名的方式来查看某个特定用户或特定条目的数据统计。
+
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmth90bi9j31120h80uz.jpg[/img]
+
+此外，在安装脚本后([url=https://bgm.tv/dev/app/720]超合金组件审核中暂时不可用[/url], [url=https://greasyfork.org/en/scripts/373898-go-bangumin]greasyfork[/url])，您甚至可以无需登录，从bangumi一键直达BangumiN
+[img]https://wx1.sinaimg.cn/large/007kYSBAly1fwus4xb9eaj313a0220t1.jpg[/img]
+[img]https://wx4.sinaimg.cn/large/007kYSBAly1fwus4xbyafj30wo0463yu.jpg[/img]
+
+* 数据可视化的一部分数据是从Bangumi网页抓取的，如果Bangumi管理员未来禁止这一行为，我们无法保证此功能的可用性。
+
+
+[b][size=20]PWA[/size][/b]
+BangumiN基于PWA(渐进式Web应用)的标准构建，支持PWA的各种特性
+
+- 优化访问: 在网络状况不好，甚至离线时，您仍可使用部分网站的功能
+- 安全: BangumiN已启用强制加密访问以保证数据传输安全，服务器和客户端代码开源并接受社区检验，如果您发现了安全漏洞，欢迎告知。
+- 原生app体验： 在Android上，您更可以通过点击网站下方的安装提示或通过在菜单中选择"添加到主屏幕"来安装BangumiN，从而像使用原生Android app一样使用BangumiN
+
+
+[b][size=20]条目状态管理[/size][/b]
+您可以通过BangumiN搜索条目，然后进行条目状态管理，在BangumiN对条目状态做出的修改都将及时反应到主站上。
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmthfp298j31kw109x1m.jpg[/img]
+
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmthjmj6fj31kw0yhqsi.jpg[/img]
+* 评论与实际游戏无关，仅为演示效果
+
+
+[b][size=20]适配各种平台，各种尺寸的屏幕[/size][/b]
+[img]https://wx4.sinaimg.cn/large/007kYSBAly1fvmthnd41uj31kw0xe4iw.jpg[/img]
+* 评论与实际游戏，动画无关，仅为演示效果
+
+BangumiN全面适配各种尺寸的屏幕，无论是手机，电脑还是平板，均可顺畅的使用BangumiN。
+BangumiN基于网页，不受操作系统限制，您可以使用任何我们支持的浏览器进行访问。
+
+
+[b][size=20]多主题[/size][/b]
+我们目前提供三套配色，您可以随时前往设置进行切换
+
+蓝绿(默认配色)：
+[img]https://wx3.sinaimg.cn/mw1024/007kYSBAly1fvmti7stdhj31kw0wqnlv.jpg[/img]
+
+红黑(夜间模式[mask], macOS Mojave ready[/mask]):
+[img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fvmtiazx6yj31kw0wqty6.jpg[/img]
+
+粉蓝(Bangumi经典配色)*:
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fvmtiesfdbj31kw0wq1hd.jpg[/img]
+
+* Bangumi Pink 配色因不符合无障碍标准默认不予显示，如果有需要，请在设置里手动打开
+
+主题配色目前处于试验期，欢迎提交您觉得更美观的配色(如果是非material标准调色板的配色，请确保配色至少已通过WCAG AA测试)
+
+[b][size=20][new!]隐私权[/size][/b]
+虽然BangumiN收集的Bangumi条目和用户数据均来自公开的互联网，我们也理解有些用户不希望让人看到自己的数据统计的心情，您随时可以前往BangumiN的设置界面选择禁止我们抓取数据。
+[img]https://wx1.sinaimg.cn/mw1024/007kYSBAly1fwus8gzlfkj316e0a2wf1.jpg[/img]
+请注意，此选项不会立即生效，我们可能需要长达几周的时间来处理您的请求(清除或再次开始抓取您的数据)，在此期间您随时可以在设置页面里撤回此更改。
+此选项仅影响您是否可以查看自己的统计页面和其他的统计中是否包含您的数据，其他的BangumiN功能不受影响。
+您在bgm.tv的数据不会受到此选项的影响，此外，我们无法阻止他人从bgm.tv抓取并使用您的数据。
+
+[b][size=20]其他[/size][/b]
+多语言支持，自定义条目名语言（中文/原文），同步自己在不同设备上发表的剧透和设置...限于篇幅限制我们无法介绍所有功能，还有更多的特性等待您使用BangumiN时[url=https://bangumin.tv]进行探索[/url]。
+
+=========
+[b][size=20]Q&A[/size][/b]
+
+Q: 什么浏览器和操作系统可以使用BangumiN?
+A: 我们支持大部分主流浏览器: Firefox, Chrome和Safari，具体的版本号如下
+[img]https://wx3.sinaimg.cn/large/007kYSBAly1fvmtiip5brj30uo05kadk.jpg[/img]
+使用其他浏览器/平台的用户也可以使用BangumiN，但可能无法保证最佳浏览体验
+
+Q: 我想更改网站的显示语言
+A: Bangumi的显示语言取决于您浏览器和系统设置的偏好语言，未登录用户可以修改浏览器偏好语言，登陆后在设置里可以更改。
+[img]https://wx4.sinaimg.cn/mw1024/007kYSBAly1fvmtimph68j31h60t8ahc.jpg[/img]
+
+Q: 没明白剧透箱是干嘛的
+A: 写一段剧透->标记可能剧透的地方->发表->得到可以分享的链接和文字(剧透文字会被自动遮盖)->分享到你想分享的地方
+发表到剧透箱的内容默认不会被同步到Bangumi(或者其他任意的地方，除非您主动要求)，您可以分享对应剧透箱的链接给别人，对方打开后即可看见内容
+
+Q: 是怎么想到要做剧透箱这样的一个功能的?
+A: 原创意归功于[url=https://fusetter.com]fusetter[/url]，当我们第一次看到fusetter的时候觉得这就是我们想要的分享剧透的方法，但是fusetter和我们想象中形态的还是有很多差距，所以就自己做了一个。
+
+Q: 数据好像不太对
+A: 除搜索之外其他都是缓存的Bangumi数据，可能有延迟，统计数据一个月更新一次。您可以在数据统计界面的"最新数据"标签处看到上次数据更新时间
+
+[img]https://wx3.sinaimg.cn/large/007kYSBAly1fwuscpptojj31kw05l0uq.jpg[/img]
+
+Q: 我不想让BangumiN抓取我的数据，但我不想登陆BangumiN后再设置，有什么办法吗？
+A: 通过我们的联系方式提出请求 [url]https://bangumin.tv/about[/url] ，或直接回复此贴
+
+Q: 代码在哪里公开?
+A: [url]https://github.com/edwardez/bangumin[/url]
+
+Q: 我该如何对BangumiN做出贡献？
+A: 欢迎在github提出issue或pull request(另，我们也觉得现在网站不太好看，欢迎设计师朋友提出建议:P)
+
+Q: 如何联系你们？
+A: 参见我们的联系方式 [url]https://bangumin.tv/about[/url] ，或直接回复此贴
+
+
+=========
+[b][size=20]已知限制[/size][/b]
+
+- 因为Bangumi API对网站的限制，我们无法提供类似主站或其他原生Bangumi app的体验，具体表现为：主页时间线，超展开，管理进度（点格子）和查看自己的收藏概览目前不可用，短期内也没有计划进行支持(查看其他用户对条目的评论可能会在将来试探性的进行支持)。但是，您依然可以通过BangumiN搜索条目并进行最基本的条目状态管理。
+- 尝试登陆有一定几率提示: 登录失败请重试
+  - 请重试，目前我们发现的绝大部分"登录失败请重试"错误都是来源于Bangumi自己的服务器， 即使在参数都正确的情况下Bangumi依然会随机拒绝授权请求，如果在多次尝试后此问题仍存在请汇报给给我们。
+  - 多次是几次？建议最少三次（一般第二次登陆即可修复，但笔者曾经遇到过Bangumi服务器连续三次拒绝授权，第四次成功的错误）。（顺便，有其他使用Oauth的开发者遇到类似的问题吗? Bangumi的服务器会随机返回一个500错误导致授权无法完成）
+=========
+[b][size=20]未来展望[/size][/b]
+短期（近期重点）
+
+- 稳定性: 修复beta版中可能出现的问题
+- [新!]我们正在讨论与设计显示创作人员(监督，声优…etc)的数据统计界面，并计划在近期推出相关功能
+- [新!]完善剧透发表功能
+
+中期（完成日期待定）
+
+- 网站无障碍: 我们相信，科技不是为某些人，而是为所有人准备，我们计划优化网站的无障碍性，让网站可以通过屏幕阅读器进行全方面的交互。
+
+长期（也许会鸽）
+
+- 自动标注剧透: 剧透箱现在需要手动标注剧透再进行发布，比起手动标注，何不如让BangumiN来帮您自动标注？我们计划使用人工智能和自然语言处理来自动检测文字中的剧透并进行标注
+- 交互式构建图表: 我们的数据的可视化图表已经涵盖大部分常见基本情况，然而，我们理解每个人对数据分析的需求都有所不同，但复杂的数据分析往往有一定门槛，比如需要了解数据查询语言（如SQL），我们计划推出Data Gazer功能，通过简单的几下选择，即使是不会的SQL的用户也能通过交互式的点击来构建符合自己需求的图表

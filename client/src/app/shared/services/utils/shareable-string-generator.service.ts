@@ -4,6 +4,7 @@ import {map, switchMap, take} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {SnackBarService} from '../snackBar/snack-bar.service';
+import {environment} from '../../../../environments/environment';
 
 
 export interface CopyEvent {
@@ -59,6 +60,25 @@ export class ShareableStringGeneratorService {
   }
 
   /**
+   * Convert raw text to quill format text chunks
+   * @param rawSpoilerText Raw text
+   * @param delimiter What would be the delimiter that divides text into chunks, any text after this delimiter is treated as spoiler
+   */
+  static convertRawTextToSpoilerTextChunk(rawSpoilerText: string, delimiter = '\n'): SpoilerTextChunkSchema[] {
+    const textLengthBeforeDelimiter = rawSpoilerText.indexOf(delimiter);
+    if (textLengthBeforeDelimiter === -1 || textLengthBeforeDelimiter === rawSpoilerText.length - 1) {
+      return [{'insert': rawSpoilerText}];
+    }
+
+    const textBeforeDelimiter = rawSpoilerText.substr(0, textLengthBeforeDelimiter);
+    const textAfterDelimiter = rawSpoilerText.substr(textLengthBeforeDelimiter + 1);
+    return [
+      {'insert': textBeforeDelimiter},
+      {'insert': textAfterDelimiter, attributes: {spoiler: true}},
+    ];
+  }
+
+  /**
    * convert quill format text to masked text
    * @param spoilerText
    */
@@ -71,6 +91,28 @@ export class ShareableStringGeneratorService {
 
       return spoilerTextChunk.insert;
     }).join('');
+  }
+
+  /**
+   * generate and slice text which be posted to comment part of bangumi review
+   * @param spoilerLink link
+   * @param spoilerText text in quill format
+   */
+  generateCommentForBangumiSubjectReview(spoilerLink: string,
+                                         spoilerText: SpoilerTextChunkSchema[]): Observable<string> {
+    return this.translateService
+      .get('common.noun.spoiler')
+      .pipe(
+        map(spoilerLabel => {
+          const generatedShareableText =
+            `${spoilerLink} ${spoilerLabel}: ${ShareableStringGeneratorService.spoilerDeltaToMaskedRawText(spoilerText)}`;
+          // weibo will automatically slice string so we don't need to precisely calculate
+          // however weibo will return code 414(url too long) if the spoiler content is too long, slice the string to 140
+          return generatedShareableText.slice(0, environment.commentMaxLength);
+        }),
+        take(1),
+      );
+
   }
 
 

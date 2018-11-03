@@ -39,7 +39,6 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activatedRoute
-      .parent
       .params
       .pipe(
         filter(params => params['userId']),

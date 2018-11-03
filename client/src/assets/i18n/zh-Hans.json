@@ -109,7 +109,7 @@
         "name": "剧透箱"
       },
       "login": {
-        "name": "登陆"
+        "name": "登录"
       },
       "logout": {
         "name": "登出"
@@ -120,18 +120,18 @@
     }
   },
   "login": {
-    "heroExplanation": "在BangumiN，你可以安全的发表剧透并分享给他人，还可以查看你或者作品在Bangumi的数据统计。",
-    "signInUsingBangumi": "使用Bangumi账号登陆",
-    "signInUsingBangumiNotice": "1. 点击登陆代表你同意我们的<a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">服务条款</a>和<a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">隐私协议</a>",
+    "heroExplanation": "在BangumiN，您可以安全的发表剧透并分享给他人，还可以查看您或者作品在Bangumi的数据统计。",
+    "signInUsingBangumi": "使用Bangumi账号登录",
+    "signInUsingBangumiNotice": "1. 点击登录代表您同意我们的<a href=\"./tos\" target=\"_blank\" rel=\"noreferrer\">服务条款</a>和<a href=\"./privacy\" target=\"_blank\" rel=\"noreferrer\">隐私协议</a>",
     "signUpBangumi": "注册一个Bangumi账号",
-    "signUpBangumiNotice": "2. BangumiN与Bangumi无直接关系，在注册Bangumi账号后你需要回到BangumiN进行登录",
+    "signUpBangumiNotice": "2. BangumiN与Bangumi无直接关系，在注册Bangumi账号后您需要回到BangumiN进行登录",
     "waitForBangumiAuth": {
       "title": "正在登录中",
       "content": "在认证期间请不要关闭本窗口，请在新打开的窗口完成登录认证",
       "cancel": "取消认证"
     },
     "loginSuccess": "登录成功",
-    "alreadyLoggedIn": "已登陆用户，转向主界面",
+    "alreadyLoggedIn": "已登录用户，转向主界面",
     "loginFailure": "登录失败，请尝试重试",
     "waitForActivationPrompt": "正在激活账号，此窗口将稍候自动关闭...",
     "activationSuccessful": "激活成功",
@@ -140,12 +140,12 @@
   },
   "welcome": {
     "name": "欢迎",
-    "subHeading": "了解BangumiN可以帮你做些什么",
+    "subHeading": "了解BangumiN可以帮您做些什么",
     "learnMore": "了解更多",
     "card": {
       "stats": {
         "title": "统计",
-        "content": "查看你在Bangumi数据的统计图：分数分布，历史数据...等等。",
+        "content": "查看您在Bangumi数据的统计图：分数分布，历史数据...等等。",
         "learnMore": "前往我的统计"
       },
       "spoilerBox": {
@@ -194,6 +194,22 @@
             }
           }
         }
+      },
+      "privacy":{
+        "name":"隐私",
+        "personalData":{
+          "name":"个人数据",
+          "stopCrawling":{
+            "name":"移除我的统计数据",
+            "tooltip": {
+              "explanation": "选中后，我们将停止继续抓取您在Bangumi的评分记录，您将无法继续查看自己的统计数据，您的数据也将被从其他统计里移除。"
+            },
+            "explanationDialog": {
+              "content": "我们将处理您的记录。<br/>请注意，数据的清除或抓取不会立即发生，我们可能需要长达几周的时间来处理您的请求，在此期间您随时可以在设置页面里撤回此更改。<br/>此选项仅影响您是否可以查看自己的统计页面和其他的统计中是否包含您的数据，其他的BangumiN功能不受影响。<br/>您在bgm.tv的数据不会受到此选项的影响，同时，我们无法阻止他人从bgm.tv抓取并使用您的数据。<br/>"
+            }
+          }
+        }
+
       }
     }
   },
@@ -274,10 +290,18 @@
           "modal": {
             "title": "编辑收藏",
             "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
+            "commentWithSpoiler": "剧透({{commentCurrentLength}}/{{commentMaxLength}}字)",
             "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
             "cancel": "取消",
             "submit": "提交",
             "privacy": "仅自己可见",
+            "spoiler": "此评论含有剧透",
+            "prompt": {
+              "spoiler": {
+                "labeInCommentArea": "第一行不会被替换\n从此行开始的内容会被替换成防剧透符号",
+                "textUnderCommentArea": "剧透模式已打开，第一行不会被遮盖，换行后(第二行开始)的内容会被替换成防剧透符号。"
+              }
+            },
             "error": {
               "comment": {
                 "maxLength": "最多只能输入{{commentMaxLength}}个字"
@@ -436,6 +460,13 @@
   },
   "statistics": {
     "headline": "{{name}}的统计",
+    "updateTime": {
+      "last": "最新数据: {{time}}",
+      "explanation": {
+        "subject": "BangumiN最后一次获取到条目的新数据于: {{time}}。数据可能有延迟，每月更新一次。如果条目无新数据，此时间不更新。",
+        "user": "BangumiN最后一次获取到用户的新数据于: {{time}}。数据可能有延迟，每月更新一次。如果用户无新数据，此时间不更新。"
+      }
+    },
     "common": {
       "legend": "图例"
     },
@@ -454,17 +485,17 @@
       "score": "分数",
       "count": "合计"
     },
-    "meanScorePerYearBarChart": {
-      "title": "每年平均分",
+    "userAccumulatedMeanLineChart": {
+      "title": "累积平均分",
       "score": "平均分",
       "year": "年份",
       "tooltip": {
         "in": ":",
-        "wholeYear": "全年",
+        "until": "截止{{untilTime}}",
         "mean": "平均数",
         "min": "最小",
         "max": "最大",
-        "count": "总数"
+        "count": "打分总数"
       }
     },
     "subjectCountBarChart": {
@@ -472,9 +503,16 @@
     },
     "subjectAccumulatedMeanLineChart": {
       "title": "累积平均分",
+      "score": "平均分",
+      "year": "年份",
       "accumulatedMean": "累积平均分",
       "accumulatedCOunt": "累积打分人数",
       "until": "截止"
+    },
+    "exception": {
+      "userNotFound": {
+        "explanation": "<div>我们尝试获得Bangumi用户<a href=\"https://bgm.tv/user/{{targetUserId}}\" target=\"_blank\" rel=\"noopener\">@{{targetUserId}}</a>的数据但或者该用户不存在，或者没有标记过任何作品，或者由于隐私保护设定我们无法访问。<br/> 如果以上情况均不适用，相关数据应该很快就会出现。</div>"
+      }
     }
   },
   "footer": {
@@ -502,7 +540,7 @@
     "content": "<h2>BangumiN服务条款</h2><h3>1.条款</h3><p>访问bangumin.tv网站，即表示您同意遵守这些服务条款，所有适用法律和法规，并同意您有责任遵守任何适用的当地法律。如果您不同意这些条款，则禁止您使用或访问本网站。本网站包含的内容受适用的版权和商标法保护。</p><h3>2. 使用许可证</h3><ol type='a'><li>允许在BangumiN网站上临时观看内容（信息或软件），仅用于个人非商业短暂观看。这是授予许可，而不是转让所有权，根据本许可，您不得进行:<ol type='i'><li>未授权的修改或复制;</li><li>将这些内容用于任何商业目的;</li><li>尝试对BangumiN网站上包含的任何软件进行反编译或反向工程;</li><li>将内容转移给另一个人或“镜像”内容到任何其他服务器;或者</li><li>对网站，网站会员有危害或违反任何可适用法律的行为;</li></ol></li><li>如果您违反任何这些限制，本许可将自动终止，并且可能随时由BangumiN终止。</li></ol><h3>3. 免责声明</h3><ol type='a'><li>BangumiN网站上的内容按“原样”提供。 BangumiN不做任何明示或暗示的保证，特此声明并否认所有其他保证，包括但不限于适销性，适用于特定用途或不侵犯知识产权或其他侵权行为的暗示保证或条件。</li><li>此外，BangumiN不保证或就内容在其网站上使用的准确性，可能的结果或可靠性或与此类内容或与本网站链接的任何网站有关的任何陈述。</li><li>BangumiN的非本站用户产生，版权相关内容均来自Bangumi(https://bgm.tv/about/copyright)，我们对这些内容一无所知，任何相关的版权问题应联系Bangumi处理。</li></ol><h3>4. 限制</h3><p>在任何情况下，BangumiN或其供应商均不对因在BangumiN网站上使用或无法使用这些内容而导致的任何损害（包括但不限于因数据或利润损失或由于业务中断造成的损害）承担责任，即使BangumiN或BangumiN授权代表已经口头或书面通知可能存在此类损害。由于某些司法管辖区不允许对隐含担保或对间接或附带损害的责任限制进行限制，因此这些限制可能对您不适用。</p><h3>5. 内容的准确性</h3><p>BangumiN网站上出现的资料可能包括技术，印刷或照片错误。 BangumiN不保证其网站上的任何内容准确，完整或最新。 BangumiN可能随时更改其网站上的资料，恕不另行通知。但BangumiN不承诺更新内容。</p><h3>6. 链接</h3><p>BangumiN没有审查与其网站链接的所有网站，也不对任何此类链接网站的内容负责。包含任何链接并不意味着BangumiN对该网站的认可。使用任何此类链接网站的风险由用户自行承担。</p><h3>7. 修改</h3><p>BangumiN可随时修改其网站的这些服务条款，恕不另行通知。使用本网站即表示您同意受当时这些服务条款的约束。</p><h3>8. 适用法律</h3><p>这些条款和条件受网站管理者当地法律管辖并按其解释，您必须服从该州或地区法院的专属管辖权。</p><p>本声明翻译自英文版本，中文版本仅为阅读方便而提供，如有疑惑请参照<a href='https://github.com/edwardez/bangumin' rel='noopener' target='_blank'>英文版本</a>。</p><p>本服务条款自2018年9月21日起生效。</p>"
   },
   "privacy": {
-    "content": "<h2>隐私政策</h2><p>你的隐私对我们很重要。 BangumiN的政策是尊重您在我们的网站，bangumin.tv以及我们拥有和运营的其他网站上可能产生的隐私的基础上收集这些信息。</p><p>我们只在需要时请求隐私信息。我们在您的知情和同意下，通过公平合法的方式收集。我们还会告诉您我们为什么要收集它以及如何使用它。</p><p>我们仅保留所收集的信息，以便为您提供所需的服务。我们将以可接受的方式保护存储的数据，以防止丢失和被盗，以及未经授权的访问，披露，复制，使用或修改。</p><p>在访问BangumiN时，您的请求历史记录（包括但不限于ip地址，请求时间，行为，本网站存储在localstorage，cookies或其他我们可接触的地方的信息）可能会被我们记录并用于改善我们的网站服务，此外，我们还使用Google Analytics来统计用户行为。</p><p>除非法律要求或处于极端情况，否则我们不会公开或与第三方共享任何个人身份信息。</p><p>我们的网站可能链接到非我们运营的外部网站。请注意，我们无法控制这些网站的内容和做法，也不对其各自的隐私政策承担任何责任或义务。</p><p>您可以拒绝我们的个人信息请求，但我们可能无法为您提供所需的一些服务。</p><p>您继续使用我们的网站将被视为接受我们关于隐私和个人信息的做法。如果您对我们如何处理用户数据和个人信息有任何疑问，请随时与我们联系。</p><p>本声明翻译自英文版本，中文版本仅为阅读方便而提供，如有疑惑请参照<a href='https://github.com/edwardez/bangumin' rel='noopener' target='_blank'>英文版本</a>。</p><p>该政策自2018年9月21日起生效。</p>"
+    "content": "<h2>隐私政策</h2><p>您的隐私对我们很重要。 BangumiN的政策是尊重您在我们的网站，bangumin.tv以及我们拥有和运营的其他网站上可能产生的隐私的基础上收集这些信息。</p><p>我们只在需要时请求隐私信息。我们在您的知情和同意下，通过公平合法的方式收集。我们还会告诉您我们为什么要收集它以及如何使用它。</p><p>我们仅保留所收集的信息，以便为您提供所需的服务。我们将以可接受的方式保护存储的数据，以防止丢失和被盗，以及未经授权的访问，披露，复制，使用或修改。</p><p>在访问BangumiN时，您的请求历史记录（包括但不限于ip地址，请求时间，行为，本网站存储在localstorage，cookies或其他我们可接触的地方的信息）可能会被我们记录并用于改善我们的网站服务，此外，我们还使用Google Analytics来统计用户行为。</p><p>除非法律要求或处于极端情况，否则我们不会公开或与第三方共享任何个人身份信息。</p><p>我们的网站可能链接到非我们运营的外部网站。请注意，我们无法控制这些网站的内容和做法，也不对其各自的隐私政策承担任何责任或义务。</p><p>您可以拒绝我们的个人信息请求，但我们可能无法为您提供所需的一些服务。</p><p>您继续使用我们的网站将被视为接受我们关于隐私和个人信息的做法。如果您对我们如何处理用户数据和个人信息有任何疑问，请随时与我们联系。</p><p>本声明翻译自英文版本，中文版本仅为阅读方便而提供，如有疑惑请参照<a href='https://github.com/edwardez/bangumin' rel='noopener' target='_blank'>英文版本</a>。</p><p>该政策自2018年9月21日起生效。</p>"
   },
   "help": {
     "name": "帮助",

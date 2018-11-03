@@ -1,6 +1,6 @@
-<div class="row justify-content-center align-items-center bangumin-height-container">
+<div class="d-flex flex-column justify-content-center align-items-center bangumin-height-container">
   <ng-container *ngIf="activationStage === ActivationStage.InProgress">
-    <mat-spinner></mat-spinner>
+    <app-loading-spinner [fullHeight]="false"></app-loading-spinner>
     <p>{{'login.waitForActivationPrompt' | translate}}</p>
   </ng-container>
   <ng-container *ngIf="activationStage === ActivationStage.Failure">

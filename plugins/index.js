@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         go/BangumiN
 // @namespace    https://bangumin.tv
-// @version      0.1
+// @version      0.1.0
 // @description  查看统计与发表剧透，在Bangumi添加前往BangumiN对应页面的链接
 // @author       Edward
 // @include      /https?:\/\/(bgm\.tv|bangumi\.tv|chii\.in)\/subject\/.*/

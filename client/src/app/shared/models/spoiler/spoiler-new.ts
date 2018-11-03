@@ -15,11 +15,15 @@ export interface RelatedSubjectsUserInput {
 export class SpoilerNew extends SpoilerBase implements Serializable<SpoilerNew> {
 
   relatedSubjects: RelatedSubjectsUserInput[];
+  relatedReviewSubjectId: number;
   spoilerTextHtml: string;
 
-  constructor(spoilerText?: any[], relatedSubjects?: SubjectBase[]) {
+  constructor(spoilerText?: any[], relatedSubjects?: SubjectBase[], relatedReviewSubjectId?: number) {
     super(spoilerText);
     this.relatedSubjects = SpoilerNew.normalizeRelatedSubjects(relatedSubjects || []);
+    if (relatedReviewSubjectId) {
+      this.relatedReviewSubjectId = relatedReviewSubjectId;
+    }
   }
 
   static normalizeRelatedSubjects(relatedSubjects?: SubjectBase[]): RelatedSubjectsUserInput[] {
@@ -34,6 +38,7 @@ export class SpoilerNew extends SpoilerBase implements Serializable<SpoilerNew> 
   deserialize(input) {
     super.deserialize(input);
     this.relatedSubjects = SpoilerNew.normalizeRelatedSubjects(input.relatedSubjects || []);
+    this.relatedReviewSubjectId = input.relatedReviewSubjectId;
     return this;
   }
 }

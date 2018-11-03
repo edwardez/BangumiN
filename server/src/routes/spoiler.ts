@@ -17,6 +17,7 @@ router.post('/spoiler', authenticationMiddleware.isAuthenticated, celebrate({
   body: {
     spoilerText: Joi.array(),
     relatedSubjects: Joi.array(),
+    relatedReviewSubjectId: Joi.number().integer().positive(),
   },
 }), (req: any, res: any, next: any) => {
 
@@ -83,9 +84,7 @@ router.delete('/spoiler/:spoilerId', celebrate({
 
   dynamooseSpoilerModel.Spoiler.deleteSpoiler(spoilerId, req.user.id)
     .then((response) => {
-
       return res.status(200).json(response || {});
-
     })
     .catch((error) => {
       if (error instanceof CustomError || error.name === 'ValidationError') {

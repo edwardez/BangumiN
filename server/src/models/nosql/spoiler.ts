@@ -31,6 +31,7 @@ export interface SpoilerSchema {
   spoilerId: string;
   spoilerText: SpoilerTextChunkSchema[];
   relatedSubjects: RelatedSubjectsUserInput[] | SubjectBase[];
+  relatedReviewSubjectId?: number; // if this spoiler is a review for a subject, there must exist a related subject id
   updatedAt?: number;
   createdAt?: number;
   creationTime?: number;
@@ -100,6 +101,12 @@ const spoilerSchema = new dynamoose.Schema({
 
       return Joi.array().items(relatedSubjectSchema).min(0).max(MAX_RELATED_SUBJECT_NUMBER).validate(v).error === null;
     },
+  },
+  relatedReviewSubjectId: {
+    required: false,
+    type: Number,
+    trim: true,
+    validate: (v: number) => Joi.number().integer().positive().validate(v).error === null,
   },
 
 }, {

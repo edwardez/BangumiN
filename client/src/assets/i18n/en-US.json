@@ -290,11 +290,18 @@
           "modal": {
             "title": "Edit collection",
             "comment": "Comment({{commentCurrentLength}}/{{commentMaxLength}})",
+            "commentWithSpoiler": "Spoilers({{commentCurrentLength}}/{{commentMaxLength}})",
             "tags": "Tags(Use Space, Comma or Enter key to add，up to {{tagsMaxNumber}})",
             "cancel": "Cancel",
             "submit": "Submit",
             "privacy": "Only visible to yourself",
             "spoiler": "Review contains spoiler",
+            "prompt": {
+              "spoiler": {
+                "labeInCommentArea": "This line won't be replaced.\nSecond and subsequent lines will be replaced with masks",
+                "textUnderCommentArea": "Spoiler mode is tunred on. First line won't be masked, Second and subsequent lines will be replaced with masks."
+              }
+            },
             "error": {
               "comment": {
                 "maxLength": "Maximum: {{commentMaxLength}} characters"

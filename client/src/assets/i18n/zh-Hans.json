@@ -209,7 +209,7 @@
             }
           }
         }
-        
+
       }
     }
   },
@@ -290,11 +290,18 @@
           "modal": {
             "title": "编辑收藏",
             "comment": "评论({{commentCurrentLength}}/{{commentMaxLength}}字)",
+            "commentWithSpoiler": "剧透({{commentCurrentLength}}/{{commentMaxLength}}字)",
             "tags": "标签(使用空格，逗号或回车键添加，至多{{tagsMaxNumber}}个)",
             "cancel": "取消",
             "submit": "提交",
             "privacy": "仅自己可见",
             "spoiler": "此评论含有剧透",
+            "prompt": {
+              "spoiler": {
+                "labeInCommentArea": "第一行不会被替换\n从此行开始的内容会被替换成防剧透符号",
+                "textUnderCommentArea": "剧透模式已打开，第一行不会被遮盖，换行后(第二行开始)的内容会被替换成防剧透符号。"
+              }
+            },
             "error": {
               "comment": {
                 "maxLength": "最多只能输入{{commentMaxLength}}个字"

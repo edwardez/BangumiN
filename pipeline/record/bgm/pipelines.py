@@ -193,7 +193,6 @@ class WikiHistoryDBPipeline(object):
             'Skipping %s existed instances in range (%s, %s) as there\'s no difference',
             skipped_entities_count,
             start_id, end_id)
-        logger.info(entities_to_update)
         logger.info('Updating %s existed instances in range (%s, %s)',
                     len(entities_to_update), start_id, end_id)
         updated_entities = self.wikiHistoryTableDatabaseExecutor.update(

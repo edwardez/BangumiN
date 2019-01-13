@@ -20,7 +20,7 @@ ITEM_PIPELINES = {
     # 'bgm.pipelines.RecordPipeline': 400,
     # 'bgm.pipelines.SubjectPipeline': 500
     # 'bgm.pipelines.TsvPipeline': 300
-    'record.bgm.pipelines.DBPipeline': 800
+    # 'record.bgm.pipelines.DBPipeline': 800
 }
 
 MEMUSAGE_WARNING_MB = 1024

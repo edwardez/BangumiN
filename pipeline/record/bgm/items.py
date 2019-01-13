@@ -72,6 +72,16 @@ class Subject(scrapy.Item):
 
     # staff = scrapy.Field() # feature list!
     staff = scrapy.Field()  # map
-    staff['serializer'] = lambda x: ";".join(":".join([k, ",".join(v)]) for k, v in x.items())
+    staff['serializer'] = lambda x: ";".join(
+        ":".join([k, ",".join(v)]) for k, v in x.items())
     relations = scrapy.Field()  # map
-    relations['serializer'] = lambda x: ";".join(":".join([k, ','.join(v)]) for k, v in x.items())
+    relations['serializer'] = lambda x: ";".join(
+        ":".join([k, ','.join(v)]) for k, v in x.items())
+
+
+class WikiHistory(scrapy.Item):
+    user_id = scrapy.Field()
+    entry_id = scrapy.Field()
+    edit_comment = scrapy.Field()
+    edit_time = scrapy.Field()
+    edit_type = scrapy.Field()

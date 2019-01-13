@@ -85,7 +85,7 @@ class Scraper:
         # noinspection PyTypeChecker
         self.process.crawl(WikiHistorySpider,
                            user_id_min=1,
-                           user_id_max=5,
+                           user_id_max=max_api_id,
                            excluding_list=excluding_list)
         # the script will block here until the crawling is finished
         self.process.start()

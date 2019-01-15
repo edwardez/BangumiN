@@ -27,7 +27,8 @@
 
   </mat-sidenav>
 
-  <mat-sidenav-content class="mat-sidenav-content-lt-md mat-sidenav-content-gt-sm d-flex flex-column">
+  <mat-sidenav-content [ngClass]="{'hide-nav': !(navBarService.visibleSubject | async)}"
+                       class="mat-sidenav-content-lt-md mat-sidenav-content-gt-sm d-flex flex-column">
     <app-nav [currentDeviceWidth]="currentDeviceWidth"></app-nav>
     <router-outlet></router-outlet>
     <small *ngIf="Environment.displayBuildVersion" class="build-version-footer">{{displayBuildVersion()}}</small>

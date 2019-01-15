@@ -1,4 +1,6 @@
-<mat-toolbar color="primary" class="d-flex pl-1 pl-sm-2 fixed-header mat-elevation-z6 helper-toolbar">
+<mat-toolbar *ngIf="navBarService.visibleSubject | async"
+             class="d-flex pl-1 pl-sm-2 fixed-header mat-elevation-z6 helper-toolbar"
+             color="primary">
   <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated"
           tabindex="0">
     <mat-icon>menu</mat-icon>
@@ -12,10 +14,12 @@
 
 
   <div *ngIf="LayoutService.gtXs(currentDeviceWidth) && isAuthenticated">
-    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'statistics']" tabindex="0">{{'nav.menu.myStatistics.name'
+    <a [routerLink]="['/user', this.bangumiUser.user_id, 'statistics']" mat-button
+       tabindex="0">{{'nav.menu.myStatistics.name'
       |
       translate}}</a>
-    <a mat-button [routerLink]="['/user', this.bangumiUser.user_id, 'timeline','spoilers']" tabindex="0">{{'nav.menu.spoilerBox.name'
+    <a [routerLink]="['/user', this.bangumiUser.user_id, 'timeline','spoilers']" mat-button
+       tabindex="0">{{'nav.menu.spoilerBox.name'
       | translate}}</a>
   </div>
 

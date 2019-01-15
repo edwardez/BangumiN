@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {LayoutService} from '../../shared/services/layout/layout.service';
 import {environment} from '../../../environments/environment';
+import {NavBarService} from '../../shared/services/navbar/nav-bar.service';
 
 @Component({
   selector: 'app-nav',
@@ -29,6 +30,7 @@ export class NavComponent implements OnInit, OnDestroy {
   constructor(private sidenavService: SidenavService,
               private storageService: StorageService,
               private bangumiUserService: BangumiUserService,
+              private navBarService: NavBarService,
               private route: ActivatedRoute,
               private router: Router,
               private authenticationService: AuthenticationService) {

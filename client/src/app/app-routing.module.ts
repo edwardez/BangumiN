@@ -95,10 +95,6 @@ const routes: Routes = [
       },
     ]
   },
-  // {
-  //   path: 'summary',
-  //   loadChildren: 'app/summary/summary.module#SummaryModule'
-  // },
   {
     path: 'login',
     component: LoginBangumiComponent

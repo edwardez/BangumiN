@@ -27,7 +27,7 @@
 
   </mat-sidenav>
 
-  <mat-sidenav-content [ngClass]="{'hide-nav': !(navBarService.visibleSubject | async)}"
+  <mat-sidenav-content [ngClass]="{'hide-nav': !(isNavBarVisible() | async)}"
                        class="mat-sidenav-content-lt-md mat-sidenav-content-gt-sm d-flex flex-column">
     <app-nav [currentDeviceWidth]="currentDeviceWidth"></app-nav>
     <router-outlet></router-outlet>

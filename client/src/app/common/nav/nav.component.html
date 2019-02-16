@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="navBarService.visibleSubject | async"
+<mat-toolbar *ngIf="isNavBarVisible() | async"
              class="d-flex pl-1 pl-sm-2 fixed-header mat-elevation-z6 helper-toolbar"
              color="primary">
   <button mat-icon-button (click)="toggleSidenav()" *ngIf="LayoutService.xs(currentDeviceWidth) && isAuthenticated"

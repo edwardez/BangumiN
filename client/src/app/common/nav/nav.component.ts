@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, switchMap, take, tap} from 'rxjs/operators';
 import {StorageService} from '../../shared/services/storage.service';
 import {BangumiUser} from '../../shared/models/BangumiUser';
-import {concat, Subject} from 'rxjs';
+import {BehaviorSubject, concat, Subject} from 'rxjs';
 import {BangumiUserService} from '../../shared/services/bangumi/bangumi-user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceWidth} from '../../shared/enums/device-width.enum';
@@ -85,6 +85,10 @@ export class NavComponent implements OnInit, OnDestroy {
       ).subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
     });
+  }
+
+  isNavBarVisible(): BehaviorSubject<boolean> {
+    return this.navBarService.visibleSubject;
   }
 
   toggleSidenav() {

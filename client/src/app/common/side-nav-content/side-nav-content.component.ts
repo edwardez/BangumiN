@@ -8,6 +8,7 @@ import {environment} from '../../../environments/environment';
 import {BuildVersion} from '../../../environments/build-version';
 import {BangumiUser} from '../../shared/models/BangumiUser';
 import {NavBarService} from '../../shared/services/navbar/nav-bar.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -48,6 +49,10 @@ export class SideNavContentComponent implements OnInit {
     });
 
 
+  }
+
+  isNavBarVisible(): BehaviorSubject<boolean> {
+    return this.navBarService.visibleSubject;
   }
 
   get Environment() {

@@ -216,6 +216,11 @@
           }
         }
       }
+    },
+    "a11y": {
+      "form": {
+        "title": "Settings form(Changes will be saved automatically)"
+      }
     }
   },
   "progress": {

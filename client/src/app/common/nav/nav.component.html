@@ -35,9 +35,13 @@
 
   </app-nav-search-bar>
 
-  <div class="helper-mat-toolbar-item helper-cursor-pointer d-none d-sm-block" tabindex="0">
-    <a *ngIf="isAuthenticated" [matMenuTriggerFor]="menu">
-      <span class="helper-vertical-align-img"></span><img src={{bangumiUser.avatar.medium}}>
+  <div class="helper-mat-toolbar-item helper-cursor-pointer d-none d-sm-block">
+    <a *ngIf="isAuthenticated" [matMenuTriggerFor]="menu"
+       [title]="'nav.menu.a11y.menu.title' | translate:{nickname: bangumiUser.nickname}" role="button"
+       tabindex="0">
+      <span class="helper-vertical-align-img"></span><img
+      [alt]="'nav.menu.a11y.menu.title' | translate:{nickname: bangumiUser.nickname}" src={{bangumiUser.avatar.medium}}
+      tabindex="">
     </a>
   </div>
 

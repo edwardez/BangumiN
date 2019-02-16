@@ -116,6 +116,11 @@
       },
       "settings": {
         "name": "设置"
+      },
+      "a11y": {
+        "menu": {
+          "title": "{{nickname}}的账户"
+        }
       }
     }
   },

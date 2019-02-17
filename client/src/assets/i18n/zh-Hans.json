@@ -285,6 +285,15 @@
         "collect": "收藏",
         "more": "详细"
       }
+    },
+    "a11y": {
+      "subject": {
+        "cover": "{{subjectName}}的可点击封面,第{{subjectPosition}}个结果, 搜索关键词: {{queryKeyword}}",
+        "link": "{{subjectName}}的链接,第{{subjectPosition}}个结果, 搜索关键词: {{queryKeyword}}",
+        "form": {
+          "typeFilter": "作品类别过滤，变更会被自动保存"
+        }
+      }
     }
   },
   "subject": {

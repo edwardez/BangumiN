@@ -6,8 +6,9 @@ import {SubjectType} from '../../shared/enums/subject-type.enum';
 import {CommonUtils} from '../../shared/utils/common-utils';
 import {takeUntil, tap} from 'rxjs/operators';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {TitleService} from '../../shared/services/page/title.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-search',
@@ -26,7 +27,9 @@ export class SubjectSearchComponent implements OnInit, OnDestroy {
 
   constructor(private bangumiSearchService: BangumiSearchService,
               private formBuilder: FormBuilder,
-              private titleService: TitleService,) {
+              private titleService: TitleService,
+              private translateService: TranslateService,
+  ) {
     this.initializeSubjectSearchFilterForm();
   }
 
@@ -141,6 +144,16 @@ export class SubjectSearchComponent implements OnInit, OnDestroy {
 
   getSubjectTypeName(subjectType: SubjectType): string {
     return CommonUtils.getSubjectTypeName(subjectType);
+  }
+
+  // get aria-label for search result link
+  getSubjectLinkLabel(subjectName: string, subjectPosition: number, queryKeyword: string): Observable<string> {
+    return this.translateService.get('search.a11y.subject.link', {subjectName, subjectPosition, queryKeyword});
+  }
+
+  // get aria-label for search result cover
+  getSubjectCoverLabel(subjectName: string, subjectPosition: number, queryKeyword: string): Observable<string> {
+    return this.translateService.get('search.a11y.subject.cover', {subjectName, subjectPosition, queryKeyword});
   }
 
   ngOnDestroy(): void {

@@ -1,70 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:munin/blocs/authentication/authentication.dart';
-import 'package:munin/blocs/login/login.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/redux/app/AppActions.dart';
+import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 
 class MuninLoginPage extends StatefulWidget {
-  MuninLoginPage({Key key, this.title}) : super(key: key);
-  final String title;
+  MuninLoginPage({Key key}) : super(key: key);
 
   @override
   _MuninLoginPageState createState() => _MuninLoginPageState();
 }
 
 class _MuninLoginPageState extends State<MuninLoginPage> {
-  LoginBloc _loginBloc;
-  AuthenticationBloc _authenticationBloc;
-
   @override
   void initState() {
-    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    _loginBloc = LoginBloc(authenticationBloc: _authenticationBloc);
     super.initState();
   }
 
   @override
   void dispose() {
-    _loginBloc.dispose();
     super.dispose();
-  }
-
-  logBrowser() async {
-    final flutterWebviewPlugin = new FlutterWebviewPlugin();
-    await flutterWebviewPlugin.show();
-    flutterWebviewPlugin.onUrlChanged.listen((String url) async {
-      if (url == null) return;
-
-      if (url.contains('bgm.tv/anime')) {
-        print(await flutterWebviewPlugin.getCookies());
-        print(await flutterWebviewPlugin.evalJavascript('navigator.userAgent'));
-        flutterWebviewPlugin.close();
-        flutterWebviewPlugin.dispose();
-        _loginBloc.dispatch(LoginButtonPressed());
-      }
-    });
-  }
-
-  _onLoginPressed() {
-    logBrowser();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => new WebviewScaffold(
-                url: "https://bgm.tv",
-                appBar: new AppBar(
-                  title: new Text("完成授权"),
-                ),
-                initialChild: Container(
-                  child: const Center(
-                    child: Text('Waiting.....'),
-                  ),
-                ),
-              )),
-    );
-    _loginBloc.dispatch(LoginButtonPressed());
   }
 
   _buildTosAndPrivacy(BuildContext context) {
@@ -86,8 +41,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLoginPage(_ViewModel vm) {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(15),
@@ -104,7 +58,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                 Row(children: <Widget>[
                   Expanded(
                     child: FlatButton(
-                      onPressed: _onLoginPressed,
+                      onPressed: vm.onLoginPressed,
                       color: Theme.of(context).primaryColor,
                       child: Text(
                         '开始授权',
@@ -123,4 +77,24 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: (store) {
+        return _ViewModel(
+          appState: store.state,
+          onLoginPressed: () => store.dispatch(OAuthLoginRequest(context)),
+        );
+      },
+      builder: (BuildContext context, _ViewModel vm) => _buildLoginPage(vm),
+    );
+  }
+}
+
+class _ViewModel {
+  final AppState appState;
+  final void Function() onLoginPressed;
+
+  _ViewModel({this.appState, this.onLoginPressed});
 }

@@ -1,34 +1,24 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:munin/blocs/authentication/authentication.dart';
-import 'package:munin/blocs/authentication/authentication_bloc.dart';
-import 'package:munin/blocs/authentication/authentication_event.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/development.dart';
 import 'package:munin/config/environment.dart';
-import 'package:munin/styles/theme/bangumi_pink_blue.dart';
-import 'package:munin/widgets/home/home_page.dart';
-import 'package:munin/widgets/initial/login.dart';
-import 'package:munin/widgets/initial/splash.dart';
-
-class SimpleBlocDelegate extends BlocDelegate {
-  @override
-  void onTransition(Transition transition) {
-    print(transition);
-  }
-}
+import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/styles/theme/BangumiPinkBlue.dart';
+import 'package:munin/widgets/home/MuninHomePage.dart';
+import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
+import 'package:munin/widgets/initial/MuninLoginPage.dart';
+import 'package:redux/redux.dart';
 
 void main() {
-//  in dev environment, create a bloc delegation to debug state transition
-  BlocSupervisor().delegate = SimpleBlocDelegate();
-  //  AuthenticationCredentials.data = await SharedPreferences.getInstance();
   Development();
 }
 
 class MuninApp extends StatefulWidget {
-  final Env env;
+  final Environment env;
+  final Store<AppState> store;
 
-  MuninApp(this.env);
+  MuninApp(this.env, this.store);
 
   @override
   State<StatefulWidget> createState() {
@@ -37,44 +27,32 @@ class MuninApp extends StatefulWidget {
 }
 
 class _MuninAppState extends State<MuninApp> {
-  AuthenticationBloc _authenticationBloc;
-
   @override
   void initState() {
-    _authenticationBloc = AuthenticationBloc();
-    _authenticationBloc.dispatch(AppStarted());
+    // TODO: theme awareness
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     super.initState();
   }
 
   @override
   void dispose() {
-    _authenticationBloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthenticationBloc>(
-      bloc: _authenticationBloc,
+    return new StoreProvider<AppState>(
+      store: widget.store,
       child: MaterialApp(
-        theme: BangumiPinkBlue().data,
-        home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
-          bloc: _authenticationBloc,
-          builder: (BuildContext context, AuthenticationState state) {
-            if (state is AuthenticationAuthenticated) {
-              return MuninHomePage(title: 'Munin');
-            }
-
-            if (state is AuthenticationUnauthenticated) {
-              return MuninLoginPage(title: 'Munin');
-            }
-
-            if (state is AuthenticationUninitialized) {
-              return InitialSplashPage();
-            }
-          },
-        ),
-      ),
+          theme: BangumiPinkBlue().data,
+          home: widget.store.state.isAuthenticated
+              ? MuninHomePage()
+              : MuninLoginPage(),
+          routes: {
+            '/login': (context) => MuninLoginPage(),
+            '/home': (context) => MuninHomePage(),
+            '/bangumiOauth': (context) => BangumiOauthWebview(),
+          }),
     );
   }
 }

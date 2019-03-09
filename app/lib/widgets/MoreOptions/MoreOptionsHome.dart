@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:munin/blocs/authentication/authentication.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/redux/app/AppActions.dart';
+import 'package:munin/redux/app/AppState.dart';
 
 class MoreOptionsHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authenticationBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: (store) {
+        return _ViewModel(
+          appState: store.state,
+          onLoginOutPressed: () => store.dispatch(LogoutRequest(context)),
+        );
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        return _buildMoreOptionsPage(context, vm);
+      },
+    );
+  }
 
+  Widget _buildMoreOptionsPage(BuildContext context, _ViewModel vm) {
     return Scaffold(
       appBar: AppBar(
         title: Text("账户"),
+        elevation: 0.5,
       ),
       body: ListView(
         children: <Widget>[
@@ -31,13 +44,17 @@ class MoreOptionsHomePage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.power_settings_new),
             title: Text('退出登录'),
-            onTap: () {
-              authenticationBloc.dispatch(LoggedOut());
-              Navigator.pop(context);
-            },
+            onTap: vm.onLoginOutPressed,
           ),
         ],
       ),
     );
   }
+}
+
+class _ViewModel {
+  final AppState appState;
+  final void Function() onLoginOutPressed;
+
+  _ViewModel({this.appState, this.onLoginOutPressed});
 }

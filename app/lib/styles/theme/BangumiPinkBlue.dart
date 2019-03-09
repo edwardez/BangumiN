@@ -27,6 +27,13 @@ class BangumiPinkBlue {
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      brightness: Brightness.light,
+      color: Colors.white,
+      iconTheme: IconThemeData(color: Colors.black54),
+      textTheme: Typography.blackMountainView,
+    ),
     primarySwatch: Colors.blue,
     accentColor: bangumiPink,
   );

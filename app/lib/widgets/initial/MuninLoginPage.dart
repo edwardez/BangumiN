@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 
 class MuninLoginPage extends StatefulWidget {
@@ -12,6 +12,8 @@ class MuninLoginPage extends StatefulWidget {
 }
 
 class _MuninLoginPageState extends State<MuninLoginPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -41,8 +43,14 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     );
   }
 
-  Widget _buildLoginPage(_ViewModel vm) {
+  Widget _buildLoginPage(BuildContext context, _ViewModel vm) {
+    if (vm.appState?.oauthState?.showLoginErrorSnackBar == true) {
+      vm.showErrorSnackBar(
+          _scaffoldKey, vm.appState?.oauthState?.oauthFailureMessage ?? '未知错误');
+    }
+
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         padding: EdgeInsets.all(15),
         child: Column(
@@ -87,7 +95,8 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           onLoginPressed: () => store.dispatch(OAuthLoginRequest(context)),
         );
       },
-      builder: (BuildContext context, _ViewModel vm) => _buildLoginPage(vm),
+      builder: (BuildContext context, _ViewModel vm) =>
+          _buildLoginPage(context, vm),
     );
   }
 }
@@ -97,4 +106,19 @@ class _ViewModel {
   final void Function() onLoginPressed;
 
   _ViewModel({this.appState, this.onLoginPressed});
+
+  void _onWidgetDidBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callback();
+    });
+  }
+
+  /// TODO: figure out a better way to show snack bar error message when use is navigated back to login page
+  showErrorSnackBar(GlobalKey<ScaffoldState> _scaffoldKey, String message) {
+    _onWidgetDidBuild(() {
+      _scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    });
+  }
 }

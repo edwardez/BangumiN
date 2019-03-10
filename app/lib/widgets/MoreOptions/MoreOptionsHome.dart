@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 
 class MoreOptionsHomePage extends StatelessWidget {
   @override

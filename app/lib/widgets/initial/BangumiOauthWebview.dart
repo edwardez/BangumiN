@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:munin/config/environment.dart';
-import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:redux/redux.dart';
 
 class BangumiOauthWebview extends StatelessWidget {
@@ -25,8 +25,9 @@ class BangumiOauthWebview extends StatelessWidget {
         return WillPopScope(
             onWillPop: vm.onGoBackPressed,
             child: WebviewScaffold(
+              hidden: true,
               url:
-                  'https://bgm.tv/oauth/authorize?response_type=code&client_id=${Environment.value.bangumiOauthClientIdentifier}',
+              'https://bgm.tv/oauth/authorize?response_type=code&client_id=${Environment.value.bangumiOauthClientIdentifier}',
               appBar: new AppBar(
                 title: new Text("完成授权"),
                 elevation: 4.0,

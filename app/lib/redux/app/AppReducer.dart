@@ -1,20 +1,20 @@
-import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:redux/redux.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/redux/oauth/OauthReducer.dart';
 
-final appReducers = combineReducers<AppState>([
-  TypedReducer<AppState, OAuthLoginSuccess>(oauthLoginSuccessReducer),
-  TypedReducer<AppState, LogoutSuccess>(logoutSuccessReducer),
-]);
+// We create the State reducer by combining many smaller reducers into one!
+AppState appReducer(AppState appState, dynamic action) {
+  if (action is OAuthLoginSuccess) {
+    return appState.rebuild((b) =>
+    b
+      ..currentAuthenticatedUserBasicInfo.replace(action.userInfo)
+      ..isAuthenticated = true);
+  } else if (action is LogoutSuccess) {
+    return AppState((b) => b..isAuthenticated = false);
+  }
 
-AppState oauthLoginSuccessReducer(
-    AppState appState, OAuthLoginSuccess oAuthLoginSuccess) {
-  return appState.rebuild((b) => b
-    ..currentAuthenticatedUserBasicInfo.replace(oAuthLoginSuccess.userInfo)
-    ..isAuthenticated = true);
-}
-
-AppState logoutSuccessReducer(
-    AppState appState, LogoutSuccess logoutSuccessReducer) {
-  return AppState((b) => b..isAuthenticated = false);
+  return appState.rebuild(
+          (b) =>
+      b
+        ..oauthState.replace(oauthReducers(appState.oauthState, action)));
 }

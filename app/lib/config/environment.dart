@@ -5,9 +5,9 @@ import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';
-import 'package:munin/redux/app/AppMiddleware.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthMiddleware.dart';
 import 'package:munin/shared/injector/injector.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
@@ -56,7 +56,7 @@ abstract class Environment {
       }
     }
 
-    final store = new Store<AppState>(appReducers, initialState: AppState((b) {
+    final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
       }
@@ -65,7 +65,7 @@ abstract class Environment {
         middleware: [
           LoggingMiddleware.printer(),
         ]
-          ..addAll(createLoginMiddleware(_bangumiOauthClient,
+          ..addAll(createOauthMiddleware(_bangumiOauthClient,
               _bangumiCookieClient, bangumiUserService, preferences)));
 
     runApp(MuninApp(this, store));

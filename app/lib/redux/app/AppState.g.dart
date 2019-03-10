@@ -11,14 +11,22 @@ class _$AppState extends AppState {
   final BangumiUserBasic currentAuthenticatedUserBasicInfo;
   @override
   final bool isAuthenticated;
+  @override
+  final OauthState oauthState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.currentAuthenticatedUserBasicInfo, this.isAuthenticated})
+  _$AppState._(
+      {this.currentAuthenticatedUserBasicInfo,
+      this.isAuthenticated,
+      this.oauthState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
+    }
+    if (oauthState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'oauthState');
     }
   }
 
@@ -35,13 +43,16 @@ class _$AppState extends AppState {
     return other is AppState &&
         currentAuthenticatedUserBasicInfo ==
             other.currentAuthenticatedUserBasicInfo &&
-        isAuthenticated == other.isAuthenticated;
+        isAuthenticated == other.isAuthenticated &&
+        oauthState == other.oauthState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-        isAuthenticated.hashCode));
+    return $jf($jc(
+        $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
+            isAuthenticated.hashCode),
+        oauthState.hashCode));
   }
 
   @override
@@ -49,7 +60,8 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('currentAuthenticatedUserBasicInfo',
               currentAuthenticatedUserBasicInfo)
-          ..add('isAuthenticated', isAuthenticated))
+          ..add('isAuthenticated', isAuthenticated)
+          ..add('oauthState', oauthState))
         .toString();
   }
 }
@@ -58,22 +70,24 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
   BangumiUserBasicBuilder _currentAuthenticatedUserBasicInfo;
-
   BangumiUserBasicBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
           new BangumiUserBasicBuilder();
-
   set currentAuthenticatedUserBasicInfo(
           BangumiUserBasicBuilder currentAuthenticatedUserBasicInfo) =>
       _$this._currentAuthenticatedUserBasicInfo =
           currentAuthenticatedUserBasicInfo;
 
   bool _isAuthenticated;
-
   bool get isAuthenticated => _$this._isAuthenticated;
-
   set isAuthenticated(bool isAuthenticated) =>
       _$this._isAuthenticated = isAuthenticated;
+
+  OauthStateBuilder _oauthState;
+  OauthStateBuilder get oauthState =>
+      _$this._oauthState ??= new OauthStateBuilder();
+  set oauthState(OauthStateBuilder oauthState) =>
+      _$this._oauthState = oauthState;
 
   AppStateBuilder();
 
@@ -82,6 +96,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _currentAuthenticatedUserBasicInfo =
           _$v.currentAuthenticatedUserBasicInfo?.toBuilder();
       _isAuthenticated = _$v.isAuthenticated;
+      _oauthState = _$v.oauthState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -108,12 +123,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               currentAuthenticatedUserBasicInfo:
                   _currentAuthenticatedUserBasicInfo?.build(),
-              isAuthenticated: isAuthenticated);
+              isAuthenticated: isAuthenticated,
+              oauthState: oauthState.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'currentAuthenticatedUserBasicInfo';
         _currentAuthenticatedUserBasicInfo?.build();
+
+        _$failedField = 'oauthState';
+        oauthState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

@@ -45,6 +45,9 @@ class _MuninAppState extends State<MuninApp> {
       store: widget.store,
       child: MaterialApp(
           theme: BangumiPinkBlue().data,
+
+          /// TODO: figure out why if there is Japanese characters in page, flutter will render whole page solely with Japanese font
+          locale: Locale("zh"),
           home: widget.store.state.isAuthenticated
               ? MuninHomePage()
               : MuninLoginPage(),

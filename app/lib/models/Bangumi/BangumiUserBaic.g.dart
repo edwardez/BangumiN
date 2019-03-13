@@ -195,46 +195,32 @@ class BangumiUserBasicBuilder
   _$BangumiUserBasic _$v;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _url;
-
   String get url => _$this._url;
-
   set url(String url) => _$this._url = url;
 
   String _username;
-
   String get username => _$this._username;
-
   set username(String username) => _$this._username = username;
 
   String _nickname;
-
   String get nickname => _$this._nickname;
-
   set nickname(String nickname) => _$this._nickname = nickname;
 
   BangumiUserAvatarBuilder _avatar;
-
   BangumiUserAvatarBuilder get avatar =>
       _$this._avatar ??= new BangumiUserAvatarBuilder();
-
   set avatar(BangumiUserAvatarBuilder avatar) => _$this._avatar = avatar;
 
   String _sign;
-
   String get sign => _$this._sign;
-
   set sign(String sign) => _$this._sign = sign;
 
   int _userGroup;
-
   int get userGroup => _$this._userGroup;
-
   set userGroup(int userGroup) => _$this._userGroup = userGroup;
 
   BangumiUserBasicBuilder();

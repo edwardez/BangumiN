@@ -125,21 +125,15 @@ class BangumiUserAvatarBuilder
   _$BangumiUserAvatar _$v;
 
   String _large;
-
   String get large => _$this._large;
-
   set large(String large) => _$this._large = large;
 
   String _medium;
-
   String get medium => _$this._medium;
-
   set medium(String medium) => _$this._medium = medium;
 
   String _small;
-
   String get small => _$this._small;
-
   set small(String small) => _$this._small = small;
 
   BangumiUserAvatarBuilder();

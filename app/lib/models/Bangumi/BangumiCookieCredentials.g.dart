@@ -119,15 +119,11 @@ class BangumiCookieCredentialsBuilder
   _$BangumiCookieCredentials _$v;
 
   String _authCookie;
-
   String get authCookie => _$this._authCookie;
-
   set authCookie(String authCookie) => _$this._authCookie = authCookie;
 
   String _userAgent;
-
   String get userAgent => _$this._userAgent;
-
   set userAgent(String userAgent) => _$this._userAgent = userAgent;
 
   BangumiCookieCredentialsBuilder();

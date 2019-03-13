@@ -27,7 +27,8 @@ class BangumiOauthWebview extends StatelessWidget {
             child: WebviewScaffold(
               hidden: true,
               url:
-              'https://bgm.tv/oauth/authorize?response_type=code&client_id=${Environment.value.bangumiOauthClientIdentifier}',
+              'https://bgm.tv/oauth/authorize?response_type=code&client_id=${Environment
+                  .value.bangumiOauthClientIdentifier}',
               appBar: new AppBar(
                 title: new Text("完成授权"),
                 elevation: 4.0,

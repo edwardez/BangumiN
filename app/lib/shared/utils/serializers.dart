@@ -4,6 +4,7 @@ import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/models/Bangumi/BangumiUserAvatar.dart';
 import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/Bangumi/BangumiUserIdentity.dart';
+import 'package:munin/models/Bangumi/timeline/common/TimelineItem.dart';
 
 part 'serializers.g.dart';
 
@@ -11,7 +12,8 @@ part 'serializers.g.dart';
   BangumiUserBasic,
   BangumiUserAvatar,
   BangumiUserIdentity,
-  BangumiCookieCredentials
+  BangumiCookieCredentials,
+  TimelineItem
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

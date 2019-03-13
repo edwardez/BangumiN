@@ -160,33 +160,23 @@ class BangumiUserIdentityBuilder
   _$BangumiUserIdentity _$v;
 
   String _accessToken;
-
   String get accessToken => _$this._accessToken;
-
   set accessToken(String accessToken) => _$this._accessToken = accessToken;
 
   String _clientId;
-
   String get clientId => _$this._clientId;
-
   set clientId(String clientId) => _$this._clientId = clientId;
 
   int _expires;
-
   int get expires => _$this._expires;
-
   set expires(int expires) => _$this._expires = expires;
 
   String _scope;
-
   String get scope => _$this._scope;
-
   set scope(String scope) => _$this._scope = scope;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   BangumiUserIdentityBuilder();

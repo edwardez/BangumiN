@@ -28,7 +28,10 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     final linkStyle = TextStyle(color: Theme.of(context).primaryColor);
     return RichText(
       text: TextSpan(
-        style: TextStyle(color: Colors.black),
+        style: Theme
+            .of(context)
+            .textTheme
+            .body1,
         children: <TextSpan>[
           TextSpan(text: '点击授权即代表您同意我们的'),
           LinkTextSpan(

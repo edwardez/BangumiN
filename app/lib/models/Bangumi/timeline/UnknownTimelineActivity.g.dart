@@ -6,9 +6,65 @@ part of 'UnknownTimelineActivity.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<UnknownTimelineActivity> _$unknownTimelineActivitySerializer =
+new _$UnknownTimelineActivitySerializer();
+
+class _$UnknownTimelineActivitySerializer
+    implements StructuredSerializer<UnknownTimelineActivity> {
+  @override
+  final Iterable<Type> types = const [
+    UnknownTimelineActivity,
+    _$UnknownTimelineActivity
+  ];
+  @override
+  final String wireName = 'UnknownTimelineActivity';
+
+  @override
+  Iterable serialize(Serializers serializers, UnknownTimelineActivity object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+    ];
+    if (object.user != null) {
+      result..add('user')..add(serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)));
+    }
+
+    return result;
+  }
+
+  @override
+  UnknownTimelineActivity deserialize(Serializers serializers,
+      Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new UnknownTimelineActivityBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$UnknownTimelineActivity extends UnknownTimelineActivity {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String content;
 
@@ -17,9 +73,6 @@ class _$UnknownTimelineActivity extends UnknownTimelineActivity {
       (new UnknownTimelineActivityBuilder()..update(updates)).build();
 
   _$UnknownTimelineActivity._({this.user, this.content}) : super._() {
-    if (user == null) {
-      throw new BuiltValueNullFieldError('UnknownTimelineActivity', 'user');
-    }
     if (content == null) {
       throw new BuiltValueNullFieldError('UnknownTimelineActivity', 'content');
     }
@@ -61,17 +114,14 @@ class UnknownTimelineActivityBuilder
         Builder<UnknownTimelineActivity, UnknownTimelineActivityBuilder> {
   _$UnknownTimelineActivity _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;
-
   String get content => _$this._content;
-
   set content(String content) => _$this._content = content;
 
   UnknownTimelineActivityBuilder();
@@ -103,12 +153,13 @@ class UnknownTimelineActivityBuilder
     _$UnknownTimelineActivity _$result;
     try {
       _$result = _$v ??
-          new _$UnknownTimelineActivity._(user: user.build(), content: content);
+          new _$UnknownTimelineActivity._(
+              user: _user?.build(), content: content);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
-        user.build();
+        _user?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UnknownTimelineActivity', _$failedField, e.toString());

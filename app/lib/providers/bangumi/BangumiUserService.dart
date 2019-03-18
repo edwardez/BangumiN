@@ -21,7 +21,7 @@ class BangumiUserService {
   // get bangumi user basic info through api
   Future<BangumiUserBasic> getUserBasicInfo(int id) async {
     final response =
-        await oauthClient.client.get('https://api.bgm.tv/user/${id}');
+    await oauthClient.client.get('https://api.bgm.tv/user/$id');
 
     BangumiUserBasic currentAuthenticatedUserBasicInfo =
         BangumiUserBasic.fromJson(response.body);

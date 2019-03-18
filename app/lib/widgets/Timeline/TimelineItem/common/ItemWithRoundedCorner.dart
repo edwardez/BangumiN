@@ -20,11 +20,11 @@ class ItemWithRoundedCorner extends StatelessWidget {
     this.leadingWidget,
     this.subtitle,
     this.paddingBetweenCoverAndTitle = 10,
-    this.containerPadding = 4,
+    this.containerPadding = 2,
     this.borderRadius = 8,
     this.borderColor = Colors.black12,
-    this.titleMaxLines = 1,
-    this.subTitleMaxLines = 1,
+    this.titleMaxLines = 3,
+    this.subTitleMaxLines = 2,
   }) : super(key: key);
 
   _buildSubtitle(String subtitle, int subTitleMaxLines) {
@@ -49,12 +49,11 @@ class ItemWithRoundedCorner extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         child: Container(
-          padding: EdgeInsets.all(containerPadding),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-              border: Border.all(color: borderColor)),
+          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0.0),
+
           child: ListTile(
-            contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: 0.0, vertical: 2.0),
             leading: leadingWidget,
             subtitle: _buildSubtitle(subtitle, subTitleMaxLines),
             title: Text(

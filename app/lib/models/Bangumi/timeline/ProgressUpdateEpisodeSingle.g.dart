@@ -6,17 +6,95 @@ part of 'ProgressUpdateEpisodeSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<ProgressUpdateEpisodeSingle>
+_$progressUpdateEpisodeSingleSerializer =
+new _$ProgressUpdateEpisodeSingleSerializer();
+
+class _$ProgressUpdateEpisodeSingleSerializer
+    implements StructuredSerializer<ProgressUpdateEpisodeSingle> {
+  @override
+  final Iterable<Type> types = const [
+    ProgressUpdateEpisodeSingle,
+    _$ProgressUpdateEpisodeSingle
+  ];
+  @override
+  final String wireName = 'ProgressUpdateEpisodeSingle';
+
+  @override
+  Iterable serialize(Serializers serializers,
+      ProgressUpdateEpisodeSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'episodeName',
+      serializers.serialize(object.episodeName,
+          specifiedType: const FullType(String)),
+      'episodeId',
+      serializers.serialize(object.episodeId,
+          specifiedType: const FullType(String)),
+      'subjectName',
+      serializers.serialize(object.subjectName,
+          specifiedType: const FullType(String)),
+      'subjectId',
+      serializers.serialize(object.subjectId,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  ProgressUpdateEpisodeSingle deserialize(Serializers serializers,
+      Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new ProgressUpdateEpisodeSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'episodeName':
+          result.episodeName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'episodeId':
+          result.episodeId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'subjectName':
+          result.subjectName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'subjectId':
+          result.subjectId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String episodeName;
   @override
-  final int episodeId;
+  final String episodeId;
   @override
   final String subjectName;
   @override
-  final int subjectId;
+  final String subjectId;
 
   factory _$ProgressUpdateEpisodeSingle(
           [void updates(ProgressUpdateEpisodeSingleBuilder b)]) =>
@@ -98,36 +176,31 @@ class ProgressUpdateEpisodeSingleBuilder
             ProgressUpdateEpisodeSingleBuilder> {
   _$ProgressUpdateEpisodeSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _episodeName;
-
   String get episodeName => _$this._episodeName;
-
   set episodeName(String episodeName) => _$this._episodeName = episodeName;
 
-  int _episodeId;
+  String _episodeId;
 
-  int get episodeId => _$this._episodeId;
+  String get episodeId => _$this._episodeId;
 
-  set episodeId(int episodeId) => _$this._episodeId = episodeId;
+  set episodeId(String episodeId) => _$this._episodeId = episodeId;
 
   String _subjectName;
-
   String get subjectName => _$this._subjectName;
-
   set subjectName(String subjectName) => _$this._subjectName = subjectName;
 
-  int _subjectId;
+  String _subjectId;
 
-  int get subjectId => _$this._subjectId;
+  String get subjectId => _$this._subjectId;
 
-  set subjectId(int subjectId) => _$this._subjectId = subjectId;
+  set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
   ProgressUpdateEpisodeSingleBuilder();
 

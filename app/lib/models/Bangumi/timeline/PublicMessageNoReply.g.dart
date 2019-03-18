@@ -6,9 +6,63 @@ part of 'PublicMessageNoReply.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<PublicMessageNoReply> _$publicMessageNoReplySerializer =
+new _$PublicMessageNoReplySerializer();
+
+class _$PublicMessageNoReplySerializer
+    implements StructuredSerializer<PublicMessageNoReply> {
+  @override
+  final Iterable<Type> types = const [
+    PublicMessageNoReply,
+    _$PublicMessageNoReply
+  ];
+  @override
+  final String wireName = 'PublicMessageNoReply';
+
+  @override
+  Iterable serialize(Serializers serializers, PublicMessageNoReply object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  PublicMessageNoReply deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new PublicMessageNoReplyBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$PublicMessageNoReply extends PublicMessageNoReply {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String content;
 
@@ -59,17 +113,14 @@ class PublicMessageNoReplyBuilder
     implements Builder<PublicMessageNoReply, PublicMessageNoReplyBuilder> {
   _$PublicMessageNoReply _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;
-
   String get content => _$this._content;
-
   set content(String content) => _$this._content = content;
 
   PublicMessageNoReplyBuilder();

@@ -6,13 +6,71 @@ part of 'WikiCreationSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<WikiCreationSingle> _$wikiCreationSingleSerializer =
+new _$WikiCreationSingleSerializer();
+
+class _$WikiCreationSingleSerializer
+    implements StructuredSerializer<WikiCreationSingle> {
+  @override
+  final Iterable<Type> types = const [WikiCreationSingle, _$WikiCreationSingle];
+  @override
+  final String wireName = 'WikiCreationSingle';
+
+  @override
+  Iterable serialize(Serializers serializers, WikiCreationSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'newItemName',
+      serializers.serialize(object.newItemName,
+          specifiedType: const FullType(String)),
+      'newItemId',
+      serializers.serialize(object.newItemId,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  WikiCreationSingle deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new WikiCreationSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'newItemName':
+          result.newItemName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'newItemId':
+          result.newItemId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$WikiCreationSingle extends WikiCreationSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String newItemName;
   @override
-  final int newItemId;
+  final String newItemId;
 
   factory _$WikiCreationSingle([void updates(WikiCreationSingleBuilder b)]) =>
       (new WikiCreationSingleBuilder()..update(updates)).build();
@@ -67,24 +125,21 @@ class WikiCreationSingleBuilder
     implements Builder<WikiCreationSingle, WikiCreationSingleBuilder> {
   _$WikiCreationSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _newItemName;
-
   String get newItemName => _$this._newItemName;
-
   set newItemName(String newItemName) => _$this._newItemName = newItemName;
 
-  int _newItemId;
+  String _newItemId;
 
-  int get newItemId => _$this._newItemId;
+  String get newItemId => _$this._newItemId;
 
-  set newItemId(int newItemId) => _$this._newItemId = newItemId;
+  set newItemId(String newItemId) => _$this._newItemId = newItemId;
 
   WikiCreationSingleBuilder();
 

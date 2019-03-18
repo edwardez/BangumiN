@@ -1,8 +1,11 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperImage.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineUserInfo.dart';
+import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
 
 part 'StatusUpdateMultiple.g.dart';
 
@@ -15,16 +18,26 @@ part 'StatusUpdateMultiple.g.dart';
 /// However on the main timeline, bangumi omits some hyperImages/hyperTexts so
 /// length might not be the same
 abstract class StatusUpdateMultiple
-    implements Built<StatusUpdateMultiple, StatusUpdateMultipleBuilder> {
+    implements
+        Built<StatusUpdateMultiple, StatusUpdateMultipleBuilder>,
+        TimelineFeed {
   /// due to the limitation of bangumi, this has to be a string
-  TimelineUserInfo get user;
+  FeedMetaInfo get user;
 
   BuiltList<HyperImage> get hyperImages;
 
   BuiltList<HyperBangumiItem> get hyperBangumiItems;
 
+  /// content type of the timeline feed, note: Bangumi might merge different activities
+  /// into one feed so this value is just as a reference for the 'main type'
+  /// check [hyperImages] and [hyperBangumiItems] for individual types
+  BangumiContent get contentType;
+
   StatusUpdateMultiple._();
 
   factory StatusUpdateMultiple([updates(StatusUpdateMultipleBuilder b)]) =
       _$StatusUpdateMultiple;
+
+  static Serializer<StatusUpdateMultiple> get serializer =>
+      _$statusUpdateMultipleSerializer;
 }

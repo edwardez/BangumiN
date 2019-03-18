@@ -6,13 +6,81 @@ part of 'IndexFavoriteSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<IndexFavoriteSingle> _$indexFavoriteSingleSerializer =
+new _$IndexFavoriteSingleSerializer();
+
+class _$IndexFavoriteSingleSerializer
+    implements StructuredSerializer<IndexFavoriteSingle> {
+  @override
+  final Iterable<Type> types = const [
+    IndexFavoriteSingle,
+    _$IndexFavoriteSingle
+  ];
+  @override
+  final String wireName = 'IndexFavoriteSingle';
+
+  @override
+  Iterable serialize(Serializers serializers, IndexFavoriteSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'title',
+      serializers.serialize(object.title,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+    if (object.summary != null) {
+      result..add('summary')..add(serializers.serialize(object.summary,
+          specifiedType: const FullType(String)));
+    }
+
+    return result;
+  }
+
+  @override
+  IndexFavoriteSingle deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new IndexFavoriteSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'title':
+          result.title = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'summary':
+          result.summary = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$IndexFavoriteSingle extends IndexFavoriteSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String title;
   @override
-  final int id;
+  final String id;
   @override
   final String summary;
 
@@ -29,9 +97,6 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('IndexFavoriteSingle', 'id');
-    }
-    if (summary == null) {
-      throw new BuiltValueNullFieldError('IndexFavoriteSingle', 'summary');
     }
   }
 
@@ -74,29 +139,24 @@ class IndexFavoriteSingleBuilder
     implements Builder<IndexFavoriteSingle, IndexFavoriteSingleBuilder> {
   _$IndexFavoriteSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
-  int _id;
+  String _id;
 
-  int get id => _$this._id;
+  String get id => _$this._id;
 
-  set id(int id) => _$this._id = id;
+  set id(String id) => _$this._id = id;
 
   String _summary;
-
   String get summary => _$this._summary;
-
   set summary(String summary) => _$this._summary = summary;
 
   IndexFavoriteSingleBuilder();

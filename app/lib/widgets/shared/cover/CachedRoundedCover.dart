@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/shared/utils/common.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 enum SubjectCoverSize {
   grid,
@@ -23,12 +23,20 @@ class CachedRoundedCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imageUrl == null) {
+      return Image.memory(
+          kTransparentImage,
+          semanticLabel: '封面图'
+      );
+    }
+
+    /// TODO: clip is expensive, consider avoid using if there is performance issue
     return ClipRRect(
       borderRadius: new BorderRadius.circular(8.0),
       child: CachedNetworkImage(
         width: this.width,
         height: this.height,
-        imageUrl: upgradeToHttps(this.imageUrl),
+        imageUrl: this.imageUrl,
         fit: BoxFit.cover,
         errorWidget: (context, url, error) => new Icon(Icons.error),
       ),

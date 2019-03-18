@@ -6,6 +6,66 @@ part of 'OauthState.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<OauthState> _$oauthStateSerializer = new _$OauthStateSerializer();
+
+class _$OauthStateSerializer implements StructuredSerializer<OauthState> {
+  @override
+  final Iterable<Type> types = const [OauthState, _$OauthState];
+  @override
+  final String wireName = 'OauthState';
+
+  @override
+  Iterable serialize(Serializers serializers, OauthState object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[];
+    if (object.showLoginErrorSnackBar != null) {
+      result..add('showLoginErrorSnackBar')..add(
+          serializers.serialize(object.showLoginErrorSnackBar,
+              specifiedType: const FullType(bool)));
+    }
+    if (object.oauthFailureMessage != null) {
+      result..add('oauthFailureMessage')..add(
+          serializers.serialize(object.oauthFailureMessage,
+              specifiedType: const FullType(String)));
+    }
+    if (object.error != null) {
+      result..add('error')..add(serializers.serialize(object.error,
+          specifiedType: const FullType(String)));
+    }
+
+    return result;
+  }
+
+  @override
+  OauthState deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new OauthStateBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'showLoginErrorSnackBar':
+          result.showLoginErrorSnackBar = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'oauthFailureMessage':
+          result.oauthFailureMessage = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'error':
+          result.error = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$OauthState extends OauthState {
   @override
   final bool showLoginErrorSnackBar;
@@ -59,23 +119,17 @@ class OauthStateBuilder implements Builder<OauthState, OauthStateBuilder> {
   _$OauthState _$v;
 
   bool _showLoginErrorSnackBar;
-
   bool get showLoginErrorSnackBar => _$this._showLoginErrorSnackBar;
-
   set showLoginErrorSnackBar(bool showLoginErrorSnackBar) =>
       _$this._showLoginErrorSnackBar = showLoginErrorSnackBar;
 
   String _oauthFailureMessage;
-
   String get oauthFailureMessage => _$this._oauthFailureMessage;
-
   set oauthFailureMessage(String oauthFailureMessage) =>
       _$this._oauthFailureMessage = oauthFailureMessage;
 
   String _error;
-
   String get error => _$this._error;
-
   set error(String error) => _$this._error = error;
 
   OauthStateBuilder();

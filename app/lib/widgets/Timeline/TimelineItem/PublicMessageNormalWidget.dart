@@ -40,7 +40,7 @@ class PublicMessageNormalWidget extends StatelessWidget {
               Padding(
                 padding:
                     EdgeInsets.only(left: paddingBetweenCommentIconAndCount),
-                child: Text(publicMessageNormal.replyCount),
+                child: Text(publicMessageNormal.replyCount.toString()),
               )
             ],
           ),

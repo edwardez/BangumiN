@@ -1,15 +1,16 @@
 import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/Bangumi/timeline/common/HyperItem.dart';
 
 part 'HyperBangumiItem.g.dart';
 
 /// A hyper link that directs to a [BangumiContent] page
 abstract class HyperBangumiItem
-    implements Built<HyperBangumiItem, HyperBangumiItemBuilder> {
+    implements Built<HyperBangumiItem, HyperBangumiItemBuilder>, HyperItem {
   /// id of the hyper text
-  int get id;
+  String get id;
 
-  /// user nick name
   BangumiContent get contentType;
 
   /// Item name, i.e. user name, subject name...
@@ -18,7 +19,7 @@ abstract class HyperBangumiItem
   /// if we cannot parse content, a fallback webview might be used
   /// hence an optional link is needed
   @nullable
-  String get link;
+  String get pageUrl;
 
   /// a item may or may not have an image
   @nullable
@@ -28,4 +29,7 @@ abstract class HyperBangumiItem
 
   factory HyperBangumiItem([updates(HyperBangumiItemBuilder b)]) =
       _$HyperBangumiItem;
+
+  static Serializer<HyperBangumiItem> get serializer =>
+      _$hyperBangumiItemSerializer;
 }

@@ -6,9 +6,83 @@ part of 'GroupJoinSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<GroupJoinSingle> _$groupJoinSingleSerializer =
+new _$GroupJoinSingleSerializer();
+
+class _$GroupJoinSingleSerializer
+    implements StructuredSerializer<GroupJoinSingle> {
+  @override
+  final Iterable<Type> types = const [GroupJoinSingle, _$GroupJoinSingle];
+  @override
+  final String wireName = 'GroupJoinSingle';
+
+  @override
+  Iterable serialize(Serializers serializers, GroupJoinSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'groupCoverImageUrl',
+      serializers.serialize(object.groupCoverImageUrl,
+          specifiedType: const FullType(String)),
+      'groupName',
+      serializers.serialize(object.groupName,
+          specifiedType: const FullType(String)),
+      'groupId',
+      serializers.serialize(object.groupId,
+          specifiedType: const FullType(String)),
+    ];
+    if (object.groupDescription != null) {
+      result..add('groupDescription')..add(
+          serializers.serialize(object.groupDescription,
+              specifiedType: const FullType(String)));
+    }
+
+    return result;
+  }
+
+  @override
+  GroupJoinSingle deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GroupJoinSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'groupCoverImageUrl':
+          result.groupCoverImageUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'groupName':
+          result.groupName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'groupDescription':
+          result.groupDescription = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'groupId':
+          result.groupId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$GroupJoinSingle extends GroupJoinSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String groupCoverImageUrl;
   @override
@@ -37,9 +111,6 @@ class _$GroupJoinSingle extends GroupJoinSingle {
     }
     if (groupName == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupName');
-    }
-    if (groupDescription == null) {
-      throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupDescription');
     }
     if (groupId == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupId');
@@ -91,37 +162,28 @@ class GroupJoinSingleBuilder
     implements Builder<GroupJoinSingle, GroupJoinSingleBuilder> {
   _$GroupJoinSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _groupCoverImageUrl;
-
   String get groupCoverImageUrl => _$this._groupCoverImageUrl;
-
   set groupCoverImageUrl(String groupCoverImageUrl) =>
       _$this._groupCoverImageUrl = groupCoverImageUrl;
 
   String _groupName;
-
   String get groupName => _$this._groupName;
-
   set groupName(String groupName) => _$this._groupName = groupName;
 
   String _groupDescription;
-
   String get groupDescription => _$this._groupDescription;
-
   set groupDescription(String groupDescription) =>
       _$this._groupDescription = groupDescription;
 
   String _groupId;
-
   String get groupId => _$this._groupId;
-
   set groupId(String groupId) => _$this._groupId = groupId;
 
   GroupJoinSingleBuilder();

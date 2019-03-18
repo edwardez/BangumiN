@@ -6,15 +6,84 @@ part of 'FriendshipCreationSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<FriendshipCreationSingle> _$friendshipCreationSingleSerializer =
+new _$FriendshipCreationSingleSerializer();
+
+class _$FriendshipCreationSingleSerializer
+    implements StructuredSerializer<FriendshipCreationSingle> {
+  @override
+  final Iterable<Type> types = const [
+    FriendshipCreationSingle,
+    _$FriendshipCreationSingle
+  ];
+  @override
+  final String wireName = 'FriendshipCreationSingle';
+
+  @override
+  Iterable serialize(Serializers serializers, FriendshipCreationSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'friendNickName',
+      serializers.serialize(object.friendNickName,
+          specifiedType: const FullType(String)),
+      'friendAvatarImageUrl',
+      serializers.serialize(object.friendAvatarImageUrl,
+          specifiedType: const FullType(String)),
+      'friendId',
+      serializers.serialize(object.friendId,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  FriendshipCreationSingle deserialize(Serializers serializers,
+      Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new FriendshipCreationSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'friendNickName':
+          result.friendNickName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'friendAvatarImageUrl':
+          result.friendAvatarImageUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'friendId':
+          result.friendId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String friendNickName;
   @override
   final String friendAvatarImageUrl;
   @override
-  final int friendId;
+  final String friendId;
 
   factory _$FriendshipCreationSingle(
           [void updates(FriendshipCreationSingleBuilder b)]) =>
@@ -86,32 +155,27 @@ class FriendshipCreationSingleBuilder
         Builder<FriendshipCreationSingle, FriendshipCreationSingleBuilder> {
   _$FriendshipCreationSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _friendNickName;
-
   String get friendNickName => _$this._friendNickName;
-
   set friendNickName(String friendNickName) =>
       _$this._friendNickName = friendNickName;
 
   String _friendAvatarImageUrl;
-
   String get friendAvatarImageUrl => _$this._friendAvatarImageUrl;
-
   set friendAvatarImageUrl(String friendAvatarImageUrl) =>
       _$this._friendAvatarImageUrl = friendAvatarImageUrl;
 
-  int _friendId;
+  String _friendId;
 
-  int get friendId => _$this._friendId;
+  String get friendId => _$this._friendId;
 
-  set friendId(int friendId) => _$this._friendId = friendId;
+  set friendId(String friendId) => _$this._friendId = friendId;
 
   FriendshipCreationSingleBuilder();
 

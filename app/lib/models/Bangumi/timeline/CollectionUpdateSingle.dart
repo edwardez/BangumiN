@@ -1,19 +1,26 @@
 import 'package:built_value/built_value.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineUserInfo.dart';
+import 'package:built_value/serializer.dart';
+import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
 
 part 'CollectionUpdateSingle.g.dart';
 
 abstract class CollectionUpdateSingle
-    implements Built<CollectionUpdateSingle, CollectionUpdateSingleBuilder> {
+    implements
+        Built<CollectionUpdateSingle, CollectionUpdateSingleBuilder>,
+        TimelineFeed {
   /// due to the limitation of bangumi, this has to be a string
-  TimelineUserInfo get user;
+  FeedMetaInfo get user;
 
+  @nullable
   String get subjectComment;
 
-  int get subjectId;
+  String get subjectId;
 
+  @nullable
   String get subjectImageUrl;
 
+  @nullable
   double get subjectScore;
 
   String get subjectTitle;
@@ -22,4 +29,7 @@ abstract class CollectionUpdateSingle
 
   factory CollectionUpdateSingle([updates(CollectionUpdateSingleBuilder b)]) =
       _$CollectionUpdateSingle;
+
+  static Serializer<CollectionUpdateSingle> get serializer =>
+      _$collectionUpdateSingleSerializer;
 }

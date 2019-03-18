@@ -6,20 +6,95 @@ part of 'StatusUpdateMultiple.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<StatusUpdateMultiple> _$statusUpdateMultipleSerializer =
+new _$StatusUpdateMultipleSerializer();
+
+class _$StatusUpdateMultipleSerializer
+    implements StructuredSerializer<StatusUpdateMultiple> {
+  @override
+  final Iterable<Type> types = const [
+    StatusUpdateMultiple,
+    _$StatusUpdateMultiple
+  ];
+  @override
+  final String wireName = 'StatusUpdateMultiple';
+
+  @override
+  Iterable serialize(Serializers serializers, StatusUpdateMultiple object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'hyperImages',
+      serializers.serialize(object.hyperImages,
+          specifiedType:
+          const FullType(BuiltList, const [const FullType(HyperImage)])),
+      'hyperBangumiItems',
+      serializers.serialize(object.hyperBangumiItems,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(HyperBangumiItem)])),
+      'contentType',
+      serializers.serialize(object.contentType,
+          specifiedType: const FullType(BangumiContent)),
+    ];
+
+    return result;
+  }
+
+  @override
+  StatusUpdateMultiple deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new StatusUpdateMultipleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'hyperImages':
+          result.hyperImages.replace(serializers.deserialize(value,
+              specifiedType: const FullType(
+                  BuiltList, const [const FullType(HyperImage)])) as BuiltList);
+          break;
+        case 'hyperBangumiItems':
+          result.hyperBangumiItems.replace(serializers.deserialize(value,
+              specifiedType: const FullType(
+                  BuiltList, const [const FullType(HyperBangumiItem)]))
+          as BuiltList);
+          break;
+        case 'contentType':
+          result.contentType = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$StatusUpdateMultiple extends StatusUpdateMultiple {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final BuiltList<HyperImage> hyperImages;
   @override
   final BuiltList<HyperBangumiItem> hyperBangumiItems;
+  @override
+  final BangumiContent contentType;
 
   factory _$StatusUpdateMultiple(
           [void updates(StatusUpdateMultipleBuilder b)]) =>
       (new StatusUpdateMultipleBuilder()..update(updates)).build();
 
   _$StatusUpdateMultiple._(
-      {this.user, this.hyperImages, this.hyperBangumiItems})
+      {this.user, this.hyperImages, this.hyperBangumiItems, this.contentType})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('StatusUpdateMultiple', 'user');
@@ -30,6 +105,9 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
     if (hyperBangumiItems == null) {
       throw new BuiltValueNullFieldError(
           'StatusUpdateMultiple', 'hyperBangumiItems');
+    }
+    if (contentType == null) {
+      throw new BuiltValueNullFieldError('StatusUpdateMultiple', 'contentType');
     }
   }
 
@@ -47,21 +125,25 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
     return other is StatusUpdateMultiple &&
         user == other.user &&
         hyperImages == other.hyperImages &&
-        hyperBangumiItems == other.hyperBangumiItems;
+        hyperBangumiItems == other.hyperBangumiItems &&
+        contentType == other.contentType;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, user.hashCode), hyperImages.hashCode),
-        hyperBangumiItems.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, user.hashCode), hyperImages.hashCode),
+            hyperBangumiItems.hashCode),
+        contentType.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('StatusUpdateMultiple')
           ..add('user', user)
-          ..add('hyperImages', hyperImages)
-          ..add('hyperBangumiItems', hyperBangumiItems))
+          ..add('hyperImages', hyperImages)..add(
+          'hyperBangumiItems', hyperBangumiItems)..add(
+          'contentType', contentType))
         .toString();
   }
 }
@@ -70,28 +152,30 @@ class StatusUpdateMultipleBuilder
     implements Builder<StatusUpdateMultiple, StatusUpdateMultipleBuilder> {
   _$StatusUpdateMultiple _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   ListBuilder<HyperImage> _hyperImages;
-
   ListBuilder<HyperImage> get hyperImages =>
       _$this._hyperImages ??= new ListBuilder<HyperImage>();
-
   set hyperImages(ListBuilder<HyperImage> hyperImages) =>
       _$this._hyperImages = hyperImages;
 
   ListBuilder<HyperBangumiItem> _hyperBangumiItems;
-
   ListBuilder<HyperBangumiItem> get hyperBangumiItems =>
       _$this._hyperBangumiItems ??= new ListBuilder<HyperBangumiItem>();
-
   set hyperBangumiItems(ListBuilder<HyperBangumiItem> hyperBangumiItems) =>
       _$this._hyperBangumiItems = hyperBangumiItems;
+
+  BangumiContent _contentType;
+
+  BangumiContent get contentType => _$this._contentType;
+
+  set contentType(BangumiContent contentType) =>
+      _$this._contentType = contentType;
 
   StatusUpdateMultipleBuilder();
 
@@ -100,6 +184,7 @@ class StatusUpdateMultipleBuilder
       _user = _$v.user?.toBuilder();
       _hyperImages = _$v.hyperImages?.toBuilder();
       _hyperBangumiItems = _$v.hyperBangumiItems?.toBuilder();
+      _contentType = _$v.contentType;
       _$v = null;
     }
     return this;
@@ -126,7 +211,8 @@ class StatusUpdateMultipleBuilder
           new _$StatusUpdateMultiple._(
               user: user.build(),
               hyperImages: hyperImages.build(),
-              hyperBangumiItems: hyperBangumiItems.build());
+              hyperBangumiItems: hyperBangumiItems.build(),
+              contentType: contentType);
     } catch (_) {
       String _$failedField;
       try {

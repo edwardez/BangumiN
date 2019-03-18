@@ -6,15 +6,84 @@ part of 'PublicMessageNormal.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<PublicMessageNormal> _$publicMessageNormalSerializer =
+new _$PublicMessageNormalSerializer();
+
+class _$PublicMessageNormalSerializer
+    implements StructuredSerializer<PublicMessageNormal> {
+  @override
+  final Iterable<Type> types = const [
+    PublicMessageNormal,
+    _$PublicMessageNormal
+  ];
+  @override
+  final String wireName = 'PublicMessageNormal';
+
+  @override
+  Iterable serialize(Serializers serializers, PublicMessageNormal object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+      'replyCount',
+      serializers.serialize(object.replyCount,
+          specifiedType: const FullType(int)),
+    ];
+    if (object.id != null) {
+      result..add('id')..add(serializers.serialize(object.id,
+          specifiedType: const FullType(String)));
+    }
+
+    return result;
+  }
+
+  @override
+  PublicMessageNormal deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new PublicMessageNormalBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'replyCount':
+          result.replyCount = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$PublicMessageNormal extends PublicMessageNormal {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String content;
   @override
-  final String replyCount;
+  final int replyCount;
   @override
-  final int id;
+  final String id;
 
   factory _$PublicMessageNormal([void updates(PublicMessageNormalBuilder b)]) =>
       (new PublicMessageNormalBuilder()..update(updates)).build();
@@ -29,9 +98,6 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     }
     if (replyCount == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'replyCount');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('PublicMessageNormal', 'id');
     }
   }
 
@@ -75,30 +141,27 @@ class PublicMessageNormalBuilder
     implements Builder<PublicMessageNormal, PublicMessageNormalBuilder> {
   _$PublicMessageNormal _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;
-
   String get content => _$this._content;
-
   set content(String content) => _$this._content = content;
 
-  String _replyCount;
+  int _replyCount;
 
-  String get replyCount => _$this._replyCount;
+  int get replyCount => _$this._replyCount;
 
-  set replyCount(String replyCount) => _$this._replyCount = replyCount;
+  set replyCount(int replyCount) => _$this._replyCount = replyCount;
 
-  int _id;
+  String _id;
 
-  int get id => _$this._id;
+  String get id => _$this._id;
 
-  set id(int id) => _$this._id = id;
+  set id(String id) => _$this._id = id;
 
   PublicMessageNormalBuilder();
 

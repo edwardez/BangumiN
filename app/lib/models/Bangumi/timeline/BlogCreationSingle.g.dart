@@ -6,15 +6,80 @@ part of 'BlogCreationSingle.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<BlogCreationSingle> _$blogCreationSingleSerializer =
+new _$BlogCreationSingleSerializer();
+
+class _$BlogCreationSingleSerializer
+    implements StructuredSerializer<BlogCreationSingle> {
+  @override
+  final Iterable<Type> types = const [BlogCreationSingle, _$BlogCreationSingle];
+  @override
+  final String wireName = 'BlogCreationSingle';
+
+  @override
+  Iterable serialize(Serializers serializers, BlogCreationSingle object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'title',
+      serializers.serialize(object.title,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+    if (object.summary != null) {
+      result..add('summary')..add(serializers.serialize(object.summary,
+          specifiedType: const FullType(String)));
+    }
+
+    return result;
+  }
+
+  @override
+  BlogCreationSingle deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new BlogCreationSingleBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'title':
+          result.title = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'summary':
+          result.summary = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$BlogCreationSingle extends BlogCreationSingle {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String title;
   @override
   final String summary;
   @override
-  final int id;
+  final String id;
 
   factory _$BlogCreationSingle([void updates(BlogCreationSingleBuilder b)]) =>
       (new BlogCreationSingleBuilder()..update(updates)).build();
@@ -26,9 +91,6 @@ class _$BlogCreationSingle extends BlogCreationSingle {
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('BlogCreationSingle', 'title');
-    }
-    if (summary == null) {
-      throw new BuiltValueNullFieldError('BlogCreationSingle', 'summary');
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('BlogCreationSingle', 'id');
@@ -75,30 +137,25 @@ class BlogCreationSingleBuilder
     implements Builder<BlogCreationSingle, BlogCreationSingleBuilder> {
   _$BlogCreationSingle _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
   String _summary;
-
   String get summary => _$this._summary;
-
   set summary(String summary) => _$this._summary = summary;
 
-  int _id;
+  String _id;
 
-  int get id => _$this._id;
+  String get id => _$this._id;
 
-  set id(int id) => _$this._id = id;
+  set id(String id) => _$this._id = id;
 
   BlogCreationSingleBuilder();
 

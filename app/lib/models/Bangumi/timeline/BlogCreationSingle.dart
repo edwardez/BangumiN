@@ -1,22 +1,30 @@
 import 'package:built_value/built_value.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineUserInfo.dart';
+import 'package:built_value/serializer.dart';
+import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
 
 part 'BlogCreationSingle.g.dart';
 
 abstract class BlogCreationSingle
-    implements Built<BlogCreationSingle, BlogCreationSingleBuilder> {
+    implements
+        Built<BlogCreationSingle, BlogCreationSingleBuilder>,
+        TimelineFeed {
   /// due to the limitation of bangumi, this has to be a string
-  TimelineUserInfo get user;
+  FeedMetaInfo get user;
 
   String get title;
 
+  @nullable
   String get summary;
 
   /// blog id
-  int get id;
+  String get id;
 
   BlogCreationSingle._();
 
   factory BlogCreationSingle([updates(BlogCreationSingleBuilder b)]) =
       _$BlogCreationSingle;
+
+  static Serializer<BlogCreationSingle> get serializer =>
+      _$blogCreationSingleSerializer;
 }

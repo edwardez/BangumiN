@@ -6,11 +6,14 @@ import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.
 class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
   final ProgressUpdateEpisodeUntil progressUpdateEpisodeUntil;
   final int subjectNameMaxLines;
+  final double verticalPadding;
 
   const ProgressUpdateEpisodeUntilWidget(
       {Key key,
       @required this.progressUpdateEpisodeUntil,
-      this.subjectNameMaxLines = 1})
+        this.subjectNameMaxLines = 2,
+        this.verticalPadding = 4.0
+      })
       : super(key: key);
 
   @override
@@ -18,19 +21,22 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         TimelineUserListTile(user: progressUpdateEpisodeUntil.user),
-        InkWell(
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  progressUpdateEpisodeUntil.subjectName,
-                  maxLines: subjectNameMaxLines,
-                  overflow: TextOverflow.ellipsis,
+        Container(
+          padding: EdgeInsets.symmetric(vertical: verticalPadding),
+          child: InkWell(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    progressUpdateEpisodeUntil.subjectName,
+                    maxLines: subjectNameMaxLines,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            onTap: () => {},
           ),
-          onTap: () => {},
         )
       ],
     );

@@ -6,13 +6,75 @@ part of 'ProgressUpdateEpisodeUntil.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<ProgressUpdateEpisodeUntil> _$progressUpdateEpisodeUntilSerializer =
+new _$ProgressUpdateEpisodeUntilSerializer();
+
+class _$ProgressUpdateEpisodeUntilSerializer
+    implements StructuredSerializer<ProgressUpdateEpisodeUntil> {
+  @override
+  final Iterable<Type> types = const [
+    ProgressUpdateEpisodeUntil,
+    _$ProgressUpdateEpisodeUntil
+  ];
+  @override
+  final String wireName = 'ProgressUpdateEpisodeUntil';
+
+  @override
+  Iterable serialize(Serializers serializers, ProgressUpdateEpisodeUntil object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(FeedMetaInfo)),
+      'subjectName',
+      serializers.serialize(object.subjectName,
+          specifiedType: const FullType(String)),
+      'subjectId',
+      serializers.serialize(object.subjectId,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  ProgressUpdateEpisodeUntil deserialize(Serializers serializers,
+      Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new ProgressUpdateEpisodeUntilBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
+          break;
+        case 'subjectName':
+          result.subjectName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'subjectId':
+          result.subjectId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
   @override
-  final TimelineUserInfo user;
+  final FeedMetaInfo user;
   @override
   final String subjectName;
   @override
-  final int subjectId;
+  final String subjectId;
 
   factory _$ProgressUpdateEpisodeUntil(
           [void updates(ProgressUpdateEpisodeUntilBuilder b)]) =>
@@ -72,24 +134,21 @@ class ProgressUpdateEpisodeUntilBuilder
         Builder<ProgressUpdateEpisodeUntil, ProgressUpdateEpisodeUntilBuilder> {
   _$ProgressUpdateEpisodeUntil _$v;
 
-  TimelineUserInfoBuilder _user;
+  FeedMetaInfoBuilder _user;
 
-  TimelineUserInfoBuilder get user =>
-      _$this._user ??= new TimelineUserInfoBuilder();
+  FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
 
-  set user(TimelineUserInfoBuilder user) => _$this._user = user;
+  set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _subjectName;
-
   String get subjectName => _$this._subjectName;
-
   set subjectName(String subjectName) => _$this._subjectName = subjectName;
 
-  int _subjectId;
+  String _subjectId;
 
-  int get subjectId => _$this._subjectId;
+  String get subjectId => _$this._subjectId;
 
-  set subjectId(int subjectId) => _$this._subjectId = subjectId;
+  set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
   ProgressUpdateEpisodeUntilBuilder();
 

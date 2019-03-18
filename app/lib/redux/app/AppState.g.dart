@@ -6,6 +6,73 @@ part of 'AppState.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<AppState> _$appStateSerializer = new _$AppStateSerializer();
+
+class _$AppStateSerializer implements StructuredSerializer<AppState> {
+  @override
+  final Iterable<Type> types = const [AppState, _$AppState];
+  @override
+  final String wireName = 'AppState';
+
+  @override
+  Iterable serialize(Serializers serializers, AppState object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'isAuthenticated',
+      serializers.serialize(object.isAuthenticated,
+          specifiedType: const FullType(bool)),
+      'oauthState',
+      serializers.serialize(object.oauthState,
+          specifiedType: const FullType(OauthState)),
+      'timelineState',
+      serializers.serialize(object.timelineState,
+          specifiedType: const FullType(TimelineState)),
+    ];
+    if (object.currentAuthenticatedUserBasicInfo != null) {
+      result..add('currentAuthenticatedUserBasicInfo')..add(
+          serializers.serialize(object.currentAuthenticatedUserBasicInfo,
+              specifiedType: const FullType(BangumiUserBasic)));
+    }
+
+    return result;
+  }
+
+  @override
+  AppState deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new AppStateBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'currentAuthenticatedUserBasicInfo':
+          result.currentAuthenticatedUserBasicInfo.replace(
+              serializers.deserialize(value,
+                  specifiedType: const FullType(BangumiUserBasic))
+              as BangumiUserBasic);
+          break;
+        case 'isAuthenticated':
+          result.isAuthenticated = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'oauthState':
+          result.oauthState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(OauthState)) as OauthState);
+          break;
+        case 'timelineState':
+          result.timelineState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(TimelineState)) as TimelineState);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$AppState extends AppState {
   @override
   final BangumiUserBasic currentAuthenticatedUserBasicInfo;
@@ -13,6 +80,8 @@ class _$AppState extends AppState {
   final bool isAuthenticated;
   @override
   final OauthState oauthState;
+  @override
+  final TimelineState timelineState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -20,13 +89,17 @@ class _$AppState extends AppState {
   _$AppState._(
       {this.currentAuthenticatedUserBasicInfo,
       this.isAuthenticated,
-      this.oauthState})
+        this.oauthState,
+        this.timelineState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
     }
     if (oauthState == null) {
       throw new BuiltValueNullFieldError('AppState', 'oauthState');
+    }
+    if (timelineState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'timelineState');
     }
   }
 
@@ -44,15 +117,18 @@ class _$AppState extends AppState {
         currentAuthenticatedUserBasicInfo ==
             other.currentAuthenticatedUserBasicInfo &&
         isAuthenticated == other.isAuthenticated &&
-        oauthState == other.oauthState;
+        oauthState == other.oauthState &&
+        timelineState == other.timelineState;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-            isAuthenticated.hashCode),
-        oauthState.hashCode));
+        $jc(
+            $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
+                isAuthenticated.hashCode),
+            oauthState.hashCode),
+        timelineState.hashCode));
   }
 
   @override
@@ -60,8 +136,8 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('currentAuthenticatedUserBasicInfo',
               currentAuthenticatedUserBasicInfo)
-          ..add('isAuthenticated', isAuthenticated)
-          ..add('oauthState', oauthState))
+          ..add('isAuthenticated', isAuthenticated)..add(
+          'oauthState', oauthState)..add('timelineState', timelineState))
         .toString();
   }
 }
@@ -89,6 +165,14 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set oauthState(OauthStateBuilder oauthState) =>
       _$this._oauthState = oauthState;
 
+  TimelineStateBuilder _timelineState;
+
+  TimelineStateBuilder get timelineState =>
+      _$this._timelineState ??= new TimelineStateBuilder();
+
+  set timelineState(TimelineStateBuilder timelineState) =>
+      _$this._timelineState = timelineState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -97,6 +181,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           _$v.currentAuthenticatedUserBasicInfo?.toBuilder();
       _isAuthenticated = _$v.isAuthenticated;
       _oauthState = _$v.oauthState?.toBuilder();
+      _timelineState = _$v.timelineState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -124,7 +209,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               currentAuthenticatedUserBasicInfo:
                   _currentAuthenticatedUserBasicInfo?.build(),
               isAuthenticated: isAuthenticated,
-              oauthState: oauthState.build());
+              oauthState: oauthState.build(),
+              timelineState: timelineState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -133,6 +219,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
         _$failedField = 'oauthState';
         oauthState.build();
+        _$failedField = 'timelineState';
+        timelineState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

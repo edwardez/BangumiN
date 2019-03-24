@@ -16,7 +16,10 @@ class BangumiContent extends EnumClass {
   static const BangumiContent Wiki = _$Wiki;
   static const BangumiContent Catalog = _$Catalog;
   static const BangumiContent Doujin = _$Doujin;
-  static const BangumiContent Mixed = _$Mixed;
+  static const BangumiContent CharacterOrPerson = _$CharacterOrPerson;
+
+  /// a plain text item
+  static const BangumiContent PlainText = _$PlainText;
   static const BangumiContent Unknown = _$Unknown;
 
   const BangumiContent._(String name) : super(name);

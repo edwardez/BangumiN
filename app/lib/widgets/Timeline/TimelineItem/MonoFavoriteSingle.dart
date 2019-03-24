@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/timeline/MonoFavoriteSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/ItemWithRoundedCorner.dart';
+import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 
@@ -17,10 +17,10 @@ class MonoFavoriteSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(
+        TimelineUserListTile.fromUser(
           user: monoFavoriteSingle.user,
         ),
-        ItemWithRoundedCorner(
+        TimelineCommonListTile(
           leadingWidget: CachedRoundedCover(
               imageUrl: monoFavoriteSingle.monoAvatarImageUrl),
           title: monoFavoriteSingle.monoName,

@@ -7,7 +7,7 @@ part of 'MonoFavoriteSingle.dart';
 // **************************************************************************
 
 Serializer<MonoFavoriteSingle> _$monoFavoriteSingleSerializer =
-new _$MonoFavoriteSingleSerializer();
+    new _$MonoFavoriteSingleSerializer();
 
 class _$MonoFavoriteSingleSerializer
     implements StructuredSerializer<MonoFavoriteSingle> {
@@ -33,9 +33,10 @@ class _$MonoFavoriteSingleSerializer
           specifiedType: const FullType(Mono)),
     ];
     if (object.monoAvatarImageUrl != null) {
-      result..add('monoAvatarImageUrl')..add(
-          serializers.serialize(object.monoAvatarImageUrl,
-              specifiedType: const FullType(String)));
+      result
+        ..add('monoAvatarImageUrl')
+        ..add(serializers.serialize(object.monoAvatarImageUrl,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -94,11 +95,12 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   factory _$MonoFavoriteSingle([void updates(MonoFavoriteSingleBuilder b)]) =>
       (new MonoFavoriteSingleBuilder()..update(updates)).build();
 
-  _$MonoFavoriteSingle._({this.user,
-    this.monoName,
-    this.monoAvatarImageUrl,
-    this.id,
-    this.monoType})
+  _$MonoFavoriteSingle._(
+      {this.user,
+      this.monoName,
+      this.monoAvatarImageUrl,
+      this.id,
+      this.monoType})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'user');
@@ -148,8 +150,9 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     return (newBuiltValueToStringHelper('MonoFavoriteSingle')
           ..add('user', user)
           ..add('monoName', monoName)
-          ..add('monoAvatarImageUrl', monoAvatarImageUrl)..add('id', id)..add(
-          'monoType', monoType))
+          ..add('monoAvatarImageUrl', monoAvatarImageUrl)
+          ..add('id', id)
+          ..add('monoType', monoType))
         .toString();
   }
 }
@@ -159,9 +162,7 @@ class MonoFavoriteSingleBuilder
   _$MonoFavoriteSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _monoName;
@@ -174,15 +175,11 @@ class MonoFavoriteSingleBuilder
       _$this._monoAvatarImageUrl = monoAvatarImageUrl;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   Mono _monoType;
-
   Mono get monoType => _$this._monoType;
-
   set monoType(Mono monoType) => _$this._monoType = monoType;
 
   MonoFavoriteSingleBuilder();

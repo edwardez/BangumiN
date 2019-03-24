@@ -11,7 +11,7 @@ class BlogCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(
+        TimelineUserListTile.fromUser(
           user: blogCreationSingle.user,
         ),
         Column(

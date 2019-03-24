@@ -7,7 +7,7 @@ part of 'UnknownTimelineActivity.dart';
 // **************************************************************************
 
 Serializer<UnknownTimelineActivity> _$unknownTimelineActivitySerializer =
-new _$UnknownTimelineActivitySerializer();
+    new _$UnknownTimelineActivitySerializer();
 
 class _$UnknownTimelineActivitySerializer
     implements StructuredSerializer<UnknownTimelineActivity> {
@@ -28,16 +28,18 @@ class _$UnknownTimelineActivitySerializer
           specifiedType: const FullType(String)),
     ];
     if (object.user != null) {
-      result..add('user')..add(serializers.serialize(object.user,
-          specifiedType: const FullType(FeedMetaInfo)));
+      result
+        ..add('user')
+        ..add(serializers.serialize(object.user,
+            specifiedType: const FullType(FeedMetaInfo)));
     }
 
     return result;
   }
 
   @override
-  UnknownTimelineActivity deserialize(Serializers serializers,
-      Iterable serialized,
+  UnknownTimelineActivity deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UnknownTimelineActivityBuilder();
 
@@ -115,9 +117,7 @@ class UnknownTimelineActivityBuilder
   _$UnknownTimelineActivity _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;

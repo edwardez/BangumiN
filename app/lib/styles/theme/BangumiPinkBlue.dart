@@ -49,9 +49,9 @@ class BangumiPinkBlue {
   /// TODO: figure out a way to configure fonts without using workarounds
   /// currently approach in https://medium.com/@najeira/flutter-and-cjk-font-4e372b37083c
   /// is used
-  static const Locale kLocale = const Locale("zh", "");
+  static const Locale kLocale = const Locale('zh', '');
   static const String fontFamilyAndroid = null;
-  static const String fontFamilyCupertino = "PingFang SC";
+  static const String fontFamilyCupertino = 'PingFang SC';
   static final bool _android = defaultTargetPlatform == TargetPlatform.android;
   static final String _kFontFamily = _android
       ? fontFamilyAndroid

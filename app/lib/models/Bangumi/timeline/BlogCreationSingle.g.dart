@@ -7,7 +7,7 @@ part of 'BlogCreationSingle.dart';
 // **************************************************************************
 
 Serializer<BlogCreationSingle> _$blogCreationSingleSerializer =
-new _$BlogCreationSingleSerializer();
+    new _$BlogCreationSingleSerializer();
 
 class _$BlogCreationSingleSerializer
     implements StructuredSerializer<BlogCreationSingle> {
@@ -30,8 +30,10 @@ class _$BlogCreationSingleSerializer
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
     if (object.summary != null) {
-      result..add('summary')..add(serializers.serialize(object.summary,
-          specifiedType: const FullType(String)));
+      result
+        ..add('summary')
+        ..add(serializers.serialize(object.summary,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -138,9 +140,7 @@ class BlogCreationSingleBuilder
   _$BlogCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _title;
@@ -152,9 +152,7 @@ class BlogCreationSingleBuilder
   set summary(String summary) => _$this._summary = summary;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   BlogCreationSingleBuilder();

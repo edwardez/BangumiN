@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/timeline/FriendshipCreationSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/ItemWithRoundedCorner.dart';
+import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 
@@ -15,10 +15,10 @@ class FriendshipCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(
+        TimelineUserListTile.fromUser(
           user: friendshipCreationSingle.user,
         ),
-        ItemWithRoundedCorner(
+        TimelineCommonListTile(
           leadingWidget: CachedCircleAvatar(
               imageUrl: friendshipCreationSingle.friendAvatarImageUrl),
           title: friendshipCreationSingle.friendNickName,

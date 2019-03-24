@@ -7,7 +7,7 @@ part of 'WikiCreationSingle.dart';
 // **************************************************************************
 
 Serializer<WikiCreationSingle> _$wikiCreationSingleSerializer =
-new _$WikiCreationSingleSerializer();
+    new _$WikiCreationSingleSerializer();
 
 class _$WikiCreationSingleSerializer
     implements StructuredSerializer<WikiCreationSingle> {
@@ -126,9 +126,7 @@ class WikiCreationSingleBuilder
   _$WikiCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _newItemName;
@@ -136,9 +134,7 @@ class WikiCreationSingleBuilder
   set newItemName(String newItemName) => _$this._newItemName = newItemName;
 
   String _newItemId;
-
   String get newItemId => _$this._newItemId;
-
   set newItemId(String newItemId) => _$this._newItemId = newItemId;
 
   WikiCreationSingleBuilder();

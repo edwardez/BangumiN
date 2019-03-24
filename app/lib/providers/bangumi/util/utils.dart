@@ -7,31 +7,90 @@ String aHrefContains(String keyword) {
   return 'a[href*="$keyword"]';
 }
 
+/// retrieve image url from background-image css property
+/// Note: instead of accessing this property directly, [Element.outerHtml] of the
+///  element is used
+String imageUrlFromBackgroundImage(Element imageElement,
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
+  Match imageMatchers = RegExp(r"""background-image:url\('([^']*)'\)""")
+      .firstMatch(imageElement?.outerHtml ?? '');
+  String imageUrl;
+
+  if (imageMatchers != null && imageMatchers.groupCount >= 1) {
+    imageUrl = imageMatchers.group(1);
+  } else {
+    return defaultImageSrc;
+  }
+
+  return normalizeImageUrl(imageUrl,
+      defaultImageSrc: defaultImageSrc);
+}
+
 ///imageUrl may be something like  '//lain.bgm.tv/pic/user/m/000/1/2/3.jpg' without protocol
-String normalizeImageUrl(String imageUrl) {
+String normalizeImageUrl(String imageUrl,
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
   if (imageUrl != null && imageUrl[0] == '/') return 'https:' + imageUrl;
 
-  return imageUrl;
+  return defaultImageSrc;
+}
+
+///convert url such as '/person/1' to '$host/person/1'
+String relativeUrlToAbsolute(String relativeUrl,
+    {String host = 'https://bgm.tv'}) {
+  return '$host${relativeUrl ?? ""}';
 }
 
 String parseHrefId(Element element) {
+  if (element == null) {
+    return null;
+  }
+
+  String hrefId = element.attributes['href']?.trim();
+  if (hrefId == null) {
+    return null;
+  }
+
   return RegExp(r'\w+$')
-      .firstMatch(element?.attributes['href']?.trim())
+      .firstMatch(hrefId)
       ?.group(0);
 }
 
 String parseFeedId(Element element) {
+  String id = element?.attributes['id']?.trim();
+  if (id == null) {
+    return null;
+  }
+
   return RegExp(r'\d+$')
-      .firstMatch(element?.attributes['id']?.trim())
+      .firstMatch(id)
       ?.group(0);
 }
 
-String imageSrcOrNull(
-  Element imageElement,
-) {
-  if (imageElement == null) return null;
+/// extract first int from a string
+int extractFirstInt(String rawString, {defaultValue = 0}) {
+  if (rawString == null) return defaultValue;
 
-  return normalizeImageUrl(imageElement?.attributes['src']);
+  Match intMatcher =
+  RegExp(r'\d+').firstMatch(rawString);
+
+  if (intMatcher != null) {
+    int parsedInt = int.parse(intMatcher.group(0));
+    return parsedInt;
+  }
+
+  return defaultValue;
+}
+
+String imageSrcOrNull(Element imageElement,
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
+  if (imageElement == null) return null;
+  String imageUrl = imageElement.attributes['src'];
+
+  ///maybe because of https://blog.cloudflare.com/mirage2-solving-mobile-speed/ ?
+  imageUrl ??= imageElement.attributes['data-cfsrc'];
+
+  return normalizeImageUrl(imageUrl,
+      defaultImageSrc: defaultImageSrc);
 }
 
 Optional<String> getFirstTextNodeContent(NodeList nodeList,

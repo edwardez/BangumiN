@@ -138,8 +138,8 @@ class _$HyperBangumiItem extends HyperBangumiItem {
   String toString() {
     return (newBuiltValueToStringHelper('HyperBangumiItem')
           ..add('id', id)
-          ..add('contentType', contentType)
-          ..add('name', name)..add('pageUrl', pageUrl)
+          ..add('contentType', contentType)..add('name', name)..add(
+          'pageUrl', pageUrl)
           ..add('imageUrl', imageUrl))
         .toString();
   }
@@ -150,9 +150,7 @@ class HyperBangumiItemBuilder
   _$HyperBangumiItem _$v;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   BangumiContent _contentType;
@@ -165,9 +163,7 @@ class HyperBangumiItemBuilder
   set name(String name) => _$this._name = name;
 
   String _pageUrl;
-
   String get pageUrl => _$this._pageUrl;
-
   set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
 
   String _imageUrl;

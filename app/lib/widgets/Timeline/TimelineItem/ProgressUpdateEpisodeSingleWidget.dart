@@ -18,7 +18,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(user: progressUpdateEpisodeSingle.user),
+        TimelineUserListTile.fromUser(user: progressUpdateEpisodeSingle.user),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: InkWell(

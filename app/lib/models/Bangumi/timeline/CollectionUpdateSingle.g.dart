@@ -7,7 +7,7 @@ part of 'CollectionUpdateSingle.dart';
 // **************************************************************************
 
 Serializer<CollectionUpdateSingle> _$collectionUpdateSingleSerializer =
-new _$CollectionUpdateSingleSerializer();
+    new _$CollectionUpdateSingleSerializer();
 
 class _$CollectionUpdateSingleSerializer
     implements StructuredSerializer<CollectionUpdateSingle> {
@@ -29,30 +29,35 @@ class _$CollectionUpdateSingleSerializer
       'subjectId',
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
-      'subjectImageUrl',
-      serializers.serialize(object.subjectImageUrl,
-          specifiedType: const FullType(String)),
       'subjectTitle',
       serializers.serialize(object.subjectTitle,
           specifiedType: const FullType(String)),
     ];
     if (object.subjectComment != null) {
-      result..add('subjectComment')..add(
-          serializers.serialize(object.subjectComment,
-              specifiedType: const FullType(String)));
+      result
+        ..add('subjectComment')
+        ..add(serializers.serialize(object.subjectComment,
+            specifiedType: const FullType(String)));
+    }
+    if (object.subjectImageUrl != null) {
+      result
+        ..add('subjectImageUrl')
+        ..add(serializers.serialize(object.subjectImageUrl,
+            specifiedType: const FullType(String)));
     }
     if (object.subjectScore != null) {
-      result..add('subjectScore')..add(
-          serializers.serialize(object.subjectScore,
-              specifiedType: const FullType(double)));
+      result
+        ..add('subjectScore')
+        ..add(serializers.serialize(object.subjectScore,
+            specifiedType: const FullType(double)));
     }
 
     return result;
   }
 
   @override
-  CollectionUpdateSingle deserialize(Serializers serializers,
-      Iterable serialized,
+  CollectionUpdateSingle deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionUpdateSingleBuilder();
 
@@ -125,10 +130,6 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
     if (subjectId == null) {
       throw new BuiltValueNullFieldError('CollectionUpdateSingle', 'subjectId');
     }
-    if (subjectImageUrl == null) {
-      throw new BuiltValueNullFieldError(
-          'CollectionUpdateSingle', 'subjectImageUrl');
-    }
     if (subjectTitle == null) {
       throw new BuiltValueNullFieldError(
           'CollectionUpdateSingle', 'subjectTitle');
@@ -186,9 +187,7 @@ class CollectionUpdateSingleBuilder
   _$CollectionUpdateSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _subjectComment;
@@ -197,9 +196,7 @@ class CollectionUpdateSingleBuilder
       _$this._subjectComment = subjectComment;
 
   String _subjectId;
-
   String get subjectId => _$this._subjectId;
-
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
   String _subjectImageUrl;

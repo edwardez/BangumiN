@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/timeline/WikiCreationSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/ItemWithRoundedCorner.dart';
+import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 
 class WikiCreationSingleWidget extends StatelessWidget {
@@ -12,10 +12,10 @@ class WikiCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(
+        TimelineUserListTile.fromUser(
           user: wikiCreationSingle.user,
         ),
-        ItemWithRoundedCorner(title: wikiCreationSingle.newItemName),
+        TimelineCommonListTile(title: wikiCreationSingle.newItemName),
       ],
     );
   }

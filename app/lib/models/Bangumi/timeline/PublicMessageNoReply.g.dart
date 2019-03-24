@@ -7,7 +7,7 @@ part of 'PublicMessageNoReply.dart';
 // **************************************************************************
 
 Serializer<PublicMessageNoReply> _$publicMessageNoReplySerializer =
-new _$PublicMessageNoReplySerializer();
+    new _$PublicMessageNoReplySerializer();
 
 class _$PublicMessageNoReplySerializer
     implements StructuredSerializer<PublicMessageNoReply> {
@@ -114,9 +114,7 @@ class PublicMessageNoReplyBuilder
   _$PublicMessageNoReply _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;

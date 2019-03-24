@@ -10,7 +10,7 @@ class BangumiTimelineService {
       : assert(cookieClient != null);
 
   // get bangumi user basic info through api
-  Future<Response<String>> fetchLatestTimeline({int nextPageNum}) async {
+  Future<Response<String>> getTimeline({int nextPageNum}) async {
     Map<String, dynamic> queryParameters = {'ajax': '1'};
 
     if (nextPageNum != null) {
@@ -19,11 +19,5 @@ class BangumiTimelineService {
 
     return cookieClient.dio
         .get('https://bgm.tv/timeline?', queryParameters: queryParameters);
-
-//    var client = new http.Client();
-//     return client.get('https://bgm.tv/timeline?&ajax=1&page=$nextPageNum', headers: {
-//       'Cookie' : 'chii_auth=${cookieClient.bangumiCookieCredential.authCookie}',
-//       'User-Agent': cookieClient.bangumiCookieCredential.userAgent
-//     });
   }
 }

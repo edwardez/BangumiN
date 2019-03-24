@@ -5,6 +5,18 @@ import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/models/Bangumi/BangumiUserAvatar.dart';
 import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/Bangumi/BangumiUserIdentity.dart';
+import 'package:munin/models/Bangumi/common/Images.dart';
+import 'package:munin/models/Bangumi/mono/Actor.dart';
+import 'package:munin/models/Bangumi/mono/Character.dart';
+import 'package:munin/models/Bangumi/subject/Count.dart';
+import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
+import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
+import 'package:munin/models/Bangumi/subject/Rating.dart';
+import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
+import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
+import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/Bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/Bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/models/Bangumi/timeline/FriendshipCreationSingle.dart';
@@ -25,6 +37,7 @@ import 'package:munin/models/Bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
 
@@ -52,10 +65,25 @@ part 'serializers.g.dart';
   HyperBangumiItem,
   HyperImage,
   FeedMetaInfo,
-  OauthState,
-  TimelineState,
   FeedChunks,
   AppState,
+  OauthState,
+  TimelineState,
+  SubjectState,
+  Subject,
+  SubjectType,
+  Count,
+  Rating,
+  Images,
+  Character,
+  RelatedSubject,
+  SubjectComment,
+  SubjectCommentMetaInfo,
+  Actor,
+  InfoBoxRow,
+  InfoBoxItem
+
+
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

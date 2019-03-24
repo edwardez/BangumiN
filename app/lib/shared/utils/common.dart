@@ -1,5 +1,3 @@
-// upgrade a link to https
-// TODO: use built_value custom serializer to handle this at parsing time
 import 'dart:math' show min;
 
 String upgradeToHttps(String link) {
@@ -17,9 +15,21 @@ String truncateStringTo(String stringToTruncate, maxLength) {
 }
 
 /// safely parse an int string, or returns null if intStr is null
-/// this method assumes intStr must be a int string
-int parseInt(String intStr) {
-  return intStr == null ? null : int.parse(intStr);
+/// if intStr is not int string, [defaultValue] will be returned
+int tryParseInt(String intStr, {defaultValue = 0}) {
+  if (intStr == null) {
+    return defaultValue;
+  }
+  return int.tryParse(intStr) ?? defaultValue;
+}
+
+/// safely parse an double string, or returns null if doubleStr is null
+/// if doubleStr is not double string, [defaultValue] will be returned
+double tryParseDouble(String doubleStr, {defaultValue = 0}) {
+  if (doubleStr == null) {
+    return defaultValue;
+  }
+  return double.tryParse(doubleStr) ?? defaultValue;
 }
 
 /// https://www.dartlang.org/articles/server/numeric-computation

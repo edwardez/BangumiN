@@ -65,7 +65,7 @@ Middleware<AppState> _createLoadTimelineFeed(
               ' FeedLoadType.Gap is currently not implemented');
         }
 
-        var feedsHtml = await bangumiTimelineService.fetchLatestTimeline(
+        var feedsHtml = await bangumiTimelineService.getTimeline(
             nextPageNum: nextPageNum);
 
         TimelineParser timelineParser = TimelineParser();
@@ -75,6 +75,8 @@ Middleware<AppState> _createLoadTimelineFeed(
                 feedLoadType: action.feedLoadType,
                 upperFeedId: upperFeedId,
                 lowerFeedId: lowerFeedId);
+
+        debugPrint('Recevied ${processedFeeds.item1.length} feeds');
 
         store.dispatch(LoadTimelineFeedSuccess(
             feeds: processedFeeds.item1,

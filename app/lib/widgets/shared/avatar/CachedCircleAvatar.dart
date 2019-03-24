@@ -14,10 +14,13 @@ class CachedCircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imageUrl == null) {
       return Image.memory(
-          kTransparentImage,
-          semanticLabel: '用户头像'
+        kTransparentImage,
+        semanticLabel: '用户头像',
+        width: width,
+        height: height,
       );
     }
+//    return Image.network(imageUrl);
 
     /// TODO: clip is expensive, consider avoid using if there is performance issue
     return ClipOval(

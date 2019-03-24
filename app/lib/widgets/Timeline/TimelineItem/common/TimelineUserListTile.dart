@@ -1,72 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
-import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
-import 'package:munin/widgets/shared/utils/SubjectStars.dart';
+import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 
 /// a commonly-used user list tile
 /// optionally there is a score parameter which follows the actionName in subtitle,
 class TimelineUserListTile extends StatelessWidget {
-  final FeedMetaInfo user;
+  final String nickName;
+  final String actionName;
+  final String updatedAt;
   final int titleMaxLines;
   final double score;
 
-  const TimelineUserListTile({
+  TimelineUserListTile({
     Key key,
-    @required this.user,
+    @required this.nickName,
+    @required this.actionName,
+    @required this.updatedAt,
     this.titleMaxLines = 1,
     this.score,
-  }) : super(key: key);
+  });
 
-  _captionTextStyle(BuildContext context) {
-    /// text style of action and time
-    /// style and size is intentionally hard coded(like [ListTile])
-    return Theme
-        .of(context)
-        .textTheme
-        .caption
-        .copyWith(
-      fontSize: 14,
-    );
-  }
-
-  List<Widget> _buildSubtitleComponents({@required String actionName,
-    @required String updatedAt,
-    @required BuildContext context,
-    double score}) {
-    if (score == null) {
-      return [
-        Expanded(
-            child: Text(
-          actionName,
-              style: _captionTextStyle(context),
-          /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        )),
-        Text(
-          updatedAt,
-          style: _captionTextStyle(context),
-        )
-      ];
-    } else {
-      /// if text overflows there will be an error
-      /// however length of this text is predictable so it should be fine
-      return [
-        Text(
-          actionName,
-          style: _captionTextStyle(context),
-        ),
-        SubjectStars(
-          subjectScore: score,
-        ),
-        ExpandedEmpty(),
-        Text(
-          updatedAt,
-          style: _captionTextStyle(context),
-        )
-      ];
-    }
-  }
+  TimelineUserListTile.fromUser({
+    Key key,
+    FeedMetaInfo user,
+    this.titleMaxLines = 1,
+    this.score,
+  })
+      : actionName = user.actionName,
+        updatedAt = user.updatedAt,
+        nickName = user.nickName,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +41,7 @@ class TimelineUserListTile extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: Text(
-                  user.nickName,
+                  nickName,
                   maxLines: titleMaxLines,
                   overflow: TextOverflow.ellipsis,
                   style: Theme
@@ -89,13 +52,10 @@ class TimelineUserListTile extends StatelessWidget {
               )
             ],
           ),
-          Row(
-            children: _buildSubtitleComponents(
-                context: context,
-                actionName: user.actionName,
-                updatedAt: user.updatedAt,
-                score: this.score),
-          )
+          ListTileSubtitleWidget(
+              actionName: actionName,
+              updatedAt: updatedAt,
+              score: this.score)
         ],
       ),
     );

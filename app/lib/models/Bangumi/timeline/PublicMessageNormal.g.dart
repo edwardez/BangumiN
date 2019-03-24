@@ -7,7 +7,7 @@ part of 'PublicMessageNormal.dart';
 // **************************************************************************
 
 Serializer<PublicMessageNormal> _$publicMessageNormalSerializer =
-new _$PublicMessageNormalSerializer();
+    new _$PublicMessageNormalSerializer();
 
 class _$PublicMessageNormalSerializer
     implements StructuredSerializer<PublicMessageNormal> {
@@ -34,8 +34,10 @@ class _$PublicMessageNormalSerializer
           specifiedType: const FullType(int)),
     ];
     if (object.id != null) {
-      result..add('id')..add(serializers.serialize(object.id,
-          specifiedType: const FullType(String)));
+      result
+        ..add('id')
+        ..add(serializers.serialize(object.id,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -142,9 +144,7 @@ class PublicMessageNormalBuilder
   _$PublicMessageNormal _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _content;
@@ -152,15 +152,11 @@ class PublicMessageNormalBuilder
   set content(String content) => _$this._content = content;
 
   int _replyCount;
-
   int get replyCount => _$this._replyCount;
-
   set replyCount(int replyCount) => _$this._replyCount = replyCount;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   PublicMessageNormalBuilder();

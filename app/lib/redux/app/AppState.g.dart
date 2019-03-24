@@ -27,11 +27,15 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'timelineState',
       serializers.serialize(object.timelineState,
           specifiedType: const FullType(TimelineState)),
+      'subjectState',
+      serializers.serialize(object.subjectState,
+          specifiedType: const FullType(SubjectState)),
     ];
     if (object.currentAuthenticatedUserBasicInfo != null) {
-      result..add('currentAuthenticatedUserBasicInfo')..add(
-          serializers.serialize(object.currentAuthenticatedUserBasicInfo,
-              specifiedType: const FullType(BangumiUserBasic)));
+      result
+        ..add('currentAuthenticatedUserBasicInfo')
+        ..add(serializers.serialize(object.currentAuthenticatedUserBasicInfo,
+            specifiedType: const FullType(BangumiUserBasic)));
     }
 
     return result;
@@ -51,8 +55,8 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'currentAuthenticatedUserBasicInfo':
           result.currentAuthenticatedUserBasicInfo.replace(
               serializers.deserialize(value,
-                  specifiedType: const FullType(BangumiUserBasic))
-              as BangumiUserBasic);
+                      specifiedType: const FullType(BangumiUserBasic))
+                  as BangumiUserBasic);
           break;
         case 'isAuthenticated':
           result.isAuthenticated = serializers.deserialize(value,
@@ -65,6 +69,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'timelineState':
           result.timelineState.replace(serializers.deserialize(value,
               specifiedType: const FullType(TimelineState)) as TimelineState);
+          break;
+        case 'subjectState':
+          result.subjectState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(SubjectState)) as SubjectState);
           break;
       }
     }
@@ -82,6 +90,8 @@ class _$AppState extends AppState {
   final OauthState oauthState;
   @override
   final TimelineState timelineState;
+  @override
+  final SubjectState subjectState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -89,8 +99,9 @@ class _$AppState extends AppState {
   _$AppState._(
       {this.currentAuthenticatedUserBasicInfo,
       this.isAuthenticated,
-        this.oauthState,
-        this.timelineState})
+      this.oauthState,
+      this.timelineState,
+      this.subjectState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
@@ -100,6 +111,9 @@ class _$AppState extends AppState {
     }
     if (timelineState == null) {
       throw new BuiltValueNullFieldError('AppState', 'timelineState');
+    }
+    if (subjectState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'subjectState');
     }
   }
 
@@ -118,17 +132,20 @@ class _$AppState extends AppState {
             other.currentAuthenticatedUserBasicInfo &&
         isAuthenticated == other.isAuthenticated &&
         oauthState == other.oauthState &&
-        timelineState == other.timelineState;
+        timelineState == other.timelineState &&
+        subjectState == other.subjectState;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-                isAuthenticated.hashCode),
-            oauthState.hashCode),
-        timelineState.hashCode));
+            $jc(
+                $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
+                    isAuthenticated.hashCode),
+                oauthState.hashCode),
+            timelineState.hashCode),
+        subjectState.hashCode));
   }
 
   @override
@@ -136,8 +153,10 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('currentAuthenticatedUserBasicInfo',
               currentAuthenticatedUserBasicInfo)
-          ..add('isAuthenticated', isAuthenticated)..add(
-          'oauthState', oauthState)..add('timelineState', timelineState))
+          ..add('isAuthenticated', isAuthenticated)
+          ..add('oauthState', oauthState)
+          ..add('timelineState', timelineState)
+          ..add('subjectState', subjectState))
         .toString();
   }
 }
@@ -166,12 +185,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._oauthState = oauthState;
 
   TimelineStateBuilder _timelineState;
-
   TimelineStateBuilder get timelineState =>
       _$this._timelineState ??= new TimelineStateBuilder();
-
   set timelineState(TimelineStateBuilder timelineState) =>
       _$this._timelineState = timelineState;
+
+  SubjectStateBuilder _subjectState;
+  SubjectStateBuilder get subjectState =>
+      _$this._subjectState ??= new SubjectStateBuilder();
+  set subjectState(SubjectStateBuilder subjectState) =>
+      _$this._subjectState = subjectState;
 
   AppStateBuilder();
 
@@ -182,6 +205,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _isAuthenticated = _$v.isAuthenticated;
       _oauthState = _$v.oauthState?.toBuilder();
       _timelineState = _$v.timelineState?.toBuilder();
+      _subjectState = _$v.subjectState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -210,7 +234,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
                   _currentAuthenticatedUserBasicInfo?.build(),
               isAuthenticated: isAuthenticated,
               oauthState: oauthState.build(),
-              timelineState: timelineState.build());
+              timelineState: timelineState.build(),
+              subjectState: subjectState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -221,6 +246,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         oauthState.build();
         _$failedField = 'timelineState';
         timelineState.build();
+        _$failedField = 'subjectState';
+        subjectState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

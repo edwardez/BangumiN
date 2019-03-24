@@ -19,6 +19,8 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
   Iterable serialize(Serializers serializers, FeedMetaInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'feedId',
+      serializers.serialize(object.feedId, specifiedType: const FullType(int)),
       'updatedAt',
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(String)),
@@ -28,16 +30,23 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
       'userId',
       serializers.serialize(object.userId,
           specifiedType: const FullType(String)),
-      'feedId',
-      serializers.serialize(object.feedId, specifiedType: const FullType(int)),
-      'actionName',
-      serializers.serialize(object.actionName,
-          specifiedType: const FullType(String)),
     ];
+    if (object.images != null) {
+      result
+        ..add('images')
+        ..add(serializers.serialize(object.images,
+            specifiedType: const FullType(Images)));
+    }
     if (object.avatarImageUrl != null) {
       result
         ..add('avatarImageUrl')
         ..add(serializers.serialize(object.avatarImageUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.actionName != null) {
+      result
+        ..add('actionName')
+        ..add(serializers.serialize(object.actionName,
             specifiedType: const FullType(String)));
     }
 
@@ -55,6 +64,14 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'feedId':
+          result.feedId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'images':
+          result.images.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Images)) as Images);
+          break;
         case 'updatedAt':
           result.updatedAt = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -71,10 +88,6 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
           result.userId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'feedId':
-          result.feedId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'actionName':
           result.actionName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -88,6 +101,10 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
 
 class _$FeedMetaInfo extends FeedMetaInfo {
   @override
+  final int feedId;
+  @override
+  final Images images;
+  @override
   final String updatedAt;
   @override
   final String nickName;
@@ -96,21 +113,23 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   @override
   final String userId;
   @override
-  final int feedId;
-  @override
   final String actionName;
 
   factory _$FeedMetaInfo([void updates(FeedMetaInfoBuilder b)]) =>
       (new FeedMetaInfoBuilder()..update(updates)).build();
 
   _$FeedMetaInfo._(
-      {this.updatedAt,
+      {this.feedId,
+      this.images,
+      this.updatedAt,
       this.nickName,
       this.avatarImageUrl,
       this.userId,
-      this.feedId,
       this.actionName})
       : super._() {
+    if (feedId == null) {
+      throw new BuiltValueNullFieldError('FeedMetaInfo', 'feedId');
+    }
     if (updatedAt == null) {
       throw new BuiltValueNullFieldError('FeedMetaInfo', 'updatedAt');
     }
@@ -119,12 +138,6 @@ class _$FeedMetaInfo extends FeedMetaInfo {
     }
     if (userId == null) {
       throw new BuiltValueNullFieldError('FeedMetaInfo', 'userId');
-    }
-    if (feedId == null) {
-      throw new BuiltValueNullFieldError('FeedMetaInfo', 'feedId');
-    }
-    if (actionName == null) {
-      throw new BuiltValueNullFieldError('FeedMetaInfo', 'actionName');
     }
   }
 
@@ -139,11 +152,12 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is FeedMetaInfo &&
+        feedId == other.feedId &&
+        images == other.images &&
         updatedAt == other.updatedAt &&
         nickName == other.nickName &&
         avatarImageUrl == other.avatarImageUrl &&
         userId == other.userId &&
-        feedId == other.feedId &&
         actionName == other.actionName;
   }
 
@@ -152,21 +166,24 @@ class _$FeedMetaInfo extends FeedMetaInfo {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, updatedAt.hashCode), nickName.hashCode),
-                    avatarImageUrl.hashCode),
-                userId.hashCode),
-            feedId.hashCode),
+                $jc(
+                    $jc($jc($jc(0, feedId.hashCode), images.hashCode),
+                        updatedAt.hashCode),
+                    nickName.hashCode),
+                avatarImageUrl.hashCode),
+            userId.hashCode),
         actionName.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('FeedMetaInfo')
+          ..add('feedId', feedId)
+          ..add('images', images)
           ..add('updatedAt', updatedAt)
           ..add('nickName', nickName)
           ..add('avatarImageUrl', avatarImageUrl)
           ..add('userId', userId)
-          ..add('feedId', feedId)
           ..add('actionName', actionName))
         .toString();
   }
@@ -176,52 +193,45 @@ class FeedMetaInfoBuilder
     implements Builder<FeedMetaInfo, FeedMetaInfoBuilder> {
   _$FeedMetaInfo _$v;
 
+  int _feedId;
+  int get feedId => _$this._feedId;
+  set feedId(int feedId) => _$this._feedId = feedId;
+
+  ImagesBuilder _images;
+  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
+  set images(ImagesBuilder images) => _$this._images = images;
+
   String _updatedAt;
-
   String get updatedAt => _$this._updatedAt;
-
   set updatedAt(String updatedAt) => _$this._updatedAt = updatedAt;
 
   String _nickName;
-
   String get nickName => _$this._nickName;
-
   set nickName(String nickName) => _$this._nickName = nickName;
 
   String _avatarImageUrl;
-
   String get avatarImageUrl => _$this._avatarImageUrl;
-
   set avatarImageUrl(String avatarImageUrl) =>
       _$this._avatarImageUrl = avatarImageUrl;
 
   String _userId;
-
   String get userId => _$this._userId;
-
   set userId(String userId) => _$this._userId = userId;
 
-  int _feedId;
-
-  int get feedId => _$this._feedId;
-
-  set feedId(int feedId) => _$this._feedId = feedId;
-
   String _actionName;
-
   String get actionName => _$this._actionName;
-
   set actionName(String actionName) => _$this._actionName = actionName;
 
   FeedMetaInfoBuilder();
 
   FeedMetaInfoBuilder get _$this {
     if (_$v != null) {
+      _feedId = _$v.feedId;
+      _images = _$v.images?.toBuilder();
       _updatedAt = _$v.updatedAt;
       _nickName = _$v.nickName;
       _avatarImageUrl = _$v.avatarImageUrl;
       _userId = _$v.userId;
-      _feedId = _$v.feedId;
       _actionName = _$v.actionName;
       _$v = null;
     }
@@ -243,14 +253,28 @@ class FeedMetaInfoBuilder
 
   @override
   _$FeedMetaInfo build() {
-    final _$result = _$v ??
-        new _$FeedMetaInfo._(
-            updatedAt: updatedAt,
-            nickName: nickName,
-            avatarImageUrl: avatarImageUrl,
-            userId: userId,
-            feedId: feedId,
-            actionName: actionName);
+    _$FeedMetaInfo _$result;
+    try {
+      _$result = _$v ??
+          new _$FeedMetaInfo._(
+              feedId: feedId,
+              images: _images?.build(),
+              updatedAt: updatedAt,
+              nickName: nickName,
+              avatarImageUrl: avatarImageUrl,
+              userId: userId,
+              actionName: actionName);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'images';
+        _images?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'FeedMetaInfo', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

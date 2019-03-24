@@ -5,7 +5,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/config/environment.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
 
 // A client for Bangumi thst sends requests with cookie and handles relevant persistence
@@ -50,7 +50,8 @@ class BangumiCookieClient {
     var cookieJar = getIt.get<CookieJar>();
 
     cookieJar.saveFromResponse(
-        Uri.parse("https://${Environment.value.bangumiMainHost}"), cookies);
+        Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
+        cookies);
     Map<String, dynamic> headers = dio.options.headers;
 
     headers[HttpHeaders.userAgentHeader] = userAgent;

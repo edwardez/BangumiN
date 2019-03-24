@@ -7,7 +7,7 @@ part of 'ProgressUpdateEpisodeUntil.dart';
 // **************************************************************************
 
 Serializer<ProgressUpdateEpisodeUntil> _$progressUpdateEpisodeUntilSerializer =
-new _$ProgressUpdateEpisodeUntilSerializer();
+    new _$ProgressUpdateEpisodeUntilSerializer();
 
 class _$ProgressUpdateEpisodeUntilSerializer
     implements StructuredSerializer<ProgressUpdateEpisodeUntil> {
@@ -38,8 +38,8 @@ class _$ProgressUpdateEpisodeUntilSerializer
   }
 
   @override
-  ProgressUpdateEpisodeUntil deserialize(Serializers serializers,
-      Iterable serialized,
+  ProgressUpdateEpisodeUntil deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProgressUpdateEpisodeUntilBuilder();
 
@@ -135,9 +135,7 @@ class ProgressUpdateEpisodeUntilBuilder
   _$ProgressUpdateEpisodeUntil _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _subjectName;
@@ -145,9 +143,7 @@ class ProgressUpdateEpisodeUntilBuilder
   set subjectName(String subjectName) => _$this._subjectName = subjectName;
 
   String _subjectId;
-
   String get subjectId => _$this._subjectId;
-
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
   ProgressUpdateEpisodeUntilBuilder();

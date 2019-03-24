@@ -4,6 +4,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -19,18 +20,20 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   TimelineState get timelineState;
 
+  SubjectState get subjectState;
+
   factory AppState([updates(AppStateBuilder b)]) =>
       _$AppState((b) =>
       b
         ..oauthState.replace(OauthState())
         ..timelineState.replace(TimelineState())
+        ..subjectState.replace(SubjectState())
         ..update(updates));
 
   AppState._();
 
   String toJson() {
-    return json.encode(
-        serializers.serializeWith(AppState.serializer, this));
+    return json.encode(serializers.serializeWith(AppState.serializer, this));
   }
 
   static AppState fromJson(String jsonString) {
@@ -38,6 +41,5 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         AppState.serializer, json.decode(jsonString));
   }
 
-  static Serializer<AppState> get serializer =>
-      _$appStateSerializer;
+  static Serializer<AppState> get serializer => _$appStateSerializer;
 }

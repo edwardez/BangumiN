@@ -165,6 +165,7 @@ class MuninTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
+      distinct: true,
       converter: (Store store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
         return Container(
@@ -192,7 +193,7 @@ class _ViewModel {
   factory _ViewModel.fromStore(Store<AppState> store) {
     _fetchLatestFeed(BuildContext context) {
       FeedLoadType feedLoadType;
-      if (isBuiltListNullOrEmpty(store.state.timelineState.feedChunks.first)) {
+      if (isIterableNullOrEmpty(store.state.timelineState.feedChunks.first)) {
         feedLoadType = FeedLoadType.Initial;
       } else {
         feedLoadType = FeedLoadType.Newer;
@@ -226,4 +227,14 @@ class _ViewModel {
       {@required this.timelineState,
       @required this.fetchLatestFeed,
       @required this.fetchOlderFeed});
+
+  @override
+  int get hashCode => timelineState.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is _ViewModel &&
+            timelineState == other.timelineState;
+  }
 }

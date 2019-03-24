@@ -4,11 +4,12 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:munin/config/environment.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,6 +59,11 @@ Future<void> injector(GetIt getIt) async {
       cookieClient: _bangumiCookieClient);
   getIt.registerSingleton<BangumiTimelineService>(bangumiTimelineService);
 
+
+  final bangumiSubjectService = BangumiSubjectService(
+      cookieClient: _bangumiCookieClient);
+  getIt.registerSingleton<BangumiSubjectService>(bangumiSubjectService);
+
   return;
 }
 
@@ -66,7 +72,7 @@ Dio _createDioForBangumiCookieClient(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
   Map<String, dynamic> headers = {
-    HttpHeaders.hostHeader: Environment.value.bangumiMainHost,
+    HttpHeaders.hostHeader: Application.environmentValue.bangumiMainHost,
 
   };
 
@@ -84,11 +90,12 @@ Dio _createDioForBangumiCookieClient(
     }
 
     bangumiCookieJar.saveFromResponse(
-        Uri.parse("https://${Environment.value.bangumiMainHost}"), cookies);
+        Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
+        cookies);
   }
 
   var dio = Dio(BaseOptions(
-    baseUrl: "https://${Environment.value.bangumiMainHost}",
+    baseUrl: "https://${Application.environmentValue.bangumiMainHost}",
     connectTimeout: Duration(seconds: 15).inMilliseconds,
     receiveTimeout: Duration(seconds: 15).inMilliseconds,
     headers: headers,
@@ -101,7 +108,8 @@ Dio _createDioForBangumiCookieClient(
   dio.interceptors.add(CookieManager(bangumiCookieJar));
 
   /// enable logging in development environment
-  if (Environment.value.environmentType == EnvironmentType.Development) {
+  if (Application.environmentValue.environmentType ==
+      EnvironmentType.Development) {
     dio.interceptors.add(LogInterceptor(responseBody: false));
   }
 

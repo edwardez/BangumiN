@@ -17,7 +17,9 @@ const BangumiContent _$Group = const BangumiContent._('Group');
 const BangumiContent _$Wiki = const BangumiContent._('Wiki');
 const BangumiContent _$Catalog = const BangumiContent._('Catalog');
 const BangumiContent _$Doujin = const BangumiContent._('Doujin');
-const BangumiContent _$Mixed = const BangumiContent._('Mixed');
+const BangumiContent _$CharacterOrPerson =
+const BangumiContent._('CharacterOrPerson');
+const BangumiContent _$PlainText = const BangumiContent._('PlainText');
 const BangumiContent _$Unknown = const BangumiContent._('Unknown');
 
 BangumiContent _$valueOf(String name) {
@@ -44,8 +46,10 @@ BangumiContent _$valueOf(String name) {
       return _$Catalog;
     case 'Doujin':
       return _$Doujin;
-    case 'Mixed':
-      return _$Mixed;
+    case 'CharacterOrPerson':
+      return _$CharacterOrPerson;
+    case 'PlainText':
+      return _$PlainText;
     case 'Unknown':
       return _$Unknown;
     default:
@@ -66,7 +70,8 @@ final BuiltSet<BangumiContent> _$values =
   _$Wiki,
   _$Catalog,
   _$Doujin,
-  _$Mixed,
+  _$CharacterOrPerson,
+  _$PlainText,
   _$Unknown,
 ]);
 

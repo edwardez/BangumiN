@@ -136,17 +136,13 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
   _$FeedChunks _$v;
 
   ListBuilder<TimelineFeed> _first;
-
   ListBuilder<TimelineFeed> get first =>
       _$this._first ??= new ListBuilder<TimelineFeed>();
-
   set first(ListBuilder<TimelineFeed> first) => _$this._first = first;
 
   ListBuilder<TimelineFeed> _second;
-
   ListBuilder<TimelineFeed> get second =>
       _$this._second ??= new ListBuilder<TimelineFeed>();
-
   set second(ListBuilder<TimelineFeed> second) => _$this._second = second;
 
   FeedChunksBuilder();

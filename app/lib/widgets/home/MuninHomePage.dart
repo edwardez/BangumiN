@@ -40,7 +40,8 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<AppState, _ViewModel>(
+      distinct: true,
       converter: (store) {
         return _ViewModel(
           state: store.state,
@@ -88,7 +89,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
                 children: [
                   muninTimeline,
                   muninSubjectProgress,
-                  muninUserProfile
+                  muninUserProfile,
                 ],
                 onPageChanged: (index) => setState(() => currentIndex = index),
               ),
@@ -116,4 +117,14 @@ class _ViewModel {
   final AppState state;
 
   _ViewModel({this.state});
+
+  @override
+  int get hashCode => state.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is _ViewModel &&
+            state == other.state;
+  }
 }

@@ -19,7 +19,7 @@ import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
-import 'package:munin/providers/bangumi/timeline/parser/utils.dart';
+import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
@@ -98,7 +98,7 @@ class TimelineParser {
     Map<String, String> userAvatarImageCache = {};
 
     for (var item in document.querySelectorAll('.tml_item')) {
-      int feedId = parseInt(parseFeedId(item));
+      int feedId = tryParseInt(parseFeedId(item));
 
       /// if we are trying to load a newer feed, and current feed id is equal to
       /// or lower than current max feed id, we're load all new contents and can break
@@ -468,7 +468,7 @@ class TimelineParser {
     characterTextList.addAll(personTextList);
     StatusUpdateMultiple statusUpdateMultiple = StatusUpdateMultiple((b) => b
       ..user.replace(userInfo)
-      ..contentType = BangumiContent.Mixed
+      ..contentType = BangumiContent.CharacterOrPerson
       ..hyperBangumiItems.replace(characterTextList)
       ..hyperImages.replace(characterImageList));
     return statusUpdateMultiple;

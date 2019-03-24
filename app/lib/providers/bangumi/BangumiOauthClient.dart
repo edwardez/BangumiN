@@ -6,7 +6,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show Response;
 import 'package:meta/meta.dart';
-import 'package:munin/config/environment.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/BangumiUserIdentity.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:oauth2/oauth2.dart' show Client, AuthorizationCodeGrant;
@@ -36,8 +36,8 @@ class BangumiOauthClient {
       oauth2.Credentials credentials =
           oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
       this.client = oauth2.Client(credentials,
-          identifier: Environment.value.bangumiOauthClientIdentifier,
-          secret: Environment.value.bangumiOauthClientSecret);
+          identifier: Application.environmentValue.bangumiOauthClientIdentifier,
+          secret: Application.environmentValue.bangumiOauthClientSecret);
     }
   }
 
@@ -53,8 +53,8 @@ class BangumiOauthClient {
     oauth2.Credentials credentials =
         oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
     this.client = oauth2.Client(credentials,
-        identifier: Environment.value.bangumiOauthClientIdentifier,
-        secret: Environment.value.bangumiOauthClientSecret);
+        identifier: Application.environmentValue.bangumiOauthClientIdentifier,
+        secret: Application.environmentValue.bangumiOauthClientSecret);
   }
 
   /// calling this constructor will not produce a read-to-use client, it prepares
@@ -86,12 +86,14 @@ class BangumiOauthClient {
     assert(cookieClient != null);
 
     AuthorizationCodeGrant grant = new AuthorizationCodeGrant(
-        Environment.value.bangumiOauthClientIdentifier,
-        Uri.parse(Environment.value.bangumiOauthAuthorizationEndpoint),
-        Uri.parse(Environment.value.bangumiOauthTokenEndpoint),
-        secret: Environment.value.bangumiOauthClientSecret);
+        Application.environmentValue.bangumiOauthClientIdentifier,
+        Uri.parse(
+            Application.environmentValue.bangumiOauthAuthorizationEndpoint),
+        Uri.parse(Application.environmentValue.bangumiOauthTokenEndpoint),
+        secret: Application.environmentValue.bangumiOauthClientSecret);
     authorizationUrl = grant
-        .getAuthorizationUrl(Uri.parse(Environment.value.bangumiRedirectUrl))
+        .getAuthorizationUrl(
+        Uri.parse(Application.environmentValue.bangumiRedirectUrl))
         .toString();
 
     _flutterWebviewPlugin = FlutterWebviewPlugin();

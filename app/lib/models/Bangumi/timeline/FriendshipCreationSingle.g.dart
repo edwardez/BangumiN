@@ -7,7 +7,7 @@ part of 'FriendshipCreationSingle.dart';
 // **************************************************************************
 
 Serializer<FriendshipCreationSingle> _$friendshipCreationSingleSerializer =
-new _$FriendshipCreationSingleSerializer();
+    new _$FriendshipCreationSingleSerializer();
 
 class _$FriendshipCreationSingleSerializer
     implements StructuredSerializer<FriendshipCreationSingle> {
@@ -41,8 +41,8 @@ class _$FriendshipCreationSingleSerializer
   }
 
   @override
-  FriendshipCreationSingle deserialize(Serializers serializers,
-      Iterable serialized,
+  FriendshipCreationSingle deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FriendshipCreationSingleBuilder();
 
@@ -156,9 +156,7 @@ class FriendshipCreationSingleBuilder
   _$FriendshipCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _friendNickName;
@@ -172,9 +170,7 @@ class FriendshipCreationSingleBuilder
       _$this._friendAvatarImageUrl = friendAvatarImageUrl;
 
   String _friendId;
-
   String get friendId => _$this._friendId;
-
   set friendId(String friendId) => _$this._friendId = friendId;
 
   FriendshipCreationSingleBuilder();

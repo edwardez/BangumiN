@@ -7,7 +7,7 @@ part of 'IndexFavoriteSingle.dart';
 // **************************************************************************
 
 Serializer<IndexFavoriteSingle> _$indexFavoriteSingleSerializer =
-new _$IndexFavoriteSingleSerializer();
+    new _$IndexFavoriteSingleSerializer();
 
 class _$IndexFavoriteSingleSerializer
     implements StructuredSerializer<IndexFavoriteSingle> {
@@ -33,8 +33,10 @@ class _$IndexFavoriteSingleSerializer
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
     if (object.summary != null) {
-      result..add('summary')..add(serializers.serialize(object.summary,
-          specifiedType: const FullType(String)));
+      result
+        ..add('summary')
+        ..add(serializers.serialize(object.summary,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -140,9 +142,7 @@ class IndexFavoriteSingleBuilder
   _$IndexFavoriteSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _title;
@@ -150,9 +150,7 @@ class IndexFavoriteSingleBuilder
   set title(String title) => _$this._title = title;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   String _summary;

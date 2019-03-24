@@ -1,12 +1,13 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/config/development.dart';
-import 'package:munin/config/environment.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/BangumiPinkBlue.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
-import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
 import 'package:redux/redux.dart';
 
@@ -15,10 +16,10 @@ void main() {
 }
 
 class MuninApp extends StatefulWidget {
-  final Environment env;
+  final Application application;
   final Store<AppState> store;
 
-  MuninApp(this.env, this.store);
+  MuninApp(this.application, this.store);
 
   @override
   State<StatefulWidget> createState() {
@@ -31,6 +32,9 @@ class _MuninAppState extends State<MuninApp> {
   void initState() {
     // TODO: theme awareness
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    final router = Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
     super.initState();
   }
 
@@ -44,15 +48,12 @@ class _MuninAppState extends State<MuninApp> {
     return new StoreProvider<AppState>(
       store: widget.store,
       child: MaterialApp(
-          theme: BangumiPinkBlue().data,
-          home: widget.store.state.isAuthenticated
-              ? MuninHomePage()
-              : MuninLoginPage(),
-          routes: {
-            '/login': (context) => MuninLoginPage(),
-            '/home': (context) => MuninHomePage(),
-            '/bangumiOauth': (context) => BangumiOauthWebview(),
-          }),
+        theme: BangumiPinkBlue().data,
+        home: widget.store.state.isAuthenticated
+            ? MuninHomePage()
+            : MuninLoginPage(),
+        onGenerateRoute: Application.router.generator,
+      ),
     );
   }
 }

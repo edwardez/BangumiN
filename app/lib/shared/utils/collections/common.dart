@@ -1,13 +1,21 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:quiver/collection.dart';
 
-MapBuilder<K, V> newLruMapBuilder<K, V>({maximumSize = 200}) {
+MapBuilder<K, V> newLruMapBuilder<K, V>({maximumSize = 100}) {
   return MapBuilder<K, V>()
     ..withBase(() => LruMap<K, V>(maximumSize: maximumSize));
 }
 
-isBuiltListNullOrEmpty(BuiltList builtList) {
-  return builtList == null || builtList.length == 0;
+isIterableNullOrEmpty(Iterable iterable) {
+  return iterable == null || iterable.isEmpty;
+}
+
+isMapNullOrEmpty(Map map) {
+  return map == null || map.isEmpty;
+}
+
+isBuiltListMultimapNullOrEmpty(BuiltListMultimap map) {
+  return map == null || map.isEmpty;
 }
 
 /// exception safe first element accessor, inspired by firstOrNull in kotlin

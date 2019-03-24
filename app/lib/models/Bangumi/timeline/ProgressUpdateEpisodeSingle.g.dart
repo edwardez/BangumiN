@@ -7,8 +7,8 @@ part of 'ProgressUpdateEpisodeSingle.dart';
 // **************************************************************************
 
 Serializer<ProgressUpdateEpisodeSingle>
-_$progressUpdateEpisodeSingleSerializer =
-new _$ProgressUpdateEpisodeSingleSerializer();
+    _$progressUpdateEpisodeSingleSerializer =
+    new _$ProgressUpdateEpisodeSingleSerializer();
 
 class _$ProgressUpdateEpisodeSingleSerializer
     implements StructuredSerializer<ProgressUpdateEpisodeSingle> {
@@ -21,8 +21,8 @@ class _$ProgressUpdateEpisodeSingleSerializer
   final String wireName = 'ProgressUpdateEpisodeSingle';
 
   @override
-  Iterable serialize(Serializers serializers,
-      ProgressUpdateEpisodeSingle object,
+  Iterable serialize(
+      Serializers serializers, ProgressUpdateEpisodeSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -46,8 +46,8 @@ class _$ProgressUpdateEpisodeSingleSerializer
   }
 
   @override
-  ProgressUpdateEpisodeSingle deserialize(Serializers serializers,
-      Iterable serialized,
+  ProgressUpdateEpisodeSingle deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProgressUpdateEpisodeSingleBuilder();
 
@@ -177,9 +177,7 @@ class ProgressUpdateEpisodeSingleBuilder
   _$ProgressUpdateEpisodeSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _episodeName;
@@ -187,9 +185,7 @@ class ProgressUpdateEpisodeSingleBuilder
   set episodeName(String episodeName) => _$this._episodeName = episodeName;
 
   String _episodeId;
-
   String get episodeId => _$this._episodeId;
-
   set episodeId(String episodeId) => _$this._episodeId = episodeId;
 
   String _subjectName;
@@ -197,9 +193,7 @@ class ProgressUpdateEpisodeSingleBuilder
   set subjectName(String subjectName) => _$this._subjectName = subjectName;
 
   String _subjectId;
-
   String get subjectId => _$this._subjectId;
-
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
   ProgressUpdateEpisodeSingleBuilder();

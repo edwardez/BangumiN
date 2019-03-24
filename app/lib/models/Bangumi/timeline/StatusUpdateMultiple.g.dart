@@ -7,7 +7,7 @@ part of 'StatusUpdateMultiple.dart';
 // **************************************************************************
 
 Serializer<StatusUpdateMultiple> _$statusUpdateMultipleSerializer =
-new _$StatusUpdateMultipleSerializer();
+    new _$StatusUpdateMultipleSerializer();
 
 class _$StatusUpdateMultipleSerializer
     implements StructuredSerializer<StatusUpdateMultiple> {
@@ -29,7 +29,7 @@ class _$StatusUpdateMultipleSerializer
       'hyperImages',
       serializers.serialize(object.hyperImages,
           specifiedType:
-          const FullType(BuiltList, const [const FullType(HyperImage)])),
+              const FullType(BuiltList, const [const FullType(HyperImage)])),
       'hyperBangumiItems',
       serializers.serialize(object.hyperBangumiItems,
           specifiedType: const FullType(
@@ -64,9 +64,9 @@ class _$StatusUpdateMultipleSerializer
           break;
         case 'hyperBangumiItems':
           result.hyperBangumiItems.replace(serializers.deserialize(value,
-              specifiedType: const FullType(
-                  BuiltList, const [const FullType(HyperBangumiItem)]))
-          as BuiltList);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(HyperBangumiItem)]))
+              as BuiltList);
           break;
         case 'contentType':
           result.contentType = serializers.deserialize(value,
@@ -141,9 +141,9 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
   String toString() {
     return (newBuiltValueToStringHelper('StatusUpdateMultiple')
           ..add('user', user)
-          ..add('hyperImages', hyperImages)..add(
-          'hyperBangumiItems', hyperBangumiItems)..add(
-          'contentType', contentType))
+          ..add('hyperImages', hyperImages)
+          ..add('hyperBangumiItems', hyperBangumiItems)
+          ..add('contentType', contentType))
         .toString();
   }
 }
@@ -153,9 +153,7 @@ class StatusUpdateMultipleBuilder
   _$StatusUpdateMultiple _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   ListBuilder<HyperImage> _hyperImages;
@@ -171,9 +169,7 @@ class StatusUpdateMultipleBuilder
       _$this._hyperBangumiItems = hyperBangumiItems;
 
   BangumiContent _contentType;
-
   BangumiContent get contentType => _$this._contentType;
-
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 

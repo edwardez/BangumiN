@@ -91,10 +91,8 @@ class TimelineStateBuilder
   _$TimelineState _$v;
 
   FeedChunksBuilder _feedChunks;
-
   FeedChunksBuilder get feedChunks =>
       _$this._feedChunks ??= new FeedChunksBuilder();
-
   set feedChunks(FeedChunksBuilder feedChunks) =>
       _$this._feedChunks = feedChunks;
 

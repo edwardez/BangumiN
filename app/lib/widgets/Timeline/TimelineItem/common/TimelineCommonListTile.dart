@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart' show isEmpty;
 
-/// a item with name, cover and a rounded corner
+/// a item with name, rounded cover image, sub title
 /// can be used to display person, subject, character...
-class ItemWithRoundedCorner extends StatelessWidget {
+class TimelineCommonListTile extends StatelessWidget {
   final Color borderColor;
   final double borderRadius;
   final double containerPadding;
@@ -13,8 +13,10 @@ class ItemWithRoundedCorner extends StatelessWidget {
   final int titleMaxLines;
   final int subTitleMaxLines;
   final Widget leadingWidget;
+  final GestureTapCallback onTap;
 
-  const ItemWithRoundedCorner({
+
+  const TimelineCommonListTile({
     Key key,
     @required this.title,
     this.leadingWidget,
@@ -25,6 +27,7 @@ class ItemWithRoundedCorner extends StatelessWidget {
     this.borderColor = Colors.black12,
     this.titleMaxLines = 3,
     this.subTitleMaxLines = 2,
+    this.onTap,
   }) : super(key: key);
 
   _buildSubtitle(String subtitle, int subTitleMaxLines) {
@@ -50,7 +53,6 @@ class ItemWithRoundedCorner extends StatelessWidget {
     return InkWell(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0.0),
-
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(
                 horizontal: 0.0, vertical: 2.0),
@@ -63,6 +65,6 @@ class ItemWithRoundedCorner extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () => null);
+        onTap: onTap ?? () => {});
   }
 }

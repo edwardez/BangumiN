@@ -8,7 +8,7 @@ class SubjectStars extends StatelessWidget {
   const SubjectStars(
       {Key key,
       @required this.subjectScore,
-      this.starSize = 18,
+        this.starSize = 18,
       this.starColor = Colors.yellow})
       : super(key: key);
 

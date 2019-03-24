@@ -15,7 +15,7 @@ class PublicMessageNoReplyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile(
+        TimelineUserListTile.fromUser(
           user: publicMessageNoReply.user,
         ),
         Row(

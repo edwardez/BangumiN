@@ -7,7 +7,7 @@ part of 'GroupJoinSingle.dart';
 // **************************************************************************
 
 Serializer<GroupJoinSingle> _$groupJoinSingleSerializer =
-new _$GroupJoinSingleSerializer();
+    new _$GroupJoinSingleSerializer();
 
 class _$GroupJoinSingleSerializer
     implements StructuredSerializer<GroupJoinSingle> {
@@ -34,9 +34,10 @@ class _$GroupJoinSingleSerializer
           specifiedType: const FullType(String)),
     ];
     if (object.groupDescription != null) {
-      result..add('groupDescription')..add(
-          serializers.serialize(object.groupDescription,
-              specifiedType: const FullType(String)));
+      result
+        ..add('groupDescription')
+        ..add(serializers.serialize(object.groupDescription,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -163,9 +164,7 @@ class GroupJoinSingleBuilder
   _$GroupJoinSingle _$v;
 
   FeedMetaInfoBuilder _user;
-
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
-
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
   String _groupCoverImageUrl;

@@ -19,18 +19,22 @@ class _$OauthStateSerializer implements StructuredSerializer<OauthState> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
     if (object.showLoginErrorSnackBar != null) {
-      result..add('showLoginErrorSnackBar')..add(
-          serializers.serialize(object.showLoginErrorSnackBar,
-              specifiedType: const FullType(bool)));
+      result
+        ..add('showLoginErrorSnackBar')
+        ..add(serializers.serialize(object.showLoginErrorSnackBar,
+            specifiedType: const FullType(bool)));
     }
     if (object.oauthFailureMessage != null) {
-      result..add('oauthFailureMessage')..add(
-          serializers.serialize(object.oauthFailureMessage,
-              specifiedType: const FullType(String)));
+      result
+        ..add('oauthFailureMessage')
+        ..add(serializers.serialize(object.oauthFailureMessage,
+            specifiedType: const FullType(String)));
     }
     if (object.error != null) {
-      result..add('error')..add(serializers.serialize(object.error,
-          specifiedType: const FullType(String)));
+      result
+        ..add('error')
+        ..add(serializers.serialize(object.error,
+            specifiedType: const FullType(String)));
     }
 
     return result;

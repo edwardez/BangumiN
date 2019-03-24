@@ -2,14 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-enum SubjectCoverSize {
-  grid,
-  small,
-  medium,
-  common,
-  large,
-}
-
 class CachedRoundedCover extends StatelessWidget {
   final String imageUrl;
   final double width;
@@ -25,10 +17,14 @@ class CachedRoundedCover extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imageUrl == null) {
       return Image.memory(
-          kTransparentImage,
-          semanticLabel: '封面图'
+        kTransparentImage,
+        semanticLabel: '封面图',
+        width: width,
+        height: height,
       );
     }
+
+//    return Image.network(imageUrl);
 
     /// TODO: clip is expensive, consider avoid using if there is performance issue
     return ClipRRect(

@@ -48,13 +48,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       ImageType imageType) {
     if (imageUrl == null) {
       imageUrl = defaultCoverImage;
-      return Images((b) =>
-      b
-        ..large = imageUrl
-        ..common = imageUrl
-        ..medium = imageUrl
-        ..small = imageUrl
-        ..grid = imageUrl);
+      return Images.useSameImageUrlForAll(imageUrl);
     }
 
     String replacePattern;
@@ -85,7 +79,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       /// `urlMatcher == null` is unexpected, in that case, use original imageUrl for
       /// all sizes
       if (urlMatcher == null) {
-        replacePattern = '';
+        return Images.useSameImageUrlForAll(imageUrl);
       } else {
         replacePattern = urlMatcher.group(0);
       }
@@ -117,6 +111,20 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       ..medium = mediumImage
       ..small = smallImage
       ..grid = gridImage);
+  }
+
+  factory Images.useSameImageUrlForAll(String imageUrl){
+    if (imageUrl == null) {
+      imageUrl = defaultCoverImage;
+    }
+
+    return Images((b) =>
+    b
+      ..large = imageUrl
+      ..common = imageUrl
+      ..medium = imageUrl
+      ..small = imageUrl
+      ..grid = imageUrl);
   }
 
   String toJson() {

@@ -29,7 +29,8 @@ String imageUrlFromBackgroundImage(Element imageElement,
 ///imageUrl may be something like  '//lain.bgm.tv/pic/user/m/000/1/2/3.jpg' without protocol
 String normalizeImageUrl(String imageUrl,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
-  if (imageUrl != null && imageUrl[0] == '/') return 'https:' + imageUrl;
+  if (imageUrl != null && imageUrl.substring(0, 2) == '//')
+    return 'https:' + imageUrl;
 
   return defaultImageSrc;
 }

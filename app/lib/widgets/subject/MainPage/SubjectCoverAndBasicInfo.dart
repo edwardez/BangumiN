@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
+import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class SubjectCoverAndBasicInfo extends StatelessWidget {
   final Subject subject;
@@ -18,7 +18,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
 
   _buildInfoWidgets(BuildContext context, Subject subject) {
     List<Widget> widgets = [];
-    widgets.add(ClippedText(
+    widgets.add(WrappableText(
       subject.name,
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
@@ -27,13 +27,13 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     ));
 
     if (subject.curatedInfoBoxRows != null) {
-      subject.curatedInfoBoxRows.forEachKey(
-          (String infoBoxRowName, Iterable<InfoBoxRow> infoBoxRows) {
-        String rowValuePlainText = infoBoxRows
-            .map<String>((InfoBoxRow row) => row.concatRowItems())
-            .join('、');
-        widgets.add(ClippedText.smallVerticalPadding(
-          '$infoBoxRowName: $rowValuePlainText',
+      subject.curatedInfoBoxRows
+          .forEachKey((String rowName, Iterable<InfoBoxItem> infoBoxItem) {
+        String concatenatedInfoBoxItem = infoBoxItem
+            .expand((InfoBoxItem infoBoxItem) => [infoBoxItem.name])
+            .join('');
+        widgets.add(WrappableText.smallVerticalPadding(
+          '$rowName: $concatenatedInfoBoxItem',
           maxLines: 3,
         ));
       });

@@ -18,6 +18,21 @@ class BangumiContent extends EnumClass {
   static const BangumiContent Doujin = _$Doujin;
   static const BangumiContent CharacterOrPerson = _$CharacterOrPerson;
 
+  static const Map<BangumiContent, String> enumToWebPageRouteName = {
+    BangumiContent.Subject: 'subject',
+    BangumiContent.Episode: 'ep',
+    BangumiContent.Friend: 'user',
+    BangumiContent.Group: 'group',
+    BangumiContent.Blog: 'blog',
+    BangumiContent.Catalog: 'index',
+    BangumiContent.Doujin: 'doujin',
+    BangumiContent.Character: 'character',
+    BangumiContent.Person: 'person',
+
+    /// all timeline wiki activity means user creates a new subject
+    BangumiContent.Wiki: 'subject',
+  };
+
   /// a plain text item
   static const BangumiContent PlainText = _$PlainText;
   static const BangumiContent Unknown = _$Unknown;

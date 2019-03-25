@@ -5,6 +5,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -16,9 +17,12 @@ part 'InfoBoxRow.g.dart';
 /// Bangumi web parser returns this info
 /// see [JobsPerStaff], Bangumi Rest API returns that info
 abstract class InfoBoxRow implements Built<InfoBoxRow, InfoBoxRowBuilder> {
-  InfoBoxRow._();
+  static String _rowItemSeparator = '、';
 
-  factory InfoBoxRow([updates(InfoBoxRowBuilder b)]) = _$InfoBoxRow;
+  static InfoBoxItem separator = InfoBoxItem((b) =>
+  b
+    ..name = _rowItemSeparator
+    ..type = BangumiContent.PlainText);
 
   /// i.e. nameCn, director, airDate, Music, Title Studio
   String get rowName;
@@ -48,4 +52,8 @@ abstract class InfoBoxRow implements Built<InfoBoxRow, InfoBoxRowBuilder> {
   }
 
   static Serializer<InfoBoxRow> get serializer => _$infoBoxRowSerializer;
+
+  InfoBoxRow._();
+
+  factory InfoBoxRow([updates(InfoBoxRowBuilder b)]) = _$InfoBoxRow;
 }

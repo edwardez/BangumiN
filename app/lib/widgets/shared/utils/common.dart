@@ -2,52 +2,75 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
-import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 generateOnTapCallbackForBangumiContent({
   BangumiContent contentType,
-  String pageUrl,
   String id,
   BuildContext context,
 }) {
   assert(contentType != null);
+  assert(id != null);
 
   /// if it's empty or null, returns empty function
-  if (isEmpty(id)) return () {};
-
+  if (isEmpty(id)) {
+    debugPrint(
+        'Recevied invalid pair of BangumiContent $contentType and id $id');
+    return () {};
+  }
   if (contentType == BangumiContent.Subject) {
     return () {
-      Application
-          .router
-          .navigateTo(context,
-          '/subject/$id',
+      Application.router.navigateTo(context, '/subject/$id',
           transition: TransitionType.native);
     };
   }
 
-  if (isEmpty(pageUrl)) return () {};
+  String routeUrl = _getRouterUrlByContentType(contentType, id);
 
-  Optional<String> maybeRouteUrl =
-  _getRouterUrlByContentType(contentType);
-
-  if (maybeRouteUrl.isPresent) {
-    /// TODO: supports navigate to an internal app page
-    return () =>
-    {
-    launch(pageUrl, forceSafariVC: true)
+  if (routeUrl != null) {
+    return () {
+      Application.router
+          .navigateTo(context, routeUrl, transition: TransitionType.native);
     };
   }
 
-  return () =>
-  {
-  launch(pageUrl, forceSafariVC: true)
-  };
+  String webPageUrl = _getWebPageUrlByContentType(contentType, id);
+
+  if (webPageUrl != null) {
+    return () {
+      launch(webPageUrl, forceSafariVC: true);
+    };
+  }
+
+  /// otherwise returns an empty function and logs it
+  debugPrint('Recevied invalid pair of BangumiContent $contentType and id $id');
+  return () {};
 }
 
-Optional<String> _getRouterUrlByContentType(BangumiContent contentType) {
-  return Optional.absent();
+
+/// checks whether the content type current has a app route page
+/// returns null corresponding Munin page cannot be found
+String _getWebPageUrlByContentType(BangumiContent contentType, String id) {
+  String webPageSubRouteName =
+  BangumiContent.enumToWebPageRouteName[contentType];
+
+  if (webPageSubRouteName == null || id == null) {
+    return null;
+  }
+
+  return 'https://${Application.environmentValue
+      .bangumiMainHost}/$webPageSubRouteName/$id';
+}
+
+/// checks whether the content type current has a web route page
+/// returns null corresponding Bangumi web page cannot be found
+String _getRouterUrlByContentType(BangumiContent contentType, String id) {
+  if (contentType == BangumiContent.Subject) {
+    return '/subject/$id';
+  }
+
+  return null;
 }
 
 /// TODO: figure out a better way to calculate text height

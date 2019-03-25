@@ -15,7 +15,7 @@ import 'package:munin/widgets/subject/MainPage/SubjectSummary.dart';
 import 'package:redux/redux.dart';
 
 class SubjectWidget extends StatelessWidget {
-  final String subjectId;
+  final int subjectId;
 
   const SubjectWidget({Key key, @required this.subjectId})
       : assert(subjectId != null),
@@ -27,12 +27,12 @@ class SubjectWidget extends StatelessWidget {
       converter: (Store store) => _ViewModel.fromStore(store),
       distinct: true,
       onInit: (store) {
-        final action =
-            GetSubjectAction(context: context, subjectId: int.parse(subjectId));
+        final action = GetSubjectAction(context: context, subjectId: subjectId);
         store.dispatch(action);
       },
       builder: (BuildContext context, _ViewModel vm) {
-        if (vm.subjectState.subjects[int.parse(subjectId)] == null) {
+        /// TODO: write a generic widget to handle malformed parameter case like subjectId == null
+        if (vm.subjectState.subjects[subjectId] == null) {
           return ScaffoldWithAppBar(
             appBar: AppBar(
               title: Text('加载中'),
@@ -44,7 +44,7 @@ class SubjectWidget extends StatelessWidget {
         }
 
         return _buildSubjectMainPage(
-            context, vm.subjectState.subjects[int.parse(subjectId)]);
+            context, vm.subjectState.subjects[subjectId]);
       },
     );
   }
@@ -113,7 +113,7 @@ class SubjectWidget extends StatelessWidget {
       body: SafeArea(
           child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: defaultHorizontalPadding),
+                  horizontal: portraitDefaultHorizontalPadding),
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.all(0),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
 import 'package:munin/shared/utils/collections/common.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/SubjectCommentWidget.dart';
 
 class CommentsPreview extends StatelessWidget {
@@ -17,7 +17,7 @@ class CommentsPreview extends StatelessWidget {
     if (isIterableNullOrEmpty(subject.commentsPreview)) {
       commentPreviewWidgets.add(Row(
         children: <Widget>[
-          ClippedText(
+          WrappableText(
             '短评',
             fit: FlexFit.tight,
           ),
@@ -29,7 +29,7 @@ class CommentsPreview extends StatelessWidget {
     } else {
       commentPreviewWidgets.add(Row(
         children: <Widget>[
-          ClippedText(
+          WrappableText(
             '短评',
             fit: FlexFit.tight,
           ),

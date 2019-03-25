@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
 import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class CommentUserListTile extends StatelessWidget {
   final SubjectCommentMetaInfo metaInfo;
@@ -23,7 +23,7 @@ class CommentUserListTile extends StatelessWidget {
         ///with user name https://imgur.com/a/YqKVClo
         ///(may be using a custom Clip, or custom icon?)
         padding: const EdgeInsets.only(left: 0.7),
-        child: ClippedText(
+        child: WrappableText(
           metaInfo.nickName,
           outerWrapper: OuterWrapper.Row,
         ),

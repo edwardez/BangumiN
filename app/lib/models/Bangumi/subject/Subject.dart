@@ -5,6 +5,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
+import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/Bangumi/subject/Rating.dart';
 import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
@@ -54,7 +55,6 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   BuiltListMultimap<String, RelatedSubject> get relatedSubjects;
 
   @nullable
-
   /// a short preview list of comments that are on subject main page
   BuiltList<SubjectComment> get commentsPreview;
 
@@ -62,12 +62,17 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   /// we need to use this data structure because Bangumi might use multiple rows
   /// to display info that's under the same rowName, and these need to be
   /// merged into one row, like:
-  /// <li><span class="tip">平台: </span>PlayStation 4</li>
+  /// <li><span class="tip">平台: </span>PS4、PS3</li>
   /// <li><span class="tip" style="visibility:hidden;">平台: </span>PC</li>
   /// The default behaviour of ListMultimap is keys are retrieved in the same
   /// order as they stored, so key sequence are guaranteed(which is important to us)
+  /// value has to be [InfoBoxRow] (which contains a list of [InfoBoxItem]) instead of
+  /// a flatten list of [InfoBoxItem], reason is in each InfoBoxRow, Bangumi separates
+  /// items using a `、`, so we need to add a a `、` between each [InfoBoxRow] as well
+  /// i.e. in the above example, there is a `、` between PS4 and PS3, we want to
+  /// add a `、` between PS3 and PC as well
   @nullable
-  BuiltListMultimap<String, InfoBoxRow> get infoBoxRows;
+  BuiltListMultimap<String, InfoBoxItem> get infoBoxRows;
 
   /// A list of curated info box rows
   /// These rows will present to user on subject main page
@@ -75,7 +80,7 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   /// [curatedInfoBoxRows] should be a subset of [infoBoxRows] that only contains
   /// most important info of a subject
   @nullable
-  BuiltListMultimap<String, InfoBoxRow> get curatedInfoBoxRows;
+  BuiltListMultimap<String, InfoBoxItem> get curatedInfoBoxRows;
 
   String toJson() {
     return json.encode(serializers.serializeWith(Subject.serializer, this));
@@ -85,6 +90,7 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
     return serializers.deserializeWith(
         Subject.serializer, json.decode(jsonString));
   }
+
 
   static Serializer<Subject> get serializer => _$subjectSerializer;
 

@@ -73,14 +73,14 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
         ..add('infoBoxRows')
         ..add(serializers.serialize(object.infoBoxRows,
             specifiedType: const FullType(BuiltListMultimap,
-                const [const FullType(String), const FullType(InfoBoxRow)])));
+                const [const FullType(String), const FullType(InfoBoxItem)])));
     }
     if (object.curatedInfoBoxRows != null) {
       result
         ..add('curatedInfoBoxRows')
         ..add(serializers.serialize(object.curatedInfoBoxRows,
             specifiedType: const FullType(BuiltListMultimap,
-                const [const FullType(String), const FullType(InfoBoxRow)])));
+                const [const FullType(String), const FullType(InfoBoxItem)])));
     }
     if (object.id != null) {
       result
@@ -161,14 +161,14 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
           result.infoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
-                const FullType(InfoBoxRow)
+                const FullType(InfoBoxItem)
               ])) as BuiltListMultimap);
           break;
         case 'curatedInfoBoxRows':
           result.curatedInfoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
-                const FullType(InfoBoxRow)
+                const FullType(InfoBoxItem)
               ])) as BuiltListMultimap);
           break;
         case 'id':
@@ -214,9 +214,9 @@ class _$Subject extends Subject {
   @override
   final BuiltList<SubjectComment> commentsPreview;
   @override
-  final BuiltListMultimap<String, InfoBoxRow> infoBoxRows;
+  final BuiltListMultimap<String, InfoBoxItem> infoBoxRows;
   @override
-  final BuiltListMultimap<String, InfoBoxRow> curatedInfoBoxRows;
+  final BuiltListMultimap<String, InfoBoxItem> curatedInfoBoxRows;
   @override
   final int id;
   @override
@@ -396,18 +396,18 @@ class SubjectBuilder
   set commentsPreview(ListBuilder<SubjectComment> commentsPreview) =>
       _$this._commentsPreview = commentsPreview;
 
-  ListMultimapBuilder<String, InfoBoxRow> _infoBoxRows;
-  ListMultimapBuilder<String, InfoBoxRow> get infoBoxRows =>
-      _$this._infoBoxRows ??= new ListMultimapBuilder<String, InfoBoxRow>();
-  set infoBoxRows(ListMultimapBuilder<String, InfoBoxRow> infoBoxRows) =>
+  ListMultimapBuilder<String, InfoBoxItem> _infoBoxRows;
+  ListMultimapBuilder<String, InfoBoxItem> get infoBoxRows =>
+      _$this._infoBoxRows ??= new ListMultimapBuilder<String, InfoBoxItem>();
+  set infoBoxRows(ListMultimapBuilder<String, InfoBoxItem> infoBoxRows) =>
       _$this._infoBoxRows = infoBoxRows;
 
-  ListMultimapBuilder<String, InfoBoxRow> _curatedInfoBoxRows;
-  ListMultimapBuilder<String, InfoBoxRow> get curatedInfoBoxRows =>
+  ListMultimapBuilder<String, InfoBoxItem> _curatedInfoBoxRows;
+  ListMultimapBuilder<String, InfoBoxItem> get curatedInfoBoxRows =>
       _$this._curatedInfoBoxRows ??=
-          new ListMultimapBuilder<String, InfoBoxRow>();
+          new ListMultimapBuilder<String, InfoBoxItem>();
   set curatedInfoBoxRows(
-          ListMultimapBuilder<String, InfoBoxRow> curatedInfoBoxRows) =>
+          ListMultimapBuilder<String, InfoBoxItem> curatedInfoBoxRows) =>
       _$this._curatedInfoBoxRows = curatedInfoBoxRows;
 
   int _id;

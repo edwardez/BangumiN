@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 
 class RoundedImageWithVerticalText extends StatelessWidget {
@@ -47,7 +47,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
 
     if (title != null) {
       verticalItems.add(
-        ClippedText(
+        WrappableText(
           title,
           maxLines: titleMaxLines,
         ),
@@ -56,7 +56,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
 
     if (subtitle != null) {
       verticalItems.add(
-        ClippedText(
+        WrappableText(
           subtitle,
           textStyle: Theme.of(context).textTheme.caption,
           maxLines: subTitleMaxLines,
@@ -73,7 +73,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
         ),
       ),
       onTap: generateOnTapCallbackForBangumiContent(
-          contentType: contentType, id: id, pageUrl: pageUrl, context: context),
+          contentType: contentType, id: id, context: context),
     );
   }
 }

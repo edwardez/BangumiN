@@ -18,7 +18,6 @@ abstract class InfoBoxItem implements Built<InfoBoxItem, InfoBoxItemBuilder> {
   String get name;
 
   @nullable
-
   /// id of the InfoBoxItem, if there is any. For plain text such id doesn't exist
   String get id;
 

@@ -23,7 +23,9 @@ import 'package:quiver/strings.dart';
 
 class SubjectParser {
   final curatedRowMappings = {
-    SubjectType.Anime: {'话数', '动画制作', '制作', '放送开始'},
+    SubjectType.Anime: {
+    '话数', '动画制作', '原作', '制作', '放送开始'
+    },
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
     SubjectType.Book: {
@@ -75,13 +77,8 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  InfoBoxRow parseInfoBoxRow(
+  List<InfoBoxItem> parseInfoBoxRow(
       Element infoBoxRowElement, SubjectType subjectType) {
-    String infoBoxRowName =
-        infoBoxRowElement.querySelector('span.tip')?.text ?? '';
-    infoBoxRowName = infoBoxRowName.replaceAll(RegExp(r'\s+|:'), '');
-    bool isCuratedRow =
-        curatedRowMappings[subjectType].contains(infoBoxRowName);
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -91,10 +88,7 @@ class SubjectParser {
       }
     }
 
-    return InfoBoxRow((b) => b
-      ..rowName = infoBoxRowName
-      ..rowItems.replace(infoBoxItems)
-      ..isCuratedRow = isCuratedRow);
+    return infoBoxItems;
   }
 
   Rating parseRating(DocumentFragment subjectElement) {
@@ -356,6 +350,18 @@ class SubjectParser {
     return infoBoxRow;
   }
 
+  /// in-place update [infoBoxRows] with [infoBoxItems]
+  /// add a separator to value of infoBoxRows if it's not empty
+  _addSeparatorIfNotFirstInfoBoxItem(
+      ListMultimap<String, InfoBoxItem> infoBoxRows,
+      String newInfoBoxRowName,
+      Iterable<InfoBoxItem> infoBoxItems) {
+    if (infoBoxRows.containsKey(newInfoBoxRowName)) {
+      infoBoxRows.add(newInfoBoxRowName, InfoBoxRow.separator);
+    }
+    infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
+  }
+
   Subject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
     final SubjectType subjectType = SubjectType.getSubjectTypeByChineseName(
@@ -377,32 +383,46 @@ class SubjectParser {
     name ??= '-';
     nameCn ??= '-';
 
-    String summary = document.querySelector('#subject_summary')?.text ?? '暂无简介';
+    ListMultimap<String, InfoBoxItem> infoBoxRows =
+    ListMultimap<String, InfoBoxItem>();
 
-    ListMultimap<String, InfoBoxRow> infoBoxRows =
-        ListMultimap<String, InfoBoxRow>();
-
-    ListMultimap<String, InfoBoxRow> curatedInfoBoxRows =
-        ListMultimap<String, InfoBoxRow>();
-
-    for (Element infoBoxRowElement
-        in document.querySelectorAll('#infobox li')) {
-      InfoBoxRow infoBoxRow = parseInfoBoxRow(infoBoxRowElement, subjectType);
-      infoBoxRows.add(infoBoxRow.rowName, infoBoxRow);
-      if (infoBoxRow.isCuratedRow) {
-        curatedInfoBoxRows.add(infoBoxRow.rowName, infoBoxRow);
-      }
-    }
+    ListMultimap<String, InfoBoxItem> curatedInfoBoxRows =
+    ListMultimap<String, InfoBoxItem>();
 
     /// manually add subType as another [InfoBoxRow], this info is available
     /// in a difference place
     InfoBoxRow subTypeRow = parseSubjectSubtype(document);
     if (subTypeRow != null) {
-      infoBoxRows.add(subTypeRow.rowName, subTypeRow);
+      _addSeparatorIfNotFirstInfoBoxItem(
+          infoBoxRows, subTypeRow.rowName, subTypeRow.rowItems);
       if (subTypeRow.isCuratedRow) {
-        curatedInfoBoxRows.add(subTypeRow.rowName, subTypeRow);
+        _addSeparatorIfNotFirstInfoBoxItem(
+            curatedInfoBoxRows, subTypeRow.rowName, subTypeRow.rowItems);
       }
     }
+
+    for (Element infoBoxRowElement
+    in document.querySelectorAll('#infobox li')) {
+      String infoBoxRowName =
+          infoBoxRowElement
+              .querySelector('span.tip')
+              ?.text ?? '';
+      infoBoxRowName = infoBoxRowName.replaceAll(RegExp(r'\s+|:'), '');
+      bool isCuratedRow =
+      curatedRowMappings[subjectType].contains(infoBoxRowName);
+      List<InfoBoxItem> infoBoxItems =
+      parseInfoBoxRow(infoBoxRowElement, subjectType);
+
+      _addSeparatorIfNotFirstInfoBoxItem(
+          infoBoxRows, infoBoxRowName, infoBoxItems);
+
+      if (isCuratedRow) {
+        _addSeparatorIfNotFirstInfoBoxItem(
+            curatedInfoBoxRows, infoBoxRowName, infoBoxItems);
+      }
+    }
+
+
 
     Rating rating = parseRating(document);
 
@@ -423,6 +443,10 @@ class SubjectParser {
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
         parseRelatedSubjects(document, subjectType);
+
+    String summary = document
+        .querySelector('#subject_summary')
+        ?.text ?? '暂无简介';
 
     return Subject((b) => b
       ..infoBoxRows.replace(infoBoxRows)

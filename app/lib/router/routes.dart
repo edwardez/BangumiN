@@ -9,6 +9,7 @@ class Routes {
   static String homeRoute = "/home";
   static String bangumiOauthRoute = "/bangumiOauth";
   static String subjectMainPageRoute = "/subject/:subjectId";
+  static String subjectDetailInfoPageRoute = "/subject/info/:subjectId";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
@@ -19,5 +20,7 @@ class Routes {
     router.define(homeRoute, handler: homeRouteHandler);
     router.define(bangumiOauthRoute, handler: bangumiOauthRouteHandler);
     router.define(subjectMainPageRoute, handler: subjectMainPageRouteHandler);
+    router.define(
+        subjectDetailInfoPageRoute, handler: subjectDetailInfoRouteHandler);
   }
 }

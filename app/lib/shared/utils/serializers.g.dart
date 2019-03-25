@@ -60,12 +60,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<SubjectComment>())
       ..addBuilderFactory(
           const FullType(BuiltListMultimap,
-              const [const FullType(String), const FullType(InfoBoxRow)]),
-          () => new ListMultimapBuilder<String, InfoBoxRow>())
+              const [const FullType(String), const FullType(InfoBoxItem)]),
+          () => new ListMultimapBuilder<String, InfoBoxItem>())
       ..addBuilderFactory(
           const FullType(BuiltListMultimap,
-              const [const FullType(String), const FullType(InfoBoxRow)]),
-          () => new ListMultimapBuilder<String, InfoBoxRow>())
+              const [const FullType(String), const FullType(InfoBoxItem)]),
+          () => new ListMultimapBuilder<String, InfoBoxItem>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(HyperImage)]),
           () => new ListBuilder<HyperImage>())

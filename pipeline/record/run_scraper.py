@@ -7,7 +7,7 @@ from scrapy.utils.project import get_project_settings
 from common.DataSyncer import DataSyncer
 from models.User import User
 from models.UserExclude import UserExclude
-from record.bgm.spiders.spider import RecordSpider
+from record.bgm.spiders.spider import RecordSpider, WikiHistorySpider
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +17,8 @@ class Scraper:
         settings_file_path = 'record.bgm.settings'  # The path seen from root, ie. from main.py
         os.environ.setdefault('SCRAPY_SETTINGS_MODULE', settings_file_path)
         self.process = CrawlerProcess(get_project_settings())
-        self.spiders = RecordSpider
-        self.dataSyncer = DataSyncer('https://api.bgm.tv/user/', User, 435000, 8)
+        self.dataSyncer = DataSyncer('https://api.bgm.tv/user/', User, 435000,
+                                     8)
 
     def calculate_incremental_scraping_range(self):
 
@@ -43,7 +43,8 @@ class Scraper:
         :return:
         """
         excluding_list = []
-        excluding_users = self.dataSyncer.databaseExecutor.session.query(UserExclude) \
+        excluding_users = self.dataSyncer.databaseExecutor.session.query(
+            UserExclude) \
             .all()
 
         for user in excluding_users:
@@ -52,12 +53,12 @@ class Scraper:
         return excluding_list
 
     def run_full_sync(self):
-
         max_api_id = max(1, self.dataSyncer.requestHandler.max_id)
         excluding_list = self.get_excluding_list()
 
         # noinspection PyTypeChecker
-        self.process.crawl(self.spiders, user_id_min=1, user_id_max=max_api_id, excluding_list=excluding_list)
+        self.process.crawl(RecordSpider, user_id_min=1, user_id_max=max_api_id,
+                           excluding_list=excluding_list)
         self.process.start()  # the script will block here until the crawling is finished
 
     def run_partial_sync(self):
@@ -71,5 +72,20 @@ class Scraper:
         excluding_list = self.get_excluding_list()
 
         # noinspection PyTypeChecker
-        self.process.crawl(self.spiders, user_id_min=max_db_id, user_id_max=max_api_id, excluding_list=excluding_list)
-        self.process.start()  # the script will block here until the crawling is finished
+        self.process.crawl(RecordSpider, user_id_min=max_db_id,
+                           user_id_max=max_api_id,
+                           excluding_list=excluding_list)
+        # the script will block here until the crawling is finished
+        self.process.start()
+
+    def run_full_sync_wiki(self):
+        max_api_id = max(1, self.dataSyncer.requestHandler.max_id)
+        excluding_list = self.get_excluding_list()
+
+        # noinspection PyTypeChecker
+        self.process.crawl(WikiHistorySpider,
+                           user_id_min=1,
+                           user_id_max=max_api_id,
+                           excluding_list=excluding_list)
+        # the script will block here until the crawling is finished
+        self.process.start()

@@ -42,5 +42,8 @@ if __name__ == '__main__':
     elif args.task_type == 'record' and args.sync_type == 'incremental':
         scraper = Scraper()
         scraper.run_partial_sync()
+    elif args.task_type == 'wiki' and args.sync_type == 'full':
+        scraper = Scraper()
+        scraper.run_full_sync_wiki()
     else:
         logger.error('Unknown arguments, task_type: %s, sync_type: %s', args.task_type, args.sync_type)

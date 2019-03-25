@@ -117,6 +117,11 @@
       },
       "settings": {
         "name": "Settings"
+      },
+      "a11y": {
+        "menu": {
+          "title": "{{nickname}}'s account"
+        }
       }
     }
   },
@@ -211,6 +216,11 @@
           }
         }
       }
+    },
+    "a11y": {
+      "form": {
+        "title": "Settings form(Changes will be saved automatically)"
+      }
     }
   },
   "progress": {
@@ -275,6 +285,15 @@
       "action": {
         "collect": "Collect",
         "more": "More Info"
+      }
+    },
+    "a11y": {
+      "subject": {
+        "cover": "Clickable cover for {{subjectName}},result position {{subjectPosition}}, search keyword: {{queryKeyword}}",
+        "link": "Link for {{subjectName}},result position {{subjectPosition}}, search keyword: {{queryKeyword}}",
+        "form": {
+          "typeFilter": "Subject type filter, changes will be auto submitted"
+        }
       }
     }
   },

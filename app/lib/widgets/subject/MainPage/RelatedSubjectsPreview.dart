@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/widgets/shared/icons/PlatformIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/HorizontalRelatedSubjects.dart';
 
@@ -20,7 +21,7 @@ class RelatedSubjectsPreview extends StatelessWidget {
               fit: FlexFit.tight,
             ),
             IconButton(
-              icon: Icon(Icons.arrow_forward),
+              icon: Icon(PlatformIcons.forwardIconData),
               color: Theme.of(context).primaryColor,
               onPressed: () {},
             ),

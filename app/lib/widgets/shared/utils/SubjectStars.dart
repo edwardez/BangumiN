@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/styles/theme/common.dart';
 
 class SubjectStars extends StatelessWidget {
   final double subjectScore;
@@ -9,7 +10,7 @@ class SubjectStars extends StatelessWidget {
       {Key key,
       @required this.subjectScore,
         this.starSize = 18,
-      this.starColor = Colors.yellow})
+        this.starColor = MuninColor.score})
       : super(key: key);
 
   /// score: min 0, max 10

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
@@ -17,10 +18,6 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'Subject.g.dart';
 
 abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
-  Subject._();
-
-  factory Subject([updates(SubjectBuilder b)]) = _$Subject;
-
   SubjectType get type;
 
   /// for anime, is it a TV series or a movie
@@ -74,6 +71,22 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   @nullable
   BuiltListMultimap<String, InfoBoxItem> get infoBoxRows;
 
+  @memoized
+  String get infoBoxRowsPlainText {
+    String plainText = '';
+
+    infoBoxRows.forEachKey((a, b) {
+      plainText += '$a: ';
+
+      b.forEach((InfoBoxItem infoBoxItem) {
+        plainText += infoBoxItem.name;
+      });
+      plainText += '\n';
+    });
+
+    return plainText;
+  }
+
   /// A list of curated info box rows
   /// These rows will present to user on subject main page
   /// while rows in [infoBoxRows] will only be shown if user taps 'lean more'
@@ -81,6 +94,18 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   /// most important info of a subject
   @nullable
   BuiltListMultimap<String, InfoBoxItem> get curatedInfoBoxRows;
+
+  /// a runtime generated subject url
+  /// see also [pageUrl]
+  @memoized
+  String get pageUrlFromCalculation {
+    return 'https://${Application.environmentValue
+        .bangumiMainHost}/subject/$id';
+  }
+
+  Subject._();
+
+  factory Subject([updates(SubjectBuilder b)]) = _$Subject;
 
   String toJson() {
     return json.encode(serializers.serializeWith(Subject.serializer, this));

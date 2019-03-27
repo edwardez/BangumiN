@@ -1,4 +1,32 @@
-const portraitDefaultHorizontalPadding = 24.0;
-const portraitDenseHorizontalPadding = 16.0;
-const landScapeDefaultHorizontalPadding = 48.0;
-const landScapeDefaultDenseHorizontalPadding = 16.0;
+import 'package:flutter/material.dart';
+
+const defaultPortraitHorizontalPadding = 24.0;
+const defaultDensePortraitHorizontalPadding = 16.0;
+const defaultLandScapeHorizontalPadding = 48.0;
+const defaultLandScapeDenseHorizontalPadding = 16.0;
+const defaultAppBarElevation = 4.0;
+
+TextStyle body1TextWithPrimaryColor(BuildContext context) {
+  return Theme.of(context)
+      .textTheme
+      .body1
+      .copyWith(color: Theme.of(context).primaryColor);
+}
+
+TextStyle captionTextWithBody1Size(BuildContext context) {
+  return Theme.of(context)
+      .textTheme
+      .caption
+      .copyWith(fontSize: Theme.of(context).textTheme.body1.fontSize);
+}
+
+TextStyle scoreStyle(BuildContext context, {fontSize = 18.0}) {
+  return Theme.of(context)
+      .textTheme
+      .body1
+      .copyWith(fontSize: fontSize, color: MuninColor.score);
+}
+
+class MuninColor {
+  static const Color score = Color(0xFFFFAC2D);
+}

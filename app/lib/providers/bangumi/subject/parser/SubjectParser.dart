@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
-import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Actor.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
@@ -24,7 +23,7 @@ import 'package:quiver/strings.dart';
 class SubjectParser {
   final curatedRowMappings = {
     SubjectType.Anime: {
-    '话数', '动画制作', '原作', '制作', '放送开始'
+    '话数', '动画制作', '原作', '制作', '监督', '放送开始'
     },
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
@@ -66,7 +65,6 @@ class SubjectParser {
       infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.Person
         ..id = parseHrefId(element)
-        ..pageUrl = relativeUrlToAbsolute(element.attributes['href'])
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
       infoBoxItem = InfoBoxItem((b) => b
@@ -132,11 +130,8 @@ class SubjectParser {
     for (Element actorElement in actorElements) {
       int actorId = tryParseInt(parseHrefId(actorElement));
       String actorName = actorElement.text ?? '';
-      String actorUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/person/$actorId';
       actors.add(Actor((b) => b
         ..name = actorName
-        ..pageUrl = actorUrl
         ..id = actorId));
     }
 
@@ -195,8 +190,6 @@ class SubjectParser {
       Element avatarElement = characterElement.querySelector('a.avatar');
       int characterId = tryParseInt(parseHrefId(avatarElement));
       String characterName = avatarElement?.text?.trim() ?? '';
-      String characterUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/character/$characterId';
       String roleName =
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
 
@@ -212,7 +205,6 @@ class SubjectParser {
       Character character = Character((b) => b
         ..id = characterId
         ..name = characterName
-        ..pageUrl = characterUrl
         ..roleName = roleName
         ..images.replace(images)
         ..collectionCounts = collectionCounts
@@ -270,8 +262,6 @@ class SubjectParser {
         ..nameCn = subjectNameCn
         ..id = subjectId
         ..images.replace(images)
-        ..pageUrl =
-            'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId'
         ..subjectSubTypeName = subjectSubType);
 
       relatedSubjects.add(subjectSubType, relatedSubject);
@@ -299,8 +289,6 @@ class SubjectParser {
       int subjectId =
           tryParseInt(parseHrefId(coverElement), defaultValue: null);
 
-      print(coverElement.outerHtml);
-
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
       /// and in some browser(?), attribute `title` is used instead of `data-original-title`
@@ -317,8 +305,6 @@ class SubjectParser {
         ..name = subjectName
         ..id = subjectId
         ..images.replace(images)
-        ..pageUrl =
-            'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId'
         ..subjectSubTypeName = typeTankobon);
 
       relatedSubjects.add(typeTankobon, relatedSubject);
@@ -364,21 +350,18 @@ class SubjectParser {
 
   Subject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
-    final SubjectType subjectType = SubjectType.getSubjectTypeByChineseName(
+    final SubjectType subjectType = SubjectType.getTypeByChineseName(
         document.querySelector('#navMenuNeue .focus')?.text);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
     String nameCn;
     int subjectId;
-    String subjectUrl;
 
     if (nameElement != null) {
       name = nameElement.text;
       nameCn = nameElement.attributes['title'];
       subjectId = tryParseInt(parseHrefId(nameElement));
-      subjectUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId';
     }
     name ??= '-';
     nameCn ??= '-';
@@ -422,8 +405,6 @@ class SubjectParser {
       }
     }
 
-
-
     Rating rating = parseRating(document);
 
     int rank = tryParseInt(
@@ -452,7 +433,6 @@ class SubjectParser {
       ..infoBoxRows.replace(infoBoxRows)
       ..curatedInfoBoxRows.replace(curatedInfoBoxRows)
       ..id = subjectId
-      ..pageUrl = subjectUrl
       ..type = subjectType
       ..name = name
       ..nameCn = nameCn

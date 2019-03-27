@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 
@@ -26,6 +27,17 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       maxLines: 3,
     ));
 
+    widgets.add(WrappableText(
+      subject.nameCn,
+      textStyle: Theme
+          .of(context)
+          .textTheme
+          .caption,
+      fit: FlexFit.tight,
+      outerWrapper: OuterWrapper.Row,
+      maxLines: 3,
+    ));
+
     if (subject.curatedInfoBoxRows != null) {
       subject.curatedInfoBoxRows
           .forEachKey((String rowName, Iterable<InfoBoxItem> infoBoxItem) {
@@ -43,10 +55,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       text: TextSpan(children: [
         TextSpan(
             text: subject.rating.score?.toString() ?? '-',
-            style: Theme.of(context)
-                .textTheme
-                .body1
-                .copyWith(fontSize: 18, color: Colors.orange)),
+            style: scoreStyle(context)),
         TextSpan(text: '分  ', style: Theme.of(context).textTheme.body1),
         TextSpan(
             text: '${subject.rating.total}人',

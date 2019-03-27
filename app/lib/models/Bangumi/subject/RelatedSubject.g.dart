@@ -38,10 +38,10 @@ class _$RelatedSubjectSerializer
         ..add(serializers.serialize(object.id,
             specifiedType: const FullType(int)));
     }
-    if (object.pageUrl != null) {
+    if (object.pageUrlFromApi != null) {
       result
         ..add('url')
-        ..add(serializers.serialize(object.pageUrl,
+        ..add(serializers.serialize(object.pageUrlFromApi,
             specifiedType: const FullType(String)));
     }
     if (object.nameCn != null) {
@@ -78,7 +78,7 @@ class _$RelatedSubjectSerializer
               specifiedType: const FullType(int)) as int;
           break;
         case 'url':
-          result.pageUrl = serializers.deserialize(value,
+          result.pageUrlFromApi = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'name':
@@ -104,7 +104,7 @@ class _$RelatedSubject extends RelatedSubject {
   @override
   final int id;
   @override
-  final String pageUrl;
+  final String pageUrlFromApi;
   @override
   final String name;
   @override
@@ -117,7 +117,7 @@ class _$RelatedSubject extends RelatedSubject {
       {this.subjectSubTypeName,
       this.images,
       this.id,
-      this.pageUrl,
+      this.pageUrlFromApi,
       this.name,
       this.nameCn})
       : super._() {
@@ -145,7 +145,7 @@ class _$RelatedSubject extends RelatedSubject {
         subjectSubTypeName == other.subjectSubTypeName &&
         images == other.images &&
         id == other.id &&
-        pageUrl == other.pageUrl &&
+        pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
         nameCn == other.nameCn;
   }
@@ -157,7 +157,7 @@ class _$RelatedSubject extends RelatedSubject {
             $jc(
                 $jc($jc($jc(0, subjectSubTypeName.hashCode), images.hashCode),
                     id.hashCode),
-                pageUrl.hashCode),
+                pageUrlFromApi.hashCode),
             name.hashCode),
         nameCn.hashCode));
   }
@@ -168,7 +168,7 @@ class _$RelatedSubject extends RelatedSubject {
           ..add('subjectSubTypeName', subjectSubTypeName)
           ..add('images', images)
           ..add('id', id)
-          ..add('pageUrl', pageUrl)
+          ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
           ..add('nameCn', nameCn))
         .toString();
@@ -194,9 +194,10 @@ class RelatedSubjectBuilder
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
 
-  String _pageUrl;
-  String get pageUrl => _$this._pageUrl;
-  set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
+  String _pageUrlFromApi;
+  String get pageUrlFromApi => _$this._pageUrlFromApi;
+  set pageUrlFromApi(String pageUrlFromApi) =>
+      _$this._pageUrlFromApi = pageUrlFromApi;
 
   String _name;
   String get name => _$this._name;
@@ -213,7 +214,7 @@ class RelatedSubjectBuilder
       _subjectSubTypeName = _$v.subjectSubTypeName;
       _images = _$v.images?.toBuilder();
       _id = _$v.id;
-      _pageUrl = _$v.pageUrl;
+      _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
       _nameCn = _$v.nameCn;
       _$v = null;
@@ -243,7 +244,7 @@ class RelatedSubjectBuilder
               subjectSubTypeName: subjectSubTypeName,
               images: _images?.build(),
               id: id,
-              pageUrl: pageUrl,
+              pageUrlFromApi: pageUrlFromApi,
               name: name,
               nameCn: nameCn);
     } catch (_) {

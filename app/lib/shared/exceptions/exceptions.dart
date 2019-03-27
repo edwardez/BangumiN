@@ -5,3 +5,4 @@ class AuthenticationExpiredException implements Exception {
 
   AuthenticationExpiredException(this.message);
 }
+

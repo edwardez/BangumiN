@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/common.dart';
 
-/// a simple layout with a scaffold and a inner SafeArea
-class ScaffoldWithAppBar extends StatelessWidget {
+/// a simple layout with a scaffold, an AppBat and a inner SafeArea
+/// where AppBar is the built-in app bar for [Scaffold]
+class ScaffoldWithRegularAppBar extends StatelessWidget {
   final Widget safeAreaChild;
-  final AppBar appBar;
+  final PreferredSizeWidget appBar;
   final double safeAreaChildHorizontalPadding;
 
-  const ScaffoldWithAppBar(
-      {Key key, @required this.safeAreaChild, @required this.appBar, this.safeAreaChildHorizontalPadding = portraitDefaultHorizontalPadding})
+  const ScaffoldWithRegularAppBar(
+      {Key key, @required this.safeAreaChild, @required this.appBar, this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalPadding})
       : super(key: key);
 
   @override

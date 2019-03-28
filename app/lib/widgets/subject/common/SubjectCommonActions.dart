@@ -50,7 +50,7 @@ List<Widget> subjectCommonActions(BuildContext context, Subject subject) {
     IconButton(
       icon: Icon(PlatformIcons.shareIconData),
       onPressed: () {
-        Share.share('分享一个作品 ${subject.name} ${subject.pageUrlFromCalculation}');
+        Share.share('${subject.name} ${subject.pageUrlFromCalculation}');
       },
     ),
     IconButton(

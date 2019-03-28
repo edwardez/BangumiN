@@ -4,6 +4,7 @@ import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:quiver/strings.dart';
 
 class SubjectCoverAndBasicInfo extends StatelessWidget {
   final Subject subject;
@@ -27,16 +28,18 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       maxLines: 3,
     ));
 
-    widgets.add(WrappableText(
-      subject.nameCn,
-      textStyle: Theme
-          .of(context)
-          .textTheme
-          .caption,
-      fit: FlexFit.tight,
-      outerWrapper: OuterWrapper.Row,
-      maxLines: 3,
-    ));
+    if (!isEmpty(subject.nameCn)) {
+      widgets.add(WrappableText(
+        subject.nameCn,
+        textStyle: Theme
+            .of(context)
+            .textTheme
+            .caption,
+        fit: FlexFit.tight,
+        outerWrapper: OuterWrapper.Row,
+        maxLines: 3,
+      ));
+    }
 
     if (subject.curatedInfoBoxRows != null) {
       subject.curatedInfoBoxRows
@@ -44,9 +47,11 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
         String concatenatedInfoBoxItem = infoBoxItem
             .expand((InfoBoxItem infoBoxItem) => [infoBoxItem.name])
             .join('');
-        widgets.add(WrappableText.smallVerticalPadding(
+        widgets.add(WrappableText(
           '$rowName: $concatenatedInfoBoxItem',
           maxLines: 3,
+          top: 3.0,
+          bottom: 3.0,
         ));
       });
     }

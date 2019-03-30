@@ -13,7 +13,7 @@ class SubjectType extends EnumClass {
   static const SubjectType Game = _$Game;
   static const SubjectType Real = _$Real;
 
-  static getSubjectTypeByChineseName(String chineseName) {
+  static getTypeByChineseName(String chineseName) {
     switch (chineseName) {
       case '书籍':
         return SubjectType.Book;
@@ -27,6 +27,28 @@ class SubjectType extends EnumClass {
         return SubjectType.Real;
       default:
         return SubjectType.All;
+    }
+  }
+
+  /// Get quantified chinese name by subject type
+  /// '一本书', '一张唱片' ...etc
+  /// TODO(edward): I feel like there is a better way to get it's enum type...
+  @memoized
+  String get quantifiedChineseNameByType {
+    switch (SubjectType.valueOf(this.name)) {
+      case SubjectType.Book:
+        return '本书';
+      case SubjectType.Anime:
+        return '部动画';
+      case SubjectType.Music:
+        return '张唱片';
+      case SubjectType.Game:
+        return '个游戏';
+      case SubjectType.Real:
+        return '部剧';
+      case SubjectType.All:
+      default:
+        return '个作品';
     }
   }
 

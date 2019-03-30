@@ -6,16 +6,19 @@ import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/common.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithAppBar.dart';
+import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/subject/MainPage/CharactersPreview.dart';
 import 'package:munin/widgets/subject/MainPage/CommentsPreview.dart';
 import 'package:munin/widgets/subject/MainPage/RelatedSubjectsPreview.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectSummary.dart';
+import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
+import 'package:munin/widgets/subject/management/SubjectManagementWidget.dart';
 import 'package:redux/redux.dart';
 
 class SubjectWidget extends StatelessWidget {
-  final String subjectId;
+  final int subjectId;
 
   const SubjectWidget({Key key, @required this.subjectId})
       : assert(subjectId != null),
@@ -27,13 +30,16 @@ class SubjectWidget extends StatelessWidget {
       converter: (Store store) => _ViewModel.fromStore(store),
       distinct: true,
       onInit: (store) {
-        final action =
-            GetSubjectAction(context: context, subjectId: int.parse(subjectId));
-        store.dispatch(action);
+        if (store.state.subjectState.subjects[subjectId] == null) {
+          final action =
+          GetSubjectAction(context: context, subjectId: subjectId);
+          store.dispatch(action);
+        }
       },
       builder: (BuildContext context, _ViewModel vm) {
-        if (vm.subjectState.subjects[int.parse(subjectId)] == null) {
-          return ScaffoldWithAppBar(
+        /// TODO: write a generic widget to handle malformed parameter case like subjectId == null
+        if (vm.subjectState.subjects[subjectId] == null) {
+          return ScaffoldWithRegularAppBar(
             appBar: AppBar(
               title: Text('加载中'),
             ),
@@ -44,7 +50,7 @@ class SubjectWidget extends StatelessWidget {
         }
 
         return _buildSubjectMainPage(
-            context, vm.subjectState.subjects[int.parse(subjectId)]);
+            context, vm.subjectState.subjects[subjectId]);
       },
     );
   }
@@ -55,42 +61,7 @@ class SubjectWidget extends StatelessWidget {
       subject: subject,
     ));
 
-    widgets.add(Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
-                  child: Text('观看进度管理'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
-                  child: Text('编辑收藏'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ));
+    widgets.add(SubjectManagementWidget(subject: subject));
 
     widgets.add(SubjectSummary(subject: subject));
 
@@ -102,27 +73,23 @@ class SubjectWidget extends StatelessWidget {
       widgets.add(RelatedSubjectsPreview(subject: subject));
     }
 
-    if (!isIterableNullOrEmpty(subject.commentsPreview)) {
-      widgets.add(CommentsPreview(subject: subject));
-    }
+    widgets.add(CommentsPreview(subject: subject));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(subject.name),
+    return ScaffoldWithSliverAppBar(
+      appBarMainTitle: '关于这${subject.type.quantifiedChineseNameByType}',
+      appBarSecondaryTitle: subject.name,
+      changeAppBarTitleOnScroll: true,
+      nestedScrollViewBody: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
+        itemBuilder: (BuildContext context, int index) =>
+        widgets[index],
+        separatorBuilder: (BuildContext context, int index) =>
+            Divider(),
+        itemCount: widgets.length,
       ),
-      body: SafeArea(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: defaultHorizontalPadding),
-              child: ListView.separated(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.all(0),
-                itemBuilder: (BuildContext context, int index) =>
-                    widgets[index],
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(),
-                itemCount: widgets.length,
-              ))),
+      safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+      appBarActions: subjectCommonActions(context, subject),
     );
   }
 }

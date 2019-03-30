@@ -7,7 +7,7 @@ part of 'HyperBangumiItem.dart';
 // **************************************************************************
 
 Serializer<HyperBangumiItem> _$hyperBangumiItemSerializer =
-new _$HyperBangumiItemSerializer();
+    new _$HyperBangumiItemSerializer();
 
 class _$HyperBangumiItemSerializer
     implements StructuredSerializer<HyperBangumiItem> {
@@ -29,12 +29,16 @@ class _$HyperBangumiItemSerializer
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
     if (object.pageUrl != null) {
-      result..add('pageUrl')..add(serializers.serialize(object.pageUrl,
-          specifiedType: const FullType(String)));
+      result
+        ..add('pageUrl')
+        ..add(serializers.serialize(object.pageUrl,
+            specifiedType: const FullType(String)));
     }
     if (object.imageUrl != null) {
-      result..add('imageUrl')..add(serializers.serialize(object.imageUrl,
-          specifiedType: const FullType(String)));
+      result
+        ..add('imageUrl')
+        ..add(serializers.serialize(object.imageUrl,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -138,8 +142,9 @@ class _$HyperBangumiItem extends HyperBangumiItem {
   String toString() {
     return (newBuiltValueToStringHelper('HyperBangumiItem')
           ..add('id', id)
-          ..add('contentType', contentType)..add('name', name)..add(
-          'pageUrl', pageUrl)
+          ..add('contentType', contentType)
+          ..add('name', name)
+          ..add('pageUrl', pageUrl)
           ..add('imageUrl', imageUrl))
         .toString();
   }
@@ -150,24 +155,34 @@ class HyperBangumiItemBuilder
   _$HyperBangumiItem _$v;
 
   String _id;
+
   String get id => _$this._id;
+
   set id(String id) => _$this._id = id;
 
   BangumiContent _contentType;
+
   BangumiContent get contentType => _$this._contentType;
+
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 
   String _name;
+
   String get name => _$this._name;
+
   set name(String name) => _$this._name = name;
 
   String _pageUrl;
+
   String get pageUrl => _$this._pageUrl;
+
   set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
 
   String _imageUrl;
+
   String get imageUrl => _$this._imageUrl;
+
   set imageUrl(String imageUrl) => _$this._imageUrl = imageUrl;
 
   HyperBangumiItemBuilder();

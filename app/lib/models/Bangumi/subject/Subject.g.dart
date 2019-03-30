@@ -73,14 +73,14 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
         ..add('infoBoxRows')
         ..add(serializers.serialize(object.infoBoxRows,
             specifiedType: const FullType(BuiltListMultimap,
-                const [const FullType(String), const FullType(InfoBoxRow)])));
+                const [const FullType(String), const FullType(InfoBoxItem)])));
     }
     if (object.curatedInfoBoxRows != null) {
       result
         ..add('curatedInfoBoxRows')
         ..add(serializers.serialize(object.curatedInfoBoxRows,
             specifiedType: const FullType(BuiltListMultimap,
-                const [const FullType(String), const FullType(InfoBoxRow)])));
+                const [const FullType(String), const FullType(InfoBoxItem)])));
     }
     if (object.id != null) {
       result
@@ -88,10 +88,10 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
         ..add(serializers.serialize(object.id,
             specifiedType: const FullType(int)));
     }
-    if (object.pageUrl != null) {
+    if (object.pageUrlFromApi != null) {
       result
         ..add('url')
-        ..add(serializers.serialize(object.pageUrl,
+        ..add(serializers.serialize(object.pageUrlFromApi,
             specifiedType: const FullType(String)));
     }
     if (object.nameCn != null) {
@@ -161,14 +161,14 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
           result.infoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
-                const FullType(InfoBoxRow)
+                const FullType(InfoBoxItem)
               ])) as BuiltListMultimap);
           break;
         case 'curatedInfoBoxRows':
           result.curatedInfoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
-                const FullType(InfoBoxRow)
+                const FullType(InfoBoxItem)
               ])) as BuiltListMultimap);
           break;
         case 'id':
@@ -176,7 +176,7 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
               specifiedType: const FullType(int)) as int;
           break;
         case 'url':
-          result.pageUrl = serializers.deserialize(value,
+          result.pageUrlFromApi = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'name':
@@ -214,17 +214,19 @@ class _$Subject extends Subject {
   @override
   final BuiltList<SubjectComment> commentsPreview;
   @override
-  final BuiltListMultimap<String, InfoBoxRow> infoBoxRows;
+  final BuiltListMultimap<String, InfoBoxItem> infoBoxRows;
   @override
-  final BuiltListMultimap<String, InfoBoxRow> curatedInfoBoxRows;
+  final BuiltListMultimap<String, InfoBoxItem> curatedInfoBoxRows;
   @override
   final int id;
   @override
-  final String pageUrl;
+  final String pageUrlFromApi;
   @override
   final String name;
   @override
   final String nameCn;
+  String __infoBoxRowsPlainText;
+  String __pageUrlFromCalculation;
 
   factory _$Subject([void updates(SubjectBuilder b)]) =>
       (new SubjectBuilder()..update(updates)).build();
@@ -242,7 +244,7 @@ class _$Subject extends Subject {
       this.infoBoxRows,
       this.curatedInfoBoxRows,
       this.id,
-      this.pageUrl,
+      this.pageUrlFromApi,
       this.name,
       this.nameCn})
       : super._() {
@@ -262,6 +264,14 @@ class _$Subject extends Subject {
       throw new BuiltValueNullFieldError('Subject', 'name');
     }
   }
+
+  @override
+  String get infoBoxRowsPlainText =>
+      __infoBoxRowsPlainText ??= super.infoBoxRowsPlainText;
+
+  @override
+  String get pageUrlFromCalculation =>
+      __pageUrlFromCalculation ??= super.pageUrlFromCalculation;
 
   @override
   Subject rebuild(void updates(SubjectBuilder b)) =>
@@ -286,7 +296,7 @@ class _$Subject extends Subject {
         infoBoxRows == other.infoBoxRows &&
         curatedInfoBoxRows == other.curatedInfoBoxRows &&
         id == other.id &&
-        pageUrl == other.pageUrl &&
+        pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
         nameCn == other.nameCn;
   }
@@ -321,7 +331,7 @@ class _$Subject extends Subject {
                             infoBoxRows.hashCode),
                         curatedInfoBoxRows.hashCode),
                     id.hashCode),
-                pageUrl.hashCode),
+                pageUrlFromApi.hashCode),
             name.hashCode),
         nameCn.hashCode));
   }
@@ -341,7 +351,7 @@ class _$Subject extends Subject {
           ..add('infoBoxRows', infoBoxRows)
           ..add('curatedInfoBoxRows', curatedInfoBoxRows)
           ..add('id', id)
-          ..add('pageUrl', pageUrl)
+          ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
           ..add('nameCn', nameCn))
         .toString();
@@ -396,27 +406,28 @@ class SubjectBuilder
   set commentsPreview(ListBuilder<SubjectComment> commentsPreview) =>
       _$this._commentsPreview = commentsPreview;
 
-  ListMultimapBuilder<String, InfoBoxRow> _infoBoxRows;
-  ListMultimapBuilder<String, InfoBoxRow> get infoBoxRows =>
-      _$this._infoBoxRows ??= new ListMultimapBuilder<String, InfoBoxRow>();
-  set infoBoxRows(ListMultimapBuilder<String, InfoBoxRow> infoBoxRows) =>
+  ListMultimapBuilder<String, InfoBoxItem> _infoBoxRows;
+  ListMultimapBuilder<String, InfoBoxItem> get infoBoxRows =>
+      _$this._infoBoxRows ??= new ListMultimapBuilder<String, InfoBoxItem>();
+  set infoBoxRows(ListMultimapBuilder<String, InfoBoxItem> infoBoxRows) =>
       _$this._infoBoxRows = infoBoxRows;
 
-  ListMultimapBuilder<String, InfoBoxRow> _curatedInfoBoxRows;
-  ListMultimapBuilder<String, InfoBoxRow> get curatedInfoBoxRows =>
+  ListMultimapBuilder<String, InfoBoxItem> _curatedInfoBoxRows;
+  ListMultimapBuilder<String, InfoBoxItem> get curatedInfoBoxRows =>
       _$this._curatedInfoBoxRows ??=
-          new ListMultimapBuilder<String, InfoBoxRow>();
+          new ListMultimapBuilder<String, InfoBoxItem>();
   set curatedInfoBoxRows(
-          ListMultimapBuilder<String, InfoBoxRow> curatedInfoBoxRows) =>
+          ListMultimapBuilder<String, InfoBoxItem> curatedInfoBoxRows) =>
       _$this._curatedInfoBoxRows = curatedInfoBoxRows;
 
   int _id;
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
 
-  String _pageUrl;
-  String get pageUrl => _$this._pageUrl;
-  set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
+  String _pageUrlFromApi;
+  String get pageUrlFromApi => _$this._pageUrlFromApi;
+  set pageUrlFromApi(String pageUrlFromApi) =>
+      _$this._pageUrlFromApi = pageUrlFromApi;
 
   String _name;
   String get name => _$this._name;
@@ -442,7 +453,7 @@ class SubjectBuilder
       _infoBoxRows = _$v.infoBoxRows?.toBuilder();
       _curatedInfoBoxRows = _$v.curatedInfoBoxRows?.toBuilder();
       _id = _$v.id;
-      _pageUrl = _$v.pageUrl;
+      _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
       _nameCn = _$v.nameCn;
       _$v = null;
@@ -481,7 +492,7 @@ class SubjectBuilder
               infoBoxRows: _infoBoxRows?.build(),
               curatedInfoBoxRows: _curatedInfoBoxRows?.build(),
               id: id,
-              pageUrl: pageUrl,
+              pageUrlFromApi: pageUrlFromApi,
               name: name,
               nameCn: nameCn);
     } catch (_) {

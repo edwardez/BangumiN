@@ -1,6 +1,8 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/subject/Subject.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class SubjectSummary extends StatelessWidget {
   final Subject subject;
@@ -14,7 +16,7 @@ class SubjectSummary extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            ClippedText.mediumVerticalPadding(
+            WrappableText.mediumVerticalPadding(
               subject.summary,
               maxLines: summaryMaxLines,
             )
@@ -26,7 +28,11 @@ class SubjectSummary extends StatelessWidget {
               child: FlatButton(
                 child: Text('简介与制作人员'),
                 textColor: Theme.of(context).primaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  Application.router.navigateTo(
+                      context, '/subject/info/${subject.id}',
+                      transition: TransitionType.native);
+                },
               ),
             ),
           ],

@@ -29,7 +29,7 @@ dependencies:
   fluro: '>=1.4.0 <1.5.0'
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.0
-  get_it: ^1.0.3
+  get_it: '>=1.0.3 <1.1.0'
   html: '>=0.13.4 <0.14.0'
   http: '>=0.12.0 <0.13.0'
   transparent_image: '>=1.0.0 <2.0.0'
@@ -38,6 +38,7 @@ dependencies:
   redux_epics: '>=0.10.4 <0.20.0'
   redux_logging: '>=0.3.0 <0.4.0'
   rxdart: '>=0.20.0 <0.21.0'
+  share: '>=0.6.0 <0.7.0'
   shared_preferences: '>=0.5.1 <0.6.0'
   tuple: '>=1.0.2 <2.0.0'
   quiver: '>=2.0.1 <3.0.0'
@@ -96,3 +97,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+  fonts:
+    - family: MuninIcons
+      fonts:
+        - asset: fonts/icons/munin/MuninIcons.ttf

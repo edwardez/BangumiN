@@ -30,9 +30,6 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
               const FullType(BuiltList, const [const FullType(Actor)])),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
-      'url',
-      serializers.serialize(object.pageUrl,
-          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -53,6 +50,12 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
         ..add('collects')
         ..add(serializers.serialize(object.collectionCounts,
             specifiedType: const FullType(int)));
+    }
+    if (object.pageUrl != null) {
+      result
+        ..add('url')
+        ..add(serializers.serialize(object.pageUrl,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -159,9 +162,6 @@ class _$Character extends Character {
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('Character', 'id');
-    }
-    if (pageUrl == null) {
-      throw new BuiltValueNullFieldError('Character', 'pageUrl');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('Character', 'name');

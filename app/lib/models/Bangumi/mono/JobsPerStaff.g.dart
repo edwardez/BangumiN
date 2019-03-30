@@ -31,9 +31,6 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
               const FullType(BuiltList, const [const FullType(String)])),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
-      'url',
-      serializers.serialize(object.pageUrl,
-          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -54,6 +51,12 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
         ..add('collects')
         ..add(serializers.serialize(object.collectionCounts,
             specifiedType: const FullType(int)));
+    }
+    if (object.pageUrl != null) {
+      result
+        ..add('url')
+        ..add(serializers.serialize(object.pageUrl,
+            specifiedType: const FullType(String)));
     }
 
     return result;
@@ -160,9 +163,6 @@ class _$JobsPerStaff extends JobsPerStaff {
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('JobsPerStaff', 'id');
-    }
-    if (pageUrl == null) {
-      throw new BuiltValueNullFieldError('JobsPerStaff', 'pageUrl');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('JobsPerStaff', 'name');

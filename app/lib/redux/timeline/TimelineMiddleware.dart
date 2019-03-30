@@ -24,8 +24,6 @@ Middleware<AppState> _createLoadTimelineFeed(
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     try {
       if (action is LoadTimelineFeed) {
-        print('start ${DateTime.now().millisecondsSinceEpoch}');
-
         /// bangumi returns 10 feeds each time, this cannot be changed currently
         int feedPerPage = 10;
 

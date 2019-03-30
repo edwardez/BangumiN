@@ -30,7 +30,7 @@ Middleware<AppState> _createGetSubject(
       print(stack);
       Scaffold.of(action.context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
-    } finally {}
+    }
 
     next(action);
   };

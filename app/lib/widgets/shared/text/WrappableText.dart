@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum OuterWrapper { NoWrapper, Row }
 
-class ClippedText extends StatelessWidget {
+class WrappableText extends StatelessWidget {
   final String text;
   final int maxLines;
   final FlexFit fit;
@@ -23,7 +23,7 @@ class ClippedText extends StatelessWidget {
   /// whether create a outer wrapper widget, (Flexible needs a wrapper flex to work)
   final OuterWrapper outerWrapper;
 
-  const ClippedText(
+  const WrappableText(
     this.text, {
     Key key,
     this.textStyle,
@@ -36,7 +36,7 @@ class ClippedText extends StatelessWidget {
     this.outerWrapper = OuterWrapper.NoWrapper,
   }) : super(key: key);
 
-  const ClippedText.smallVerticalPadding(
+  const WrappableText.smallVerticalPadding(
     this.text, {
     Key key,
     this.textStyle,
@@ -49,7 +49,7 @@ class ClippedText extends StatelessWidget {
     this.outerWrapper = OuterWrapper.NoWrapper,
   }) : super(key: key);
 
-  const ClippedText.mediumVerticalPadding(
+  const WrappableText.mediumVerticalPadding(
     this.text, {
     Key key,
     this.textStyle,

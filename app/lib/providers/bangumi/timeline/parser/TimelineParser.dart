@@ -37,20 +37,8 @@ class TimelineParser {
   final Set<String> subjectOrEpOrBookVolAction =
       {'读过', '看过', '想看', '想读', '抛弃了', '搁置了'};
 
-  final Map<BangumiContent, String> contentTypeToSelectorName = {
-    BangumiContent.Subject: 'subject',
-    BangumiContent.Episode: 'ep',
-    BangumiContent.Friend: 'user',
-    BangumiContent.Group: 'group',
-    BangumiContent.Blog: 'blog',
-    BangumiContent.Catalog: 'index',
-    BangumiContent.Doujin: 'doujin',
-    BangumiContent.Character: 'character',
-    BangumiContent.Person: 'person',
-
-    /// all timeline wiki activity means user creates a new subject
-    BangumiContent.Wiki: 'subject',
-  };
+  final Map<BangumiContent, String> contentTypeToSelectorName = BangumiContent
+      .enumToWebPageRouteName;
 
   /// verify whether user is authenticated
   /// tricky part is: bangumi WILL returns site global timeline instead of returning

@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
-import 'package:munin/config/application.dart';
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Actor.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
@@ -23,7 +22,9 @@ import 'package:quiver/strings.dart';
 
 class SubjectParser {
   final curatedRowMappings = {
-    SubjectType.Anime: {'话数', '动画制作', '制作', '放送开始'},
+    SubjectType.Anime: {
+    '话数', '动画制作', '原作', '制作', '监督', '放送开始'
+    },
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
     SubjectType.Book: {
@@ -64,7 +65,6 @@ class SubjectParser {
       infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.Person
         ..id = parseHrefId(element)
-        ..pageUrl = relativeUrlToAbsolute(element.attributes['href'])
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
       infoBoxItem = InfoBoxItem((b) => b
@@ -75,13 +75,8 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  InfoBoxRow parseInfoBoxRow(
+  List<InfoBoxItem> parseInfoBoxRow(
       Element infoBoxRowElement, SubjectType subjectType) {
-    String infoBoxRowName =
-        infoBoxRowElement.querySelector('span.tip')?.text ?? '';
-    infoBoxRowName = infoBoxRowName.replaceAll(RegExp(r'\s+|:'), '');
-    bool isCuratedRow =
-        curatedRowMappings[subjectType].contains(infoBoxRowName);
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -91,10 +86,7 @@ class SubjectParser {
       }
     }
 
-    return InfoBoxRow((b) => b
-      ..rowName = infoBoxRowName
-      ..rowItems.replace(infoBoxItems)
-      ..isCuratedRow = isCuratedRow);
+    return infoBoxItems;
   }
 
   Rating parseRating(DocumentFragment subjectElement) {
@@ -138,11 +130,8 @@ class SubjectParser {
     for (Element actorElement in actorElements) {
       int actorId = tryParseInt(parseHrefId(actorElement));
       String actorName = actorElement.text ?? '';
-      String actorUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/person/$actorId';
       actors.add(Actor((b) => b
         ..name = actorName
-        ..pageUrl = actorUrl
         ..id = actorId));
     }
 
@@ -201,8 +190,6 @@ class SubjectParser {
       Element avatarElement = characterElement.querySelector('a.avatar');
       int characterId = tryParseInt(parseHrefId(avatarElement));
       String characterName = avatarElement?.text?.trim() ?? '';
-      String characterUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/character/$characterId';
       String roleName =
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
 
@@ -218,7 +205,6 @@ class SubjectParser {
       Character character = Character((b) => b
         ..id = characterId
         ..name = characterName
-        ..pageUrl = characterUrl
         ..roleName = roleName
         ..images.replace(images)
         ..collectionCounts = collectionCounts
@@ -276,8 +262,6 @@ class SubjectParser {
         ..nameCn = subjectNameCn
         ..id = subjectId
         ..images.replace(images)
-        ..pageUrl =
-            'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId'
         ..subjectSubTypeName = subjectSubType);
 
       relatedSubjects.add(subjectSubType, relatedSubject);
@@ -305,8 +289,6 @@ class SubjectParser {
       int subjectId =
           tryParseInt(parseHrefId(coverElement), defaultValue: null);
 
-      print(coverElement.outerHtml);
-
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
       /// and in some browser(?), attribute `title` is used instead of `data-original-title`
@@ -323,8 +305,6 @@ class SubjectParser {
         ..name = subjectName
         ..id = subjectId
         ..images.replace(images)
-        ..pageUrl =
-            'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId'
         ..subjectSubTypeName = typeTankobon);
 
       relatedSubjects.add(typeTankobon, relatedSubject);
@@ -356,51 +336,72 @@ class SubjectParser {
     return infoBoxRow;
   }
 
+  /// in-place update [infoBoxRows] with [infoBoxItems]
+  /// add a separator to value of infoBoxRows if it's not empty
+  _addSeparatorIfNotFirstInfoBoxItem(
+      ListMultimap<String, InfoBoxItem> infoBoxRows,
+      String newInfoBoxRowName,
+      Iterable<InfoBoxItem> infoBoxItems) {
+    if (infoBoxRows.containsKey(newInfoBoxRowName)) {
+      infoBoxRows.add(newInfoBoxRowName, InfoBoxRow.separator);
+    }
+    infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
+  }
+
   Subject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
-    final SubjectType subjectType = SubjectType.getSubjectTypeByChineseName(
+    final SubjectType subjectType = SubjectType.getTypeByChineseName(
         document.querySelector('#navMenuNeue .focus')?.text);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
     String nameCn;
     int subjectId;
-    String subjectUrl;
 
     if (nameElement != null) {
       name = nameElement.text;
       nameCn = nameElement.attributes['title'];
       subjectId = tryParseInt(parseHrefId(nameElement));
-      subjectUrl =
-          'https://${Application.environmentValue.bangumiMainHost}/subject/$subjectId';
     }
     name ??= '-';
     nameCn ??= '-';
 
-    String summary = document.querySelector('#subject_summary')?.text ?? '暂无简介';
+    ListMultimap<String, InfoBoxItem> infoBoxRows =
+    ListMultimap<String, InfoBoxItem>();
 
-    ListMultimap<String, InfoBoxRow> infoBoxRows =
-        ListMultimap<String, InfoBoxRow>();
-
-    ListMultimap<String, InfoBoxRow> curatedInfoBoxRows =
-        ListMultimap<String, InfoBoxRow>();
-
-    for (Element infoBoxRowElement
-        in document.querySelectorAll('#infobox li')) {
-      InfoBoxRow infoBoxRow = parseInfoBoxRow(infoBoxRowElement, subjectType);
-      infoBoxRows.add(infoBoxRow.rowName, infoBoxRow);
-      if (infoBoxRow.isCuratedRow) {
-        curatedInfoBoxRows.add(infoBoxRow.rowName, infoBoxRow);
-      }
-    }
+    ListMultimap<String, InfoBoxItem> curatedInfoBoxRows =
+    ListMultimap<String, InfoBoxItem>();
 
     /// manually add subType as another [InfoBoxRow], this info is available
     /// in a difference place
     InfoBoxRow subTypeRow = parseSubjectSubtype(document);
     if (subTypeRow != null) {
-      infoBoxRows.add(subTypeRow.rowName, subTypeRow);
+      _addSeparatorIfNotFirstInfoBoxItem(
+          infoBoxRows, subTypeRow.rowName, subTypeRow.rowItems);
       if (subTypeRow.isCuratedRow) {
-        curatedInfoBoxRows.add(subTypeRow.rowName, subTypeRow);
+        _addSeparatorIfNotFirstInfoBoxItem(
+            curatedInfoBoxRows, subTypeRow.rowName, subTypeRow.rowItems);
+      }
+    }
+
+    for (Element infoBoxRowElement
+    in document.querySelectorAll('#infobox li')) {
+      String infoBoxRowName =
+          infoBoxRowElement
+              .querySelector('span.tip')
+              ?.text ?? '';
+      infoBoxRowName = infoBoxRowName.replaceAll(RegExp(r'\s+|:'), '');
+      bool isCuratedRow =
+      curatedRowMappings[subjectType].contains(infoBoxRowName);
+      List<InfoBoxItem> infoBoxItems =
+      parseInfoBoxRow(infoBoxRowElement, subjectType);
+
+      _addSeparatorIfNotFirstInfoBoxItem(
+          infoBoxRows, infoBoxRowName, infoBoxItems);
+
+      if (isCuratedRow) {
+        _addSeparatorIfNotFirstInfoBoxItem(
+            curatedInfoBoxRows, infoBoxRowName, infoBoxItems);
       }
     }
 
@@ -424,11 +425,14 @@ class SubjectParser {
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
         parseRelatedSubjects(document, subjectType);
 
+    String summary = document
+        .querySelector('#subject_summary')
+        ?.text ?? '暂无简介';
+
     return Subject((b) => b
       ..infoBoxRows.replace(infoBoxRows)
       ..curatedInfoBoxRows.replace(curatedInfoBoxRows)
       ..id = subjectId
-      ..pageUrl = subjectUrl
       ..type = subjectType
       ..name = name
       ..nameCn = nameCn

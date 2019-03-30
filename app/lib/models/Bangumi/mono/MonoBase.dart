@@ -6,6 +6,7 @@ part 'MonoBase.g.dart';
 abstract class MonoBase {
   int get id;
 
+  @nullable
   @BuiltValueField(wireName: 'url')
   String get pageUrl;
 

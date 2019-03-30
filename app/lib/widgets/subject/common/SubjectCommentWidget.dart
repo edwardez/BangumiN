@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
-import 'package:munin/widgets/shared/text/ClippedText.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/CommentUserListTile.dart';
 
 class SubjectCommentWidget extends StatelessWidget {
@@ -17,7 +17,7 @@ class SubjectCommentWidget extends StatelessWidget {
         CommentUserListTile(
           metaInfo: subjectComment.metaInfo,
         ),
-        ClippedText(
+        WrappableText(
           subjectComment.content,
           outerWrapper: OuterWrapper.Row,
           maxLines: commentMaxLines,

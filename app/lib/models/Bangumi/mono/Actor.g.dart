@@ -20,12 +20,15 @@ class _$ActorSerializer implements StructuredSerializer<Actor> {
     final result = <Object>[
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
-      'url',
-      serializers.serialize(object.pageUrl,
-          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
+    if (object.pageUrl != null) {
+      result
+        ..add('url')
+        ..add(serializers.serialize(object.pageUrl,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -74,9 +77,6 @@ class _$Actor extends Actor {
   _$Actor._({this.id, this.pageUrl, this.name}) : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Actor', 'id');
-    }
-    if (pageUrl == null) {
-      throw new BuiltValueNullFieldError('Actor', 'pageUrl');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('Actor', 'name');

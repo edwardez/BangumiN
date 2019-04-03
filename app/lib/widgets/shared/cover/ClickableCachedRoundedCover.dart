@@ -12,8 +12,8 @@ class ClickableCachedRoundedCover extends StatelessWidget {
   ClickableCachedRoundedCover.name(
       {@required this.imageUrl,
       @required this.coverLinkType,
-      this.width,
-      this.height,
+        @required this.width,
+        @required this.height,
       this.id});
 
   final double height;

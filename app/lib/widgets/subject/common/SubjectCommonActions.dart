@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/widgets/shared/icons/PlatformIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:share/share.dart';
 
-void _settingModalBottomSheet(BuildContext context, Subject subject) {
+void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
   showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
@@ -45,7 +45,8 @@ void _settingModalBottomSheet(BuildContext context, Subject subject) {
 }
 
 /// A list of common actions on subject page AppBar
-List<Widget> subjectCommonActions(BuildContext context, Subject subject) {
+List<Widget> subjectCommonActions(BuildContext context,
+    BangumiSubject subject) {
   return [
     IconButton(
       icon: Icon(PlatformIcons.shareIconData),

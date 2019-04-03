@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/Bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -28,7 +28,7 @@ abstract class InfoBoxRow implements Built<InfoBoxRow, InfoBoxRowBuilder> {
   String get rowName;
 
   /// is this row a curated(aka. important) row
-  /// see [curatedInfoBoxRows] in [Subject]
+  /// see [curatedInfoBoxRows] in [BangumiSubject]
   bool get isCuratedRow;
 
   /// Can be: all staff under a job, name value for a name row

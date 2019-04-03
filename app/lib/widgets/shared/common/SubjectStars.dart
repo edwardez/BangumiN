@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/common.dart';
 
+/// A read-only subject star widget
+/// Currently max stars are 5
 class SubjectStars extends StatelessWidget {
   final double subjectScore;
   final double starSize;

@@ -15,9 +15,10 @@ import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/Bangumi/subject/common/SujectBase.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'Subject.g.dart';
+part 'BangumiSubject.g.dart';
 
-abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
+abstract class BangumiSubject
+    implements SubjectBase, Built<BangumiSubject, BangumiSubjectBuilder> {
   SubjectType get type;
 
   /// for anime, is it a TV series or a movie
@@ -25,7 +26,7 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   /// this info is not always available and it's currently a string instead of
   /// a enum since we are parsing html and there are too many types
   /// Also note this subType might be slightly different from [RelatedSubject.subjectSubTypeName]
-  /// i.e. if [Subject.subTypeName] is 小说系列, then
+  /// i.e. if [BangumiSubject.subTypeName] is 小说系列, then
   /// [RelatedSubject.subjectSubTypeName] is 系列 for some subjects
   @nullable
   String get subTypeName;
@@ -71,6 +72,15 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
   @nullable
   BuiltListMultimap<String, InfoBoxItem> get infoBoxRows;
 
+  /// A list of tags that are suggested by bangumi
+  BuiltList<String> get bangumiSuggestedTags;
+
+  /// A list of tags that have been selected by user for this subject
+  BuiltList<String> get userSelectedTags;
+
+  @nullable
+  BuiltListMultimap<String, InfoBoxItem> get user;
+
   @memoized
   String get infoBoxRowsPlainText {
     String plainText = '';
@@ -103,21 +113,23 @@ abstract class Subject implements SubjectBase, Built<Subject, SubjectBuilder> {
         .bangumiMainHost}/subject/$id';
   }
 
-  Subject._();
+  BangumiSubject._();
 
-  factory Subject([updates(SubjectBuilder b)]) = _$Subject;
+  factory BangumiSubject([updates(BangumiSubjectBuilder b)]) = _$BangumiSubject;
 
   String toJson() {
-    return json.encode(serializers.serializeWith(Subject.serializer, this));
+    return json.encode(
+        serializers.serializeWith(BangumiSubject.serializer, this));
   }
 
-  static Subject fromJson(String jsonString) {
+  static BangumiSubject fromJson(String jsonString) {
     return serializers.deserializeWith(
-        Subject.serializer, json.decode(jsonString));
+        BangumiSubject.serializer, json.decode(jsonString));
   }
 
 
-  static Serializer<Subject> get serializer => _$subjectSerializer;
+  static Serializer<BangumiSubject> get serializer =>
+      _$bangumiSubjectSerializer;
 
   /// below fields are in bangumi rest api but currently not in use by Munin
   ///   @BuiltValueField(wireName: 'air_date')

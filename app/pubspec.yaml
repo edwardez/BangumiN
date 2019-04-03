@@ -24,6 +24,7 @@ dependencies:
   #  please pay extra attention while upgrading cached_network_image as there is no test for this dep
   cached_network_image: ^0.7.0
   cookie_jar: ^1.0.0
+  expandable: ^2.0.0
   dio: '>=2.1.0 < 3.0.0'
   equatable: ^0.2.2
   fluro: '>=1.4.0 <1.5.0'

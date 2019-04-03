@@ -5,6 +5,7 @@ const defaultDensePortraitHorizontalPadding = 16.0;
 const defaultLandScapeHorizontalPadding = 48.0;
 const defaultLandScapeDenseHorizontalPadding = 16.0;
 const defaultAppBarElevation = 4.0;
+const defaultImageCircularRadius = 4.0;
 
 TextStyle body1TextWithPrimaryColor(BuildContext context) {
   return Theme.of(context)

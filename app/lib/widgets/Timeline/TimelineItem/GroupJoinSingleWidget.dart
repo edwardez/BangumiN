@@ -19,7 +19,8 @@ class GroupJoinSingleWidget extends StatelessWidget {
         ),
         TimelineCommonListTile(
           leadingWidget:
-              CachedRoundedCover(imageUrl: groupJoinSingle.groupCoverImageUrl),
+          CachedRoundedCover.asGridSize(
+              imageUrl: groupJoinSingle.groupCoverImageUrl),
           title: groupJoinSingle.groupName,
           subtitle: groupJoinSingle.groupDescription,
         ),

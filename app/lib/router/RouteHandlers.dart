@@ -6,6 +6,7 @@ import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
 import 'package:munin/widgets/subject/SubjectWidget.dart';
 import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
+import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
 
 var loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -43,3 +44,15 @@ var subjectDetailInfoRouteHandler = Handler(
         ),
       );
     });
+
+var subjectCollectionManagementRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String subjectIdStr = params["subjectId"]?.first;
+      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+      return Scaffold(
+        body: SubjectCollectionManagementWidget(
+          subjectId: subjectId,
+        ),
+      );
+    });
+

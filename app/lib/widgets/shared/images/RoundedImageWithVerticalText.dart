@@ -33,6 +33,8 @@ class RoundedImageWithVerticalText extends StatelessWidget {
     this.subTitleMaxLines = 1,
     totalWidthFactor = 1.5,
   })  : this.widgetWidth = imageWidth * totalWidthFactor,
+        assert(imageWidth != null),
+        assert(imageHeight != null),
         super(key: key);
 
   @override
@@ -73,7 +75,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
         ),
       ),
       onTap: generateOnTapCallbackForBangumiContent(
-          contentType: contentType, id: id, context: context),
+          contentType: contentType, id: id, pageUrl: pageUrl, context: context),
     );
   }
 }

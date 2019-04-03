@@ -1,7 +1,7 @@
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/oauth/OauthReducer.dart';
-import 'package:munin/redux/subject/SubtectReducer.dart';
+import 'package:munin/redux/subject/SubjectReducer.dart';
 import 'package:munin/redux/timeline/TimelineReducer.dart';
 
 // We create the State reducer by combining many smaller reducers into one!

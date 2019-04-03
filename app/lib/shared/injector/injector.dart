@@ -61,7 +61,8 @@ Future<void> injector(GetIt getIt) async {
 
 
   final bangumiSubjectService = BangumiSubjectService(
-      cookieClient: _bangumiCookieClient);
+      cookieClient: _bangumiCookieClient, oauthClient: _bangumiOauthClient
+  );
   getIt.registerSingleton<BangumiSubjectService>(bangumiSubjectService);
 
   return;
@@ -110,7 +111,7 @@ Dio _createDioForBangumiCookieClient(
   /// enable logging in development environment
   if (Application.environmentValue.environmentType ==
       EnvironmentType.Development) {
-    dio.interceptors.add(LogInterceptor(responseBody: false));
+//    dio.interceptors.add(LogInterceptor(responseBody: false));
   }
 
   return dio;

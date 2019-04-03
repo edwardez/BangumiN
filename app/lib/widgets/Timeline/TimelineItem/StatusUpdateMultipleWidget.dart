@@ -21,6 +21,7 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
         contentType: image.contentType,
         imageUrl: image.imageUrl,
         id: image.id,
+        pageUrl: image.pageUrl,
         totalWidthFactor: 1,
       ));
     }

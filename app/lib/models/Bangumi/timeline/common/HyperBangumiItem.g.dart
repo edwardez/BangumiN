@@ -155,34 +155,24 @@ class HyperBangumiItemBuilder
   _$HyperBangumiItem _$v;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   BangumiContent _contentType;
-
   BangumiContent get contentType => _$this._contentType;
-
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 
   String _name;
-
   String get name => _$this._name;
-
   set name(String name) => _$this._name = name;
 
   String _pageUrl;
-
   String get pageUrl => _$this._pageUrl;
-
   set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
 
   String _imageUrl;
-
   String get imageUrl => _$this._imageUrl;
-
   set imageUrl(String imageUrl) => _$this._imageUrl = imageUrl;
 
   HyperBangumiItemBuilder();

@@ -21,7 +21,7 @@ class MonoFavoriteSingleWidget extends StatelessWidget {
           user: monoFavoriteSingle.user,
         ),
         TimelineCommonListTile(
-          leadingWidget: CachedRoundedCover(
+          leadingWidget: CachedRoundedCover.asGridSize(
               imageUrl: monoFavoriteSingle.monoAvatarImageUrl),
           title: monoFavoriteSingle.monoName,
         ),

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:quiver/collection.dart';
 
@@ -54,4 +56,29 @@ lastOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
   }
 
   return builtList.last.last;
+}
+
+/// Put a new [K, V] pair into the [orderedHashMap] if it doesn't exist
+/// otherwise, move the existing one to the tail of the [orderedHashMap]
+/// It is an in-place operation
+/// Note: it only works if the map is ordered(i.e. [LinkedHashMap])
+void putOrMoveToLastInMap<K, V>(Map<K, V> orderedHashMap, K newKey,
+    V newValue) {
+  if (orderedHashMap.containsKey(newKey)) {
+    orderedHashMap.remove(newKey);
+  }
+
+  orderedHashMap[newKey] = newValue;
+}
+
+/// Put a new [K, V] pair into the [orderedHashSet] if it doesn't exist
+/// otherwise, move the existing one to the tail of the [orderedHashSet]
+/// It is an in-place operation
+/// Note: it only works if the set is ordered(i.e. [LinkedHashSet])
+void putOrMoveToLastInSet<K>(Set<K> orderedHashSet, K newValue) {
+  if (orderedHashSet.contains(newValue)) {
+    orderedHashSet.remove(newValue);
+  }
+
+  orderedHashSet.add(newValue);
 }

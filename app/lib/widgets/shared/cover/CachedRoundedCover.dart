@@ -1,15 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/styles/theme/common.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class CachedRoundedCover extends StatelessWidget {
   final String imageUrl;
   final double width;
   final double height;
+  final BorderRadiusGeometry borderRadius;
 
-  CachedRoundedCover({@required this.imageUrl, this.width, this.height});
+  CachedRoundedCover({@required this.imageUrl,
+    @required this.width,
+    @required this.height,
+    this.borderRadius =
+    const BorderRadius.all(Radius.circular(defaultImageCircularRadius))});
 
-  CachedRoundedCover.asGridSize({@required this.imageUrl})
+  CachedRoundedCover.asGridSize({@required this.imageUrl,
+    this.borderRadius =
+    const BorderRadius.all(Radius.circular(defaultImageCircularRadius))})
       : this.width = 48,
         this.height = 48;
 
@@ -24,18 +32,16 @@ class CachedRoundedCover extends StatelessWidget {
       );
     }
 
-//    return Image.network(imageUrl);
-
-    /// TODO: clip is expensive, consider avoid using if there is performance issue
-    return ClipRRect(
-      borderRadius: new BorderRadius.circular(8.0),
-      child: CachedNetworkImage(
-        width: this.width,
-        height: this.height,
-        imageUrl: this.imageUrl,
-        fit: BoxFit.cover,
-        errorWidget: (context, url, error) => new Icon(Icons.error),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(imageUrl),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: borderRadius,
       ),
+      width: width,
+      height: height,
     );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class SubjectSummary extends StatelessWidget {
-  final Subject subject;
+  final BangumiSubject subject;
   final int summaryMaxLines = 5;
 
   const SubjectSummary({Key key, @required this.subject}) : super(key: key);
@@ -29,8 +30,11 @@ class SubjectSummary extends StatelessWidget {
                 child: Text('简介与制作人员'),
                 textColor: Theme.of(context).primaryColor,
                 onPressed: () {
+                  /// opens [SubjectDetailInfoWidget]
                   Application.router.navigateTo(
-                      context, '/subject/info/${subject.id}',
+                      context,
+                      Routes.subjectDetailInfoPageRoute
+                          .replaceFirst(':subjectId', subject.id?.toString()),
                       transition: TransitionType.native);
                 },
               ),

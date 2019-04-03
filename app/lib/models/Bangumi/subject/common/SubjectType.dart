@@ -52,6 +52,28 @@ class SubjectType extends EnumClass {
     }
   }
 
+  /// Get quantified chinese name by subject type
+  /// '一本书', '一张唱片' ...etc
+  /// TODO(edward): I feel like there is a better way to get it's enum type...
+  @memoized
+  String get activityVerbChineseNameByType {
+    switch (SubjectType.valueOf(this.name)) {
+      case SubjectType.Book:
+        return '看';
+      case SubjectType.Anime:
+        return '看';
+      case SubjectType.Music:
+        return '听';
+      case SubjectType.Game:
+        return '玩';
+      case SubjectType.Real:
+        return '看';
+      case SubjectType.All:
+      default:
+        return '看';
+    }
+  }
+
   const SubjectType._(String name) : super(name);
 
   static BuiltSet<SubjectType> get values => _$values;

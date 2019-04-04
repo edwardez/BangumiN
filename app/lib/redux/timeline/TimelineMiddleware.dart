@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 import 'package:munin/redux/app/AppState.dart';

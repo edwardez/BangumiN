@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/StatusUpdateMultiple.dart';
-import 'package:munin/models/Bangumi/timeline/common/HyperImage.dart';
+import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
+import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/WrappableHyperTextLinkList.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';

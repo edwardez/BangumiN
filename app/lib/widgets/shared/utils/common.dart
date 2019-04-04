@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 

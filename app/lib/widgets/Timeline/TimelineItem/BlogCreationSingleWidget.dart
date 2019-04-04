@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/BlogCreationSingle.dart';
+import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 
 class BlogCreationSingleWidget extends StatelessWidget {

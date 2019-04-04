@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/PublicMessageNormal.dart';
+import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 

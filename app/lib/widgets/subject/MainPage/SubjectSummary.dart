@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 

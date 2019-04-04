@@ -1,5 +1,5 @@
-import 'package:munin/models/Bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/redux/subject/SubjectState.dart';

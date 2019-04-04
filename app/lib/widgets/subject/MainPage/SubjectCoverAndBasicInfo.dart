@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';

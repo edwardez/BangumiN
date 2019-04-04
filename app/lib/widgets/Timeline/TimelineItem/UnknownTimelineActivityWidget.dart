@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/UnknownTimelineActivity.dart';
+import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/shared/utils/common.dart';
 
 /// an unknown timeline activity, only truncated plain text will be shown

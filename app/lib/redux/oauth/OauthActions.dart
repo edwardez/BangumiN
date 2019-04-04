@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 
 class LoginPage {
   final BuildContext context;

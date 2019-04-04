@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/common/HyperBangumiItem.dart';
+import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 
 class WrappableHyperTextLinkList extends StatelessWidget {
   final BuiltList<HyperBangumiItem> hyperBangumiItems;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/PublicMessageNoReply.dart';
+import 'package:munin/models/bangumi/timeline/PublicMessageNoReply.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 
 /// a special public message that's published by system and un-deletable

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/MonoFavoriteSingle.dart';
+import 'package:munin/models/bangumi/timeline/MonoFavoriteSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';

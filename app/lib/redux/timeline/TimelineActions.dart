@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/models/Bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
 class LoadTimelineFeed {
   final Completer completer;

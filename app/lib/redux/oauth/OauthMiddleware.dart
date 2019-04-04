@@ -1,7 +1,7 @@
 import 'dart:math' show min;
 
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';

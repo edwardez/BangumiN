@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectCommentMetaInfo.dart';
 import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 

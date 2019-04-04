@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 
 /// a commonly-used user list tile

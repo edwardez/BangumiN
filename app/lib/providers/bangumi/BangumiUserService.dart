@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:shared_preferences/shared_preferences.dart';

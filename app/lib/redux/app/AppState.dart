@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';

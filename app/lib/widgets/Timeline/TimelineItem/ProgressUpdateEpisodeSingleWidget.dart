@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/ProgressUpdateEpisodeSingle.dart';
+import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 
 class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {

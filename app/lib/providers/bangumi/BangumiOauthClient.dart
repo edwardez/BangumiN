@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show Response;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/BangumiUserIdentity.dart';
+import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:oauth2/oauth2.dart' show Client, AuthorizationCodeGrant;
 import 'package:oauth2/oauth2.dart' as oauth2;

@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
+import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';

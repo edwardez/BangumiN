@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedImageWithVerticalText.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectComment.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/CommentUserListTile.dart';
 

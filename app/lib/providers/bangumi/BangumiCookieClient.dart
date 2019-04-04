@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
+import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 
 // A client for Bangumi thst sends requests with cookie and handles relevant persistence
 class BangumiCookieClient {

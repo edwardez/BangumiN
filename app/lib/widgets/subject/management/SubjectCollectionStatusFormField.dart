@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 
 typedef void ChipSelectedCallBack(CollectionStatus status);
 

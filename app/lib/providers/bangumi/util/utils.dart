@@ -1,5 +1,5 @@
 import 'package:html/dom.dart' show Element, Node, NodeList;
-import 'package:munin/models/Bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 

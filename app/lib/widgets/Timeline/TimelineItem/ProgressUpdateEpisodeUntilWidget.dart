@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
+import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 
 /// this currently applies to both book and tv shows(shares same route, layout, etc)

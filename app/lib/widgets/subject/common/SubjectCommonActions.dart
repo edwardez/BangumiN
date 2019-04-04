@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/widgets/shared/icons/PlatformIcons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:share/share.dart';
 
@@ -49,13 +49,13 @@ List<Widget> subjectCommonActions(BuildContext context,
     BangumiSubject subject) {
   return [
     IconButton(
-      icon: Icon(PlatformIcons.shareIconData),
+      icon: Icon(AdaptiveIcons.shareIconData),
       onPressed: () {
         Share.share('${subject.name} ${subject.pageUrlFromCalculation}');
       },
     ),
     IconButton(
-      icon: Icon(PlatformIcons.moreActionsIconData),
+      icon: Icon(AdaptiveIcons.moreActionsIconData),
       onPressed: () {
         _settingModalBottomSheet(context, subject);
       },

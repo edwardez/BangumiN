@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/widgets/shared/icons/MuninIcons.dart';
 
 /// A set of [IconData] that has platform awareness
-class PlatformIcons {
+class AdaptiveIcons {
   static IconData get shareIconData {
     if (Platform.isIOS) {
       return MuninIcons.muninCupertinoShare;
@@ -14,9 +14,17 @@ class PlatformIcons {
     }
   }
 
+  static IconData get backIconData {
+    if (Platform.isIOS) {
+      return Icons.arrow_back_ios;
+    } else {
+      return Icons.arrow_back;
+    }
+  }
+
   static IconData get forwardIconData {
     if (Platform.isIOS) {
-      return CupertinoIcons.forward;
+      return Icons.arrow_forward_ios;
     } else {
       return Icons.arrow_forward;
     }

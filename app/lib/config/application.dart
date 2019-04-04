@@ -15,6 +15,7 @@ import 'package:munin/redux/subject/SubjectMiddleware.dart';
 import 'package:munin/redux/timeline/TimelineMiddleware.dart';
 import 'package:munin/shared/injector/injector.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt();
@@ -28,6 +29,7 @@ abstract class Application {
   final bangumiOauthAuthorizationEndpoint = 'https://bgm.tv/oauth/authorize';
   final bangumiOauthTokenEndpoint = 'https://bgm.tv/oauth/access_token';
   final bangumiMainHost = 'bgm.tv';
+  final bangumiApiHost = 'api.bgm.tv';
 
   EnvironmentType environmentType;
   String bangumiOauthClientIdentifier;
@@ -68,7 +70,9 @@ abstract class Application {
         _isAuthenticated = false;
       }
     }
-
+    Epic<AppState> epics = combineEpics<AppState>(
+        []..addAll(createSubjectMiddleware(_bangumiSubjectService))
+    );
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
@@ -77,10 +81,12 @@ abstract class Application {
     }),
         middleware: [
 //          LoggingMiddleware.printer(),
+          EpicMiddleware<AppState>(epics),
         ]..addAll(createOauthMiddleware(_bangumiOauthClient,
             _bangumiCookieClient, bangumiUserService, preferences))..addAll(
-            createTimelineMiddleware(_bangumiTimelineService))..addAll(
-            createSubjectMiddleware(_bangumiSubjectService)));
+            createTimelineMiddleware(_bangumiTimelineService))
+
+    );
 
     runApp(MuninApp(this, store));
   }

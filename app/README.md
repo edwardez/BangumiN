@@ -18,3 +18,9 @@ Flutter + BangumiN == Munin (a new Bangumi App)
 1. [Effective DART](https://www.dartlang.org/guides/language/effective-dart)
 2. Don't mix package import with relative import as it's [required by one of our library](https://pub.dartlang.org/packages/get_it) 
 3. Please fix all lint warnings/errors before submitting code
+
+# Special terminology
+ - Bangumi Subject: Not to be confused with `Subject` in `Rx`, here `Subject` refers to a work, like a 
+    Music, Game...
+ - Bangumi Collection: Not to be confused with `Collection` in Dart, here collection indicates a subject that 
+   User has marked with some status. i.e. User watched a Movie, then user owns a(and only one) `Collection` of this movie

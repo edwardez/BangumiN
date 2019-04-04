@@ -1,21 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Subject.dart';
+part of 'BangumiSubject.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<Subject> _$subjectSerializer = new _$SubjectSerializer();
+Serializer<BangumiSubject> _$bangumiSubjectSerializer =
+    new _$BangumiSubjectSerializer();
 
-class _$SubjectSerializer implements StructuredSerializer<Subject> {
+class _$BangumiSubjectSerializer
+    implements StructuredSerializer<BangumiSubject> {
   @override
-  final Iterable<Type> types = const [Subject, _$Subject];
+  final Iterable<Type> types = const [BangumiSubject, _$BangumiSubject];
   @override
-  final String wireName = 'Subject';
+  final String wireName = 'BangumiSubject';
 
   @override
-  Iterable serialize(Serializers serializers, Subject object,
+  Iterable serialize(Serializers serializers, BangumiSubject object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'type',
@@ -30,6 +32,14 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
       'images',
       serializers.serialize(object.images,
           specifiedType: const FullType(Images)),
+      'bangumiSuggestedTags',
+      serializers.serialize(object.bangumiSuggestedTags,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'userSelectedTags',
+      serializers.serialize(object.userSelectedTags,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -75,6 +85,13 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
             specifiedType: const FullType(BuiltListMultimap,
                 const [const FullType(String), const FullType(InfoBoxItem)])));
     }
+    if (object.user != null) {
+      result
+        ..add('user')
+        ..add(serializers.serialize(object.user,
+            specifiedType: const FullType(BuiltListMultimap,
+                const [const FullType(String), const FullType(InfoBoxItem)])));
+    }
     if (object.curatedInfoBoxRows != null) {
       result
         ..add('curatedInfoBoxRows')
@@ -105,9 +122,9 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
   }
 
   @override
-  Subject deserialize(Serializers serializers, Iterable serialized,
+  BangumiSubject deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SubjectBuilder();
+    final result = new BangumiSubjectBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -164,6 +181,25 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
                 const FullType(InfoBoxItem)
               ])) as BuiltListMultimap);
           break;
+        case 'bangumiSuggestedTags':
+          result.bangumiSuggestedTags.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList);
+          break;
+        case 'userSelectedTags':
+          result.userSelectedTags.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList);
+          break;
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltListMultimap, const [
+                const FullType(String),
+                const FullType(InfoBoxItem)
+              ])) as BuiltListMultimap);
+          break;
         case 'curatedInfoBoxRows':
           result.curatedInfoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
@@ -194,7 +230,7 @@ class _$SubjectSerializer implements StructuredSerializer<Subject> {
   }
 }
 
-class _$Subject extends Subject {
+class _$BangumiSubject extends BangumiSubject {
   @override
   final SubjectType type;
   @override
@@ -216,6 +252,12 @@ class _$Subject extends Subject {
   @override
   final BuiltListMultimap<String, InfoBoxItem> infoBoxRows;
   @override
+  final BuiltList<String> bangumiSuggestedTags;
+  @override
+  final BuiltList<String> userSelectedTags;
+  @override
+  final BuiltListMultimap<String, InfoBoxItem> user;
+  @override
   final BuiltListMultimap<String, InfoBoxItem> curatedInfoBoxRows;
   @override
   final int id;
@@ -228,10 +270,10 @@ class _$Subject extends Subject {
   String __infoBoxRowsPlainText;
   String __pageUrlFromCalculation;
 
-  factory _$Subject([void updates(SubjectBuilder b)]) =>
-      (new SubjectBuilder()..update(updates)).build();
+  factory _$BangumiSubject([void updates(BangumiSubjectBuilder b)]) =>
+      (new BangumiSubjectBuilder()..update(updates)).build();
 
-  _$Subject._(
+  _$BangumiSubject._(
       {this.type,
       this.subTypeName,
       this.summary,
@@ -242,6 +284,9 @@ class _$Subject extends Subject {
       this.relatedSubjects,
       this.commentsPreview,
       this.infoBoxRows,
+      this.bangumiSuggestedTags,
+      this.userSelectedTags,
+      this.user,
       this.curatedInfoBoxRows,
       this.id,
       this.pageUrlFromApi,
@@ -249,19 +294,26 @@ class _$Subject extends Subject {
       this.nameCn})
       : super._() {
     if (type == null) {
-      throw new BuiltValueNullFieldError('Subject', 'type');
+      throw new BuiltValueNullFieldError('BangumiSubject', 'type');
     }
     if (summary == null) {
-      throw new BuiltValueNullFieldError('Subject', 'summary');
+      throw new BuiltValueNullFieldError('BangumiSubject', 'summary');
     }
     if (rating == null) {
-      throw new BuiltValueNullFieldError('Subject', 'rating');
+      throw new BuiltValueNullFieldError('BangumiSubject', 'rating');
     }
     if (images == null) {
-      throw new BuiltValueNullFieldError('Subject', 'images');
+      throw new BuiltValueNullFieldError('BangumiSubject', 'images');
+    }
+    if (bangumiSuggestedTags == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiSubject', 'bangumiSuggestedTags');
+    }
+    if (userSelectedTags == null) {
+      throw new BuiltValueNullFieldError('BangumiSubject', 'userSelectedTags');
     }
     if (name == null) {
-      throw new BuiltValueNullFieldError('Subject', 'name');
+      throw new BuiltValueNullFieldError('BangumiSubject', 'name');
     }
   }
 
@@ -274,16 +326,17 @@ class _$Subject extends Subject {
       __pageUrlFromCalculation ??= super.pageUrlFromCalculation;
 
   @override
-  Subject rebuild(void updates(SubjectBuilder b)) =>
+  BangumiSubject rebuild(void updates(BangumiSubjectBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SubjectBuilder toBuilder() => new SubjectBuilder()..replace(this);
+  BangumiSubjectBuilder toBuilder() =>
+      new BangumiSubjectBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Subject &&
+    return other is BangumiSubject &&
         type == other.type &&
         subTypeName == other.subTypeName &&
         summary == other.summary &&
@@ -294,6 +347,9 @@ class _$Subject extends Subject {
         relatedSubjects == other.relatedSubjects &&
         commentsPreview == other.commentsPreview &&
         infoBoxRows == other.infoBoxRows &&
+        bangumiSuggestedTags == other.bangumiSuggestedTags &&
+        userSelectedTags == other.userSelectedTags &&
+        user == other.user &&
         curatedInfoBoxRows == other.curatedInfoBoxRows &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
@@ -317,18 +373,28 @@ class _$Subject extends Subject {
                                                 $jc(
                                                     $jc(
                                                         $jc(
-                                                            $jc(0,
-                                                                type.hashCode),
-                                                            subTypeName
-                                                                .hashCode),
-                                                        summary.hashCode),
-                                                    rating.hashCode),
-                                                rank.hashCode),
-                                            images.hashCode),
-                                        characters.hashCode),
-                                    relatedSubjects.hashCode),
-                                commentsPreview.hashCode),
-                            infoBoxRows.hashCode),
+                                                            $jc(
+                                                                $jc(
+                                                                    $jc(
+                                                                        $jc(
+                                                                            0,
+                                                                            type
+                                                                                .hashCode),
+                                                                        subTypeName
+                                                                            .hashCode),
+                                                                    summary
+                                                                        .hashCode),
+                                                                rating
+                                                                    .hashCode),
+                                                            rank.hashCode),
+                                                        images.hashCode),
+                                                    characters.hashCode),
+                                                relatedSubjects.hashCode),
+                                            commentsPreview.hashCode),
+                                        infoBoxRows.hashCode),
+                                    bangumiSuggestedTags.hashCode),
+                                userSelectedTags.hashCode),
+                            user.hashCode),
                         curatedInfoBoxRows.hashCode),
                     id.hashCode),
                 pageUrlFromApi.hashCode),
@@ -338,7 +404,7 @@ class _$Subject extends Subject {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Subject')
+    return (newBuiltValueToStringHelper('BangumiSubject')
           ..add('type', type)
           ..add('subTypeName', subTypeName)
           ..add('summary', summary)
@@ -349,6 +415,9 @@ class _$Subject extends Subject {
           ..add('relatedSubjects', relatedSubjects)
           ..add('commentsPreview', commentsPreview)
           ..add('infoBoxRows', infoBoxRows)
+          ..add('bangumiSuggestedTags', bangumiSuggestedTags)
+          ..add('userSelectedTags', userSelectedTags)
+          ..add('user', user)
           ..add('curatedInfoBoxRows', curatedInfoBoxRows)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
@@ -358,9 +427,11 @@ class _$Subject extends Subject {
   }
 }
 
-class SubjectBuilder
-    implements Builder<Subject, SubjectBuilder>, SubjectBaseBuilder {
-  _$Subject _$v;
+class BangumiSubjectBuilder
+    implements
+        Builder<BangumiSubject, BangumiSubjectBuilder>,
+        SubjectBaseBuilder {
+  _$BangumiSubject _$v;
 
   SubjectType _type;
   SubjectType get type => _$this._type;
@@ -412,6 +483,24 @@ class SubjectBuilder
   set infoBoxRows(ListMultimapBuilder<String, InfoBoxItem> infoBoxRows) =>
       _$this._infoBoxRows = infoBoxRows;
 
+  ListBuilder<String> _bangumiSuggestedTags;
+  ListBuilder<String> get bangumiSuggestedTags =>
+      _$this._bangumiSuggestedTags ??= new ListBuilder<String>();
+  set bangumiSuggestedTags(ListBuilder<String> bangumiSuggestedTags) =>
+      _$this._bangumiSuggestedTags = bangumiSuggestedTags;
+
+  ListBuilder<String> _userSelectedTags;
+  ListBuilder<String> get userSelectedTags =>
+      _$this._userSelectedTags ??= new ListBuilder<String>();
+  set userSelectedTags(ListBuilder<String> userSelectedTags) =>
+      _$this._userSelectedTags = userSelectedTags;
+
+  ListMultimapBuilder<String, InfoBoxItem> _user;
+  ListMultimapBuilder<String, InfoBoxItem> get user =>
+      _$this._user ??= new ListMultimapBuilder<String, InfoBoxItem>();
+  set user(ListMultimapBuilder<String, InfoBoxItem> user) =>
+      _$this._user = user;
+
   ListMultimapBuilder<String, InfoBoxItem> _curatedInfoBoxRows;
   ListMultimapBuilder<String, InfoBoxItem> get curatedInfoBoxRows =>
       _$this._curatedInfoBoxRows ??=
@@ -437,9 +526,9 @@ class SubjectBuilder
   String get nameCn => _$this._nameCn;
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
-  SubjectBuilder();
+  BangumiSubjectBuilder();
 
-  SubjectBuilder get _$this {
+  BangumiSubjectBuilder get _$this {
     if (_$v != null) {
       _type = _$v.type;
       _subTypeName = _$v.subTypeName;
@@ -451,6 +540,9 @@ class SubjectBuilder
       _relatedSubjects = _$v.relatedSubjects?.toBuilder();
       _commentsPreview = _$v.commentsPreview?.toBuilder();
       _infoBoxRows = _$v.infoBoxRows?.toBuilder();
+      _bangumiSuggestedTags = _$v.bangumiSuggestedTags?.toBuilder();
+      _userSelectedTags = _$v.userSelectedTags?.toBuilder();
+      _user = _$v.user?.toBuilder();
       _curatedInfoBoxRows = _$v.curatedInfoBoxRows?.toBuilder();
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
@@ -462,24 +554,24 @@ class SubjectBuilder
   }
 
   @override
-  void replace(covariant Subject other) {
+  void replace(covariant BangumiSubject other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$Subject;
+    _$v = other as _$BangumiSubject;
   }
 
   @override
-  void update(void updates(SubjectBuilder b)) {
+  void update(void updates(BangumiSubjectBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$Subject build() {
-    _$Subject _$result;
+  _$BangumiSubject build() {
+    _$BangumiSubject _$result;
     try {
       _$result = _$v ??
-          new _$Subject._(
+          new _$BangumiSubject._(
               type: type,
               subTypeName: subTypeName,
               summary: summary,
@@ -490,6 +582,9 @@ class SubjectBuilder
               relatedSubjects: _relatedSubjects?.build(),
               commentsPreview: _commentsPreview?.build(),
               infoBoxRows: _infoBoxRows?.build(),
+              bangumiSuggestedTags: bangumiSuggestedTags.build(),
+              userSelectedTags: userSelectedTags.build(),
+              user: _user?.build(),
               curatedInfoBoxRows: _curatedInfoBoxRows?.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
@@ -511,11 +606,17 @@ class SubjectBuilder
         _commentsPreview?.build();
         _$failedField = 'infoBoxRows';
         _infoBoxRows?.build();
+        _$failedField = 'bangumiSuggestedTags';
+        bangumiSuggestedTags.build();
+        _$failedField = 'userSelectedTags';
+        userSelectedTags.build();
+        _$failedField = 'user';
+        _user?.build();
         _$failedField = 'curatedInfoBoxRows';
         _curatedInfoBoxRows?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'Subject', _$failedField, e.toString());
+            'BangumiSubject', _$failedField, e.toString());
       }
       rethrow;
     }

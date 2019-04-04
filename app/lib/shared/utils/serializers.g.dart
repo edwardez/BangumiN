@@ -11,11 +11,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AppState.serializer)
       ..add(BangumiContent.serializer)
       ..add(BangumiCookieCredentials.serializer)
+      ..add(BangumiSubject.serializer)
       ..add(BangumiUserAvatar.serializer)
       ..add(BangumiUserBasic.serializer)
       ..add(BangumiUserIdentity.serializer)
       ..add(BlogCreationSingle.serializer)
       ..add(Character.serializer)
+      ..add(CollectionStatus.serializer)
+      ..add(CollectionStatusFromBangumi.serializer)
       ..add(CollectionUpdateSingle.serializer)
       ..add(Count.serializer)
       ..add(FeedChunks.serializer)
@@ -28,6 +31,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(IndexFavoriteSingle.serializer)
       ..add(InfoBoxItem.serializer)
       ..add(InfoBoxRow.serializer)
+      ..add(LoadingStatus.serializer)
       ..add(MonoFavoriteSingle.serializer)
       ..add(OauthState.serializer)
       ..add(ProgressUpdateEpisodeSingle.serializer)
@@ -37,7 +41,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Rating.serializer)
       ..add(RelatedSubject.serializer)
       ..add(StatusUpdateMultiple.serializer)
-      ..add(Subject.serializer)
+      ..add(SubjectCollectionInfo.serializer)
       ..add(SubjectComment.serializer)
       ..add(SubjectCommentMetaInfo.serializer)
       ..add(SubjectState.serializer)
@@ -63,6 +67,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(String), const FullType(InfoBoxItem)]),
           () => new ListMultimapBuilder<String, InfoBoxItem>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltListMultimap,
+              const [const FullType(String), const FullType(InfoBoxItem)]),
+          () => new ListMultimapBuilder<String, InfoBoxItem>())
+      ..addBuilderFactory(
           const FullType(BuiltListMultimap,
               const [const FullType(String), const FullType(InfoBoxItem)]),
           () => new ListMultimapBuilder<String, InfoBoxItem>())
@@ -76,15 +90,36 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(InfoBoxItem)]),
           () => new ListBuilder<InfoBoxItem>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(TimelineFeed)]),
-          () => new ListBuilder<TimelineFeed>())
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
           () => new ListBuilder<TimelineFeed>())
       ..addBuilderFactory(
-          const FullType(
-              BuiltMap, const [const FullType(int), const FullType(Subject)]),
-          () => new MapBuilder<int, Subject>()))
+          const FullType(BuiltList, const [const FullType(TimelineFeed)]),
+          () => new ListBuilder<TimelineFeed>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(BangumiSubject)]),
+          () => new MapBuilder<int, BangumiSubject>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(LoadingStatus)]),
+          () => new MapBuilder<int, LoadingStatus>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [
+            const FullType(int),
+            const FullType(SubjectCollectionInfo)
+          ]),
+          () => new MapBuilder<int, SubjectCollectionInfo>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(LoadingStatus)]),
+          () => new MapBuilder<int, LoadingStatus>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(LoadingStatus)]),
+          () => new MapBuilder<int, LoadingStatus>()))
     .build();
 
 // ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

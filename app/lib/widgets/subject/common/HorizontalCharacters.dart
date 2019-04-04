@@ -29,7 +29,12 @@ class HorizontalCharacters extends StatelessWidget {
     for (var character in characters) {
       imageWidgets.add(RoundedImageWithVerticalText(
         contentType: BangumiContent.Character,
-        imageUrl: character.images.small,
+
+        /// TODO: grid/small stores a low-resolution size avatar, medium/large stores a hi-res one
+        /// However Bangumi allows user to crop image and produces a corresponding small/grid image
+        /// We can let user select using a high-res but incorrectly cropped version
+        /// Or a lo-res but correctly cropped version
+        imageUrl: character.images.grid,
         id: character.id.toString(),
         imageHeight: imageHeight,
         imageWidth: imageWidth,

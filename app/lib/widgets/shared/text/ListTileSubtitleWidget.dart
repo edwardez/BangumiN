@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
-import 'package:munin/widgets/shared/utils/SubjectStars.dart';
 
 /// a subtitle for list tile that contains an action, a subject score and a updatedAt time
 /// it's used in timeline, user comment lists...etc

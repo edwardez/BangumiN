@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/styles/theme/common.dart';
@@ -20,7 +20,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
     this.subjectId,
   }) : super(key: key);
 
-  Widget _buildDetailInfoBody(BuildContext context, Subject subject) {
+  Widget _buildDetailInfoBody(BuildContext context, BangumiSubject subject) {
     List<Widget> wraps = [];
 
     wraps.add(Text(subject.summary));
@@ -62,7 +62,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
     );
   }
 
-  void _settingModalBottomSheet(BuildContext context, Subject subject) {
+  void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -126,7 +126,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Subject subject;
+  final BangumiSubject subject;
 
   @override
   int get hashCode => subject.hashCode;

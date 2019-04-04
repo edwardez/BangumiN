@@ -13,7 +13,6 @@ abstract class SubjectBaseBuilder {
   set id(int id);
 
   String get pageUrlFromApi;
-
   set pageUrlFromApi(String pageUrlFromApi);
 
   String get name;

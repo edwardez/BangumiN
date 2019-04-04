@@ -4,11 +4,9 @@ import 'package:transparent_image/transparent_image.dart';
 
 class CachedCircleAvatar extends StatelessWidget {
   final String imageUrl;
-  final double width;
-  final double height;
+  final double radius;
 
-  CachedCircleAvatar(
-      {@required this.imageUrl, this.width = 40.0, this.height = 40.0});
+  CachedCircleAvatar({@required this.imageUrl, this.radius = 20.0});
 
   @override
   Widget build(BuildContext context) {
@@ -16,21 +14,17 @@ class CachedCircleAvatar extends StatelessWidget {
       return Image.memory(
         kTransparentImage,
         semanticLabel: '用户头像',
-        width: width,
-        height: height,
+        width: radius * 2,
+        height: radius * 2,
       );
     }
-//    return Image.network(imageUrl);
 
-    /// TODO: clip is expensive, consider avoid using if there is performance issue
-    return ClipOval(
-      child: CachedNetworkImage(
-        width: this.width,
-        height: this.height,
-        imageUrl: this.imageUrl,
-        fit: BoxFit.contain,
-        errorWidget: (context, url, error) => new Icon(Icons.error),
-      ),
+    return CircleAvatar(
+      radius: this.radius,
+      backgroundColor: Theme
+          .of(context)
+          .scaffoldBackgroundColor,
+      backgroundImage: CachedNetworkImageProvider(this.imageUrl),
     );
   }
 }

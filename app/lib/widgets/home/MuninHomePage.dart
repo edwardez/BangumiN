@@ -65,12 +65,13 @@ class _MuninHomePageState extends State<MuninHomePage> {
                         ),
                         IconButton(
                           icon: CachedCircleAvatar(
-                              imageUrl: vm
-                                  .state
-                                  .currentAuthenticatedUserBasicInfo
-                                  ?.avatar
-                                  ?.medium ??
-                                  'https://lain.bgm.tv/pic/user/m/icon.jpg'),
+                            imageUrl: vm.state.currentAuthenticatedUserBasicInfo
+                                ?.avatar?.small ??
+                                'https://lain.bgm.tv/pic/user/m/icon.jpg',
+                            radius: 15.0,
+
+                            /// maybe avoid hard coding this value?
+                          ),
                           tooltip: '头像，更多选项',
                           onPressed: () {
                             Navigator.push(
@@ -124,7 +125,6 @@ class _ViewModel {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is _ViewModel &&
-            state == other.state;
+        other is _ViewModel && state == other.state;
   }
 }

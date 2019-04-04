@@ -1,8 +1,11 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/config/application.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/router/routes.dart';
 
 class SubjectManagementWidget extends StatelessWidget {
-  final Subject subject;
+  final BangumiSubject subject;
 
   const SubjectManagementWidget({Key key, @required this.subject})
       : super(key: key);
@@ -37,7 +40,13 @@ class SubjectManagementWidget extends StatelessWidget {
                   textColor: Theme.of(context).primaryColor,
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor, width: 1.0),
-                  onPressed: () {},
+                  onPressed: () {
+                    Application.router.navigateTo(
+                        context,
+                        Routes.subjectCollectionManagementRoute
+                            .replaceFirst(':subjectId', subject.id?.toString()),
+                        transition: TransitionType.nativeModal);
+                  },
                 ),
               ),
             ),

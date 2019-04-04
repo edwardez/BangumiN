@@ -136,28 +136,20 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
   _$HyperImage _$v;
 
   String _id;
-
   String get id => _$this._id;
-
   set id(String id) => _$this._id = id;
 
   BangumiContent _contentType;
-
   BangumiContent get contentType => _$this._contentType;
-
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 
   String _imageUrl;
-
   String get imageUrl => _$this._imageUrl;
-
   set imageUrl(String imageUrl) => _$this._imageUrl = imageUrl;
 
   String _pageUrl;
-
   String get pageUrl => _$this._pageUrl;
-
   set pageUrl(String pageUrl) => _$this._pageUrl = pageUrl;
 
   HyperImageBuilder();

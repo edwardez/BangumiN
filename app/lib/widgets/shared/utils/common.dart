@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 generateOnTapCallbackForBangumiContent({
   BangumiContent contentType,
   String id,
+  String pageUrl,
   BuildContext context,
 }) {
   assert(contentType != null);
@@ -35,7 +36,13 @@ generateOnTapCallbackForBangumiContent({
     };
   }
 
-  String webPageUrl = _getWebPageUrlByContentType(contentType, id);
+  String webPageUrl;
+
+  if (contentType == BangumiContent.Doujin) {
+    webPageUrl = pageUrl;
+  } else {
+    webPageUrl = _getWebPageUrlByContentType(contentType, id);
+  }
 
   if (webPageUrl != null) {
     return () {

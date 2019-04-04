@@ -5,15 +5,18 @@ import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/models/Bangumi/BangumiUserAvatar.dart';
 import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/Bangumi/BangumiUserIdentity.dart';
+import 'package:munin/models/Bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/Bangumi/collection/CollectionStatusFromBangumi.dart';
+import 'package:munin/models/Bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Actor.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/Count.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/Bangumi/subject/Rating.dart';
 import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
 import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
@@ -37,6 +40,7 @@ import 'package:munin/models/Bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
@@ -70,7 +74,8 @@ part 'serializers.g.dart';
   OauthState,
   TimelineState,
   SubjectState,
-  Subject,
+  LoadingStatus,
+  BangumiSubject,
   SubjectType,
   Count,
   Rating,
@@ -81,9 +86,10 @@ part 'serializers.g.dart';
   SubjectCommentMetaInfo,
   Actor,
   InfoBoxRow,
-  InfoBoxItem
-
-
+  InfoBoxItem,
+  SubjectCollectionInfo,
+  CollectionStatusFromBangumi,
+  CollectionStatus
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

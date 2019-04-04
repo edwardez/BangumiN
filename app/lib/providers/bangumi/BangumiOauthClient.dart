@@ -14,7 +14,7 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 
 // A client for Bangumi that authorizes user, send requests with oauth token and handles relevant persistence
 class BangumiOauthClient {
-  BangumiCookieClient cookieClient;
+  BangumiCookieClient _cookieClient;
   FlutterSecureStorage secureStorage;
   String authorizationUrl;
   Client client;
@@ -29,7 +29,7 @@ class BangumiOauthClient {
     assert(secureStorage != null);
     assert(cookieClient != null);
 
-    this.cookieClient = cookieClient;
+    this._cookieClient = cookieClient;
     this.secureStorage = secureStorage;
 
     if (serializedBangumiOauthCredentials != null) {
@@ -48,7 +48,7 @@ class BangumiOauthClient {
     assert(secureStorage != null);
     assert(cookieClient != null);
 
-    this.cookieClient = cookieClient;
+    this._cookieClient = cookieClient;
     this.secureStorage = secureStorage;
     oauth2.Credentials credentials =
         oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
@@ -64,7 +64,7 @@ class BangumiOauthClient {
     assert(secureStorage != null);
     assert(cookieClient != null);
 
-    this.cookieClient = cookieClient;
+    this._cookieClient = cookieClient;
     this.secureStorage = secureStorage;
   }
 
@@ -83,7 +83,7 @@ class BangumiOauthClient {
   }
 
   Future<void> initializeAuthentication() async {
-    assert(cookieClient != null);
+    assert(_cookieClient != null);
 
     AuthorizationCodeGrant grant = new AuthorizationCodeGrant(
         Application.environmentValue.bangumiOauthClientIdentifier,
@@ -109,7 +109,7 @@ class BangumiOauthClient {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
 
-          this.cookieClient.updateBangumiAuthInfo(
+          this._cookieClient.updateBangumiAuthInfo(
               authCookie: authCookie, userAgent: userAgent);
         }
       }
@@ -119,7 +119,7 @@ class BangumiOauthClient {
     final String code = await onCode.first;
     client = await grant.handleAuthorizationResponse({'code': code});
     await persistCredentials();
-    await cookieClient.persistCredentials();
+    await _cookieClient.persistCredentials();
     _flutterWebviewPlugin.close();
     _flutterWebviewPlugin.dispose();
   }

@@ -4,12 +4,12 @@ import 'package:html/parser.dart' show parseFragment;
 import 'package:munin/models/Bangumi/common/Images.dart';
 import 'package:munin/models/Bangumi/mono/Actor.dart';
 import 'package:munin/models/Bangumi/mono/Character.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/Count.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/Bangumi/subject/Rating.dart';
 import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/models/Bangumi/subject/SubjectCollection.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
@@ -336,6 +336,40 @@ class SubjectParser {
     return infoBoxRow;
   }
 
+  BuiltList<String> parseBangumiSuggestedTags(DocumentFragment subjectElement) {
+    List<String> tags = [];
+
+    List<Element> tagElements = subjectElement.querySelectorAll('.tagList a');
+    RegExp invalidChars = RegExp(',| +');
+    for (Element element in tagElements) {
+      if (!isEmpty(element.text)) {
+        tags.add(element.text.replaceAll(invalidChars, ''));
+      }
+    }
+
+    return BuiltList<String>(tags);
+  }
+
+  BuiltList<String> parseUserSelectedTags(DocumentFragment subjectElement) {
+    List<String> userTags = [];
+
+    Element tagElement = subjectElement.querySelector('#tags');
+    String subTypeName = '';
+    RegExp invalidChars = RegExp(',| +');
+    if (tagElement != null) {
+      String concatenatedTags = tagElement.attributes['value'] ?? '';
+      List<String> splitTags = concatenatedTags.split(' ');
+      for (String tag in splitTags) {
+        tag = tag.replaceAll(invalidChars, '');
+        if (!isEmpty(tag)) {
+          userTags.add(tag);
+        }
+      }
+    }
+
+    return BuiltList<String>(userTags);
+  }
+
   /// in-place update [infoBoxRows] with [infoBoxItems]
   /// add a separator to value of infoBoxRows if it's not empty
   _addSeparatorIfNotFirstInfoBoxItem(
@@ -348,7 +382,7 @@ class SubjectParser {
     infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
   }
 
-  Subject process(String rawHtml) {
+  BangumiSubject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
     final SubjectType subjectType = SubjectType.getTypeByChineseName(
         document.querySelector('#navMenuNeue .focus')?.text);
@@ -429,7 +463,12 @@ class SubjectParser {
         .querySelector('#subject_summary')
         ?.text ?? '暂无简介';
 
-    return Subject((b) => b
+    BuiltList<String> bangumiSuggestedTags =
+    parseBangumiSuggestedTags(document);
+    BuiltList<String> userSelectedTags = parseUserSelectedTags(document);
+
+    return BangumiSubject((b) =>
+    b
       ..infoBoxRows.replace(infoBoxRows)
       ..curatedInfoBoxRows.replace(curatedInfoBoxRows)
       ..id = subjectId
@@ -442,7 +481,9 @@ class SubjectParser {
       ..images.replace(images)
       ..characters.replace(characters)
       ..commentsPreview.replace(comments)
-      ..relatedSubjects.replace(relatedSubjects));
+      ..relatedSubjects.replace(relatedSubjects)
+      ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
+      ..userSelectedTags.replace(userSelectedTags));
   }
 
   /// currently not in use

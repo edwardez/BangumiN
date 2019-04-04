@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:quiver/strings.dart';
 
 class SubjectCoverAndBasicInfo extends StatelessWidget {
-  final Subject subject;
+  final BangumiSubject subject;
   final int coverFlex;
   final int curatedInfoBoxFlex;
 
@@ -17,7 +18,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     this.curatedInfoBoxFlex = 4,
   }) : super(key: key);
 
-  _buildInfoWidgets(BuildContext context, Subject subject) {
+  _buildInfoWidgets(BuildContext context, BangumiSubject subject) {
     List<Widget> widgets = [];
     widgets.add(WrappableText(
       subject.name,
@@ -27,16 +28,18 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       maxLines: 3,
     ));
 
-    widgets.add(WrappableText(
-      subject.nameCn,
-      textStyle: Theme
-          .of(context)
-          .textTheme
-          .caption,
-      fit: FlexFit.tight,
-      outerWrapper: OuterWrapper.Row,
-      maxLines: 3,
-    ));
+    if (!isEmpty(subject.nameCn)) {
+      widgets.add(WrappableText(
+        subject.nameCn,
+        textStyle: Theme
+            .of(context)
+            .textTheme
+            .caption,
+        fit: FlexFit.tight,
+        outerWrapper: OuterWrapper.Row,
+        maxLines: 3,
+      ));
+    }
 
     if (subject.curatedInfoBoxRows != null) {
       subject.curatedInfoBoxRows
@@ -44,9 +47,11 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
         String concatenatedInfoBoxItem = infoBoxItem
             .expand((InfoBoxItem infoBoxItem) => [infoBoxItem.name])
             .join('');
-        widgets.add(WrappableText.smallVerticalPadding(
+        widgets.add(WrappableText(
           '$rowName: $concatenatedInfoBoxItem',
           maxLines: 3,
+          top: 3.0,
+          bottom: 3.0,
         ));
       });
     }

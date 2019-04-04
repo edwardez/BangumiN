@@ -85,7 +85,6 @@ class BangumiPinkBlue {
       color: Colors.white,
       iconTheme: IconThemeData(color: Colors.black54),
       textTheme: Typography.blackMountainView.copyWith(
-
       ),
     ),
     primarySwatch: Colors.blue,

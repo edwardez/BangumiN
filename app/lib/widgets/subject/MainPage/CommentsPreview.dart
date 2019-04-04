@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/Subject.dart';
+import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/common.dart';
@@ -8,7 +8,7 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/SubjectCommentWidget.dart';
 
 class CommentsPreview extends StatelessWidget {
-  final Subject subject;
+  final BangumiSubject subject;
 
   const CommentsPreview({Key key, @required this.subject}) : super(key: key);
 

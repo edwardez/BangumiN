@@ -299,7 +299,6 @@ class _SubjectCollectionManagementWidgetState
           formErrors.remove(SubjectCollectionError.LengthyComment);
         }
       },
-      keyboardAppearance: Theme.of(context).brightness,
       maxLines: 3,
       onSaved: (String comment) {
         localSubjectCollectionInfo =

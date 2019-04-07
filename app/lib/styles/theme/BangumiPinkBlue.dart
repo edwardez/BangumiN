@@ -88,6 +88,10 @@ class BangumiPinkBlue {
       ),
     ),
     primarySwatch: Colors.blue,
+
+    /// TODO: flutter by default calculates abd set it to [Brightness.dark]
+    /// verify whether [Brightness.light] meets color contrast requirement
+    primaryColorBrightness: Brightness.light,
     accentColor: bangumiPink,
   );
 }

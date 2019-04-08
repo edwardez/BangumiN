@@ -26,6 +26,8 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: 10,
       ),
+
+      /// TODO: "This class is relatively expensive. Avoid using it where possible."
       child: IntrinsicHeight(
         child: Flex(
           direction: Axis.horizontal,

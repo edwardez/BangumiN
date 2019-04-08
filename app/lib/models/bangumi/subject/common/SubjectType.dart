@@ -32,10 +32,9 @@ class SubjectType extends EnumClass {
 
   /// Get quantified chinese name by subject type
   /// '一本书', '一张唱片' ...etc
-  /// TODO(edward): I feel like there is a better way to get it's enum type...
   @memoized
   String get quantifiedChineseNameByType {
-    switch (SubjectType.valueOf(this.name)) {
+    switch (this) {
       case SubjectType.Book:
         return '本书';
       case SubjectType.Anime:
@@ -54,10 +53,9 @@ class SubjectType extends EnumClass {
 
   /// Get quantified chinese name by subject type
   /// '一本书', '一张唱片' ...etc
-  /// TODO(edward): I feel like there is a better way to get it's enum type...
   @memoized
   String get activityVerbChineseNameByType {
-    switch (SubjectType.valueOf(this.name)) {
+    switch (this) {
       case SubjectType.Book:
         return '看';
       case SubjectType.Anime:

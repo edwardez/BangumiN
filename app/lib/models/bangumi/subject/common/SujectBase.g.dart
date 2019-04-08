@@ -8,23 +8,17 @@ part of 'SujectBase.dart';
 
 abstract class SubjectBaseBuilder {
   void replace(SubjectBase other);
-
   void update(void updates(SubjectBaseBuilder b));
-
   int get id;
-
   set id(int id);
 
   String get pageUrlFromApi;
-
   set pageUrlFromApi(String pageUrlFromApi);
 
   String get name;
-
   set name(String name);
 
   String get nameCn;
-
   set nameCn(String nameCn);
 }
 

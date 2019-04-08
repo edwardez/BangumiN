@@ -29,8 +29,8 @@ class CollectionStatus extends EnumClass {
   /// '一本书', '一张唱片' ...etc
   /// TODO(edward): I feel like there is a better way to get it's enum type...
   @memoized
-  String get chineseNameByType {
-    switch (CollectionStatus.valueOf(this.name)) {
+  String get chineseName {
+    switch (this) {
       case CollectionStatus.Wish:
         return '想';
       case CollectionStatus.Collect:
@@ -48,8 +48,8 @@ class CollectionStatus extends EnumClass {
   }
 
   @memoized
-  String get wiredNameByType {
-    switch (CollectionStatus.valueOf(this.name)) {
+  String get wiredName {
+    switch (this) {
       case CollectionStatus.Wish:
         return 'wish';
       case CollectionStatus.Collect:

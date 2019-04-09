@@ -8,7 +8,7 @@ part 'Images.g.dart';
 
 enum ImageSize { Large, Common, Medium, Small, Grid, Unknown }
 
-enum ImageType { UserAvatar, CharacterAvatar, SubjectCover }
+enum ImageType { UserAvatar, MonoAvatar, SubjectCover }
 
 abstract class Images implements Built<Images, ImagesBuilder> {
   static const String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
@@ -35,13 +35,15 @@ abstract class Images implements Built<Images, ImagesBuilder> {
 
   /// initiate [Images] from a Image
   /// this works because bangumi image url follows same pattern
+  /// [imageSize] is the image size of [imageUrl], this constructor will
+  /// use these info to guess network addressed of all sizes of this image
   /// TODO: for some images some image size doesn't exist
   /// i.e. avatar doesn't have a grid version
   /// maybe check image type or let each image type use different image pattern?
   /// if imageType is [ImageSize.Unknown]
   /// constructor will try to guess size type of [imageUrl]
   /// Regarding imageType:
-  /// for [ImageType.CharacterAvatar], [ImageSize.Common] is not available
+  /// for [ImageType.MonoAvatar], [ImageSize.Common] is not available
   /// for [ImageType.UserAvatar], [ImageSize.Common] and [ImageSize.Grid] is not available
   /// Image from the larger size tier is used instead
   factory Images.fromImageUrl(
@@ -88,7 +90,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
     String largeImage = imageUrl.replaceFirst(replacePattern, '/l/');
     String commonImage;
     if (imageType == ImageType.UserAvatar ||
-        imageType == ImageType.CharacterAvatar) {
+        imageType == ImageType.MonoAvatar) {
       commonImage = largeImage;
     } else {
       commonImage = imageUrl.replaceFirst(replacePattern, '/c/');

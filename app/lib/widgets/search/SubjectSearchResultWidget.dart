@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:quiver/strings.dart';
 
+/// TODO: we should reuse code in this class and [MonoSearchResultWidget]
 class SubjectSearchResultWidget extends StatelessWidget {
   final SubjectSearchResult subjectSearchResult;
   static const double paddingBetweenSubject = 8.0;

@@ -4,6 +4,7 @@ import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
 import 'package:munin/styles/theme/common.dart';
+import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
 import 'package:munin/widgets/search/SubjectSearchResultWidget.dart';
 
 class SearchResultDelegate extends StatelessWidget {
@@ -21,6 +22,11 @@ class SearchResultDelegate extends StatelessWidget {
     if (searchResult is SubjectSearchResult) {
       return SubjectSearchResultWidget(subjectSearchResult: searchResult);
     }
+
+    if (searchResult is MonoSearchResult) {
+      return MonoSearchResultWidget(monoSearchResult: searchResult);
+    }
+
     return Text('No such result');
   }
 

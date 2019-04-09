@@ -108,15 +108,11 @@ class SearchRequestBuilder
   _$SearchRequest _$v;
 
   String _query;
-
   String get query => _$this._query;
-
   set query(String query) => _$this._query = query;
 
   SearchType _searchType;
-
   SearchType get searchType => _$this._searchType;
-
   set searchType(SearchType searchType) => _$this._searchType = searchType;
 
   SearchRequestBuilder();

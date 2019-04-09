@@ -92,6 +92,10 @@ Dio _createDioForBangumiCookieClient(
       cookies.add(Cookie('chii_auth', bangumiCookieCredential.authCookie));
     }
 
+    /// https://github.com/bangumi/api/issues/43#issuecomment-414563212 requires
+    /// [chii_searchDateLine] to be present
+    cookies.add(Cookie('chii_searchDateLine', '0'));
+
     if (bangumiCookieCredential.userAgent != null) {
       headers[HttpHeaders.userAgentHeader] = bangumiCookieCredential.userAgent;
     }

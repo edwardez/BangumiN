@@ -144,14 +144,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
         /// Dispatches a new event only if there is currently no response
         /// Otherwise, leaves the refreshing task to refresh widget
         if (bangumiSearchResponse == null) {
-          final action = SearchSubjectAction(
-              context: context, searchRequest: currentSearchRequest);
+          final action = _createSearchAction(context, currentSearchRequest);
           store.dispatch(action);
         }
       },
       onDispose: (store) {
         store.dispatch(
-            SearchSubjectCleanUpAction(searchRequest: currentSearchRequest));
+            SearchCleanUpAction(searchRequest: currentSearchRequest));
       },
       builder: (BuildContext context, _ViewModel vm) {
         return Column(
@@ -174,8 +173,8 @@ class _ViewModel {
       Store<AppState> store, SearchRequest searchRequest) {
     _dispatchSearchAction(
         BuildContext context, SearchRequest externalSearchRequest) async {
-      final action = SearchSubjectAction(
-          context: context, searchRequest: externalSearchRequest);
+      final action = _createSearchAction(context, externalSearchRequest);
+
       store.dispatch(action);
       return action.completer.future;
     }
@@ -210,4 +209,19 @@ class _ViewModel {
   @override
   int get hashCode =>
       hash3(bangumiSearchResponse, loadingStatus, searchRequest);
+}
+
+_createSearchAction(BuildContext context, SearchRequest externalSearchRequest) {
+  dynamic action;
+  if (externalSearchRequest.searchType.isSubjectSearchType) {
+    action = SearchSubjectAction(
+        context: context, searchRequest: externalSearchRequest);
+  } else if (externalSearchRequest.searchType.isMonoSearchType) {
+    action = SearchMonoAction(
+        context: context, searchRequest: externalSearchRequest);
+  } else {
+    throw 'Not implemented yet';
+  }
+
+  return action;
 }

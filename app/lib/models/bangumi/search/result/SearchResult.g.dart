@@ -8,27 +8,20 @@ part of 'SearchResult.dart';
 
 abstract class SearchResultBuilder {
   void replace(SearchResult other);
-
   void update(void updates(SearchResultBuilder b));
-
   ImagesBuilder get images;
-
   set images(ImagesBuilder images);
 
   String get name;
-
   set name(String name);
 
   String get nameCn;
-
   set nameCn(String nameCn);
 
   int get id;
-
   set id(int id);
 
   SearchType get type;
-
   set type(SearchType type);
 }
 

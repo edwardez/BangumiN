@@ -118,20 +118,16 @@ class SearchStateBuilder implements Builder<SearchState, SearchStateBuilder> {
   _$SearchState _$v;
 
   MapBuilder<SearchRequest, BangumiSearchResponse> _results;
-
   MapBuilder<SearchRequest, BangumiSearchResponse> get results =>
       _$this._results ??=
           new MapBuilder<SearchRequest, BangumiSearchResponse>();
-
   set results(MapBuilder<SearchRequest, BangumiSearchResponse> results) =>
       _$this._results = results;
 
   MapBuilder<SearchRequest, LoadingStatus> _searchRequestsStatus;
-
   MapBuilder<SearchRequest, LoadingStatus> get searchRequestsStatus =>
       _$this._searchRequestsStatus ??=
           new MapBuilder<SearchRequest, LoadingStatus>();
-
   set searchRequestsStatus(
           MapBuilder<SearchRequest, LoadingStatus> searchRequestsStatus) =>
       _$this._searchRequestsStatus = searchRequestsStatus;

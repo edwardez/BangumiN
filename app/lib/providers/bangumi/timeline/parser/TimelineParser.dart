@@ -487,8 +487,8 @@ class TimelineParser {
       Element singleTimelineContent, FeedMetaInfo userInfo) {
     List<HyperBangumiItem> friendTextList = parseAllHyperLinks(
         singleTimelineContent,
-        BangumiContent.Friend,
-        contentTypeToSelectorName[BangumiContent.Friend],
+        BangumiContent.User,
+        contentTypeToSelectorName[BangumiContent.User],
         filterIds: {userInfo.userId});
 
     Element hyperImageElement = singleTimelineContent.querySelector('a>img.rr');
@@ -512,7 +512,7 @@ class TimelineParser {
   TimelineFeed parseFriendshipCreationMultiple(
       Element singleTimelineContent, FeedMetaInfo userInfo) {
     return parseStatusUpdateMultiple(
-        singleTimelineContent, userInfo, BangumiContent.Friend);
+        singleTimelineContent, userInfo, BangumiContent.User);
   }
 
   TimelineFeed parseStatusUpdateMultiple(Element singleTimelineContent,
@@ -559,7 +559,7 @@ class TimelineParser {
 
     List<HyperBangumiItem> subjectTextList = parseAllHyperLinks(
         singleTimelineContent,
-        BangumiContent.Friend,
+        BangumiContent.User,
         contentTypeToSelectorName[BangumiContent.Subject]);
 
     if (subjectTextList.length != 1) {

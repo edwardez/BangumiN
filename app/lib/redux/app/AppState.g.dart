@@ -110,8 +110,8 @@ class _$AppState extends AppState {
       this.isAuthenticated,
       this.oauthState,
       this.timelineState,
-        this.subjectState,
-        this.searchState})
+      this.subjectState,
+      this.searchState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
@@ -171,8 +171,9 @@ class _$AppState extends AppState {
               currentAuthenticatedUserBasicInfo)
           ..add('isAuthenticated', isAuthenticated)
           ..add('oauthState', oauthState)
-          ..add('timelineState', timelineState)..add(
-          'subjectState', subjectState)..add('searchState', searchState))
+          ..add('timelineState', timelineState)
+          ..add('subjectState', subjectState)
+          ..add('searchState', searchState))
         .toString();
   }
 }
@@ -213,10 +214,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._subjectState = subjectState;
 
   SearchStateBuilder _searchState;
-
   SearchStateBuilder get searchState =>
       _$this._searchState ??= new SearchStateBuilder();
-
   set searchState(SearchStateBuilder searchState) =>
       _$this._searchState = searchState;
 

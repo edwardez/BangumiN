@@ -145,23 +145,17 @@ class BangumiSearchResponseBuilder
   _$BangumiSearchResponse _$v;
 
   int _totalCount;
-
   int get totalCount => _$this._totalCount;
-
   set totalCount(int totalCount) => _$this._totalCount = totalCount;
 
   int _requestedResults;
-
   int get requestedResults => _$this._requestedResults;
-
   set requestedResults(int requestedResults) =>
       _$this._requestedResults = requestedResults;
 
   MapBuilder<int, SearchResult> _results;
-
   MapBuilder<int, SearchResult> get results =>
       _$this._results ??= new MapBuilder<int, SearchResult>();
-
   set results(MapBuilder<int, SearchResult> results) =>
       _$this._results = results;
 

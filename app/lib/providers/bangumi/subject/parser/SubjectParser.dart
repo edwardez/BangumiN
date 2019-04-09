@@ -195,7 +195,7 @@ class SubjectParser {
 
       String characterImageSmall = imageUrlFromBackgroundImage(avatarElement);
       Images images = Images.fromImageUrl(
-          characterImageSmall, ImageSize.Unknown, ImageType.CharacterAvatar);
+          characterImageSmall, ImageSize.Unknown, ImageType.MonoAvatar);
 
       String collectionCountsStr =
           characterElement.querySelector('.fade.rr')?.text ?? '0';

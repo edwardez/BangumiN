@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
@@ -11,8 +12,8 @@ part 'MonoSearchResult.g.dart';
 
 abstract class MonoSearchResult
     implements SearchResult, Built<MonoSearchResult, MonoSearchResultBuilder> {
-  @override
-  SearchType get type;
+
+  BuiltList<String> get miscInfo;
 
   factory MonoSearchResult([updates(MonoSearchResultBuilder b)]) =
       _$MonoSearchResult;

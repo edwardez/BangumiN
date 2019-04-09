@@ -157,33 +157,23 @@ class UserSearchResultBuilder
   _$UserSearchResult _$v;
 
   SearchType _type;
-
   SearchType get type => _$this._type;
-
   set type(SearchType type) => _$this._type = type;
 
   ImagesBuilder _images;
-
   ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-
   set images(ImagesBuilder images) => _$this._images = images;
 
   String _name;
-
   String get name => _$this._name;
-
   set name(String name) => _$this._name = name;
 
   String _nameCn;
-
   String get nameCn => _$this._nameCn;
-
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   UserSearchResultBuilder();

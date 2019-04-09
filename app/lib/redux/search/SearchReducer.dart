@@ -8,7 +8,7 @@ import 'package:redux/redux.dart';
 final searchReducers = combineReducers<SearchState>([
   /// Search Subject
   TypedReducer<SearchState, SearchLoadingAction>(searchLoadingReducer),
-  TypedReducer<SearchState, SearchSubjectSuccessAction>(
+  TypedReducer<SearchState, SearchSuccessAction>(
       searchSubjectSuccessReducer),
   TypedReducer<SearchState, SearchFailureAction>(searchFailureReducer),
 ]);
@@ -22,7 +22,7 @@ SearchState searchLoadingReducer(
 }
 
 SearchState searchSubjectSuccessReducer(SearchState searchState,
-    SearchSubjectSuccessAction searchSubjectSuccessAction) {
+    SearchSuccessAction searchSubjectSuccessAction) {
   SearchRequest searchRequest = searchSubjectSuccessAction.searchRequest;
   BangumiSearchResponse responseToUpdate = searchState.results[searchRequest];
   BangumiSearchResponse newResponse = searchSubjectSuccessAction.searchResponse;

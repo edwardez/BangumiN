@@ -10,8 +10,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Actor.serializer)
       ..add(AppState.serializer)
       ..add(BangumiContent.serializer)
-      ..add(BangumiCookieCredentials.serializer)..add(
-      BangumiSearchResponse.serializer)
+      ..add(BangumiCookieCredentials.serializer)
+      ..add(BangumiSearchResponse.serializer)
       ..add(BangumiSubject.serializer)
       ..add(BangumiUserAvatar.serializer)
       ..add(BangumiUserBasic.serializer)
@@ -33,25 +33,28 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(InfoBoxItem.serializer)
       ..add(InfoBoxRow.serializer)
       ..add(LoadingStatus.serializer)
-      ..add(MonoFavoriteSingle.serializer)..add(MonoSearchResult.serializer)
+      ..add(MonoFavoriteSingle.serializer)
+      ..add(MonoSearchResult.serializer)
       ..add(OauthState.serializer)
       ..add(ProgressUpdateEpisodeSingle.serializer)
       ..add(ProgressUpdateEpisodeUntil.serializer)
       ..add(PublicMessageNoReply.serializer)
       ..add(PublicMessageNormal.serializer)
       ..add(Rating.serializer)
-      ..add(RelatedSubject.serializer)..add(SearchRequest.serializer)..add(
-      SearchState.serializer)..add(SearchType.serializer)
+      ..add(RelatedSubject.serializer)
+      ..add(SearchRequest.serializer)
+      ..add(SearchState.serializer)
+      ..add(SearchType.serializer)
       ..add(StatusUpdateMultiple.serializer)
       ..add(SubjectCollectionInfo.serializer)
       ..add(SubjectComment.serializer)
-      ..add(SubjectCommentMetaInfo.serializer)..add(
-      SubjectSearchResult.serializer)
+      ..add(SubjectCommentMetaInfo.serializer)
+      ..add(SubjectSearchResult.serializer)
       ..add(SubjectState.serializer)
       ..add(SubjectType.serializer)
       ..add(TimelineState.serializer)
-      ..add(UnknownTimelineActivity.serializer)..add(
-      UserSearchResult.serializer)
+      ..add(UnknownTimelineActivity.serializer)
+      ..add(UserSearchResult.serializer)
       ..add(WikiCreationSingle.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Actor)]),
@@ -97,22 +100,25 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
           () => new ListBuilder<TimelineFeed>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
-          () => new ListBuilder<TimelineFeed>())..addBuilderFactory(
-      const FullType(BuiltMap, const [
-        const FullType(SearchRequest),
-        const FullType(BangumiSearchResponse)
-      ]),
-          () =>
-      new MapBuilder<SearchRequest,
-          BangumiSearchResponse>())..addBuilderFactory(
-      const FullType(BuiltMap, const [
-        const FullType(SearchRequest),
-        const FullType(LoadingStatus)
-      ]),
+          () => new ListBuilder<TimelineFeed>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [
+            const FullType(SearchRequest),
+            const FullType(BangumiSearchResponse)
+          ]),
+          () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [
+            const FullType(SearchRequest),
+            const FullType(LoadingStatus)
+          ]),
           () => new MapBuilder<SearchRequest, LoadingStatus>())
       ..addBuilderFactory(
           const FullType(BuiltMap,
@@ -135,9 +141,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(int), const FullType(LoadingStatus)]),
-              () => new MapBuilder<int, LoadingStatus>())..addBuilderFactory(
-      const FullType(BuiltMap,
-          const [const FullType(int), const FullType(SearchResult)]),
+          () => new MapBuilder<int, LoadingStatus>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(SearchResult)]),
           () => new MapBuilder<int, SearchResult>()))
     .build();
 

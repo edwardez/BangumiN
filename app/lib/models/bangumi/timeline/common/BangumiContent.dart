@@ -11,7 +11,7 @@ class BangumiContent extends EnumClass {
   static const BangumiContent Blog = _$Blog;
   static const BangumiContent Character = _$Character;
   static const BangumiContent Person = _$Person;
-  static const BangumiContent Friend = _$Friend;
+  static const BangumiContent User = _$User;
   static const BangumiContent Group = _$Group;
   static const BangumiContent Wiki = _$Wiki;
   static const BangumiContent Catalog = _$Catalog;
@@ -21,7 +21,7 @@ class BangumiContent extends EnumClass {
   static const Map<BangumiContent, String> enumToWebPageRouteName = {
     BangumiContent.Subject: 'subject',
     BangumiContent.Episode: 'ep',
-    BangumiContent.Friend: 'user',
+    BangumiContent.User: 'user',
     BangumiContent.Group: 'group',
     BangumiContent.Blog: 'blog',
     BangumiContent.Catalog: 'index',

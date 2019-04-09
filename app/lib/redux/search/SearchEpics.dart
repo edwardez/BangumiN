@@ -9,8 +9,9 @@ import 'package:rxdart/rxdart.dart';
 List<Epic<AppState>> createSearchEpics(
     BangumiSearchService bangumiSearchService) {
   final searchSubjectEpic = _createSearchSubjectEpic(bangumiSearchService);
+  final searchMonoEpic = _createSearchMonoEpic(bangumiSearchService);
 
-  return [searchSubjectEpic];
+  return [searchSubjectEpic, searchMonoEpic];
 }
 
 Stream<dynamic> _searchSubject(BangumiSearchService bangumiSearchService,
@@ -27,13 +28,11 @@ Stream<dynamic> _searchSubject(BangumiSearchService bangumiSearchService,
             searchType: action.searchRequest.searchType,
             maxResults: maxResults,
             start: responseInStore?.requestedResults);
-    print('success!');
-    // If the api call is successful, dispatch the results for display
-    yield SearchSubjectSuccessAction(
+
+    yield SearchSuccessAction(
         searchRequest: action.searchRequest,
         searchResponse: bangumiSearchResponse);
   } catch (error, stack) {
-    // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
     Scaffold.of(action.context)
@@ -49,11 +48,43 @@ Epic<AppState> _createSearchSubjectEpic(
     BangumiSearchService bangumiSearchService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-        // Narrow down to SearchAction actions
         .ofType(TypeToken<SearchSubjectAction>())
-        .debounce(Duration(seconds: 2))
-        // Cancel the previous search and start a new one with switchMap
         .switchMap((action) => _searchSubject(bangumiSearchService, action,
             store.state.searchState.results[action.searchRequest]));
+  };
+}
+
+Stream<dynamic> _searchMono(BangumiSearchService bangumiSearchService,
+    SearchMonoAction action, BangumiSearchResponse responseInStore) async* {
+  try {
+    yield SearchLoadingAction(searchRequest: action.searchRequest);
+
+    BangumiSearchResponse bangumiSearchResponse =
+    await bangumiSearchService.searchMono(
+        query: action.searchRequest.query,
+        searchType: action.searchRequest.searchType);
+
+    yield SearchSuccessAction(
+        searchRequest: action.searchRequest,
+        searchResponse: bangumiSearchResponse);
+  } catch (error, stack) {
+    print(error.toString());
+    print(stack);
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+    yield SearchFailureAction.fromUnknownException(
+        searchRequest: action.searchRequest);
+  } finally {
+    action.completer.complete();
+  }
+}
+
+Epic<AppState> _createSearchMonoEpic(
+    BangumiSearchService bangumiSearchService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions).ofType(TypeToken<SearchMonoAction>()).switchMap(
+            (action) =>
+            _searchMono(bangumiSearchService, action,
+                store.state.searchState.results[action.searchRequest]));
   };
 }

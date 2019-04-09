@@ -19,17 +19,28 @@ class SearchSubjectAction {
       : this.completer = completer ?? new Completer();
 }
 
+class SearchMonoAction {
+  final BuildContext context;
+  final SearchRequest searchRequest;
+  final Completer completer;
+
+  SearchMonoAction({@required this.context,
+    @required this.searchRequest,
+    Completer completer})
+      : this.completer = completer ?? new Completer();
+}
+
 class SearchLoadingAction {
   final SearchRequest searchRequest;
 
   SearchLoadingAction({@required this.searchRequest});
 }
 
-class SearchSubjectSuccessAction {
+class SearchSuccessAction {
   final SearchRequest searchRequest;
   final BangumiSearchResponse searchResponse;
 
-  SearchSubjectSuccessAction(
+  SearchSuccessAction(
       {@required this.searchRequest, @required this.searchResponse});
 }
 
@@ -44,8 +55,8 @@ class SearchFailureAction extends FailureAction {
       : super.fromUnknownException();
 }
 
-class SearchSubjectCleanUpAction {
+class SearchCleanUpAction {
   final SearchRequest searchRequest;
 
-  SearchSubjectCleanUpAction({@required this.searchRequest});
+  SearchCleanUpAction({@required this.searchRequest});
 }

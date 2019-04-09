@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 
 part 'SearchType.g.dart';
 
@@ -82,9 +83,34 @@ class SearchType extends EnumClass {
   }
 
   @memoized
+  BangumiContent get bangumiContentType {
+    if (this.isSubjectSearchType) {
+      return BangumiContent.Subject;
+    }
+
+    switch (this) {
+      case SearchType.Person:
+        return BangumiContent.Person;
+      case SearchType.Character:
+        return BangumiContent.Character;
+      case SearchType.User:
+        return BangumiContent.User;
+      default:
+        assert(true);
+        return null;
+    }
+  }
+
+  @memoized
   bool get isSubjectSearchType {
     return subjectSearchType.contains(this);
   }
+
+  @memoized
+  bool get isMonoSearchType {
+    return this == SearchType.Character || this == SearchType.Person;
+  }
+
 
   /// Get relevant search type by subject type int
   /// Int is defined by(and can only be) bangumi subject type

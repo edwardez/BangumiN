@@ -6,11 +6,13 @@ import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthMiddleware.dart';
+import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
 import 'package:munin/redux/timeline/TimelineMiddleware.dart';
 import 'package:munin/shared/injector/injector.dart';
@@ -54,6 +56,8 @@ abstract class Application {
     getIt.get<BangumiTimelineService>();
     final BangumiSubjectService _bangumiSubjectService =
     getIt.get<BangumiSubjectService>();
+    final BangumiSearchService _bangumiSearchService =
+    getIt.get<BangumiSearchService>();
     final SharedPreferences preferences = getIt.get<SharedPreferences>();
     final String serializedUserInfo =
     preferences.get('currentAuthenticatedUserBasicInfo');
@@ -70,9 +74,10 @@ abstract class Application {
         _isAuthenticated = false;
       }
     }
-    Epic<AppState> epics = combineEpics<AppState>(
-        []..addAll(createSubjectMiddleware(_bangumiSubjectService))
-    );
+    Epic<AppState> epics = combineEpics<AppState>([]
+      ..addAll(
+          createSubjectEpics(_bangumiSubjectService)
+            ..addAll(createSearchEpics(_bangumiSearchService))));
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
@@ -84,9 +89,7 @@ abstract class Application {
           EpicMiddleware<AppState>(epics),
         ]..addAll(createOauthMiddleware(_bangumiOauthClient,
             _bangumiCookieClient, bangumiUserService, preferences))..addAll(
-            createTimelineMiddleware(_bangumiTimelineService))
-
-    );
+            createTimelineMiddleware(_bangumiTimelineService)));
 
     runApp(MuninApp(this, store));
   }

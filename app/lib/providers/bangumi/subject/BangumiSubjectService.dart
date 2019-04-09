@@ -71,7 +71,7 @@ class BangumiSubjectService {
       SubjectCollectionInfo collectionUpdateRequest) async {
     Map<String, String> formData = {};
     String tagSeparator = ' ';
-    formData['status'] = collectionUpdateRequest.status.type.wiredNameByType;
+    formData['status'] = collectionUpdateRequest.status.type.wiredName;
     formData['comment'] = collectionUpdateRequest.comment;
     formData['tags'] = collectionUpdateRequest.tags.join(tagSeparator);
     formData['rating'] = collectionUpdateRequest.rating.toString();

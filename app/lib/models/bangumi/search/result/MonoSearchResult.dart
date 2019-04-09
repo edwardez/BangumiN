@@ -1,0 +1,34 @@
+import 'dart:convert';
+
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/search/SearchType.dart';
+import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/shared/utils/serializers.dart';
+
+part 'MonoSearchResult.g.dart';
+
+abstract class MonoSearchResult
+    implements SearchResult, Built<MonoSearchResult, MonoSearchResultBuilder> {
+  @override
+  SearchType get type;
+
+  factory MonoSearchResult([updates(MonoSearchResultBuilder b)]) =
+      _$MonoSearchResult;
+
+  MonoSearchResult._();
+
+  String toJson() {
+    return json
+        .encode(serializers.serializeWith(MonoSearchResult.serializer, this));
+  }
+
+  static MonoSearchResult fromJson(String jsonString) {
+    return serializers.deserializeWith(
+        MonoSearchResult.serializer, json.decode(jsonString));
+  }
+
+  static Serializer<MonoSearchResult> get serializer =>
+      _$monoSearchResultSerializer;
+}

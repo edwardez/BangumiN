@@ -1,6 +1,7 @@
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/oauth/OauthReducer.dart';
+import 'package:munin/redux/search/SearchReducer.dart';
 import 'package:munin/redux/subject/SubjectReducer.dart';
 import 'package:munin/redux/timeline/TimelineReducer.dart';
 
@@ -23,6 +24,8 @@ AppState appReducer(AppState appState, dynamic action) {
             timelineReducers(appState.timelineState, action))
         ..subjectState.replace(
             subjectReducers(appState.subjectState, action))
+        ..searchState.replace(
+            searchReducers(appState.searchState, action))
   )
   ;
 }

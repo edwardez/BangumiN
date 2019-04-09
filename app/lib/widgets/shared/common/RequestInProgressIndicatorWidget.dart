@@ -28,10 +28,14 @@ class RequestInProgressIndicatorWidget extends StatelessWidget {
   /// a [loadingStatus] that can be used to build widget accordingly
   final LoadingStatus loadingStatus;
 
+  /// If set to false, appbar inside this widget will be hide
+  final bool showAppBar;
+
   const RequestInProgressIndicatorWidget(
       {Key key,
       @required this.loadingStatus,
       this.refreshAction,
+        this.showAppBar = true,
       this.requestInProgressMessage = '加载中',
       this.requestGeneralErrorMessage = '加载出错',
       this.retryButtonMessage = '重试'})
@@ -57,7 +61,7 @@ class RequestInProgressIndicatorWidget extends StatelessWidget {
           }
 
           return ScaffoldWithRegularAppBar(
-            appBar: AppBar(),
+            appBar: showAppBar ? AppBar() : null,
             safeAreaChild: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -68,9 +72,11 @@ class RequestInProgressIndicatorWidget extends StatelessWidget {
         }
 
         return ScaffoldWithRegularAppBar(
-          appBar: AppBar(
+          appBar: showAppBar
+              ? AppBar(
             title: Text(requestInProgressMessage),
-          ),
+          )
+              : null,
           safeAreaChild: Center(
             child: CircularProgressIndicator(),
           ),

@@ -7,7 +7,7 @@ import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createSubjectMiddleware(
+List<Epic<AppState>> createSubjectEpics(
     BangumiSubjectService bangumiSubjectService) {
   final getCollectionInfo = _createGetCollectionInfoEpic(bangumiSubjectService);
   final collectionUpdateRequest =

@@ -30,6 +30,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'subjectState',
       serializers.serialize(object.subjectState,
           specifiedType: const FullType(SubjectState)),
+      'searchState',
+      serializers.serialize(object.searchState,
+          specifiedType: const FullType(SearchState)),
     ];
     if (object.currentAuthenticatedUserBasicInfo != null) {
       result
@@ -74,6 +77,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.subjectState.replace(serializers.deserialize(value,
               specifiedType: const FullType(SubjectState)) as SubjectState);
           break;
+        case 'searchState':
+          result.searchState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(SearchState)) as SearchState);
+          break;
       }
     }
 
@@ -92,6 +99,8 @@ class _$AppState extends AppState {
   final TimelineState timelineState;
   @override
   final SubjectState subjectState;
+  @override
+  final SearchState searchState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -101,7 +110,8 @@ class _$AppState extends AppState {
       this.isAuthenticated,
       this.oauthState,
       this.timelineState,
-      this.subjectState})
+        this.subjectState,
+        this.searchState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
@@ -114,6 +124,9 @@ class _$AppState extends AppState {
     }
     if (subjectState == null) {
       throw new BuiltValueNullFieldError('AppState', 'subjectState');
+    }
+    if (searchState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'searchState');
     }
   }
 
@@ -133,7 +146,8 @@ class _$AppState extends AppState {
         isAuthenticated == other.isAuthenticated &&
         oauthState == other.oauthState &&
         timelineState == other.timelineState &&
-        subjectState == other.subjectState;
+        subjectState == other.subjectState &&
+        searchState == other.searchState;
   }
 
   @override
@@ -141,11 +155,13 @@ class _$AppState extends AppState {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-                    isAuthenticated.hashCode),
-                oauthState.hashCode),
-            timelineState.hashCode),
-        subjectState.hashCode));
+                $jc(
+                    $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
+                        isAuthenticated.hashCode),
+                    oauthState.hashCode),
+                timelineState.hashCode),
+            subjectState.hashCode),
+        searchState.hashCode));
   }
 
   @override
@@ -155,8 +171,8 @@ class _$AppState extends AppState {
               currentAuthenticatedUserBasicInfo)
           ..add('isAuthenticated', isAuthenticated)
           ..add('oauthState', oauthState)
-          ..add('timelineState', timelineState)
-          ..add('subjectState', subjectState))
+          ..add('timelineState', timelineState)..add(
+          'subjectState', subjectState)..add('searchState', searchState))
         .toString();
   }
 }
@@ -196,6 +212,14 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set subjectState(SubjectStateBuilder subjectState) =>
       _$this._subjectState = subjectState;
 
+  SearchStateBuilder _searchState;
+
+  SearchStateBuilder get searchState =>
+      _$this._searchState ??= new SearchStateBuilder();
+
+  set searchState(SearchStateBuilder searchState) =>
+      _$this._searchState = searchState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -206,6 +230,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _oauthState = _$v.oauthState?.toBuilder();
       _timelineState = _$v.timelineState?.toBuilder();
       _subjectState = _$v.subjectState?.toBuilder();
+      _searchState = _$v.searchState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -235,7 +260,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               isAuthenticated: isAuthenticated,
               oauthState: oauthState.build(),
               timelineState: timelineState.build(),
-              subjectState: subjectState.build());
+              subjectState: subjectState.build(),
+              searchState: searchState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -248,6 +274,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         timelineState.build();
         _$failedField = 'subjectState';
         subjectState.build();
+        _$failedField = 'searchState';
+        searchState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

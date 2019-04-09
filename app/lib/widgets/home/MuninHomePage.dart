@@ -5,6 +5,7 @@ import 'package:munin/widgets/MoreOptions/MoreOptionsHome.dart';
 import 'package:munin/widgets/Progress/Progress.dart';
 import 'package:munin/widgets/TimeLine/Timeline.dart';
 import 'package:munin/widgets/UserProfile/UserHome.dart';
+import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -17,6 +18,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
   MuninTimeline muninTimeline;
   MuninSubjectProgress muninSubjectProgress;
   MuninUserProfile muninUserProfile;
+  SearchHomeDelegate searchHomeDelegate;
 
   final PageController controller = PageController();
   int currentIndex = 0;
@@ -26,6 +28,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
     muninTimeline = MuninTimeline();
     muninSubjectProgress = MuninSubjectProgress();
     muninUserProfile = MuninUserProfile();
+    searchHomeDelegate = SearchHomeDelegate();
     super.initState();
   }
 
@@ -61,7 +64,12 @@ class _MuninHomePageState extends State<MuninHomePage> {
                         IconButton(
                           icon: Icon(Icons.search),
                           tooltip: '搜索',
-                          onPressed: () {},
+                          onPressed: () {
+                            showSearch(
+                                context: context,
+                                delegate: searchHomeDelegate
+                            );
+                          },
                         ),
                         IconButton(
                           icon: CachedCircleAvatar(

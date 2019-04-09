@@ -11,6 +11,13 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
+import 'package:munin/models/bangumi/search/SearchRequest.dart';
+import 'package:munin/models/bangumi/search/SearchType.dart';
+import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
+import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
@@ -40,6 +47,7 @@ import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
@@ -73,7 +81,8 @@ part 'serializers.g.dart';
   AppState,
   OauthState,
   TimelineState,
-  SubjectState,
+
+  /// Subject
   LoadingStatus,
   BangumiSubject,
   SubjectType,
@@ -89,7 +98,18 @@ part 'serializers.g.dart';
   InfoBoxItem,
   SubjectCollectionInfo,
   CollectionStatusFromBangumi,
-  CollectionStatus
+  CollectionStatus,
+  SubjectState,
+
+  /// search
+  BangumiSearchResponse,
+  SearchResult,
+  MonoSearchResult,
+  SubjectSearchResult,
+  UserSearchResult,
+  SearchRequest,
+  SearchType,
+  SearchState
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

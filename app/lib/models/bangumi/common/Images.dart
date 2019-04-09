@@ -11,7 +11,7 @@ enum ImageSize { Large, Common, Medium, Small, Grid, Unknown }
 enum ImageType { UserAvatar, CharacterAvatar, SubjectCover }
 
 abstract class Images implements Built<Images, ImagesBuilder> {
-  static String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
+  static const String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
 
   @BuiltValueField(wireName: 'large')
   String get large;

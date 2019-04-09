@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
+import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
@@ -59,8 +60,8 @@ class MonoSearchParser {
   }
 
   LinkedHashMap<int, MonoSearchResult> process(String rawHtml,
-      {SearchType searchType = SearchType.Person}) {
-    assert(searchType.isMonoSearchType);
+      {@required SearchType searchType}) {
+    assert(searchType != null && searchType.isMonoSearchType);
 
     DocumentFragment document = parseFragment(rawHtml);
     List<Element> monoElements = document.querySelectorAll('.light_odd');

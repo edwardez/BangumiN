@@ -110,7 +110,7 @@ class BangumiSearchService {
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
     LinkedHashMap<int, MonoSearchResult> monoSearchResults =
-    MonoSearchParser().process(response.data);
+    MonoSearchParser().process(response.data, searchType: searchType);
 
     BangumiSearchResponse bangumiSearchResponse = BangumiSearchResponse((b) =>
     b

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
-import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/search/SubjectSearchResultWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
@@ -85,7 +84,7 @@ class MonoSearchResultWidget extends StatelessWidget {
         ),
       ),
       onTap: generateOnTapCallbackForBangumiContent(
-          contentType: BangumiContent.Person,
+          contentType: monoSearchResult.type.bangumiContentType,
           id: monoSearchResult.id.toString(),
           context: context),
     );

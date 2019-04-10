@@ -161,7 +161,7 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MonoSearchResult')
-          ..add('miscInfo', miscInfo)..add('nameCn', nameCn)
+      ..add('miscInfo', miscInfo)..add('nameCn', nameCn)
           ..add('images', images)
           ..add('name', name)
           ..add('id', id)
@@ -182,9 +182,7 @@ class MonoSearchResultBuilder
   set miscInfo(ListBuilder<String> miscInfo) => _$this._miscInfo = miscInfo;
 
   String _nameCn;
-
   String get nameCn => _$this._nameCn;
-
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   ImagesBuilder _images;

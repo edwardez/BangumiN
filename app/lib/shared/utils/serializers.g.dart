@@ -9,8 +9,8 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Actor.serializer)
       ..add(AppState.serializer)
-      ..add(BangumiContent.serializer)
-      ..add(BangumiCookieCredentials.serializer)..add(
+      ..add(BangumiContent.serializer)..add(
+      BangumiCookieCredentials.serializer)..add(
       BangumiGeneralSearchResponse.serializer)
       ..add(BangumiSubject.serializer)
       ..add(BangumiUserAvatar.serializer)

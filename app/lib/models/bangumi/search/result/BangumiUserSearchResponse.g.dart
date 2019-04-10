@@ -185,37 +185,27 @@ class BangumiUserSearchResponseBuilder
   _$BangumiUserSearchResponse _$v;
 
   int _totalCount;
-
   int get totalCount => _$this._totalCount;
-
   set totalCount(int totalCount) => _$this._totalCount = totalCount;
 
   int _requestedResults;
-
   int get requestedResults => _$this._requestedResults;
-
   set requestedResults(int requestedResults) =>
       _$this._requestedResults = requestedResults;
 
   MapBuilder<int, SearchResult> _results;
-
   MapBuilder<int, SearchResult> get results =>
       _$this._results ??= new MapBuilder<int, SearchResult>();
-
   set results(MapBuilder<int, SearchResult> results) =>
       _$this._results = results;
 
   bool _hasReachedFullMatchEnd;
-
   bool get hasReachedFullMatchEnd => _$this._hasReachedFullMatchEnd;
-
   set hasReachedFullMatchEnd(bool hasReachedFullMatchEnd) =>
       _$this._hasReachedFullMatchEnd = hasReachedFullMatchEnd;
 
   bool _hasReachedFuzzyMatchEnd;
-
   bool get hasReachedFuzzyMatchEnd => _$this._hasReachedFuzzyMatchEnd;
-
   set hasReachedFuzzyMatchEnd(bool hasReachedFuzzyMatchEnd) =>
       _$this._hasReachedFuzzyMatchEnd = hasReachedFuzzyMatchEnd;
 

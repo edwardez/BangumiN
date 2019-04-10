@@ -186,7 +186,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubjectSearchResult')
-          ..add('startDate', startDate)..add('nameCn', nameCn)
+      ..add('startDate', startDate)..add('nameCn', nameCn)
           ..add('rating', rating)
           ..add('images', images)
           ..add('name', name)
@@ -207,9 +207,7 @@ class SubjectSearchResultBuilder
   set startDate(String startDate) => _$this._startDate = startDate;
 
   String _nameCn;
-
   String get nameCn => _$this._nameCn;
-
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   RatingBuilder _rating;

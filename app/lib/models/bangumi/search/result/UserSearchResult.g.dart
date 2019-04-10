@@ -140,9 +140,8 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserSearchResult')
-          ..add('images', images)
-          ..add('name', name)..add('id', id)..add('username', username)..add(
-          'type', type))
+          ..add('images', images)..add('name', name)..add('id', id)..add(
+          'username', username)..add('type', type))
         .toString();
   }
 }
@@ -166,15 +165,11 @@ class UserSearchResultBuilder
   set id(int id) => _$this._id = id;
 
   String _username;
-
   String get username => _$this._username;
-
   set username(String username) => _$this._username = username;
 
   SearchType _type;
-
   SearchType get type => _$this._type;
-
   set type(SearchType type) => _$this._type = type;
 
   UserSearchResultBuilder();

@@ -161,7 +161,8 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MonoSearchResult')
-      ..add('miscInfo', miscInfo)..add('nameCn', nameCn)
+          ..add('miscInfo', miscInfo)
+          ..add('nameCn', nameCn)
           ..add('images', images)
           ..add('name', name)
           ..add('id', id)

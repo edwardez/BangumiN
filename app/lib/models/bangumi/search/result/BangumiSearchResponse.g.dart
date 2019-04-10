@@ -8,14 +8,19 @@ part of 'BangumiSearchResponse.dart';
 
 abstract class BangumiSearchResponseBuilder {
   void replace(BangumiSearchResponse other);
+
   void update(void updates(BangumiSearchResponseBuilder b));
+
   int get totalCount;
+
   set totalCount(int totalCount);
 
   int get requestedResults;
+
   set requestedResults(int requestedResults);
 
   MapBuilder<int, SearchResult> get results;
+
   set results(MapBuilder<int, SearchResult> results);
 }
 

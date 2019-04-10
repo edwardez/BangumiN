@@ -12,7 +12,6 @@ part 'MonoSearchResult.g.dart';
 
 abstract class MonoSearchResult
     implements SearchResult, Built<MonoSearchResult, MonoSearchResultBuilder> {
-
   BuiltList<String> get miscInfo;
 
   @BuiltValueField(wireName: 'name_cn')

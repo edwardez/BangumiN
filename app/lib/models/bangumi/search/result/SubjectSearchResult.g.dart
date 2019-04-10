@@ -121,7 +121,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
 
   _$SubjectSearchResult._(
       {this.startDate,
-        this.nameCn,
+      this.nameCn,
       this.rating,
       this.images,
       this.name,
@@ -186,7 +186,8 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubjectSearchResult')
-      ..add('startDate', startDate)..add('nameCn', nameCn)
+          ..add('startDate', startDate)
+          ..add('nameCn', nameCn)
           ..add('rating', rating)
           ..add('images', images)
           ..add('name', name)

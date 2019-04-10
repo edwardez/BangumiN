@@ -35,8 +35,10 @@ class _$ImagesSerializer implements StructuredSerializer<Images> {
             specifiedType: const FullType(String)));
     }
     if (object.grid != null) {
-      result..add('grid')..add(serializers.serialize(object.grid,
-          specifiedType: const FullType(String)));
+      result
+        ..add('grid')
+        ..add(serializers.serialize(object.grid,
+            specifiedType: const FullType(String)));
     }
 
     return result;

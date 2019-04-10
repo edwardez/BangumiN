@@ -32,7 +32,8 @@ class _$UserSearchResultSerializer
           specifiedType: const FullType(SearchType)),
     ];
     if (object.images != null) {
-      result..add('avatar')
+      result
+        ..add('avatar')
         ..add(serializers.serialize(object.images,
             specifiedType: const FullType(Images)));
     }
@@ -140,8 +141,11 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserSearchResult')
-          ..add('images', images)..add('name', name)..add('id', id)..add(
-          'username', username)..add('type', type))
+          ..add('images', images)
+          ..add('name', name)
+          ..add('id', id)
+          ..add('username', username)
+          ..add('type', type))
         .toString();
   }
 }

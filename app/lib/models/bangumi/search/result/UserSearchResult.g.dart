@@ -20,20 +20,19 @@ class _$UserSearchResultSerializer
   Iterable serialize(Serializers serializers, UserSearchResult object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'nickname',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(int)),
+      'username',
+      serializers.serialize(object.username,
+          specifiedType: const FullType(String)),
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(SearchType)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'name_cn',
-      serializers.serialize(object.nameCn,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(int)),
     ];
     if (object.images != null) {
-      result
-        ..add('images')
+      result..add('avatar')
         ..add(serializers.serialize(object.images,
             specifiedType: const FullType(Images)));
     }
@@ -52,25 +51,25 @@ class _$UserSearchResultSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'type':
-          result.type = serializers.deserialize(value,
-              specifiedType: const FullType(SearchType)) as SearchType;
-          break;
-        case 'images':
+        case 'avatar':
           result.images.replace(serializers.deserialize(value,
               specifiedType: const FullType(Images)) as Images);
           break;
-        case 'name':
+        case 'nickname':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
+          break;
+        case 'username':
+          result.username = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(SearchType)) as SearchType;
           break;
       }
     }
@@ -81,33 +80,33 @@ class _$UserSearchResultSerializer
 
 class _$UserSearchResult extends UserSearchResult {
   @override
-  final SearchType type;
-  @override
   final Images images;
   @override
   final String name;
   @override
-  final String nameCn;
-  @override
   final int id;
+  @override
+  final String username;
+  @override
+  final SearchType type;
 
   factory _$UserSearchResult([void updates(UserSearchResultBuilder b)]) =>
       (new UserSearchResultBuilder()..update(updates)).build();
 
   _$UserSearchResult._(
-      {this.type, this.images, this.name, this.nameCn, this.id})
+      {this.images, this.name, this.id, this.username, this.type})
       : super._() {
-    if (type == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'type');
-    }
     if (name == null) {
       throw new BuiltValueNullFieldError('UserSearchResult', 'name');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'nameCn');
-    }
     if (id == null) {
       throw new BuiltValueNullFieldError('UserSearchResult', 'id');
+    }
+    if (username == null) {
+      throw new BuiltValueNullFieldError('UserSearchResult', 'username');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('UserSearchResult', 'type');
     }
   }
 
@@ -123,29 +122,27 @@ class _$UserSearchResult extends UserSearchResult {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserSearchResult &&
-        type == other.type &&
         images == other.images &&
         name == other.name &&
-        nameCn == other.nameCn &&
-        id == other.id;
+        id == other.id &&
+        username == other.username &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, type.hashCode), images.hashCode), name.hashCode),
-            nameCn.hashCode),
-        id.hashCode));
+        $jc($jc($jc($jc(0, images.hashCode), name.hashCode), id.hashCode),
+            username.hashCode),
+        type.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserSearchResult')
-          ..add('type', type)
           ..add('images', images)
-          ..add('name', name)
-          ..add('nameCn', nameCn)
-          ..add('id', id))
+          ..add('name', name)..add('id', id)..add('username', username)..add(
+          'type', type))
         .toString();
   }
 }
@@ -156,10 +153,6 @@ class UserSearchResultBuilder
         SearchResultBuilder {
   _$UserSearchResult _$v;
 
-  SearchType _type;
-  SearchType get type => _$this._type;
-  set type(SearchType type) => _$this._type = type;
-
   ImagesBuilder _images;
   ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
   set images(ImagesBuilder images) => _$this._images = images;
@@ -168,23 +161,31 @@ class UserSearchResultBuilder
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
-
   int _id;
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
+
+  String _username;
+
+  String get username => _$this._username;
+
+  set username(String username) => _$this._username = username;
+
+  SearchType _type;
+
+  SearchType get type => _$this._type;
+
+  set type(SearchType type) => _$this._type = type;
 
   UserSearchResultBuilder();
 
   UserSearchResultBuilder get _$this {
     if (_$v != null) {
-      _type = _$v.type;
       _images = _$v.images?.toBuilder();
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
       _id = _$v.id;
+      _username = _$v.username;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -209,11 +210,11 @@ class UserSearchResultBuilder
     try {
       _$result = _$v ??
           new _$UserSearchResult._(
-              type: type,
               images: _images?.build(),
               name: name,
-              nameCn: nameCn,
-              id: id);
+              id: id,
+              username: username,
+              type: type);
     } catch (_) {
       String _$failedField;
       try {

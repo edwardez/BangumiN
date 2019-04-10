@@ -13,6 +13,7 @@ import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
+import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
@@ -103,6 +104,7 @@ part 'serializers.g.dart';
 
   /// search
   BangumiSearchResponse,
+  BangumiGeneralSearchResponse,
   SearchResult,
   MonoSearchResult,
   SubjectSearchResult,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'Images.g.dart';
@@ -16,6 +17,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   @BuiltValueField(wireName: 'large')
   String get large;
 
+  /// Not available for [ImageType.MonoAvatar] and [ImageType.UserAvatar]
   @nullable
   @BuiltValueField(wireName: 'common')
   String get common;
@@ -26,6 +28,8 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   @BuiltValueField(wireName: 'small')
   String get small;
 
+  /// Not available for [ImageType.UserAvatar]
+  @nullable
   @BuiltValueField(wireName: 'grid')
   String get grid;
 
@@ -112,6 +116,16 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       ..medium = mediumImage
       ..small = smallImage
       ..grid = gridImage);
+  }
+
+  factory Images.fromBangumiUserAvatar(BangumiUserAvatar avatar){
+    return Images((b) =>
+    b
+      ..large = avatar.large
+      ..common = avatar.large
+      ..medium = avatar.medium
+      ..small = avatar.small
+      ..grid = avatar.small);
   }
 
   factory Images.useSameImageUrlForAll(String imageUrl) {

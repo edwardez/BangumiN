@@ -30,6 +30,17 @@ class SearchMonoAction {
       : this.completer = completer ?? new Completer();
 }
 
+class SearchUserAction {
+  final BuildContext context;
+  final SearchRequest searchRequest;
+  final Completer completer;
+
+  SearchUserAction({@required this.context,
+    @required this.searchRequest,
+    Completer completer})
+      : this.completer = completer ?? new Completer();
+}
+
 class SearchLoadingAction {
   final SearchRequest searchRequest;
 

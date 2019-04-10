@@ -24,11 +24,11 @@ class _$MonoSearchResultSerializer
       serializers.serialize(object.miscInfo,
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
       'name_cn',
       serializers.serialize(object.nameCn,
           specifiedType: const FullType(String)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'type',
@@ -62,16 +62,16 @@ class _$MonoSearchResultSerializer
                       const FullType(BuiltList, const [const FullType(String)]))
               as BuiltList);
           break;
+        case 'name_cn':
+          result.nameCn = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'images':
           result.images.replace(serializers.deserialize(value,
               specifiedType: const FullType(Images)) as Images);
           break;
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'id':
@@ -93,11 +93,11 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   final BuiltList<String> miscInfo;
   @override
+  final String nameCn;
+  @override
   final Images images;
   @override
   final String name;
-  @override
-  final String nameCn;
   @override
   final int id;
   @override
@@ -107,16 +107,16 @@ class _$MonoSearchResult extends MonoSearchResult {
       (new MonoSearchResultBuilder()..update(updates)).build();
 
   _$MonoSearchResult._(
-      {this.miscInfo, this.images, this.name, this.nameCn, this.id, this.type})
+      {this.miscInfo, this.nameCn, this.images, this.name, this.id, this.type})
       : super._() {
     if (miscInfo == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'miscInfo');
     }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('MonoSearchResult', 'name');
-    }
     if (nameCn == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'nameCn');
+    }
+    if (name == null) {
+      throw new BuiltValueNullFieldError('MonoSearchResult', 'name');
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'id');
@@ -139,9 +139,9 @@ class _$MonoSearchResult extends MonoSearchResult {
     if (identical(other, this)) return true;
     return other is MonoSearchResult &&
         miscInfo == other.miscInfo &&
+        nameCn == other.nameCn &&
         images == other.images &&
         name == other.name &&
-        nameCn == other.nameCn &&
         id == other.id &&
         type == other.type;
   }
@@ -151,9 +151,9 @@ class _$MonoSearchResult extends MonoSearchResult {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, miscInfo.hashCode), images.hashCode),
-                    name.hashCode),
-                nameCn.hashCode),
+                $jc($jc($jc(0, miscInfo.hashCode), nameCn.hashCode),
+                    images.hashCode),
+                name.hashCode),
             id.hashCode),
         type.hashCode));
   }
@@ -161,10 +161,9 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MonoSearchResult')
-          ..add('miscInfo', miscInfo)
+          ..add('miscInfo', miscInfo)..add('nameCn', nameCn)
           ..add('images', images)
           ..add('name', name)
-          ..add('nameCn', nameCn)
           ..add('id', id)
           ..add('type', type))
         .toString();
@@ -182,6 +181,12 @@ class MonoSearchResultBuilder
       _$this._miscInfo ??= new ListBuilder<String>();
   set miscInfo(ListBuilder<String> miscInfo) => _$this._miscInfo = miscInfo;
 
+  String _nameCn;
+
+  String get nameCn => _$this._nameCn;
+
+  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+
   ImagesBuilder _images;
   ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
   set images(ImagesBuilder images) => _$this._images = images;
@@ -189,10 +194,6 @@ class MonoSearchResultBuilder
   String _name;
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
-
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   int _id;
   int get id => _$this._id;
@@ -207,9 +208,9 @@ class MonoSearchResultBuilder
   MonoSearchResultBuilder get _$this {
     if (_$v != null) {
       _miscInfo = _$v.miscInfo?.toBuilder();
+      _nameCn = _$v.nameCn;
       _images = _$v.images?.toBuilder();
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
       _id = _$v.id;
       _type = _$v.type;
       _$v = null;
@@ -237,9 +238,9 @@ class MonoSearchResultBuilder
       _$result = _$v ??
           new _$MonoSearchResult._(
               miscInfo: miscInfo.build(),
+              nameCn: nameCn,
               images: _images?.build(),
               name: name,
-              nameCn: nameCn,
               id: id,
               type: type);
     } catch (_) {
@@ -247,6 +248,7 @@ class MonoSearchResultBuilder
       try {
         _$failedField = 'miscInfo';
         miscInfo.build();
+
         _$failedField = 'images';
         _images?.build();
       } catch (e) {

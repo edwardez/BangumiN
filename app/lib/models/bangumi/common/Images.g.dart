@@ -27,14 +27,16 @@ class _$ImagesSerializer implements StructuredSerializer<Images> {
       'small',
       serializers.serialize(object.small,
           specifiedType: const FullType(String)),
-      'grid',
-      serializers.serialize(object.grid, specifiedType: const FullType(String)),
     ];
     if (object.common != null) {
       result
         ..add('common')
         ..add(serializers.serialize(object.common,
             specifiedType: const FullType(String)));
+    }
+    if (object.grid != null) {
+      result..add('grid')..add(serializers.serialize(object.grid,
+          specifiedType: const FullType(String)));
     }
 
     return result;
@@ -103,9 +105,6 @@ class _$Images extends Images {
     }
     if (small == null) {
       throw new BuiltValueNullFieldError('Images', 'small');
-    }
-    if (grid == null) {
-      throw new BuiltValueNullFieldError('Images', 'grid');
     }
   }
 

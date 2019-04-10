@@ -1,5 +1,5 @@
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
-import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
+import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/redux/search/SearchActions.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
@@ -24,8 +24,10 @@ SearchState searchLoadingReducer(
 SearchState searchSubjectSuccessReducer(SearchState searchState,
     SearchSuccessAction searchSubjectSuccessAction) {
   SearchRequest searchRequest = searchSubjectSuccessAction.searchRequest;
-  BangumiSearchResponse responseToUpdate = searchState.results[searchRequest];
-  BangumiSearchResponse newResponse = searchSubjectSuccessAction.searchResponse;
+  BangumiGeneralSearchResponse responseToUpdate = searchState
+      .results[searchRequest];
+  BangumiGeneralSearchResponse newResponse = searchSubjectSuccessAction
+      .searchResponse;
   if (responseToUpdate == null) {
     responseToUpdate = newResponse;
   } else {

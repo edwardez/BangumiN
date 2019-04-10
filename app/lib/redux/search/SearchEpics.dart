@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
+import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/search/SearchActions.dart';
@@ -11,18 +11,19 @@ List<Epic<AppState>> createSearchEpics(
   final searchSubjectEpic = _createSearchSubjectEpic(bangumiSearchService);
   final searchMonoEpic = _createSearchMonoEpic(bangumiSearchService);
 
-  return [searchSubjectEpic, searchMonoEpic];
+  return [searchSubjectEpic, searchMonoEpic,];
 }
 
 Stream<dynamic> _searchSubject(BangumiSearchService bangumiSearchService,
-    SearchSubjectAction action, BangumiSearchResponse responseInStore) async* {
+    SearchSubjectAction action,
+    BangumiGeneralSearchResponse responseInStore) async* {
   try {
     yield SearchLoadingAction(searchRequest: action.searchRequest);
 
     /// currently [maxResults] is hard-coded to 25
     int maxResults = 25;
 
-    BangumiSearchResponse bangumiSearchResponse =
+    BangumiGeneralSearchResponse bangumiSearchResponse =
         await bangumiSearchService.searchSubject(
             query: action.searchRequest.query,
             searchType: action.searchRequest.searchType,
@@ -55,11 +56,12 @@ Epic<AppState> _createSearchSubjectEpic(
 }
 
 Stream<dynamic> _searchMono(BangumiSearchService bangumiSearchService,
-    SearchMonoAction action, BangumiSearchResponse responseInStore) async* {
+    SearchMonoAction action,
+    BangumiGeneralSearchResponse responseInStore) async* {
   try {
     yield SearchLoadingAction(searchRequest: action.searchRequest);
 
-    BangumiSearchResponse bangumiSearchResponse =
+    BangumiGeneralSearchResponse bangumiSearchResponse =
     await bangumiSearchService.searchMono(
         query: action.searchRequest.query,
         searchType: action.searchRequest.searchType);

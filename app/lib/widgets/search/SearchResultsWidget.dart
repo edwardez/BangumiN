@@ -3,7 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
-import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
+import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/search/SearchActions.dart';
@@ -163,7 +163,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
 }
 
 class _ViewModel {
-  final BangumiSearchResponse bangumiSearchResponse;
+  final BangumiGeneralSearchResponse bangumiSearchResponse;
   final SearchRequest searchRequest;
   final LoadingStatus loadingStatus;
   final Function(BuildContext context, SearchRequest externalSearchRequest)
@@ -220,7 +220,7 @@ _createSearchAction(BuildContext context, SearchRequest externalSearchRequest) {
     action = SearchMonoAction(
         context: context, searchRequest: externalSearchRequest);
   } else {
-    throw 'Not implemented yet';
+    throw UnsupportedError('Not supported');
   }
 
   return action;

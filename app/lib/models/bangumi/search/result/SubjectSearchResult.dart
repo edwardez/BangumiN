@@ -18,8 +18,10 @@ abstract class SubjectSearchResult
   @BuiltValueField(wireName: 'air_date')
   String get startDate;
 
-  @memoized
+  @BuiltValueField(wireName: 'name_cn')
+  String get nameCn;
 
+  @memoized
   /// a [startDate] is considered invalid if it's empty, null or starts with 0
   /// since bangumi sometimes uses `0000-00-00` to indicates invalid date
   bool get isStartDateValid {

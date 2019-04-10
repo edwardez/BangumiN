@@ -15,9 +15,6 @@ abstract class SearchResultBuilder {
   String get name;
   set name(String name);
 
-  String get nameCn;
-  set nameCn(String nameCn);
-
   int get id;
   set id(int id);
 

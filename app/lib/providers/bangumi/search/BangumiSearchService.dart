@@ -8,7 +8,7 @@ import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
-import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
+import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
@@ -30,7 +30,7 @@ class BangumiSearchService {
   /// a response
   /// another strange behaviour is a html might be returned, but the status code
   /// is 200
-  Future<BangumiSearchResponse> searchSubject({
+  Future<BangumiGeneralSearchResponse> searchSubject({
     @required String query,
     @required SearchType searchType,
     responseGroup = 'large',
@@ -59,11 +59,11 @@ class BangumiSearchService {
     final decodedBody = json.decode(response.body);
 
     if (decodedBody['code'] == 404) {
-      return BangumiSearchResponse();
+      return BangumiGeneralSearchResponse();
     }
 
-    BangumiSearchResponse bangumiSearchResponse =
-        BangumiSearchResponse.fromJson(response.body);
+    BangumiGeneralSearchResponse bangumiSearchResponse =
+    BangumiGeneralSearchResponse.fromJson(response.body);
 
     LinkedHashMap<int, SubjectSearchResult> results =
         LinkedHashMap<int, SubjectSearchResult>();
@@ -93,7 +93,7 @@ class BangumiSearchService {
   /// (actually Bangumi has pagination for mono search, but second page is hidden)
   /// According to https://bgm.tv/group/topic/4428#post_56015, it seems like
   /// pagination is hidden intentionally
-  Future<BangumiSearchResponse> searchMono(
+  Future<BangumiGeneralSearchResponse> searchMono(
       {@required String query, @required SearchType searchType}) async {
     assert(searchType.isMonoSearchType);
 
@@ -112,7 +112,8 @@ class BangumiSearchService {
     LinkedHashMap<int, MonoSearchResult> monoSearchResults =
     MonoSearchParser().process(response.data, searchType: searchType);
 
-    BangumiSearchResponse bangumiSearchResponse = BangumiSearchResponse((b) =>
+    BangumiGeneralSearchResponse bangumiSearchResponse =
+    BangumiGeneralSearchResponse((b) =>
     b
       ..totalCount = monoSearchResults.length
       ..requestedResults = monoSearchResults.length
@@ -120,4 +121,5 @@ class BangumiSearchService {
 
     return bangumiSearchResponse;
   }
+
 }

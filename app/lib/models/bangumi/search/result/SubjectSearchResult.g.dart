@@ -26,11 +26,11 @@ class _$SubjectSearchResultSerializer
       'air_date',
       serializers.serialize(object.startDate,
           specifiedType: const FullType(String)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
       'name_cn',
       serializers.serialize(object.nameCn,
           specifiedType: const FullType(String)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'type',
@@ -68,6 +68,10 @@ class _$SubjectSearchResultSerializer
           result.startDate = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'name_cn':
+          result.nameCn = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'rating':
           result.rating.replace(serializers.deserialize(value,
               specifiedType: const FullType(Rating)) as Rating);
@@ -78,10 +82,6 @@ class _$SubjectSearchResultSerializer
           break;
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'id':
@@ -103,13 +103,13 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   @override
   final String startDate;
   @override
+  final String nameCn;
+  @override
   final Rating rating;
   @override
   final Images images;
   @override
   final String name;
-  @override
-  final String nameCn;
   @override
   final int id;
   @override
@@ -121,21 +121,21 @@ class _$SubjectSearchResult extends SubjectSearchResult {
 
   _$SubjectSearchResult._(
       {this.startDate,
+        this.nameCn,
       this.rating,
       this.images,
       this.name,
-      this.nameCn,
       this.id,
       this.type})
       : super._() {
     if (startDate == null) {
       throw new BuiltValueNullFieldError('SubjectSearchResult', 'startDate');
     }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'name');
-    }
     if (nameCn == null) {
       throw new BuiltValueNullFieldError('SubjectSearchResult', 'nameCn');
+    }
+    if (name == null) {
+      throw new BuiltValueNullFieldError('SubjectSearchResult', 'name');
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('SubjectSearchResult', 'id');
@@ -161,10 +161,10 @@ class _$SubjectSearchResult extends SubjectSearchResult {
     if (identical(other, this)) return true;
     return other is SubjectSearchResult &&
         startDate == other.startDate &&
+        nameCn == other.nameCn &&
         rating == other.rating &&
         images == other.images &&
         name == other.name &&
-        nameCn == other.nameCn &&
         id == other.id &&
         type == other.type;
   }
@@ -175,10 +175,10 @@ class _$SubjectSearchResult extends SubjectSearchResult {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, startDate.hashCode), rating.hashCode),
-                        images.hashCode),
-                    name.hashCode),
-                nameCn.hashCode),
+                    $jc($jc($jc(0, startDate.hashCode), nameCn.hashCode),
+                        rating.hashCode),
+                    images.hashCode),
+                name.hashCode),
             id.hashCode),
         type.hashCode));
   }
@@ -186,11 +186,10 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubjectSearchResult')
-          ..add('startDate', startDate)
+          ..add('startDate', startDate)..add('nameCn', nameCn)
           ..add('rating', rating)
           ..add('images', images)
           ..add('name', name)
-          ..add('nameCn', nameCn)
           ..add('id', id)
           ..add('type', type))
         .toString();
@@ -207,6 +206,12 @@ class SubjectSearchResultBuilder
   String get startDate => _$this._startDate;
   set startDate(String startDate) => _$this._startDate = startDate;
 
+  String _nameCn;
+
+  String get nameCn => _$this._nameCn;
+
+  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+
   RatingBuilder _rating;
   RatingBuilder get rating => _$this._rating ??= new RatingBuilder();
   set rating(RatingBuilder rating) => _$this._rating = rating;
@@ -218,10 +223,6 @@ class SubjectSearchResultBuilder
   String _name;
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
-
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   int _id;
   int get id => _$this._id;
@@ -236,10 +237,10 @@ class SubjectSearchResultBuilder
   SubjectSearchResultBuilder get _$this {
     if (_$v != null) {
       _startDate = _$v.startDate;
+      _nameCn = _$v.nameCn;
       _rating = _$v.rating?.toBuilder();
       _images = _$v.images?.toBuilder();
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
       _id = _$v.id;
       _type = _$v.type;
       _$v = null;
@@ -267,10 +268,10 @@ class SubjectSearchResultBuilder
       _$result = _$v ??
           new _$SubjectSearchResult._(
               startDate: startDate,
+              nameCn: nameCn,
               rating: _rating?.build(),
               images: _images?.build(),
               name: name,
-              nameCn: nameCn,
               id: id,
               type: type);
     } catch (_) {

@@ -32,6 +32,7 @@ abstract class Application {
   final bangumiOauthTokenEndpoint = 'https://bgm.tv/oauth/access_token';
   final bangumiMainHost = 'bgm.tv';
   final bangumiApiHost = 'api.bgm.tv';
+  final forsetiApiHost = 'api.bangumin.tv';
 
   EnvironmentType environmentType;
   String bangumiOauthClientIdentifier;

@@ -11,9 +11,6 @@ abstract class SearchResult {
 
   String get name;
 
-  @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
-
   int get id;
 
   SearchType get type;

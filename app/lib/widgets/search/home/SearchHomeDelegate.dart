@@ -10,7 +10,6 @@ final List<SearchType> _searchTypes = const [
   SearchType.AnySubject,
   SearchType.Character,
   SearchType.Person,
-  SearchType.User,
 ];
 
 class SearchHomeDelegate extends SearchDelegate {

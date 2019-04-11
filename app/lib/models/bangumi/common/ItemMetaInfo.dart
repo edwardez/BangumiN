@@ -2,9 +2,8 @@ import 'package:built_value/built_value.dart';
 
 /// a base TimelineFeed interface
 abstract class ItemMetaInfo {
-  /// due to the limitation of bangumi, this has to be a string
-  /// it's a relative time, i.e. xx minutes ago
-  String get updatedAt;
+  /// Updated at epoch time in milliseconds
+  int get updatedAt;
 
   /// user nick name
   String get nickName;

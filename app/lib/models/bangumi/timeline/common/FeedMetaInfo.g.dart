@@ -23,7 +23,7 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
       serializers.serialize(object.feedId, specifiedType: const FullType(int)),
       'updatedAt',
       serializers.serialize(object.updatedAt,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(int)),
       'nickName',
       serializers.serialize(object.nickName,
           specifiedType: const FullType(String)),
@@ -74,7 +74,7 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
           break;
         case 'updatedAt':
           result.updatedAt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'nickName':
           result.nickName = serializers.deserialize(value,
@@ -105,7 +105,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   @override
   final Images images;
   @override
-  final String updatedAt;
+  final int updatedAt;
   @override
   final String nickName;
   @override
@@ -201,9 +201,9 @@ class FeedMetaInfoBuilder
   ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
   set images(ImagesBuilder images) => _$this._images = images;
 
-  String _updatedAt;
-  String get updatedAt => _$this._updatedAt;
-  set updatedAt(String updatedAt) => _$this._updatedAt = updatedAt;
+  int _updatedAt;
+  int get updatedAt => _$this._updatedAt;
+  set updatedAt(int updatedAt) => _$this._updatedAt = updatedAt;
 
   String _nickName;
   String get nickName => _$this._nickName;

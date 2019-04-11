@@ -25,8 +25,8 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectComment.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectCommentMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
@@ -92,8 +92,8 @@ part 'serializers.g.dart';
   Images,
   Character,
   RelatedSubject,
-  SubjectComment,
-  SubjectCommentMetaInfo,
+  SubjectReview,
+  ReviewMetaInfo,
   Actor,
   InfoBoxRow,
   InfoBoxItem,

@@ -1,5 +1,9 @@
+import 'dart:core';
+
 import 'package:html/dom.dart' show Element, Node, NodeList;
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/providers/bangumi/util/regex.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -22,16 +26,15 @@ String imageUrlFromBackgroundImage(Element imageElement,
     return defaultImageSrc;
   }
 
-  return normalizeImageUrl(imageUrl,
-      defaultImageSrc: defaultImageSrc);
+  return normalizeImageUrl(imageUrl, defaultImageSrc: defaultImageSrc);
 }
 
 ///imageUrl may be something like  '//lain.bgm.tv/pic/user/m/000/1/2/3.jpg' without protocol
 String normalizeImageUrl(String imageUrl,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
-  if (imageUrl != null && imageUrl.length >= 2 &&
-      imageUrl.substring(0, 2) == '//')
-    return 'https:' + imageUrl;
+  if (imageUrl != null &&
+      imageUrl.length >= 2 &&
+      imageUrl.substring(0, 2) == '//') return 'https:' + imageUrl;
 
   return defaultImageSrc;
 }
@@ -52,9 +55,7 @@ String parseHrefId(Element element) {
     return null;
   }
 
-  return RegExp(r'\w+$')
-      .firstMatch(hrefId)
-      ?.group(0);
+  return RegExp(r'\w+$').firstMatch(hrefId)?.group(0);
 }
 
 String parseFeedId(Element element) {
@@ -63,17 +64,14 @@ String parseFeedId(Element element) {
     return null;
   }
 
-  return RegExp(r'\d+$')
-      .firstMatch(id)
-      ?.group(0);
+  return RegExp(r'\d+$').firstMatch(id)?.group(0);
 }
 
 /// extract first int from a string
 int extractFirstInt(String rawString, {defaultValue = 0}) {
   if (rawString == null) return defaultValue;
 
-  Match intMatcher =
-  RegExp(r'\d+').firstMatch(rawString);
+  Match intMatcher = RegExp(r'\d+').firstMatch(rawString);
 
   if (intMatcher != null) {
     int parsedInt = int.parse(intMatcher.group(0));
@@ -91,8 +89,7 @@ String imageSrcOrNull(Element imageElement,
   ///maybe because of https://blog.cloudflare.com/mirage2-solving-mobile-speed/ ?
   imageUrl ??= imageElement.attributes['data-cfsrc'];
 
-  return normalizeImageUrl(imageUrl,
-      defaultImageSrc: defaultImageSrc);
+  return normalizeImageUrl(imageUrl, defaultImageSrc: defaultImageSrc);
 }
 
 Optional<String> getFirstTextNodeContent(NodeList nodeList,
@@ -144,7 +141,7 @@ double parseSubjectScore(Element element) {
   }
 
   Match scoreMatcher =
-      RegExp(r'sstars(\d+)').firstMatch(starsInfoElement.className);
+  RegExp(r'sstars(\d+)').firstMatch(starsInfoElement.className);
 
   if (scoreMatcher?.groupCount == 1) {
     int parsedScore = int.parse(scoreMatcher.group(1));
@@ -158,16 +155,164 @@ double parseSubjectScore(Element element) {
   return null;
 }
 
-FeedMetaInfo updateUserAction(
-    Element singleTimelineContent, FeedMetaInfo userInfo) {
+FeedMetaInfo updateUserAction(Element singleTimelineContent, FeedMetaInfo userInfo) {
   assert(singleTimelineContent != null);
   assert(userInfo != null);
 
   Optional<String> maybeActionName =
-      getMergedTextNodeContent(singleTimelineContent.nodes);
+  getMergedTextNodeContent(singleTimelineContent.nodes);
 
   userInfo = userInfo.rebuild((b) =>
-      b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
+  b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
 
   return userInfo;
+}
+
+/// Parse a bangumi time string into an absolute [DateTime] object
+/// bangumi might represents time in three format
+/// 1. English relative time, 1s ago
+/// 2. Chinese relative time, 1小时前
+/// 3. Timestamp 2017-10-16 17:23
+/// If [stripDummyInfo] is set to true(by default it's true), this method will
+/// try to strip some possible dummy info first
+/// If [rawTime] is invalid, null will be returned
+DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
+  if (rawTime == null) {
+    return null;
+  }
+
+  if (stripDummyInfo) {
+    rawTime = rawTime.replaceAll('@', '').trim();
+  }
+
+  if (rawTime.contains('ago')) {
+    return parseEnglishRelativeTime(rawTime);
+  }
+
+  if (rawTime.contains('前')) {
+    return parseChineseRelativeTime(rawTime);
+  }
+
+  return parseDateTime(rawTime);
+}
+
+/// Parse time that's in format ` 2019-4-8 02:12` and returns [DateTime]
+/// Bangumi always displays timestamp in GMT+8(Beijing time)
+/// Hence +0800 is default time
+DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
+  if (rawTime == null) {
+    return null;
+  }
+
+  rawTime = rawTime.replaceAllMapped(unnormalizedDateMatcher, (Match m) {
+    if (m.groupCount == 0) {
+      return '';
+    }
+
+    return '0${m.group(1)}';
+  });
+
+
+  rawTime += timeZoneShift;
+
+  return DateTime.tryParse(rawTime);
+}
+
+/// Parse english relative time that's in format `1h 1m ago` and returns
+///// absoluteTime in [DateTime]
+/// Note: some time unit might not be displayed, i.e. bangumi displays
+/// `1d 1h ago` where minutes are not displayed
+/// returns null if [rawRelativeTime] cannot be parsed at all
+/// Examples:
+/// 0s ago / 3m ago / 1h 35m ago / 1d 20h ago
+/// Different from [parseChineseRelativeTime],It SEEMS like bangumi only uses
+/// this format to display time up to x days ago,  so years are not parsed
+/// for performance reason
+DateTime parseEnglishRelativeTime(String rawRelativeTime,) {
+  if (rawRelativeTime == null) {
+    return null;
+  }
+
+  final int days = tryParseInt(
+      firstCapturedStringOrNull(daysRegexEn, rawRelativeTime),
+      defaultValue: null);
+  final int hours = tryParseInt(
+      firstCapturedStringOrNull(hoursRegexEn, rawRelativeTime),
+      defaultValue: null);
+  final int minutes = tryParseInt(
+      firstCapturedStringOrNull(minutesRegexEn, rawRelativeTime),
+      defaultValue: null);
+  final int seconds = tryParseInt(
+      firstCapturedStringOrNull(secondsRegexEn, rawRelativeTime),
+      defaultValue: null);
+
+  if (days == null && hours == null && minutes == null && seconds == null) {
+    return null;
+  }
+
+  Duration duration = Duration(
+      days: days ?? 0,
+      hours: hours ?? 0,
+      minutes: minutes ?? 0,
+      seconds: seconds ?? 0);
+
+  DateTime absoluteTime = DateTime.now().subtract(duration);
+
+  return absoluteTime;
+}
+
+/// Parse Chinese relative time that's in format `1小时30分钟前` and returns
+/// absoluteTime in [DateTime]
+/// Note: some time unit might not be displayed, i.e. bangumi displays
+/// `1小时30分钟前` where `天` are not displayed
+/// returns null if [rawRelativeTime] cannot be parsed at all
+/// Examples:
+/// 1秒前 / 29分16秒前 / 12小时1分钟前  / 15天1小时前 / 11月1天前 / 1年前 / 1年3月前
+/// Different from [parseEnglishRelativeTime], it SEEMS like Bangumi uses this
+/// format to display time up to years / months ago
+DateTime parseChineseRelativeTime(String rawRelativeTime) {
+  if (rawRelativeTime == null) {
+    return null;
+  }
+
+  final int years = tryParseInt(
+      firstCapturedStringOrNull(yearsRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+  final int months = tryParseInt(
+      firstCapturedStringOrNull(monthsRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+  final int days = tryParseInt(
+      firstCapturedStringOrNull(daysRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+  final int hours = tryParseInt(
+      firstCapturedStringOrNull(hoursRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+  final int minutes = tryParseInt(
+      firstCapturedStringOrNull(minutesRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+  final int seconds = tryParseInt(
+      firstCapturedStringOrNull(secondsRegexZhHans, rawRelativeTime),
+      defaultValue: null);
+
+  if (years == null &&
+      months == null &&
+      days == null &&
+      minutes == null &&
+      hours == null &&
+      seconds == null) {
+    return null;
+  }
+
+  /// Roughly estimates total days, there will be a margin of error but we should
+  /// be fine
+  int totalDays = (years ?? 0) * 365 + (months ?? 0) * 30 + (days ?? 0);
+  Duration duration = Duration(
+      days: totalDays ?? 0,
+      hours: hours ?? 0,
+      minutes: minutes ?? 0,
+      seconds: seconds ?? 0);
+
+  DateTime absoluteTime = DateTime.now().subtract(duration);
+
+  return absoluteTime;
 }

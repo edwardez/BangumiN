@@ -16,6 +16,7 @@ import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
 import 'package:munin/redux/timeline/TimelineMiddleware.dart';
 import 'package:munin/shared/injector/injector.dart';
+import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,11 @@ abstract class Application {
 
   initialize() async {
     environmentValue = this;
+
+    /// misc utils initialization
+    TimeUtils.initializeTimeago();
+
+    /// service locator initialization
     await injector(getIt);
 
     final BangumiCookieClient _bangumiCookieClient =
@@ -75,6 +81,8 @@ abstract class Application {
         _isAuthenticated = false;
       }
     }
+
+    /// redux initialization
     Epic<AppState> epics = combineEpics<AppState>([]
       ..addAll(
           createSubjectEpics(_bangumiSubjectService)
@@ -92,8 +100,10 @@ abstract class Application {
             _bangumiCookieClient, bangumiUserService, preferences))..addAll(
             createTimelineMiddleware(_bangumiTimelineService)));
 
+    /// flutter initialization
     runApp(MuninApp(this, store));
   }
+
 
   String get name => runtimeType.toString();
 }

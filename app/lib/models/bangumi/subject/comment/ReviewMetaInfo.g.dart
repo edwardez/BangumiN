@@ -1,31 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SubjectCommentMetaInfo.dart';
+part of 'ReviewMetaInfo.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SubjectCommentMetaInfo> _$subjectCommentMetaInfoSerializer =
-    new _$SubjectCommentMetaInfoSerializer();
+Serializer<ReviewMetaInfo> _$reviewMetaInfoSerializer =
+    new _$ReviewMetaInfoSerializer();
 
-class _$SubjectCommentMetaInfoSerializer
-    implements StructuredSerializer<SubjectCommentMetaInfo> {
+class _$ReviewMetaInfoSerializer
+    implements StructuredSerializer<ReviewMetaInfo> {
   @override
-  final Iterable<Type> types = const [
-    SubjectCommentMetaInfo,
-    _$SubjectCommentMetaInfo
-  ];
+  final Iterable<Type> types = const [ReviewMetaInfo, _$ReviewMetaInfo];
   @override
-  final String wireName = 'SubjectCommentMetaInfo';
+  final String wireName = 'ReviewMetaInfo';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectCommentMetaInfo object,
+  Iterable serialize(Serializers serializers, ReviewMetaInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'updatedAt',
       serializers.serialize(object.updatedAt,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(int)),
       'nickName',
       serializers.serialize(object.nickName,
           specifiedType: const FullType(String)),
@@ -62,10 +59,9 @@ class _$SubjectCommentMetaInfoSerializer
   }
 
   @override
-  SubjectCommentMetaInfo deserialize(
-      Serializers serializers, Iterable serialized,
+  ReviewMetaInfo deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SubjectCommentMetaInfoBuilder();
+    final result = new ReviewMetaInfoBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -83,7 +79,7 @@ class _$SubjectCommentMetaInfoSerializer
           break;
         case 'updatedAt':
           result.updatedAt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'nickName':
           result.nickName = serializers.deserialize(value,
@@ -108,13 +104,13 @@ class _$SubjectCommentMetaInfoSerializer
   }
 }
 
-class _$SubjectCommentMetaInfo extends SubjectCommentMetaInfo {
+class _$ReviewMetaInfo extends ReviewMetaInfo {
   @override
   final Images images;
   @override
   final double score;
   @override
-  final String updatedAt;
+  final int updatedAt;
   @override
   final String nickName;
   @override
@@ -124,11 +120,10 @@ class _$SubjectCommentMetaInfo extends SubjectCommentMetaInfo {
   @override
   final String actionName;
 
-  factory _$SubjectCommentMetaInfo(
-          [void updates(SubjectCommentMetaInfoBuilder b)]) =>
-      (new SubjectCommentMetaInfoBuilder()..update(updates)).build();
+  factory _$ReviewMetaInfo([void updates(ReviewMetaInfoBuilder b)]) =>
+      (new ReviewMetaInfoBuilder()..update(updates)).build();
 
-  _$SubjectCommentMetaInfo._(
+  _$ReviewMetaInfo._(
       {this.images,
       this.score,
       this.updatedAt,
@@ -138,29 +133,28 @@ class _$SubjectCommentMetaInfo extends SubjectCommentMetaInfo {
       this.actionName})
       : super._() {
     if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('SubjectCommentMetaInfo', 'updatedAt');
+      throw new BuiltValueNullFieldError('ReviewMetaInfo', 'updatedAt');
     }
     if (nickName == null) {
-      throw new BuiltValueNullFieldError('SubjectCommentMetaInfo', 'nickName');
+      throw new BuiltValueNullFieldError('ReviewMetaInfo', 'nickName');
     }
     if (userId == null) {
-      throw new BuiltValueNullFieldError('SubjectCommentMetaInfo', 'userId');
+      throw new BuiltValueNullFieldError('ReviewMetaInfo', 'userId');
     }
   }
 
   @override
-  SubjectCommentMetaInfo rebuild(
-          void updates(SubjectCommentMetaInfoBuilder b)) =>
+  ReviewMetaInfo rebuild(void updates(ReviewMetaInfoBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SubjectCommentMetaInfoBuilder toBuilder() =>
-      new SubjectCommentMetaInfoBuilder()..replace(this);
+  ReviewMetaInfoBuilder toBuilder() =>
+      new ReviewMetaInfoBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SubjectCommentMetaInfo &&
+    return other is ReviewMetaInfo &&
         images == other.images &&
         score == other.score &&
         updatedAt == other.updatedAt &&
@@ -186,7 +180,7 @@ class _$SubjectCommentMetaInfo extends SubjectCommentMetaInfo {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SubjectCommentMetaInfo')
+    return (newBuiltValueToStringHelper('ReviewMetaInfo')
           ..add('images', images)
           ..add('score', score)
           ..add('updatedAt', updatedAt)
@@ -198,9 +192,9 @@ class _$SubjectCommentMetaInfo extends SubjectCommentMetaInfo {
   }
 }
 
-class SubjectCommentMetaInfoBuilder
-    implements Builder<SubjectCommentMetaInfo, SubjectCommentMetaInfoBuilder> {
-  _$SubjectCommentMetaInfo _$v;
+class ReviewMetaInfoBuilder
+    implements Builder<ReviewMetaInfo, ReviewMetaInfoBuilder> {
+  _$ReviewMetaInfo _$v;
 
   ImagesBuilder _images;
   ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
@@ -210,9 +204,9 @@ class SubjectCommentMetaInfoBuilder
   double get score => _$this._score;
   set score(double score) => _$this._score = score;
 
-  String _updatedAt;
-  String get updatedAt => _$this._updatedAt;
-  set updatedAt(String updatedAt) => _$this._updatedAt = updatedAt;
+  int _updatedAt;
+  int get updatedAt => _$this._updatedAt;
+  set updatedAt(int updatedAt) => _$this._updatedAt = updatedAt;
 
   String _nickName;
   String get nickName => _$this._nickName;
@@ -231,9 +225,9 @@ class SubjectCommentMetaInfoBuilder
   String get actionName => _$this._actionName;
   set actionName(String actionName) => _$this._actionName = actionName;
 
-  SubjectCommentMetaInfoBuilder();
+  ReviewMetaInfoBuilder();
 
-  SubjectCommentMetaInfoBuilder get _$this {
+  ReviewMetaInfoBuilder get _$this {
     if (_$v != null) {
       _images = _$v.images?.toBuilder();
       _score = _$v.score;
@@ -248,24 +242,24 @@ class SubjectCommentMetaInfoBuilder
   }
 
   @override
-  void replace(SubjectCommentMetaInfo other) {
+  void replace(ReviewMetaInfo other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$SubjectCommentMetaInfo;
+    _$v = other as _$ReviewMetaInfo;
   }
 
   @override
-  void update(void updates(SubjectCommentMetaInfoBuilder b)) {
+  void update(void updates(ReviewMetaInfoBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SubjectCommentMetaInfo build() {
-    _$SubjectCommentMetaInfo _$result;
+  _$ReviewMetaInfo build() {
+    _$ReviewMetaInfo _$result;
     try {
       _$result = _$v ??
-          new _$SubjectCommentMetaInfo._(
+          new _$ReviewMetaInfo._(
               images: _images?.build(),
               score: score,
               updatedAt: updatedAt,
@@ -280,7 +274,7 @@ class SubjectCommentMetaInfoBuilder
         _images?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'SubjectCommentMetaInfo', _$failedField, e.toString());
+            'ReviewMetaInfo', _$failedField, e.toString());
       }
       rethrow;
     }

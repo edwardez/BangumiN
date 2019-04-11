@@ -7,7 +7,7 @@ import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 class TimelineUserListTile extends StatelessWidget {
   final String nickName;
   final String actionName;
-  final String updatedAt;
+  final int updatedAt;
   final int titleMaxLines;
   final double score;
 

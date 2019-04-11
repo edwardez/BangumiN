@@ -1,28 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SubjectComment.dart';
+part of 'SubjectReview.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SubjectComment> _$subjectCommentSerializer =
-    new _$SubjectCommentSerializer();
+Serializer<SubjectReview> _$subjectReviewSerializer =
+    new _$SubjectReviewSerializer();
 
-class _$SubjectCommentSerializer
-    implements StructuredSerializer<SubjectComment> {
+class _$SubjectReviewSerializer implements StructuredSerializer<SubjectReview> {
   @override
-  final Iterable<Type> types = const [SubjectComment, _$SubjectComment];
+  final Iterable<Type> types = const [SubjectReview, _$SubjectReview];
   @override
-  final String wireName = 'SubjectComment';
+  final String wireName = 'SubjectReview';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectComment object,
+  Iterable serialize(Serializers serializers, SubjectReview object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'metaInfo',
       serializers.serialize(object.metaInfo,
-          specifiedType: const FullType(SubjectCommentMetaInfo)),
+          specifiedType: const FullType(ReviewMetaInfo)),
       'content',
       serializers.serialize(object.content,
           specifiedType: const FullType(String)),
@@ -32,9 +31,9 @@ class _$SubjectCommentSerializer
   }
 
   @override
-  SubjectComment deserialize(Serializers serializers, Iterable serialized,
+  SubjectReview deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SubjectCommentBuilder();
+    final result = new SubjectReviewBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -44,8 +43,7 @@ class _$SubjectCommentSerializer
       switch (key) {
         case 'metaInfo':
           result.metaInfo.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(SubjectCommentMetaInfo))
-              as SubjectCommentMetaInfo);
+              specifiedType: const FullType(ReviewMetaInfo)) as ReviewMetaInfo);
           break;
         case 'content':
           result.content = serializers.deserialize(value,
@@ -58,36 +56,35 @@ class _$SubjectCommentSerializer
   }
 }
 
-class _$SubjectComment extends SubjectComment {
+class _$SubjectReview extends SubjectReview {
   @override
-  final SubjectCommentMetaInfo metaInfo;
+  final ReviewMetaInfo metaInfo;
   @override
   final String content;
 
-  factory _$SubjectComment([void updates(SubjectCommentBuilder b)]) =>
-      (new SubjectCommentBuilder()..update(updates)).build();
+  factory _$SubjectReview([void updates(SubjectReviewBuilder b)]) =>
+      (new SubjectReviewBuilder()..update(updates)).build();
 
-  _$SubjectComment._({this.metaInfo, this.content}) : super._() {
+  _$SubjectReview._({this.metaInfo, this.content}) : super._() {
     if (metaInfo == null) {
-      throw new BuiltValueNullFieldError('SubjectComment', 'metaInfo');
+      throw new BuiltValueNullFieldError('SubjectReview', 'metaInfo');
     }
     if (content == null) {
-      throw new BuiltValueNullFieldError('SubjectComment', 'content');
+      throw new BuiltValueNullFieldError('SubjectReview', 'content');
     }
   }
 
   @override
-  SubjectComment rebuild(void updates(SubjectCommentBuilder b)) =>
+  SubjectReview rebuild(void updates(SubjectReviewBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SubjectCommentBuilder toBuilder() =>
-      new SubjectCommentBuilder()..replace(this);
+  SubjectReviewBuilder toBuilder() => new SubjectReviewBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SubjectComment &&
+    return other is SubjectReview &&
         metaInfo == other.metaInfo &&
         content == other.content;
   }
@@ -99,30 +96,29 @@ class _$SubjectComment extends SubjectComment {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SubjectComment')
+    return (newBuiltValueToStringHelper('SubjectReview')
           ..add('metaInfo', metaInfo)
           ..add('content', content))
         .toString();
   }
 }
 
-class SubjectCommentBuilder
-    implements Builder<SubjectComment, SubjectCommentBuilder> {
-  _$SubjectComment _$v;
+class SubjectReviewBuilder
+    implements Builder<SubjectReview, SubjectReviewBuilder> {
+  _$SubjectReview _$v;
 
-  SubjectCommentMetaInfoBuilder _metaInfo;
-  SubjectCommentMetaInfoBuilder get metaInfo =>
-      _$this._metaInfo ??= new SubjectCommentMetaInfoBuilder();
-  set metaInfo(SubjectCommentMetaInfoBuilder metaInfo) =>
-      _$this._metaInfo = metaInfo;
+  ReviewMetaInfoBuilder _metaInfo;
+  ReviewMetaInfoBuilder get metaInfo =>
+      _$this._metaInfo ??= new ReviewMetaInfoBuilder();
+  set metaInfo(ReviewMetaInfoBuilder metaInfo) => _$this._metaInfo = metaInfo;
 
   String _content;
   String get content => _$this._content;
   set content(String content) => _$this._content = content;
 
-  SubjectCommentBuilder();
+  SubjectReviewBuilder();
 
-  SubjectCommentBuilder get _$this {
+  SubjectReviewBuilder get _$this {
     if (_$v != null) {
       _metaInfo = _$v.metaInfo?.toBuilder();
       _content = _$v.content;
@@ -132,24 +128,24 @@ class SubjectCommentBuilder
   }
 
   @override
-  void replace(SubjectComment other) {
+  void replace(SubjectReview other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$SubjectComment;
+    _$v = other as _$SubjectReview;
   }
 
   @override
-  void update(void updates(SubjectCommentBuilder b)) {
+  void update(void updates(SubjectReviewBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SubjectComment build() {
-    _$SubjectComment _$result;
+  _$SubjectReview build() {
+    _$SubjectReview _$result;
     try {
       _$result = _$v ??
-          new _$SubjectComment._(metaInfo: metaInfo.build(), content: content);
+          new _$SubjectReview._(metaInfo: metaInfo.build(), content: content);
     } catch (_) {
       String _$failedField;
       try {
@@ -157,7 +153,7 @@ class SubjectCommentBuilder
         metaInfo.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'SubjectComment', _$failedField, e.toString());
+            'SubjectReview', _$failedField, e.toString());
       }
       rethrow;
     }

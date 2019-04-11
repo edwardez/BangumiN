@@ -227,10 +227,8 @@ class TimelineParser {
       return Optional.absent();
     }
 
-    /// in case time cannot be parsed, display '神秘时间'
-    String updatedAt =
-        RegExp(r'\d\S+前').firstMatch(updatedAtElement.text.trim())?.group(0) ??
-            '神秘时间';
+    DateTime absoluteTime = parseBangumiTime(updatedAtElement.text);
+
     Match idMatchers = RegExp(r'user\/(\w+)')
         .firstMatch(userNameElement.attributes['href'] ?? '');
     String userId = idMatchers?.group(1);
@@ -255,7 +253,7 @@ class TimelineParser {
     /// set actionName using a dummy place holder
     FeedMetaInfo userInfo = FeedMetaInfo((b) => b
       ..nickName = nickName
-      ..updatedAt = updatedAt
+      ..updatedAt = absoluteTime?.millisecondsSinceEpoch
       ..feedId = feedId
       ..userId = userId
       ..avatarImageUrl = avatarImageUrl

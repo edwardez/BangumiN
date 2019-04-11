@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 
@@ -7,7 +8,7 @@ import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 /// this widget assumes actionName will never be null or empty
 class ListTileSubtitleWidget extends StatelessWidget {
   final String actionName;
-  final String updatedAt;
+  final int updatedAt;
   final double score;
 
   ListTileSubtitleWidget(
@@ -27,7 +28,7 @@ class ListTileSubtitleWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           )),
           Text(
-            updatedAt,
+            TimeUtils.formatMilliSecondsEpochTime(updatedAt),
           )
         ],
       );
@@ -44,7 +45,7 @@ class ListTileSubtitleWidget extends StatelessWidget {
           ),
           ExpandedEmpty(),
           Text(
-            updatedAt,
+            TimeUtils.formatMilliSecondsEpochTime(updatedAt),
           )
         ],
       );

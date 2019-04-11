@@ -42,13 +42,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(PublicMessageNormal.serializer)
       ..add(Rating.serializer)
       ..add(RelatedSubject.serializer)
+      ..add(ReviewMetaInfo.serializer)
       ..add(SearchRequest.serializer)
       ..add(SearchState.serializer)
       ..add(SearchType.serializer)
       ..add(StatusUpdateMultiple.serializer)
       ..add(SubjectCollectionInfo.serializer)
-      ..add(SubjectComment.serializer)
-      ..add(SubjectCommentMetaInfo.serializer)
+      ..add(SubjectReview.serializer)
       ..add(SubjectSearchResult.serializer)
       ..add(SubjectState.serializer)
       ..add(SubjectType.serializer)
@@ -67,8 +67,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(String), const FullType(RelatedSubject)]),
           () => new ListMultimapBuilder<String, RelatedSubject>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(SubjectComment)]),
-          () => new ListBuilder<SubjectComment>())
+          const FullType(BuiltList, const [const FullType(SubjectReview)]),
+          () => new ListBuilder<SubjectReview>())
       ..addBuilderFactory(
           const FullType(BuiltListMultimap,
               const [const FullType(String), const FullType(InfoBoxItem)]),

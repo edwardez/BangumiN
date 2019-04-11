@@ -11,8 +11,8 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollection.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectComment.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectCommentMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -138,12 +138,12 @@ class SubjectParser {
     return BuiltList<Actor>(actors);
   }
 
-  BuiltList<SubjectComment> parseComments(DocumentFragment subjectElement,
+  BuiltList<SubjectReview> parseComments(DocumentFragment subjectElement,
       {defaultActionName = '无评分'}) {
     List<Element> commentElements =
         subjectElement.querySelectorAll('#comment_box>.item');
 
-    List<SubjectComment> comments = [];
+    List<SubjectReview> comments = [];
 
     for (Element commentElement in commentElements) {
       Element avatarElement = commentElement.querySelector('a.avatar');
@@ -153,31 +153,32 @@ class SubjectParser {
           userAvatarSmall, ImageSize.Unknown, ImageType.UserAvatar);
       String updatedAt = commentElement
               .querySelector('.grey')
-              ?.text
-              ?.replaceAll('@', '')
-              ?.trim() ??
-          '神秘时间';
+          ?.text;
+
+      DateTime absoluteTime = parseBangumiTime(updatedAt);
       String commentContent = commentElement.querySelector('p')?.text ?? '';
       String nickName = commentElement.querySelector('.text > a')?.text ?? '';
       double score = parseSubjectScore(commentElement);
 
       String actionName = score == null ? defaultActionName : '';
 
-      SubjectCommentMetaInfo metaInfo = SubjectCommentMetaInfo((b) => b
-        ..updatedAt = updatedAt
+      ReviewMetaInfo metaInfo = ReviewMetaInfo((b) =>
+      b
+        ..updatedAt = absoluteTime?.millisecondsSinceEpoch
         ..nickName = nickName
         ..actionName = actionName
         ..score = score
         ..userId = userId?.toString()
         ..images.replace(images));
 
-      SubjectComment subjectComment = SubjectComment((b) => b
+      SubjectReview subjectComment = SubjectReview((b) =>
+      b
         ..content = commentContent
         ..metaInfo.replace(metaInfo));
       comments.add(subjectComment);
     }
 
-    return BuiltList<SubjectComment>(comments);
+    return BuiltList<SubjectReview>(comments);
   }
 
   BuiltList<Character> parseCharacters(DocumentFragment subjectElement) {
@@ -454,7 +455,7 @@ class SubjectParser {
 
     BuiltList<Character> characters = parseCharacters(document);
 
-    BuiltList<SubjectComment> comments = parseComments(document);
+    BuiltList<SubjectReview> comments = parseComments(document);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
         parseRelatedSubjects(document, subjectType);

@@ -23,6 +23,21 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
   return int.tryParse(intStr) ?? defaultValue;
 }
 
+/// Returns first captures string or null
+/// This method assumes [regExp] contains at least one capture group
+String firstCapturedStringOrNull(RegExp regExp, String input) {
+  /// Ensure input [regExp] contains at least one capture group
+  assert(RegExp(r'\(.+\)').hasMatch(regExp.pattern));
+
+  Match match = regExp.firstMatch(input);
+
+  if (match != null && match.groupCount >= 1) {
+    return match.group(1);
+  }
+
+  return null;
+}
+
 /// safely parse an double string, or returns null if doubleStr is null
 /// if doubleStr is not double string, [defaultValue] will be returned
 double tryParseDouble(String doubleStr, {defaultValue = 0}) {

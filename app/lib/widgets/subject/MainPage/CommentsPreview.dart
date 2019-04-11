@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectComment.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
@@ -43,7 +43,7 @@ class CommentsPreview extends StatelessWidget {
         ),
       ));
     } else {
-      for (SubjectComment comment in subject.commentsPreview) {
+      for (SubjectReview comment in subject.commentsPreview) {
         commentPreviewWidgets.add(SubjectCommentWidget(
           subjectComment: comment,
         ));

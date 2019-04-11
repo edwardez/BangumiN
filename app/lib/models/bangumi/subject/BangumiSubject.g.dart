@@ -76,7 +76,7 @@ class _$BangumiSubjectSerializer
         ..add('commentsPreview')
         ..add(serializers.serialize(object.commentsPreview,
             specifiedType: const FullType(
-                BuiltList, const [const FullType(SubjectComment)])));
+                BuiltList, const [const FullType(SubjectReview)])));
     }
     if (object.infoBoxRows != null) {
       result
@@ -171,7 +171,7 @@ class _$BangumiSubjectSerializer
         case 'commentsPreview':
           result.commentsPreview.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(SubjectComment)]))
+                      BuiltList, const [const FullType(SubjectReview)]))
               as BuiltList);
           break;
         case 'infoBoxRows':
@@ -248,7 +248,7 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
   @override
-  final BuiltList<SubjectComment> commentsPreview;
+  final BuiltList<SubjectReview> commentsPreview;
   @override
   final BuiltListMultimap<String, InfoBoxItem> infoBoxRows;
   @override
@@ -471,10 +471,10 @@ class BangumiSubjectBuilder
           ListMultimapBuilder<String, RelatedSubject> relatedSubjects) =>
       _$this._relatedSubjects = relatedSubjects;
 
-  ListBuilder<SubjectComment> _commentsPreview;
-  ListBuilder<SubjectComment> get commentsPreview =>
-      _$this._commentsPreview ??= new ListBuilder<SubjectComment>();
-  set commentsPreview(ListBuilder<SubjectComment> commentsPreview) =>
+  ListBuilder<SubjectReview> _commentsPreview;
+  ListBuilder<SubjectReview> get commentsPreview =>
+      _$this._commentsPreview ??= new ListBuilder<SubjectReview>();
+  set commentsPreview(ListBuilder<SubjectReview> commentsPreview) =>
       _$this._commentsPreview = commentsPreview;
 
   ListMultimapBuilder<String, InfoBoxItem> _infoBoxRows;

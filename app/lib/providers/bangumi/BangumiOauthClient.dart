@@ -107,7 +107,9 @@ class BangumiOauthClient {
           Uri.parse(state.url).host == 'bgm.tv') {
         Map<String, String> cookies = await _flutterWebviewPlugin.getCookies();
 
-        // TODO: fix cookie parsing problem in flutter webview plugin
+        /// TODO: fix cookie parsing problem in flutter webview plugin
+        /// TODO: figure out why sometimes [chii_auth] is never present in returned
+        /// cookie while user is actually logged-in
         String authCookie = cookies['chii_auth'] ?? cookies[' chii_auth'];
         if (authCookie != null) {
           String userAgent =

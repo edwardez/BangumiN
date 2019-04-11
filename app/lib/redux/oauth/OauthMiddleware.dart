@@ -63,11 +63,12 @@ Middleware<AppState> _createOAuthRequest(
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
       Navigator.of(action.context).pushReplacementNamed('/home');
-    } catch (error) {
+    } catch (error, stack) {
       final maxErrorMessageMaxLength = 200;
       final errorMessage = error.toString();
 
       print(errorMessage);
+      print(stack);
       Navigator.of(action.context)
           .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
       store.dispatch(OAuthLoginFailure(

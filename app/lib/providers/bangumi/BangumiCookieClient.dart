@@ -58,6 +58,7 @@ class BangumiCookieClient {
   }
 
   Future<void> persistCredentials() {
+    assert(bangumiCookieCredential != null);
     return this.secureStorage.write(
         key: 'bangumiCookieCredentials',
         value: bangumiCookieCredential.toJson());

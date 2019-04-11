@@ -27,8 +27,8 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
       'nickName',
       serializers.serialize(object.nickName,
           specifiedType: const FullType(String)),
-      'userId',
-      serializers.serialize(object.userId,
+      'username',
+      serializers.serialize(object.username,
           specifiedType: const FullType(String)),
     ];
     if (object.images != null) {
@@ -84,8 +84,8 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
           result.avatarImageUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'userId':
-          result.userId = serializers.deserialize(value,
+        case 'username':
+          result.username = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'actionName':
@@ -111,7 +111,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   @override
   final String avatarImageUrl;
   @override
-  final String userId;
+  final String username;
   @override
   final String actionName;
 
@@ -124,7 +124,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
       this.updatedAt,
       this.nickName,
       this.avatarImageUrl,
-      this.userId,
+      this.username,
       this.actionName})
       : super._() {
     if (feedId == null) {
@@ -136,8 +136,8 @@ class _$FeedMetaInfo extends FeedMetaInfo {
     if (nickName == null) {
       throw new BuiltValueNullFieldError('FeedMetaInfo', 'nickName');
     }
-    if (userId == null) {
-      throw new BuiltValueNullFieldError('FeedMetaInfo', 'userId');
+    if (username == null) {
+      throw new BuiltValueNullFieldError('FeedMetaInfo', 'username');
     }
   }
 
@@ -157,7 +157,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
         updatedAt == other.updatedAt &&
         nickName == other.nickName &&
         avatarImageUrl == other.avatarImageUrl &&
-        userId == other.userId &&
+        username == other.username &&
         actionName == other.actionName;
   }
 
@@ -171,7 +171,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
                         updatedAt.hashCode),
                     nickName.hashCode),
                 avatarImageUrl.hashCode),
-            userId.hashCode),
+            username.hashCode),
         actionName.hashCode));
   }
 
@@ -183,7 +183,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
           ..add('updatedAt', updatedAt)
           ..add('nickName', nickName)
           ..add('avatarImageUrl', avatarImageUrl)
-          ..add('userId', userId)
+          ..add('username', username)
           ..add('actionName', actionName))
         .toString();
   }
@@ -214,9 +214,9 @@ class FeedMetaInfoBuilder
   set avatarImageUrl(String avatarImageUrl) =>
       _$this._avatarImageUrl = avatarImageUrl;
 
-  String _userId;
-  String get userId => _$this._userId;
-  set userId(String userId) => _$this._userId = userId;
+  String _username;
+  String get username => _$this._username;
+  set username(String username) => _$this._username = username;
 
   String _actionName;
   String get actionName => _$this._actionName;
@@ -231,7 +231,7 @@ class FeedMetaInfoBuilder
       _updatedAt = _$v.updatedAt;
       _nickName = _$v.nickName;
       _avatarImageUrl = _$v.avatarImageUrl;
-      _userId = _$v.userId;
+      _username = _$v.username;
       _actionName = _$v.actionName;
       _$v = null;
     }
@@ -262,7 +262,7 @@ class FeedMetaInfoBuilder
               updatedAt: updatedAt,
               nickName: nickName,
               avatarImageUrl: avatarImageUrl,
-              userId: userId,
+              username: username,
               actionName: actionName);
     } catch (_) {
       String _$failedField;

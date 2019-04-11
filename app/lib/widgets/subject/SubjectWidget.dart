@@ -87,6 +87,7 @@ class SubjectWidget extends StatelessWidget {
         itemCount: widgets.length,
       ),
       safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+      enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );
   }

@@ -231,11 +231,11 @@ class TimelineParser {
 
     Match idMatchers = RegExp(r'user\/(\w+)')
         .firstMatch(userNameElement.attributes['href'] ?? '');
-    String userId = idMatchers?.group(1);
+    String username = idMatchers?.group(1);
 
     String nickName = userNameElement.text.trim();
 
-    if (userId == null || nickName == null) {
+    if (username == null || nickName == null) {
       /// these two must not be null, otherwise it's an unknown situation
       return Optional.absent();
     }
@@ -243,7 +243,7 @@ class TimelineParser {
     /// bangumi timeline might omit avatar, so it's optional
     Element userAvatarElement =
         timelineItem.querySelector('${aHrefContains('/user/')}.avatar');
-    String avatarImageUrl = userAvatarImageCache[userId];
+    String avatarImageUrl = userAvatarImageCache[username];
     if (userAvatarElement != null && avatarImageUrl == null) {
       Match imageMatchers = RegExp(r"""background-image:url\('([^']*)'\)""")
           .firstMatch(userAvatarElement?.innerHtml ?? '');
@@ -255,11 +255,11 @@ class TimelineParser {
       ..nickName = nickName
       ..updatedAt = absoluteTime?.millisecondsSinceEpoch
       ..feedId = feedId
-      ..userId = userId
+      ..username = username
       ..avatarImageUrl = avatarImageUrl
       ..actionName = '');
 
-    userAvatarImageCache[userId] = avatarImageUrl;
+    userAvatarImageCache[username] = avatarImageUrl;
 
     return Optional<FeedMetaInfo>.of(userInfo);
   }
@@ -487,7 +487,9 @@ class TimelineParser {
         singleTimelineContent,
         BangumiContent.User,
         contentTypeToSelectorName[BangumiContent.User],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
 
     Element hyperImageElement = singleTimelineContent.querySelector('a>img.rr');
 
@@ -520,11 +522,15 @@ class TimelineParser {
       parseActionName = false}) {
     hyperLinkList ??= parseAllHyperLinks(singleTimelineContent, contentType,
         contentTypeToSelectorName[contentType],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
 
     imageList ??= parseAllHyperImages(singleTimelineContent, contentType,
         contentTypeToSelectorName[contentType],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
 
     if (parseActionName) {
       userInfo = updateUserAction(singleTimelineContent, userInfo);
@@ -601,10 +607,14 @@ class TimelineParser {
         singleTimelineContent,
         BangumiContent.Group,
         contentTypeToSelectorName[BangumiContent.Group],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
     List<HyperImage> imageList = parseAllHyperImages(singleTimelineContent,
         BangumiContent.Group, contentTypeToSelectorName[BangumiContent.Group],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
 
     /// group may not have an icon, and there must be exactly one text group link
     if (hyperLinkList.length != 1) {
@@ -707,12 +717,16 @@ class TimelineParser {
         singleTimelineContent,
         BangumiContent.Subject,
         contentTypeToSelectorName[BangumiContent.Subject],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
     List<HyperImage> imageList = parseAllHyperImages(
         singleTimelineContent,
         BangumiContent.Subject,
         contentTypeToSelectorName[BangumiContent.Subject],
-        filterIds: {userInfo.userId});
+        filterIds: {
+        userInfo.username
+        });
 
     /// subject may not have an icon, and there must be exactly one text subject link
     if (hyperLinkList.length < 1) {

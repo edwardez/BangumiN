@@ -22,10 +22,13 @@ class _$SubjectReviewSerializer implements StructuredSerializer<SubjectReview> {
       'metaInfo',
       serializers.serialize(object.metaInfo,
           specifiedType: const FullType(ReviewMetaInfo)),
-      'content',
-      serializers.serialize(object.content,
-          specifiedType: const FullType(String)),
     ];
+    if (object.content != null) {
+      result
+        ..add('content')
+        ..add(serializers.serialize(object.content,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -68,9 +71,6 @@ class _$SubjectReview extends SubjectReview {
   _$SubjectReview._({this.metaInfo, this.content}) : super._() {
     if (metaInfo == null) {
       throw new BuiltValueNullFieldError('SubjectReview', 'metaInfo');
-    }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('SubjectReview', 'content');
     }
   }
 

@@ -23,6 +23,10 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
   final List<Widget> appBarActions;
   final Widget nestedScrollViewBody;
   final double safeAreaChildHorizontalPadding;
+  final bool enableLeftSafeArea;
+  final bool enableTopSafeArea;
+  final bool enableRightSafeArea;
+  final bool enableBottomSafeArea;
 
   const ScaffoldWithSliverAppBar({
     Key key,
@@ -35,6 +39,10 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
     this.appBarElevation = defaultAppBarElevation,
     this.appBarActions = const [],
     this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalPadding,
+    this.enableLeftSafeArea = true,
+    this.enableTopSafeArea = true,
+    this.enableRightSafeArea = true,
+    this.enableBottomSafeArea = true,
   }) : super(key: key);
 
   _buildAppBarTitle(bool changeAppBarTitleOnScroll, bool innerBoxIsScrolled,
@@ -77,7 +85,12 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
             child: nestedScrollViewBody,
           ),
         ),
+        left: enableLeftSafeArea,
+        top: enableTopSafeArea,
+        right: enableRightSafeArea,
+        bottom: enableBottomSafeArea,
       ),
+
     );
   }
 }

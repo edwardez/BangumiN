@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
@@ -11,10 +13,10 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollection.dart';
-import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/providers/bangumi/subject/parser/common.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/collection.dart';
@@ -28,17 +30,17 @@ class SubjectParser {
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
     SubjectType.Book: {
-      '作者',
-      '插图',
-      '原作',
-      '作画',
-      '开始',
-      '结束',
-      '发售日',
-      '话数',
-      '册数',
-      '连载杂志',
-      '文库'
+    '作者',
+    '插图',
+    '原作',
+    '作画',
+    '开始',
+    '结束',
+    '发售日',
+    '话数',
+    '册数',
+    '连载杂志',
+    '文库'
     },
     SubjectType.Real: {'国家/地区', '类型', '开始', '结束'},
   };
@@ -75,8 +77,7 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  List<InfoBoxItem> parseInfoBoxRow(
-      Element infoBoxRowElement, SubjectType subjectType) {
+  List<InfoBoxItem> parseInfoBoxRow(Element infoBoxRowElement, SubjectType subjectType) {
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -125,7 +126,7 @@ class SubjectParser {
   BuiltList<Actor> parseActors(Element characterElement) {
     List<Actor> actors = [];
     List<Element> actorElements =
-        characterElement.querySelectorAll('a[rel=\"v:starring\"]');
+    characterElement.querySelectorAll('a[rel=\"v:starring\"]');
 
     for (Element actorElement in actorElements) {
       int actorId = tryParseInt(parseHrefId(actorElement));
@@ -138,54 +139,51 @@ class SubjectParser {
     return BuiltList<Actor>(actors);
   }
 
-  BuiltList<SubjectReview> parseComments(DocumentFragment subjectElement,
-      {defaultActionName = '无评分'}) {
-    List<Element> commentElements =
-        subjectElement.querySelectorAll('#comment_box>.item');
+  BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement,
+      {String defaultActionName = '评价道'}) {
+    /// a [SplayTreeSet] that contains a sorted set of reviews where
+    /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
+    /// sorted in descending order
+    SplayTreeSet<SubjectReview> reviews = SplayTreeSet<SubjectReview>(
+            (SubjectReview reviewA, SubjectReview reviewB) {
+          /// If username is the same, always skipping insertion
+          if (reviewA.metaInfo.username == reviewB.metaInfo.username) {
+            return 0;
+          }
 
-    List<SubjectReview> comments = [];
+          int reviewAUpdatedAt = reviewA.metaInfo.updatedAt ?? 0;
+          int reviewBUpdatedAt = reviewB.metaInfo.updatedAt ?? 0;
+          if (reviewAUpdatedAt != reviewBUpdatedAt) {
+            return reviewBUpdatedAt - reviewAUpdatedAt;
+          }
 
-    for (Element commentElement in commentElements) {
-      Element avatarElement = commentElement.querySelector('a.avatar');
-      int userId = tryParseInt(parseHrefId(avatarElement));
-      String userAvatarSmall = imageUrlFromBackgroundImage(avatarElement);
-      Images images = Images.fromImageUrl(
-          userAvatarSmall, ImageSize.Unknown, ImageType.UserAvatar);
-      String updatedAt = commentElement
-              .querySelector('.grey')
-          ?.text;
+          /// If [UpdatedAt] is the same, we sort by username
+          return reviewB.metaInfo.username.compareTo(reviewA.metaInfo.username);
+        });
 
-      DateTime absoluteTime = parseBangumiTime(updatedAt);
-      String commentContent = commentElement.querySelector('p')?.text ?? '';
-      String nickName = commentElement.querySelector('.text > a')?.text ?? '';
-      double score = parseSubjectScore(commentElement);
+    List<Element> commentBoxElements =
+    subjectElement.querySelectorAll('#comment_box>.item');
 
-      String actionName = score == null ? defaultActionName : '';
-
-      ReviewMetaInfo metaInfo = ReviewMetaInfo((b) =>
-      b
-        ..updatedAt = absoluteTime?.millisecondsSinceEpoch
-        ..nickName = nickName
-        ..actionName = actionName
-        ..score = score
-        ..userId = userId?.toString()
-        ..images.replace(images));
-
-      SubjectReview subjectComment = SubjectReview((b) =>
-      b
-        ..content = commentContent
-        ..metaInfo.replace(metaInfo));
-      comments.add(subjectComment);
+    /// Elements that are in the comment box
+    for (Element commentElement in commentBoxElements) {
+      reviews.add(parseSubjectReview(commentElement, ReviewElement.CommentBox));
     }
 
-    return BuiltList<SubjectReview>(comments);
+    List<Element> recentCollectionElements = subjectElement
+        .querySelectorAll('#subjectPanelCollect > .groupsLine > li');
+    for (Element recentCollectionElement in recentCollectionElements) {
+      reviews.add(parseSubjectReview(
+          recentCollectionElement, ReviewElement.CollectionPreview));
+    }
+
+    return BuiltList<SubjectReview>(reviews);
   }
 
   BuiltList<Character> parseCharacters(DocumentFragment subjectElement) {
     List<Character> characters = [];
 
     List<Element> characterElements =
-        subjectElement.querySelectorAll('.subject_section .user');
+    subjectElement.querySelectorAll('.subject_section .user');
 
     for (Element characterElement in characterElements) {
       Element avatarElement = characterElement.querySelector('a.avatar');
@@ -219,16 +217,16 @@ class SubjectParser {
   BuiltListMultimap<String, RelatedSubject> parseRelatedSubjects(
       DocumentFragment subjectElement, SubjectType subjectType) {
     ListMultimap<String, RelatedSubject> relatedSubjects =
-        ListMultimap<String, RelatedSubject>();
+    ListMultimap<String, RelatedSubject>();
     List<Element> relatedSubjectElements =
-        subjectElement.querySelectorAll('.browserCoverMedium > li');
+    subjectElement.querySelectorAll('.browserCoverMedium > li');
 
     String lastValidSubjectSubType = '';
 
     /// parse 关联条目
     for (Element subjectElement in relatedSubjectElements) {
       String subjectSubType =
-          subjectElement.querySelector('.sub')?.text?.trim();
+      subjectElement.querySelector('.sub')?.text?.trim();
 
       /// bangumi will not set subject type if current subject has the same
       /// subject type as previous ones, hence we need to store and use the
@@ -244,7 +242,7 @@ class SubjectParser {
       Element subjectTitleElement = subjectElement.querySelector('a.title');
       String subjectName = subjectTitleElement?.text?.trim() ?? '';
       int subjectId =
-          tryParseInt(parseHrefId(subjectTitleElement), defaultValue: null);
+      tryParseInt(parseHrefId(subjectTitleElement), defaultValue: null);
 
       Element coverElement = subjectElement.querySelector('a.avatar');
       String subjectNameCn;
@@ -275,7 +273,7 @@ class SubjectParser {
     /// it's possible book is associated with 单行本(tankobon), which is only
     /// valid for book
     List<Element> tankobonElements =
-        subjectElement.querySelectorAll('.browserCoverSmall > li');
+    subjectElement.querySelectorAll('.browserCoverSmall > li');
 
     String typeTankobon = '单行本';
     for (Element tankobonElement in tankobonElements) {
@@ -288,7 +286,7 @@ class SubjectParser {
       }
 
       int subjectId =
-          tryParseInt(parseHrefId(coverElement), defaultValue: null);
+      tryParseInt(parseHrefId(coverElement), defaultValue: null);
 
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
@@ -316,7 +314,7 @@ class SubjectParser {
 
   InfoBoxRow parseSubjectSubtype(DocumentFragment subjectElement) {
     final subtypeElements =
-        subjectElement.querySelectorAll('.nameSingle > .grey');
+    subjectElement.querySelectorAll('.nameSingle > .grey');
     String subTypeName = '';
     for (Element element in subtypeElements) {
       subTypeName += element?.text?.trim() ?? '';
@@ -373,8 +371,7 @@ class SubjectParser {
 
   /// in-place update [infoBoxRows] with [infoBoxItems]
   /// add a separator to value of infoBoxRows if it's not empty
-  _addSeparatorIfNotFirstInfoBoxItem(
-      ListMultimap<String, InfoBoxItem> infoBoxRows,
+  _addSeparatorIfNotFirstInfoBoxItem(ListMultimap<String, InfoBoxItem> infoBoxRows,
       String newInfoBoxRowName,
       Iterable<InfoBoxItem> infoBoxItems) {
     if (infoBoxRows.containsKey(newInfoBoxRowName)) {
@@ -455,10 +452,10 @@ class SubjectParser {
 
     BuiltList<Character> characters = parseCharacters(document);
 
-    BuiltList<SubjectReview> comments = parseComments(document);
+    BuiltList<SubjectReview> comments = parseReviews(document);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
-        parseRelatedSubjects(document, subjectType);
+    parseRelatedSubjects(document, subjectType);
 
     String summary = document
         .querySelector('#subject_summary')
@@ -490,7 +487,7 @@ class SubjectParser {
   /// currently not in use
   SubjectCollection parseSubjectCollection(DocumentFragment subjectElement) {
     Element subjectPanelCollectElement =
-        subjectElement.querySelector('subjectPanelCollect');
+    subjectElement.querySelector('subjectPanelCollect');
     int wish = 0;
     int collect = 0;
     int doing = 0;

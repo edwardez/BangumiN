@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 
 /// a commonly-used user list tile
@@ -8,6 +9,7 @@ class TimelineUserListTile extends StatelessWidget {
   final String nickName;
   final String actionName;
   final int updatedAt;
+  final TimeDisplayFormat timeDisplayFormat;
   final int titleMaxLines;
   final double score;
 
@@ -16,14 +18,16 @@ class TimelineUserListTile extends StatelessWidget {
     @required this.nickName,
     @required this.actionName,
     @required this.updatedAt,
-    this.titleMaxLines = 1,
     this.score,
+    this.titleMaxLines = 1,
+    this.timeDisplayFormat = TimeDisplayFormat.AlwaysRelative,
   });
 
   TimelineUserListTile.fromUser({
     Key key,
     FeedMetaInfo user,
     this.titleMaxLines = 1,
+    this.timeDisplayFormat = TimeDisplayFormat.AlwaysRelative,
     this.score,
   })
       : actionName = user.actionName,
@@ -55,7 +59,12 @@ class TimelineUserListTile extends StatelessWidget {
           ListTileSubtitleWidget(
               actionName: actionName,
               updatedAt: updatedAt,
-              score: this.score)
+            score: score,
+
+            /// [updatedAt] on timeline is parsed by relative time on bangumi WebPage
+            /// timeline, thus using absolute time might results in incorrect time display
+            timeDisplayFormat: timeDisplayFormat,
+          )
         ],
       ),
     );

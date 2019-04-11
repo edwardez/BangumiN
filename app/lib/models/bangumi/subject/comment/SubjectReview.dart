@@ -15,6 +15,7 @@ abstract class SubjectReview
 
   ReviewMetaInfo get metaInfo;
 
+  @nullable
   String get content;
 
   String toJson() {

@@ -5,7 +5,7 @@ import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/subject/common/SubjectCommentWidget.dart';
+import 'package:munin/widgets/subject/common/SubjectReviewWidget.dart';
 
 class CommentsPreview extends StatelessWidget {
   final BangumiSubject subject;
@@ -29,7 +29,7 @@ class CommentsPreview extends StatelessWidget {
     commentPreviewWidgets.add(Row(
       children: <Widget>[
         WrappableText(
-          '短评',
+          '最近收藏',
           fit: FlexFit.tight,
         ),
         _moreCommentsButton(context),
@@ -38,14 +38,14 @@ class CommentsPreview extends StatelessWidget {
     if (isIterableNullOrEmpty(subject.commentsPreview)) {
       commentPreviewWidgets.add(Center(
         child: Text(
-          '暂无短评',
+          '暂无用户收藏',
           style: captionTextWithBody1Size(context),
         ),
       ));
     } else {
       for (SubjectReview comment in subject.commentsPreview) {
-        commentPreviewWidgets.add(SubjectCommentWidget(
-          subjectComment: comment,
+        commentPreviewWidgets.add(SubjectReviewWidget(
+          subjectReview: comment,
         ));
       }
     }

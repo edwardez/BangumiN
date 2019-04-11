@@ -17,8 +17,10 @@ class UnknownTimelineActivityWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         Flexible(
-          child: Text(truncateStringTo(unknownTimelineActivity.content,
-              maxUnknownTimelineActivityLength)),
+          child: Text(firstNChars(unknownTimelineActivity.content,
+              maxUnknownTimelineActivityLength,
+              fallbackValue: null
+          )),
         )
       ],
     );

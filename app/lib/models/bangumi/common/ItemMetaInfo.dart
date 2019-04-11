@@ -14,8 +14,8 @@ abstract class ItemMetaInfo {
   /// user avatar image url
   String get avatarImageUrl;
 
-  /// user id, can only have digit and alphabetic
-  String get userId;
+  /// user name, can only have digit and alphabetic
+  String get username;
 
   @nullable
   String get actionName;

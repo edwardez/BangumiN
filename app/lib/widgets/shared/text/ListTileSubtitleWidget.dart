@@ -9,26 +9,37 @@ import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 class ListTileSubtitleWidget extends StatelessWidget {
   final String actionName;
   final int updatedAt;
+  final TimeDisplayFormat timeDisplayFormat;
   final double score;
 
   ListTileSubtitleWidget(
-      {@required this.actionName, @required this.updatedAt, this.score});
+      {@required this.actionName, @required this.updatedAt, this.score,
+        this.timeDisplayFormat = TimeDisplayFormat.AlwaysRelative,
+      });
 
   @override
   Widget build(BuildContext context) {
+    TextStyle captionStyle = Theme
+        .of(context)
+        .textTheme
+        .caption;
+
     if (score == null) {
       return Row(
         children: [
           Expanded(
               child: Text(
-            actionName,
+                actionName,
 
-            /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )),
+                /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: captionStyle,
+              )),
           Text(
-            TimeUtils.formatMilliSecondsEpochTime(updatedAt),
+            TimeUtils.formatMilliSecondsEpochTime(
+                updatedAt, timeDisplayFormat: timeDisplayFormat),
+            style: captionStyle,
           )
         ],
       );
@@ -39,13 +50,16 @@ class ListTileSubtitleWidget extends StatelessWidget {
         children: [
           Text(
             actionName,
+            style: captionStyle,
           ),
           SubjectStars(
             subjectScore: score,
           ),
           ExpandedEmpty(),
           Text(
-            TimeUtils.formatMilliSecondsEpochTime(updatedAt),
+            TimeUtils.formatMilliSecondsEpochTime(
+                updatedAt, timeDisplayFormat: timeDisplayFormat),
+            style: captionStyle,
           )
         ],
       );

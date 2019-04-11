@@ -37,7 +37,9 @@ class BangumiOauthClient {
           oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
       this.client = oauth2.Client(credentials,
           identifier: Application.environmentValue.bangumiOauthClientIdentifier,
-          secret: Application.environmentValue.bangumiOauthClientSecret);
+          secret: Application.environmentValue.bangumiOauthClientSecret,
+          basicAuth: false
+      );
     }
   }
 
@@ -54,7 +56,9 @@ class BangumiOauthClient {
         oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
     this.client = oauth2.Client(credentials,
         identifier: Application.environmentValue.bangumiOauthClientIdentifier,
-        secret: Application.environmentValue.bangumiOauthClientSecret);
+        secret: Application.environmentValue.bangumiOauthClientSecret,
+        basicAuth: false
+    );
   }
 
   /// calling this constructor will not produce a read-to-use client, it prepares

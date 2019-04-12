@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/widgets/shared/icons/MuninIcons.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 /// A set of [IconData] that has platform awareness
 class AdaptiveIcons {
@@ -35,6 +36,14 @@ class AdaptiveIcons {
       return Icons.more_horiz;
     } else {
       return Icons.more_vert;
+    }
+  }
+
+  static IconData get conversationIconData {
+    if (Platform.isIOS) {
+      return CupertinoIcons.conversation_bubble;
+    } else {
+      return OMIcons.modeComment;
     }
   }
 }

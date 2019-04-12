@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
-import 'package:munin/widgets/shared/icons/MuninIcons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 
 class PublicMessageNormalWidget extends StatelessWidget {
   final PublicMessageNormal publicMessageNormal;
@@ -33,10 +34,10 @@ class PublicMessageNormalWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: paddingFromItemToTop),
           child: Row(
             children: <Widget>[
-              Icon(MuninIcons.muninReplyCount),
+              Icon(AdaptiveIcons.conversationIconData),
               Padding(
                 padding:
-                    EdgeInsets.only(left: paddingBetweenCommentIconAndCount),
+                EdgeInsets.only(left: paddingBetweenCommentIconAndCount),
                 child: Text(publicMessageNormal.replyCount.toString()),
               )
             ],

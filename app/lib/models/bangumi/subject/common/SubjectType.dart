@@ -44,10 +44,9 @@ class SubjectType extends EnumClass {
       case SubjectType.Game:
         return '个游戏';
       case SubjectType.Real:
-        return '部剧';
       case SubjectType.All:
       default:
-        return '个作品';
+        return '部作品';
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/shared/icons/MuninIcons.dart';
 
 class PublicMessageNormalWidget extends StatelessWidget {
   final PublicMessageNormal publicMessageNormal;
@@ -33,10 +33,7 @@ class PublicMessageNormalWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: paddingFromItemToTop),
           child: Row(
             children: <Widget>[
-              Expanded(
-                child: Container(),
-              ),
-              Icon(OMIcons.modeComment),
+              Icon(MuninIcons.muninReplyCount),
               Padding(
                 padding:
                     EdgeInsets.only(left: paddingBetweenCommentIconAndCount),

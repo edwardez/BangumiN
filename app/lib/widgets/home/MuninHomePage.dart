@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/MoreOptions/MoreOptionsHome.dart';
 import 'package:munin/widgets/Progress/Progress.dart';
 import 'package:munin/widgets/TimeLine/Timeline.dart';
 import 'package:munin/widgets/UserProfile/UserHome.dart';
+import 'package:munin/widgets/discussion/DiscussionHome.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -18,6 +20,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
   MuninTimeline muninTimeline;
   MuninSubjectProgress muninSubjectProgress;
   MuninUserProfile muninUserProfile;
+  DiscussionHome discussionHome;
   SearchHomeDelegate searchHomeDelegate;
 
   final PageController controller = PageController();
@@ -29,6 +32,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
     muninSubjectProgress = MuninSubjectProgress();
     muninUserProfile = MuninUserProfile();
     searchHomeDelegate = SearchHomeDelegate();
+    discussionHome = DiscussionHome();
     super.initState();
   }
 
@@ -92,25 +96,34 @@ class _MuninHomePageState extends State<MuninHomePage> {
                       ])
                 ];
               },
-              body: PageView(
-                controller: controller,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  muninTimeline,
-                  muninSubjectProgress,
-                  muninUserProfile,
-                ],
-                onPageChanged: (index) => setState(() => currentIndex = index),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPortraitHorizontalPadding),
+                child: PageView(
+                  controller: controller,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    muninTimeline,
+                    muninSubjectProgress,
+                    discussionHome,
+                    muninUserProfile,
+                  ],
+                  onPageChanged: (index) =>
+                      setState(() => currentIndex = index),
+                ),
               ),
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
+            type: BottomNavigationBarType.fixed,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                   icon: Icon(OMIcons.home), title: Text('动态')),
               BottomNavigationBarItem(
                   icon: Icon(OMIcons.done), title: Text('进度')),
+              BottomNavigationBarItem(
+                  icon: Icon(OMIcons.group), title: Text('讨论')),
               BottomNavigationBarItem(
                   icon: Icon(OMIcons.person), title: Text('主页')),
             ],

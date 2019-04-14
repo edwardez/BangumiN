@@ -168,17 +168,9 @@ class MuninTimeline extends StatelessWidget {
       distinct: true,
       converter: (Store store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
-        return Container(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            bottom: 0,
-            top: 0,
-          ),
-          child: RefreshIndicator(
-            onRefresh: () => vm.fetchLatestFeed(context),
-            child: _buildFeeds(vm),
-          ),
+        return RefreshIndicator(
+          onRefresh: () => vm.fetchLatestFeed(context),
+          child: _buildFeeds(vm),
         );
       },
     );

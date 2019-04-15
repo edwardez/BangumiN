@@ -77,7 +77,7 @@ class SearchType extends EnumClass {
       case SearchType.Real:
         return '6';
       default:
-        assert(true);
+        assert(false, 'Cannot find wiredName for $this');
         return null;
     }
   }
@@ -96,7 +96,7 @@ class SearchType extends EnumClass {
       case SearchType.User:
         return BangumiContent.User;
       default:
-        assert(true);
+        assert(false, 'Cannot find bangumiContentType for $this');
         return null;
     }
   }

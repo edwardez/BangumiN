@@ -9,6 +9,10 @@ import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
+import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
@@ -47,6 +51,7 @@ import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
@@ -111,7 +116,14 @@ part 'serializers.g.dart';
   UserSearchResult,
   SearchRequest,
   SearchType,
-  SearchState
+  SearchState,
+
+  /// Discussion
+  DiscussionItem,
+  DiscussionType,
+  FetchDiscussionRequest,
+  FetchDiscussionResponse,
+  DiscussionState
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

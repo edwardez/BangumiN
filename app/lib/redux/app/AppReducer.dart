@@ -1,4 +1,5 @@
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/discussion/DiscussionReducer.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/oauth/OauthReducer.dart';
 import 'package:munin/redux/search/SearchReducer.dart';
@@ -26,6 +27,8 @@ AppState appReducer(AppState appState, dynamic action) {
             subjectReducers(appState.subjectState, action))
         ..searchState.replace(
             searchReducers(appState.searchState, action))
+        ..discussionState.replace(
+            discussionReducers(appState.discussionState, action))
   )
   ;
 }

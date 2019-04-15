@@ -44,7 +44,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   /// TODO: for some images some image size doesn't exist
   /// i.e. avatar doesn't have a grid version
   /// maybe check image type or let each image type use different image pattern?
-  /// if imageType is [ImageSize.Unknown]
+  /// if ImageSize is [ImageSize.Unknown]
   /// constructor will try to guess size type of [imageUrl]
   /// Regarding imageType:
   /// for [ImageType.MonoAvatar], [ImageSize.Common] is not available

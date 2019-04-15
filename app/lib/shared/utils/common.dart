@@ -38,10 +38,16 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
 }
 
 /// Returns first captures string or null
+/// [input] should never be null, if it's null, null will be returned
 /// This method assumes [regExp] contains at least one capture group
 String firstCapturedStringOrNull(RegExp regExp, String input) {
   /// Ensure input [regExp] contains at least one capture group
   assert(RegExp(r'\(.+\)').hasMatch(regExp.pattern));
+  assert(input != null);
+
+  if (input == null) {
+    return null;
+  }
 
   Match match = regExp.firstMatch(input);
 

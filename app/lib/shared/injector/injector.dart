@@ -9,6 +9,7 @@ import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
@@ -70,6 +71,11 @@ Future<void> injector(GetIt getIt) async {
       cookieClient: _bangumiCookieClient, oauthClient: _bangumiOauthClient
   );
   getIt.registerSingleton<BangumiSearchService>(bangumiSearchService);
+
+  final bangumiDiscussionService = BangumiDiscussionService(
+      cookieClient: _bangumiCookieClient
+  );
+  getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
 
   return;
 }

@@ -15,8 +15,10 @@ String aHrefContains(String keyword) {
 /// Note: instead of accessing this property directly, [Element.outerHtml] of the
 ///  element is used
 String imageUrlFromBackgroundImage(Element imageElement,
-    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
-  Match imageMatchers = RegExp(r"""background-image:url\('([^']*)'\)""")
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
+      checkImageExtensionType = true
+    }) {
+  Match imageMatchers = cssBackgroundImageGroupRegex
       .firstMatch(imageElement?.outerHtml ?? '');
   String imageUrl;
 
@@ -30,11 +32,30 @@ String imageUrlFromBackgroundImage(Element imageElement,
 }
 
 ///imageUrl may be something like  '//lain.bgm.tv/pic/user/m/000/1/2/3.jpg' without protocol
+///If input is not a valid image url, i.e. it doesn't
+///start with '//', or it doesn't contains image extension type '.jpg'/'.png'
+///(Bangumi solely uses these types to store image
+/// for performance reason we only check these types)
+///[defaultImageSrc] will be returned
 String normalizeImageUrl(String imageUrl,
-    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
+    {
+      defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
+      checkImageExtensionType = true
+    }) {
+  if (checkImageExtensionType) {
+    if (!validBangumiImageTypeRegex.hasMatch(imageUrl)) {
+      return defaultImageSrc;
+    }
+  }
+
+
   if (imageUrl != null &&
       imageUrl.length >= 2 &&
-      imageUrl.substring(0, 2) == '//') return 'https:' + imageUrl;
+      imageUrl.substring(0, 2) == '//'
+  ) {
+    return 'https:' + imageUrl;
+  }
+
 
   return defaultImageSrc;
 }
@@ -55,7 +76,7 @@ String parseHrefId(Element element) {
     return null;
   }
 
-  return RegExp(r'\w+$').firstMatch(hrefId)?.group(0);
+  return endsWithAlphanumericRegex.firstMatch(hrefId)?.group(0);
 }
 
 String parseFeedId(Element element) {
@@ -64,14 +85,14 @@ String parseFeedId(Element element) {
     return null;
   }
 
-  return RegExp(r'\d+$').firstMatch(id)?.group(0);
+  return endsWithDigitRegex.firstMatch(id)?.group(0);
 }
 
 /// extract first int from a string
 int extractFirstInt(String rawString, {defaultValue = 0}) {
   if (rawString == null) return defaultValue;
 
-  Match intMatcher = RegExp(r'\d+').firstMatch(rawString);
+  Match intMatcher = atLeastOneDigitRegex.firstMatch(rawString);
 
   if (intMatcher != null) {
     int parsedInt = int.parse(intMatcher.group(0));
@@ -125,10 +146,10 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
   }
 
   if (!trimExtraChars && mergeExtraWhiteSpace) {
-    mergedText = mergedText.replaceAll(RegExp(r'\s+'), ' ');
+    mergedText = mergedText.replaceAll(atLeastOneSpaceRegex, ' ');
   }
 
-  mergedText = mergedText.replaceAll(RegExp(r'^\s+|\s+$'), '');
+  mergedText = mergedText.replaceAll(endsOrStartsWithSpaceRegex, '');
 
   return isEmpty(mergedText) ? Optional.absent() : Optional.of(mergedText);
 }
@@ -141,7 +162,7 @@ double parseSubjectScore(Element element) {
   }
 
   Match scoreMatcher =
-  RegExp(r'sstars(\d+)').firstMatch(starsInfoElement.className);
+  scoreRegex.firstMatch(starsInfoElement.className);
 
   if (scoreMatcher?.groupCount == 1) {
     int parsedScore = int.parse(scoreMatcher.group(1));
@@ -168,6 +189,7 @@ FeedMetaInfo updateUserAction(Element singleTimelineContent, FeedMetaInfo userIn
   return userInfo;
 }
 
+final RegExp dummyTimeInfoRegex = RegExp(r'@|\.');
 /// Parse a bangumi time string into an absolute [DateTime] object
 /// bangumi might represents time in three format
 /// 1. English relative time, 1s ago
@@ -182,7 +204,7 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
   }
 
   if (stripDummyInfo) {
-    rawTime = rawTime.replaceAll('@', '').trim();
+    rawTime = rawTime.replaceAll(dummyTimeInfoRegex, '').trim();
   }
 
   if (rawTime.contains('ago')) {

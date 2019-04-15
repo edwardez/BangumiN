@@ -6,11 +6,13 @@ import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/discussion/DiscussionEpics.dart';
 import 'package:munin/redux/oauth/OauthMiddleware.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
@@ -65,6 +67,8 @@ abstract class Application {
     getIt.get<BangumiSubjectService>();
     final BangumiSearchService _bangumiSearchService =
     getIt.get<BangumiSearchService>();
+    final BangumiDiscussionService _bangumiDiscussionService =
+    getIt.get<BangumiDiscussionService>();
     final SharedPreferences preferences = getIt.get<SharedPreferences>();
     final String serializedUserInfo =
     preferences.get('currentAuthenticatedUserBasicInfo');
@@ -83,10 +87,11 @@ abstract class Application {
     }
 
     /// redux initialization
-    Epic<AppState> epics = combineEpics<AppState>([]
-      ..addAll(
-          createSubjectEpics(_bangumiSubjectService)
-            ..addAll(createSearchEpics(_bangumiSearchService))));
+    Epic<AppState> epics = combineEpics<AppState>([]..addAll(
+        createSubjectEpics(_bangumiSubjectService))..addAll(
+        createSearchEpics(_bangumiSearchService))..addAll(
+        createDiscussionEpics(_bangumiDiscussionService))
+    );
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
@@ -103,7 +108,6 @@ abstract class Application {
     /// flutter initialization
     runApp(MuninApp(this, store));
   }
-
 
   String get name => runtimeType.toString();
 }

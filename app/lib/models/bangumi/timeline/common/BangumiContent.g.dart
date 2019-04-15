@@ -9,11 +9,13 @@ part of 'BangumiContent.dart';
 const BangumiContent _$PublicMessage = const BangumiContent._('PublicMessage');
 const BangumiContent _$Episode = const BangumiContent._('Episode');
 const BangumiContent _$Subject = const BangumiContent._('Subject');
+const BangumiContent _$SubjectTopic = const BangumiContent._('SubjectTopic');
 const BangumiContent _$Blog = const BangumiContent._('Blog');
 const BangumiContent _$Character = const BangumiContent._('Character');
 const BangumiContent _$Person = const BangumiContent._('Person');
 const BangumiContent _$User = const BangumiContent._('User');
 const BangumiContent _$Group = const BangumiContent._('Group');
+const BangumiContent _$GroupTopic = const BangumiContent._('GroupTopic');
 const BangumiContent _$Wiki = const BangumiContent._('Wiki');
 const BangumiContent _$Catalog = const BangumiContent._('Catalog');
 const BangumiContent _$Doujin = const BangumiContent._('Doujin');
@@ -30,6 +32,8 @@ BangumiContent _$valueOf(String name) {
       return _$Episode;
     case 'Subject':
       return _$Subject;
+    case 'SubjectTopic':
+      return _$SubjectTopic;
     case 'Blog':
       return _$Blog;
     case 'Character':
@@ -40,6 +44,8 @@ BangumiContent _$valueOf(String name) {
       return _$User;
     case 'Group':
       return _$Group;
+    case 'GroupTopic':
+      return _$GroupTopic;
     case 'Wiki':
       return _$Wiki;
     case 'Catalog':
@@ -62,11 +68,13 @@ final BuiltSet<BangumiContent> _$values =
   _$PublicMessage,
   _$Episode,
   _$Subject,
+  _$SubjectTopic,
   _$Blog,
   _$Character,
   _$Person,
   _$User,
   _$Group,
+  _$GroupTopic,
   _$Wiki,
   _$Catalog,
   _$Doujin,

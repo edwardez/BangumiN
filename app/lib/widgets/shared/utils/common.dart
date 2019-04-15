@@ -13,6 +13,7 @@ generateOnTapCallbackForBangumiContent({
 }) {
   assert(contentType != null);
   assert(id != null);
+  assert(context != null);
 
   /// if it's empty or null, returns empty function
   if (isEmpty(id)) {

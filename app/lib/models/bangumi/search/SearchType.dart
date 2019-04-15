@@ -37,6 +37,16 @@ class SearchType extends EnumClass {
     SearchType.Real,
   };
 
+  /// difference between [subjectSearchType]: [SearchType.AnySubject] is not a
+  /// concrete subject type
+  static const concreteSubjectType = {
+  SearchType.Book,
+  SearchType.Anime,
+  SearchType.Music,
+  SearchType.Game,
+  SearchType.Real,
+  };
+
   @memoized
   String get chineseName {
     switch (this) {
@@ -104,6 +114,11 @@ class SearchType extends EnumClass {
   @memoized
   bool get isSubjectSearchType {
     return subjectSearchType.contains(this);
+  }
+
+  @memoized
+  bool get isConcreteSubjectType {
+    return concreteSubjectType.contains(this);
   }
 
   @memoized

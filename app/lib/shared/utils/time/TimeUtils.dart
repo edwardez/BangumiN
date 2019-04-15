@@ -86,11 +86,11 @@ class _ZhHansMessagesShort implements timeago.LookupMessages {
 
   String aDay(int hours) => '1天';
 
-  String days(int days) => '$days日';
+  String days(int days) => '$days天';
 
   String aboutAMonth(int days) => '1个月';
 
-  String months(int months) => '$months月';
+  String months(int months) => '$months个月';
 
   String aboutAYear(int year) => '1年';
 

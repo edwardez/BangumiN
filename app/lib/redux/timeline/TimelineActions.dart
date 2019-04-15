@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
 class LoadTimelineFeed {
   final Completer completer;
@@ -18,11 +18,7 @@ class LoadTimelineFeed {
 }
 
 class LoadTimelineFeedSuccess {
-  final List<TimelineFeed> feeds;
-  final FeedLoadType feedLoadType;
+  final FetchFeedsResult fetchFeedsResult;
 
-  final bool hasGap;
-
-  LoadTimelineFeedSuccess(
-      {@required this.feeds, @required this.feedLoadType, this.hasGap});
+  LoadTimelineFeedSuccess({@required this.fetchFeedsResult});
 }

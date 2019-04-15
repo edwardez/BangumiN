@@ -111,9 +111,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
           () => new ListBuilder<TimelineFeed>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(TimelineFeed)]),
-          () => new ListBuilder<TimelineFeed>())
-      ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(FetchDiscussionRequest),
             const FullType(FetchDiscussionResponse)

@@ -1,5 +1,6 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
+import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
@@ -19,26 +20,52 @@ import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
-import 'package:tuple/tuple.dart';
+
+class FetchFeedsResult {
+  /// http feeds response
+  final List<TimelineFeed> feeds;
+  final FeedLoadType feedLoadType;
+
+  /// whether current feeds in store need to be truncated
+  /// Depends on type of feed load, this value might not be observed,
+  /// see [loadTimelineFeedSuccessReducer] in [timelineReducers]
+  final bool truncateFeedsInStore;
+
+  /// see [lastFetchedTime] in [FeedChunks]
+  final DateTime fetchedTime;
+
+  FetchFeedsResult({
+    @required this.feeds,
+    @required this.feedLoadType,
+    @required this.fetchedTime,
+    this.truncateFeedsInStore = false,
+  })
+      : assert(feeds != null),
+        assert(feedLoadType != null),
+        assert(fetchedTime != null),
+        assert(truncateFeedsInStore != null);
+}
 
 /// TODO: merge code since some parts can be reused
 class TimelineParser {
-  final String doujinServerSubDomain = 'doujin.';
+  static const String doujinServerSubDomain = 'doujin.';
 
-  final Set<String> subjectAction =
+  static const Set<String> subjectAction =
       {'在读', '在看', '在玩', '想玩', '玩过', '在听', '想听', '听过'};
 
   /// might indicates: have read one volume of a book, one episode of a show, or have watched a whole subject
-  final Set<String> subjectOrEpOrBookVolAction =
+  static const Set<String> subjectOrEpOrBookVolAction =
       {'读过', '看过', '想看', '想读', '抛弃了', '搁置了'};
 
-  final Map<BangumiContent, String> contentTypeToSelectorName = BangumiContent
-      .enumToWebPageRouteName;
+  static const Map<BangumiContent, String> contentTypeToSelectorName =
+      BangumiContent.enumToWebPageRouteName;
 
   /// verify whether user is authenticated
   /// tricky part is: bangumi WILL returns site global timeline instead of returning
@@ -61,7 +88,7 @@ class TimelineParser {
   /// then startsWith parsing is processed
   /// finally unknown event is processed
   /// note: if feedLoadType is set, upperFeedId/lowerFeedId might also need to be set
-  Tuple2<List<TimelineFeed>, bool> process(
+  FetchFeedsResult process(
     String rawHtml, {
     feedLoadType = FeedLoadType.Initial,
     upperFeedId = IntegerHelper.MAX_VALUE,
@@ -72,11 +99,17 @@ class TimelineParser {
       assert(upperFeedId != IntegerHelper.MAX_VALUE ||
           lowerFeedId != IntegerHelper.MIN_VALUE);
     }
+    assert(feedLoadType == FeedLoadType.Initial ||
+        feedLoadType == FeedLoadType.Newer ||
+        feedLoadType == FeedLoadType.Older,
+    'feedLoadType $feedLoadType is not supported'
+    );
+
     DocumentFragment document = parseFragment(rawHtml);
     _verifyAuthentication(document);
 
-    List<TimelineFeed> results = [];
-    bool hasGap;
+    List<TimelineFeed> feeds = [];
+    bool truncateFeedsInStore = false;
 
     /// userAvatarImageCache contains cache of user avatar image
     /// key is user id(string), value is avatar image url
@@ -88,41 +121,49 @@ class TimelineParser {
     for (var item in document.querySelectorAll('.tml_item')) {
       int feedId = tryParseInt(parseFeedId(item));
 
-      /// if we are trying to load a newer feed, and current feed id is equal to
-      /// or lower than current max feed id, we're load all new contents and can break
-      /// We load 'one more' feed here where feedId = upperFeedId
+      /// if we are trying to load a newer feed, and response feed id is equal to
+      /// or lower than max feed id in store, we've loaded all new contents and can break
       if (feedLoadType == FeedLoadType.Newer && feedId <= upperFeedId) {
-        hasGap = false;
         break;
       }
 
-      /// if we are trying to load a newer feed, and current feed id is equal to
-      /// or larger than current min feed id, it's possible that this is a overlap
-      /// and we examine the next one
-      /// i.e. current feed: feed1, feed2, feed3, new feed: feed2, feed3, feed4
+      /// if we are trying to load a older feed, and response feed id is equal to
+      /// or larger than min feed id in store, it's possible a overlap
+      /// and we check the next one
+      /// i.e. feeds in store: feed1, feed2, feed3, new feeds: feed2, feed3, feed4
       /// we want to skip feed2, feed3 but keep feed4
-      /// (maybe visit feed in reverse order?)
+      /// Another possibility is there are lots of unloaded newer feeds
+      /// i.e. new feeds: feed1, feed2, feed2, feeds in store: feed101, feed102, feed103
+      /// We want to skip these new feeds so feed is still in order
+      /// Typically the latter case shouldn't happen, however since bangumi doesn't
+      /// have a official timeline API, we have to 'guess' pagination of older
+      /// feeds to load, and this guess doesn't work if there are lots of unloaded new feeds
       if (feedLoadType == FeedLoadType.Older && feedId >= lowerFeedId) {
-        hasGap = false;
-        continue;
-      }
-
-      /// if there is a gap in feed and we are trying to load feed in gap
-      /// i.e. feed fragment 1: feed1, feed2; feed fragment 1: feed5, feed6,
-      /// we want to load feed3, feed4, continue if we've reached the edge
-      if (feedLoadType == FeedLoadType.Gap &&
-          (feedId >= upperFeedId || feedId <= lowerFeedId)) {
         continue;
       }
 
       var singleTimelineItem =
           processSingleTimelineItem(item, userAvatarImageCache, feedId);
       if (singleTimelineItem != null) {
-        results.add(singleTimelineItem);
+        feeds.add(singleTimelineItem);
       }
     }
 
-    return Tuple2(results, hasGap);
+    /// If total response feeds equal to [feedsPerPage], there must exist a gap between
+    /// feeds in store and response feeds, we currently don't support load
+    /// gap feeds due to limitation of bangumi, so all current feeds need to be
+    /// truncated
+    if (feedLoadType == FeedLoadType.Newer && feeds.length == feedsPerPage) {
+      truncateFeedsInStore = true;
+    }
+
+    /// If user deletes some feeds after munin loads feed, some feed might get lost.
+    /// However even Web Page version loses these feeds
+    return FetchFeedsResult(
+        feeds: feeds,
+        truncateFeedsInStore: truncateFeedsInStore,
+        feedLoadType: feedLoadType,
+        fetchedTime: DateTime.now());
   }
 
   TimelineFeed processSingleTimelineItem(Element timelineItem,
@@ -345,7 +386,6 @@ class TimelineParser {
       throw ('Unsupported monoType $monoType');
     }
     String monoName;
-    String monoAvatarImageUrl;
     String id;
 
     Element monoNameElement = singleTimelineContent

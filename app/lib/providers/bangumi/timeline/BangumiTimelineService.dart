@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
@@ -30,7 +29,7 @@ class BangumiTimelineService {
 
     Response feedsHtml = await cookieClient.dio
         .get(
-        'https://${Application.environmentValue.bangumiMainHost}/timeline?',
+        '/timeline',
         queryParameters: queryParameters);
 
     TimelineParser timelineParser = TimelineParser();

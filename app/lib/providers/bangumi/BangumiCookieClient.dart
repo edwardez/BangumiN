@@ -31,30 +31,45 @@ class BangumiCookieClient {
   }
 
   /// update in-memory bangumi auth credentials info
-  void updateBangumiAuthInfo({String authCookie, String userAgent}) {
+  void updateBangumiAuthInfo(
+      {String authCookie, String sessionCookie, String userAgent}) {
     assert(authCookie != null);
     assert(userAgent != null);
+    assert(sessionCookie != null);
 
     /// write to keystore/keychain
     bangumiCookieCredential = BangumiCookieCredentials((b) => {
     b
       ..authCookie = authCookie
+      ..sessionCookie = sessionCookie
       ..userAgent = userAgent
     });
 
-    updateDioHeaders(authCookie: authCookie, userAgent: userAgent);
+    updateDioHeaders(authCookie: authCookie,
+        sessionCookie: sessionCookie,
+        userAgent: userAgent);
   }
 
-  void updateDioHeaders({String authCookie, String userAgent}) {
-    List<Cookie> cookies = [Cookie("chii_auth", authCookie)];
+  void updateDioHeaders(
+      {String authCookie, String sessionCookie, String userAgent}) {
+    final String bangumiMainHost = Application.environmentValue.bangumiMainHost;
+    final String bangumiNonCdnHost = Application.environmentValue
+        .bangumiNonCdnHost;
+    List<Cookie> cookies = [
+      Cookie("chii_auth", authCookie),
+      Cookie("chii_sid", sessionCookie)
+    ];
+
     var cookieJar = getIt.get<CookieJar>();
 
+    /// Save authenticated cookie for both version of bangumi
     cookieJar.saveFromResponse(
-        Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
+        Uri.parse("https://$bangumiMainHost"),
         cookies);
-    Map<String, dynamic> headers = dio.options.headers;
-
-    headers[HttpHeaders.userAgentHeader] = userAgent;
+    cookieJar.saveFromResponse(
+        Uri.parse("https://$bangumiNonCdnHost"),
+        cookies);
+    dio.options.headers[HttpHeaders.userAgentHeader] = userAgent;
   }
 
   Future<void> persistCredentials() {

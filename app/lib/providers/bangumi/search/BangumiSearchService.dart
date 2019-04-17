@@ -105,8 +105,7 @@ class BangumiSearchService {
     }
 
     String requestUrl =
-        'https://${Application.environmentValue
-        .bangumiMainHost}/mono_search/$query?cat=$searchWiredName';
+        '/mono_search/$query?cat=$searchWiredName';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
     LinkedHashMap<int, MonoSearchResult> monoSearchResults =

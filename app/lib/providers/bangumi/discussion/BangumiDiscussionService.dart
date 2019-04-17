@@ -2,7 +2,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
@@ -28,7 +27,7 @@ class BangumiDiscussionService {
     assert(fetchDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
     String requestUrl =
-        'https://${Application.environmentValue.bangumiMainHost}/rakuen/topiclist';
+        '/rakuen/topiclist';
 
     Map<String, String> queryParameters = {};
 
@@ -43,6 +42,7 @@ class BangumiDiscussionService {
 
     Dio.Response response = await cookieClient.dio
         .get(requestUrl, queryParameters: queryParameters);
+
     List<DiscussionItem> discussionItems =
         DiscussionParser().process(response.data);
 

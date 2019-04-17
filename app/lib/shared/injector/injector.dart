@@ -85,8 +85,9 @@ Dio _createDioForBangumiCookieClient(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
   Map<String, dynamic> headers = {
-    HttpHeaders.hostHeader: Application.environmentValue.bangumiMainHost,
-
+    HttpHeaders.hostHeader: Application.environmentValue.bangumiNonCdnHost,
+    HttpHeaders.refererHeader: 'https://${Application.environmentValue
+        .bangumiNonCdnHost}/',
   };
 
   /// attach user agent and cookie to dio  if these are not null
@@ -96,6 +97,10 @@ Dio _createDioForBangumiCookieClient(
     List<Cookie> cookies = [];
     if (bangumiCookieCredential.authCookie != null) {
       cookies.add(Cookie('chii_auth', bangumiCookieCredential.authCookie));
+    }
+
+    if (bangumiCookieCredential.sessionCookie != null) {
+      cookies.add(Cookie('chii_sid', bangumiCookieCredential.sessionCookie));
     }
 
     /// https://github.com/bangumi/api/issues/43#issuecomment-414563212 requires
@@ -109,10 +114,14 @@ Dio _createDioForBangumiCookieClient(
     bangumiCookieJar.saveFromResponse(
         Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
         cookies);
+
+    bangumiCookieJar.saveFromResponse(
+        Uri.parse("https://${Application.environmentValue.bangumiNonCdnHost}"),
+        cookies);
   }
 
   var dio = Dio(BaseOptions(
-    baseUrl: "https://${Application.environmentValue.bangumiMainHost}",
+    baseUrl: "https://${Application.environmentValue.bangumiNonCdnHost}",
     connectTimeout: Duration(seconds: 15).inMilliseconds,
     receiveTimeout: Duration(seconds: 15).inMilliseconds,
     headers: headers,
@@ -127,7 +136,7 @@ Dio _createDioForBangumiCookieClient(
   /// enable logging in development environment
   if (Application.environmentValue.environmentType ==
       EnvironmentType.Development) {
-//    dio.interceptors.add(LogInterceptor(responseBody: false));
+    dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   return dio;

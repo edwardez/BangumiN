@@ -33,7 +33,13 @@ abstract class Application {
 
   final bangumiOauthAuthorizationEndpoint = 'https://bgm.tv/oauth/authorize';
   final bangumiOauthTokenEndpoint = 'https://bgm.tv/oauth/access_token';
+
+  /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
+  /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
   final bangumiMainHost = 'bgm.tv';
+
+  /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
+  final bangumiNonCdnHost = 'bangumi.tv';
   final bangumiApiHost = 'api.bgm.tv';
   final forsetiApiHost = 'api.bangumin.tv';
 
@@ -87,11 +93,10 @@ abstract class Application {
     }
 
     /// redux initialization
-    Epic<AppState> epics = combineEpics<AppState>([]..addAll(
-        createSubjectEpics(_bangumiSubjectService))..addAll(
-        createSearchEpics(_bangumiSearchService))..addAll(
-        createDiscussionEpics(_bangumiDiscussionService))
-    );
+    Epic<AppState> epics = combineEpics<AppState>(
+        []..addAll(createSubjectEpics(_bangumiSubjectService))..addAll(
+            createSearchEpics(_bangumiSearchService))..addAll(
+            createDiscussionEpics(_bangumiDiscussionService)));
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);

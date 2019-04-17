@@ -104,19 +104,26 @@ class BangumiOauthClient {
     _flutterWebviewPlugin.onStateChanged
         .listen((WebViewStateChanged state) async {
       if (state.type == WebViewState.finishLoad &&
-          Uri.parse(state.url).host == 'bgm.tv') {
+          Uri
+              .parse(state.url)
+              .host == Application.environmentValue.bangumiNonCdnHost) {
         Map<String, String> cookies = await _flutterWebviewPlugin.getCookies();
 
-        /// TODO: fix cookie parsing problem in flutter webview plugin
-        /// TODO: figure out why sometimes [chii_auth] is never present in returned
-        /// cookie while user is actually logged-in
-        String authCookie = cookies['chii_auth'] ?? cookies[' chii_auth'];
-        if (authCookie != null) {
+        /// TODO: fix cookie parsing problem in flutter webview plugin(There must be something
+        /// wrong with this plugin...)
+        /// TODO: figure out why sometimes [chii_auth] is never in returned
+        /// cookies while user is actually logged-in
+        String authCookie = cookies['chii_auth'] ?? cookies[' chii_auth'] ??
+            cookies['"chii_auth'];
+        String sessionCookie = cookies['chii_sid'] ?? cookies[' chii_sid'] ??
+            cookies['"chii_sid'];
+        if (authCookie != null && sessionCookie != null) {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
-
           this._cookieClient.updateBangumiAuthInfo(
-              authCookie: authCookie, userAgent: userAgent);
+              authCookie: authCookie,
+              sessionCookie: sessionCookie,
+              userAgent: userAgent);
         }
       }
     });
@@ -138,7 +145,7 @@ class BangumiOauthClient {
       request.response
         ..statusCode = 200
         ..headers.set("Content-Type", ContentType.html.mimeType)
-        ..write("<html></html>");
+        ..write("<html lang='en'></html>");
       await request.response.close();
       await _oauthServer?.close(force: true);
       onCode.add(code);

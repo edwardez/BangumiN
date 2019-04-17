@@ -91,7 +91,8 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   final SearchType type;
 
-  factory _$UserSearchResult([void updates(UserSearchResultBuilder b)]) =>
+  factory _$UserSearchResult(
+          [void Function(UserSearchResultBuilder) updates]) =>
       (new UserSearchResultBuilder()..update(updates)).build();
 
   _$UserSearchResult._(
@@ -112,7 +113,7 @@ class _$UserSearchResult extends UserSearchResult {
   }
 
   @override
-  UserSearchResult rebuild(void updates(UserSearchResultBuilder b)) =>
+  UserSearchResult rebuild(void Function(UserSearchResultBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -199,7 +200,7 @@ class UserSearchResultBuilder
   }
 
   @override
-  void update(void updates(UserSearchResultBuilder b)) {
+  void update(void Function(UserSearchResultBuilder) updates) {
     if (updates != null) updates(this);
   }
 

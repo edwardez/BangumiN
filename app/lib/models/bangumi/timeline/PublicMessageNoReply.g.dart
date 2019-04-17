@@ -67,7 +67,7 @@ class _$PublicMessageNoReply extends PublicMessageNoReply {
   final String content;
 
   factory _$PublicMessageNoReply(
-          [void updates(PublicMessageNoReplyBuilder b)]) =>
+          [void Function(PublicMessageNoReplyBuilder) updates]) =>
       (new PublicMessageNoReplyBuilder()..update(updates)).build();
 
   _$PublicMessageNoReply._({this.user, this.content}) : super._() {
@@ -80,7 +80,8 @@ class _$PublicMessageNoReply extends PublicMessageNoReply {
   }
 
   @override
-  PublicMessageNoReply rebuild(void updates(PublicMessageNoReplyBuilder b)) =>
+  PublicMessageNoReply rebuild(
+          void Function(PublicMessageNoReplyBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -141,7 +142,7 @@ class PublicMessageNoReplyBuilder
   }
 
   @override
-  void update(void updates(PublicMessageNoReplyBuilder b)) {
+  void update(void Function(PublicMessageNoReplyBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -14,7 +14,7 @@ class LoadTimelineFeed {
       {@required this.context,
       @required this.feedLoadType,
       Completer completer})
-      : this.completer = completer ?? new Completer();
+      : this.completer = completer ?? Completer();
 }
 
 class LoadTimelineFeedSuccess {

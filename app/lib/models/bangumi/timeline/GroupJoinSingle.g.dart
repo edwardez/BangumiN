@@ -93,7 +93,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   @override
   final String groupId;
 
-  factory _$GroupJoinSingle([void updates(GroupJoinSingleBuilder b)]) =>
+  factory _$GroupJoinSingle([void Function(GroupJoinSingleBuilder) updates]) =>
       (new GroupJoinSingleBuilder()..update(updates)).build();
 
   _$GroupJoinSingle._(
@@ -119,7 +119,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   }
 
   @override
-  GroupJoinSingle rebuild(void updates(GroupJoinSingleBuilder b)) =>
+  GroupJoinSingle rebuild(void Function(GroupJoinSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -208,7 +208,7 @@ class GroupJoinSingleBuilder
   }
 
   @override
-  void update(void updates(GroupJoinSingleBuilder b)) {
+  void update(void Function(GroupJoinSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

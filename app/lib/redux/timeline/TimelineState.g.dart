@@ -55,13 +55,13 @@ class _$TimelineState extends TimelineState {
   @override
   final FeedChunks feedChunks;
 
-  factory _$TimelineState([void updates(TimelineStateBuilder b)]) =>
+  factory _$TimelineState([void Function(TimelineStateBuilder) updates]) =>
       (new TimelineStateBuilder()..update(updates)).build();
 
   _$TimelineState._({this.feedChunks}) : super._();
 
   @override
-  TimelineState rebuild(void updates(TimelineStateBuilder b)) =>
+  TimelineState rebuild(void Function(TimelineStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -115,7 +115,7 @@ class TimelineStateBuilder
   }
 
   @override
-  void update(void updates(TimelineStateBuilder b)) {
+  void update(void Function(TimelineStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 

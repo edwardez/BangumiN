@@ -94,7 +94,8 @@ class _$HyperBangumiItem extends HyperBangumiItem {
   @override
   final String imageUrl;
 
-  factory _$HyperBangumiItem([void updates(HyperBangumiItemBuilder b)]) =>
+  factory _$HyperBangumiItem(
+          [void Function(HyperBangumiItemBuilder) updates]) =>
       (new HyperBangumiItemBuilder()..update(updates)).build();
 
   _$HyperBangumiItem._(
@@ -112,7 +113,7 @@ class _$HyperBangumiItem extends HyperBangumiItem {
   }
 
   @override
-  HyperBangumiItem rebuild(void updates(HyperBangumiItemBuilder b)) =>
+  HyperBangumiItem rebuild(void Function(HyperBangumiItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -198,7 +199,7 @@ class HyperBangumiItemBuilder
   }
 
   @override
-  void update(void updates(HyperBangumiItemBuilder b)) {
+  void update(void Function(HyperBangumiItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 

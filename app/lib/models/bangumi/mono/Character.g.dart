@@ -137,7 +137,7 @@ class _$Character extends Character {
   @override
   final String name;
 
-  factory _$Character([void updates(CharacterBuilder b)]) =>
+  factory _$Character([void Function(CharacterBuilder) updates]) =>
       (new CharacterBuilder()..update(updates)).build();
 
   _$Character._(
@@ -169,7 +169,7 @@ class _$Character extends Character {
   }
 
   @override
-  Character rebuild(void updates(CharacterBuilder b)) =>
+  Character rebuild(void Function(CharacterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -292,7 +292,7 @@ class CharacterBuilder
   }
 
   @override
-  void update(void updates(CharacterBuilder b)) {
+  void update(void Function(CharacterBuilder) updates) {
     if (updates != null) updates(this);
   }
 

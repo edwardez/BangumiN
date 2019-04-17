@@ -110,7 +110,7 @@ class _$RelatedSubject extends RelatedSubject {
   @override
   final String nameCn;
 
-  factory _$RelatedSubject([void updates(RelatedSubjectBuilder b)]) =>
+  factory _$RelatedSubject([void Function(RelatedSubjectBuilder) updates]) =>
       (new RelatedSubjectBuilder()..update(updates)).build();
 
   _$RelatedSubject._(
@@ -131,7 +131,7 @@ class _$RelatedSubject extends RelatedSubject {
   }
 
   @override
-  RelatedSubject rebuild(void updates(RelatedSubjectBuilder b)) =>
+  RelatedSubject rebuild(void Function(RelatedSubjectBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -231,7 +231,7 @@ class RelatedSubjectBuilder
   }
 
   @override
-  void update(void updates(RelatedSubjectBuilder b)) {
+  void update(void Function(RelatedSubjectBuilder) updates) {
     if (updates != null) updates(this);
   }
 

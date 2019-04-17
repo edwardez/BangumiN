@@ -87,7 +87,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   @override
   final String id;
 
-  factory _$PublicMessageNormal([void updates(PublicMessageNormalBuilder b)]) =>
+  factory _$PublicMessageNormal(
+          [void Function(PublicMessageNormalBuilder) updates]) =>
       (new PublicMessageNormalBuilder()..update(updates)).build();
 
   _$PublicMessageNormal._({this.user, this.content, this.replyCount, this.id})
@@ -104,7 +105,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   }
 
   @override
-  PublicMessageNormal rebuild(void updates(PublicMessageNormalBuilder b)) =>
+  PublicMessageNormal rebuild(
+          void Function(PublicMessageNormalBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -181,7 +183,7 @@ class PublicMessageNormalBuilder
   }
 
   @override
-  void update(void updates(PublicMessageNormalBuilder b)) {
+  void update(void Function(PublicMessageNormalBuilder) updates) {
     if (updates != null) updates(this);
   }
 

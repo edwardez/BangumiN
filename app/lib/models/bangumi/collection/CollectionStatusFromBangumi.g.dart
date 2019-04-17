@@ -62,7 +62,7 @@ class _$CollectionStatusFromBangumi extends CollectionStatusFromBangumi {
   final CollectionStatus type;
 
   factory _$CollectionStatusFromBangumi(
-          [void updates(CollectionStatusFromBangumiBuilder b)]) =>
+          [void Function(CollectionStatusFromBangumiBuilder) updates]) =>
       (new CollectionStatusFromBangumiBuilder()..update(updates)).build();
 
   _$CollectionStatusFromBangumi._({this.type}) : super._() {
@@ -73,7 +73,7 @@ class _$CollectionStatusFromBangumi extends CollectionStatusFromBangumi {
 
   @override
   CollectionStatusFromBangumi rebuild(
-          void updates(CollectionStatusFromBangumiBuilder b)) =>
+          void Function(CollectionStatusFromBangumiBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -128,7 +128,7 @@ class CollectionStatusFromBangumiBuilder
   }
 
   @override
-  void update(void updates(CollectionStatusFromBangumiBuilder b)) {
+  void update(void Function(CollectionStatusFromBangumiBuilder) updates) {
     if (updates != null) updates(this);
   }
 

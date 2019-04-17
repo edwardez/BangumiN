@@ -8,7 +8,7 @@ part of 'SujectBase.dart';
 
 abstract class SubjectBaseBuilder {
   void replace(SubjectBase other);
-  void update(void updates(SubjectBaseBuilder b));
+  void update(void Function(SubjectBaseBuilder) updates);
   int get id;
   set id(int id);
 

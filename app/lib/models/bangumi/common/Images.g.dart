@@ -94,7 +94,7 @@ class _$Images extends Images {
   @override
   final String grid;
 
-  factory _$Images([void updates(ImagesBuilder b)]) =>
+  factory _$Images([void Function(ImagesBuilder) updates]) =>
       (new ImagesBuilder()..update(updates)).build();
 
   _$Images._({this.large, this.common, this.medium, this.small, this.grid})
@@ -111,7 +111,7 @@ class _$Images extends Images {
   }
 
   @override
-  Images rebuild(void updates(ImagesBuilder b)) =>
+  Images rebuild(void Function(ImagesBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -194,7 +194,7 @@ class ImagesBuilder implements Builder<Images, ImagesBuilder> {
   }
 
   @override
-  void update(void updates(ImagesBuilder b)) {
+  void update(void Function(ImagesBuilder) updates) {
     if (updates != null) updates(this);
   }
 

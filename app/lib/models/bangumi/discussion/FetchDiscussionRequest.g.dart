@@ -69,7 +69,7 @@ class _$FetchDiscussionRequest extends FetchDiscussionRequest {
   final DiscussionFilter discussionFilter;
 
   factory _$FetchDiscussionRequest(
-          [void updates(FetchDiscussionRequestBuilder b)]) =>
+          [void Function(FetchDiscussionRequestBuilder) updates]) =>
       (new FetchDiscussionRequestBuilder()..update(updates)).build();
 
   _$FetchDiscussionRequest._({this.discussionType, this.discussionFilter})
@@ -86,7 +86,7 @@ class _$FetchDiscussionRequest extends FetchDiscussionRequest {
 
   @override
   FetchDiscussionRequest rebuild(
-          void updates(FetchDiscussionRequestBuilder b)) =>
+          void Function(FetchDiscussionRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -149,7 +149,7 @@ class FetchDiscussionRequestBuilder
   }
 
   @override
-  void update(void updates(FetchDiscussionRequestBuilder b)) {
+  void update(void Function(FetchDiscussionRequestBuilder) updates) {
     if (updates != null) updates(this);
   }
 

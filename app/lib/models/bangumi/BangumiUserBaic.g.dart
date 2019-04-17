@@ -106,7 +106,8 @@ class _$BangumiUserBasic extends BangumiUserBasic {
   @override
   final int userGroup;
 
-  factory _$BangumiUserBasic([void updates(BangumiUserBasicBuilder b)]) =>
+  factory _$BangumiUserBasic(
+          [void Function(BangumiUserBasicBuilder) updates]) =>
       (new BangumiUserBasicBuilder()..update(updates)).build();
 
   _$BangumiUserBasic._(
@@ -142,7 +143,7 @@ class _$BangumiUserBasic extends BangumiUserBasic {
   }
 
   @override
-  BangumiUserBasic rebuild(void updates(BangumiUserBasicBuilder b)) =>
+  BangumiUserBasic rebuild(void Function(BangumiUserBasicBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -248,7 +249,7 @@ class BangumiUserBasicBuilder
   }
 
   @override
-  void update(void updates(BangumiUserBasicBuilder b)) {
+  void update(void Function(BangumiUserBasicBuilder) updates) {
     if (updates != null) updates(this);
   }
 

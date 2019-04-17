@@ -72,7 +72,8 @@ class _$BangumiUserAvatar extends BangumiUserAvatar {
   @override
   final String small;
 
-  factory _$BangumiUserAvatar([void updates(BangumiUserAvatarBuilder b)]) =>
+  factory _$BangumiUserAvatar(
+          [void Function(BangumiUserAvatarBuilder) updates]) =>
       (new BangumiUserAvatarBuilder()..update(updates)).build();
 
   _$BangumiUserAvatar._({this.large, this.medium, this.small}) : super._() {
@@ -88,7 +89,7 @@ class _$BangumiUserAvatar extends BangumiUserAvatar {
   }
 
   @override
-  BangumiUserAvatar rebuild(void updates(BangumiUserAvatarBuilder b)) =>
+  BangumiUserAvatar rebuild(void Function(BangumiUserAvatarBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -157,7 +158,7 @@ class BangumiUserAvatarBuilder
   }
 
   @override
-  void update(void updates(BangumiUserAvatarBuilder b)) {
+  void update(void Function(BangumiUserAvatarBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -84,7 +84,7 @@ class _$InfoBoxItem extends InfoBoxItem {
   @override
   final String pageUrl;
 
-  factory _$InfoBoxItem([void updates(InfoBoxItemBuilder b)]) =>
+  factory _$InfoBoxItem([void Function(InfoBoxItemBuilder) updates]) =>
       (new InfoBoxItemBuilder()..update(updates)).build();
 
   _$InfoBoxItem._({this.type, this.name, this.id, this.pageUrl}) : super._() {
@@ -97,7 +97,7 @@ class _$InfoBoxItem extends InfoBoxItem {
   }
 
   @override
-  InfoBoxItem rebuild(void updates(InfoBoxItemBuilder b)) =>
+  InfoBoxItem rebuild(void Function(InfoBoxItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -171,7 +171,7 @@ class InfoBoxItemBuilder implements Builder<InfoBoxItem, InfoBoxItemBuilder> {
   }
 
   @override
-  void update(void updates(InfoBoxItemBuilder b)) {
+  void update(void Function(InfoBoxItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 

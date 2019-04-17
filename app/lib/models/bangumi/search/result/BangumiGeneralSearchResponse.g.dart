@@ -91,7 +91,7 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
   bool __hasReachedEnd;
 
   factory _$BangumiGeneralSearchResponse(
-          [void updates(BangumiGeneralSearchResponseBuilder b)]) =>
+          [void Function(BangumiGeneralSearchResponseBuilder) updates]) =>
       (new BangumiGeneralSearchResponseBuilder()..update(updates)).build();
 
   _$BangumiGeneralSearchResponse._(
@@ -112,7 +112,7 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
 
   @override
   BangumiGeneralSearchResponse rebuild(
-          void updates(BangumiGeneralSearchResponseBuilder b)) =>
+          void Function(BangumiGeneralSearchResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -187,7 +187,7 @@ class BangumiGeneralSearchResponseBuilder
   }
 
   @override
-  void update(void updates(BangumiGeneralSearchResponseBuilder b)) {
+  void update(void Function(BangumiGeneralSearchResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 

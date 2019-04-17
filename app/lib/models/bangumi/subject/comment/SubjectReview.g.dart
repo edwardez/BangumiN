@@ -65,7 +65,7 @@ class _$SubjectReview extends SubjectReview {
   @override
   final String content;
 
-  factory _$SubjectReview([void updates(SubjectReviewBuilder b)]) =>
+  factory _$SubjectReview([void Function(SubjectReviewBuilder) updates]) =>
       (new SubjectReviewBuilder()..update(updates)).build();
 
   _$SubjectReview._({this.metaInfo, this.content}) : super._() {
@@ -75,7 +75,7 @@ class _$SubjectReview extends SubjectReview {
   }
 
   @override
-  SubjectReview rebuild(void updates(SubjectReviewBuilder b)) =>
+  SubjectReview rebuild(void Function(SubjectReviewBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -136,7 +136,7 @@ class SubjectReviewBuilder
   }
 
   @override
-  void update(void updates(SubjectReviewBuilder b)) {
+  void update(void Function(SubjectReviewBuilder) updates) {
     if (updates != null) updates(this);
   }
 

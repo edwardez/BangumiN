@@ -120,7 +120,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
   @override
   final String actionName;
 
-  factory _$ReviewMetaInfo([void updates(ReviewMetaInfoBuilder b)]) =>
+  factory _$ReviewMetaInfo([void Function(ReviewMetaInfoBuilder) updates]) =>
       (new ReviewMetaInfoBuilder()..update(updates)).build();
 
   _$ReviewMetaInfo._(
@@ -144,7 +144,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
   }
 
   @override
-  ReviewMetaInfo rebuild(void updates(ReviewMetaInfoBuilder b)) =>
+  ReviewMetaInfo rebuild(void Function(ReviewMetaInfoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -250,7 +250,7 @@ class ReviewMetaInfoBuilder
   }
 
   @override
-  void update(void updates(ReviewMetaInfoBuilder b)) {
+  void update(void Function(ReviewMetaInfoBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -71,7 +71,7 @@ class _$UnknownTimelineActivity extends UnknownTimelineActivity {
   final String content;
 
   factory _$UnknownTimelineActivity(
-          [void updates(UnknownTimelineActivityBuilder b)]) =>
+          [void Function(UnknownTimelineActivityBuilder) updates]) =>
       (new UnknownTimelineActivityBuilder()..update(updates)).build();
 
   _$UnknownTimelineActivity._({this.user, this.content}) : super._() {
@@ -82,7 +82,7 @@ class _$UnknownTimelineActivity extends UnknownTimelineActivity {
 
   @override
   UnknownTimelineActivity rebuild(
-          void updates(UnknownTimelineActivityBuilder b)) =>
+          void Function(UnknownTimelineActivityBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -144,7 +144,7 @@ class UnknownTimelineActivityBuilder
   }
 
   @override
-  void update(void updates(UnknownTimelineActivityBuilder b)) {
+  void update(void Function(UnknownTimelineActivityBuilder) updates) {
     if (updates != null) updates(this);
   }
 

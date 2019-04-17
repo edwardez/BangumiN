@@ -81,7 +81,7 @@ class _$HyperImage extends HyperImage {
   @override
   final String pageUrl;
 
-  factory _$HyperImage([void updates(HyperImageBuilder b)]) =>
+  factory _$HyperImage([void Function(HyperImageBuilder) updates]) =>
       (new HyperImageBuilder()..update(updates)).build();
 
   _$HyperImage._({this.id, this.contentType, this.imageUrl, this.pageUrl})
@@ -98,7 +98,7 @@ class _$HyperImage extends HyperImage {
   }
 
   @override
-  HyperImage rebuild(void updates(HyperImageBuilder b)) =>
+  HyperImage rebuild(void Function(HyperImageBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -174,7 +174,7 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
   }
 
   @override
-  void update(void updates(HyperImageBuilder b)) {
+  void update(void Function(HyperImageBuilder) updates) {
     if (updates != null) updates(this);
   }
 

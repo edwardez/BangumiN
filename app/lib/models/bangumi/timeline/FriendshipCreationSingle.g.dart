@@ -86,7 +86,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   final String friendId;
 
   factory _$FriendshipCreationSingle(
-          [void updates(FriendshipCreationSingleBuilder b)]) =>
+          [void Function(FriendshipCreationSingleBuilder) updates]) =>
       (new FriendshipCreationSingleBuilder()..update(updates)).build();
 
   _$FriendshipCreationSingle._(
@@ -114,7 +114,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
 
   @override
   FriendshipCreationSingle rebuild(
-          void updates(FriendshipCreationSingleBuilder b)) =>
+          void Function(FriendshipCreationSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -195,7 +195,7 @@ class FriendshipCreationSingleBuilder
   }
 
   @override
-  void update(void updates(FriendshipCreationSingleBuilder b)) {
+  void update(void Function(FriendshipCreationSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

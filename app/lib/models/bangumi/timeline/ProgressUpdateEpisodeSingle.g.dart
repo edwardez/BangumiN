@@ -97,7 +97,7 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
   final String subjectId;
 
   factory _$ProgressUpdateEpisodeSingle(
-          [void updates(ProgressUpdateEpisodeSingleBuilder b)]) =>
+          [void Function(ProgressUpdateEpisodeSingleBuilder) updates]) =>
       (new ProgressUpdateEpisodeSingleBuilder()..update(updates)).build();
 
   _$ProgressUpdateEpisodeSingle._(
@@ -130,7 +130,7 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
 
   @override
   ProgressUpdateEpisodeSingle rebuild(
-          void updates(ProgressUpdateEpisodeSingleBuilder b)) =>
+          void Function(ProgressUpdateEpisodeSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -219,7 +219,7 @@ class ProgressUpdateEpisodeSingleBuilder
   }
 
   @override
-  void update(void updates(ProgressUpdateEpisodeSingleBuilder b)) {
+  void update(void Function(ProgressUpdateEpisodeSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

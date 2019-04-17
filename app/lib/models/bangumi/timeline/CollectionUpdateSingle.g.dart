@@ -113,7 +113,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   final String subjectTitle;
 
   factory _$CollectionUpdateSingle(
-          [void updates(CollectionUpdateSingleBuilder b)]) =>
+          [void Function(CollectionUpdateSingleBuilder) updates]) =>
       (new CollectionUpdateSingleBuilder()..update(updates)).build();
 
   _$CollectionUpdateSingle._(
@@ -138,7 +138,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
 
   @override
   CollectionUpdateSingle rebuild(
-          void updates(CollectionUpdateSingleBuilder b)) =>
+          void Function(CollectionUpdateSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -236,7 +236,7 @@ class CollectionUpdateSingleBuilder
   }
 
   @override
-  void update(void updates(CollectionUpdateSingleBuilder b)) {
+  void update(void Function(CollectionUpdateSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

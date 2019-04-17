@@ -86,7 +86,8 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
   @override
   final String summary;
 
-  factory _$IndexFavoriteSingle([void updates(IndexFavoriteSingleBuilder b)]) =>
+  factory _$IndexFavoriteSingle(
+          [void Function(IndexFavoriteSingleBuilder) updates]) =>
       (new IndexFavoriteSingleBuilder()..update(updates)).build();
 
   _$IndexFavoriteSingle._({this.user, this.title, this.id, this.summary})
@@ -103,7 +104,8 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
   }
 
   @override
-  IndexFavoriteSingle rebuild(void updates(IndexFavoriteSingleBuilder b)) =>
+  IndexFavoriteSingle rebuild(
+          void Function(IndexFavoriteSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -179,7 +181,7 @@ class IndexFavoriteSingleBuilder
   }
 
   @override
-  void update(void updates(IndexFavoriteSingleBuilder b)) {
+  void update(void Function(IndexFavoriteSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -94,7 +94,8 @@ class _$BangumiUserIdentity extends BangumiUserIdentity {
   @override
   final int id;
 
-  factory _$BangumiUserIdentity([void updates(BangumiUserIdentityBuilder b)]) =>
+  factory _$BangumiUserIdentity(
+          [void Function(BangumiUserIdentityBuilder) updates]) =>
       (new BangumiUserIdentityBuilder()..update(updates)).build();
 
   _$BangumiUserIdentity._(
@@ -115,7 +116,8 @@ class _$BangumiUserIdentity extends BangumiUserIdentity {
   }
 
   @override
-  BangumiUserIdentity rebuild(void updates(BangumiUserIdentityBuilder b)) =>
+  BangumiUserIdentity rebuild(
+          void Function(BangumiUserIdentityBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -202,7 +204,7 @@ class BangumiUserIdentityBuilder
   }
 
   @override
-  void update(void updates(BangumiUserIdentityBuilder b)) {
+  void update(void Function(BangumiUserIdentityBuilder) updates) {
     if (updates != null) updates(this);
   }
 

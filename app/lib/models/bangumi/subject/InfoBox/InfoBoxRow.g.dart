@@ -73,7 +73,7 @@ class _$InfoBoxRow extends InfoBoxRow {
   @override
   final BuiltList<InfoBoxItem> rowItems;
 
-  factory _$InfoBoxRow([void updates(InfoBoxRowBuilder b)]) =>
+  factory _$InfoBoxRow([void Function(InfoBoxRowBuilder) updates]) =>
       (new InfoBoxRowBuilder()..update(updates)).build();
 
   _$InfoBoxRow._({this.rowName, this.isCuratedRow, this.rowItems}) : super._() {
@@ -89,7 +89,7 @@ class _$InfoBoxRow extends InfoBoxRow {
   }
 
   @override
-  InfoBoxRow rebuild(void updates(InfoBoxRowBuilder b)) =>
+  InfoBoxRow rebuild(void Function(InfoBoxRowBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -158,7 +158,7 @@ class InfoBoxRowBuilder implements Builder<InfoBoxRow, InfoBoxRowBuilder> {
   }
 
   @override
-  void update(void updates(InfoBoxRowBuilder b)) {
+  void update(void Function(InfoBoxRowBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -138,7 +138,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   @override
   final String name;
 
-  factory _$JobsPerStaff([void updates(JobsPerStaffBuilder b)]) =>
+  factory _$JobsPerStaff([void Function(JobsPerStaffBuilder) updates]) =>
       (new JobsPerStaffBuilder()..update(updates)).build();
 
   _$JobsPerStaff._(
@@ -170,7 +170,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   }
 
   @override
-  JobsPerStaff rebuild(void updates(JobsPerStaffBuilder b)) =>
+  JobsPerStaff rebuild(void Function(JobsPerStaffBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -293,7 +293,7 @@ class JobsPerStaffBuilder
   }
 
   @override
-  void update(void updates(JobsPerStaffBuilder b)) {
+  void update(void Function(JobsPerStaffBuilder) updates) {
     if (updates != null) updates(this);
   }
 

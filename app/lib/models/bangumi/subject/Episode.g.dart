@@ -136,7 +136,7 @@ class _$Episode extends Episode {
   @override
   final String status;
 
-  factory _$Episode([void updates(EpisodeBuilder b)]) =>
+  factory _$Episode([void Function(EpisodeBuilder) updates]) =>
       (new EpisodeBuilder()..update(updates)).build();
 
   _$Episode._(
@@ -188,7 +188,7 @@ class _$Episode extends Episode {
   }
 
   @override
-  Episode rebuild(void updates(EpisodeBuilder b)) =>
+  Episode rebuild(void Function(EpisodeBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -327,7 +327,7 @@ class EpisodeBuilder implements Builder<Episode, EpisodeBuilder> {
   }
 
   @override
-  void update(void updates(EpisodeBuilder b)) {
+  void update(void Function(EpisodeBuilder) updates) {
     if (updates != null) updates(this);
   }
 

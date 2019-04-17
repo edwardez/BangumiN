@@ -72,7 +72,7 @@ class _$FetchDiscussionResponse extends FetchDiscussionResponse {
   BuiltList<DiscussionItem> __discussionItemsAsList;
 
   factory _$FetchDiscussionResponse(
-          [void updates(FetchDiscussionResponseBuilder b)]) =>
+          [void Function(FetchDiscussionResponseBuilder) updates]) =>
       (new FetchDiscussionResponseBuilder()..update(updates)).build();
 
   _$FetchDiscussionResponse._({this.discussionItems, this.lastFetchedTime})
@@ -93,7 +93,7 @@ class _$FetchDiscussionResponse extends FetchDiscussionResponse {
 
   @override
   FetchDiscussionResponse rebuild(
-          void updates(FetchDiscussionResponseBuilder b)) =>
+          void Function(FetchDiscussionResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -158,7 +158,7 @@ class FetchDiscussionResponseBuilder
   }
 
   @override
-  void update(void updates(FetchDiscussionResponseBuilder b)) {
+  void update(void Function(FetchDiscussionResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 

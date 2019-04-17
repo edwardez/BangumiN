@@ -85,7 +85,8 @@ class _$SubjectCollection extends SubjectCollection {
   @override
   final int dropped;
 
-  factory _$SubjectCollection([void updates(SubjectCollectionBuilder b)]) =>
+  factory _$SubjectCollection(
+          [void Function(SubjectCollectionBuilder) updates]) =>
       (new SubjectCollectionBuilder()..update(updates)).build();
 
   _$SubjectCollection._(
@@ -109,7 +110,7 @@ class _$SubjectCollection extends SubjectCollection {
   }
 
   @override
-  SubjectCollection rebuild(void updates(SubjectCollectionBuilder b)) =>
+  SubjectCollection rebuild(void Function(SubjectCollectionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -194,7 +195,7 @@ class SubjectCollectionBuilder
   }
 
   @override
-  void update(void updates(SubjectCollectionBuilder b)) {
+  void update(void Function(SubjectCollectionBuilder) updates) {
     if (updates != null) updates(this);
   }
 

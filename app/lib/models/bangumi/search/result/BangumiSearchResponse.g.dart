@@ -8,7 +8,7 @@ part of 'BangumiSearchResponse.dart';
 
 abstract class BangumiSearchResponseBuilder {
   void replace(BangumiSearchResponse other);
-  void update(void updates(BangumiSearchResponseBuilder b));
+  void update(void Function(BangumiSearchResponseBuilder) updates);
   int get totalCount;
   set totalCount(int totalCount);
 

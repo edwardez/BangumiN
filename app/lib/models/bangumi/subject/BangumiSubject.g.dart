@@ -270,7 +270,7 @@ class _$BangumiSubject extends BangumiSubject {
   String __infoBoxRowsPlainText;
   String __pageUrlFromCalculation;
 
-  factory _$BangumiSubject([void updates(BangumiSubjectBuilder b)]) =>
+  factory _$BangumiSubject([void Function(BangumiSubjectBuilder) updates]) =>
       (new BangumiSubjectBuilder()..update(updates)).build();
 
   _$BangumiSubject._(
@@ -326,7 +326,7 @@ class _$BangumiSubject extends BangumiSubject {
       __pageUrlFromCalculation ??= super.pageUrlFromCalculation;
 
   @override
-  BangumiSubject rebuild(void updates(BangumiSubjectBuilder b)) =>
+  BangumiSubject rebuild(void Function(BangumiSubjectBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -562,7 +562,7 @@ class BangumiSubjectBuilder
   }
 
   @override
-  void update(void updates(BangumiSubjectBuilder b)) {
+  void update(void Function(BangumiSubjectBuilder) updates) {
     if (updates != null) updates(this);
   }
 

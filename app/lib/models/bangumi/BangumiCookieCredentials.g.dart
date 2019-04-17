@@ -26,6 +26,9 @@ class _$BangumiCookieCredentialsSerializer
       'authCookie',
       serializers.serialize(object.authCookie,
           specifiedType: const FullType(String)),
+      'sessionCookie',
+      serializers.serialize(object.sessionCookie,
+          specifiedType: const FullType(String)),
       'userAgent',
       serializers.serialize(object.userAgent,
           specifiedType: const FullType(String)),
@@ -50,6 +53,10 @@ class _$BangumiCookieCredentialsSerializer
           result.authCookie = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'sessionCookie':
+          result.sessionCookie = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'userAgent':
           result.userAgent = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -65,16 +72,24 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
   @override
   final String authCookie;
   @override
+  final String sessionCookie;
+  @override
   final String userAgent;
 
   factory _$BangumiCookieCredentials(
-          [void updates(BangumiCookieCredentialsBuilder b)]) =>
+          [void Function(BangumiCookieCredentialsBuilder) updates]) =>
       (new BangumiCookieCredentialsBuilder()..update(updates)).build();
 
-  _$BangumiCookieCredentials._({this.authCookie, this.userAgent}) : super._() {
+  _$BangumiCookieCredentials._(
+      {this.authCookie, this.sessionCookie, this.userAgent})
+      : super._() {
     if (authCookie == null) {
       throw new BuiltValueNullFieldError(
           'BangumiCookieCredentials', 'authCookie');
+    }
+    if (sessionCookie == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiCookieCredentials', 'sessionCookie');
     }
     if (userAgent == null) {
       throw new BuiltValueNullFieldError(
@@ -84,7 +99,7 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
 
   @override
   BangumiCookieCredentials rebuild(
-          void updates(BangumiCookieCredentialsBuilder b)) =>
+          void Function(BangumiCookieCredentialsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -96,18 +111,21 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
     if (identical(other, this)) return true;
     return other is BangumiCookieCredentials &&
         authCookie == other.authCookie &&
+        sessionCookie == other.sessionCookie &&
         userAgent == other.userAgent;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, authCookie.hashCode), userAgent.hashCode));
+    return $jf($jc($jc($jc(0, authCookie.hashCode), sessionCookie.hashCode),
+        userAgent.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('BangumiCookieCredentials')
           ..add('authCookie', authCookie)
+          ..add('sessionCookie', sessionCookie)
           ..add('userAgent', userAgent))
         .toString();
   }
@@ -122,6 +140,11 @@ class BangumiCookieCredentialsBuilder
   String get authCookie => _$this._authCookie;
   set authCookie(String authCookie) => _$this._authCookie = authCookie;
 
+  String _sessionCookie;
+  String get sessionCookie => _$this._sessionCookie;
+  set sessionCookie(String sessionCookie) =>
+      _$this._sessionCookie = sessionCookie;
+
   String _userAgent;
   String get userAgent => _$this._userAgent;
   set userAgent(String userAgent) => _$this._userAgent = userAgent;
@@ -131,6 +154,7 @@ class BangumiCookieCredentialsBuilder
   BangumiCookieCredentialsBuilder get _$this {
     if (_$v != null) {
       _authCookie = _$v.authCookie;
+      _sessionCookie = _$v.sessionCookie;
       _userAgent = _$v.userAgent;
       _$v = null;
     }
@@ -146,7 +170,7 @@ class BangumiCookieCredentialsBuilder
   }
 
   @override
-  void update(void updates(BangumiCookieCredentialsBuilder b)) {
+  void update(void Function(BangumiCookieCredentialsBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -154,7 +178,9 @@ class BangumiCookieCredentialsBuilder
   _$BangumiCookieCredentials build() {
     final _$result = _$v ??
         new _$BangumiCookieCredentials._(
-            authCookie: authCookie, userAgent: userAgent);
+            authCookie: authCookie,
+            sessionCookie: sessionCookie,
+            userAgent: userAgent);
     replace(_$result);
     return _$result;
   }

@@ -90,7 +90,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
   final BangumiContent contentType;
 
   factory _$StatusUpdateMultiple(
-          [void updates(StatusUpdateMultipleBuilder b)]) =>
+          [void Function(StatusUpdateMultipleBuilder) updates]) =>
       (new StatusUpdateMultipleBuilder()..update(updates)).build();
 
   _$StatusUpdateMultiple._(
@@ -112,7 +112,8 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
   }
 
   @override
-  StatusUpdateMultiple rebuild(void updates(StatusUpdateMultipleBuilder b)) =>
+  StatusUpdateMultiple rebuild(
+          void Function(StatusUpdateMultipleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -195,7 +196,7 @@ class StatusUpdateMultipleBuilder
   }
 
   @override
-  void update(void updates(StatusUpdateMultipleBuilder b)) {
+  void update(void Function(StatusUpdateMultipleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

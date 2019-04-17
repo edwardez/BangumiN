@@ -92,7 +92,7 @@ class _$Rating extends Rating {
   @override
   final double friendScore;
 
-  factory _$Rating([void updates(RatingBuilder b)]) =>
+  factory _$Rating([void Function(RatingBuilder) updates]) =>
       (new RatingBuilder()..update(updates)).build();
 
   _$Rating._(
@@ -114,7 +114,7 @@ class _$Rating extends Rating {
   }
 
   @override
-  Rating rebuild(void updates(RatingBuilder b)) =>
+  Rating rebuild(void Function(RatingBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -198,7 +198,7 @@ class RatingBuilder implements Builder<Rating, RatingBuilder> {
   }
 
   @override
-  void update(void updates(RatingBuilder b)) {
+  void update(void Function(RatingBuilder) updates) {
     if (updates != null) updates(this);
   }
 

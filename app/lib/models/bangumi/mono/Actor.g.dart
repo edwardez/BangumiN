@@ -71,7 +71,7 @@ class _$Actor extends Actor {
   @override
   final String name;
 
-  factory _$Actor([void updates(ActorBuilder b)]) =>
+  factory _$Actor([void Function(ActorBuilder) updates]) =>
       (new ActorBuilder()..update(updates)).build();
 
   _$Actor._({this.id, this.pageUrl, this.name}) : super._() {
@@ -84,7 +84,7 @@ class _$Actor extends Actor {
   }
 
   @override
-  Actor rebuild(void updates(ActorBuilder b)) =>
+  Actor rebuild(void Function(ActorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -150,7 +150,7 @@ class ActorBuilder implements Builder<Actor, ActorBuilder>, MonoBaseBuilder {
   }
 
   @override
-  void update(void updates(ActorBuilder b)) {
+  void update(void Function(ActorBuilder) updates) {
     if (updates != null) updates(this);
   }
 

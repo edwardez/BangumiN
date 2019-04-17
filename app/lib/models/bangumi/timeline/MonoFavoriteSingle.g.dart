@@ -92,7 +92,8 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   @override
   final Mono monoType;
 
-  factory _$MonoFavoriteSingle([void updates(MonoFavoriteSingleBuilder b)]) =>
+  factory _$MonoFavoriteSingle(
+          [void Function(MonoFavoriteSingleBuilder) updates]) =>
       (new MonoFavoriteSingleBuilder()..update(updates)).build();
 
   _$MonoFavoriteSingle._(
@@ -117,7 +118,8 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   }
 
   @override
-  MonoFavoriteSingle rebuild(void updates(MonoFavoriteSingleBuilder b)) =>
+  MonoFavoriteSingle rebuild(
+          void Function(MonoFavoriteSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -205,7 +207,7 @@ class MonoFavoriteSingleBuilder
   }
 
   @override
-  void update(void updates(MonoFavoriteSingleBuilder b)) {
+  void update(void Function(MonoFavoriteSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

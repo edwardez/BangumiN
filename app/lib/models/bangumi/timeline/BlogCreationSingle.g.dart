@@ -83,7 +83,8 @@ class _$BlogCreationSingle extends BlogCreationSingle {
   @override
   final String id;
 
-  factory _$BlogCreationSingle([void updates(BlogCreationSingleBuilder b)]) =>
+  factory _$BlogCreationSingle(
+          [void Function(BlogCreationSingleBuilder) updates]) =>
       (new BlogCreationSingleBuilder()..update(updates)).build();
 
   _$BlogCreationSingle._({this.user, this.title, this.summary, this.id})
@@ -100,7 +101,8 @@ class _$BlogCreationSingle extends BlogCreationSingle {
   }
 
   @override
-  BlogCreationSingle rebuild(void updates(BlogCreationSingleBuilder b)) =>
+  BlogCreationSingle rebuild(
+          void Function(BlogCreationSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -177,7 +179,7 @@ class BlogCreationSingleBuilder
   }
 
   @override
-  void update(void updates(BlogCreationSingleBuilder b)) {
+  void update(void Function(BlogCreationSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

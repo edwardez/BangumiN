@@ -8,7 +8,7 @@ part of 'SearchResult.dart';
 
 abstract class SearchResultBuilder {
   void replace(SearchResult other);
-  void update(void updates(SearchResultBuilder b));
+  void update(void Function(SearchResultBuilder) updates);
   ImagesBuilder get images;
   set images(ImagesBuilder images);
 

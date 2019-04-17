@@ -77,7 +77,7 @@ class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
   final String subjectId;
 
   factory _$ProgressUpdateEpisodeUntil(
-          [void updates(ProgressUpdateEpisodeUntilBuilder b)]) =>
+          [void Function(ProgressUpdateEpisodeUntilBuilder) updates]) =>
       (new ProgressUpdateEpisodeUntilBuilder()..update(updates)).build();
 
   _$ProgressUpdateEpisodeUntil._({this.user, this.subjectName, this.subjectId})
@@ -97,7 +97,7 @@ class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
 
   @override
   ProgressUpdateEpisodeUntil rebuild(
-          void updates(ProgressUpdateEpisodeUntilBuilder b)) =>
+          void Function(ProgressUpdateEpisodeUntilBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -167,7 +167,7 @@ class ProgressUpdateEpisodeUntilBuilder
   }
 
   @override
-  void update(void updates(ProgressUpdateEpisodeUntilBuilder b)) {
+  void update(void Function(ProgressUpdateEpisodeUntilBuilder) updates) {
     if (updates != null) updates(this);
   }
 

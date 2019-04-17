@@ -133,7 +133,7 @@ class _$Count extends Count {
   @override
   final int scoreTen;
 
-  factory _$Count([void updates(CountBuilder b)]) =>
+  factory _$Count([void Function(CountBuilder) updates]) =>
       (new CountBuilder()..update(updates)).build();
 
   _$Count._(
@@ -181,7 +181,7 @@ class _$Count extends Count {
   }
 
   @override
-  Count rebuild(void updates(CountBuilder b)) =>
+  Count rebuild(void Function(CountBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -313,7 +313,7 @@ class CountBuilder implements Builder<Count, CountBuilder> {
   }
 
   @override
-  void update(void updates(CountBuilder b)) {
+  void update(void Function(CountBuilder) updates) {
     if (updates != null) updates(this);
   }
 

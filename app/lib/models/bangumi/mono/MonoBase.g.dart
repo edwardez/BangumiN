@@ -8,7 +8,7 @@ part of 'MonoBase.dart';
 
 abstract class MonoBaseBuilder {
   void replace(MonoBase other);
-  void update(void updates(MonoBaseBuilder b));
+  void update(void Function(MonoBaseBuilder) updates);
   int get id;
   set id(int id);
 

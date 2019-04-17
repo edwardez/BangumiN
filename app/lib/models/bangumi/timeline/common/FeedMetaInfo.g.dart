@@ -115,7 +115,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   @override
   final String actionName;
 
-  factory _$FeedMetaInfo([void updates(FeedMetaInfoBuilder b)]) =>
+  factory _$FeedMetaInfo([void Function(FeedMetaInfoBuilder) updates]) =>
       (new FeedMetaInfoBuilder()..update(updates)).build();
 
   _$FeedMetaInfo._(
@@ -142,7 +142,7 @@ class _$FeedMetaInfo extends FeedMetaInfo {
   }
 
   @override
-  FeedMetaInfo rebuild(void updates(FeedMetaInfoBuilder b)) =>
+  FeedMetaInfo rebuild(void Function(FeedMetaInfoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -247,7 +247,7 @@ class FeedMetaInfoBuilder
   }
 
   @override
-  void update(void updates(FeedMetaInfoBuilder b)) {
+  void update(void Function(FeedMetaInfoBuilder) updates) {
     if (updates != null) updates(this);
   }
 

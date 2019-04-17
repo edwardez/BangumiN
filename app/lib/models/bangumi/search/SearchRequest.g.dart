@@ -62,7 +62,7 @@ class _$SearchRequest extends SearchRequest {
   @override
   final SearchType searchType;
 
-  factory _$SearchRequest([void updates(SearchRequestBuilder b)]) =>
+  factory _$SearchRequest([void Function(SearchRequestBuilder) updates]) =>
       (new SearchRequestBuilder()..update(updates)).build();
 
   _$SearchRequest._({this.query, this.searchType}) : super._() {
@@ -75,7 +75,7 @@ class _$SearchRequest extends SearchRequest {
   }
 
   @override
-  SearchRequest rebuild(void updates(SearchRequestBuilder b)) =>
+  SearchRequest rebuild(void Function(SearchRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -135,7 +135,7 @@ class SearchRequestBuilder
   }
 
   @override
-  void update(void updates(SearchRequestBuilder b)) {
+  void update(void Function(SearchRequestBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -110,7 +110,7 @@ class _$DiscussionItem extends DiscussionItem {
   @override
   final int updatedAt;
 
-  factory _$DiscussionItem([void updates(DiscussionItemBuilder b)]) =>
+  factory _$DiscussionItem([void Function(DiscussionItemBuilder) updates]) =>
       (new DiscussionItemBuilder()..update(updates)).build();
 
   _$DiscussionItem._(
@@ -143,7 +143,7 @@ class _$DiscussionItem extends DiscussionItem {
   }
 
   @override
-  DiscussionItem rebuild(void updates(DiscussionItemBuilder b)) =>
+  DiscussionItem rebuild(void Function(DiscussionItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -249,7 +249,7 @@ class DiscussionItemBuilder
   }
 
   @override
-  void update(void updates(DiscussionItemBuilder b)) {
+  void update(void Function(DiscussionItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 

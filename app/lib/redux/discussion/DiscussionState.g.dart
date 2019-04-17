@@ -80,7 +80,7 @@ class _$DiscussionState extends DiscussionState {
   final BuiltMap<FetchDiscussionRequest, LoadingStatus>
       fetchDiscussionRequestStatus;
 
-  factory _$DiscussionState([void updates(DiscussionStateBuilder b)]) =>
+  factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
       (new DiscussionStateBuilder()..update(updates)).build();
 
   _$DiscussionState._({this.results, this.fetchDiscussionRequestStatus})
@@ -91,7 +91,7 @@ class _$DiscussionState extends DiscussionState {
   }
 
   @override
-  DiscussionState rebuild(void updates(DiscussionStateBuilder b)) =>
+  DiscussionState rebuild(void Function(DiscussionStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -166,7 +166,7 @@ class DiscussionStateBuilder
   }
 
   @override
-  void update(void updates(DiscussionStateBuilder b)) {
+  void update(void Function(DiscussionStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 

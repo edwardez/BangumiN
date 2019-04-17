@@ -97,7 +97,7 @@ class _$SubjectCollectionInfo extends SubjectCollectionInfo {
   final int private;
 
   factory _$SubjectCollectionInfo(
-          [void updates(SubjectCollectionInfoBuilder b)]) =>
+          [void Function(SubjectCollectionInfoBuilder) updates]) =>
       (new SubjectCollectionInfoBuilder()..update(updates)).build();
 
   _$SubjectCollectionInfo._(
@@ -121,7 +121,8 @@ class _$SubjectCollectionInfo extends SubjectCollectionInfo {
   }
 
   @override
-  SubjectCollectionInfo rebuild(void updates(SubjectCollectionInfoBuilder b)) =>
+  SubjectCollectionInfo rebuild(
+          void Function(SubjectCollectionInfoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -208,7 +209,7 @@ class SubjectCollectionInfoBuilder
   }
 
   @override
-  void update(void updates(SubjectCollectionInfoBuilder b)) {
+  void update(void Function(SubjectCollectionInfoBuilder) updates) {
     if (updates != null) updates(this);
   }
 

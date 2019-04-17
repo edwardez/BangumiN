@@ -116,7 +116,8 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   final SearchType type;
   bool __isStartDateValid;
 
-  factory _$SubjectSearchResult([void updates(SubjectSearchResultBuilder b)]) =>
+  factory _$SubjectSearchResult(
+          [void Function(SubjectSearchResultBuilder) updates]) =>
       (new SubjectSearchResultBuilder()..update(updates)).build();
 
   _$SubjectSearchResult._(
@@ -149,7 +150,8 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   bool get isStartDateValid => __isStartDateValid ??= super.isStartDateValid;
 
   @override
-  SubjectSearchResult rebuild(void updates(SubjectSearchResultBuilder b)) =>
+  SubjectSearchResult rebuild(
+          void Function(SubjectSearchResultBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -256,7 +258,7 @@ class SubjectSearchResultBuilder
   }
 
   @override
-  void update(void updates(SubjectSearchResultBuilder b)) {
+  void update(void Function(SubjectSearchResultBuilder) updates) {
     if (updates != null) updates(this);
   }
 

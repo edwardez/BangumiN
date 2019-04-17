@@ -103,7 +103,8 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   final SearchType type;
 
-  factory _$MonoSearchResult([void updates(MonoSearchResultBuilder b)]) =>
+  factory _$MonoSearchResult(
+          [void Function(MonoSearchResultBuilder) updates]) =>
       (new MonoSearchResultBuilder()..update(updates)).build();
 
   _$MonoSearchResult._(
@@ -127,7 +128,7 @@ class _$MonoSearchResult extends MonoSearchResult {
   }
 
   @override
-  MonoSearchResult rebuild(void updates(MonoSearchResultBuilder b)) =>
+  MonoSearchResult rebuild(void Function(MonoSearchResultBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -226,7 +227,7 @@ class MonoSearchResultBuilder
   }
 
   @override
-  void update(void updates(MonoSearchResultBuilder b)) {
+  void update(void Function(MonoSearchResultBuilder) updates) {
     if (updates != null) updates(this);
   }
 

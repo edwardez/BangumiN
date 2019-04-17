@@ -72,7 +72,8 @@ class _$WikiCreationSingle extends WikiCreationSingle {
   @override
   final String newItemId;
 
-  factory _$WikiCreationSingle([void updates(WikiCreationSingleBuilder b)]) =>
+  factory _$WikiCreationSingle(
+          [void Function(WikiCreationSingleBuilder) updates]) =>
       (new WikiCreationSingleBuilder()..update(updates)).build();
 
   _$WikiCreationSingle._({this.user, this.newItemName, this.newItemId})
@@ -89,7 +90,8 @@ class _$WikiCreationSingle extends WikiCreationSingle {
   }
 
   @override
-  WikiCreationSingle rebuild(void updates(WikiCreationSingleBuilder b)) =>
+  WikiCreationSingle rebuild(
+          void Function(WikiCreationSingleBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -158,7 +160,7 @@ class WikiCreationSingleBuilder
   }
 
   @override
-  void update(void updates(WikiCreationSingleBuilder b)) {
+  void update(void Function(WikiCreationSingleBuilder) updates) {
     if (updates != null) updates(this);
   }
 

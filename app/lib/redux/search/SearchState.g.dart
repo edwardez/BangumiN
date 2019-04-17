@@ -76,7 +76,7 @@ class _$SearchState extends SearchState {
   @override
   final BuiltMap<SearchRequest, LoadingStatus> searchRequestsStatus;
 
-  factory _$SearchState([void updates(SearchStateBuilder b)]) =>
+  factory _$SearchState([void Function(SearchStateBuilder) updates]) =>
       (new SearchStateBuilder()..update(updates)).build();
 
   _$SearchState._({this.results, this.searchRequestsStatus}) : super._() {
@@ -86,7 +86,7 @@ class _$SearchState extends SearchState {
   }
 
   @override
-  SearchState rebuild(void updates(SearchStateBuilder b)) =>
+  SearchState rebuild(void Function(SearchStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -152,7 +152,7 @@ class SearchStateBuilder implements Builder<SearchState, SearchStateBuilder> {
   }
 
   @override
-  void update(void updates(SearchStateBuilder b)) {
+  void update(void Function(SearchStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 

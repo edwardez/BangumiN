@@ -18,6 +18,9 @@ abstract class BangumiCookieCredentials
   @BuiltValueField(wireName: 'authCookie')
   String get authCookie;
 
+  @BuiltValueField(wireName: 'sessionCookie')
+  String get sessionCookie;
+
   @BuiltValueField(wireName: 'userAgent')
   String get userAgent;
 

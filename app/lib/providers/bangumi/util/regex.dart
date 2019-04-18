@@ -16,7 +16,7 @@ final RegExp unnormalizedDateMatcher = RegExp(r'-(\d)(?=[-\s])');
 final RegExp cssBackgroundImageGroupRegex = RegExp(
     r"""background-image:url\('([^']*)'\)""");
 final RegExp validBangumiImageTypeRegex = RegExp(r'\.jpg|\.png');
-final RegExp endsWithAlphanumericRegex = RegExp(r'[a-zA-Z0-9]+$');
+final RegExp endsWithWordsRegex = RegExp(r'\w+$');
 final RegExp endsWithAlphanumericGroupRegex = RegExp(r'([a-zA-Z0-9]+)$');
 
 final RegExp endsWithDigitRegex = RegExp(r'\d+$');

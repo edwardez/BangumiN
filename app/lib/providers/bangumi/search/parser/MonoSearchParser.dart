@@ -22,7 +22,8 @@ class MonoSearchParser {
       return null;
     }
 
-    int id = tryParseInt(parseHrefId(nameElement), defaultValue: null);
+    int id = tryParseInt(
+        parseHrefId(nameElement, digitOnly: true), defaultValue: null);
 
     if (id == null) {
       return null;

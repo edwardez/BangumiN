@@ -398,7 +398,7 @@ class TimelineParser {
     }
 
     monoName = monoNameElement.text;
-    id = parseHrefId(monoNameElement);
+    id = parseHrefId(monoNameElement, digitOnly: true);
 
     return MonoFavoriteSingle((b) => b
       ..id = id
@@ -703,7 +703,7 @@ class TimelineParser {
 
     String subjectName = subjectLinkElement.text;
 
-    String subjectId = parseHrefId(subjectLinkElement);
+    String subjectId = parseHrefId(subjectLinkElement, digitOnly: true);
 
     return ProgressUpdateEpisodeSingle((b) => b
       ..user.replace(userInfo)

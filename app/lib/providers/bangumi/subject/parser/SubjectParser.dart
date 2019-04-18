@@ -66,7 +66,7 @@ class SubjectParser {
       /// we don't check whether the link is
       infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.Person
-        ..id = parseHrefId(element)
+        ..id = parseHrefId(element, digitOnly: true)
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
       infoBoxItem = InfoBoxItem((b) => b
@@ -129,7 +129,8 @@ class SubjectParser {
     characterElement.querySelectorAll('a[rel=\"v:starring\"]');
 
     for (Element actorElement in actorElements) {
-      int actorId = tryParseInt(parseHrefId(actorElement));
+      int actorId = tryParseInt(
+          parseHrefId(actorElement, digitOnly: true), defaultValue: null);
       String actorName = actorElement.text ?? '';
       actors.add(Actor((b) => b
         ..name = actorName
@@ -187,7 +188,8 @@ class SubjectParser {
 
     for (Element characterElement in characterElements) {
       Element avatarElement = characterElement.querySelector('a.avatar');
-      int characterId = tryParseInt(parseHrefId(avatarElement));
+      int characterId = tryParseInt(
+          parseHrefId(avatarElement, digitOnly: true), defaultValue: null);
       String characterName = avatarElement?.text?.trim() ?? '';
       String roleName =
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
@@ -242,7 +244,8 @@ class SubjectParser {
       Element subjectTitleElement = subjectElement.querySelector('a.title');
       String subjectName = subjectTitleElement?.text?.trim() ?? '';
       int subjectId =
-      tryParseInt(parseHrefId(subjectTitleElement), defaultValue: null);
+      tryParseInt(parseHrefId(subjectTitleElement, digitOnly: true),
+          defaultValue: null);
 
       Element coverElement = subjectElement.querySelector('a.avatar');
       String subjectNameCn;
@@ -286,7 +289,8 @@ class SubjectParser {
       }
 
       int subjectId =
-      tryParseInt(parseHrefId(coverElement), defaultValue: null);
+      tryParseInt(
+          parseHrefId(coverElement, digitOnly: true), defaultValue: null);
 
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
@@ -393,7 +397,7 @@ class SubjectParser {
     if (nameElement != null) {
       name = nameElement.text;
       nameCn = nameElement.attributes['title'];
-      subjectId = tryParseInt(parseHrefId(nameElement));
+      subjectId = tryParseInt(parseHrefId(nameElement, digitOnly: true));
     }
     name ??= '-';
     nameCn ??= '-';

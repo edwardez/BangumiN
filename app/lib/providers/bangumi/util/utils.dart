@@ -66,7 +66,11 @@ String relativeUrlToAbsolute(String relativeUrl,
   return '$host${relativeUrl ?? ""}';
 }
 
-String parseHrefId(Element element) {
+/// parse href id of a element
+/// If [digitOnly] is set to true, only href Id that ends with pure digits will
+/// be captured. Otherwise, any href id that ends up with words(`\w+` in regex)
+/// will be captured
+String parseHrefId(Element element, {digitOnly = false}) {
   if (element == null) {
     return null;
   }
@@ -76,7 +80,11 @@ String parseHrefId(Element element) {
     return null;
   }
 
-  return endsWithAlphanumericRegex.firstMatch(hrefId)?.group(0);
+  if (digitOnly) {
+    return endsWithDigitRegex.firstMatch(hrefId)?.group(0);
+  }
+
+  return endsWithWordsRegex.firstMatch(hrefId)?.group(0);
 }
 
 String parseFeedId(Element element) {

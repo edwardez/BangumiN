@@ -5,10 +5,13 @@ import 'package:built_value/serializer.dart';
 part 'LoadingStatus.g.dart';
 
 class LoadingStatus extends EnumClass {
-  /// we use a 'trick' here, bangumi will return all results if type is not in their list, so we use -1 to indicate all type
+  /// Loading has not started yet
   static const LoadingStatus Initial = _$Initial;
+
   static const LoadingStatus Loading = _$Loading;
   static const LoadingStatus Success = _$Success;
+
+  /// New exception/error should be added to [isException]
   static const LoadingStatus TimeoutException = _$Timeout;
   static const LoadingStatus UnknownException = _$UnknownError;
 

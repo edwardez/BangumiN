@@ -108,6 +108,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
   @override
   Widget build(BuildContext context) {
     return PageView(
+      physics: NeverScrollableScrollPhysics(),
       controller: pageController,
       children: pages,
     );

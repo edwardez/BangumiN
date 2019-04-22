@@ -98,6 +98,7 @@ class _DiscussionHomeState extends State<DiscussionHome> {
   @override
   Widget build(BuildContext context) {
     return PageView(
+      physics: NeverScrollableScrollPhysics(),
       controller: pageController,
       children: pages,
     );

@@ -9,6 +9,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
   final double widgetWidth;
   final double imageHeight;
   final double horizontalImagePadding;
+  final double verticalImagePadding;
   final String imageUrl;
   final String pageUrl;
   final String id;
@@ -28,6 +29,7 @@ class RoundedImageWithVerticalText extends StatelessWidget {
     this.title,
     this.subtitle,
     this.horizontalImagePadding = 2,
+    this.verticalImagePadding = 0,
     this.pageUrl,
     this.titleMaxLines = 1,
     this.subTitleMaxLines = 1,
@@ -69,7 +71,8 @@ class RoundedImageWithVerticalText extends StatelessWidget {
     return InkWell(
       child: Container(
         width: widgetWidth,
-        padding: EdgeInsets.symmetric(horizontal: horizontalImagePadding),
+        padding: EdgeInsets.symmetric(
+            horizontal: horizontalImagePadding, vertical: verticalImagePadding),
         child: Column(
           children: verticalItems,
         ),

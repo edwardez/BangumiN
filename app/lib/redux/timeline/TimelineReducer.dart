@@ -1,78 +1,92 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
+import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
 import 'package:redux/redux.dart';
 
 final timelineReducers = combineReducers<TimelineState>([
-  TypedReducer<TimelineState, LoadTimelineFeedSuccess>(
+  TypedReducer<TimelineState, LoadTimelineSuccess>(
       loadTimelineFeedSuccessReducer),
 ]);
 
 TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
-    LoadTimelineFeedSuccess loadTimelineFeedSuccess) {
+    LoadTimelineSuccess loadTimelineFeedSuccess) {
+  FetchTimelineRequest fetchTimelineRequest =
+      loadTimelineFeedSuccess.fetchTimelineRequest;
+  FeedChunks feedChunksInStore =
+      timelineState.timeline[fetchTimelineRequest] ?? FeedChunks();
   FetchFeedsResult result = loadTimelineFeedSuccess.fetchFeedsResult;
-  List<TimelineFeed> feeds = result.feeds;
+
+  List<TimelineFeed> feedsResponse = result.feeds;
 
   if (result.feedLoadType == FeedLoadType.Initial) {
     bool hasReachedEnd = false;
+    bool disableLoadingMore = false;
 
     /// Even the initial load returns less than [feedsPerPage] feeds
     /// Which means there are no more feeds to load
-    if (feeds.length <= feedsPerPage) {
+    if (feedsResponse.length < feedsPerPage) {
       hasReachedEnd = true;
+      disableLoadingMore = true;
     }
 
     return timelineState.rebuild((b) => b
-      ..feedChunks.update((b) => b
-        ..first.replace(BuiltList<TimelineFeed>(feeds))
-        ..disableLoadingMore = false
-        ..hasReachedEnd = hasReachedEnd));
+      ..timeline.addAll({
+        fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+        b
+          ..first.replace(BuiltList<TimelineFeed>(feedsResponse))
+          ..disableLoadingMore = disableLoadingMore
+          ..hasReachedEnd = hasReachedEnd)
+      }));
   }
 
   if (result.feedLoadType == FeedLoadType.Newer) {
-    BuiltList<TimelineFeed> currentFeedsInFirstChunk =
-        timelineState.feedChunks.first;
+    BuiltList<TimelineFeed> currentFeedsInFirstChunk = feedChunksInStore.first;
 
     if (result.truncateFeedsInStore) {
-      return timelineState.rebuild((b) => b
-        ..feedChunks.update((b) => b
-          ..first.replace(BuiltList<TimelineFeed>(feeds))
-          ..disableLoadingMore = false
-          ..hasReachedEnd = false));
-
       /// clean up feeds
-    } else {
-      currentFeedsInFirstChunk =
-          currentFeedsInFirstChunk.rebuild((b) => b..insertAll(0, feeds));
       return timelineState.rebuild((b) => b
-        ..feedChunks.update((b) =>
-        b
-          ..first.replace(currentFeedsInFirstChunk)
-          ..disableLoadingMore = false
-          ..hasReachedEnd = false));
+        ..timeline.addAll({
+          fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+          b
+            ..first.replace(BuiltList<TimelineFeed>(feedsResponse))
+            ..disableLoadingMore = false
+            ..hasReachedEnd = false)
+        }));
+    } else {
+      BuiltList<TimelineFeed> updatedFeeds =
+      currentFeedsInFirstChunk.rebuild((b) => b..insertAll(0, feedsResponse));
+      return timelineState.rebuild((b) => b
+        ..timeline.addAll({
+          fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+          b
+            ..first.replace(updatedFeeds)
+            ..disableLoadingMore = false
+            ..hasReachedEnd = false)
+        }));
     }
   }
 
   if (result.feedLoadType == FeedLoadType.Older) {
-    bool disableLoadingMore = false;
-    if (feeds.isEmpty) {
-      disableLoadingMore = true;
-    }
+    bool disableLoadingMore = feedsResponse.isEmpty;
 
-    BuiltList<TimelineFeed> currentFeedsInFirstChunk =
-        timelineState.feedChunks.first;
+    BuiltList<TimelineFeed> currentFeedsInFirstChunk = feedChunksInStore.first;
 
-    currentFeedsInFirstChunk =
-        currentFeedsInFirstChunk.rebuild((b) => b..addAll(feeds));
+    BuiltList<TimelineFeed> updatedFeeds =
+    currentFeedsInFirstChunk.rebuild((b) => b..addAll(feedsResponse));
+
     return timelineState.rebuild((b) => b
-      ..feedChunks.update((b) =>
-      b
-        ..first.replace(currentFeedsInFirstChunk)
-        ..disableLoadingMore = disableLoadingMore));
+      ..timeline.addAll({
+        fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+        b
+          ..first.replace(updatedFeeds)
+          ..disableLoadingMore = disableLoadingMore)
+      }));
   }
 
   return timelineState;

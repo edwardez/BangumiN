@@ -89,7 +89,7 @@ class _$FeedChunks extends FeedChunks {
   int __firstChunkMaxIdOrNull;
   int __firstChunkMinIdOrNull;
 
-  factory _$FeedChunks([void updates(FeedChunksBuilder b)]) =>
+  factory _$FeedChunks([void Function(FeedChunksBuilder) updates]) =>
       (new FeedChunksBuilder()..update(updates)).build();
 
   _$FeedChunks._(
@@ -124,7 +124,7 @@ class _$FeedChunks extends FeedChunks {
       __firstChunkMinIdOrNull ??= super.firstChunkMinIdOrNull;
 
   @override
-  FeedChunks rebuild(void updates(FeedChunksBuilder b)) =>
+  FeedChunks rebuild(void Function(FeedChunksBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -204,7 +204,7 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
   }
 
   @override
-  void update(void updates(FeedChunksBuilder b)) {
+  void update(void Function(FeedChunksBuilder) updates) {
     if (updates != null) updates(this);
   }
 

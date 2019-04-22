@@ -2,69 +2,50 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/shared/utils/collections/common.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/discussion/common/DiscussionItemWidget.dart';
-import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
+import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
+import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class RakuenHome extends StatefulWidget {
-  static String rakuenMobileUrl =
-      'https://${Application.environmentValue.bangumiMainHost}/m';
-
+class DiscussionBody extends StatefulWidget {
   final FetchDiscussionRequest fetchDiscussionRequest;
 
-  const RakuenHome({Key key, @required this.fetchDiscussionRequest})
+  final OneMuninBar oneMuninBar;
+
+  const DiscussionBody({Key key,
+    @required this.fetchDiscussionRequest,
+    @required this.oneMuninBar})
       : super(key: key);
 
   @override
-  _RakuenHomeState createState() => _RakuenHomeState();
+  _DiscussionBodyState createState() => _DiscussionBodyState();
 }
 
-class _RakuenHomeState extends State<RakuenHome> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+class _DiscussionBodyState extends State<DiscussionBody> {
+  GlobalKey<MuninRefreshState> _muninRefreshKey =
+  GlobalKey<MuninRefreshState>();
 
-  Widget _buildTopicList(
-      BuildContext context, FetchDiscussionResponse rakuenTopics) {
-    if (rakuenTopics == null) {
-      return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-      );
-    }
-
-    if (rakuenTopics.discussionItemsAsList.length == 0) {
-      /// TODO: make this a reusable widget
-      final linkStyle = TextStyle(color: Theme.of(context).primaryColor);
-      return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Text('Bangumi上暂无内容或内容无法解析'),
-              RichText(
-                text: LinkTextSpan(
-                    text: '查看对应网页版',
-                    url: RakuenHome.rakuenMobileUrl,
-                    style: linkStyle),
-              )
-            ],
-          )
-        ],
-      );
-    }
-
-    return ListView.builder(
-        itemCount: rakuenTopics.discussionItemsAsList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return DiscussionItemWidget(
-            discussionItem: rakuenTopics.discussionItemsAsList[index],
-          );
-        });
+  /// A widget that will show up if the timeline is empty
+  Widget _buildEmptyRakuenWidget() {
+    return Column(
+      children: <Widget>[
+        Text('Bangumi上暂无内容或内容无法解析，可能因为应用或bangumi出错，下拉可重试'),
+        FlatButton(
+          child: Text('查看网页版'),
+          onPressed: () {
+            return launch(rakuenMobileUrl, forceSafariVC: true);
+          },
+        )
+      ],
+    );
   }
 
   @override
@@ -79,16 +60,29 @@ class _RakuenHomeState extends State<RakuenHome> {
           /// Use null-aware operators to avoid
           /// `NoSuchMethodError: The method 'show' was called on null.`
           /// (Guessing it's a bug in redux?)
-          _refreshIndicatorKey?.currentState?.show();
+          _muninRefreshKey?.currentState?.callOnRefresh();
         }
       },
       builder: (BuildContext context, _ViewModel vm) {
-        return RefreshIndicator(
-          key: _refreshIndicatorKey,
+        return MuninRefresh(
+          key: _muninRefreshKey,
           onRefresh: () {
             return vm.getRakuenTopics(context);
           },
-          child: _buildTopicList(context, vm.rakuenTopics),
+          onLoadMore: null,
+          itemBuilder: (BuildContext context, int index) {
+            if (isIterableNullOrEmpty(vm.rakuenTopics?.discussionItemsAsList)) {
+              return null;
+            }
+            return DiscussionItemWidget(
+              discussionItem: vm.rakuenTopics.discussionItemsAsList[index],
+            );
+          },
+          itemCount: vm.rakuenTopics?.discussionItemsAsList?.length ?? 0,
+          emptyAfterRefreshWidget: _buildEmptyRakuenWidget(),
+          appBar: widget.oneMuninBar,
+          separatorBuilder: null,
+
         );
       },
     );

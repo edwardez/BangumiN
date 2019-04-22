@@ -22,6 +22,13 @@ class LoadingStatus extends EnumClass {
         this == LoadingStatus.UnknownException;
   }
 
+  /// Checks whether next loading request under the same loading object can be initialized
+  @memoized
+  bool get canInitializeNextLoad {
+    return this == LoadingStatus.Initial ||
+        this == LoadingStatus.Success;
+  }
+
   const LoadingStatus._(String name) : super(name);
 
   static BuiltSet<LoadingStatus> get values => _$values;

@@ -29,6 +29,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FeedMetaInfo.serializer)
       ..add(FetchDiscussionRequest.serializer)
       ..add(FetchDiscussionResponse.serializer)
+      ..add(FetchTimelineRequest.serializer)
       ..add(FriendshipCreationSingle.serializer)
       ..add(GroupJoinSingle.serializer)
       ..add(HyperBangumiItem.serializer)
@@ -57,6 +58,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SubjectSearchResult.serializer)
       ..add(SubjectState.serializer)
       ..add(SubjectType.serializer)
+      ..add(TimelineCategoryFilter.serializer)
+      ..add(TimelineSource.serializer)
       ..add(TimelineState.serializer)
       ..add(UnknownTimelineActivity.serializer)
       ..add(UserSearchResult.serializer)
@@ -124,28 +127,26 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () => new MapBuilder<FetchDiscussionRequest, LoadingStatus>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SearchRequest),
-            const FullType(BangumiSearchResponse)
-          ]),
-          () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SearchRequest),
-            const FullType(LoadingStatus)
-          ]),
-          () => new MapBuilder<SearchRequest, LoadingStatus>())
+          const FullType(BuiltMap,
+              const [const FullType(FetchTimelineRequest), const FullType(FeedChunks)]),
+          () => new MapBuilder<FetchTimelineRequest, FeedChunks>())
       ..addBuilderFactory(
           const FullType(BuiltMap,
+              const [const FullType(SearchRequest), const FullType(BangumiSearchResponse)]),
+          () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(SearchRequest), const FullType(LoadingStatus)]),
+          () => new MapBuilder<SearchRequest, LoadingStatus>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltMap,
               const [const FullType(int), const FullType(BangumiSubject)]),
           () => new MapBuilder<int, BangumiSubject>())
       ..addBuilderFactory(
-          const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LoadingStatus)]),
+          const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]),
           () => new MapBuilder<int, LoadingStatus>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap, const [const FullType(int), const FullType(SubjectCollectionInfo)]),
-          () => new MapBuilder<int, SubjectCollectionInfo>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SubjectCollectionInfo)]), () => new MapBuilder<int, SubjectCollectionInfo>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]), () => new MapBuilder<int, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]), () => new MapBuilder<int, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SearchResult)]), () => new MapBuilder<int, SearchResult>())

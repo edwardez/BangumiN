@@ -26,13 +26,13 @@ Stream<dynamic> _getDiscussion(
     yield GetDiscussionRequestSuccessAction(
         fetchDiscussionRequest: action.fetchDiscussionRequest,
         fetchDiscussionResponse: fetchDiscussionResponse);
+    action.completer.complete();
   } catch (error, stack) {
     print(error.toString());
     print(stack);
+    action.completer.completeError(error, stack);
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text(error.toString())));
-  } finally {
-    action.completer.complete();
   }
 }
 

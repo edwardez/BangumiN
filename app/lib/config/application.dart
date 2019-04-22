@@ -16,7 +16,7 @@ import 'package:munin/redux/discussion/DiscussionEpics.dart';
 import 'package:munin/redux/oauth/OauthMiddleware.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
-import 'package:munin/redux/timeline/TimelineMiddleware.dart';
+import 'package:munin/redux/timeline/TimelineEpics.dart';
 import 'package:munin/shared/injector/injector.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:redux/redux.dart';
@@ -96,7 +96,8 @@ abstract class Application {
     Epic<AppState> epics = combineEpics<AppState>(
         []..addAll(createSubjectEpics(_bangumiSubjectService))..addAll(
             createSearchEpics(_bangumiSearchService))..addAll(
-            createDiscussionEpics(_bangumiDiscussionService)));
+            createDiscussionEpics(_bangumiDiscussionService))..addAll(
+            createTimelineEpics(_bangumiTimelineService)));
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
@@ -107,8 +108,7 @@ abstract class Application {
 //          LoggingMiddleware.printer(),
           EpicMiddleware<AppState>(epics),
         ]..addAll(createOauthMiddleware(_bangumiOauthClient,
-            _bangumiCookieClient, bangumiUserService, preferences))..addAll(
-            createTimelineMiddleware(_bangumiTimelineService)));
+            _bangumiCookieClient, bangumiUserService, preferences)));
 
     /// flutter initialization
     runApp(MuninApp(this, store));

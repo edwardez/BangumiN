@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
@@ -92,4 +94,17 @@ getTextOffsetHeight(String title, String subtitle, TextStyle textStyle) {
   }
 
   return textFactor * textStyle.fontSize;
+}
+
+/// on iOS, set secondary theme color as target color
+/// on other platforms, returns null(use widget default)
+getSwitchActiveColor(BuildContext context) {
+  if (Platform.isIOS) {
+    return Theme
+        .of(context)
+        .colorScheme
+        .primary;
+  }
+
+  return null;
 }

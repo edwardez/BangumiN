@@ -47,9 +47,12 @@ import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
+import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
@@ -63,6 +66,14 @@ part 'serializers.g.dart';
 
 @SerializersFor(const [
   BangumiContent,
+  AppState,
+  OauthState,
+
+  ///timeline
+  TimelineState,
+  FetchTimelineRequest,
+  TimelineCategoryFilter,
+  TimelineSource,
   BangumiUserBasic,
   BangumiUserAvatar,
   BangumiUserIdentity,
@@ -84,9 +95,6 @@ part 'serializers.g.dart';
   HyperImage,
   FeedMetaInfo,
   FeedChunks,
-  AppState,
-  OauthState,
-  TimelineState,
 
   /// Subject
   LoadingStatus,

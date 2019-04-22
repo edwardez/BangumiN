@@ -11,7 +11,7 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'FeedChunks.g.dart';
 
 abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
-  static const Duration staleDataThreshold = Duration(minutes: 30);
+  static const Duration staleDataThreshold = Duration(minutes: 5);
 
   BuiltList<TimelineFeed> get first;
 
@@ -31,7 +31,8 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   @memoized
   bool get isStale {
-    return lastFetchedTime != null &&
+    return !hasReachedEnd &&
+        lastFetchedTime != null &&
         DateTime.now().difference(lastFetchedTime) >= staleDataThreshold;
   }
 

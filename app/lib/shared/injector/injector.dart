@@ -136,7 +136,7 @@ Dio _createDioForBangumiCookieClient(
   /// enable logging in development environment
   if (Application.environmentValue.environmentType ==
       EnvironmentType.Development) {
-    dio.interceptors.add(LogInterceptor(responseBody: true));
+//    dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   return dio;

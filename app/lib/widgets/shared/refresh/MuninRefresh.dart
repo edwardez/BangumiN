@@ -199,7 +199,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       /// instead(like how [_materialRefreshKey] is used below)
       completer = widget.onRefresh();
     } else {
-      completer = _materialRefreshKey.currentState.show();
+      completer = _materialRefreshKey?.currentState?.show();
     }
 
     completer.then((v) {
@@ -222,7 +222,8 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// Different from [callOnRefresh] which might be called externally,
   /// this method is called internally and passed to refresh widget
   RefreshCallback _generateOnRefreshCallBack() {
-    if (refreshLoadingStatus == LoadingStatus.Loading) {
+    if (refreshLoadingStatus == LoadingStatus.Loading &&
+        computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino) {
       return null;
     }
 

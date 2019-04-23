@@ -198,7 +198,7 @@ class _TimelineBodyState extends State<TimelineBody> {
             onLoadMore: () {
               return vm.fetchOlderFeed(context);
             },
-            refreshWidgetStyle: RefreshWidgetStyle.Material,
+            refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
             itemCount: vm.feedChunks.first.length,
             appBar: widget.oneMuninBar,
             emptyAfterRefreshWidget: _buildEmptyTimelineWidget(),

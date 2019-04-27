@@ -81,7 +81,7 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
           },
           body: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: defaultPortraitHorizontalPadding),
+                horizontal: safeAreaChildHorizontalPadding),
             child: nestedScrollViewBody,
           ),
         ),

@@ -12,6 +12,7 @@ const CollectionStatus _$Do = const CollectionStatus._('Do');
 const CollectionStatus _$OnHold = const CollectionStatus._('OnHold');
 const CollectionStatus _$Dropped = const CollectionStatus._('Dropped');
 const CollectionStatus _$Untouched = const CollectionStatus._('Untouched');
+const CollectionStatus _$Unknown = const CollectionStatus._('Unknown');
 
 CollectionStatus _$valueOf(String name) {
   switch (name) {
@@ -27,6 +28,8 @@ CollectionStatus _$valueOf(String name) {
       return _$Dropped;
     case 'Untouched':
       return _$Untouched;
+    case 'Unknown':
+      return _$Unknown;
     default:
       throw new ArgumentError(name);
   }
@@ -40,6 +43,7 @@ final BuiltSet<CollectionStatus> _$values =
   _$OnHold,
   _$Dropped,
   _$Untouched,
+  _$Unknown,
 ]);
 
 Serializer<CollectionStatus> _$collectionStatusSerializer =
@@ -54,6 +58,7 @@ class _$CollectionStatusSerializer
     'OnHold': 'on_hold',
     'Dropped': 'dropped',
     'Untouched': 'untouched',
+    'Unknown': 'unknown',
   };
   static const Map<String, String> _fromWire = const <String, String>{
     'wish': 'Wish',
@@ -62,6 +67,7 @@ class _$CollectionStatusSerializer
     'on_hold': 'OnHold',
     'dropped': 'Dropped',
     'untouched': 'Untouched',
+    'unknown': 'Unknown',
   };
 
   @override

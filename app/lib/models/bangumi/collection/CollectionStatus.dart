@@ -1,12 +1,13 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:quiver/strings.dart';
 
 part 'CollectionStatus.g.dart';
 
 @BuiltValueEnum(wireName: 'type')
 class CollectionStatus extends EnumClass {
-  /// we use a 'trick' here, bangumi will return all results if type is not in their list, so we use -1 to indicate all type
   @BuiltValueEnumConst(wireName: 'wish')
   static const CollectionStatus Wish = _$Wish;
 
@@ -22,30 +23,16 @@ class CollectionStatus extends EnumClass {
   @BuiltValueEnumConst(wireName: 'dropped')
   static const CollectionStatus Dropped = _$Dropped;
 
+  /// Following types don't exist in bangumi json response
+
+  /// User has not touched this subject
   @BuiltValueEnumConst(wireName: 'untouched')
   static const CollectionStatus Untouched = _$Untouched;
 
-  /// Get quantified chinese name by subject type
-  /// '一本书', '一张唱片' ...etc
-  /// TODO(edward): I feel like there is a better way to get it's enum type...
-  @memoized
-  String get chineseName {
-    switch (this) {
-      case CollectionStatus.Wish:
-        return '想';
-      case CollectionStatus.Collect:
-        return '过';
-      case CollectionStatus.Do:
-        return '在';
-      case CollectionStatus.OnHold:
-        return '搁置';
-      case CollectionStatus.Dropped:
-        return '抛弃';
-      case CollectionStatus.Untouched:
-      default:
-        return '';
-    }
-  }
+  /// User may or may not have touched this subject, we are not aware of the actual
+  /// status
+  @BuiltValueEnumConst(wireName: 'unknown')
+  static const CollectionStatus Unknown = _$Unknown;
 
   @memoized
   String get wiredName {
@@ -61,9 +48,63 @@ class CollectionStatus extends EnumClass {
       case CollectionStatus.Dropped:
         return 'dropped';
       case CollectionStatus.Untouched:
+      case CollectionStatus.Unknown:
+        return '';
       default:
+        assert(false, '$this is not supported');
         return '';
     }
+  }
+
+  static String chineseNameWithSubjectType(CollectionStatus status,
+      SubjectType subjectType) {
+    switch (status) {
+      case CollectionStatus.Wish:
+        return '想${subjectType.activityVerbChineseNameByType}';
+      case CollectionStatus.Collect:
+        return '${subjectType.activityVerbChineseNameByType}过';
+      case CollectionStatus.Do:
+        return '在${subjectType.activityVerbChineseNameByType}';
+      case CollectionStatus.OnHold:
+        return '搁置';
+      case CollectionStatus.Dropped:
+        return '抛弃';
+      case CollectionStatus.Untouched:
+      case CollectionStatus.Unknown:
+      default:
+        assert(false, '$status with $subjectType is not supported');
+        return '';
+    }
+  }
+
+
+  static CollectionStatus guessCollectionStatusByChineseName(
+      String actionName) {
+    if (isEmpty(actionName)) {
+      return CollectionStatus.Unknown;
+    }
+
+    if (actionName.contains('想')) {
+      return CollectionStatus.Wish;
+    }
+
+    if (actionName.contains('在')) {
+      return CollectionStatus.Do;
+    }
+
+    if (actionName.contains('过')) {
+      return CollectionStatus.Collect;
+    }
+
+    if (actionName.contains('抛弃')) {
+      return CollectionStatus.Dropped;
+    }
+
+    if (actionName.contains('搁置')) {
+      return CollectionStatus.OnHold;
+    }
+
+    return CollectionStatus.Unknown;
   }
 
   static isInvalid(CollectionStatus status) {

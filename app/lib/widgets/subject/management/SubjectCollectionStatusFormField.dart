@@ -35,7 +35,8 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
                 children: <Widget>[
                   ChoiceChip(
                     label:
-                        Text('想${subjectType.activityVerbChineseNameByType}'),
+                    Text(CollectionStatus.chineseNameWithSubjectType(
+                        CollectionStatus.Wish, subjectType)),
                     selected: state.value == CollectionStatus.Wish,
                     onSelected: (bool selected) {
                       _onChipSelected(state, selected, CollectionStatus.Wish,
@@ -44,7 +45,8 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
                   ),
                   ChoiceChip(
                     label:
-                        Text('${subjectType.activityVerbChineseNameByType}过'),
+                    Text(CollectionStatus.chineseNameWithSubjectType(
+                        CollectionStatus.Collect, subjectType)),
                     selected: state.value == CollectionStatus.Collect,
                     onSelected: (bool selected) {
                       _onChipSelected(state, selected, CollectionStatus.Collect,
@@ -53,7 +55,8 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
                   ),
                   ChoiceChip(
                     label:
-                        Text('在${subjectType.activityVerbChineseNameByType}'),
+                    Text(CollectionStatus.chineseNameWithSubjectType(
+                        CollectionStatus.Do, subjectType)),
                     selected: state.value == CollectionStatus.Do,
                     onSelected: (bool selected) {
                       _onChipSelected(
@@ -61,7 +64,8 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
                     },
                   ),
                   ChoiceChip(
-                    label: Text('搁置'),
+                    label: Text(CollectionStatus.chineseNameWithSubjectType(
+                        CollectionStatus.OnHold, subjectType)),
                     selected: state.value == CollectionStatus.OnHold,
                     onSelected: (bool selected) {
                       _onChipSelected(state, selected, CollectionStatus.OnHold,
@@ -69,7 +73,8 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
                     },
                   ),
                   ChoiceChip(
-                    label: Text('抛弃'),
+                    label: Text(CollectionStatus.chineseNameWithSubjectType(
+                        CollectionStatus.Dropped, subjectType)),
                     selected: state.value == CollectionStatus.Dropped,
                     onSelected: (bool selected) {
                       _onChipSelected(state, selected, CollectionStatus.Dropped,

@@ -30,6 +30,25 @@ class SubjectType extends EnumClass {
     }
   }
 
+  @memoized
+  String get chineseName {
+    switch (this) {
+      case SubjectType.Book:
+        return '书籍';
+      case SubjectType.Anime:
+        return '动画';
+      case SubjectType.Music:
+        return '唱片';
+      case SubjectType.Game:
+        return '游戏';
+      case SubjectType.Real:
+        return '三次元';
+      case SubjectType.All:
+      default:
+        return '作品';
+    }
+  }
+
   /// Get quantified chinese name by subject type
   /// '一本书', '一张唱片' ...etc
   @memoized

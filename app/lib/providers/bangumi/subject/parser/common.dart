@@ -1,4 +1,5 @@
 import 'package:html/dom.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
@@ -43,6 +44,7 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
   String nickName;
   double score;
   String actionName;
+  CollectionStatus collectionStatus;
 
   if (elementType == ReviewElement.CollectionPreview) {
     nickName = element.querySelector('.innerWithAvatar > .avatar')?.text ?? '';
@@ -51,10 +53,13 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
     String rawActionName =
         element.querySelector('.innerWithAvatar > .grey')?.text ?? '';
     actionName = lastNChars(rawActionName, 2);
+    collectionStatus =
+        CollectionStatus.guessCollectionStatusByChineseName(actionName);
   } else if (elementType == ReviewElement.CommentBox) {
     nickName = element.querySelector('.text > a')?.text ?? '';
     score = parseSubjectScore(element);
     actionName = score == null ? defaultActionName : '';
+    collectionStatus = CollectionStatus.Unknown;
   } else {
     throw UnimplementedError('Not implemented yet');
   }
@@ -63,9 +68,10 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
     ..updatedAt = absoluteTime?.millisecondsSinceEpoch
     ..nickName = nickName
     ..actionName = actionName
+    ..collectionStatus = collectionStatus
     ..score = score
     ..username = username
-    ..images.replace(images));
+    ..userAvatars.replace(images));
 
   SubjectReview subjectReview = SubjectReview((b) => b
     ..content = commentContent

@@ -39,6 +39,7 @@ class RoundedElevatedImage extends StatelessWidget {
         ),
         elevation: elevation,
         child: CachedNetworkImage(
+
           imageUrl: imageUrl ?? fallbackImageUrl,
           height: imageHeight,
           width: imageWidth,

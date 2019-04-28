@@ -43,9 +43,10 @@ class CommentsPreview extends StatelessWidget {
         ),
       ));
     } else {
-      for (SubjectReview comment in subject.commentsPreview) {
+      for (SubjectReview review in subject.commentsPreview) {
         commentPreviewWidgets.add(SubjectReviewWidget(
-          subjectReview: comment,
+          subject: subject,
+          review: review,
         ));
       }
     }

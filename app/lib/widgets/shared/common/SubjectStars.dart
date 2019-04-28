@@ -17,7 +17,7 @@ class SubjectStars extends StatelessWidget {
 
   /// score: min 0, max 10
   List<Widget> _buildStarIconsWith5StarMax(double score) {
-    assert(score <= 10.0);
+    assert(score <= 10.0 && score >= 0.0);
 
     const maxStars = 5;
     final int numOfFullStars = score ~/ 2;
@@ -37,6 +37,10 @@ class SubjectStars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (subjectScore == null) {
+      return Container();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: _buildStarIconsWith5StarMax(subjectScore),

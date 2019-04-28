@@ -9,13 +9,22 @@ import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 class ListTileSubtitleWidget extends StatelessWidget {
   final String actionName;
   final int updatedAt;
-  final TimeDisplayFormat timeDisplayFormat;
+  final DisplayTimeIn timeDisplayFormat;
+
+  /// see [AbsoluteTimeFormat]
+  /// This won't work if time is displayed in relative format
+  final AbsoluteTimeFormat formatAbsoluteTimeAs;
   final double score;
 
-  ListTileSubtitleWidget(
-      {@required this.actionName, @required this.updatedAt, this.score,
-        this.timeDisplayFormat = TimeDisplayFormat.AlwaysRelative,
-      });
+  static const double starCaptionFontSizeRatio = 1.2;
+
+  ListTileSubtitleWidget({
+    @required this.actionName,
+    @required this.updatedAt,
+    this.score,
+    this.timeDisplayFormat = DisplayTimeIn.AlwaysRelative,
+    this.formatAbsoluteTimeAs,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,10 @@ class ListTileSubtitleWidget extends StatelessWidget {
               )),
           Text(
             TimeUtils.formatMilliSecondsEpochTime(
-                updatedAt, timeDisplayFormat: timeDisplayFormat),
+              updatedAt,
+              displayTimeIn: timeDisplayFormat,
+              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+            ),
             style: captionStyle,
           )
         ],
@@ -54,11 +66,15 @@ class ListTileSubtitleWidget extends StatelessWidget {
           ),
           SubjectStars(
             subjectScore: score,
+            starSize: captionStyle.fontSize * starCaptionFontSizeRatio,
           ),
           ExpandedEmpty(),
           Text(
             TimeUtils.formatMilliSecondsEpochTime(
-                updatedAt, timeDisplayFormat: timeDisplayFormat),
+              updatedAt,
+              displayTimeIn: timeDisplayFormat,
+              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+            ),
             style: captionStyle,
           )
         ],

@@ -24,23 +24,21 @@ import 'package:quiver/strings.dart';
 
 class SubjectParser {
   final curatedRowMappings = {
-    SubjectType.Anime: {
-    '话数', '动画制作', '原作', '制作', '监督', '放送开始'
-    },
+    SubjectType.Anime: {'话数', '动画制作', '原作', '制作', '监督', '放送开始', '发售日', '发售日期'},
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
     SubjectType.Book: {
-    '作者',
-    '插图',
-    '原作',
-    '作画',
-    '开始',
-    '结束',
-    '发售日',
-    '话数',
-    '册数',
-    '连载杂志',
-    '文库'
+      '作者',
+      '插图',
+      '原作',
+      '作画',
+      '开始',
+      '结束',
+      '发售日',
+      '话数',
+      '册数',
+      '连载杂志',
+      '文库'
     },
     SubjectType.Real: {'国家/地区', '类型', '开始', '结束'},
   };
@@ -77,7 +75,8 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  List<InfoBoxItem> parseInfoBoxRow(Element infoBoxRowElement, SubjectType subjectType) {
+  List<InfoBoxItem> parseInfoBoxRow(Element infoBoxRowElement,
+      SubjectType subjectType) {
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -129,8 +128,8 @@ class SubjectParser {
     characterElement.querySelectorAll('a[rel=\"v:starring\"]');
 
     for (Element actorElement in actorElements) {
-      int actorId = tryParseInt(
-          parseHrefId(actorElement, digitOnly: true), defaultValue: null);
+      int actorId = tryParseInt(parseHrefId(actorElement, digitOnly: true),
+          defaultValue: null);
       String actorName = actorElement.text ?? '';
       actors.add(Actor((b) => b
         ..name = actorName
@@ -188,8 +187,8 @@ class SubjectParser {
 
     for (Element characterElement in characterElements) {
       Element avatarElement = characterElement.querySelector('a.avatar');
-      int characterId = tryParseInt(
-          parseHrefId(avatarElement, digitOnly: true), defaultValue: null);
+      int characterId = tryParseInt(parseHrefId(avatarElement, digitOnly: true),
+          defaultValue: null);
       String characterName = avatarElement?.text?.trim() ?? '';
       String roleName =
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
@@ -228,7 +227,10 @@ class SubjectParser {
     /// parse 关联条目
     for (Element subjectElement in relatedSubjectElements) {
       String subjectSubType =
-      subjectElement.querySelector('.sub')?.text?.trim();
+      subjectElement
+          .querySelector('.sub')
+          ?.text
+          ?.trim();
 
       /// bangumi will not set subject type if current subject has the same
       /// subject type as previous ones, hence we need to store and use the
@@ -243,8 +245,8 @@ class SubjectParser {
 
       Element subjectTitleElement = subjectElement.querySelector('a.title');
       String subjectName = subjectTitleElement?.text?.trim() ?? '';
-      int subjectId =
-      tryParseInt(parseHrefId(subjectTitleElement, digitOnly: true),
+      int subjectId = tryParseInt(
+          parseHrefId(subjectTitleElement, digitOnly: true),
           defaultValue: null);
 
       Element coverElement = subjectElement.querySelector('a.avatar');
@@ -288,9 +290,8 @@ class SubjectParser {
         continue;
       }
 
-      int subjectId =
-      tryParseInt(
-          parseHrefId(coverElement, digitOnly: true), defaultValue: null);
+      int subjectId = tryParseInt(parseHrefId(coverElement, digitOnly: true),
+          defaultValue: null);
 
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
@@ -375,7 +376,8 @@ class SubjectParser {
 
   /// in-place update [infoBoxRows] with [infoBoxItems]
   /// add a separator to value of infoBoxRows if it's not empty
-  _addSeparatorIfNotFirstInfoBoxItem(ListMultimap<String, InfoBoxItem> infoBoxRows,
+  _addSeparatorIfNotFirstInfoBoxItem(
+      ListMultimap<String, InfoBoxItem> infoBoxRows,
       String newInfoBoxRowName,
       Iterable<InfoBoxItem> infoBoxItems) {
     if (infoBoxRows.containsKey(newInfoBoxRowName)) {

@@ -21,6 +21,14 @@ abstract class Rating implements Built<Rating, RatingBuilder> {
   @BuiltValueField(wireName: 'score')
   double get score;
 
+  String get scoreAsStringOrHyphen {
+    if (score == null || score == 0.0) {
+      return '-';
+    }
+
+    return score.toString();
+  }
+
   /// [friendScoreVotesCount] is not available in BangumiAPI(but available through html parser)
   @nullable
   int get friendScoreVotesCount;

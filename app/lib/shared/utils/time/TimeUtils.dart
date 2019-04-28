@@ -2,12 +2,16 @@ import 'package:intl/intl.dart';
 import 'package:quiver/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-enum TimeDisplayFormat { AlwaysRelative, AlwaysAbsolute, SwitchByThreshold }
+enum DisplayTimeIn { AlwaysRelative, AlwaysAbsolute, SwitchByThreshold }
+
+enum AbsoluteTimeFormat { Full, DateOnly }
 
 class TimeUtils {
   static const defaultRelativeTimeFormatName = 'zh_hans_short';
-  static final DateFormat defaultAbsoluteTimeFormatter =
+  static final DateFormat fullAbsoluteTimeFormatter =
       DateFormat('yyyy-MM-dd HH:mm');
+  static final DateFormat dateOnlyAbsoluteTimeFormatter =
+  DateFormat('yyyy-MM-dd');
 
   static initializeTimeago() {
     timeago.setLocaleMessages(
@@ -17,18 +21,18 @@ class TimeUtils {
   /// Format a millie seconds epoch time to 'xx ago'
   /// If [epochTimeInMilliSeconds] is null, [fallbackTimeStr] will be returned
   /// [relativeTimeFormat] must be valid format in [timeago]
-  /// If [timeDisplayFormat] is set to [TimeDisplayFormat.AlwaysRelative], relative time will
+  /// If [displayTimeIn] is set to [DisplayTimeIn.AlwaysRelative], relative time will
   /// always be used
-  /// If [timeDisplayFormat] is set to [TimeDisplayFormat.AlwaysAbsolute], absolute time will
+  /// If [displayTimeIn] is set to [DisplayTimeIn.AlwaysAbsolute], absolute time will
   /// always be used
-  /// If [timeDisplayFormat] is set to [TimeDisplayFormat.SwitchByThreshold], both time might
+  /// If [displayTimeIn] is set to [DisplayTimeIn.SwitchByThreshold], both time might
   /// be displayed, it depends on [[relativeTimeThreshold]]. Specifiably, If
   /// difference between current time and [epochTimeInMilliSeconds] are longer than
   /// [relativeTimeThreshold], absolute time  will be displayed, otherwise
   /// relative time will be displayed
   static String formatMilliSecondsEpochTime(int epochTimeInMilliSeconds, {
-    timeDisplayFormat = TimeDisplayFormat.SwitchByThreshold,
-    absoluteTimeFormatter,
+    displayTimeIn = DisplayTimeIn.SwitchByThreshold,
+    AbsoluteTimeFormat formatAbsoluteTimeAs = AbsoluteTimeFormat.Full,
     fallbackTimeStr = '神秘时间',
     relativeTimeFormat = defaultRelativeTimeFormatName,
     relativeTimeThreshold = aDay,
@@ -37,25 +41,27 @@ class TimeUtils {
       return fallbackTimeStr;
     }
 
-    if (absoluteTimeFormatter == null) {
-      absoluteTimeFormatter = defaultAbsoluteTimeFormatter;
+    DateFormat absoluteTimeFormatter;
+    if (formatAbsoluteTimeAs == AbsoluteTimeFormat.DateOnly) {
+      absoluteTimeFormatter = dateOnlyAbsoluteTimeFormatter;
+    } else {
+      absoluteTimeFormatter = fullAbsoluteTimeFormatter;
     }
 
     DateTime dateTime =
         DateTime.fromMillisecondsSinceEpoch(epochTimeInMilliSeconds);
 
-    if (timeDisplayFormat == TimeDisplayFormat.AlwaysAbsolute) {
+    if (displayTimeIn == DisplayTimeIn.AlwaysAbsolute) {
       return absoluteTimeFormatter.format(dateTime);
     }
 
-    if (timeDisplayFormat == TimeDisplayFormat.AlwaysRelative) {
+    if (displayTimeIn == DisplayTimeIn.AlwaysRelative) {
       return timeago.format(dateTime, locale: relativeTimeFormat);
     }
 
     /// Otherwise, [timeDisplayFormat] is set to [TimeDisplayFormat.SwitchByThreshold]
     /// Or an unknown enum value is passed in so we have to use default display format
-    assert(timeDisplayFormat == TimeDisplayFormat.SwitchByThreshold);
-
+    assert(displayTimeIn == DisplayTimeIn.SwitchByThreshold);
 
     if (DateTime.now().difference(dateTime) > relativeTimeThreshold) {
       return absoluteTimeFormatter.format(dateTime);

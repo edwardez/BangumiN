@@ -64,8 +64,8 @@ class DiscussionItemWidget extends StatelessWidget {
                         Text(
                           TimeUtils.formatMilliSecondsEpochTime(
                               discussionItem.updatedAt,
-                              timeDisplayFormat:
-                                  TimeDisplayFormat.AlwaysRelative,
+                              displayTimeIn:
+                              DisplayTimeIn.AlwaysRelative,
                               fallbackTimeStr: ''),
                           style: Theme.of(context).textTheme.caption,
                         ),

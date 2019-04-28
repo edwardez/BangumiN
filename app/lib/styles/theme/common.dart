@@ -6,6 +6,10 @@ const defaultLandScapeHorizontalPadding = 48.0;
 const defaultLandScapeDenseHorizontalPadding = 16.0;
 const defaultAppBarElevation = 4.0;
 const defaultImageCircularRadius = 4.0;
+const defaultIconSize = 24.0;
+
+/// 87.5% of the default icon size
+const smallerIconSize = defaultIconSize * 0.875;
 
 TextStyle body1TextWithPrimaryColor(BuildContext context) {
   return Theme.of(context)

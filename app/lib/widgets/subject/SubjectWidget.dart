@@ -86,7 +86,7 @@ class SubjectWidget extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: widgets.length,
       ),
-      safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+      safeAreaChildHorizontalPadding: defaultPortraitHorizontalPadding,
       enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );

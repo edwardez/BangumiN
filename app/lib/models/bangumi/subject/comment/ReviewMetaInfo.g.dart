@@ -30,10 +30,10 @@ class _$ReviewMetaInfoSerializer
       serializers.serialize(object.username,
           specifiedType: const FullType(String)),
     ];
-    if (object.images != null) {
+    if (object.userAvatars != null) {
       result
-        ..add('images')
-        ..add(serializers.serialize(object.images,
+        ..add('userAvatars')
+        ..add(serializers.serialize(object.userAvatars,
             specifiedType: const FullType(Images)));
     }
     if (object.score != null) {
@@ -41,6 +41,12 @@ class _$ReviewMetaInfoSerializer
         ..add('score')
         ..add(serializers.serialize(object.score,
             specifiedType: const FullType(double)));
+    }
+    if (object.collectionStatus != null) {
+      result
+        ..add('collectionStatus')
+        ..add(serializers.serialize(object.collectionStatus,
+            specifiedType: const FullType(CollectionStatus)));
     }
     if (object.avatarImageUrl != null) {
       result
@@ -69,13 +75,18 @@ class _$ReviewMetaInfoSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
+        case 'userAvatars':
+          result.userAvatars.replace(serializers.deserialize(value,
               specifiedType: const FullType(Images)) as Images);
           break;
         case 'score':
           result.score = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
+          break;
+        case 'collectionStatus':
+          result.collectionStatus = serializers.deserialize(value,
+                  specifiedType: const FullType(CollectionStatus))
+              as CollectionStatus;
           break;
         case 'updatedAt':
           result.updatedAt = serializers.deserialize(value,
@@ -106,9 +117,11 @@ class _$ReviewMetaInfoSerializer
 
 class _$ReviewMetaInfo extends ReviewMetaInfo {
   @override
-  final Images images;
+  final Images userAvatars;
   @override
   final double score;
+  @override
+  final CollectionStatus collectionStatus;
   @override
   final int updatedAt;
   @override
@@ -124,8 +137,9 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
       (new ReviewMetaInfoBuilder()..update(updates)).build();
 
   _$ReviewMetaInfo._(
-      {this.images,
+      {this.userAvatars,
       this.score,
+      this.collectionStatus,
       this.updatedAt,
       this.nickName,
       this.avatarImageUrl,
@@ -155,8 +169,9 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is ReviewMetaInfo &&
-        images == other.images &&
+        userAvatars == other.userAvatars &&
         score == other.score &&
+        collectionStatus == other.collectionStatus &&
         updatedAt == other.updatedAt &&
         nickName == other.nickName &&
         avatarImageUrl == other.avatarImageUrl &&
@@ -170,7 +185,9 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, images.hashCode), score.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, userAvatars.hashCode), score.hashCode),
+                            collectionStatus.hashCode),
                         updatedAt.hashCode),
                     nickName.hashCode),
                 avatarImageUrl.hashCode),
@@ -181,8 +198,9 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('ReviewMetaInfo')
-          ..add('images', images)
+          ..add('userAvatars', userAvatars)
           ..add('score', score)
+          ..add('collectionStatus', collectionStatus)
           ..add('updatedAt', updatedAt)
           ..add('nickName', nickName)
           ..add('avatarImageUrl', avatarImageUrl)
@@ -196,13 +214,19 @@ class ReviewMetaInfoBuilder
     implements Builder<ReviewMetaInfo, ReviewMetaInfoBuilder> {
   _$ReviewMetaInfo _$v;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  ImagesBuilder _userAvatars;
+  ImagesBuilder get userAvatars => _$this._userAvatars ??= new ImagesBuilder();
+  set userAvatars(ImagesBuilder userAvatars) =>
+      _$this._userAvatars = userAvatars;
 
   double _score;
   double get score => _$this._score;
   set score(double score) => _$this._score = score;
+
+  CollectionStatus _collectionStatus;
+  CollectionStatus get collectionStatus => _$this._collectionStatus;
+  set collectionStatus(CollectionStatus collectionStatus) =>
+      _$this._collectionStatus = collectionStatus;
 
   int _updatedAt;
   int get updatedAt => _$this._updatedAt;
@@ -229,8 +253,9 @@ class ReviewMetaInfoBuilder
 
   ReviewMetaInfoBuilder get _$this {
     if (_$v != null) {
-      _images = _$v.images?.toBuilder();
+      _userAvatars = _$v.userAvatars?.toBuilder();
       _score = _$v.score;
+      _collectionStatus = _$v.collectionStatus;
       _updatedAt = _$v.updatedAt;
       _nickName = _$v.nickName;
       _avatarImageUrl = _$v.avatarImageUrl;
@@ -260,8 +285,9 @@ class ReviewMetaInfoBuilder
     try {
       _$result = _$v ??
           new _$ReviewMetaInfo._(
-              images: _images?.build(),
+              userAvatars: _userAvatars?.build(),
               score: score,
+              collectionStatus: collectionStatus,
               updatedAt: updatedAt,
               nickName: nickName,
               avatarImageUrl: avatarImageUrl,
@@ -270,8 +296,8 @@ class ReviewMetaInfoBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'userAvatars';
+        _userAvatars?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ReviewMetaInfo', _$failedField, e.toString());

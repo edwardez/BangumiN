@@ -7,7 +7,6 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:redux/redux.dart';
@@ -60,46 +59,6 @@ class SubjectDetailInfoWidget extends StatelessWidget {
       },
       itemCount: wraps.length,
     );
-  }
-
-  void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: Wrap(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制标题'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(context, subject.name,
-                          popContext: true);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制简介'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(context, subject.summary,
-                          popContext: true);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制Staff信息'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(
-                          context, subject.infoBoxRowsPlainText,
-                          popContext: true);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   @override

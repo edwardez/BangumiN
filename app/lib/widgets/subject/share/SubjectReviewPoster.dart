@@ -13,7 +13,6 @@ import 'package:munin/styles/theme/common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
 
 class SubjectReviewPoster extends StatefulWidget {
@@ -171,8 +170,9 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3),
                               ),
-                              Text(widget.review.metaInfo.nickName),
-                              ExpandedEmpty(),
+                              WrappableText(
+                                  widget.review.metaInfo.nickName
+                              ),
                               Text(
                                 TimeUtils.formatMilliSecondsEpochTime(
                                     widget.review.metaInfo.updatedAt,

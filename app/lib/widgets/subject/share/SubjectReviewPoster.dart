@@ -171,7 +171,8 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                 padding: EdgeInsets.symmetric(horizontal: 3),
                               ),
                               WrappableText(
-                                  widget.review.metaInfo.nickName
+                                widget.review.metaInfo.nickName,
+                                fit: FlexFit.tight,
                               ),
                               Text(
                                 TimeUtils.formatMilliSecondsEpochTime(

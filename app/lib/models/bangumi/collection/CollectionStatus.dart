@@ -6,14 +6,18 @@ import 'package:quiver/strings.dart';
 
 part 'CollectionStatus.g.dart';
 
+/// All possible collection status values on Bangumi
+/// enum names are a little bit strange and confusing but this is in sync with bangumi API
 @BuiltValueEnum(wireName: 'type')
 class CollectionStatus extends EnumClass {
   @BuiltValueEnumConst(wireName: 'wish')
   static const CollectionStatus Wish = _$Wish;
 
+  /// Collected
   @BuiltValueEnumConst(wireName: 'collect')
   static const CollectionStatus Collect = _$Collect;
 
+  /// In progress
   @BuiltValueEnumConst(wireName: 'do')
   static const CollectionStatus Do = _$Do;
 
@@ -79,36 +83,37 @@ class CollectionStatus extends EnumClass {
 
 
   static CollectionStatus guessCollectionStatusByChineseName(
-      String actionName) {
-    if (isEmpty(actionName)) {
+      String chineseName) {
+    if (isEmpty(chineseName)) {
       return CollectionStatus.Unknown;
     }
 
-    if (actionName.contains('想')) {
+    if (chineseName.contains('想')) {
       return CollectionStatus.Wish;
     }
 
-    if (actionName.contains('在')) {
+    if (chineseName.contains('在')) {
       return CollectionStatus.Do;
     }
 
-    if (actionName.contains('过')) {
+    if (chineseName.contains('过')) {
       return CollectionStatus.Collect;
     }
 
-    if (actionName.contains('抛弃')) {
+    if (chineseName.contains('抛弃')) {
       return CollectionStatus.Dropped;
     }
 
-    if (actionName.contains('搁置')) {
+    if (chineseName.contains('搁置')) {
       return CollectionStatus.OnHold;
     }
 
     return CollectionStatus.Unknown;
   }
 
-  static isInvalid(CollectionStatus status) {
-    return status == null || status == CollectionStatus.Untouched;
+  static bool isInvalid(CollectionStatus status) {
+    return status == null || status == CollectionStatus.Untouched ||
+        status == CollectionStatus.Unknown;
   }
 
   const CollectionStatus._(String name) : super(name);

@@ -6,7 +6,7 @@ part of 'SubjectType.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-const SubjectType _$All = const SubjectType._('All');
+const SubjectType _$All = const SubjectType._('Unknown');
 const SubjectType _$Book = const SubjectType._('Book');
 const SubjectType _$Anime = const SubjectType._('Anime');
 const SubjectType _$Music = const SubjectType._('Music');
@@ -15,7 +15,7 @@ const SubjectType _$Real = const SubjectType._('Real');
 
 SubjectType _$valueOf(String name) {
   switch (name) {
-    case 'All':
+    case 'Unknown':
       return _$All;
     case 'Book':
       return _$Book;

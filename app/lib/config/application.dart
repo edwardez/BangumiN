@@ -5,11 +5,11 @@ import 'package:munin/main.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
-import 'package:munin/providers/bangumi/BangumiUserService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionEpics.dart';
@@ -17,6 +17,7 @@ import 'package:munin/redux/oauth/OauthMiddleware.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
+import 'package:munin/redux/user/UserEpics.dart';
 import 'package:munin/shared/injector/injector.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:redux/redux.dart';
@@ -75,6 +76,8 @@ abstract class Application {
     getIt.get<BangumiSearchService>();
     final BangumiDiscussionService _bangumiDiscussionService =
     getIt.get<BangumiDiscussionService>();
+    final BangumiUserService _bangumiUserService =
+    getIt.get<BangumiUserService>();
     final SharedPreferences preferences = getIt.get<SharedPreferences>();
     final String serializedUserInfo =
     preferences.get('currentAuthenticatedUserBasicInfo');
@@ -97,7 +100,9 @@ abstract class Application {
         []..addAll(createSubjectEpics(_bangumiSubjectService))..addAll(
             createSearchEpics(_bangumiSearchService))..addAll(
             createDiscussionEpics(_bangumiDiscussionService))..addAll(
-            createTimelineEpics(_bangumiTimelineService)));
+            createTimelineEpics(_bangumiTimelineService))..addAll(
+            createUserEpics(_bangumiUserService))
+    );
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);

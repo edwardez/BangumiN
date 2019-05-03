@@ -166,6 +166,7 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                 imageUrl:
                                     widget.review.metaInfo.userAvatars.medium,
                                 radius: 15,
+                                navigateToUserRouteOnTap: false,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 3),

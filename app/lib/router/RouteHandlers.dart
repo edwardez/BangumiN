@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
@@ -52,6 +53,17 @@ var subjectCollectionManagementRouteHandler = Handler(
       return Scaffold(
         body: SubjectCollectionManagementWidget(
           subjectId: subjectId,
+        ),
+      );
+    });
+
+var userProfileRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String username = params["username"]?.first;
+
+      return Scaffold(
+        body: UserProfileWidget(
+          username: username,
         ),
       );
     });

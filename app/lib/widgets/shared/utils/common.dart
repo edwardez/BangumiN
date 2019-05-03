@@ -30,6 +30,13 @@ generateOnTapCallbackForBangumiContent({
     };
   }
 
+  if (contentType == BangumiContent.User) {
+    return () {
+      Application.router.navigateTo(context, '/user/$id',
+          transition: TransitionType.native);
+    };
+  }
+
   String routeUrl = _getRouterUrlByContentType(contentType, id);
 
   if (routeUrl != null) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
-import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:redux/redux.dart';
@@ -55,7 +55,7 @@ Middleware<AppState> _createOAuthRequest(
       await oauthClient.initializeAuthentication();
       int userId = await oauthClient.verifyUser();
       BangumiUserBasic userInfo =
-          await bangumiUserService.getUserBasicInfo(userId);
+      await bangumiUserService.persistCurrentUserBasicInfo(userId.toString());
       await Future.wait([
         oauthClient.persistCredentials(),
         bangumiCookieClient.persistCredentials(),

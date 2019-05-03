@@ -5,8 +5,8 @@ import 'package:built_value/serializer.dart';
 part 'SubjectType.g.dart';
 
 class SubjectType extends EnumClass {
-  /// we use a 'trick' here, bangumi will return all results if type is not in their list, so we use -1 to indicate all type
-  static const SubjectType All = _$All;
+
+  static const SubjectType Unknown = _$All;
   static const SubjectType Book = _$Book;
   static const SubjectType Anime = _$Anime;
   static const SubjectType Music = _$Music;
@@ -26,7 +26,25 @@ class SubjectType extends EnumClass {
       case '三次元':
         return SubjectType.Real;
       default:
-        return SubjectType.All;
+        return SubjectType.Unknown;
+    }
+  }
+
+  static SubjectType getTypeByWiredName(String wiredName) {
+    switch (wiredName) {
+      case 'book':
+        return SubjectType.Book;
+      case 'anime':
+        return SubjectType.Anime;
+      case 'music':
+        return SubjectType.Music;
+      case 'game':
+        return SubjectType.Game;
+      case 'real':
+        return SubjectType.Real;
+      default:
+        assert(false, '$wiredName is not valid');
+        return SubjectType.Unknown;
     }
   }
 
@@ -43,7 +61,7 @@ class SubjectType extends EnumClass {
         return '游戏';
       case SubjectType.Real:
         return '三次元';
-      case SubjectType.All:
+      case SubjectType.Unknown:
       default:
         return '作品';
     }
@@ -63,7 +81,7 @@ class SubjectType extends EnumClass {
       case SubjectType.Game:
         return '个游戏';
       case SubjectType.Real:
-      case SubjectType.All:
+      case SubjectType.Unknown:
       default:
         return '部作品';
     }
@@ -75,7 +93,7 @@ class SubjectType extends EnumClass {
   String get activityVerbChineseNameByType {
     switch (this) {
       case SubjectType.Book:
-        return '看';
+        return '读';
       case SubjectType.Anime:
         return '看';
       case SubjectType.Music:
@@ -84,11 +102,16 @@ class SubjectType extends EnumClass {
         return '玩';
       case SubjectType.Real:
         return '看';
-      case SubjectType.All:
+      case SubjectType.Unknown:
       default:
         return '看';
     }
   }
+
+  /// [SubjectType.Unknown] is a Munin internal value that's not valid on bangumi
+  @memoized
+  bool get isValidOnBangumi => this != SubjectType.Unknown;
+
 
   const SubjectType._(String name) : super(name);
 

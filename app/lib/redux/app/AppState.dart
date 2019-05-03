@@ -8,6 +8,7 @@ import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
+import 'package:munin/redux/user/UserState.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'AppState.g.dart';
@@ -28,6 +29,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   DiscussionState get discussionState;
 
+  UserState get userState;
+
   factory AppState([updates(AppStateBuilder b)]) =>
       _$AppState((b) =>
       b
@@ -36,6 +39,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         ..subjectState.replace(SubjectState())
         ..searchState.replace(SearchState())
         ..discussionState.replace(DiscussionState())
+        ..userState.replace(UserState())
         ..update(updates));
 
   AppState._();

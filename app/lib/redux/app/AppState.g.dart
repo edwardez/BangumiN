@@ -36,6 +36,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'discussionState',
       serializers.serialize(object.discussionState,
           specifiedType: const FullType(DiscussionState)),
+      'userState',
+      serializers.serialize(object.userState,
+          specifiedType: const FullType(UserState)),
     ];
     if (object.currentAuthenticatedUserBasicInfo != null) {
       result
@@ -89,6 +92,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
                   specifiedType: const FullType(DiscussionState))
               as DiscussionState);
           break;
+        case 'userState':
+          result.userState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserState)) as UserState);
+          break;
       }
     }
 
@@ -111,6 +118,8 @@ class _$AppState extends AppState {
   final SearchState searchState;
   @override
   final DiscussionState discussionState;
+  @override
+  final UserState userState;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -122,7 +131,8 @@ class _$AppState extends AppState {
       this.timelineState,
       this.subjectState,
       this.searchState,
-      this.discussionState})
+      this.discussionState,
+      this.userState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
@@ -141,6 +151,9 @@ class _$AppState extends AppState {
     }
     if (discussionState == null) {
       throw new BuiltValueNullFieldError('AppState', 'discussionState');
+    }
+    if (userState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'userState');
     }
   }
 
@@ -162,7 +175,8 @@ class _$AppState extends AppState {
         timelineState == other.timelineState &&
         subjectState == other.subjectState &&
         searchState == other.searchState &&
-        discussionState == other.discussionState;
+        discussionState == other.discussionState &&
+        userState == other.userState;
   }
 
   @override
@@ -172,13 +186,17 @@ class _$AppState extends AppState {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-                            isAuthenticated.hashCode),
-                        oauthState.hashCode),
-                    timelineState.hashCode),
-                subjectState.hashCode),
-            searchState.hashCode),
-        discussionState.hashCode));
+                        $jc(
+                            $jc(
+                                $jc(0,
+                                    currentAuthenticatedUserBasicInfo.hashCode),
+                                isAuthenticated.hashCode),
+                            oauthState.hashCode),
+                        timelineState.hashCode),
+                    subjectState.hashCode),
+                searchState.hashCode),
+            discussionState.hashCode),
+        userState.hashCode));
   }
 
   @override
@@ -191,7 +209,8 @@ class _$AppState extends AppState {
           ..add('timelineState', timelineState)
           ..add('subjectState', subjectState)
           ..add('searchState', searchState)
-          ..add('discussionState', discussionState))
+          ..add('discussionState', discussionState)
+          ..add('userState', userState))
         .toString();
   }
 }
@@ -243,6 +262,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set discussionState(DiscussionStateBuilder discussionState) =>
       _$this._discussionState = discussionState;
 
+  UserStateBuilder _userState;
+  UserStateBuilder get userState =>
+      _$this._userState ??= new UserStateBuilder();
+  set userState(UserStateBuilder userState) => _$this._userState = userState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -255,6 +279,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _subjectState = _$v.subjectState?.toBuilder();
       _searchState = _$v.searchState?.toBuilder();
       _discussionState = _$v.discussionState?.toBuilder();
+      _userState = _$v.userState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -286,7 +311,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               timelineState: timelineState.build(),
               subjectState: subjectState.build(),
               searchState: searchState.build(),
-              discussionState: discussionState.build());
+              discussionState: discussionState.build(),
+              userState: userState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -303,6 +329,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         searchState.build();
         _$failedField = 'discussionState';
         discussionState.build();
+        _$failedField = 'userState';
+        userState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

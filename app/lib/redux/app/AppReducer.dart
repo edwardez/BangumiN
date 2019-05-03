@@ -5,6 +5,7 @@ import 'package:munin/redux/oauth/OauthReducer.dart';
 import 'package:munin/redux/search/SearchReducer.dart';
 import 'package:munin/redux/subject/SubjectReducer.dart';
 import 'package:munin/redux/timeline/TimelineReducer.dart';
+import 'package:munin/redux/user/UserReducer.dart';
 
 // We create the State reducer by combining many smaller reducers into one!
 AppState appReducer(AppState appState, dynamic action) {
@@ -29,6 +30,7 @@ AppState appReducer(AppState appState, dynamic action) {
             searchReducers(appState.searchState, action))
         ..discussionState.replace(
             discussionReducers(appState.discussionState, action))
-  )
-  ;
+        ..userState.replace(
+            userReducers(appState.userState, action))
+  );
 }

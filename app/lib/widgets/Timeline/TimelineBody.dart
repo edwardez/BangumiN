@@ -141,6 +141,11 @@ class _TimelineBodyState extends State<TimelineBody> {
         children: <Widget>[
           CachedCircleAvatar(
             imageUrl: feedChunks.getFeedAt(index)?.user?.avatarImageUrl,
+            navigateToUserRouteOnTap: true,
+            username: feedChunks
+                .getFeedAt(index)
+                ?.user
+                ?.username,
           ),
           Expanded(
             child: Container(

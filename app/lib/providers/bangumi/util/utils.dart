@@ -70,7 +70,7 @@ String relativeUrlToAbsolute(String relativeUrl,
 /// If [digitOnly] is set to true, only href Id that ends with pure digits will
 /// be captured. Otherwise, any href id that ends up with words(`\w+` in regex)
 /// will be captured
-String parseHrefId(Element element, {digitOnly = false}) {
+String parseHrefId(Element element, {bool digitOnly = false}) {
   if (element == null) {
     return null;
   }

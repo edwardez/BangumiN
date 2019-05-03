@@ -8,11 +8,11 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
-import 'package:munin/providers/bangumi/BangumiUserService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> injector(GetIt getIt) async {

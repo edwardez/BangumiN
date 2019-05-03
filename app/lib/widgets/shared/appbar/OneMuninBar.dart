@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/MoreOptions/MoreOptionsHome.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
+import 'package:redux/redux.dart';
 
 /// A unified app bar that's displayed on the top of each munin home page
 /// TODO: change avatar to actual user avatar and change fixed constants to
@@ -38,39 +41,48 @@ class _OneMuninBarState extends State<OneMuninBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-        automaticallyImplyLeading: false,
-        pinned: true,
-        centerTitle: true,
-        elevation: 0.5,
-        title: widget.title,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: '搜索',
-            onPressed: () {
-              showSearch(context: context, delegate: searchHomeDelegate);
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: widget.appBarActionRightPadding),
-            child: IconButton(
-              icon: CachedCircleAvatar(
-                imageUrl: 'https://lain.bgm.tv/pic/user/m/icon.jpg',
-                radius: 15.0,
-
-                /// maybe avoid hard coding this value?
+    return StoreConnector<AppState, String>(
+      converter: (Store<AppState> store) =>
+      store.state.currentAuthenticatedUserBasicInfo.avatar.large,
+      distinct: true,
+      builder: (BuildContext context, String avatarUrl) {
+        return SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            centerTitle: true,
+            elevation: 0.5,
+            title: widget.title,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.search),
+                tooltip: '搜索',
+                onPressed: () {
+                  showSearch(context: context, delegate: searchHomeDelegate);
+                },
               ),
-              tooltip: '头像，更多选项',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MoreOptionsHomePage()),
-                );
-              },
-            ),
-          )
-        ]);
+              Padding(
+                padding:
+                EdgeInsets.only(right: widget.appBarActionRightPadding),
+                child: IconButton(
+                  icon: CachedCircleAvatar(
+                    imageUrl: avatarUrl,
+                    radius: 15.0,
+                    navigateToUserRouteOnTap: false,
+
+                    /// maybe avoid hard coding this value?
+                  ),
+                  tooltip: '头像，更多选项',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MoreOptionsHomePage()),
+                    );
+                  },
+                ),
+              )
+            ]);
+      },
+    );
   }
 }

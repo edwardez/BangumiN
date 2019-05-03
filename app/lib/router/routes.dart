@@ -13,6 +13,9 @@ class Routes {
   static String subjectCollectionManagementRoute =
       "/subject/:subjectId/collection";
 
+  static String userProfileRoute =
+      "/user/:username";
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -26,5 +29,7 @@ class Routes {
         handler: subjectDetailInfoRouteHandler);
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
+    router.define(userProfileRoute,
+        handler: userProfileRouteHandler);
   }
 }

@@ -4,6 +4,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/Progress/Progress.dart';
 import 'package:munin/widgets/Timeline/Timeline.dart';
 import 'package:munin/widgets/UserProfile/UserHome.dart';
+import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/discussion/DiscussionHome.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -16,7 +17,7 @@ class MuninHomePage extends StatefulWidget {
 class _MuninHomePageState extends State<MuninHomePage> {
   MuninTimeline muninTimeline;
   MuninSubjectProgress muninSubjectProgress;
-  MuninUserProfile muninUserProfile;
+  UserProfileWidget muninUserProfile;
   DiscussionHome discussionHome;
   SearchHomeDelegate searchHomeDelegate;
 
@@ -33,7 +34,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
     DiscussionHome(
       key: PageStorageKey('Page4'),
     ),
-    MuninUserProfile(
+    UserHome(
       key: PageStorageKey('Page3'),
     ),
   ];

@@ -77,6 +77,8 @@ class SubjectReviewWidget extends StatelessWidget {
         children: <Widget>[
           CachedCircleAvatar(
             imageUrl: review.metaInfo.userAvatars.medium,
+              navigateToUserRouteOnTap: true,
+              username: review.metaInfo.username
           ),
           Expanded(
             child: Container(

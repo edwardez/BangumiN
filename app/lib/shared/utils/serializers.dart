@@ -53,6 +53,15 @@ import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/models/bangumi/user/Relationship.dart';
+import 'package:munin/models/bangumi/user/UserProfile.dart';
+import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
+import 'package:munin/models/bangumi/user/collection/SubjectPreview.dart';
+import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
+import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
+import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
+import 'package:munin/models/bangumi/user/social/NetworkServiceType.dart';
+import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
@@ -61,6 +70,7 @@ import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
+import 'package:munin/redux/user/UserState.dart';
 
 part 'serializers.g.dart';
 
@@ -131,7 +141,20 @@ part 'serializers.g.dart';
   DiscussionType,
   FetchDiscussionRequest,
   FetchDiscussionResponse,
-  DiscussionState
+  DiscussionState,
+
+  /// User
+  UserProfile,
+  NetworkServiceTag,
+  NetworkServiceTagLink,
+  NetworkServiceTagPlainText,
+  NetworkServiceType,
+  SubjectPreview,
+  CollectionPreview,
+  TimelinePreview,
+  Relationship,
+  UserState,
 ])
 final Serializers serializers =
-(_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+(_$serializers.toBuilder()
+  ..addPlugin(StandardJsonPlugin())).build();

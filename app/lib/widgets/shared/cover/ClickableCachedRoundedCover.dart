@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
-
-enum CoverLinkType { subject, user, person, character }
+import 'package:munin/widgets/shared/utils/common.dart';
 
 class ClickableCachedRoundedCover extends StatelessWidget {
   final String imageUrl;
-  final int id;
+  final String id;
   final double width;
-  final CoverLinkType coverLinkType;
+  final double height;
+  final BangumiContent contentType;
 
-  ClickableCachedRoundedCover.name(
+  ClickableCachedRoundedCover(
       {@required this.imageUrl,
-      @required this.coverLinkType,
+        @required this.contentType,
         @required this.width,
         @required this.height,
       this.id});
 
-  final double height;
+  ClickableCachedRoundedCover.asGridSize({
+    @required this.imageUrl,
+    @required this.contentType,
+    @required this.id,
+    this.width = 48.0,
+    this.height = 48.0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       child: CachedRoundedCover(
           imageUrl: this.imageUrl, width: this.width, height: this.height),
-      onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-            builder: (_) => null,
-          )),
+      onTap: generateOnTapCallbackForBangumiContent(
+          contentType: contentType, id: id, context: context),
     );
   }
 }

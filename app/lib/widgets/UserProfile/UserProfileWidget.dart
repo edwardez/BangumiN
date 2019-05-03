@@ -39,7 +39,7 @@ class UserProfileWidget extends StatelessWidget {
   UserProfileWidget(
       {Key key,
       @required this.username,
-      @required Widget appBar,
+        Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
           horizontal: defaultPortraitHorizontalPadding)})
       : this.providedAppBar = appBar,

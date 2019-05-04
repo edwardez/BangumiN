@@ -101,8 +101,6 @@ class UserProfileWidget extends StatelessWidget {
           CachedCircleAvatar(
             imageUrl: profile.basicInfo.avatar.large,
             radius: 30,
-            navigateToUserRouteOnTap: true,
-            username: profile.basicInfo.username,
           ),
           Expanded(
             child: Row(

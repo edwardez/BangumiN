@@ -69,6 +69,7 @@ class UserProfileWidget extends StatelessWidget {
                     leading: Icon(OMIcons.openInBrowser),
                     title: Text('查看网页版'),
                     onTap: () {
+                      Navigator.of(context).pop();
                       launch(userProfileMainUrl, forceSafariVC: true);
                     },
                   ),

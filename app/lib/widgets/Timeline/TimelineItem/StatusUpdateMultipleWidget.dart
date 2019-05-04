@@ -17,7 +17,6 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
       : super(key: key);
 
   List<Widget> _buildImageLists(BuiltList<HyperImage> images) {
-    print(statusUpdateMultiple.contentType);
     List<Widget> imageWidgets = [];
     if (statusUpdateMultiple.contentType == BangumiContent.User) {
       for (var image in images) {

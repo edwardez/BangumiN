@@ -48,7 +48,7 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   @memoized
   int get firstChunkMinIdOrNull {
-    return lastOrNullInBuiltList<TimelineFeed>(first)?.user?.feedId;
+    return lastOrNullInIterable<TimelineFeed>(first)?.user?.feedId;
   }
 
   /// reserved, currently not in use

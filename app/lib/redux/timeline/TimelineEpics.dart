@@ -46,7 +46,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// [UnknownTimelineActivity] so feedId cannot be filled in
       /// we just load all new feeds
       /// TODO: clean up all newer feeds in this case?
-      lowerFeedId = feedChunks.firstChunkMaxIdOrNull ?? IntegerHelper.MAX_VALUE;
+      lowerFeedId = feedChunks.firstChunkMinIdOrNull ?? IntegerHelper.MAX_VALUE;
 
       int tentativeNextPageNum = 1 + feedChunks.first.length ~/ feedsPerPage;
 
@@ -90,6 +90,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
         if (fetchFeedsResult.feeds.length == 0) {
           nextPageNum = tentativeNextPageNum + 1;
         } else {
+          action.completer.complete();
           yield LoadTimelineSuccess(
               fetchTimelineRequest: action.fetchTimelineRequest,
               fetchFeedsResult: fetchFeedsResult);
@@ -133,6 +134,11 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
 
     print(error.toString());
     print(stack);
+  } finally {
+    assert(action.completer.isCompleted);
+    if (!action.completer.isCompleted) {
+      action.completer.complete();
+    }
   }
 }
 

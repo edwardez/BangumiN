@@ -44,7 +44,6 @@ Future<void> injector(GetIt getIt) async {
   credentials['bangumiOauthCredentials'];
 
   OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
-//  print(await oauthHttpClient.post("http://example.org"));
   final BangumiOauthClient _bangumiOauthClient = BangumiOauthClient(
     cookieClient: _bangumiCookieClient,
     serializedBangumiOauthCredentials: serializedBangumiOauthCredentials,

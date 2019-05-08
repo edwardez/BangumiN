@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
@@ -18,19 +19,24 @@ class BangumiOauthClient {
   FlutterSecureStorage secureStorage;
   String authorizationUrl;
   Client client;
+  http.Client _baseOauthHttpClient;
 
   HttpServer _oauthServer;
   FlutterWebviewPlugin _flutterWebviewPlugin;
 
-  BangumiOauthClient(
-      {@required BangumiCookieClient cookieClient,
-      @required String serializedBangumiOauthCredentials,
-      @required FlutterSecureStorage secureStorage}) {
+  BangumiOauthClient({
+    @required BangumiCookieClient cookieClient,
+    @required String serializedBangumiOauthCredentials,
+    @required FlutterSecureStorage secureStorage,
+    @required http.Client oauthHttpClient,
+  }) {
     assert(secureStorage != null);
     assert(cookieClient != null);
+    assert(oauthHttpClient != null);
 
     this._cookieClient = cookieClient;
     this.secureStorage = secureStorage;
+    this._baseOauthHttpClient = oauthHttpClient;
 
     if (serializedBangumiOauthCredentials != null) {
       oauth2.Credentials credentials =
@@ -38,38 +44,32 @@ class BangumiOauthClient {
       this.client = oauth2.Client(credentials,
           identifier: Application.environmentValue.bangumiOauthClientIdentifier,
           secret: Application.environmentValue.bangumiOauthClientSecret,
-          basicAuth: false
-      );
+          basicAuth: false,
+          httpClient: _baseOauthHttpClient);
     }
   }
 
-  BangumiOauthClient.fromCredentials(
-      {@required BangumiCookieClient cookieClient,
-      @required String serializedBangumiOauthCredentials,
-      @required secureStorage}) {
+  BangumiOauthClient.fromCredentials({
+    @required BangumiCookieClient cookieClient,
+    @required String serializedBangumiOauthCredentials,
+    @required secureStorage,
+    @required http.Client oauthHttpClient,
+  }) {
     assert(secureStorage != null);
     assert(cookieClient != null);
+    assert(oauthHttpClient != null);
 
     this._cookieClient = cookieClient;
     this.secureStorage = secureStorage;
+    this._baseOauthHttpClient = oauthHttpClient;
+
     oauth2.Credentials credentials =
         oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
     this.client = oauth2.Client(credentials,
         identifier: Application.environmentValue.bangumiOauthClientIdentifier,
         secret: Application.environmentValue.bangumiOauthClientSecret,
-        basicAuth: false
-    );
-  }
-
-  /// calling this constructor will not produce a read-to-use client, it prepares
-  /// values that are needed to initialize a new client
-  BangumiOauthClient.setUpForAuthorization(
-      {@required BangumiCookieClient cookieClient, @required secureStorage}) {
-    assert(secureStorage != null);
-    assert(cookieClient != null);
-
-    this._cookieClient = cookieClient;
-    this.secureStorage = secureStorage;
+        basicAuth: false,
+        httpClient: _baseOauthHttpClient);
   }
 
   bool readyToUse() {
@@ -94,7 +94,8 @@ class BangumiOauthClient {
         Uri.parse(
             Application.environmentValue.bangumiOauthAuthorizationEndpoint),
         Uri.parse(Application.environmentValue.bangumiOauthTokenEndpoint),
-        secret: Application.environmentValue.bangumiOauthClientSecret);
+        secret: Application.environmentValue.bangumiOauthClientSecret,
+        httpClient: _baseOauthHttpClient);
     authorizationUrl = grant
         .getAuthorizationUrl(
         Uri.parse(Application.environmentValue.bangumiRedirectUrl))
@@ -106,17 +107,19 @@ class BangumiOauthClient {
       if (state.type == WebViewState.finishLoad &&
           Uri
               .parse(state.url)
-              .host == Application.environmentValue.bangumiNonCdnHost) {
+              .host ==
+              Application.environmentValue.bangumiNonCdnHost) {
         Map<String, String> cookies = await _flutterWebviewPlugin.getCookies();
 
         /// TODO: fix cookie parsing problem in flutter webview plugin(There must be something
         /// wrong with this plugin...)
         /// TODO: figure out why sometimes [chii_auth] is never in returned
         /// cookies while user is actually logged-in
-        String authCookie = cookies['chii_auth'] ?? cookies[' chii_auth'] ??
+        String authCookie = cookies['chii_auth'] ??
+            cookies[' chii_auth'] ??
             cookies['"chii_auth'];
-        String sessionCookie = cookies['chii_sid'] ?? cookies[' chii_sid'] ??
-            cookies['"chii_sid'];
+        String sessionCookie =
+            cookies['chii_sid'] ?? cookies[' chii_sid'] ?? cookies['"chii_sid'];
         if (authCookie != null && sessionCookie != null) {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
@@ -131,6 +134,7 @@ class BangumiOauthClient {
     Stream<String> onCode = await _server();
     final String code = await onCode.first;
     client = await grant.handleAuthorizationResponse({'code': code});
+
     await persistCredentials();
     await _cookieClient.persistCredentials();
     _flutterWebviewPlugin.close();

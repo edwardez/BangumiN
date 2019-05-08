@@ -4,11 +4,13 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
+import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
@@ -40,10 +42,14 @@ Future<void> injector(GetIt getIt) async {
 
   final String serializedBangumiOauthCredentials =
   credentials['bangumiOauthCredentials'];
+
+  OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
+//  print(await oauthHttpClient.post("http://example.org"));
   final BangumiOauthClient _bangumiOauthClient = BangumiOauthClient(
     cookieClient: _bangumiCookieClient,
     serializedBangumiOauthCredentials: serializedBangumiOauthCredentials,
     secureStorage: secureStorage,
+    oauthHttpClient: oauthHttpClient,
   );
 
   getIt.registerSingleton<SharedPreferences>(preferences);
@@ -76,7 +82,6 @@ Future<void> injector(GetIt getIt) async {
       cookieClient: _bangumiCookieClient
   );
   getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
-
   return;
 }
 

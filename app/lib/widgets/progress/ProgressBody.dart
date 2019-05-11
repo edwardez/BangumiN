@@ -90,9 +90,9 @@ class _ProgressBodyState extends State<ProgressBody> {
         _muninRefreshKey.currentState?.callOnRefresh();
       },
       builder: (BuildContext context, _ViewModel vm) {
-        bool progressesLoaded = vm.progressesSelector().isPresent;
+        bool progressesLoaded = vm.progresses.isPresent;
         BuiltList<InProgressSubject> subjects = progressesLoaded
-            ? vm.progressesSelector().value
+            ? vm.progresses.value
             : BuiltList<InProgressSubject>();
 
         List<Widget> widgets = [];
@@ -173,7 +173,7 @@ class _ProgressBodyState extends State<ProgressBody> {
 }
 
 class _ViewModel {
-  final Optional<BuiltList<InProgressSubject>> Function() progressesSelector;
+  final Optional<BuiltList<InProgressSubject>> progresses;
   final LoadingStatus getProgressLoadingStatus;
   final Future Function(BuildContext context) getProgress;
   final UpdateAnimeOrRealSingleEpisode updateAnimeOrRealSingleEpisode;
@@ -259,18 +259,33 @@ class _ViewModel {
     return _ViewModel(
         getProgressLoadingStatus: null,
         getProgress: _getProgress,
-        progressesSelector: _progressesSelector,
+        progresses: _progressesSelector(),
         updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
         updateAnimeOrRealBatchEpisodes: _updateAnimeOrRealBatchEpisodes,
         updateBookProgress: _updateBookProgress);
   }
 
   _ViewModel({
-    @required this.progressesSelector,
+    @required this.progresses,
     @required this.getProgressLoadingStatus,
     @required this.getProgress,
     @required this.updateAnimeOrRealSingleEpisode,
     @required this.updateAnimeOrRealBatchEpisodes,
     @required this.updateBookProgress,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              progresses == other.progresses &&
+              getProgressLoadingStatus == other.getProgressLoadingStatus;
+
+  @override
+  int get hashCode =>
+      hash2(
+          progresses.hashCode,
+          getProgressLoadingStatus.hashCode);
+
 }

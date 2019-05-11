@@ -28,3 +28,5 @@ final RegExp atLeastOneSpaceRegex = RegExp(r'\s+');
 final RegExp endsOrStartsWithSpaceRegex = RegExp(r'^\s+|\s+$');
 
 final RegExp scoreRegex = RegExp(r'sstars(\d+)');
+
+final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');

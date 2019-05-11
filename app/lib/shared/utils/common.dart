@@ -37,6 +37,15 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
   return int.tryParse(intStr) ?? defaultValue;
 }
 
+/// safely parse an double string, or returns null if doubleStr is null
+/// if doubleStr is not double string, [defaultValue] will be returned
+double tryParseDouble(String doubleStr, {defaultValue = 0}) {
+  if (doubleStr == null) {
+    return defaultValue;
+  }
+  return double.tryParse(doubleStr) ?? defaultValue;
+}
+
 /// Returns first captures string or null
 /// [input] should never be null, if it's null, null will be returned
 /// This method assumes [regExp] contains at least one capture group
@@ -58,13 +67,18 @@ String firstCapturedStringOrNull(RegExp regExp, String input) {
   return null;
 }
 
-/// safely parse an double string, or returns null if doubleStr is null
-/// if doubleStr is not double string, [defaultValue] will be returned
-double tryParseDouble(String doubleStr, {defaultValue = 0}) {
-  if (doubleStr == null) {
-    return defaultValue;
+bool doubleIsInt(double input) {
+  if (input == null) return false;
+  return input % 1 == 0;
+}
+
+/// Tries to format a double like `1.0`
+String tryFormatDoubleAsInt(double input) {
+  if (doubleIsInt(input)) {
+    return input.toStringAsFixed(0);
   }
-  return double.tryParse(doubleStr) ?? defaultValue;
+
+  return input.toString();
 }
 
 /// https://www.dartlang.org/articles/server/numeric-computation

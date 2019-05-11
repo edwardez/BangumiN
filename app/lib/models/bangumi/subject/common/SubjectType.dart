@@ -1,17 +1,34 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/shared/utils/serializers.dart';
 
 part 'SubjectType.g.dart';
 
 class SubjectType extends EnumClass {
 
   static const SubjectType Unknown = _$All;
+
+  @BuiltValueEnumConst(wireName: '1')
   static const SubjectType Book = _$Book;
+
+  @BuiltValueEnumConst(wireName: '2')
   static const SubjectType Anime = _$Anime;
+
+  @BuiltValueEnumConst(wireName: '3')
   static const SubjectType Music = _$Music;
+
+  @BuiltValueEnumConst(wireName: '4')
   static const SubjectType Game = _$Game;
+
+  @BuiltValueEnumConst(wireName: '6')
   static const SubjectType Real = _$Real;
+
+  static const validWatchableTypes = const {
+    SubjectType.Anime,
+    SubjectType.Real,
+    SubjectType.Book
+  };
 
   static getTypeByChineseName(String chineseName) {
     switch (chineseName) {
@@ -30,7 +47,7 @@ class SubjectType extends EnumClass {
     }
   }
 
-  static SubjectType getTypeByWiredName(String wiredName) {
+  static SubjectType getTypeByHttpWiredName(String wiredName) {
     switch (wiredName) {
       case 'book':
         return SubjectType.Book;
@@ -112,6 +129,26 @@ class SubjectType extends EnumClass {
   @memoized
   bool get isValidOnBangumi => this != SubjectType.Unknown;
 
+  @memoized
+  String get wiredName {
+    switch (this) {
+      case SubjectType.Book:
+        return '1';
+      case SubjectType.Anime:
+        return '2';
+      case SubjectType.Music:
+        return '3';
+      case SubjectType.Game:
+        return '4';
+      case SubjectType.Real:
+        return '6';
+      case SubjectType.Unknown:
+      default:
+        assert(false, '$this doesn\'t have a valid wired name');
+        return '2';
+    }
+  }
+
 
   const SubjectType._(String name) : super(name);
 
@@ -120,4 +157,9 @@ class SubjectType extends EnumClass {
   static SubjectType valueOf(String name) => _$valueOf(name);
 
   static Serializer<SubjectType> get serializer => _$subjectTypeSerializer;
+
+  static SubjectType fromWiredName(String wiredName) {
+    return serializers.deserializeWith(
+        SubjectType.serializer, wiredName);
+  }
 }

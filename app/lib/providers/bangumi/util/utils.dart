@@ -97,7 +97,7 @@ String parseFeedId(Element element) {
 }
 
 /// extract first int from a string
-int extractFirstInt(String rawString, {defaultValue = 0}) {
+int extractFirstIntGroup(String rawString, {defaultValue = 0}) {
   if (rawString == null) return defaultValue;
 
   Match intMatcher = atLeastOneDigitRegex.firstMatch(rawString);

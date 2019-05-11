@@ -21,6 +21,10 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
       'introductionElement',
       serializers.serialize(object.introductionElement,
           specifiedType: const FullType(Element)),
+      'networkServiceTags',
+      serializers.serialize(object.networkServiceTags,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(NetworkServiceTag)])),
       'collectionPreviews',
       serializers.serialize(object.collectionPreviews,
           specifiedType: const FullType(BuiltMap, const [
@@ -41,13 +45,6 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
         ..add('basicInfo')
         ..add(serializers.serialize(object.basicInfo,
             specifiedType: const FullType(BangumiUserBasic)));
-    }
-    if (object.networkServiceTags != null) {
-      result
-        ..add('networkServiceTags')
-        ..add(serializers.serialize(object.networkServiceTags,
-            specifiedType: const FullType(
-                BuiltList, const [const FullType(NetworkServiceTag)])));
     }
 
     return result;
@@ -131,6 +128,9 @@ class _$UserProfile extends UserProfile {
       : super._() {
     if (introductionElement == null) {
       throw new BuiltValueNullFieldError('UserProfile', 'introductionElement');
+    }
+    if (networkServiceTags == null) {
+      throw new BuiltValueNullFieldError('UserProfile', 'networkServiceTags');
     }
     if (collectionPreviews == null) {
       throw new BuiltValueNullFieldError('UserProfile', 'collectionPreviews');
@@ -265,7 +265,7 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
           new _$UserProfile._(
               introductionElement: introductionElement,
               basicInfo: _basicInfo?.build(),
-              networkServiceTags: _networkServiceTags?.build(),
+              networkServiceTags: networkServiceTags.build(),
               collectionPreviews: collectionPreviews.build(),
               timelinePreviews: timelinePreviews.build(),
               relationships: relationships.build());
@@ -275,7 +275,7 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
         _$failedField = 'basicInfo';
         _basicInfo?.build();
         _$failedField = 'networkServiceTags';
-        _networkServiceTags?.build();
+        networkServiceTags.build();
         _$failedField = 'collectionPreviews';
         collectionPreviews.build();
         _$failedField = 'timelinePreviews';

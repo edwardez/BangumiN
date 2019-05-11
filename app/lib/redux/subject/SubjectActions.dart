@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
@@ -32,8 +34,7 @@ class GetSubjectSuccessAction {
 class GetSubjectFailureAction extends FailureAction {
   int subjectId;
 
-  GetSubjectFailureAction(
-      {@required this.subjectId, @required LoadingStatus loadingStatus})
+  GetSubjectFailureAction({@required this.subjectId, @required LoadingStatus loadingStatus})
       : super(loadingStatus: loadingStatus);
 
   GetSubjectFailureAction.fromUnknownException({@required this.subjectId})
@@ -51,11 +52,13 @@ class CleanUpLoadingStatusAction {
 class GetCollectionInfoAction {
   final BuildContext context;
   final int subjectId;
+  final Completer completer;
 
   GetCollectionInfoAction({
     @required this.context,
     @required this.subjectId,
-  });
+    Completer completer,
+  }) : this.completer = completer ?? new Completer();
 }
 
 class GetCollectionInfoLoadingAction {
@@ -69,22 +72,22 @@ class GetCollectionInfoLoadingAction {
 class GetCollectionInfoSuccessAction {
   final int subjectId;
   final SubjectCollectionInfo collectionInfo;
+  final BangumiSubject bangumiSubject;
 
   GetCollectionInfoSuccessAction({
     @required this.subjectId,
     @required this.collectionInfo,
+    this.bangumiSubject,
   });
 }
 
 class GetCollectionInfoFailureAction extends FailureAction {
   final int subjectId;
 
-  GetCollectionInfoFailureAction(
-      {@required this.subjectId, @required LoadingStatus loadingStatus})
+  GetCollectionInfoFailureAction({@required this.subjectId, @required LoadingStatus loadingStatus})
       : super(loadingStatus: loadingStatus);
 
-  GetCollectionInfoFailureAction.fromUnknownException(
-      {@required this.subjectId})
+  GetCollectionInfoFailureAction.fromUnknownException({@required this.subjectId})
       : super.fromUnknownException();
 }
 
@@ -120,8 +123,7 @@ class UpdateCollectionRequestFailureAction extends FailureAction {
     @required LoadingStatus loadingStatus,
   }) : super(loadingStatus: loadingStatus);
 
-  UpdateCollectionRequestFailureAction.fromUnknownException(
-      {@required this.subjectId})
+  UpdateCollectionRequestFailureAction.fromUnknownException({@required this.subjectId})
       : super.fromUnknownException();
 }
 
@@ -129,6 +131,5 @@ class UpdateCollectionRequestSuccessAction {
   final int subjectId;
   final SubjectCollectionInfo collectionUpdateResponse;
 
-  UpdateCollectionRequestSuccessAction(
-      {@required this.subjectId, this.collectionUpdateResponse});
+  UpdateCollectionRequestSuccessAction({@required this.subjectId, this.collectionUpdateResponse});
 }

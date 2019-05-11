@@ -56,6 +56,7 @@ class _SubjectCollectionManagementWidgetState
   SubjectCollectionInfo unmodifiedSubjectCollectionInfo;
 
   SubjectType subjectType;
+  BangumiSubject subject;
 
   ///Looks like flutter doesn't expose list of current form errors so we maintain
   ///errors ourselves here
@@ -174,7 +175,7 @@ class _SubjectCollectionManagementWidgetState
 
   String _buildErrorMessages(
       final Map<SubjectCollectionError, String> formErrors) {
-//    assert(formErrors.keys.isNotEmpty);
+    assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
       errorMessages
@@ -322,33 +323,44 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  _initFormData(Store<AppState> store) {
-    if (store.state.subjectState.collections[widget.subjectId] == null) {
+  _onInitialBuild(Store<AppState> store) {
+    bool isSubjectAbsent = store.state.subjectState.subjects[widget
+        .subjectId] == null;
+    bool isCollectionInfoAbsent = store.state.subjectState.collections[widget
+        .subjectId] == null;
+    if (isSubjectAbsent || isCollectionInfoAbsent) {
       final action = GetCollectionInfoAction(
           context: context, subjectId: widget.subjectId);
       store.dispatch(action);
+      action.completer.future
+          .then((_) {
+        _initFormData(store.state.subjectState.subjects[widget.subjectId]);
+      });
+    } else {
+      _initFormData(store.state.subjectState.subjects[widget.subjectId]);
     }
+  }
 
-    BangumiSubject subject =
-        store.state.subjectState.subjects[widget.subjectId];
-
+  _initFormData(BangumiSubject loadedSubject) {
     /// subject should never be null: user must enters this page BEFORE
-    /// they enters the subject page
-    assert(subject != null);
+    /// they enters the subject page, or this data will be fetched before this method
+    /// is called
+    assert(loadedSubject != null, 'Subject must not be null');
 
-    if (subject == null) {
+    subject = loadedSubject;
+    if (loadedSubject == null) {
       /// in case it's null(exception!), assign a default type
-      /// note: [subjectType] only affects action name users see on the ui
+      /// note: [subjectType] only affects action name user sees on the ui
       subjectType = SubjectType.Anime;
     } else {
-      subjectType = subject.type;
-      for (String userSelectedTag in subject.userSelectedTags) {
+      subjectType = loadedSubject.type;
+      for (String userSelectedTag in loadedSubject.userSelectedTags) {
         candidateTags[userSelectedTag] = true;
         headerTags[userSelectedTag] = true;
       }
 
       /// suggestedTag might be in current user subject tags, or it might not
-      for (String suggestedTag in subject.bangumiSuggestedTags) {
+      for (String suggestedTag in loadedSubject.bangumiSuggestedTags) {
         /// Only if [headerTags] doesn't contain this tag, we need to add it to
         /// [candidateTags]
         if (!headerTags.containsKey(suggestedTag)) {
@@ -393,7 +405,7 @@ class _SubjectCollectionManagementWidgetState
       converter: (Store store) => _ViewModel.fromStore(store, widget.subjectId),
       distinct: true,
       onInit: (store) {
-        _initFormData(store);
+        _onInitialBuild(store);
       },
       onDispose: (store) {
         store
@@ -424,7 +436,7 @@ class _SubjectCollectionManagementWidgetState
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
-            title: Text('作品标题'),
+            title: Text(subject?.name ?? '作品标题'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],
           ),
           safeAreaChild: Form(
@@ -452,7 +464,7 @@ class _ViewModel {
   final SubjectCollectionInfo subjectCollectionInfo;
   final LoadingStatus collectionLoadingStatus;
   final LoadingStatus collectionsSubmissionStatus;
-  final Function(BuildContext context, int subjectId) getCollectionInfo;
+  final Future Function(BuildContext context, int subjectId) getCollectionInfo;
   final Function(BuildContext context, int subjectId,
           SubjectCollectionInfo collectionUpdateRequest)
       collectionInfoUpdateRequest;
@@ -467,10 +479,11 @@ class _ViewModel {
       store.dispatch(action);
     }
 
-    _getCollectionInfo(BuildContext context, int subjectId) {
+    Future _getCollectionInfo(BuildContext context, int subjectId) {
       final action =
           GetCollectionInfoAction(context: context, subjectId: subjectId);
       store.dispatch(action);
+      return action.completer.future;
     }
 
     return _ViewModel(

@@ -27,7 +27,7 @@ Stream<dynamic> _getSubject(BangumiSubjectService bangumiSubjectService,
     yield GetSubjectLoadingAction(subjectId: action.subjectId);
 
     BangumiSubject subject =
-    await bangumiSubjectService.getSubject(subjectId: action.subjectId);
+    await bangumiSubjectService.getSubjectFromHttp(subjectId: action.subjectId);
 
     // If the api call is successful, dispatch the results for display
     yield GetSubjectSuccessAction(subject);
@@ -54,17 +54,38 @@ Epic<AppState> _createGetSubjectEpic(
 }
 
 Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
-    GetCollectionInfoAction action) async* {
+    GetCollectionInfoAction action, EpicStore<AppState> store) async* {
   try {
     yield GetCollectionInfoLoadingAction(subjectId: action.subjectId);
 
-    SubjectCollectionInfo subjectCollectionInfo =
-    await bangumiSubjectService.getCollectionInfo(action.subjectId);
+    List<Future> futures = [];
+
+    futures.add(bangumiSubjectService.getCollectionInfo(action.subjectId));
+
+
+    bool isSubjectAbsent = store.state.subjectState.subjects[[
+      action.subjectId
+    ]] == null;
+    if (isSubjectAbsent) {
+      futures.add(bangumiSubjectService.getSubjectFromHttp(
+          subjectId: action.subjectId));
+    }
+
+    List responses = await Future.wait(futures);
+
+    BangumiSubject bangumiSubject;
+    SubjectCollectionInfo subjectCollectionInfo = responses[0];
+
+    if (isSubjectAbsent) {
+      bangumiSubject = responses[1];
+    }
 
     yield GetCollectionInfoSuccessAction(
+      bangumiSubject: bangumiSubject,
       subjectId: action.subjectId,
       collectionInfo: subjectCollectionInfo,
     );
+    action.completer.complete();
   } catch (error, stack) {
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
@@ -73,6 +94,7 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
         .showSnackBar(SnackBar(content: Text(error.toString())));
     yield GetCollectionInfoFailureAction.fromUnknownException(
         subjectId: action.subjectId);
+    action.completer.completeError(error, stack);
   }
 }
 
@@ -84,7 +106,8 @@ Epic<AppState> _createGetCollectionInfoEpic(
         .ofType(TypeToken<GetCollectionInfoAction>())
     // Cancel the previous search and start a new one with switchMap
         .switchMap(
-            (action) => _getCollectionInfo(bangumiSubjectService, action));
+            (action) =>
+            _getCollectionInfo(bangumiSubjectService, action, store));
   };
 }
 

@@ -5,6 +5,7 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
@@ -31,6 +32,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   UserState get userState;
 
+  ProgressState get progressState;
+
   factory AppState([updates(AppStateBuilder b)]) =>
       _$AppState((b) =>
       b
@@ -40,6 +43,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         ..searchState.replace(SearchState())
         ..discussionState.replace(DiscussionState())
         ..userState.replace(UserState())
+        ..progressState.replace(ProgressState())
         ..update(updates));
 
   AppState._();

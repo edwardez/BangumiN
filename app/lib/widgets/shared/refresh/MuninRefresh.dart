@@ -222,11 +222,6 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// Different from [callOnRefresh] which might be called externally,
   /// this method is called internally and passed to refresh widget
   RefreshCallback _generateOnRefreshCallBack() {
-    if (refreshLoadingStatus == LoadingStatus.Loading &&
-        computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino) {
-      return null;
-    }
-
     return () {
       refreshLoadingStatus = LoadingStatus.Loading;
       Future<void> completer;
@@ -387,12 +382,20 @@ class MuninRefreshState extends State<MuninRefresh> {
         widget.emptyAfterRefreshWidget != null;
   }
 
+  /// HACKHACK: block Cupertino Refresh since we are manually trigger refresh
+  /// under this condition
+  bool showPlaceholderCupertinoRefreshIndicator() {
+    return refreshLoadingStatus == LoadingStatus.Loading &&
+        widget.itemCount == 0 &&
+        computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
+  }
+
   /// Build a plain [CustomScrollView] that just contains an AppBar(if present)
   /// and items
   /// [includeCupertinoRefreshWidget] is set to `false` by default
   CustomScrollView _buildCustomScrollViewBody({
-    includeCupertinoRefreshWidget = false,
-    includeLoadMoreStatusWidget = false,
+    bool includeCupertinoRefreshWidget = false,
+    bool includeLoadMoreStatusWidget = false,
   }) {
     List<Widget> slivers = [];
 
@@ -404,9 +407,7 @@ class MuninRefreshState extends State<MuninRefresh> {
     /// then this code bock can be removed
     /// Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
     /// [RefreshWidgetStyle.Cupertino]
-    if (refreshLoadingStatus == LoadingStatus.Loading &&
-        widget.itemCount == 0 &&
-        computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino) {
+    if (showPlaceholderCupertinoRefreshIndicator()) {
       SliverFixedExtentList progressIndicator = SliverFixedExtentList(
         itemExtent: sliverGeneralExtent,
         delegate: SliverChildBuilderDelegate(
@@ -418,14 +419,10 @@ class MuninRefreshState extends State<MuninRefresh> {
       );
 
       slivers.add(progressIndicator);
-    }
-
-    if (includeCupertinoRefreshWidget) {
+    } else {
       /// TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
       /// resolved to switch back to the official widget
       slivers.add(MuninCupertinoSliverRefreshControl(
-        /// HACKHACK: block Cupertino Refresh since we are manually trigger refresh
-        /// under this condition
         onRefresh: _generateOnRefreshCallBack(),
         refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
         refreshTriggerPullDistance: widget.cupertinoRefreshTriggerPullDistance,

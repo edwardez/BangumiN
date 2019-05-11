@@ -106,7 +106,7 @@ class SubjectParser {
         subjectElement.querySelector('[property="v:average"]')?.text);
 
     Element friendScoreElement = subjectElement.querySelector('.frdScore');
-    int friendScoreVotesCount = extractFirstInt(
+    int friendScoreVotesCount = extractFirstIntGroup(
         friendScoreElement?.querySelector('a')?.text,
         defaultValue: null);
 
@@ -199,7 +199,7 @@ class SubjectParser {
 
       String collectionCountsStr =
           characterElement.querySelector('.fade.rr')?.text ?? '0';
-      int collectionCounts = extractFirstInt(collectionCountsStr);
+      int collectionCounts = extractFirstIntGroup(collectionCountsStr);
       BuiltList<Actor> actors = parseActors(characterElement);
 
       Character character = Character((b) => b

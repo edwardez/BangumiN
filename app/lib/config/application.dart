@@ -6,6 +6,7 @@ import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
 import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
+import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
@@ -14,6 +15,7 @@ import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionEpics.dart';
 import 'package:munin/redux/oauth/OauthMiddleware.dart';
+import 'package:munin/redux/progress/ProgressEpics.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/subject/SubjectMiddleware.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
@@ -78,6 +80,8 @@ abstract class Application {
     getIt.get<BangumiDiscussionService>();
     final BangumiUserService _bangumiUserService =
     getIt.get<BangumiUserService>();
+    final BangumiProgressService _bangumiProgressService =
+    getIt.get<BangumiProgressService>();
     final SharedPreferences preferences = getIt.get<SharedPreferences>();
     final String serializedUserInfo =
     preferences.get('currentAuthenticatedUserBasicInfo');
@@ -101,7 +105,8 @@ abstract class Application {
             createSearchEpics(_bangumiSearchService))..addAll(
             createDiscussionEpics(_bangumiDiscussionService))..addAll(
             createTimelineEpics(_bangumiTimelineService))..addAll(
-            createUserEpics(_bangumiUserService))
+            createUserEpics(_bangumiUserService))..addAll(
+            createProgressEpics(_bangumiProgressService))
     );
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {

@@ -15,6 +15,14 @@ import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
+import 'package:munin/models/bangumi/progress/api/EpisodeProgress.dart';
+import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
+import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
+import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
+import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
+import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
@@ -65,6 +73,7 @@ import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
@@ -154,6 +163,19 @@ part 'serializers.g.dart';
   TimelinePreview,
   Relationship,
   UserState,
+
+
+  /// Progress
+  ProgressState,
+  InProgressSubject,
+  EpisodeProgress,
+  InProgressAnimeOrRealCollection,
+  InProgressBookCollection,
+  InProgressSubject,
+  InProgressSubjectInfo,
+  EpisodeStatus,
+  EpisodeType,
+  AirStatus,
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()

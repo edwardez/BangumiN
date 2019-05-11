@@ -30,7 +30,7 @@ firstOrNullInBuiltList<T>(BuiltList<T> builtList) {
 }
 
 /// Safely access first element without throwing exception, inspired by firstOrNull in kotlin
-firstOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
+T firstOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
   /// it's guaranteed by built_value that if builtList is not empty, it must not contain null
   /// no need to check whether first is null
   if (builtList == null || builtList.isEmpty || builtList.first.isEmpty) {
@@ -41,7 +41,7 @@ firstOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
 }
 
 /// Safely access last element without throwing exception, inspired by lastOrNull in kotlin
-lastOrNullInIterable<T>(Iterable<T> iterable) {
+T lastOrNullInIterable<T>(Iterable<T> iterable) {
   if (iterable == null || iterable.isEmpty) {
     return null;
   }

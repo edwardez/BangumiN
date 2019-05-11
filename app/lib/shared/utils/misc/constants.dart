@@ -2,6 +2,8 @@ import 'package:munin/config/application.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
 
+final String bangumiHomePageUrl =
+    'https://${Application.environmentValue.bangumiMainHost}';
 final String bangumiTimelineUrl =
     'https://${Application.environmentValue.bangumiMainHost}/timeline';
 final String rakuenMobileUrl =

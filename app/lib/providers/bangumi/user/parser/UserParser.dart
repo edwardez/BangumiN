@@ -178,7 +178,7 @@ class UserParser {
       Match idMatcher = bangumiCollectionIdRegex.firstMatch(element.id);
       if (idMatcher != null) {
         SubjectType subjectType =
-            SubjectType.getTypeByWiredName(idMatcher.group(0));
+        SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
         collectionPreviews = collectionPreviews.rebuild((b) => b
           ..addAll({
             subjectType: parseCollectionPreview(element, subjectType, false)
@@ -191,7 +191,7 @@ class UserParser {
       Match idMatcher = bangumiCollectionIdRegex.firstMatch(element.id);
       if (idMatcher != null) {
         SubjectType subjectType =
-            SubjectType.getTypeByWiredName(idMatcher.group(0));
+        SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
         collectionPreviews = collectionPreviews.rebuild((b) => b
           ..addAll({
             subjectType: parseCollectionPreview(element, subjectType, true)

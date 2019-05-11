@@ -24,7 +24,7 @@ class BangumiSubjectService {
         assert(oauthClient != null);
 
   // get bangumi subject info through parsing html response
-  Future<BangumiSubject> getSubject({int subjectId}) async {
+  Future<BangumiSubject> getSubjectFromHttp({int subjectId}) async {
     Dio.Response<String> response = await cookieClient.dio.get<String>(
         '/subject/$subjectId');
 
@@ -43,14 +43,14 @@ class BangumiSubjectService {
     if (response.statusCode == 200) {
       var decodedBody = json.decode(response.body);
       if (decodedBody['code'] == 400) {
-        /// generates a dummy new collection info
-        subjectCollectionInfo = SubjectCollectionInfo();
+        throw GeneralUnknownException(
+            '出现了未知错误: Bangumi此刻无法响应请求');
       } else if (decodedBody['code'] == null) {
         subjectCollectionInfo = SubjectCollectionInfo.fromJson(response.body);
         BuiltList<String> tags = subjectCollectionInfo.tags;
 
-        /// if tags is null, Bangumi will returns a list with a empty string instead of
-        /// a empty list or null(i.e. [""]). Thus this extra trick is needed to clean
+        /// if tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
+        /// a empty list or null. Thus this extra trick is needed to clean
         /// up the data
         if (tags.length == 1 && isEmpty(tags[0])) {
           subjectCollectionInfo =
@@ -61,6 +61,9 @@ class BangumiSubjectService {
         throw BangumiResponseIncomprehensibleException(
             '出现了未知错误: 从Bangumi返回了无法处理的数据');
       }
+    } else {
+      throw GeneralUnknownException(
+          '出现了未知错误: Bangumi此刻无法响应请求');
     }
 
     return subjectCollectionInfo;

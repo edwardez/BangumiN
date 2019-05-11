@@ -286,7 +286,8 @@ class UserParser {
         parseTimelinePreviews(document.querySelectorAll('.timeline > li'));
 
     return UserProfile((b) => b
-      ..introductionElement = introductionElement
+      ..introductionInHtml = introductionElement.outerHtml
+      ..introductionInPlainText = introductionElement.text
       ..relationships.replace(relationships)
       ..collectionPreviews.replace(previews)
       ..timelinePreviews.replace(timelinePreviews)

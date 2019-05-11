@@ -13,6 +13,8 @@ import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
+import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
+import 'package:munin/models/bangumi/discussion/enums/base.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/progress/api/EpisodeProgress.dart';
@@ -123,6 +125,7 @@ part 'serializers.g.dart';
   Rating,
   Images,
   Character,
+  Mono,
   RelatedSubject,
   SubjectReview,
   ReviewMetaInfo,
@@ -148,9 +151,12 @@ part 'serializers.g.dart';
   /// Discussion
   DiscussionItem,
   DiscussionType,
+  DiscussionFilter,
+  RakuenTopicFilter,
   FetchDiscussionRequest,
   FetchDiscussionResponse,
   DiscussionState,
+
 
   /// User
   UserProfile,
@@ -179,4 +185,12 @@ part 'serializers.g.dart';
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()
-  ..addPlugin(StandardJsonPlugin())).build();
+  ..addBuilderFactory(
+      FullType(BuiltList, [ FullType(SubjectPreview)]),
+          () => ListBuilder<SubjectPreview>())..addBuilderFactory(
+      FullType(BuiltList, [ FullType(InProgressSubject)]),
+          () => ListBuilder<InProgressSubject>())
+  ..addPlugin(StandardJsonPlugin())
+
+)
+    .build();

@@ -19,7 +19,7 @@ class UserIntroductionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget introPreviewWidget;
-    if (isEmpty(profile.introductionElement.text)) {
+    if (isEmpty(profile.introductionInPlainText)) {
       introPreviewWidget = WrappableText(
         '暂无简介',
         textStyle: Theme.of(context).textTheme.caption,
@@ -28,7 +28,7 @@ class UserIntroductionPreview extends StatelessWidget {
       );
     } else {
       introPreviewWidget = WrappableText(
-        profile.introductionElement.text,
+        profile.introductionInPlainText,
         fit: FlexFit.tight,
         maxLines: introductionPreviewMaxLines,
       );

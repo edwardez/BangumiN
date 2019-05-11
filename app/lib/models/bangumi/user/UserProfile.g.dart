@@ -18,9 +18,12 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
   Iterable serialize(Serializers serializers, UserProfile object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'introductionElement',
-      serializers.serialize(object.introductionElement,
-          specifiedType: const FullType(Element)),
+      'introductionInHtml',
+      serializers.serialize(object.introductionInHtml,
+          specifiedType: const FullType(String)),
+      'introductionInPlainText',
+      serializers.serialize(object.introductionInPlainText,
+          specifiedType: const FullType(String)),
       'networkServiceTags',
       serializers.serialize(object.networkServiceTags,
           specifiedType: const FullType(
@@ -61,9 +64,13 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'introductionElement':
-          result.introductionElement = serializers.deserialize(value,
-              specifiedType: const FullType(Element)) as Element;
+        case 'introductionInHtml':
+          result.introductionInHtml = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'introductionInPlainText':
+          result.introductionInPlainText = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'basicInfo':
           result.basicInfo.replace(serializers.deserialize(value,
@@ -103,7 +110,9 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
 
 class _$UserProfile extends UserProfile {
   @override
-  final Element introductionElement;
+  final String introductionInHtml;
+  @override
+  final String introductionInPlainText;
   @override
   final BangumiUserBasic basicInfo;
   @override
@@ -119,15 +128,20 @@ class _$UserProfile extends UserProfile {
       (new UserProfileBuilder()..update(updates)).build();
 
   _$UserProfile._(
-      {this.introductionElement,
+      {this.introductionInHtml,
+      this.introductionInPlainText,
       this.basicInfo,
       this.networkServiceTags,
       this.collectionPreviews,
       this.timelinePreviews,
       this.relationships})
       : super._() {
-    if (introductionElement == null) {
-      throw new BuiltValueNullFieldError('UserProfile', 'introductionElement');
+    if (introductionInHtml == null) {
+      throw new BuiltValueNullFieldError('UserProfile', 'introductionInHtml');
+    }
+    if (introductionInPlainText == null) {
+      throw new BuiltValueNullFieldError(
+          'UserProfile', 'introductionInPlainText');
     }
     if (networkServiceTags == null) {
       throw new BuiltValueNullFieldError('UserProfile', 'networkServiceTags');
@@ -154,7 +168,8 @@ class _$UserProfile extends UserProfile {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserProfile &&
-        introductionElement == other.introductionElement &&
+        introductionInHtml == other.introductionInHtml &&
+        introductionInPlainText == other.introductionInPlainText &&
         basicInfo == other.basicInfo &&
         networkServiceTags == other.networkServiceTags &&
         collectionPreviews == other.collectionPreviews &&
@@ -168,7 +183,9 @@ class _$UserProfile extends UserProfile {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc(0, introductionElement.hashCode),
+                    $jc(
+                        $jc($jc(0, introductionInHtml.hashCode),
+                            introductionInPlainText.hashCode),
                         basicInfo.hashCode),
                     networkServiceTags.hashCode),
                 collectionPreviews.hashCode),
@@ -179,7 +196,8 @@ class _$UserProfile extends UserProfile {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserProfile')
-          ..add('introductionElement', introductionElement)
+          ..add('introductionInHtml', introductionInHtml)
+          ..add('introductionInPlainText', introductionInPlainText)
           ..add('basicInfo', basicInfo)
           ..add('networkServiceTags', networkServiceTags)
           ..add('collectionPreviews', collectionPreviews)
@@ -192,10 +210,15 @@ class _$UserProfile extends UserProfile {
 class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
   _$UserProfile _$v;
 
-  Element _introductionElement;
-  Element get introductionElement => _$this._introductionElement;
-  set introductionElement(Element introductionElement) =>
-      _$this._introductionElement = introductionElement;
+  String _introductionInHtml;
+  String get introductionInHtml => _$this._introductionInHtml;
+  set introductionInHtml(String introductionInHtml) =>
+      _$this._introductionInHtml = introductionInHtml;
+
+  String _introductionInPlainText;
+  String get introductionInPlainText => _$this._introductionInPlainText;
+  set introductionInPlainText(String introductionInPlainText) =>
+      _$this._introductionInPlainText = introductionInPlainText;
 
   BangumiUserBasicBuilder _basicInfo;
   BangumiUserBasicBuilder get basicInfo =>
@@ -233,7 +256,8 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
 
   UserProfileBuilder get _$this {
     if (_$v != null) {
-      _introductionElement = _$v.introductionElement;
+      _introductionInHtml = _$v.introductionInHtml;
+      _introductionInPlainText = _$v.introductionInPlainText;
       _basicInfo = _$v.basicInfo?.toBuilder();
       _networkServiceTags = _$v.networkServiceTags?.toBuilder();
       _collectionPreviews = _$v.collectionPreviews?.toBuilder();
@@ -263,7 +287,8 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
     try {
       _$result = _$v ??
           new _$UserProfile._(
-              introductionElement: introductionElement,
+              introductionInHtml: introductionInHtml,
+              introductionInPlainText: introductionInPlainText,
               basicInfo: _basicInfo?.build(),
               networkServiceTags: networkServiceTags.build(),
               collectionPreviews: collectionPreviews.build(),

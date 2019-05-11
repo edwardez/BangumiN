@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:html/dom.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
@@ -17,8 +16,11 @@ part 'UserProfile.g.dart';
 abstract class UserProfile implements Built<UserProfile, UserProfileBuilder> {
   UserProfile._();
 
-  /// A paragraph of introduction as a html element
-  Element get introductionElement;
+  /// A paragraph of introduction as a html string
+  String get introductionInHtml;
+
+  /// A paragraph of introduction in plain text string
+  String get introductionInPlainText;
 
   @nullable
   BangumiUserBasic get basicInfo;

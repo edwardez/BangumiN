@@ -18,7 +18,7 @@ class UserMoreDetails extends StatelessWidget {
           return ListView(
             children: <Widget>[
               BangumiHtml(
-                html: profile.introductionElement.outerHtml,
+                html: profile.introductionInPlainText,
               ),
               Wrap(
                 children: <Widget>[

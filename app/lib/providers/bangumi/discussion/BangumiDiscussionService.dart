@@ -49,7 +49,7 @@ class BangumiDiscussionService {
     FetchDiscussionResponse fetchDiscussionResponse =
         FetchDiscussionResponse((b) => b
           ..discussionItems.replace(BuiltSet<DiscussionItem>(discussionItems))
-          ..lastFetchedTime = DateTime.now());
+          ..lastFetchedTime = DateTime.now().toUtc());
 
     return fetchDiscussionResponse;
   }

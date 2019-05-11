@@ -2,6 +2,7 @@ import 'dart:convert' show json;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
@@ -43,8 +44,9 @@ class BangumiSubjectService {
     if (response.statusCode == 200) {
       var decodedBody = json.decode(response.body);
       if (decodedBody['code'] == 400) {
-        throw GeneralUnknownException(
-            '出现了未知错误: Bangumi此刻无法响应请求');
+        /// code = 400 means user has not collected this subject
+        /// we initialize a dummy new collection here
+        subjectCollectionInfo = SubjectCollectionInfo();
       } else if (decodedBody['code'] == null) {
         subjectCollectionInfo = SubjectCollectionInfo.fromJson(response.body);
         BuiltList<String> tags = subjectCollectionInfo.tags;

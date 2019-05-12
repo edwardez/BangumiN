@@ -8,16 +8,16 @@ import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:quiver/strings.dart';
 
 // A Bangumi subject service that handles subject-related http requests
 class BangumiSubjectService {
-  BangumiCookieClient cookieClient;
-  BangumiOauthClient oauthClient;
+  BangumiCookieService cookieClient;
+  BangumiOauthService oauthClient;
 
   BangumiSubjectService(
       {@required this.cookieClient, @required this.oauthClient})

@@ -7,12 +7,12 @@ import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/discussion/parser/DiscussionParser.dart';
 
 /// A Bangumi search service that handles search-related http requests
 class BangumiDiscussionService {
-  BangumiCookieClient cookieClient;
+  BangumiCookieService cookieClient;
 
   BangumiDiscussionService({@required this.cookieClient})
       : assert(cookieClient != null);

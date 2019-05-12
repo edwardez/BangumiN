@@ -3,24 +3,24 @@ import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
+import 'package:munin/providers/storage/SecureStorageService.dart';
 
 // A client for Bangumi thst sends requests with cookie and handles relevant persistence
-class BangumiCookieClient {
+class BangumiCookieService {
   BangumiCookieCredentials bangumiCookieCredential;
-  FlutterSecureStorage secureStorage;
+  SecureStorageService secureStorageService;
   Dio dio;
 
-  BangumiCookieClient({
+  BangumiCookieService({
     @required BangumiCookieCredentials bangumiCookieCredential,
-    @required FlutterSecureStorage secureStorage,
+    @required SecureStorageService secureStorageService,
     @required Dio dio,
   }) {
     this.bangumiCookieCredential = bangumiCookieCredential;
-    this.secureStorage = secureStorage;
+    this.secureStorageService = secureStorageService;
     this.dio = dio;
   }
 
@@ -73,13 +73,11 @@ class BangumiCookieClient {
   }
 
   Future<void> persistCredentials() {
-    assert(bangumiCookieCredential != null);
-    return this.secureStorage.write(
-        key: 'bangumiCookieCredentials',
-        value: bangumiCookieCredential.toJson());
+    return this.secureStorageService.persistBangumiCookieCredentials(
+        bangumiCookieCredential);
   }
 
   Future<void> clearCredentials() {
-    return this.secureStorage.delete(key: 'bangumiCookieCredentials');
+    return this.secureStorageService.clearBangumiCookieCredentials();
   }
 }

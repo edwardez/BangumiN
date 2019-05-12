@@ -2,16 +2,16 @@ import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/parser/UserParser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // A Bangumi user service that handles user-related http requests and persist relevant info
 class BangumiUserService {
   SharedPreferences sharedPreferences;
-  BangumiOauthClient oauthClient;
-  BangumiCookieClient cookieClient;
+  BangumiOauthService oauthClient;
+  BangumiCookieService cookieClient;
 
   BangumiUserService(
       {@required this.oauthClient,

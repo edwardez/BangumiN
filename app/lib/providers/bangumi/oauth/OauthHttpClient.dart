@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:pedantic/pedantic.dart';
 
 /// Code is taken from https://github.com/dart-lang/http_retry/blob/master/lib/http_retry.dart
+/// A http client with retry feature built-in
 class OauthHttpClient extends BaseClient {
   /// The wrapped client.
   final Client _inner;
@@ -77,10 +78,13 @@ class OauthHttpClient extends BaseClient {
       }
 
       if (response != null) {
-        if (i == _retries || !_when(response)) return response;
+        if (i == _retries || !_when(response)) {
+          return response;
+        }
 
         debugPrint(
-            'Oauth Client received illegal response with status code ${response.statusCode} for endpoint ${response.request}');
+            'Oauth Client received an error response with status code ${response
+                .statusCode} for endpoint ${response.request}');
         // Make sure the response stream is listened to so that we don't leave
         // dangling connections.
         unawaited(response.stream.listen((_) {}).cancel()?.catchError((_) {}));

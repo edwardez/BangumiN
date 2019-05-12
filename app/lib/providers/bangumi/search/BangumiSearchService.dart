@@ -11,14 +11,14 @@ import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/search/parser/MonoSearchParser.dart';
 
 /// A Bangumi search service that handles search-related http requests
 class BangumiSearchService {
-  BangumiCookieClient cookieClient;
-  BangumiOauthClient oauthClient;
+  BangumiCookieService cookieClient;
+  BangumiOauthService oauthClient;
 
   BangumiSearchService(
       {@required this.cookieClient, @required this.oauthClient})

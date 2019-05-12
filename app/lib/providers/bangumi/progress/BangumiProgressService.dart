@@ -14,16 +14,16 @@ import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/progress/parser/ProgressParser.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 
 /// A Bangumi search service that handles search-related http requests
 class BangumiProgressService {
-  BangumiCookieClient cookieClient;
-  BangumiOauthClient oauthClient;
+  BangumiCookieService cookieClient;
+  BangumiOauthService oauthClient;
 
   BangumiProgressService(
       {@required this.cookieClient, @required this.oauthClient})

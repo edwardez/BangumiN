@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
 /// bangumi returns 10 feeds each time, this currently cannot be changed
@@ -12,7 +12,7 @@ const int initialPageNum = 1;
 
 // A Bangumi user service that handles user-related http requests and persist relevant info
 class BangumiTimelineService {
-  BangumiCookieClient cookieClient;
+  BangumiCookieService cookieClient;
 
   BangumiTimelineService({@required this.cookieClient})
       : assert(cookieClient != null);

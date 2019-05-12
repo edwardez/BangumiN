@@ -2,75 +2,62 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show Response;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:oauth2/oauth2.dart' show Client, AuthorizationCodeGrant;
-import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/oauth/BangumiOauthClient.dart';
+import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:oauth2/oauth2.dart'
+    show AuthorizationCodeGrant, Client, Credentials;
+
 
 // A client for Bangumi that authorizes user, send requests with oauth token and handles relevant persistence
-class BangumiOauthClient {
-  BangumiCookieClient _cookieClient;
-  FlutterSecureStorage secureStorage;
+class BangumiOauthService {
+  BangumiCookieService _cookieClient;
+  SecureStorageService secureStorageService;
   String authorizationUrl;
-  Client client;
+  BangumiOauthClient client;
   http.Client _baseOauthHttpClient;
 
   HttpServer _oauthServer;
   FlutterWebviewPlugin _flutterWebviewPlugin;
 
-  BangumiOauthClient({
-    @required BangumiCookieClient cookieClient,
+  BangumiOauthService({
+    @required BangumiCookieService cookieClient,
     @required String serializedBangumiOauthCredentials,
-    @required FlutterSecureStorage secureStorage,
+    @required SecureStorageService secureStorageService,
     @required http.Client oauthHttpClient,
   }) {
-    assert(secureStorage != null);
+    assert(secureStorageService != null);
     assert(cookieClient != null);
     assert(oauthHttpClient != null);
 
     this._cookieClient = cookieClient;
-    this.secureStorage = secureStorage;
+    this.secureStorageService = secureStorageService;
     this._baseOauthHttpClient = oauthHttpClient;
 
+//    var x = jsonDecode(serializedBangumiOauthCredentials);
+//    x['expiration'] = 0;
+//    serializedBangumiOauthCredentials = jsonEncode(x);
+
     if (serializedBangumiOauthCredentials != null) {
-      oauth2.Credentials credentials =
-          oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
-      this.client = oauth2.Client(credentials,
+      Credentials credentials =
+      Credentials.fromJson(serializedBangumiOauthCredentials);
+
+      this.client = BangumiOauthClient(credentials,
           identifier: Application.environmentValue.bangumiOauthClientIdentifier,
           secret: Application.environmentValue.bangumiOauthClientSecret,
           basicAuth: false,
-          httpClient: _baseOauthHttpClient);
+          httpClient: _baseOauthHttpClient,
+          secureStorageService: secureStorageService);
     }
+
   }
 
-  BangumiOauthClient.fromCredentials({
-    @required BangumiCookieClient cookieClient,
-    @required String serializedBangumiOauthCredentials,
-    @required secureStorage,
-    @required http.Client oauthHttpClient,
-  }) {
-    assert(secureStorage != null);
-    assert(cookieClient != null);
-    assert(oauthHttpClient != null);
-
-    this._cookieClient = cookieClient;
-    this.secureStorage = secureStorage;
-    this._baseOauthHttpClient = oauthHttpClient;
-
-    oauth2.Credentials credentials =
-        oauth2.Credentials.fromJson(serializedBangumiOauthCredentials);
-    this.client = oauth2.Client(credentials,
-        identifier: Application.environmentValue.bangumiOauthClientIdentifier,
-        secret: Application.environmentValue.bangumiOauthClientSecret,
-        basicAuth: false,
-        httpClient: _baseOauthHttpClient);
-  }
 
   bool readyToUse() {
     return client != null;
@@ -92,8 +79,8 @@ class BangumiOauthClient {
     AuthorizationCodeGrant grant = new AuthorizationCodeGrant(
         Application.environmentValue.bangumiOauthClientIdentifier,
         Uri.parse(
-            Application.environmentValue.bangumiOauthAuthorizationEndpoint),
-        Uri.parse(Application.environmentValue.bangumiOauthTokenEndpoint),
+            Application.bangumiOauthAuthorizationEndpoint),
+        Uri.parse(Application.bangumiOauthTokenEndpoint),
         secret: Application.environmentValue.bangumiOauthClientSecret,
         httpClient: _baseOauthHttpClient);
     authorizationUrl = grant
@@ -133,9 +120,23 @@ class BangumiOauthClient {
 
     Stream<String> onCode = await _server();
     final String code = await onCode.first;
-    client = await grant.handleAuthorizationResponse({'code': code});
 
-    await persistCredentials();
+    /// HACK: injects original oauth client and initializes a new customized
+    /// client
+    Client baseOauthClient = await grant.handleAuthorizationResponse(
+        {'code': code});
+    Credentials credentials = Credentials.fromJson(
+        baseOauthClient.credentials.toJson());
+
+    client = BangumiOauthClient(credentials,
+        identifier: Application.environmentValue.bangumiOauthClientIdentifier,
+        secret: Application.environmentValue.bangumiOauthClientSecret,
+        basicAuth: false,
+        httpClient: _baseOauthHttpClient,
+        secureStorageService: secureStorageService);
+
+    await secureStorageService.persistBangumiOauthCredentials(
+        client.credentials);
     await _cookieClient.persistCredentials();
     _flutterWebviewPlugin.close();
     _flutterWebviewPlugin.dispose();
@@ -173,11 +174,12 @@ class BangumiOauthClient {
   }
 
   Future<void> persistCredentials() {
-    return this.secureStorage.write(
-        key: 'bangumiOauthCredentials', value: client.credentials.toJson());
+    return this.secureStorageService.persistBangumiOauthCredentials(
+        client.credentials);
   }
 
   Future<void> clearCredentials() async {
-    return this.secureStorage.delete(key: 'bangumiOauthCredentials');
+    return this.secureStorageService.clearBangumiOauthCredentials();
   }
+
 }

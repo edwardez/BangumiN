@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:munin/main.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
@@ -24,6 +24,7 @@ import 'package:munin/shared/injector/injector.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:redux_logging/redux_logging.dart'; // ignore: unused_import
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt();
@@ -34,8 +35,11 @@ abstract class Application {
   static Application environmentValue;
   static Router router;
 
-  final bangumiOauthAuthorizationEndpoint = 'https://bgm.tv/oauth/authorize';
-  final bangumiOauthTokenEndpoint = 'https://bgm.tv/oauth/access_token';
+  static final String bangumiOauthAuthorizationEndpoint = 'https://bgm.tv/oauth/authorize';
+  static final Uri bangumiOauthTokenEndpointUri = Uri.https(
+      'bgm.tv', 'oauth/access_token');
+  static final String bangumiOauthTokenEndpoint = bangumiOauthTokenEndpointUri
+      .toString();
 
   /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
   /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
@@ -64,10 +68,10 @@ abstract class Application {
     /// service locator initialization
     await injector(getIt);
 
-    final BangumiCookieClient _bangumiCookieClient =
-    getIt.get<BangumiCookieClient>();
-    final BangumiOauthClient _bangumiOauthClient =
-    getIt.get<BangumiOauthClient>();
+    final BangumiCookieService _bangumiCookieService =
+    getIt.get<BangumiCookieService>();
+    final BangumiOauthService _bangumiOauthService =
+    getIt.get<BangumiOauthService>();
     final BangumiUserService bangumiUserService =
     getIt.get<BangumiUserService>();
     final BangumiTimelineService _bangumiTimelineService =
@@ -87,7 +91,7 @@ abstract class Application {
     preferences.get('currentAuthenticatedUserBasicInfo');
 
     bool _isAuthenticated =
-        _bangumiCookieClient.readyToUse() && _bangumiOauthClient.readyToUse();
+        _bangumiCookieService.readyToUse() && _bangumiOauthService.readyToUse();
 
     BangumiUserBasic userInfo;
     if (serializedUserInfo != null) {
@@ -106,8 +110,7 @@ abstract class Application {
             createDiscussionEpics(_bangumiDiscussionService))..addAll(
             createTimelineEpics(_bangumiTimelineService))..addAll(
             createUserEpics(_bangumiUserService))..addAll(
-            createProgressEpics(_bangumiProgressService))
-    );
+            createProgressEpics(_bangumiProgressService)));
     final store = new Store<AppState>(appReducer, initialState: AppState((b) {
       if (userInfo != null) {
         b.currentAuthenticatedUserBasicInfo.replace(userInfo);
@@ -117,8 +120,9 @@ abstract class Application {
         middleware: [
 //          LoggingMiddleware.printer(),
           EpicMiddleware<AppState>(epics),
-        ]..addAll(createOauthMiddleware(_bangumiOauthClient,
-            _bangumiCookieClient, bangumiUserService, preferences)));
+        ]
+          ..addAll(createOauthMiddleware(_bangumiOauthService,
+              _bangumiCookieService, bangumiUserService, preferences)));
 
     /// flutter initialization
     runApp(MuninApp(this, store));

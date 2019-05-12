@@ -2,8 +2,8 @@ import 'dart:math' show min;
 
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
@@ -11,8 +11,8 @@ import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<Middleware<AppState>> createOauthMiddleware(
-    BangumiOauthClient oauthClient,
-    BangumiCookieClient cookieClient,
+    BangumiOauthService oauthClient,
+    BangumiCookieService cookieClient,
     BangumiUserService bangumiUserService,
     SharedPreferences preferences) {
   final loginPage = _createLoginPage();
@@ -43,9 +43,8 @@ Middleware<AppState> _createLoginPage() {
 }
 
 // TODO: refactor this messy middleware
-Middleware<AppState> _createOAuthRequest(
-    BangumiOauthClient oauthClient,
-    BangumiCookieClient bangumiCookieClient,
+Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthClient,
+    BangumiCookieService bangumiCookieService,
     BangumiUserService bangumiUserService) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
@@ -58,7 +57,7 @@ Middleware<AppState> _createOAuthRequest(
       await bangumiUserService.persistCurrentUserBasicInfo(userId.toString());
       await Future.wait([
         oauthClient.persistCredentials(),
-        bangumiCookieClient.persistCredentials(),
+        bangumiCookieService.persistCredentials(),
         bangumiUserService.persistCurrentUserInfo(userInfo)
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
@@ -81,8 +80,8 @@ Middleware<AppState> _createOAuthRequest(
   };
 }
 
-Middleware<AppState> _createOAuthCancel(
-    BangumiOauthClient oauthClient, BangumiCookieClient bangumiCookieClient) {
+Middleware<AppState> _createOAuthCancel(BangumiOauthService oauthClient,
+    BangumiCookieService bangumiCookieService) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
     await oauthClient.disposeServerAndWebview();
@@ -90,8 +89,8 @@ Middleware<AppState> _createOAuthCancel(
   };
 }
 
-Middleware<AppState> _createLogoutRequest(BangumiOauthClient oauthClient,
-    BangumiCookieClient cookieClient, SharedPreferences preferences) {
+Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
+    BangumiCookieService cookieClient, SharedPreferences preferences) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
     await Future.wait([

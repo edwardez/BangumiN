@@ -7,8 +7,8 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
@@ -16,6 +16,7 @@ import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
+import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> injector(GetIt getIt) async {
@@ -34,10 +35,13 @@ Future<void> injector(GetIt getIt) async {
   CookieJar bangumiCookieJar = CookieJar();
   getIt.registerSingleton<CookieJar>(bangumiCookieJar);
 
-  final BangumiCookieClient _bangumiCookieClient = BangumiCookieClient(
+  SecureStorageService secureStorageService = SecureStorageService(
+      secureStorage: secureStorage);
+
+  final BangumiCookieService _bangumiCookieService = BangumiCookieService(
       bangumiCookieCredential: bangumiCookieCredential,
-      secureStorage: secureStorage,
-      dio: _createDioForBangumiCookieClient(
+      secureStorageService: secureStorageService,
+      dio: _createDioForBangumiCookieService(
           bangumiCookieCredential, bangumiCookieJar)
   );
 
@@ -45,47 +49,47 @@ Future<void> injector(GetIt getIt) async {
   credentials['bangumiOauthCredentials'];
 
   OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
-  final BangumiOauthClient _bangumiOauthClient = BangumiOauthClient(
-    cookieClient: _bangumiCookieClient,
+  final BangumiOauthService _bangumiOauthService = BangumiOauthService(
+    cookieClient: _bangumiCookieService,
     serializedBangumiOauthCredentials: serializedBangumiOauthCredentials,
-    secureStorage: secureStorage,
+    secureStorageService: secureStorageService,
     oauthHttpClient: oauthHttpClient,
   );
 
   getIt.registerSingleton<SharedPreferences>(preferences);
-  getIt.registerSingleton<FlutterSecureStorage>(secureStorage);
-  getIt.registerSingleton<BangumiCookieClient>(_bangumiCookieClient);
-  getIt.registerSingleton<BangumiOauthClient>(_bangumiOauthClient);
+  getIt.registerSingleton<SecureStorageService>(secureStorageService);
+  getIt.registerSingleton<BangumiCookieService>(_bangumiCookieService);
+  getIt.registerSingleton<BangumiOauthService>(_bangumiOauthService);
 
   final bangumiUserService = BangumiUserService(
-      cookieClient: _bangumiCookieClient,
-      oauthClient: _bangumiOauthClient,
+      cookieClient: _bangumiCookieService,
+      oauthClient: _bangumiOauthService,
       sharedPreferences: preferences);
   getIt.registerSingleton<BangumiUserService>(bangumiUserService);
 
   final bangumiTimelineService = BangumiTimelineService(
-      cookieClient: _bangumiCookieClient);
+      cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiTimelineService>(bangumiTimelineService);
 
 
   final bangumiSubjectService = BangumiSubjectService(
-      cookieClient: _bangumiCookieClient, oauthClient: _bangumiOauthClient
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
   );
   getIt.registerSingleton<BangumiSubjectService>(bangumiSubjectService);
 
   final bangumiSearchService = BangumiSearchService(
-      cookieClient: _bangumiCookieClient, oauthClient: _bangumiOauthClient
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
   );
   getIt.registerSingleton<BangumiSearchService>(bangumiSearchService);
 
   final bangumiDiscussionService = BangumiDiscussionService(
-      cookieClient: _bangumiCookieClient
+      cookieClient: _bangumiCookieService
   );
   getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
 
   final bangumiProgressService = BangumiProgressService(
-    cookieClient: _bangumiCookieClient,
-    oauthClient: _bangumiOauthClient,
+    cookieClient: _bangumiCookieService,
+    oauthClient: _bangumiOauthService,
   );
   getIt.registerSingleton<BangumiProgressService>(bangumiProgressService);
 
@@ -93,7 +97,7 @@ Future<void> injector(GetIt getIt) async {
 }
 
 /// create a new dio client with present settings
-Dio _createDioForBangumiCookieClient(
+Dio _createDioForBangumiCookieService(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
   Map<String, dynamic> headers = {

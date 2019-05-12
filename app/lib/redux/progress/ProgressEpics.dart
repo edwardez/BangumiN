@@ -105,7 +105,11 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
         return episodeIdsSoFar;
       });
 
-      print(episodeIds);
+      /// Sends the request twice to ensure it's reflected on bangumi website and api
+      /// After first request bangumi updates data in internal database but not api/website
+      /// After second request bangumi updates api/website
+      await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
+          episodeIds: episodeIds);
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
           episodeIds: episodeIds);
       yield UpdateAnimeOrRealBatchEpisodesSuccessAction(

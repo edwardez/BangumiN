@@ -2,11 +2,11 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
-import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/progress/Common.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
@@ -97,14 +97,15 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
           .episodes
           .values
           .fold<List<int>>([], (episodeIdsSoFar, episode) {
-        if (episode.episodeType == EpisodeType.RegularEpisode &&
-            episode.sequentialNumber <= action.newEpisodeNumber) {
+        if (isAffectedByCollectUntilOperation(
+            episode, action.newEpisodeNumber)) {
           episodeIdsSoFar.add(episode.id);
         }
 
         return episodeIdsSoFar;
       });
 
+      print(episodeIds);
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
           episodeIds: episodeIds);
       yield UpdateAnimeOrRealBatchEpisodesSuccessAction(

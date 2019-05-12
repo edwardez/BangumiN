@@ -5,10 +5,10 @@ import 'package:munin/models/bangumi/progress/api/EpisodeProgress.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
-import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/redux/progress/Common.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:redux/redux.dart';
@@ -102,8 +102,8 @@ ProgressState updateAnimeOrRealBatchEpisodesSuccessReducer(
       /// total number of changed episodes to add to completedEpisodesCount
       int totalChangedEpisodesCountToAdd = 0;
       for (var episode in progress.episodes.values) {
-        if (episode.episodeType == EpisodeType.RegularEpisode &&
-            episode.sequentialNumber <= action.newEpisodeNumber) {
+        if (isAffectedByCollectUntilOperation(
+            episode, action.newEpisodeNumber)) {
           totalChangedEpisodesCountToAdd +=
               EpisodeUpdateType.watchedEpisodeCountChange(
                   episode.userEpisodeStatus, EpisodeUpdateType.Collect);

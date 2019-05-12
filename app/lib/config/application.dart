@@ -36,10 +36,7 @@ abstract class Application {
   static Router router;
 
   static final String bangumiOauthAuthorizationEndpoint = 'https://bgm.tv/oauth/authorize';
-  static final Uri bangumiOauthTokenEndpointUri = Uri.https(
-      'bgm.tv', 'oauth/access_token');
-  static final String bangumiOauthTokenEndpoint = bangumiOauthTokenEndpointUri
-      .toString();
+  static final String bangumiOauthTokenEndpoint = 'https://bgm.tv/oauth/authorize';
 
   /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
   /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)

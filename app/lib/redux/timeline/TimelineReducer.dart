@@ -41,7 +41,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
         b
           ..first.replace(BuiltList<TimelineFeed>(feedsResponse))
           ..disableLoadingMore = disableLoadingMore
-          ..hasReachedEnd = hasReachedEnd)
+          ..hasReachedEnd = hasReachedEnd
+          ..lastFetchedTime = result.fetchedTime
+        )
       }));
   }
 
@@ -56,7 +58,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
           b
             ..first.replace(BuiltList<TimelineFeed>(feedsResponse))
             ..disableLoadingMore = false
-            ..hasReachedEnd = false)
+            ..hasReachedEnd = false
+            ..lastFetchedTime = result.fetchedTime
+          )
         }));
     } else {
       BuiltList<TimelineFeed> updatedFeeds =
@@ -67,7 +71,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
           b
             ..first.replace(updatedFeeds)
             ..disableLoadingMore = false
-            ..hasReachedEnd = false)
+            ..hasReachedEnd = false
+            ..lastFetchedTime = result.fetchedTime
+          )
         }));
     }
   }
@@ -85,7 +91,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
         fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
         b
           ..first.replace(updatedFeeds)
-          ..disableLoadingMore = disableLoadingMore)
+          ..disableLoadingMore = disableLoadingMore
+          ..lastFetchedTime = result.fetchedTime
+        )
       }));
   }
 

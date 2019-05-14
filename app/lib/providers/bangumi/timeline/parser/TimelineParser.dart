@@ -19,6 +19,7 @@ import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
+import 'package:munin/models/bangumi/timeline/common/Mono.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -163,7 +164,9 @@ class TimelineParser {
         feeds: feeds,
         truncateFeedsInStore: truncateFeedsInStore,
         feedLoadType: feedLoadType,
-        fetchedTime: DateTime.now());
+
+        /// `fetchedTime` needs to be in utc in order to be serialized
+        fetchedTime: DateTime.now().toUtc());
   }
 
   TimelineFeed processSingleTimelineItem(Element timelineItem,

@@ -84,7 +84,6 @@ class _$FeedChunks extends FeedChunks {
   final bool hasReachedEnd;
   @override
   final bool disableLoadingMore;
-  bool __isStale;
   int __feedsCount;
   int __firstChunkMaxIdOrNull;
   int __firstChunkMinIdOrNull;
@@ -108,9 +107,6 @@ class _$FeedChunks extends FeedChunks {
       throw new BuiltValueNullFieldError('FeedChunks', 'disableLoadingMore');
     }
   }
-
-  @override
-  bool get isStale => __isStale ??= super.isStale;
 
   @override
   int get feedsCount => __feedsCount ??= super.feedsCount;

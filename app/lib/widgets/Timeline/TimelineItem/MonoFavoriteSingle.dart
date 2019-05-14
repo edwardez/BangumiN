@@ -4,8 +4,6 @@ import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTil
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 
-enum MonoType { person, character }
-
 // currently person(real) and character(fictional) shares exactly same code, we call them 'mono'(japanese romaji) so a common widget is created
 class MonoFavoriteSingleWidget extends StatelessWidget {
   final MonoFavoriteSingle monoFavoriteSingle;

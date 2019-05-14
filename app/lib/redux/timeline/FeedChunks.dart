@@ -29,7 +29,6 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   bool get disableLoadingMore;
 
-  @memoized
   bool get isStale {
     return !hasReachedEnd &&
         lastFetchedTime != null &&

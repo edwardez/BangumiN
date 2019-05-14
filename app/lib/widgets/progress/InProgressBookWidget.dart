@@ -9,7 +9,7 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/progress/BookProgressUpdateField.dart';
 import 'package:munin/widgets/shared/button/customization.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';

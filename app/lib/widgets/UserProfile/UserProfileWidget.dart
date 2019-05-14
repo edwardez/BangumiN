@@ -10,7 +10,7 @@ import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/UserProfile/CollectionPreviewWidget.dart';
 import 'package:munin/widgets/UserProfile/TimelinePreviewWidget.dart';
 import 'package:munin/widgets/UserProfile/UserIntroductionPreview.dart';
@@ -41,6 +41,7 @@ class UserProfileWidget extends StatelessWidget {
       @required this.username,
         Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
+          vertical: largeVerticalPadding,
           horizontal: defaultPortraitHorizontalPadding)})
       : this.providedAppBar = appBar,
         this.userProfileMainUrl =
@@ -311,12 +312,14 @@ class UserProfileWidget extends StatelessWidget {
               ]),
             );
           } else {
-            scrollSliver = SliverList(
-              delegate: SliverChildListDelegate([
-                Center(
-                  child: AdaptiveProgressIndicator(),
-                ),
-              ]),
+            scrollSliver = SliverPadding(
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  Center(
+                    child: AdaptiveProgressIndicator(),
+                  ),
+                ]),
+              ), padding: profileWidgetsPadding,
             );
           }
         } else {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/widgets/MoreOptions/MoreOptionsHome.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
+import 'package:munin/widgets/setting/Setting.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:redux/redux.dart';
 
@@ -43,7 +44,8 @@ class _OneMuninBarState extends State<OneMuninBar> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, String>(
       converter: (Store<AppState> store) =>
-      store.state.currentAuthenticatedUserBasicInfo.avatar.large,
+      store.state?.currentAuthenticatedUserBasicInfo?.avatar?.large ??
+          bangumiAnonymousUserMediumAvatar,
       distinct: true,
       builder: (BuildContext context, String avatarUrl) {
         return SliverAppBar(
@@ -76,7 +78,7 @@ class _OneMuninBarState extends State<OneMuninBar> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MoreOptionsHomePage()),
+                          builder: (context) => SettingHome()),
                     );
                   },
                 ),

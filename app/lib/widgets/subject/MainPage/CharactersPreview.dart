@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/HorizontalCharacters.dart';
@@ -21,7 +22,7 @@ class CharactersPreview extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(AdaptiveIcons.forwardIconData),
-              color: Theme.of(context).primaryColor,
+              color: lightPrimaryDarkAccentColor(context),
               onPressed: () {},
             ),
           ],

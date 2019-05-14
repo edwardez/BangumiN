@@ -5,26 +5,25 @@ import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/parser/UserParser.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:munin/providers/storage/SharedPreferenceService.dart';
 
 // A Bangumi user service that handles user-related http requests and persist relevant info
 class BangumiUserService {
-  SharedPreferences sharedPreferences;
+  SharedPreferenceService sharedPreferenceService;
   BangumiOauthService oauthClient;
   BangumiCookieService cookieClient;
 
   BangumiUserService(
       {@required this.oauthClient,
       @required this.cookieClient,
-      @required this.sharedPreferences})
+        @required this.sharedPreferenceService})
       : assert(oauthClient != null),
         assert(cookieClient != null),
-        assert(sharedPreferences != null);
+        assert(sharedPreferenceService != null);
 
   // persist current bangumi user basic info through api
   Future<BangumiUserBasic> persistCurrentUserBasicInfo(String username) async {
     BangumiUserBasic basicInfo = await getUserBasicInfo(username);
-    await persistCurrentUserInfo(basicInfo);
     return basicInfo;
   }
 
@@ -49,9 +48,5 @@ class BangumiUserService {
     return profile;
   }
 
-  Future<bool> persistCurrentUserInfo(
-      BangumiUserBasic currentAuthenticatedUserBasicInfo) {
-    return sharedPreferences.setString('currentAuthenticatedUserBasicInfo',
-        currentAuthenticatedUserBasicInfo.toJson());
-  }
+
 }

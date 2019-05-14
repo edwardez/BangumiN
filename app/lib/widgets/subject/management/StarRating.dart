@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 typedef void RatingChangeCallback(double rating);
 
@@ -41,13 +41,13 @@ class StarRating extends StatelessWidget {
 
     if (index >= rating) {
       iconData = Icons.star_border;
-      iconColor = color ?? Theme.of(context).primaryColor;
+      iconColor = color ?? lightPrimaryDarkAccentColor(context);
     } else if (index > rating - 1 && index < rating) {
       iconData = Icons.star_half;
       iconColor = borderColor ?? Theme.of(context).buttonColor;
     } else {
       iconData = Icons.star;
-      iconColor = color ?? Theme.of(context).primaryColor;
+      iconColor = color ?? lightPrimaryDarkAccentColor(context);
     }
     return InkWell(
       child: Icon(

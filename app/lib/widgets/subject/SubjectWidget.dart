@@ -5,7 +5,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/subject/MainPage/CharactersPreview.dart';
@@ -76,8 +76,8 @@ class SubjectWidget extends StatelessWidget {
     widgets.add(CommentsPreview(subject: subject));
 
     return ScaffoldWithSliverAppBar(
-      appBarMainTitle: '关于这${subject.type.quantifiedChineseNameByType}',
-      appBarSecondaryTitle: subject.name,
+      appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
+      appBarSecondaryTitle: Text(subject.name),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -86,7 +86,11 @@ class SubjectWidget extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: widgets.length,
       ),
-      safeAreaChildHorizontalPadding: defaultPortraitHorizontalPadding,
+      safeAreaChildPadding: const EdgeInsets.only(
+          left: defaultDensePortraitHorizontalPadding,
+          right: defaultDensePortraitHorizontalPadding,
+          top: largeVerticalPadding
+      ),
       enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );

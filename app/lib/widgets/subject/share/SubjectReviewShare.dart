@@ -10,7 +10,7 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewPoster.dart';
 import 'package:palette_generator/palette_generator.dart';

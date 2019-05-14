@@ -13,7 +13,8 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Colors.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/button/customization.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
@@ -39,7 +40,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
       bool isSelected = status == episode.userEpisodeStatus;
 
       if (isSelected) {
-        return Theme.of(context).primaryColor;
+        return lightPrimaryDarkAccentColor(context);
       }
 
       return null;
@@ -61,8 +62,6 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
       return subtitles.join(' / ');
     }
-
-    GestureTapCallback generateOnTapCallbackForSingleEpisodeOperation() {}
 
     showModalBottomSheet(
         context: context,
@@ -194,11 +193,15 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
   Color episodeChipColor(BuildContext context, EpisodeStatus status) {
     switch (status) {
       case EpisodeStatus.Wish:
-        return Theme.of(context).accentColor;
+        return Theme
+            .of(context)
+            .brightness == Brightness.dark ? bangumiPink.shade200 : Theme
+            .of(context)
+            .accentColor;
       case EpisodeStatus.Dropped:
         return Theme.of(context).unselectedWidgetColor;
       case EpisodeStatus.Collect:
-        return Theme.of(context).primaryColor;
+        return lightPrimaryDarkAccentColor(context);
       default:
         return Theme.of(context).unselectedWidgetColor;
     }

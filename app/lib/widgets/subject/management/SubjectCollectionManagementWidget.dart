@@ -10,7 +10,7 @@ import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
@@ -134,17 +134,17 @@ class _SubjectCollectionManagementWidgetState
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: const Text('放弃编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        true); // Pops the confirmation dialog but not the page.
-                  },
-                ),
-                FlatButton(
                   child: const Text('继续编辑'),
                   onPressed: () {
                     Navigator.of(context).pop(
                         false); // Returning true to _onWillPop will pop again.
+                  },
+                ),
+                FlatButton(
+                  child: const Text('放弃编辑'),
+                  onPressed: () {
+                    Navigator.of(context).pop(
+                        true); // Pops the confirmation dialog but not the page.
                   },
                 ),
               ],
@@ -253,6 +253,9 @@ class _SubjectCollectionManagementWidgetState
               .rebuild((b) => b..status.update((b) => b..type = status));
         });
       },
+      isDarkTheme: Theme
+          .of(context)
+          .brightness == Brightness.dark,
     );
   }
 
@@ -389,7 +392,7 @@ class _SubjectCollectionManagementWidgetState
                       context, subjectId, localSubjectCollectionInfo);
                 }
               : null,
-          textColor: Theme.of(context).primaryColor,
+          textColor: lightPrimaryDarkAccentColor(context),
           child: Text('更新收藏')),
       onTap: _canSubmitForm()
           ? null

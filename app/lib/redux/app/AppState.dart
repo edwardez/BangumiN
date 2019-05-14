@@ -7,6 +7,7 @@ import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
+import 'package:munin/redux/setting/SettingState.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
 import 'package:munin/redux/user/UserState.dart';
@@ -34,9 +35,12 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   ProgressState get progressState;
 
+  SettingState get settingState;
+
   factory AppState([updates(AppStateBuilder b)]) =>
       _$AppState((b) =>
       b
+        ..isAuthenticated = false
         ..oauthState.replace(OauthState())
         ..timelineState.replace(TimelineState())
         ..subjectState.replace(SubjectState())
@@ -44,6 +48,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         ..discussionState.replace(DiscussionState())
         ..userState.replace(UserState())
         ..progressState.replace(ProgressState())
+        ..settingState.replace(SettingState())
         ..update(updates));
 
   AppState._();

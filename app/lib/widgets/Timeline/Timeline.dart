@@ -29,7 +29,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
   int currentIndex = 0;
 
   List<TimelineBodyPage> timelineBodyViews = [];
-  List<Widget> pages = [];
+  List<TimelineBody> pages = [];
 
   TimelineBody _buildTimelineBodyWidget(
       FetchTimelineRequest fetchTimelineRequest, OneMuninBar oneMuninBar) {

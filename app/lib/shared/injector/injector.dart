@@ -17,12 +17,12 @@ import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> injector(GetIt getIt) async {
   final FlutterSecureStorage secureStorage = new FlutterSecureStorage();
   Map<String, String> credentials = await secureStorage.readAll();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
 
   String serializedBangumiCookieCredentials = credentials['bangumiCookieCredentials'];
   BangumiCookieCredentials bangumiCookieCredential;
@@ -37,6 +37,9 @@ Future<void> injector(GetIt getIt) async {
 
   SecureStorageService secureStorageService = SecureStorageService(
       secureStorage: secureStorage);
+  SharedPreferenceService sharedPreferenceService = SharedPreferenceService(
+      sharedPreferences: await SharedPreferences.getInstance()
+  );
 
   final BangumiCookieService _bangumiCookieService = BangumiCookieService(
       bangumiCookieCredential: bangumiCookieCredential,
@@ -56,7 +59,7 @@ Future<void> injector(GetIt getIt) async {
     oauthHttpClient: oauthHttpClient,
   );
 
-  getIt.registerSingleton<SharedPreferences>(preferences);
+  getIt.registerSingleton<SharedPreferenceService>(sharedPreferenceService);
   getIt.registerSingleton<SecureStorageService>(secureStorageService);
   getIt.registerSingleton<BangumiCookieService>(_bangumiCookieService);
   getIt.registerSingleton<BangumiOauthService>(_bangumiOauthService);
@@ -64,7 +67,7 @@ Future<void> injector(GetIt getIt) async {
   final bangumiUserService = BangumiUserService(
       cookieClient: _bangumiCookieService,
       oauthClient: _bangumiOauthService,
-      sharedPreferences: preferences);
+      sharedPreferenceService: sharedPreferenceService);
   getIt.registerSingleton<BangumiUserService>(bangumiUserService);
 
   final bangumiTimelineService = BangumiTimelineService(

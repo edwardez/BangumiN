@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 /// a simple layout with a scaffold, an AppBat and a inner SafeArea
 /// where AppBar is the built-in app bar for [Scaffold]

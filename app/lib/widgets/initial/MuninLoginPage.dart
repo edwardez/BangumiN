@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 
 class MuninLoginPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   }
 
   _buildTosAndPrivacy(BuildContext context) {
-    final linkStyle = TextStyle(color: Theme.of(context).primaryColor);
+    final linkStyle = TextStyle(color: lightPrimaryDarkAccentColor(context));
     return RichText(
       text: TextSpan(
         style: Theme
@@ -70,7 +71,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                   Expanded(
                     child: FlatButton(
                       onPressed: vm.onLoginPressed,
-                      color: Theme.of(context).primaryColor,
+                      color: lightPrimaryDarkAccentColor(context),
                       child: Text(
                         '开始授权',
                         // TODO: set a theme-awareness text color(bypass ButtonTextTheme)

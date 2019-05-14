@@ -33,6 +33,9 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
+import 'package:munin/models/bangumi/setting/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
@@ -60,6 +63,7 @@ import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
+import 'package:munin/models/bangumi/timeline/common/Mono.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
@@ -73,10 +77,12 @@ import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart
 import 'package:munin/models/bangumi/user/social/NetworkServiceType.dart';
 import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/app/BasicAppState.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
+import 'package:munin/redux/setting/SettingState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
@@ -86,11 +92,20 @@ import 'package:munin/redux/user/UserState.dart';
 part 'serializers.g.dart';
 
 @SerializersFor(const [
-  BangumiContent,
+
+  /// Top level state
   AppState,
+
+  /// If [AppState] is serialized, it's recommended to serialize [BasicAppState], too
+  BasicAppState,
+
+  /// Oauth
   OauthState,
 
-  ///timeline
+  /// Common
+  BangumiContent,
+
+  /// Timeline
   TimelineState,
   FetchTimelineRequest,
   TimelineCategoryFilter,
@@ -137,7 +152,7 @@ part 'serializers.g.dart';
   CollectionStatus,
   SubjectState,
 
-  /// search
+  /// Search
   BangumiSearchResponse,
   BangumiGeneralSearchResponse,
   SearchResult,
@@ -182,6 +197,12 @@ part 'serializers.g.dart';
   EpisodeStatus,
   EpisodeType,
   AirStatus,
+
+  /// Settings
+  SettingState,
+  ThemeSetting,
+  MuninTheme,
+  ThemeSwitchMode,
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()

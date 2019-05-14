@@ -3,7 +3,7 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
 import 'package:munin/widgets/search/SubjectSearchResultWidget.dart';
 

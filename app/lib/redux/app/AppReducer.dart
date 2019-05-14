@@ -4,6 +4,7 @@ import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/oauth/OauthReducer.dart';
 import 'package:munin/redux/progress/ProgressReducer.dart';
 import 'package:munin/redux/search/SearchReducer.dart';
+import 'package:munin/redux/setting/SettingReducer.dart';
 import 'package:munin/redux/subject/SubjectReducer.dart';
 import 'package:munin/redux/timeline/TimelineReducer.dart';
 import 'package:munin/redux/user/UserReducer.dart';
@@ -28,5 +29,6 @@ AppState appReducer(AppState appState, dynamic action) {
     ..discussionState
         .replace(discussionReducers(appState.discussionState, action))
     ..userState.replace(userReducers(appState.userState, action))
-    ..progressState.replace(progressReducers(appState.progressState, action)));
+    ..progressState.replace(progressReducers(appState.progressState, action))
+    ..settingState.replace(settingReducers(appState.settingState, action)));
 }

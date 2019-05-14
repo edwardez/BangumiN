@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/BangumiPinkBlue.dart';
+import 'package:munin/styles/theme/Colors.dart';
 
 part 'NetworkServiceType.g.dart';
 
@@ -26,7 +26,7 @@ class NetworkServiceType extends EnumClass {
   Color get themeColor {
     switch (this) {
       case NetworkServiceType.Bangumi:
-        return BangumiPinkBlue.bangumiPink.shade200;
+        return bangumiPink.shade200;
       case NetworkServiceType.Home:
         return Colors.orange;
       case NetworkServiceType.PSN:

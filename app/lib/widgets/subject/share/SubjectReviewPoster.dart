@@ -9,7 +9,8 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/BrightBlueBangumiPink.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
@@ -30,6 +31,9 @@ class SubjectReviewPoster extends StatefulWidget {
   static const double posterOuterVerticalPadding = 24;
   static const double posterOuterHorizontalPadding =
       defaultDensePortraitHorizontalPadding;
+
+  /// Specifies a display theme to avoid conflicting with custom themes
+  static final displayTheme = brightBangumiPinkBlueThemeData;
 
   final BangumiSubject subject;
   final Color themeColor;
@@ -121,115 +125,126 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle captionStyle = Theme.of(context).textTheme.caption;
-    return RepaintBoundary(
-        key: _globalKey,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-              vertical: SubjectReviewPoster.posterOuterVerticalPadding,
-              horizontal: SubjectReviewPoster.posterOuterHorizontalPadding),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: _calculateGradientColors(),
-          )),
-          child: Center(
-            child: FractionallySizedBox(
-              child: Container(
-                // This ensures that the Card's children are clipped correctly.
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      SubjectCoverAndBasicInfo(
-                        subject: widget.subject,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 4.0),
-                      ),
-                      Divider(),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 4.0),
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              CachedCircleAvatar(
-                                imageUrl:
-                                    widget.review.metaInfo.userAvatars.medium,
-                                radius: 15,
-                                navigateToUserRouteOnTap: false,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 3),
-                              ),
-                              WrappableText(
-                                widget.review.metaInfo.nickName,
-                                fit: FlexFit.tight,
-                              ),
-                              Text(
-                                TimeUtils.formatMilliSecondsEpochTime(
-                                    widget.review.metaInfo.updatedAt,
-                                    displayTimeIn: DisplayTimeIn.AlwaysAbsolute,
-                                    formatAbsoluteTimeAs:
-                                        AbsoluteTimeFormat.DateOnly),
-                                style: captionStyle,
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              WrappableText(
-                                widget.review.content ?? '',
-                                maxLines: SubjectReviewPoster.commentMaxLines,
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                _getUserActionNameOnPoster(
-                                    widget.subject.type,
-                                    widget.review.metaInfo.collectionStatus,
-                                    widget.review.metaInfo.score),
-                                style: captionStyle,
-                              ),
-                              SubjectStars(
-                                  subjectScore: widget.review.metaInfo.score,
-                                  starSize: captionStyle.fontSize)
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                      ),
-                      Divider(),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            'By BangumiN',
-                            style: captionStyle,
-                          ),
-                        ],
-                      ),
-                    ],
+    TextStyle captionStyle = SubjectReviewPoster.displayTheme.textTheme.caption;
+    return Theme(
+      data: SubjectReviewPoster.displayTheme,
+      child: RepaintBoundary(
+          key: _globalKey,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                vertical: SubjectReviewPoster.posterOuterVerticalPadding,
+                horizontal: SubjectReviewPoster.posterOuterHorizontalPadding),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: _calculateGradientColors(),
+                )),
+            child: Center(
+              child: FractionallySizedBox(
+                child: Container(
+                  // This ensures that the Card's children are clipped correctly.
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SubjectCoverAndBasicInfo(
+                          subject: widget.subject,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                        ),
+                        Divider(),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                CachedCircleAvatar(
+                                  imageUrl:
+                                  widget.review.metaInfo.userAvatars.medium,
+                                  radius: 15,
+                                  navigateToUserRouteOnTap: false,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 3),
+                                ),
+                                WrappableText(
+                                  widget.review.metaInfo.nickName,
+                                  fit: FlexFit.tight,
+                                ),
+                                Text(
+                                  TimeUtils.formatMilliSecondsEpochTime(
+                                      widget.review.metaInfo.updatedAt,
+                                      displayTimeIn: DisplayTimeIn
+                                          .AlwaysAbsolute,
+                                      formatAbsoluteTimeAs:
+                                      AbsoluteTimeFormat.DateOnly),
+                                  style: captionStyle,
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                WrappableText(
+                                  widget.review.content ?? '',
+                                  maxLines: SubjectReviewPoster.commentMaxLines,
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  _getUserActionNameOnPoster(
+                                      widget.subject.type,
+                                      widget.review.metaInfo.collectionStatus,
+                                      widget.review.metaInfo.score),
+                                  style: captionStyle,
+                                ),
+
+                                /// hack: seems like fontSize can only be obtained
+                                /// by accessing `Theme.of(context)`
+                                SubjectStars(
+                                    subjectScore: widget.review.metaInfo.score,
+                                    starSize: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .caption
+                                        .fontSize)
+                              ],
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                        ),
+                        Divider(),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'By BangumiN',
+                              style: captionStyle,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }

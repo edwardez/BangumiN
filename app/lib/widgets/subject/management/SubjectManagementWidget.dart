@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 
 class SubjectManagementWidget extends StatelessWidget {
   final BangumiSubject subject;
@@ -19,11 +20,8 @@ class SubjectManagementWidget extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
+                child: MuninOutlineButton(
                   child: Text('观看进度管理'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
                   onPressed: () {},
                 ),
               ),
@@ -35,11 +33,8 @@ class SubjectManagementWidget extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
+                child: MuninOutlineButton(
                   child: Text('编辑收藏'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
                   onPressed: () {
                     Application.router.navigateTo(
                         context,

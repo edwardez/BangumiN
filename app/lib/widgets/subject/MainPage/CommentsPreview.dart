@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/shared/utils/collections/common.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/common/SubjectReviewWidget.dart';
@@ -15,9 +15,7 @@ class CommentsPreview extends StatelessWidget {
   _moreCommentsButton(BuildContext context) {
     return IconButton(
       icon: Icon(AdaptiveIcons.forwardIconData),
-      color: Theme
-          .of(context)
-          .primaryColor,
+      color: lightPrimaryDarkAccentColor(context),
       onPressed: () {},
     );
   }

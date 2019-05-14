@@ -5,7 +5,7 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
@@ -39,7 +39,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
           widgets.add(InkWell(
             child: Text(
               infoBoxItem.name,
-              style: body1TextWithPrimaryColor(context),
+              style: body1TextWithLightPrimaryDarkAccentColor(context),
             ),
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: infoBoxItem.type,
@@ -54,6 +54,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
     });
 
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemBuilder: (BuildContext context, int index) {
         return wraps[index];
       },
@@ -74,9 +75,13 @@ class SubjectDetailInfoWidget extends StatelessWidget {
         }
 
         return ScaffoldWithSliverAppBar(
-          appBarMainTitle: '',
+          appBarMainTitle: Text('介绍与制作人员'),
           nestedScrollViewBody: _buildDetailInfoBody(context, vm.subject),
-          safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+          safeAreaChildPadding: const EdgeInsets.only(
+              left: defaultDensePortraitHorizontalPadding,
+              right: defaultDensePortraitHorizontalPadding,
+              top: largeVerticalPadding
+          ),
           appBarActions: subjectCommonActions(context, vm.subject),
         );
       },

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/async.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
 
@@ -100,6 +100,10 @@ class MuninRefresh extends StatefulWidget {
   /// Outer padding for all items, appBar is not included
   final EdgeInsetsGeometry itemPadding;
 
+  /// Padding between appBar and underneath items
+  /// Won't take effect if appBar is not set
+  final EdgeInsetsGeometry appBarUnderneathPadding;
+
   /// If current scroll position is [loadMoreTriggerDistance] or less away from
   /// bottom, [onLoadMore] will be triggered
   final double loadMoreTriggerDistance;
@@ -118,6 +122,8 @@ class MuninRefresh extends StatefulWidget {
     this.separatorBuilder = _defaultDividerBuilder,
     this.itemPadding = const EdgeInsets.symmetric(
         horizontal: defaultPortraitHorizontalPadding),
+    this.appBarUnderneathPadding = const EdgeInsets.only(
+        bottom: largeVerticalPadding),
     this.materialRefreshIndicatorDisplacement = 50,
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
@@ -426,6 +432,12 @@ class MuninRefreshState extends State<MuninRefresh> {
         onRefresh: _generateOnRefreshCallBack(),
         refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
         refreshTriggerPullDistance: widget.cupertinoRefreshTriggerPullDistance,
+      ));
+    }
+
+    if (widget.appBarUnderneathPadding != null) {
+      slivers.add(SliverPadding(
+        padding: widget.appBarUnderneathPadding,
       ));
     }
 

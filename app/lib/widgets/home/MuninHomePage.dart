@@ -60,6 +60,36 @@ class _MuninHomePageState extends State<MuninHomePage> {
     });
   }
 
+  _buildBottomNavigationBar() {
+    BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
+      currentIndex: currentIndex,
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(OMIcons.home), title: Text('动态')),
+        BottomNavigationBarItem(icon: Icon(OMIcons.done), title: Text('进度')),
+        BottomNavigationBarItem(icon: Icon(OMIcons.group), title: Text('讨论')),
+        BottomNavigationBarItem(icon: Icon(OMIcons.person), title: Text('主页')),
+      ],
+      onTap: _onSelectedIndexChanged,
+    );
+
+    /// If current theme is dark theme, change `bottomNavigationBar` color
+    /// to current primary to distinguish from canvas
+    if (Theme
+        .of(context)
+        .brightness == Brightness.dark) {
+      return Theme(
+        data: Theme.of(context)
+            .copyWith(canvasColor: Theme
+            .of(context)
+            .primaryColor),
+        child: bottomNavigationBar,
+      );
+    } else {
+      return bottomNavigationBar;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -72,26 +102,13 @@ class _MuninHomePageState extends State<MuninHomePage> {
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           body: SafeArea(
+            top: false,
             child: PageStorage(
               child: pages[currentIndex],
               bucket: bucket,
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: currentIndex,
-            type: BottomNavigationBarType.fixed,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.home), title: Text('动态')),
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.done), title: Text('进度')),
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.group), title: Text('讨论')),
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.person), title: Text('主页')),
-            ],
-            onTap: _onSelectedIndexChanged,
-          ),
+          bottomNavigationBar: _buildBottomNavigationBar(),
         );
       },
     );

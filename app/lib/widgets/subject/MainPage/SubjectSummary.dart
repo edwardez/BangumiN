@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class SubjectSummary extends StatelessWidget {
@@ -28,7 +29,7 @@ class SubjectSummary extends StatelessWidget {
             Expanded(
               child: FlatButton(
                 child: Text('简介与制作人员'),
-                textColor: Theme.of(context).primaryColor,
+                textColor: lightPrimaryDarkAccentColor(context),
                 onPressed: () {
                   /// opens [SubjectDetailInfoWidget]
                   Application.router.navigateTo(

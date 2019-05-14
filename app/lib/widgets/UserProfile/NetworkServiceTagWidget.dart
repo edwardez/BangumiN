@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +18,8 @@ class NetworkServiceTagWidget extends StatelessWidget {
 
     if (isLink) {
       contentTextStyle =
-          contentTextStyle.copyWith(color: Theme.of(context).primaryColor);
+          contentTextStyle.copyWith(
+              color: lightPrimaryDarkAccentColor(context));
     }
 
     return InkWell(
@@ -60,6 +62,5 @@ class NetworkServiceTagWidget extends StatelessWidget {
         ClipboardService.copyConfirmationDialog(context, textToCopy);
       },
     );
-    ;
   }
 }

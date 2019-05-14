@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 /// A read-only subject star widget
 /// Currently max stars are 5

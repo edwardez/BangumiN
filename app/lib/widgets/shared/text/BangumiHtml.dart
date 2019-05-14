@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/text/SpoilerText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,7 +29,7 @@ class BangumiHtml extends StatelessWidget {
         },
         linkStyle: TextStyle(
             decoration: TextDecoration.underline,
-            color: Theme.of(context).primaryColor,
-            decorationColor: Theme.of(context).primaryColor));
+            color: lightPrimaryDarkAccentColor(context),
+            decorationColor: lightPrimaryDarkAccentColor(context)));
   }
 }

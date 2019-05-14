@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 typedef void RatingChangeCallback(double rating);
 
@@ -37,13 +37,13 @@ class _StarRatingFieldState extends State<StarRatingField> {
 
     if (index >= widget.rating) {
       iconData = Icons.star_border;
-      iconColor = widget.color ?? Theme.of(context).primaryColor;
+      iconColor = widget.color ?? lightPrimaryDarkAccentColor(context);
     } else if (index > widget.rating - 1 && index < widget.rating) {
       iconData = Icons.star_half;
       iconColor = widget.borderColor ?? Theme.of(context).buttonColor;
     } else {
       iconData = Icons.star;
-      iconColor = widget.color ?? Theme.of(context).primaryColor;
+      iconColor = widget.color ?? lightPrimaryDarkAccentColor(context);
     }
     return InkResponse(
       child: Icon(

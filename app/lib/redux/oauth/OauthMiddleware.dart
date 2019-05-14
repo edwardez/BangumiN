@@ -5,24 +5,25 @@ import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
+import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:redux/redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 List<Middleware<AppState>> createOauthMiddleware(
     BangumiOauthService oauthClient,
     BangumiCookieService cookieClient,
     BangumiUserService bangumiUserService,
-    SharedPreferences preferences) {
+    SharedPreferenceService sharedPreferenceService) {
   final loginPage = _createLoginPage();
 
   final oauthRequest =
-      _createOAuthRequest(oauthClient, cookieClient, bangumiUserService);
+  _createOAuthRequest(
+      oauthClient, cookieClient, bangumiUserService, sharedPreferenceService);
   final oauthCancel = _createOAuthCancel(oauthClient, cookieClient);
 
   final logoutRequest =
-      _createLogoutRequest(oauthClient, cookieClient, preferences);
+  _createLogoutRequest(oauthClient, cookieClient, sharedPreferenceService);
 
   return [
     TypedMiddleware<AppState, LoginPage>(loginPage),
@@ -45,7 +46,8 @@ Middleware<AppState> _createLoginPage() {
 // TODO: refactor this messy middleware
 Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthClient,
     BangumiCookieService bangumiCookieService,
-    BangumiUserService bangumiUserService) {
+    BangumiUserService bangumiUserService,
+    SharedPreferenceService sharedPreferenceService,) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
 
@@ -54,11 +56,16 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthClient,
       await oauthClient.initializeAuthentication();
       int userId = await oauthClient.verifyUser();
       BangumiUserBasic userInfo =
-      await bangumiUserService.persistCurrentUserBasicInfo(userId.toString());
+      await bangumiUserService.getUserBasicInfo(userId.toString());
+
+      AppState updatedAppState = store.state.rebuild((b) =>
+      b
+        ..isAuthenticated = true
+        ..currentAuthenticatedUserBasicInfo.replace(userInfo));
       await Future.wait([
         oauthClient.persistCredentials(),
         bangumiCookieService.persistCredentials(),
-        bangumiUserService.persistCurrentUserInfo(userInfo)
+        sharedPreferenceService.persistAppState(updatedAppState)
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
       Navigator.of(action.context).pushReplacementNamed('/home');
@@ -90,13 +97,14 @@ Middleware<AppState> _createOAuthCancel(BangumiOauthService oauthClient,
 }
 
 Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
-    BangumiCookieService cookieClient, SharedPreferences preferences) {
+    BangumiCookieService cookieClient,
+    SharedPreferenceService sharedPreferenceService) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
     await Future.wait([
       oauthClient.clearCredentials(),
       cookieClient.clearCredentials(),
-      preferences.clear()
+      sharedPreferenceService.deleteAppState(),
     ]);
     store.dispatch(LogoutSuccess(action.context));
     Navigator.of(action.context)

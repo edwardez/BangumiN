@@ -5,7 +5,7 @@ import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 
 /// a commonly-used user list tile
 /// optionally there is a score parameter which follows the actionName in subtitle,
-class TimelineUserListTile extends StatelessWidget {
+class UserListTile extends StatelessWidget {
   final String nickName;
   final String actionName;
   final int updatedAt;
@@ -22,7 +22,7 @@ class TimelineUserListTile extends StatelessWidget {
   final int titleMaxLines;
   final double score;
 
-  TimelineUserListTile({
+  UserListTile({
     Key key,
     @required this.nickName,
     @required this.actionName,
@@ -33,7 +33,7 @@ class TimelineUserListTile extends StatelessWidget {
     this.formatAbsoluteTimeAs = AbsoluteTimeFormat.Full, this.trailing,
   });
 
-  TimelineUserListTile.fromUser({
+  UserListTile.fromUser({
     Key key,
     FeedMetaInfo user,
     this.titleMaxLines = 1,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 
 class BlogCreationSingleWidget extends StatelessWidget {
   final BlogCreationSingle blogCreationSingle;
@@ -11,7 +11,7 @@ class BlogCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(
+        UserListTile.fromUser(
           user: blogCreationSingle.user,
         ),
         Column(

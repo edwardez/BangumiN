@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/GroupJoinSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 
 class GroupJoinSingleWidget extends StatelessWidget {
@@ -14,7 +14,7 @@ class GroupJoinSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(
+        UserListTile.fromUser(
           user: groupJoinSingle.user,
         ),
         TimelineCommonListTile(

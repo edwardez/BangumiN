@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 
 /// this currently applies to both book and tv shows(shares same route, layout, etc)
 class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(user: progressUpdateEpisodeUntil.user),
+        UserListTile.fromUser(user: progressUpdateEpisodeUntil.user),
         Container(
           padding: EdgeInsets.symmetric(vertical: verticalPadding),
           child: InkWell(

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 
 class PublicMessageNormalWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class PublicMessageNormalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(
+        UserListTile.fromUser(
           user: publicMessageNormal.user,
         ),
         Row(

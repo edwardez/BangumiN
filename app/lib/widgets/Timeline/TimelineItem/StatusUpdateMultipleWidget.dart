@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/WrappableHyperTextLinkList.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/images/RoundedImageWithVerticalText.dart';
 
 /// see [StatusUpdateMultiple] for further explanation
@@ -49,7 +49,7 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> statusUpdateMultipleWidgets = [
-      TimelineUserListTile.fromUser(
+      UserListTile.fromUser(
         user: statusUpdateMultiple.user,
       ),
       WrappableHyperTextLinkList(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 
 class WikiCreationSingleWidget extends StatelessWidget {
   final WikiCreationSingle wikiCreationSingle;
@@ -12,7 +12,7 @@ class WikiCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(
+        UserListTile.fromUser(
           user: wikiCreationSingle.user,
         ),
         TimelineCommonListTile(title: wikiCreationSingle.newItemName),

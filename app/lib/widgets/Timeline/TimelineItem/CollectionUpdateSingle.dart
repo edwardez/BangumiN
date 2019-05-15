@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:quiver/strings.dart';
 
@@ -55,7 +55,7 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(
+        UserListTile.fromUser(
           user: collectionUpdateSingle.user,
           score: collectionUpdateSingle.subjectScore,
         ),

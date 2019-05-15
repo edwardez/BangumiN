@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineUserListTile.dart';
+import 'package:munin/widgets/shared/common/UserListTile.dart';
 
 class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
   final ProgressUpdateEpisodeSingle progressUpdateEpisodeSingle;
@@ -18,7 +18,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TimelineUserListTile.fromUser(user: progressUpdateEpisodeSingle.user),
+        UserListTile.fromUser(user: progressUpdateEpisodeSingle.user),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: InkWell(

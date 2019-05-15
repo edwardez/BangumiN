@@ -33,7 +33,7 @@ class SubjectTagsField extends StatefulWidget {
     return _SubjectTagsFieldState();
   }
 
-  SubjectTagsField(
+  const SubjectTagsField(
       {@required LinkedHashMap<String, bool> headerTags,
       @required LinkedHashMap<String, bool> candidateTags,
       @required this.maxTags,

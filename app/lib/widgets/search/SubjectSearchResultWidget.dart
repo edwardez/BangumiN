@@ -15,7 +15,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
   static const int coverFlex = 2;
   static const int textFlex = 8;
 
-  SubjectSearchResultWidget({Key key, @required this.subjectSearchResult})
+  const SubjectSearchResultWidget({Key key, @required this.subjectSearchResult})
       : super(key: key);
 
   List<Widget> _buildSubInfoRows(BuildContext context) {

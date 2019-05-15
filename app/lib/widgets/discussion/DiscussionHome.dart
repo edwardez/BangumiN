@@ -13,11 +13,12 @@ class DiscussionBodyPage {
   final FetchDiscussionRequest fetchDiscussionRequest;
   final DiscussionBody body;
 
-  DiscussionBodyPage({this.index, this.fetchDiscussionRequest, this.body});
+  const DiscussionBodyPage(
+      {this.index, this.fetchDiscussionRequest, this.body});
 }
 
 class DiscussionHome extends StatefulWidget {
-  DiscussionHome({Key key}) : super(key: key);
+  const DiscussionHome({Key key}) : super(key: key);
 
   @override
   _DiscussionHomeState createState() => _DiscussionHomeState();

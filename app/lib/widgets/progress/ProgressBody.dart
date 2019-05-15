@@ -265,7 +265,7 @@ class _ViewModel {
         updateBookProgress: _updateBookProgress);
   }
 
-  _ViewModel({
+  const _ViewModel({
     @required this.progresses,
     @required this.getProgressLoadingStatus,
     @required this.getProgress,

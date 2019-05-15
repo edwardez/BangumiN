@@ -7,7 +7,7 @@ import 'package:redux/redux.dart';
 import 'UserProfileWidget.dart';
 
 class UserHome extends StatelessWidget {
-  UserHome({Key key}) : super(key: key);
+  const UserHome({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

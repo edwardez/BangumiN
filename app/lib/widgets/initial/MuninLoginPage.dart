@@ -6,7 +6,7 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 
 class MuninLoginPage extends StatefulWidget {
-  MuninLoginPage({Key key}) : super(key: key);
+  const MuninLoginPage({Key key}) : super(key: key);
 
   @override
   _MuninLoginPageState createState() => _MuninLoginPageState();
@@ -92,7 +92,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
+    return StoreConnector<AppState, _ViewModel>(
       converter: (store) {
         return _ViewModel(
           appState: store.state,
@@ -109,7 +109,7 @@ class _ViewModel {
   final AppState appState;
   final void Function() onLoginPressed;
 
-  _ViewModel({this.appState, this.onLoginPressed});
+  const _ViewModel({this.appState, this.onLoginPressed});
 
   void _onWidgetDidBuild(Function callback) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

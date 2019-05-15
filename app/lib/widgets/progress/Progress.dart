@@ -27,13 +27,13 @@ class ProgressBodyPage {
   final GetProgressRequest getProgressRequest;
   final ProgressBody body;
 
-  ProgressBodyPage({@required this.index,
+  const ProgressBodyPage({@required this.index,
     @required this.getProgressRequest,
     @required this.body});
 }
 
 class MuninSubjectProgress extends StatefulWidget {
-  MuninSubjectProgress({Key key}) : super(key: key);
+  const MuninSubjectProgress({Key key}) : super(key: key);
 
   @override
   _MuninSubjectProgressState createState() => _MuninSubjectProgressState();

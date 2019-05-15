@@ -16,7 +16,7 @@ class MuninApp extends StatefulWidget {
   final Application application;
   final Store<AppState> store;
 
-  MuninApp(this.application, this.store);
+  const MuninApp(this.application, this.store);
 
   @override
   State<StatefulWidget> createState() {

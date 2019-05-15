@@ -31,7 +31,7 @@ class _ViewModel {
   final MuninTheme muninTheme;
   final bool isAuthenticated;
 
-  _ViewModel({
+  const _ViewModel({
     @required this.muninTheme,
     @required this.isAuthenticated,
   });

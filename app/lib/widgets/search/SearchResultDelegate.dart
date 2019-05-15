@@ -12,11 +12,8 @@ class SearchResultDelegate extends StatelessWidget {
   static const double portraitHorizontalPadding =
       defaultPortraitHorizontalPadding;
 
-  SearchResultDelegate({Key key, @required this.searchResult})
-      : assert(searchResult is SubjectSearchResult ||
-            searchResult is UserSearchResult ||
-            searchResult is MonoSearchResult),
-        super(key: key);
+  const SearchResultDelegate({Key key, @required this.searchResult})
+      : super(key: key);
 
   Widget getDelegatedWidget(SearchResult searchResult) {
     if (searchResult is SubjectSearchResult) {
@@ -32,6 +29,10 @@ class SearchResultDelegate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(searchResult is SubjectSearchResult ||
+        searchResult is UserSearchResult ||
+        searchResult is MonoSearchResult);
+
     return getDelegatedWidget(searchResult);
   }
 }

@@ -18,7 +18,7 @@ class ListTileSubtitleWidget extends StatelessWidget {
 
   static const double starCaptionFontSizeRatio = 1.2;
 
-  ListTileSubtitleWidget({
+  const ListTileSubtitleWidget({
     @required this.actionName,
     @required this.updatedAt,
     this.score,

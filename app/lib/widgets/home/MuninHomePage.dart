@@ -118,7 +118,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
 class _ViewModel {
   final AppState state;
 
-  _ViewModel({this.state});
+  const _ViewModel({this.state});
 
   @override
   int get hashCode => state.hashCode;

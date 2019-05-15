@@ -13,7 +13,7 @@ class MonoSearchResultWidget extends StatelessWidget {
   static const int coverFlex = 2;
   static const int textFlex = 8;
 
-  MonoSearchResultWidget({Key key, @required this.monoSearchResult})
+  const MonoSearchResultWidget({Key key, @required this.monoSearchResult})
       : super(key: key);
 
   List<Widget> _buildSubInfoRows(BuildContext context) {

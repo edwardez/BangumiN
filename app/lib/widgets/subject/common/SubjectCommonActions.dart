@@ -3,8 +3,10 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
+void _showSubjectModalBottomSheet(BuildContext context,
+    BangumiSubject subject) {
   showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
@@ -12,6 +14,13 @@ void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
           child: Container(
             child: Wrap(
               children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.open_in_browser),
+                  title: Text('在浏览器中打开'),
+                  onTap: () {
+                    launch(subject.pageUrlFromCalculation, forceSafariVC: true);
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.content_copy),
                   title: Text('复制标题'),
@@ -57,7 +66,7 @@ List<Widget> subjectCommonActions(BuildContext context,
     IconButton(
       icon: Icon(AdaptiveIcons.moreActionsIconData),
       onPressed: () {
-        _settingModalBottomSheet(context, subject);
+        _showSubjectModalBottomSheet(context, subject);
       },
     ),
   ];

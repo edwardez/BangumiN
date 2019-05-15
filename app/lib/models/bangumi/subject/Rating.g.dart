@@ -19,7 +19,8 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'total',
-      serializers.serialize(object.total, specifiedType: const FullType(int)),
+      serializers.serialize(object.totalScoreVotesCount,
+          specifiedType: const FullType(int)),
       'count',
       serializers.serialize(object.count, specifiedType: const FullType(Count)),
       'score',
@@ -54,7 +55,7 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
       final dynamic value = iterator.current;
       switch (key) {
         case 'total':
-          result.total = serializers.deserialize(value,
+          result.totalScoreVotesCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'count':
@@ -82,7 +83,7 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
 
 class _$Rating extends Rating {
   @override
-  final int total;
+  final int totalScoreVotesCount;
   @override
   final Count count;
   @override
@@ -96,14 +97,14 @@ class _$Rating extends Rating {
       (new RatingBuilder()..update(updates)).build();
 
   _$Rating._(
-      {this.total,
+      {this.totalScoreVotesCount,
       this.count,
       this.score,
       this.friendScoreVotesCount,
       this.friendScore})
       : super._() {
-    if (total == null) {
-      throw new BuiltValueNullFieldError('Rating', 'total');
+    if (totalScoreVotesCount == null) {
+      throw new BuiltValueNullFieldError('Rating', 'totalScoreVotesCount');
     }
     if (count == null) {
       throw new BuiltValueNullFieldError('Rating', 'count');
@@ -124,7 +125,7 @@ class _$Rating extends Rating {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Rating &&
-        total == other.total &&
+        totalScoreVotesCount == other.totalScoreVotesCount &&
         count == other.count &&
         score == other.score &&
         friendScoreVotesCount == other.friendScoreVotesCount &&
@@ -134,7 +135,9 @@ class _$Rating extends Rating {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, total.hashCode), count.hashCode), score.hashCode),
+        $jc(
+            $jc($jc($jc(0, totalScoreVotesCount.hashCode), count.hashCode),
+                score.hashCode),
             friendScoreVotesCount.hashCode),
         friendScore.hashCode));
   }
@@ -142,7 +145,7 @@ class _$Rating extends Rating {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Rating')
-          ..add('total', total)
+          ..add('totalScoreVotesCount', totalScoreVotesCount)
           ..add('count', count)
           ..add('score', score)
           ..add('friendScoreVotesCount', friendScoreVotesCount)
@@ -154,9 +157,10 @@ class _$Rating extends Rating {
 class RatingBuilder implements Builder<Rating, RatingBuilder> {
   _$Rating _$v;
 
-  int _total;
-  int get total => _$this._total;
-  set total(int total) => _$this._total = total;
+  int _totalScoreVotesCount;
+  int get totalScoreVotesCount => _$this._totalScoreVotesCount;
+  set totalScoreVotesCount(int totalScoreVotesCount) =>
+      _$this._totalScoreVotesCount = totalScoreVotesCount;
 
   CountBuilder _count;
   CountBuilder get count => _$this._count ??= new CountBuilder();
@@ -179,7 +183,7 @@ class RatingBuilder implements Builder<Rating, RatingBuilder> {
 
   RatingBuilder get _$this {
     if (_$v != null) {
-      _total = _$v.total;
+      _totalScoreVotesCount = _$v.totalScoreVotesCount;
       _count = _$v.count?.toBuilder();
       _score = _$v.score;
       _friendScoreVotesCount = _$v.friendScoreVotesCount;
@@ -208,7 +212,7 @@ class RatingBuilder implements Builder<Rating, RatingBuilder> {
     try {
       _$result = _$v ??
           new _$Rating._(
-              total: total,
+              totalScoreVotesCount: totalScoreVotesCount,
               count: count.build(),
               score: score,
               friendScoreVotesCount: friendScoreVotesCount,

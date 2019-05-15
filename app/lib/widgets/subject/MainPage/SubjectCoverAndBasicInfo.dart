@@ -8,6 +8,9 @@ import 'package:quiver/strings.dart';
 
 class SubjectCoverAndBasicInfo extends StatelessWidget {
   final BangumiSubject subject;
+
+  /// Whether score info should be displayed at the end of info box rows
+  final bool displayScore;
   final int coverFlex;
   final int curatedInfoBoxFlex;
 
@@ -16,6 +19,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     @required this.subject,
     this.coverFlex = 2,
     this.curatedInfoBoxFlex = 4,
+    this.displayScore = false,
   }) : super(key: key);
 
   _buildInfoWidgets(BuildContext context, BangumiSubject subject) {
@@ -56,19 +60,27 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       });
     }
 
-    Widget scoreWidget = RichText(
-      text: TextSpan(children: [
-        TextSpan(
-            text: subject.rating.score?.toString() ?? '-',
-            style: scoreStyle(context)),
-        TextSpan(text: '分  ', style: Theme.of(context).textTheme.body1),
-        TextSpan(
-            text: '${subject.rating.total}人',
-            style: Theme.of(context).textTheme.caption)
-      ]),
-    );
+    if (displayScore) {
+      Widget scoreWidget = RichText(
+        text: TextSpan(children: [
+          TextSpan(
+              text: subject.rating.score?.toString() ?? '-',
+              style: scoreStyle(context)),
+          TextSpan(text: '分  ', style: Theme
+              .of(context)
+              .textTheme
+              .body1),
+          TextSpan(
+              text: '${subject.rating.totalScoreVotesCount}人',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .caption)
+        ]),
+      );
 
-    widgets.add(scoreWidget);
+      widgets.add(scoreWidget);
+    }
 
     return widgets;
   }

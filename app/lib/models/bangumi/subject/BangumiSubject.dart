@@ -10,6 +10,7 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
@@ -53,9 +54,14 @@ abstract class BangumiSubject
   BuiltListMultimap<String, RelatedSubject> get relatedSubjects;
 
   @nullable
-
   /// a short preview list of comments that are on subject main page
   BuiltList<SubjectReview> get commentsPreview;
+
+  /// Collection info preview of current user
+  /// Note: this info is parsed from html to ensure subject info can be fetched in one call
+  /// thus should only be used for preview purpose.To get the accurate info
+  /// Bangumi API should be used
+  SubjectCollectionInfoPreview get userSubjectCollectionInfoPreview;
 
   /// key is row name, value is InfoBoxRow
   /// we need to use this data structure because Bangumi might use multiple rows

@@ -32,6 +32,9 @@ class _$BangumiSubjectSerializer
       'images',
       serializers.serialize(object.images,
           specifiedType: const FullType(Images)),
+      'userSubjectCollectionInfoPreview',
+      serializers.serialize(object.userSubjectCollectionInfoPreview,
+          specifiedType: const FullType(SubjectCollectionInfoPreview)),
       'bangumiSuggestedTags',
       serializers.serialize(object.bangumiSuggestedTags,
           specifiedType:
@@ -174,6 +177,13 @@ class _$BangumiSubjectSerializer
                       BuiltList, const [const FullType(SubjectReview)]))
               as BuiltList);
           break;
+        case 'userSubjectCollectionInfoPreview':
+          result.userSubjectCollectionInfoPreview.replace(
+              serializers.deserialize(value,
+                      specifiedType:
+                          const FullType(SubjectCollectionInfoPreview))
+                  as SubjectCollectionInfoPreview);
+          break;
         case 'infoBoxRows':
           result.infoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
@@ -250,6 +260,8 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final BuiltList<SubjectReview> commentsPreview;
   @override
+  final SubjectCollectionInfoPreview userSubjectCollectionInfoPreview;
+  @override
   final BuiltListMultimap<String, InfoBoxItem> infoBoxRows;
   @override
   final BuiltList<String> bangumiSuggestedTags;
@@ -283,6 +295,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.characters,
       this.relatedSubjects,
       this.commentsPreview,
+      this.userSubjectCollectionInfoPreview,
       this.infoBoxRows,
       this.bangumiSuggestedTags,
       this.userSelectedTags,
@@ -304,6 +317,10 @@ class _$BangumiSubject extends BangumiSubject {
     }
     if (images == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'images');
+    }
+    if (userSubjectCollectionInfoPreview == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiSubject', 'userSubjectCollectionInfoPreview');
     }
     if (bangumiSuggestedTags == null) {
       throw new BuiltValueNullFieldError(
@@ -346,6 +363,8 @@ class _$BangumiSubject extends BangumiSubject {
         characters == other.characters &&
         relatedSubjects == other.relatedSubjects &&
         commentsPreview == other.commentsPreview &&
+        userSubjectCollectionInfoPreview ==
+            other.userSubjectCollectionInfoPreview &&
         infoBoxRows == other.infoBoxRows &&
         bangumiSuggestedTags == other.bangumiSuggestedTags &&
         userSelectedTags == other.userSelectedTags &&
@@ -377,20 +396,23 @@ class _$BangumiSubject extends BangumiSubject {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            0,
-                                                                            type
+                                                                            $jc(
+                                                                                0,
+                                                                                type
+                                                                                    .hashCode),
+                                                                            subTypeName
                                                                                 .hashCode),
-                                                                        subTypeName
+                                                                        summary
                                                                             .hashCode),
-                                                                    summary
+                                                                    rating
                                                                         .hashCode),
-                                                                rating
-                                                                    .hashCode),
-                                                            rank.hashCode),
-                                                        images.hashCode),
-                                                    characters.hashCode),
-                                                relatedSubjects.hashCode),
-                                            commentsPreview.hashCode),
+                                                                rank.hashCode),
+                                                            images.hashCode),
+                                                        characters.hashCode),
+                                                    relatedSubjects.hashCode),
+                                                commentsPreview.hashCode),
+                                            userSubjectCollectionInfoPreview
+                                                .hashCode),
                                         infoBoxRows.hashCode),
                                     bangumiSuggestedTags.hashCode),
                                 userSelectedTags.hashCode),
@@ -414,6 +436,8 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('characters', characters)
           ..add('relatedSubjects', relatedSubjects)
           ..add('commentsPreview', commentsPreview)
+          ..add('userSubjectCollectionInfoPreview',
+              userSubjectCollectionInfoPreview)
           ..add('infoBoxRows', infoBoxRows)
           ..add('bangumiSuggestedTags', bangumiSuggestedTags)
           ..add('userSelectedTags', userSelectedTags)
@@ -477,6 +501,16 @@ class BangumiSubjectBuilder
   set commentsPreview(ListBuilder<SubjectReview> commentsPreview) =>
       _$this._commentsPreview = commentsPreview;
 
+  SubjectCollectionInfoPreviewBuilder _userSubjectCollectionInfoPreview;
+  SubjectCollectionInfoPreviewBuilder get userSubjectCollectionInfoPreview =>
+      _$this._userSubjectCollectionInfoPreview ??=
+          new SubjectCollectionInfoPreviewBuilder();
+  set userSubjectCollectionInfoPreview(
+          SubjectCollectionInfoPreviewBuilder
+              userSubjectCollectionInfoPreview) =>
+      _$this._userSubjectCollectionInfoPreview =
+          userSubjectCollectionInfoPreview;
+
   ListMultimapBuilder<String, InfoBoxItem> _infoBoxRows;
   ListMultimapBuilder<String, InfoBoxItem> get infoBoxRows =>
       _$this._infoBoxRows ??= new ListMultimapBuilder<String, InfoBoxItem>();
@@ -539,6 +573,8 @@ class BangumiSubjectBuilder
       _characters = _$v.characters?.toBuilder();
       _relatedSubjects = _$v.relatedSubjects?.toBuilder();
       _commentsPreview = _$v.commentsPreview?.toBuilder();
+      _userSubjectCollectionInfoPreview =
+          _$v.userSubjectCollectionInfoPreview?.toBuilder();
       _infoBoxRows = _$v.infoBoxRows?.toBuilder();
       _bangumiSuggestedTags = _$v.bangumiSuggestedTags?.toBuilder();
       _userSelectedTags = _$v.userSelectedTags?.toBuilder();
@@ -581,6 +617,8 @@ class BangumiSubjectBuilder
               characters: _characters?.build(),
               relatedSubjects: _relatedSubjects?.build(),
               commentsPreview: _commentsPreview?.build(),
+              userSubjectCollectionInfoPreview:
+                  userSubjectCollectionInfoPreview.build(),
               infoBoxRows: _infoBoxRows?.build(),
               bangumiSuggestedTags: bangumiSuggestedTags.build(),
               userSelectedTags: userSelectedTags.build(),
@@ -604,6 +642,8 @@ class BangumiSubjectBuilder
         _relatedSubjects?.build();
         _$failedField = 'commentsPreview';
         _commentsPreview?.build();
+        _$failedField = 'userSubjectCollectionInfoPreview';
+        userSubjectCollectionInfoPreview.build();
         _$failedField = 'infoBoxRows';
         _infoBoxRows?.build();
         _$failedField = 'bangumiSuggestedTags';

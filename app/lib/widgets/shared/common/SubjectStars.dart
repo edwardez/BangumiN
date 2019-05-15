@@ -15,7 +15,7 @@ class SubjectStars extends StatelessWidget {
         this.starColor = MuninColor.score})
       : super(key: key);
 
-  /// score: min 0, max 10
+  /// score: min 0.0, max 10.0
   List<Widget> _buildStarIconsWith5StarMax(double score) {
     assert(score <= 10.0 && score >= 0.0);
 

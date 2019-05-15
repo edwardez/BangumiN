@@ -42,6 +42,7 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
@@ -147,10 +148,12 @@ part 'serializers.g.dart';
   Actor,
   InfoBoxRow,
   InfoBoxItem,
+  SubjectCollectionInfoPreview,
   SubjectCollectionInfo,
   CollectionStatusFromBangumi,
   CollectionStatus,
   SubjectState,
+
 
   /// Search
   BangumiSearchResponse,

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
@@ -13,6 +14,7 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollection.dart';
+import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
@@ -89,10 +91,10 @@ class SubjectParser {
     return infoBoxItems;
   }
 
-  Rating parseRating(DocumentFragment subjectElement) {
+  Rating parseRating(Element ratingElement) {
     List<int> scoreArray = [];
     int totalVotesCount = 0;
-    subjectElement.querySelectorAll('.horizontalChart li').forEach((element) {
+    ratingElement.querySelectorAll('.horizontalChart li').forEach((element) {
       int scoreVotesCount = tryParseInt(element
           .querySelector('.count')
           ?.text
@@ -103,12 +105,14 @@ class SubjectParser {
 
     Count count = Count.fromDescendingScoreArray(scoreArray);
     double score = tryParseDouble(
-        subjectElement.querySelector('[property="v:average"]')?.text);
+        ratingElement
+            .querySelector('[property="v:average"]')
+            ?.text);
 
-    Element friendScoreElement = subjectElement.querySelector('.frdScore');
+    Element friendScoreElement = ratingElement.querySelector('.frdScore');
     int friendScoreVotesCount = extractFirstIntGroup(
         friendScoreElement?.querySelector('a')?.text,
-        defaultValue: null);
+        defaultValue: 0);
 
     double friendScore = tryParseDouble(
         friendScoreElement?.querySelector('.num')?.text,
@@ -117,9 +121,29 @@ class SubjectParser {
     return Rating((b) => b
       ..score = score
       ..count.replace(count)
-      ..total = totalVotesCount
+      ..totalScoreVotesCount = totalVotesCount
       ..friendScore = friendScore
       ..friendScoreVotesCount = friendScoreVotesCount);
+  }
+
+  SubjectCollectionInfoPreview parseSubjectCollectionInfoPreview(
+      Element collectionStatusElement,
+      Element scoreElement,) {
+    int score = scoreElement == null
+        ? 0
+        : tryParseInt(scoreElement.attributes['value']);
+
+    CollectionStatus status =
+    CollectionStatus.guessCollectionStatusByChineseName(
+        collectionStatusElement
+            .querySelector('.interest_now')
+            ?.text,
+        fallbackCollectionStatus: CollectionStatus.Untouched);
+
+    return SubjectCollectionInfoPreview((b) =>
+    b
+      ..score = score
+      ..status = status);
   }
 
   BuiltList<Actor> parseActors(Element characterElement) {
@@ -358,7 +382,6 @@ class SubjectParser {
     List<String> userTags = [];
 
     Element tagElement = subjectElement.querySelector('#tags');
-    String subTypeName = '';
     RegExp invalidChars = RegExp(',| +');
     if (tagElement != null) {
       String concatenatedTags = tagElement.attributes['value'] ?? '';
@@ -443,7 +466,12 @@ class SubjectParser {
       }
     }
 
-    Rating rating = parseRating(document);
+    Element reviewElement = document.querySelector('#panelInterestWrapper');
+
+    Rating rating = parseRating(reviewElement);
+
+    SubjectCollectionInfoPreview preview = parseSubjectCollectionInfoPreview(
+        reviewElement, document.querySelector('.rating[checked]'));
 
     int rank = tryParseInt(
         document
@@ -487,7 +515,8 @@ class SubjectParser {
       ..commentsPreview.replace(comments)
       ..relatedSubjects.replace(relatedSubjects)
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
-      ..userSelectedTags.replace(userSelectedTags));
+      ..userSelectedTags.replace(userSelectedTags)
+      ..userSubjectCollectionInfoPreview.replace(preview));
   }
 
   /// currently not in use

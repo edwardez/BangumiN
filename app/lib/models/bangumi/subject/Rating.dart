@@ -12,8 +12,9 @@ abstract class Rating implements Built<Rating, RatingBuilder> {
 
   factory Rating([updates(RatingBuilder b)]) = _$Rating;
 
+  /// Total number of users who have given score to the subject
   @BuiltValueField(wireName: 'total')
-  int get total;
+  int get totalScoreVotesCount;
 
   @BuiltValueField(wireName: 'count')
   Count get count;
@@ -21,14 +22,7 @@ abstract class Rating implements Built<Rating, RatingBuilder> {
   @BuiltValueField(wireName: 'score')
   double get score;
 
-  String get scoreAsStringOrHyphen {
-    if (score == null || score == 0.0) {
-      return '-';
-    }
-
-    return score.toString();
-  }
-
+  /// Total number of friends of current app user who have given score to the subject
   /// [friendScoreVotesCount] is not available in BangumiAPI(but available through html parser)
   @nullable
   int get friendScoreVotesCount;

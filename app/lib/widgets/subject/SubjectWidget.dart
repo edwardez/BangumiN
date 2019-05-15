@@ -12,6 +12,7 @@ import 'package:munin/widgets/subject/MainPage/CharactersPreview.dart';
 import 'package:munin/widgets/subject/MainPage/CommentsPreview.dart';
 import 'package:munin/widgets/subject/MainPage/RelatedSubjectsPreview.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
+import 'package:munin/widgets/subject/MainPage/SubjectRatingOverview.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectSummary.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:munin/widgets/subject/management/SubjectManagementWidget.dart';
@@ -61,6 +62,10 @@ class SubjectWidget extends StatelessWidget {
       subject: subject,
     ));
 
+    widgets.add(SubjectRatingOverview(
+      subject: subject,
+    ));
+
     widgets.add(SubjectManagementWidget(subject: subject));
 
     widgets.add(SubjectSummary(subject: subject));
@@ -73,7 +78,11 @@ class SubjectWidget extends StatelessWidget {
       widgets.add(RelatedSubjectsPreview(subject: subject));
     }
 
-    widgets.add(CommentsPreview(subject: subject));
+    /// Add a padding in the bottom so bottom comments are easier to read
+    widgets.add(Padding(
+      padding: const EdgeInsets.only(bottom: 30.0),
+      child: CommentsPreview(subject: subject),
+    ));
 
     return ScaffoldWithSliverAppBar(
       appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),

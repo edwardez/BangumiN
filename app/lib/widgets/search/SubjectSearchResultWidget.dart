@@ -44,7 +44,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
     if (subjectSearchResult.rating != null) {
       Rating rating = subjectSearchResult.rating;
       miscellaneousInfo.add('${rating.score}分');
-      miscellaneousInfo.add('${rating.total}人评分');
+      miscellaneousInfo.add('${rating.totalScoreVotesCount}人评分');
     }
 
     if (subjectSearchResult.isStartDateValid) {

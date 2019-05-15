@@ -22,6 +22,13 @@ TextStyle body1TextWithLightPrimaryDarkAccentColor(BuildContext context) {
       .copyWith(color: lightPrimaryDarkAccentColor(context));
 }
 
+TextStyle defaultCaptionText(BuildContext context) {
+  return Theme
+      .of(context)
+      .textTheme
+      .caption;
+}
+
 TextStyle captionTextWithBody1Size(BuildContext context) {
   return Theme.of(context)
       .textTheme

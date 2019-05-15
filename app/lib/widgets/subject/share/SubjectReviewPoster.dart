@@ -15,6 +15,7 @@ import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
+import 'package:quiver/strings.dart';
 
 class SubjectReviewPoster extends StatefulWidget {
   /// Lightness ratio of topColor/BottomColor for the background
@@ -126,6 +127,12 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
   @override
   Widget build(BuildContext context) {
     TextStyle captionStyle = SubjectReviewPoster.displayTheme.textTheme.caption;
+
+    String userActionNameOnPoster = _getUserActionNameOnPoster(
+        widget.subject.type,
+        widget.review.metaInfo.collectionStatus,
+        widget.review.metaInfo.score);
+
     return Theme(
       data: SubjectReviewPoster.displayTheme,
       child: RepaintBoundary(
@@ -155,12 +162,13 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                       children: <Widget>[
                         SubjectCoverAndBasicInfo(
                           subject: widget.subject,
+                          displayScore: true,
                         ),
-                        Container(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.0),
                         ),
                         Divider(),
-                        Container(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.0),
                         ),
                         Column(
@@ -184,51 +192,61 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                 Text(
                                   TimeUtils.formatMilliSecondsEpochTime(
                                       widget.review.metaInfo.updatedAt,
-                                      displayTimeIn: DisplayTimeIn
-                                          .AlwaysAbsolute,
+                                      displayTimeIn:
+                                      DisplayTimeIn.AlwaysAbsolute,
                                       formatAbsoluteTimeAs:
                                       AbsoluteTimeFormat.DateOnly),
                                   style: captionStyle,
                                 )
                               ],
                             ),
-                            Row(
-                              children: <Widget>[
-                                WrappableText(
-                                  widget.review.content ?? '',
-                                  maxLines: SubjectReviewPoster.commentMaxLines,
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  _getUserActionNameOnPoster(
-                                      widget.subject.type,
-                                      widget.review.metaInfo.collectionStatus,
-                                      widget.review.metaInfo.score),
-                                  style: captionStyle,
-                                ),
+                            if (!isEmpty(widget.review.content)) ...[
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  WrappableText(
+                                    widget.review.content,
+                                    maxLines:
+                                    SubjectReviewPoster.commentMaxLines,
+                                  )
+                                ],
+                              ),
+                            ],
+                            if (!isEmpty(userActionNameOnPoster) || widget
+                                .review.metaInfo.score != null) ...[
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    userActionNameOnPoster,
+                                    style: captionStyle,
+                                  ),
 
-                                /// hack: seems like fontSize can only be obtained
-                                /// by accessing `Theme.of(context)`
-                                SubjectStars(
-                                    subjectScore: widget.review.metaInfo.score,
-                                    starSize: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .caption
-                                        .fontSize)
-                              ],
-                            ),
+                                  /// hack: seems like fontSize can only be obtained
+                                  /// by accessing `Theme.of(context)`
+                                  SubjectStars(
+                                      subjectScore:
+                                      widget.review.metaInfo.score,
+                                      starSize: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .caption
+                                          .fontSize)
+                                ],
+                              ),
+                            ],
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: EdgeInsets.symmetric(vertical: 2.0),
                         ),
                         Divider(),
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: EdgeInsets.symmetric(vertical: 2.0),
                         ),
                         Row(
                           children: <Widget>[

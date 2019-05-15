@@ -61,7 +61,9 @@ class CollectionStatus extends EnumClass {
   }
 
   static String chineseNameWithSubjectType(CollectionStatus status,
-      SubjectType subjectType) {
+      SubjectType subjectType, {
+        String fallbackChineseName,
+      }) {
     switch (status) {
       case CollectionStatus.Wish:
         return '想${subjectType.activityVerbChineseNameByType}';
@@ -76,16 +78,21 @@ class CollectionStatus extends EnumClass {
       case CollectionStatus.Untouched:
       case CollectionStatus.Unknown:
       default:
+        if (fallbackChineseName != null) {
+          return fallbackChineseName;
+        }
         assert(false, '$status with $subjectType is not supported');
         return '';
     }
   }
 
-
-  static CollectionStatus guessCollectionStatusByChineseName(
-      String chineseName) {
+  /// Guess collection status by searching through a given String
+  /// `fallbackCollectionStatus` can be used to specify which status to return
+  /// if this method cannot decide correct `CollectionStatus`
+  static CollectionStatus guessCollectionStatusByChineseName(String chineseName,
+      {fallbackCollectionStatus = CollectionStatus.Unknown}) {
     if (isEmpty(chineseName)) {
-      return CollectionStatus.Unknown;
+      return fallbackCollectionStatus;
     }
 
     if (chineseName.contains('想')) {
@@ -108,11 +115,12 @@ class CollectionStatus extends EnumClass {
       return CollectionStatus.OnHold;
     }
 
-    return CollectionStatus.Unknown;
+    return fallbackCollectionStatus;
   }
 
   static bool isInvalid(CollectionStatus status) {
-    return status == null || status == CollectionStatus.Untouched ||
+    return status == null ||
+        status == CollectionStatus.Untouched ||
         status == CollectionStatus.Unknown;
   }
 

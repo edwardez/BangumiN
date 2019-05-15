@@ -21,7 +21,7 @@ import 'package:munin/redux/progress/ProgressEpics.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/setting/SettingEpics.dart';
-import 'package:munin/redux/subject/SubjectMiddleware.dart';
+import 'package:munin/redux/subject/SubjectEpics.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
 import 'package:munin/redux/user/UserEpics.dart';
 import 'package:munin/shared/injector/injector.dart';

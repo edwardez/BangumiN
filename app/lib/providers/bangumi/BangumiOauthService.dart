@@ -40,10 +40,6 @@ class BangumiOauthService {
     this.secureStorageService = secureStorageService;
     this._baseOauthHttpClient = oauthHttpClient;
 
-//    var x = jsonDecode(serializedBangumiOauthCredentials);
-//    x['expiration'] = 0;
-//    serializedBangumiOauthCredentials = jsonEncode(x);
-
     if (serializedBangumiOauthCredentials != null) {
       Credentials credentials =
       Credentials.fromJson(serializedBangumiOauthCredentials);

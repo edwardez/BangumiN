@@ -6,11 +6,12 @@ import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/widgets/Timeline/TimelineItem/common/WrappableHyperTextLinkList.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
-import 'package:munin/widgets/shared/images/RoundedImageWithVerticalText.dart';
+import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
 /// see [StatusUpdateMultiple] for further explanation
 class StatusUpdateMultipleWidget extends StatelessWidget {
-  static const double imagePadding = 2.0;
+  static const double verticalImagePadding = 2.0;
+  static const double horizontalImagePadding = 4.0;
   final StatusUpdateMultiple statusUpdateMultiple;
 
   const StatusUpdateMultipleWidget({Key key, @required this.statusUpdateMultiple})
@@ -21,7 +22,7 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
     if (statusUpdateMultiple.contentType == BangumiContent.User) {
       for (var image in images) {
         imageWidgets.add(Padding(
-          padding: const EdgeInsets.only(right: imagePadding),
+          padding: const EdgeInsets.only(right: horizontalImagePadding),
           child: CachedCircleAvatar(
             imageUrl: image.imageUrl,
             username: image.id,
@@ -31,13 +32,13 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
       }
     } else {
       for (var image in images) {
-        imageWidgets.add(RoundedImageWithVerticalText(
-          verticalImagePadding: imagePadding,
+        imageWidgets.add(RoundedElevatedImageWithBottomText(
+          horizontalImagePadding: horizontalImagePadding,
+          verticalImagePadding: verticalImagePadding,
           contentType: image.contentType,
           imageUrl: image.imageUrl,
           id: image.id,
           pageUrl: image.pageUrl,
-          totalWidthFactor: 1,
         ));
       }
     }

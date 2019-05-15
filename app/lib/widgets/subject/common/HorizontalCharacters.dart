@@ -3,31 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
-import 'package:munin/widgets/shared/images/RoundedImageWithVerticalText.dart';
+import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
 class HorizontalCharacters extends StatelessWidget {
+  static const characterNameMaxLines = 1;
+  static const actorNameMaxLines = 1;
+  static const double textSpaceScaleBaseFactor = 1.5;
+
   final BuiltList<Character> characters;
   final double horizontalImagePadding;
 
   final double imageWidth;
   final double imageHeight;
 
-  /// character has title, subtitle, each counts for 1 factor, we add 1 more for spacing
-  final int textFactor = 3;
 
-  HorizontalCharacters(
-      {Key key,
-      @required this.characters,
-      this.horizontalImagePadding = 2.0,
-      this.imageHeight = 48.0,
-      this.imageWidth = 48.0})
+  const HorizontalCharacters({Key key,
+    @required this.characters,
+    this.horizontalImagePadding = 8.0,
+    this.imageHeight = 60.0,
+    this.imageWidth = 60.0})
       : super(key: key);
 
-  List<RoundedImageWithVerticalText> _buildCharacterLists(
-      BuiltList<Character> characters) {
-    List<RoundedImageWithVerticalText> imageWidgets = [];
+  _BuildCharactersListResult _buildCharactersList(BuiltList<Character> characters) {
+    bool noCharacterHasActor = true;
+
+    List<RoundedElevatedImageWithBottomText> imageWidgets = [];
     for (var character in characters) {
-      imageWidgets.add(RoundedImageWithVerticalText(
+      if (character.actors.length != 0) {
+        noCharacterHasActor = false;
+      }
+      imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Character,
 
         /// TODO: grid/small stores a low-resolution size avatar, medium/large stores a hi-res one
@@ -39,22 +44,47 @@ class HorizontalCharacters extends StatelessWidget {
         imageHeight: imageHeight,
         imageWidth: imageWidth,
         horizontalImagePadding:
-            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+        imageWidgets.length == 0 ? 0 : horizontalImagePadding,
         title: character.name,
         subtitle:
-            character.actors.length == 0 ? null : character.actors[0].name,
+        character.actors.length == 0 ? null : character.actors[0].name,
+        titleMaxLines: characterNameMaxLines,
+        subTitleMaxLines: actorNameMaxLines,
       ));
     }
 
-    return imageWidgets;
+    return _BuildCharactersListResult(
+        imageWidgets,
+        noCharacterHasActor
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    var buildCharactersListResult = _buildCharactersList(characters);
+    double textScaleFactor;
+    if (buildCharactersListResult.noCharacterHasActor) {
+      textScaleFactor = characterNameMaxLines * textSpaceScaleBaseFactor;
+    } else {
+      textScaleFactor = (characterNameMaxLines + actorNameMaxLines) *
+          textSpaceScaleBaseFactor;
+    }
+
     return HorizontalScrollableWidget(
-      horizontalList: _buildCharacterLists(characters),
+      horizontalList: buildCharactersListResult.widgets,
       listHeight:
-          imageHeight + Theme.of(context).textTheme.body1.fontSize * textFactor,
+      imageHeight + Theme
+          .of(context)
+          .textTheme
+          .caption
+          .fontSize * textScaleFactor,
     );
   }
+}
+
+class _BuildCharactersListResult {
+  final List<RoundedElevatedImageWithBottomText> widgets;
+  final bool noCharacterHasActor;
+
+  _BuildCharactersListResult(this.widgets, this.noCharacterHasActor);
 }

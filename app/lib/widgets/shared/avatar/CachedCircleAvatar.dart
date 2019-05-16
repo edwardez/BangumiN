@@ -17,13 +17,14 @@ class CachedCircleAvatar extends StatelessWidget {
   /// if [navigateToUserRouteOnTap] is set to true, [username] cannot be null
   final String username;
 
-  CachedCircleAvatar({@required this.imageUrl, this.radius = 20.0,
-    this.navigateToUserRouteOnTap = false, this.username})
-      : assert(!navigateToUserRouteOnTap ||
-      (navigateToUserRouteOnTap && isNotEmpty(username)));
+  const CachedCircleAvatar({@required this.imageUrl, this.radius = 20.0,
+    this.navigateToUserRouteOnTap = false, this.username});
 
   @override
   Widget build(BuildContext context) {
+    assert(!navigateToUserRouteOnTap ||
+        (navigateToUserRouteOnTap && isNotEmpty(username)));
+
     if (imageUrl == null) {
       return Image.memory(
         kTransparentImage,

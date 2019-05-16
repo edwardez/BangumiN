@@ -6,28 +6,31 @@ import 'package:oauth2/oauth2.dart';
 class SecureStorageService {
   final FlutterSecureStorage secureStorage;
 
+  static const String cookieCredentialsKey = 'bangumiCookieCredentials';
+  static const String oauthCredentialsKey = 'bangumiOauthCredentials';
+
   SecureStorageService({@required this.secureStorage});
 
-  Future<void> persistBangumiOauthCredentials(Credentials credentials) {
+  Future<void> persistBangumiOauthCredentials(Credentials credentials) async {
     assert(credentials != null);
     return this
         .secureStorage
-        .write(key: 'bangumiOauthCredentials', value: credentials.toJson());
+        .write(key: oauthCredentialsKey, value: credentials.toJson());
   }
 
   Future<void> clearBangumiOauthCredentials() async {
-    return this.secureStorage.delete(key: 'bangumiOauthCredentials');
+    return this.secureStorage.delete(key: oauthCredentialsKey);
   }
 
   Future<void> persistBangumiCookieCredentials(
-      BangumiCookieCredentials credentials) {
+      BangumiCookieCredentials credentials) async {
     assert(credentials != null);
     return this
         .secureStorage
-        .write(key: 'bangumiCookieCredentials', value: credentials.toJson());
+        .write(key: cookieCredentialsKey, value: credentials.toJson());
   }
 
-  Future<void> clearBangumiCookieCredentials() {
-    return this.secureStorage.delete(key: 'bangumiCookieCredentials');
+  Future<void> clearBangumiCookieCredentials() async {
+    return this.secureStorage.delete(key: cookieCredentialsKey);
   }
 }

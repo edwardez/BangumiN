@@ -26,7 +26,17 @@ import 'package:quiver/strings.dart';
 
 class SubjectParser {
   final curatedRowMappings = {
-    SubjectType.Anime: {'话数', '动画制作', '原作', '制作', '监督', '放送开始', '发售日', '发售日期'},
+    SubjectType.Anime: {
+      '话数',
+      '动画制作',
+      '原作',
+      '制作',
+      '监督',
+      '放送开始',
+      '发售日',
+      '发售日期',
+      '上映年度'
+    },
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
     SubjectType.Book: {

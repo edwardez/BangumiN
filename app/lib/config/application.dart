@@ -42,7 +42,7 @@ abstract class Application {
   static final String bangumiOauthAuthorizationEndpoint =
       'https://bgm.tv/oauth/authorize';
   static final String bangumiOauthTokenEndpoint =
-      'https://bgm.tv/oauth/authorize';
+      'https://bgm.tv/oauth/access_token';
 
   /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
   /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)

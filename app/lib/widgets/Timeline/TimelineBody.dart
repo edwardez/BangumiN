@@ -139,14 +139,18 @@ class _TimelineBodyState extends State<TimelineBody> {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CachedCircleAvatar(
-            imageUrl: feedChunks.getFeedAt(index)?.user?.avatarImageUrl,
-            navigateToUserRouteOnTap: true,
-            username: feedChunks
-                .getFeedAt(index)
-                ?.user
-                ?.username,
-          ),
+          if(feedChunks
+              .getFeedAt(index)
+              ?.user
+              ?.username != null)
+            CachedCircleAvatar(
+              imageUrl: feedChunks.getFeedAt(index)?.user?.avatarImageUrl,
+              navigateToUserRouteOnTap: true,
+              username: feedChunks
+                  .getFeedAt(index)
+                  ?.user
+                  ?.username,
+            ),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(left: 8),

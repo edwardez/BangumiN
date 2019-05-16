@@ -342,11 +342,16 @@ class TimelineParser {
       return parseUnknownTimelineActivity(singleTimelineContent);
     }
 
+    /// This public message doesn't quite fit this actionName: 'xx 注册成为了 Bangumi 成员'
+    /// But that action will currently be parsed as UnknownTimelineActivity and this
+    /// method won't be called
+    userInfo = userInfo.rebuild((b) => b..actionName = '资料更新');
+
     PublicMessageNoReply publicMessageNoReply = PublicMessageNoReply((b) => b
       ..user.replace(userInfo)
-      ..content = statusElement.text.trim());
+      ..content = statusElement.text.trim()
+    );
 
-    statusElement.text.trim();
 
     return publicMessageNoReply;
   }

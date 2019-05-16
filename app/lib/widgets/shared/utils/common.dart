@@ -115,3 +115,9 @@ getSwitchActiveColor(BuildContext context) {
 
   return null;
 }
+
+bool isNightTheme(BuildContext context) {
+  return Theme
+      .of(context)
+      .brightness == Brightness.dark;
+}

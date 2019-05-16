@@ -7,6 +7,7 @@ import 'package:munin/widgets/UserProfile/UserHome.dart';
 import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/discussion/DiscussionHome.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninHomePage extends StatefulWidget {
@@ -75,9 +76,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
     /// If current theme is dark theme, change `bottomNavigationBar` color
     /// to current primary to distinguish from canvas
-    if (Theme
-        .of(context)
-        .brightness == Brightness.dark) {
+    if (isNightTheme(context)) {
       return Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: Theme

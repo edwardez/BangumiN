@@ -19,6 +19,7 @@ void _showSubjectModalBottomSheet(BuildContext context,
                   title: Text('在浏览器中打开'),
                   onTap: () {
                     launch(subject.pageUrlFromCalculation, forceSafariVC: true);
+                    Navigator.of(context).pop();
                   },
                 ),
                 ListTile(

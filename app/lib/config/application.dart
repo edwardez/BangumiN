@@ -2,7 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:munin/main.dart';
-import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
@@ -30,6 +30,7 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // ignore: unused_import
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 final GetIt getIt = GetIt();
 
@@ -121,8 +122,18 @@ abstract class Application {
           themeSetting: store.state.settingState.themeSetting));
     }
 
+    initializrCrashlytics();
+
     /// flutter initialization
     runApp(MuninApp(this, store));
+  }
+
+  initializrCrashlytics() {
+    if (environmentType != EnvironmentType.Development) {
+      FlutterError.onError = (FlutterErrorDetails details) {
+        Crashlytics.instance.onError(details);
+      };
+    }
   }
 
   Future<AppState> initializeAppState(BangumiCookieService bangumiCookieService,
@@ -130,7 +141,6 @@ abstract class Application {
       SharedPreferenceService sharedPreferenceService) async {
     bool isAuthenticated =
         bangumiCookieService.readyToUse() && bangumiOauthService.readyToUse();
-
     Optional<AppState> maybePersistedAppState =
     await sharedPreferenceService.readAppState();
     AppState persistedAppState;

@@ -7,6 +7,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/initial/MainMaterialApp.dart';
 import 'package:redux/redux.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 void main() {
   Development();
@@ -25,6 +26,8 @@ class MuninApp extends StatefulWidget {
 }
 
 class _MuninAppState extends State<MuninApp> {
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+
   @override
   void initState() {
     final router = Router();
@@ -42,7 +45,7 @@ class _MuninAppState extends State<MuninApp> {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: widget.store,
-      child: MainMaterialApp(),
+      child: MainMaterialApp(analytics: analytics,),
     );
   }
 }

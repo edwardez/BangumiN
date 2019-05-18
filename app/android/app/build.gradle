@@ -59,3 +59,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 }
+
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'

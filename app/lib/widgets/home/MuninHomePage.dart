@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/widgets/Progress/Progress.dart';
-import 'package:munin/widgets/Timeline/Timeline.dart';
-import 'package:munin/widgets/UserProfile/UserHome.dart';
-import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/discussion/DiscussionHome.dart';
+import 'package:munin/widgets/progress/Progress.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
+import 'package:munin/widgets/timeline/Timeline.dart';
+import 'package:munin/widgets/userprofile/UserHome.dart';
+import 'package:munin/widgets/userprofile/UserProfileWidget.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninHomePage extends StatefulWidget {

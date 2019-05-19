@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -49,7 +52,37 @@ class UserProfileWidget extends StatelessWidget {
         assert(isNotEmpty(username)),
         super(key: key);
 
-  _buildMoreActionsMenu(BuildContext outerContext) {
+  _buildMuteAction(BuildContext context, _ViewModel vm) {
+    if (vm.isCurrentAppUser) {
+      return Container();
+    }
+
+    if (vm.isMuted) {
+      return ListTile(
+        leading: Icon(OMIcons.clear),
+        title: Text('解除屏蔽'),
+        onTap: () {
+          vm.unMuteUser();
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽"),));
+          Navigator.of(context).pop();
+        },
+      );
+    } else {
+      return ListTile(
+        leading: Icon(OMIcons.block),
+        title: Text('屏蔽此用户'),
+        onTap: () {
+          vm.muteUser();
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽"),));
+          Navigator.of(context).pop();
+        },
+      );
+    }
+  }
+
+  _buildMoreActionsMenu(BuildContext outerContext, _ViewModel vm) {
     showModalBottomSheet(
         context: outerContext,
         builder: (BuildContext context) {
@@ -74,6 +107,7 @@ class UserProfileWidget extends StatelessWidget {
                       launch(userProfileMainUrl, forceSafariVC: true);
                     },
                   ),
+                  _buildMuteAction(outerContext, vm),
                 ],
               ),
             ),
@@ -93,8 +127,9 @@ class UserProfileWidget extends StatelessWidget {
     return widgets;
   }
 
-  SliverList _buildProfile(
-      BuildContext context, UserProfile profile, bool isCurrentAppUser) {
+  SliverList _buildProfile(BuildContext context, _ViewModel vm) {
+    UserProfile profile = vm.userProfile;
+
     List<Widget> widgets = [];
     widgets.addAll([
       Row(
@@ -107,7 +142,7 @@ class UserProfileWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                if (!isCurrentAppUser)
+                if (!vm.isCurrentAppUser)
                   OutlineButton(
                     child: Row(
                       children: <Widget>[
@@ -120,7 +155,7 @@ class UserProfileWidget extends StatelessWidget {
                 IconButton(
                   icon: Icon(AdaptiveIcons.moreActionsIconData),
                   onPressed: () {
-                    _buildMoreActionsMenu(context);
+                    _buildMoreActionsMenu(context, vm);
                   },
                 )
               ],
@@ -319,13 +354,14 @@ class UserProfileWidget extends StatelessWidget {
                     child: AdaptiveProgressIndicator(),
                   ),
                 ]),
-              ), padding: profileWidgetsPadding,
+              ),
+              padding: profileWidgetsPadding,
             );
           }
         } else {
           scrollSliver = SliverPadding(
             padding: profileWidgetsPadding,
-            sliver: _buildProfile(context, vm.userProfile, vm.isCurrentAppUser),
+            sliver: _buildProfile(context, vm),
           );
         }
 
@@ -342,11 +378,14 @@ class _ViewModel {
   /// If set to true, user page will be rendered as 'I'm viewing my profile'
   /// Otherwise it's going to be rendered as 'I'm viewing other people's profile'
   final bool isCurrentAppUser;
+  final bool isMuted;
 
   final String username;
   final UserProfile userProfile;
   final LoadingStatus loadingStatus;
   final Function(BuildContext context) fetchUserProfile;
+  final Function() muteUser;
+  final Function() unMuteUser;
 
   factory _ViewModel.fromStore(Store<AppState> store, String username) {
     Future _fetchUserProfile(BuildContext context) {
@@ -356,28 +395,67 @@ class _ViewModel {
       return action.completer.future;
     }
 
-    bool isCurrentAppUser;
-    BangumiUserBasic currentUser =
-        store.state.currentAuthenticatedUserBasicInfo;
+    _muteUser() {
+      UserProfile userProfile = store.state.userState.profiles[username];
+      if (userProfile == null) {
+        return;
+      }
 
-    /// If [username] is the same as current app user username
-    /// Or passed-in username is the same as id of the current app user username
-    /// set isCurrentAppUser to true
-    /// The second username-id check is needed because id(pure digit) and username(~alphanumeric)
-    /// can both be used to identify a user
-    if (currentUser.username == username ||
-        currentUser.id.toString() == username) {
-      isCurrentAppUser = true;
-    } else {
-      isCurrentAppUser = false;
+      final action = MuteUserAction(
+          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+      store.dispatch(action);
+      store.dispatch(PersistAppStateAction());
+    }
+
+    _unMuteUser() {
+      UserProfile userProfile = store.state.userState.profiles[username];
+      if (userProfile == null) {
+        return;
+      }
+
+      final action = UnmuteUserAction(
+          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+      store.dispatch(action);
+      store.dispatch(PersistAppStateAction());
+    }
+
+    bool _isMuted() {
+      assert(username != null);
+
+      return store.state.settingState.muteSetting.mutedUsers
+          .containsKey(username);
+    }
+
+    bool _isCurrentAppUser() {
+      bool isCurrentAppUser;
+      BangumiUserBasic currentUser =
+          store.state.currentAuthenticatedUserBasicInfo;
+
+      /// If [username] is the same as current app user username
+      /// Or passed-in username is the same as id of the current app user username
+      /// set isCurrentAppUser to true
+      /// The second username-id check is needed because id(pure digit) and username(~alphanumeric)
+      /// can both be used to identify a user
+      if (currentUser.username == username ||
+          currentUser.id.toString() == username) {
+        isCurrentAppUser = true;
+      } else {
+        isCurrentAppUser = false;
+      }
+
+      return isCurrentAppUser;
     }
 
     return _ViewModel(
       username: username,
       userProfile: store.state.userState.profiles[username],
       fetchUserProfile: (BuildContext context) => _fetchUserProfile(context),
-      isCurrentAppUser: isCurrentAppUser,
+      isCurrentAppUser: _isCurrentAppUser(),
       loadingStatus: store.state.userState.profilesLoadingStatus[username],
+
+      muteUser: _muteUser,
+      unMuteUser: _unMuteUser,
+      isMuted: _isMuted(),
     );
   }
 
@@ -387,6 +465,9 @@ class _ViewModel {
     @required this.fetchUserProfile,
     @required this.isCurrentAppUser,
     @required this.loadingStatus,
+    @required this.isMuted,
+    @required this.muteUser,
+    @required this.unMuteUser,
   });
 
   @override
@@ -395,11 +476,18 @@ class _ViewModel {
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
           isCurrentAppUser == other.isCurrentAppUser &&
+          isMuted == other.isMuted &&
           username == other.username &&
           userProfile == other.userProfile &&
           loadingStatus == other.loadingStatus;
 
   @override
   int get hashCode =>
-      hash4(isCurrentAppUser, username, userProfile, loadingStatus);
+      hashObjects([
+        isCurrentAppUser.hashCode,
+        isMuted.hashCode,
+        username.hashCode,
+        userProfile.hashCode,
+        loadingStatus.hashCode
+      ]);
 }

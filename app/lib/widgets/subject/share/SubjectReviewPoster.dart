@@ -14,7 +14,7 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
+import 'package:munin/widgets/subject/mainpage/SubjectCoverAndBasicInfo.dart';
 import 'package:quiver/strings.dart';
 
 class SubjectReviewPoster extends StatefulWidget {

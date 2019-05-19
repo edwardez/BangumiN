@@ -144,9 +144,8 @@ abstract class Application {
   }
 
   _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {
-    bool shouldRefreshAccessToken = await bangumiOauthService.client
-        .shouldRefreshAccessToken();
-    if (shouldRefreshAccessToken) {
+    if (bangumiOauthService.client
+        .shouldRefreshAccessToken()) {
       await bangumiOauthService.client.refreshCredentials();
     }
   }

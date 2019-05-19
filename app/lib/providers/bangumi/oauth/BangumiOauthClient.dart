@@ -40,19 +40,17 @@ class BangumiOauthClient extends Client {
       basicAuth: basicAuth,
       httpClient: httpClient);
 
-  Future<bool> shouldRefreshAccessToken() async {
+  bool shouldRefreshAccessToken() {
     /// If `credentials` is null, user is not logged in yet, thus login instead
     /// of refresh is needed
     if (credentials == null) {
       return false;
     }
 
-
-    bool isInValidRefreshToken = !(await refreshTokenMatchesAppUser());
     bool isAboutToExpire = credentials.expiration
         .subtract(accessTokenExpirationThreshold)
         .isBefore(DateTime.now());
-    return isAboutToExpire || isInValidRefreshToken;
+    return isAboutToExpire;
   }
 
   /// Workaround for a current bug in bangumi api:

@@ -44,8 +44,8 @@ Middleware<AppState> _createLoginPage() {
 }
 
 // TODO: refactor this messy middleware
-Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthClient,
-    BangumiCookieService bangumiCookieService,
+Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
+    BangumiCookieService cookieService,
     BangumiUserService bangumiUserService,
     SharedPreferenceService sharedPreferenceService,) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
@@ -53,20 +53,23 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthClient,
 
     try {
       Navigator.of(action.context).pushNamed('/bangumiOauth');
-      await oauthClient.initializeAuthentication();
-      int userId = await oauthClient.verifyUser();
+      await oauthService.initializeAuthentication();
+      int userId = await oauthService.verifyUser();
       BangumiUserBasic userInfo =
       await bangumiUserService.getUserBasicInfo(userId.toString());
+
+      oauthService.client.currentUser = userInfo;
 
       AppState updatedAppState = store.state.rebuild((b) =>
       b
         ..isAuthenticated = true
         ..currentAuthenticatedUserBasicInfo.replace(userInfo));
       await Future.wait([
-        oauthClient.persistCredentials(),
-        bangumiCookieService.persistCredentials(),
+        oauthService.persistCredentials(),
+        cookieService.persistCredentials(),
         sharedPreferenceService.persistAppState(updatedAppState)
       ]);
+      await oauthService.client.refreshCredentials();
       store.dispatch(OAuthLoginSuccess(userInfo));
       Navigator.of(action.context).pushReplacementNamed('/home');
     } catch (error, stack) {

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -30,7 +33,6 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // ignore: unused_import
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 final GetIt getIt = GetIt();
 
@@ -60,10 +62,10 @@ abstract class Application {
   String bangumiRedirectUrl;
 
   Application() {
-    initialize();
+    _initialize();
   }
 
-  initialize() async {
+  _initialize() async {
     environmentValue = this;
 
     /// misc utils initialization
@@ -91,8 +93,11 @@ abstract class Application {
     final SharedPreferenceService sharedPreferenceService =
     getIt.get<SharedPreferenceService>();
 
-    AppState appState = await initializeAppState(
+
+    AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
+    bangumiOauthService.client.currentUser =
+        appState.currentAuthenticatedUserBasicInfo;
 
     /// redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
@@ -122,13 +127,15 @@ abstract class Application {
           themeSetting: store.state.settingState.themeSetting));
     }
 
-    initializrCrashlytics();
+    _initializrCrashlytics();
+
+    await _checkAuthenticationInfo(bangumiOauthService);
 
     /// flutter initialization
     runApp(MuninApp(this, store));
   }
 
-  initializrCrashlytics() {
+  _initializrCrashlytics() {
     if (environmentType != EnvironmentType.Development) {
       FlutterError.onError = (FlutterErrorDetails details) {
         Crashlytics.instance.onError(details);
@@ -136,7 +143,16 @@ abstract class Application {
     }
   }
 
-  Future<AppState> initializeAppState(BangumiCookieService bangumiCookieService,
+  _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {
+    bool shouldRefreshAccessToken = await bangumiOauthService.client
+        .shouldRefreshAccessToken();
+    if (shouldRefreshAccessToken) {
+      await bangumiOauthService.client.refreshCredentials();
+    }
+  }
+
+  Future<AppState> _initializeAppState(
+      BangumiCookieService bangumiCookieService,
       BangumiOauthService bangumiOauthService,
       SharedPreferenceService sharedPreferenceService) async {
     bool isAuthenticated =

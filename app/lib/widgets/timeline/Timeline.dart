@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
-import 'package:munin/widgets/Timeline/TimelineBody.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
+import 'package:munin/widgets/timeline/TimelineBody.dart';
 
 class TimelineBodyPage {
   final int index;

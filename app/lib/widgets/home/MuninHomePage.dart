@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/discussion/DiscussionHome.dart';
+import 'package:munin/widgets/home/MuninBottomNavigationBar.dart';
 import 'package:munin/widgets/progress/Progress.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
-import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/Timeline.dart';
 import 'package:munin/widgets/userprofile/UserHome.dart';
 import 'package:munin/widgets/userprofile/UserProfileWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninHomePage extends StatefulWidget {
   @override
@@ -61,34 +60,6 @@ class _MuninHomePageState extends State<MuninHomePage> {
     });
   }
 
-  _buildBottomNavigationBar() {
-    BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
-      currentIndex: currentIndex,
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(OMIcons.home), title: Text('动态')),
-        BottomNavigationBarItem(icon: Icon(OMIcons.done), title: Text('进度')),
-        BottomNavigationBarItem(icon: Icon(OMIcons.group), title: Text('讨论')),
-        BottomNavigationBarItem(icon: Icon(OMIcons.person), title: Text('主页')),
-      ],
-      onTap: _onSelectedIndexChanged,
-    );
-
-    /// If current theme is dark theme, change `bottomNavigationBar` color
-    /// to current primary to distinguish from canvas
-    if (isNightTheme(context)) {
-      return Theme(
-        data: Theme.of(context)
-            .copyWith(canvasColor: Theme
-            .of(context)
-            .primaryColor),
-        child: bottomNavigationBar,
-      );
-    } else {
-      return bottomNavigationBar;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -98,7 +69,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
           state: store.state,
         );
       },
-      builder: (BuildContext context, _ViewModel vm) {
+      builder: (BuildContext builderContext, _ViewModel vm) {
         return Scaffold(
           body: SafeArea(
             top: false,
@@ -107,7 +78,10 @@ class _MuninHomePageState extends State<MuninHomePage> {
               bucket: bucket,
             ),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(),
+          bottomNavigationBar: MuninBottomNavigationBar(
+            onSelectedIndexChanged: _onSelectedIndexChanged,
+            currentIndex: currentIndex,
+          ),
         );
       },
     );

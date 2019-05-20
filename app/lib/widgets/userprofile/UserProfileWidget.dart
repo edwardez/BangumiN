@@ -64,7 +64,8 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.unMuteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽"),));
+            content: Text(
+                "${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),));
           Navigator.of(context).pop();
         },
       );
@@ -75,7 +76,8 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.muteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽"),));
+            content: Text(
+                "${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),));
           Navigator.of(context).pop();
         },
       );
@@ -404,7 +406,7 @@ class _ViewModel {
       final action = MuteUserAction(
           mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
       store.dispatch(action);
-      store.dispatch(PersistAppStateAction());
+      store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
 
     _unMuteUser() {
@@ -416,7 +418,7 @@ class _ViewModel {
       final action = UnmuteUserAction(
           mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
       store.dispatch(action);
-      store.dispatch(PersistAppStateAction());
+      store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
 
     bool _isMuted() {

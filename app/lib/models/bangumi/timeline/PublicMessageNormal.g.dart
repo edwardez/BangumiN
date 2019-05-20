@@ -39,6 +39,12 @@ class _$PublicMessageNormalSerializer
         ..add(serializers.serialize(object.id,
             specifiedType: const FullType(String)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -70,6 +76,10 @@ class _$PublicMessageNormalSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -86,12 +96,15 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   final int replyCount;
   @override
   final String id;
+  @override
+  final bool isFromMutedUser;
 
   factory _$PublicMessageNormal(
           [void Function(PublicMessageNormalBuilder) updates]) =>
       (new PublicMessageNormalBuilder()..update(updates)).build();
 
-  _$PublicMessageNormal._({this.user, this.content, this.replyCount, this.id})
+  _$PublicMessageNormal._(
+      {this.user, this.content, this.replyCount, this.id, this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'user');
@@ -120,14 +133,18 @@ class _$PublicMessageNormal extends PublicMessageNormal {
         user == other.user &&
         content == other.content &&
         replyCount == other.replyCount &&
-        id == other.id;
+        id == other.id &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), content.hashCode), replyCount.hashCode),
-        id.hashCode));
+        $jc(
+            $jc($jc($jc(0, user.hashCode), content.hashCode),
+                replyCount.hashCode),
+            id.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -136,13 +153,16 @@ class _$PublicMessageNormal extends PublicMessageNormal {
           ..add('user', user)
           ..add('content', content)
           ..add('replyCount', replyCount)
-          ..add('id', id))
+          ..add('id', id)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class PublicMessageNormalBuilder
-    implements Builder<PublicMessageNormal, PublicMessageNormalBuilder> {
+    implements
+        Builder<PublicMessageNormal, PublicMessageNormalBuilder>,
+        TimelineFeedBuilder {
   _$PublicMessageNormal _$v;
 
   FeedMetaInfoBuilder _user;
@@ -161,6 +181,11 @@ class PublicMessageNormalBuilder
   String get id => _$this._id;
   set id(String id) => _$this._id = id;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   PublicMessageNormalBuilder();
 
   PublicMessageNormalBuilder get _$this {
@@ -169,13 +194,14 @@ class PublicMessageNormalBuilder
       _content = _$v.content;
       _replyCount = _$v.replyCount;
       _id = _$v.id;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(PublicMessageNormal other) {
+  void replace(covariant PublicMessageNormal other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -196,7 +222,8 @@ class PublicMessageNormalBuilder
               user: user.build(),
               content: content,
               replyCount: replyCount,
-              id: id);
+              id: id,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

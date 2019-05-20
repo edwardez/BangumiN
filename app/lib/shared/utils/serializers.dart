@@ -12,6 +12,8 @@ import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
 import 'package:munin/models/bangumi/discussion/enums/base.dart';
@@ -33,9 +35,12 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
-import 'package:munin/models/bangumi/setting/MuninTheme.dart';
-import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
-import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
@@ -167,7 +172,8 @@ part 'serializers.g.dart';
   SearchState,
 
   /// Discussion
-  DiscussionItem,
+  GeneralDiscussionItem,
+  GroupDiscussionPost,
   DiscussionType,
   DiscussionFilter,
   RakuenTopicFilter,
@@ -206,6 +212,9 @@ part 'serializers.g.dart';
   ThemeSetting,
   MuninTheme,
   ThemeSwitchMode,
+  MuteSetting,
+  MutedUser,
+  MutedGroup
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()

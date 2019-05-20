@@ -51,6 +51,12 @@ class _$CollectionUpdateSingleSerializer
         ..add(serializers.serialize(object.subjectScore,
             specifiedType: const FullType(double)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -91,6 +97,10 @@ class _$CollectionUpdateSingleSerializer
           result.subjectTitle = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -111,6 +121,8 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   final double subjectScore;
   @override
   final String subjectTitle;
+  @override
+  final bool isFromMutedUser;
 
   factory _$CollectionUpdateSingle(
           [void Function(CollectionUpdateSingleBuilder) updates]) =>
@@ -122,7 +134,8 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
       this.subjectId,
       this.subjectImageUrl,
       this.subjectScore,
-      this.subjectTitle})
+      this.subjectTitle,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('CollectionUpdateSingle', 'user');
@@ -154,7 +167,8 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
         subjectId == other.subjectId &&
         subjectImageUrl == other.subjectImageUrl &&
         subjectScore == other.subjectScore &&
-        subjectTitle == other.subjectTitle;
+        subjectTitle == other.subjectTitle &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
@@ -162,11 +176,13 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), subjectComment.hashCode),
-                    subjectId.hashCode),
-                subjectImageUrl.hashCode),
-            subjectScore.hashCode),
-        subjectTitle.hashCode));
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), subjectComment.hashCode),
+                        subjectId.hashCode),
+                    subjectImageUrl.hashCode),
+                subjectScore.hashCode),
+            subjectTitle.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -177,13 +193,16 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
           ..add('subjectId', subjectId)
           ..add('subjectImageUrl', subjectImageUrl)
           ..add('subjectScore', subjectScore)
-          ..add('subjectTitle', subjectTitle))
+          ..add('subjectTitle', subjectTitle)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class CollectionUpdateSingleBuilder
-    implements Builder<CollectionUpdateSingle, CollectionUpdateSingleBuilder> {
+    implements
+        Builder<CollectionUpdateSingle, CollectionUpdateSingleBuilder>,
+        TimelineFeedBuilder {
   _$CollectionUpdateSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -212,6 +231,11 @@ class CollectionUpdateSingleBuilder
   String get subjectTitle => _$this._subjectTitle;
   set subjectTitle(String subjectTitle) => _$this._subjectTitle = subjectTitle;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   CollectionUpdateSingleBuilder();
 
   CollectionUpdateSingleBuilder get _$this {
@@ -222,13 +246,14 @@ class CollectionUpdateSingleBuilder
       _subjectImageUrl = _$v.subjectImageUrl;
       _subjectScore = _$v.subjectScore;
       _subjectTitle = _$v.subjectTitle;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(CollectionUpdateSingle other) {
+  void replace(covariant CollectionUpdateSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -251,7 +276,8 @@ class CollectionUpdateSingleBuilder
               subjectId: subjectId,
               subjectImageUrl: subjectImageUrl,
               subjectScore: subjectScore,
-              subjectTitle: subjectTitle);
+              subjectTitle: subjectTitle,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

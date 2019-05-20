@@ -7,6 +7,7 @@ import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
@@ -25,11 +26,15 @@ class BangumiSubjectService {
         assert(oauthClient != null);
 
   // get bangumi subject info through parsing html response
-  Future<BangumiSubject> getSubjectFromHttp({int subjectId}) async {
-    Dio.Response<String> response = await cookieClient.dio.get<String>(
-        '/subject/$subjectId');
+  Future<BangumiSubject> getSubjectFromHttp({
+    @required int subjectId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+  }) async {
+    Dio.Response<String> response =
+    await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject = SubjectParser().process(response.data);
+    BangumiSubject subject = SubjectParser().process(
+        response.data, mutedUsers: mutedUsers);
 
     return subject;
   }
@@ -64,8 +69,7 @@ class BangumiSubjectService {
             '出现了未知错误: 从Bangumi返回了无法处理的数据');
       }
     } else {
-      throw GeneralUnknownException(
-          '出现了未知错误: Bangumi此刻无法响应请求');
+      throw GeneralUnknownException('出现了未知错误: Bangumi此刻无法响应请求');
     }
 
     return subjectCollectionInfo;
@@ -90,11 +94,11 @@ class BangumiSubjectService {
     formData['private'] = collectionUpdateRequest.private.toString();
     formData['privacy'] = formData['private'];
 
-    Http.Response response = await oauthClient.client.post(''
-        'https://${Application.environmentValue
-        .bangumiApiHost}/collection/$subjectId/update',
-        body: formData
-    );
+    Http.Response response = await oauthClient.client.post(
+        ''
+            'https://${Application.environmentValue
+            .bangumiApiHost}/collection/$subjectId/update',
+        body: formData);
 
     SubjectCollectionInfo subjectCollectionInfo;
     if (response.statusCode == 200) {

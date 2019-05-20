@@ -38,6 +38,12 @@ class _$MonoFavoriteSingleSerializer
         ..add(serializers.serialize(object.monoAvatarImageUrl,
             specifiedType: const FullType(String)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -73,6 +79,10 @@ class _$MonoFavoriteSingleSerializer
           result.monoType = serializers.deserialize(value,
               specifiedType: const FullType(Mono)) as Mono;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -91,6 +101,8 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   final String id;
   @override
   final Mono monoType;
+  @override
+  final bool isFromMutedUser;
 
   factory _$MonoFavoriteSingle(
           [void Function(MonoFavoriteSingleBuilder) updates]) =>
@@ -101,7 +113,8 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
       this.monoName,
       this.monoAvatarImageUrl,
       this.id,
-      this.monoType})
+      this.monoType,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'user');
@@ -134,17 +147,20 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
         monoName == other.monoName &&
         monoAvatarImageUrl == other.monoAvatarImageUrl &&
         id == other.id &&
-        monoType == other.monoType;
+        monoType == other.monoType &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), monoName.hashCode),
-                monoAvatarImageUrl.hashCode),
-            id.hashCode),
-        monoType.hashCode));
+            $jc(
+                $jc($jc($jc(0, user.hashCode), monoName.hashCode),
+                    monoAvatarImageUrl.hashCode),
+                id.hashCode),
+            monoType.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -154,13 +170,16 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
           ..add('monoName', monoName)
           ..add('monoAvatarImageUrl', monoAvatarImageUrl)
           ..add('id', id)
-          ..add('monoType', monoType))
+          ..add('monoType', monoType)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class MonoFavoriteSingleBuilder
-    implements Builder<MonoFavoriteSingle, MonoFavoriteSingleBuilder> {
+    implements
+        Builder<MonoFavoriteSingle, MonoFavoriteSingleBuilder>,
+        TimelineFeedBuilder {
   _$MonoFavoriteSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -184,6 +203,11 @@ class MonoFavoriteSingleBuilder
   Mono get monoType => _$this._monoType;
   set monoType(Mono monoType) => _$this._monoType = monoType;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   MonoFavoriteSingleBuilder();
 
   MonoFavoriteSingleBuilder get _$this {
@@ -193,13 +217,14 @@ class MonoFavoriteSingleBuilder
       _monoAvatarImageUrl = _$v.monoAvatarImageUrl;
       _id = _$v.id;
       _monoType = _$v.monoType;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(MonoFavoriteSingle other) {
+  void replace(covariant MonoFavoriteSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -221,7 +246,8 @@ class MonoFavoriteSingleBuilder
               monoName: monoName,
               monoAvatarImageUrl: monoAvatarImageUrl,
               id: id,
-              monoType: monoType);
+              monoType: monoType,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

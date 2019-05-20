@@ -25,7 +25,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CollectionStatusFromBangumi.serializer)
       ..add(CollectionUpdateSingle.serializer)
       ..add(Count.serializer)
-      ..add(DiscussionItem.serializer)
       ..add(DiscussionState.serializer)
       ..add(DiscussionType.serializer)
       ..add(EpisodeProgress.serializer)
@@ -37,6 +36,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FetchDiscussionResponse.serializer)
       ..add(FetchTimelineRequest.serializer)
       ..add(FriendshipCreationSingle.serializer)
+      ..add(GeneralDiscussionItem.serializer)
+      ..add(GroupDiscussionPost.serializer)
       ..add(GroupJoinSingle.serializer)
       ..add(HyperBangumiItem.serializer)
       ..add(HyperImage.serializer)
@@ -52,6 +53,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MonoFavoriteSingle.serializer)
       ..add(MonoSearchResult.serializer)
       ..add(MuninTheme.serializer)
+      ..add(MuteSetting.serializer)
+      ..add(MutedGroup.serializer)
+      ..add(MutedUser.serializer)
       ..add(NetworkServiceTagLink.serializer)
       ..add(NetworkServiceTagPlainText.serializer)
       ..add(NetworkServiceType.serializer)
@@ -152,6 +156,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
           () => new ListBuilder<TimelineFeed>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TimelineFeed)]),
+          () => new ListBuilder<TimelineFeed>())
+      ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(CollectionStatus), const FullType(int)]),
           () => new MapBuilder<CollectionStatus, int>())
@@ -190,6 +197,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltMap,
               const [const FullType(SearchRequest), const FullType(LoadingStatus)]),
           () => new MapBuilder<SearchRequest, LoadingStatus>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(UserProfile)]), () => new MapBuilder<String, UserProfile>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(LoadingStatus)]), () => new MapBuilder<String, LoadingStatus>())
       ..addBuilderFactory(

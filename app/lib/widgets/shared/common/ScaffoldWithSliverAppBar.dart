@@ -94,7 +94,6 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
         right: enableRightSafeArea,
         bottom: enableBottomSafeArea,
       ),
-
     );
   }
 }

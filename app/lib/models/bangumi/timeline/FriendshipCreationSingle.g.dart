@@ -36,6 +36,12 @@ class _$FriendshipCreationSingleSerializer
       serializers.serialize(object.friendId,
           specifiedType: const FullType(String)),
     ];
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -68,6 +74,10 @@ class _$FriendshipCreationSingleSerializer
           result.friendId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -84,6 +94,8 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   final String friendAvatarImageUrl;
   @override
   final String friendId;
+  @override
+  final bool isFromMutedUser;
 
   factory _$FriendshipCreationSingle(
           [void Function(FriendshipCreationSingleBuilder) updates]) =>
@@ -93,7 +105,8 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
       {this.user,
       this.friendNickName,
       this.friendAvatarImageUrl,
-      this.friendId})
+      this.friendId,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('FriendshipCreationSingle', 'user');
@@ -128,15 +141,18 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
         user == other.user &&
         friendNickName == other.friendNickName &&
         friendAvatarImageUrl == other.friendAvatarImageUrl &&
-        friendId == other.friendId;
+        friendId == other.friendId &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
-            friendAvatarImageUrl.hashCode),
-        friendId.hashCode));
+        $jc(
+            $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
+                friendAvatarImageUrl.hashCode),
+            friendId.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -145,14 +161,16 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
           ..add('user', user)
           ..add('friendNickName', friendNickName)
           ..add('friendAvatarImageUrl', friendAvatarImageUrl)
-          ..add('friendId', friendId))
+          ..add('friendId', friendId)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class FriendshipCreationSingleBuilder
     implements
-        Builder<FriendshipCreationSingle, FriendshipCreationSingleBuilder> {
+        Builder<FriendshipCreationSingle, FriendshipCreationSingleBuilder>,
+        TimelineFeedBuilder {
   _$FriendshipCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -173,6 +191,11 @@ class FriendshipCreationSingleBuilder
   String get friendId => _$this._friendId;
   set friendId(String friendId) => _$this._friendId = friendId;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   FriendshipCreationSingleBuilder();
 
   FriendshipCreationSingleBuilder get _$this {
@@ -181,13 +204,14 @@ class FriendshipCreationSingleBuilder
       _friendNickName = _$v.friendNickName;
       _friendAvatarImageUrl = _$v.friendAvatarImageUrl;
       _friendId = _$v.friendId;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(FriendshipCreationSingle other) {
+  void replace(covariant FriendshipCreationSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -208,7 +232,8 @@ class FriendshipCreationSingleBuilder
               user: user.build(),
               friendNickName: friendNickName,
               friendAvatarImageUrl: friendAvatarImageUrl,
-              friendId: friendId);
+              friendId: friendId,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

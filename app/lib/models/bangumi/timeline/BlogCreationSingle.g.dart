@@ -35,6 +35,12 @@ class _$BlogCreationSingleSerializer
         ..add(serializers.serialize(object.summary,
             specifiedType: const FullType(String)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -66,6 +72,10 @@ class _$BlogCreationSingleSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -82,12 +92,15 @@ class _$BlogCreationSingle extends BlogCreationSingle {
   final String summary;
   @override
   final String id;
+  @override
+  final bool isFromMutedUser;
 
   factory _$BlogCreationSingle(
           [void Function(BlogCreationSingleBuilder) updates]) =>
       (new BlogCreationSingleBuilder()..update(updates)).build();
 
-  _$BlogCreationSingle._({this.user, this.title, this.summary, this.id})
+  _$BlogCreationSingle._(
+      {this.user, this.title, this.summary, this.id, this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('BlogCreationSingle', 'user');
@@ -116,14 +129,16 @@ class _$BlogCreationSingle extends BlogCreationSingle {
         user == other.user &&
         title == other.title &&
         summary == other.summary &&
-        id == other.id;
+        id == other.id &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), title.hashCode), summary.hashCode),
-        id.hashCode));
+        $jc($jc($jc($jc(0, user.hashCode), title.hashCode), summary.hashCode),
+            id.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -132,13 +147,16 @@ class _$BlogCreationSingle extends BlogCreationSingle {
           ..add('user', user)
           ..add('title', title)
           ..add('summary', summary)
-          ..add('id', id))
+          ..add('id', id)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class BlogCreationSingleBuilder
-    implements Builder<BlogCreationSingle, BlogCreationSingleBuilder> {
+    implements
+        Builder<BlogCreationSingle, BlogCreationSingleBuilder>,
+        TimelineFeedBuilder {
   _$BlogCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -157,6 +175,11 @@ class BlogCreationSingleBuilder
   String get id => _$this._id;
   set id(String id) => _$this._id = id;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   BlogCreationSingleBuilder();
 
   BlogCreationSingleBuilder get _$this {
@@ -165,13 +188,14 @@ class BlogCreationSingleBuilder
       _title = _$v.title;
       _summary = _$v.summary;
       _id = _$v.id;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(BlogCreationSingle other) {
+  void replace(covariant BlogCreationSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -189,7 +213,11 @@ class BlogCreationSingleBuilder
     try {
       _$result = _$v ??
           new _$BlogCreationSingle._(
-              user: user.build(), title: title, summary: summary, id: id);
+              user: user.build(),
+              title: title,
+              summary: summary,
+              id: id,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

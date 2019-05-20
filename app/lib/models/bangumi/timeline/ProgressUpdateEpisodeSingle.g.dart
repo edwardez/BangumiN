@@ -41,6 +41,12 @@ class _$ProgressUpdateEpisodeSingleSerializer
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
     ];
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -77,6 +83,10 @@ class _$ProgressUpdateEpisodeSingleSerializer
           result.subjectId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -95,6 +105,8 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
   final String subjectName;
   @override
   final String subjectId;
+  @override
+  final bool isFromMutedUser;
 
   factory _$ProgressUpdateEpisodeSingle(
           [void Function(ProgressUpdateEpisodeSingleBuilder) updates]) =>
@@ -105,7 +117,8 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
       this.episodeName,
       this.episodeId,
       this.subjectName,
-      this.subjectId})
+      this.subjectId,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('ProgressUpdateEpisodeSingle', 'user');
@@ -145,17 +158,20 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
         episodeName == other.episodeName &&
         episodeId == other.episodeId &&
         subjectName == other.subjectName &&
-        subjectId == other.subjectId;
+        subjectId == other.subjectId &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), episodeName.hashCode),
-                episodeId.hashCode),
-            subjectName.hashCode),
-        subjectId.hashCode));
+            $jc(
+                $jc($jc($jc(0, user.hashCode), episodeName.hashCode),
+                    episodeId.hashCode),
+                subjectName.hashCode),
+            subjectId.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -165,7 +181,8 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
           ..add('episodeName', episodeName)
           ..add('episodeId', episodeId)
           ..add('subjectName', subjectName)
-          ..add('subjectId', subjectId))
+          ..add('subjectId', subjectId)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
@@ -173,7 +190,8 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
 class ProgressUpdateEpisodeSingleBuilder
     implements
         Builder<ProgressUpdateEpisodeSingle,
-            ProgressUpdateEpisodeSingleBuilder> {
+            ProgressUpdateEpisodeSingleBuilder>,
+        TimelineFeedBuilder {
   _$ProgressUpdateEpisodeSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -196,6 +214,11 @@ class ProgressUpdateEpisodeSingleBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   ProgressUpdateEpisodeSingleBuilder();
 
   ProgressUpdateEpisodeSingleBuilder get _$this {
@@ -205,13 +228,14 @@ class ProgressUpdateEpisodeSingleBuilder
       _episodeId = _$v.episodeId;
       _subjectName = _$v.subjectName;
       _subjectId = _$v.subjectId;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(ProgressUpdateEpisodeSingle other) {
+  void replace(covariant ProgressUpdateEpisodeSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -233,7 +257,8 @@ class ProgressUpdateEpisodeSingleBuilder
               episodeName: episodeName,
               episodeId: episodeId,
               subjectName: subjectName,
-              subjectId: subjectId);
+              subjectId: subjectId,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

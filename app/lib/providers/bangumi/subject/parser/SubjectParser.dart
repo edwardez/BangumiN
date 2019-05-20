@@ -3,17 +3,18 @@ import 'dart:collection';
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
+import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/bangumi/subject/SubjectCollection.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
@@ -174,6 +175,7 @@ class SubjectParser {
   }
 
   BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement,
+      BuiltMap<String, MutedUser> mutedUsers,
       {String defaultActionName = '评价道'}) {
     /// a [SplayTreeSet] that contains a sorted set of reviews where
     /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
@@ -200,14 +202,21 @@ class SubjectParser {
 
     /// Elements that are in the comment box
     for (Element commentElement in commentBoxElements) {
-      reviews.add(parseSubjectReview(commentElement, ReviewElement.CommentBox));
+      SubjectReview review = parseSubjectReview(
+          commentElement, ReviewElement.CommentBox);
+      if (!mutedUsers.containsKey(review.metaInfo.username)) {
+        reviews.add(review);
+      }
     }
 
     List<Element> recentCollectionElements = subjectElement
         .querySelectorAll('#subjectPanelCollect > .groupsLine > li');
     for (Element recentCollectionElement in recentCollectionElements) {
-      reviews.add(parseSubjectReview(
-          recentCollectionElement, ReviewElement.CollectionPreview));
+      SubjectReview review = parseSubjectReview(
+          recentCollectionElement, ReviewElement.CollectionPreview);
+      if (!mutedUsers.containsKey(review.metaInfo.username)) {
+        reviews.add(review);
+      }
     }
 
     return BuiltList<SubjectReview>(reviews);
@@ -419,7 +428,8 @@ class SubjectParser {
     infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
   }
 
-  BangumiSubject process(String rawHtml) {
+  BangumiSubject process(String rawHtml,
+      {@required BuiltMap<String, MutedUser> mutedUsers}) {
     DocumentFragment document = parseFragment(rawHtml);
     final SubjectType subjectType = SubjectType.getTypeByChineseName(
         document.querySelector('#navMenuNeue .focus')?.text);
@@ -496,7 +506,7 @@ class SubjectParser {
 
     BuiltList<Character> characters = parseCharacters(document);
 
-    BuiltList<SubjectReview> comments = parseReviews(document);
+    BuiltList<SubjectReview> comments = parseReviews(document, mutedUsers);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
     parseRelatedSubjects(document, subjectType);
@@ -527,23 +537,5 @@ class SubjectParser {
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
       ..userSelectedTags.replace(userSelectedTags)
       ..userSubjectCollectionInfoPreview.replace(preview));
-  }
-
-  /// currently not in use
-  SubjectCollection parseSubjectCollection(DocumentFragment subjectElement) {
-    Element subjectPanelCollectElement =
-    subjectElement.querySelector('subjectPanelCollect');
-    int wish = 0;
-    int collect = 0;
-    int doing = 0;
-    int onHold = 0;
-    int dropped = 0;
-
-    return SubjectCollection((b) => b
-      ..wish = wish
-      ..collect = collect
-      ..doing = doing
-      ..onHold = onHold
-      ..dropped = dropped);
   }
 }

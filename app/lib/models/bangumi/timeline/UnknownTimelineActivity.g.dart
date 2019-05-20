@@ -33,6 +33,12 @@ class _$UnknownTimelineActivitySerializer
         ..add(serializers.serialize(object.user,
             specifiedType: const FullType(FeedMetaInfo)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -57,6 +63,10 @@ class _$UnknownTimelineActivitySerializer
           result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -69,12 +79,15 @@ class _$UnknownTimelineActivity extends UnknownTimelineActivity {
   final FeedMetaInfo user;
   @override
   final String content;
+  @override
+  final bool isFromMutedUser;
 
   factory _$UnknownTimelineActivity(
           [void Function(UnknownTimelineActivityBuilder) updates]) =>
       (new UnknownTimelineActivityBuilder()..update(updates)).build();
 
-  _$UnknownTimelineActivity._({this.user, this.content}) : super._() {
+  _$UnknownTimelineActivity._({this.user, this.content, this.isFromMutedUser})
+      : super._() {
     if (content == null) {
       throw new BuiltValueNullFieldError('UnknownTimelineActivity', 'content');
     }
@@ -94,26 +107,30 @@ class _$UnknownTimelineActivity extends UnknownTimelineActivity {
     if (identical(other, this)) return true;
     return other is UnknownTimelineActivity &&
         user == other.user &&
-        content == other.content;
+        content == other.content &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, user.hashCode), content.hashCode));
+    return $jf($jc($jc($jc(0, user.hashCode), content.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UnknownTimelineActivity')
           ..add('user', user)
-          ..add('content', content))
+          ..add('content', content)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class UnknownTimelineActivityBuilder
     implements
-        Builder<UnknownTimelineActivity, UnknownTimelineActivityBuilder> {
+        Builder<UnknownTimelineActivity, UnknownTimelineActivityBuilder>,
+        TimelineFeedBuilder {
   _$UnknownTimelineActivity _$v;
 
   FeedMetaInfoBuilder _user;
@@ -124,19 +141,25 @@ class UnknownTimelineActivityBuilder
   String get content => _$this._content;
   set content(String content) => _$this._content = content;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   UnknownTimelineActivityBuilder();
 
   UnknownTimelineActivityBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _content = _$v.content;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(UnknownTimelineActivity other) {
+  void replace(covariant UnknownTimelineActivity other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -154,7 +177,9 @@ class UnknownTimelineActivityBuilder
     try {
       _$result = _$v ??
           new _$UnknownTimelineActivity._(
-              user: _user?.build(), content: content);
+              user: _user?.build(),
+              content: content,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

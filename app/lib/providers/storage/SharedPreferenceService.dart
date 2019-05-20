@@ -16,39 +16,55 @@ class SharedPreferenceService {
   SharedPreferenceService({@required this.sharedPreferences});
 
   /// Reads app state from shared preferences,
-  /// If AppState is empty or there is an error, reads BasicAppState.
-  /// If BasicAppState is empty or there is an error, returns [Optional.absent()]
+  /// 1. Read [BasicAppState], it's the core of Munin AppState
+  /// If [BasicAppState] is empty or there is an error, returns [Optional.absent()]
+  /// 2. Read [AppState], combines its value with [BasicAppState] by updating
+  /// all fields other than fields in [BasicAppState], that being said,
+  /// data in [BasicAppState] always has highest priority and overrides field in  [AppState]
+  /// If [BasicAppState] is empty or there is an error, returns an [AppState]
+  /// that has all fields other than fields in [BasicAppState] as empty
   Future<Optional<AppState>> readAppState() async {
+    var serializedBasicAppState = this.sharedPreferences.get(basicAppStateKey);
+
+    AppState appState;
+    if (serializedBasicAppState != null) {
+      try {
+        BasicAppState basicAppState =
+        BasicAppState.fromJson(serializedBasicAppState);
+        appState = AppState().rebuild((b) =>
+        b
+          ..isAuthenticated = basicAppState.isAuthenticated
+          ..settingState.replace(basicAppState.settingState)
+          ..currentAuthenticatedUserBasicInfo
+              .replace(basicAppState.currentAuthenticatedUserBasicInfo));
+      } catch (error, stack) {
+        debugPrint(
+            'Error occurred during serializing BasicAppState: $error. Stack: $stack');
+        return Optional.absent();
+      }
+    }
+
     var serializedAppState = this.sharedPreferences.get(appStateKey);
 
     if (serializedAppState != null) {
       try {
-        return Optional.of(AppState.fromJson(serializedAppState));
+        AppState fullAppState = AppState.fromJson(serializedAppState);
+        fullAppState = fullAppState.rebuild(
+                (b) =>
+            b
+              ..currentAuthenticatedUserBasicInfo.replace(
+                  appState.currentAuthenticatedUserBasicInfo)
+              ..isAuthenticated = appState.isAuthenticated
+              ..settingState.replace(appState.settingState)
+        );
+        return Optional.of(fullAppState);
       } catch (error, stack) {
         debugPrint(
             'Error occurred during serializing AppState: $error. Stack: $stack');
       }
     }
 
-    var serializedBasicAppState = this.sharedPreferences.get(basicAppStateKey);
-
-    if (serializedBasicAppState != null) {
-      try {
-        BasicAppState basicAppState =
-            BasicAppState.fromJson(serializedBasicAppState);
-        AppState appState = AppState().rebuild((b) => b
-          ..settingState.replace(basicAppState.settingState)
-          ..currentAuthenticatedUserBasicInfo
-              .replace(basicAppState.currentAuthenticatedUserBasicInfo));
-
-        return Optional.of(appState);
-      } catch (error, stack) {
-        debugPrint(
-            'Error occurred during serializing BasicAppState: $error. Stack: $stack');
-      }
-    }
-
-    return Optional.absent();
+    return appState == null ? Optional.absent() : Optional.of(appState);
   }
 
   /// Saves [AppState] with key [appStateKey] and a basicAppState with key
@@ -59,7 +75,8 @@ class SharedPreferenceService {
     /// SubjectState currently cannot be serialized
     state = state.rebuild((b) => b..subjectState.replace(SubjectState()));
 
-    BasicAppState basicAppState = BasicAppState((b) => b
+    BasicAppState basicAppState = BasicAppState((b) =>
+    b
       ..currentAuthenticatedUserBasicInfo
           .replace(state.currentAuthenticatedUserBasicInfo)
       ..isAuthenticated = state.isAuthenticated
@@ -71,6 +88,21 @@ class SharedPreferenceService {
     ]);
 
     return futures[0] && futures[1];
+  }
+
+  /// Saves [BasicAppState] with key [basicAppStateKey]
+  Future<bool> persistBasicAppState(AppState state) async {
+    assert(state != null);
+
+    BasicAppState basicAppState = BasicAppState((b) =>
+    b
+      ..currentAuthenticatedUserBasicInfo
+          .replace(state.currentAuthenticatedUserBasicInfo)
+      ..isAuthenticated = state.isAuthenticated
+      ..settingState.replace(state.settingState));
+
+    return await this.sharedPreferences.setString(
+        basicAppStateKey, basicAppState.toJson());
   }
 
   Future<bool> deleteAppState() {

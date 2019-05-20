@@ -10,7 +10,6 @@ abstract class ItemMetaInfo {
 
   /// TODO: replace avatarImageUrl with images
   @nullable
-
   /// user avatar image url
   String get avatarImageUrl;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/setting/MuninTheme.dart';
-import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
-import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/widgets/setting/Common.dart';
 
 Icon buildSwitchModeTrailingIcon(BuildContext context, ThemeSetting setting,

@@ -1,6 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
-import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/Common.dart';
@@ -11,32 +14,38 @@ import 'package:screen/screen.dart';
 
 const Duration listenToBrightnessChangeInterval = const Duration(seconds: 2);
 
-List<Epic<AppState>> createSettingEpics() {
+List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService) {
   final changeThemeByScreenBrightnessEpic =
-      _createChangeThemeByScreenBrightnessEpic();
+  _createChangeThemeByScreenBrightnessEpic();
 
   final updateThemeSettingEpic = _createUpdateThemeSettingEpic();
 
-  return [changeThemeByScreenBrightnessEpic, updateThemeSettingEpic];
+  final createImportBlockedBangumiUsersEpic =
+  _createImportBlockedBangumiUsersEpic(bangumiUserService);
+
+  return [
+    changeThemeByScreenBrightnessEpic,
+    updateThemeSettingEpic,
+    createImportBlockedBangumiUsersEpic
+  ];
 }
 
 /// Note: [Screen.brightness] returns value between 0 and 1 so we need to manually
 /// convert it to 0~100 scale
-Stream<dynamic> _changeThemeByScreenBrightness(
-  UpdateThemeSettingAction action,
+Stream<dynamic> _changeThemeByScreenBrightness(UpdateThemeSettingAction action,
 ) async* {
   ThemeSetting themeSetting = action.themeSetting;
 
   bool shouldChangeToDarkTheme(int roundedDeviceBrightness) {
     return roundedDeviceBrightness <=
-            themeSetting.preferredFollowBrightnessSwitchThreshold &&
+        themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessDarkTheme;
   }
 
   bool shouldChangeToLightTheme(int currentDeviceBrightness) {
     return currentDeviceBrightness >
-            themeSetting.preferredFollowBrightnessSwitchThreshold &&
+        themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessLightTheme;
   }
@@ -45,15 +54,15 @@ Stream<dynamic> _changeThemeByScreenBrightness(
     if (themeSetting.themeSwitchMode ==
         ThemeSwitchMode.FollowScreenBrightness) {
       int roundedDeviceBrightness =
-          roundDeviceBrightnessToPercentage(await Screen.brightness);
+      roundDeviceBrightnessToPercentage(await Screen.brightness);
       if (shouldChangeToDarkTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
             themeSetting: themeSetting.rebuild(
-                (b) => b..currentTheme = b.preferredFollowBrightnessDarkTheme));
+                    (b) => b..currentTheme = b.preferredFollowBrightnessDarkTheme));
       } else if (shouldChangeToLightTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
             themeSetting: themeSetting.rebuild((b) =>
-                b..currentTheme = b.preferredFollowBrightnessLightTheme));
+            b..currentTheme = b.preferredFollowBrightnessLightTheme));
       }
     }
   } catch (error, stack) {
@@ -91,15 +100,14 @@ Epic<AppState> _createChangeThemeByScreenBrightnessEpic() {
   };
 }
 
-Stream<dynamic> _updateThemeSetting(
-  UpdateThemeSettingAction action,
+Stream<dynamic> _updateThemeSetting(UpdateThemeSettingAction action,
 ) async* {
   try {
     /// New theme must be either light or dark theme
     assert(action.themeSetting.currentTheme.isLightTheme ||
         action.themeSetting.currentTheme.isDarkTheme);
     if (action.persistToDisk) {
-      yield PersistAppStateAction();
+      yield PersistAppStateAction(basicAppStateOnly: true);
     }
   } catch (error, stack) {
     print(error.toString());
@@ -112,5 +120,28 @@ Epic<AppState> _createUpdateThemeSettingEpic() {
     return Observable(actions)
         .ofType(TypeToken<UpdateThemeSettingAction>())
         .switchMap((action) => _updateThemeSetting(action));
+  };
+}
+
+Stream<dynamic> _createImportBlockedBangumiUsers(
+    BangumiUserService bangumiUserService,
+    ImportBlockedBangumiUsersRequestAction action,) async* {
+  try {
+    BuiltMap<String, MutedUser> users =
+    await bangumiUserService.importBlockedUser();
+    yield ImportBlockedBangumiUsersResponseSuccessAction(users: users);
+  } catch (error, stack) {
+    print(error.toString());
+    print(stack);
+  }
+}
+
+Epic<AppState> _createImportBlockedBangumiUsersEpic(
+    BangumiUserService bangumiUserService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<ImportBlockedBangumiUsersRequestAction>())
+        .switchMap((action) =>
+        _createImportBlockedBangumiUsers(bangumiUserService, action));
   };
 }

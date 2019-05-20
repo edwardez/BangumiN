@@ -1,10 +1,11 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
-import 'package:munin/redux/setting/SettingState.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 
@@ -14,7 +15,6 @@ class SettingHome extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: (store) {
         return _ViewModel(
-          settingState: store.state.settingState,
           onLoginOutPressed: () => store.dispatch(LogoutRequest(context)),
         );
       },
@@ -30,7 +30,7 @@ class SettingHome extends StatelessWidget {
       appBarMainTitle: Text("设置"),
       enableBottomSafeArea: false,
       safeAreaChildPadding:
-          const EdgeInsets.only(left: 0, right: 0, top: largeVerticalPadding),
+      const EdgeInsets.only(left: 0, right: 0, top: largeVerticalPadding),
       nestedScrollViewBody: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -41,10 +41,24 @@ class SettingHome extends StatelessWidget {
                 size: smallerIconSize,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ThemeSettingWidget()),
-                );
+                Application.router.navigateTo(
+                    context,
+                    Routes.themeSettingRoute,
+                    transition: TransitionType.native);
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text('屏蔽'),
+              trailing: Icon(
+                AdaptiveIcons.forwardIconData,
+                size: smallerIconSize,
+              ),
+              onTap: () {
+                Application.router.navigateTo(
+                    context,
+                    Routes.muteSettingRoute,
+                    transition: TransitionType.native);
               },
             ),
             Divider(),
@@ -67,8 +81,16 @@ class SettingHome extends StatelessWidget {
 }
 
 class _ViewModel {
-  final SettingState settingState;
   final void Function() onLoginOutPressed;
 
-  _ViewModel({this.settingState, this.onLoginOutPressed});
+  _ViewModel({this.onLoginOutPressed});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel &&
+              runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }

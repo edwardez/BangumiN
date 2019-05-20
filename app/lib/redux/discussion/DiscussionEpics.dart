@@ -15,13 +15,15 @@ List<Epic<AppState>> createDiscussionEpics(
   ];
 }
 
-Stream<dynamic> _getDiscussion(
+Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetDiscussionRequestAction action) async* {
   try {
     FetchDiscussionResponse fetchDiscussionResponse =
         await bangumiDiscussionService.getRakuenTopics(
-            fetchDiscussionRequest: action.fetchDiscussionRequest);
+            fetchDiscussionRequest: action.fetchDiscussionRequest,
+            muteSetting: store.state.settingState.muteSetting
+        );
 
     yield GetDiscussionRequestSuccessAction(
         fetchDiscussionRequest: action.fetchDiscussionRequest,
@@ -42,6 +44,7 @@ Epic<AppState> _createGetDiscussionEpic(
     return Observable(actions)
         .ofType(TypeToken<GetDiscussionRequestAction>())
         .switchMap(
-            (action) => _getDiscussion(bangumiDiscussionService, action));
+            (action) =>
+            _getDiscussion(store, bangumiDiscussionService, action));
   };
 }

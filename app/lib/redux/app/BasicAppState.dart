@@ -10,8 +10,8 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'BasicAppState.g.dart';
 
 /// A minimum AppState derived from [AppState].
-/// It's used in case breaking changes are introduced to AppState, some basic(but
-/// most important) app state info can still be restored
+/// It's the core of AppState, values in this class will be read and overrides
+/// main [AppState]
 abstract class BasicAppState
     implements Built<BasicAppState, BasicAppStateBuilder> {
   /// If [currentAuthenticatedUserBasicInfo] can be restores we assume user

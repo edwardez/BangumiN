@@ -19,7 +19,12 @@ Stream<dynamic> _persistState(
     SharedPreferenceService sharedPreferenceService,
     PersistAppStateAction action) async* {
   try {
-    await sharedPreferenceService.persistAppState(store.state);
+    if (action.basicAppStateOnly) {
+      await sharedPreferenceService.persistBasicAppState(store.state);
+    } else {
+      await sharedPreferenceService.persistAppState(store.state);
+    }
+
   } catch (error, stack) {
     debugPrint(
         'Error occured during persisting AppState: $error. Stack: $stack');

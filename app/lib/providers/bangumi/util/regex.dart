@@ -24,9 +24,18 @@ final RegExp endsWithDigitGroupRegex = RegExp(r'(\d+)$');
 final RegExp atLeastOneDigitRegex = RegExp(r'\d+');
 final RegExp atLeastOneDigitGroupRegex = RegExp(r'(\d+)');
 
+/// User avatar stores in path like
+/// lain.bgm.tv/pic/user/s/000/00/1/12345.jpg?r=1550000000
+/// `12345` is the user id
+final RegExp userIdInAvatarGroupRegex = RegExp(r'(\d+)\.jpg');
+
 final RegExp atLeastOneSpaceRegex = RegExp(r'\s+');
 final RegExp endsOrStartsWithSpaceRegex = RegExp(r'^\s+|\s+$');
 
 final RegExp scoreRegex = RegExp(r'sstars(\d+)');
 
 final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');
+
+
+final RegExp blockedUserIdGroupRegex = RegExp(
+    r'privacy\?ignore_reset=(\d+)&gh=');

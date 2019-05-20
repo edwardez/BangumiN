@@ -21,22 +21,22 @@ import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/BlogCreationSingleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/CollectionUpdateSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/FriendshipCreationSingleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/GroupJoinSingleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/IndexFavoriteSingleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/MonoFavoriteSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/ProgressUpdateEpisodeSingleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/ProgressUpdateEpisodeUntilWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/PublicMessageNoReplyWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/PublicMessageNormalWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/StatusUpdateMultipleWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/UnknownTimelineActivityWidget.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/WikiCreationSingleWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
+import 'package:munin/widgets/timeline/item/BlogCreationSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/CollectionUpdateSingle.dart';
+import 'package:munin/widgets/timeline/item/FriendshipCreationSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/GroupJoinSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/IndexFavoriteSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/MonoFavoriteSingle.dart';
+import 'package:munin/widgets/timeline/item/ProgressUpdateEpisodeSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/ProgressUpdateEpisodeUntilWidget.dart';
+import 'package:munin/widgets/timeline/item/PublicMessageNoReplyWidget.dart';
+import 'package:munin/widgets/timeline/item/PublicMessageNormalWidget.dart';
+import 'package:munin/widgets/timeline/item/StatusUpdateMultipleWidget.dart';
+import 'package:munin/widgets/timeline/item/UnknownTimelineActivityWidget.dart';
+import 'package:munin/widgets/timeline/item/WikiCreationSingleWidget.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -148,8 +148,8 @@ class _TimelineBodyState extends State<TimelineBody> {
               navigateToUserRouteOnTap: true,
               username: feedChunks
                   .getFeedAt(index)
-                  ?.user
-                  ?.username,
+                  .user
+                  .username,
             ),
           Expanded(
             child: Container(

@@ -82,8 +82,8 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       Match urlMatcher =
           RegExp(r'\/l\/|\/c\/|\/m\/|\/s\/|\/g\/').firstMatch(imageUrl);
 
-      /// `urlMatcher == null` is unexpected, in that case, use original imageUrl for
-      /// all sizes
+      /// `urlMatcher == null` means something like a default subject cover image
+      /// is used, in that case, use original imageUrl for  all sizes
       if (urlMatcher == null) {
         return Images.useSameImageUrlForAll(imageUrl);
       } else {
@@ -91,7 +91,9 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       }
     }
 
+
     String largeImage = imageUrl.replaceFirst(replacePattern, '/l/');
+
     String commonImage;
     if (imageType == ImageType.UserAvatar ||
         imageType == ImageType.MonoAvatar) {

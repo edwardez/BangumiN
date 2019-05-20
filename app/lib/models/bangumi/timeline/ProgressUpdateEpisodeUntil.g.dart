@@ -33,6 +33,12 @@ class _$ProgressUpdateEpisodeUntilSerializer
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
     ];
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -61,6 +67,10 @@ class _$ProgressUpdateEpisodeUntilSerializer
           result.subjectId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -75,12 +85,15 @@ class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
   final String subjectName;
   @override
   final String subjectId;
+  @override
+  final bool isFromMutedUser;
 
   factory _$ProgressUpdateEpisodeUntil(
           [void Function(ProgressUpdateEpisodeUntilBuilder) updates]) =>
       (new ProgressUpdateEpisodeUntilBuilder()..update(updates)).build();
 
-  _$ProgressUpdateEpisodeUntil._({this.user, this.subjectName, this.subjectId})
+  _$ProgressUpdateEpisodeUntil._(
+      {this.user, this.subjectName, this.subjectId, this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('ProgressUpdateEpisodeUntil', 'user');
@@ -110,13 +123,16 @@ class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
     return other is ProgressUpdateEpisodeUntil &&
         user == other.user &&
         subjectName == other.subjectName &&
-        subjectId == other.subjectId;
+        subjectId == other.subjectId &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, user.hashCode), subjectName.hashCode), subjectId.hashCode));
+        $jc($jc($jc(0, user.hashCode), subjectName.hashCode),
+            subjectId.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -124,14 +140,16 @@ class _$ProgressUpdateEpisodeUntil extends ProgressUpdateEpisodeUntil {
     return (newBuiltValueToStringHelper('ProgressUpdateEpisodeUntil')
           ..add('user', user)
           ..add('subjectName', subjectName)
-          ..add('subjectId', subjectId))
+          ..add('subjectId', subjectId)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class ProgressUpdateEpisodeUntilBuilder
     implements
-        Builder<ProgressUpdateEpisodeUntil, ProgressUpdateEpisodeUntilBuilder> {
+        Builder<ProgressUpdateEpisodeUntil, ProgressUpdateEpisodeUntilBuilder>,
+        TimelineFeedBuilder {
   _$ProgressUpdateEpisodeUntil _$v;
 
   FeedMetaInfoBuilder _user;
@@ -146,6 +164,11 @@ class ProgressUpdateEpisodeUntilBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   ProgressUpdateEpisodeUntilBuilder();
 
   ProgressUpdateEpisodeUntilBuilder get _$this {
@@ -153,13 +176,14 @@ class ProgressUpdateEpisodeUntilBuilder
       _user = _$v.user?.toBuilder();
       _subjectName = _$v.subjectName;
       _subjectId = _$v.subjectId;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(ProgressUpdateEpisodeUntil other) {
+  void replace(covariant ProgressUpdateEpisodeUntil other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -179,7 +203,8 @@ class ProgressUpdateEpisodeUntilBuilder
           new _$ProgressUpdateEpisodeUntil._(
               user: user.build(),
               subjectName: subjectName,
-              subjectId: subjectId);
+              subjectId: subjectId,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

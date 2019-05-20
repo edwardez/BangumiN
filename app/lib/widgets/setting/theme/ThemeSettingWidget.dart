@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/models/bangumi/setting/MuninTheme.dart';
-import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
-import 'package:munin/models/bangumi/setting/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -211,7 +211,7 @@ class _ViewModel {
   factory _ViewModel.fromStore(Store<AppState> store) {
     _updateThemeSetting(
       ThemeSetting themeSetting, {
-      persisToDisk = false,
+          persisToDisk = true,
     }) {
       store.dispatch(UpdateThemeSettingAction(
           themeSetting: themeSetting, persistToDisk: persisToDisk));

@@ -30,6 +30,12 @@ class _$WikiCreationSingleSerializer
       serializers.serialize(object.newItemId,
           specifiedType: const FullType(String)),
     ];
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -57,6 +63,10 @@ class _$WikiCreationSingleSerializer
           result.newItemId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -71,12 +81,15 @@ class _$WikiCreationSingle extends WikiCreationSingle {
   final String newItemName;
   @override
   final String newItemId;
+  @override
+  final bool isFromMutedUser;
 
   factory _$WikiCreationSingle(
           [void Function(WikiCreationSingleBuilder) updates]) =>
       (new WikiCreationSingleBuilder()..update(updates)).build();
 
-  _$WikiCreationSingle._({this.user, this.newItemName, this.newItemId})
+  _$WikiCreationSingle._(
+      {this.user, this.newItemName, this.newItemId, this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('WikiCreationSingle', 'user');
@@ -104,13 +117,16 @@ class _$WikiCreationSingle extends WikiCreationSingle {
     return other is WikiCreationSingle &&
         user == other.user &&
         newItemName == other.newItemName &&
-        newItemId == other.newItemId;
+        newItemId == other.newItemId &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, user.hashCode), newItemName.hashCode), newItemId.hashCode));
+        $jc($jc($jc(0, user.hashCode), newItemName.hashCode),
+            newItemId.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -118,13 +134,16 @@ class _$WikiCreationSingle extends WikiCreationSingle {
     return (newBuiltValueToStringHelper('WikiCreationSingle')
           ..add('user', user)
           ..add('newItemName', newItemName)
-          ..add('newItemId', newItemId))
+          ..add('newItemId', newItemId)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class WikiCreationSingleBuilder
-    implements Builder<WikiCreationSingle, WikiCreationSingleBuilder> {
+    implements
+        Builder<WikiCreationSingle, WikiCreationSingleBuilder>,
+        TimelineFeedBuilder {
   _$WikiCreationSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -139,6 +158,11 @@ class WikiCreationSingleBuilder
   String get newItemId => _$this._newItemId;
   set newItemId(String newItemId) => _$this._newItemId = newItemId;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   WikiCreationSingleBuilder();
 
   WikiCreationSingleBuilder get _$this {
@@ -146,13 +170,14 @@ class WikiCreationSingleBuilder
       _user = _$v.user?.toBuilder();
       _newItemName = _$v.newItemName;
       _newItemId = _$v.newItemId;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(WikiCreationSingle other) {
+  void replace(covariant WikiCreationSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -172,7 +197,8 @@ class WikiCreationSingleBuilder
           new _$WikiCreationSingle._(
               user: user.build(),
               newItemName: newItemName,
-              newItemId: newItemId);
+              newItemId: newItemId,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

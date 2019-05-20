@@ -15,6 +15,11 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   BuiltList<TimelineFeed> get first;
 
+  /// A list of feeds that include feed has been muted by the user
+  /// It's used to track actual count of feeds in order to send next fetch timeline
+  /// request
+  BuiltList<TimelineFeed> get unfilteredFirst;
+
   /// The last time munin completes fetching feed response
   @nullable
   DateTime get lastFetchedTime;
@@ -75,6 +80,7 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   factory FeedChunks([updates(FeedChunksBuilder b)]) => _$FeedChunks((b) => b
     ..first.replace(BuiltList<TimelineFeed>())
+    ..unfilteredFirst.replace(BuiltList<TimelineFeed>())
     ..hasReachedEnd = false
     ..disableLoadingMore = false
     ..update(updates));

@@ -22,6 +22,10 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
       serializers.serialize(object.first,
           specifiedType:
               const FullType(BuiltList, const [const FullType(TimelineFeed)])),
+      'unfilteredFirst',
+      serializers.serialize(object.unfilteredFirst,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(TimelineFeed)])),
       'hasReachedEnd',
       serializers.serialize(object.hasReachedEnd,
           specifiedType: const FullType(bool)),
@@ -56,6 +60,12 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
                       BuiltList, const [const FullType(TimelineFeed)]))
               as BuiltList);
           break;
+        case 'unfilteredFirst':
+          result.unfilteredFirst.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(TimelineFeed)]))
+              as BuiltList);
+          break;
         case 'lastFetchedTime':
           result.lastFetchedTime = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime;
@@ -79,6 +89,8 @@ class _$FeedChunks extends FeedChunks {
   @override
   final BuiltList<TimelineFeed> first;
   @override
+  final BuiltList<TimelineFeed> unfilteredFirst;
+  @override
   final DateTime lastFetchedTime;
   @override
   final bool hasReachedEnd;
@@ -93,12 +105,16 @@ class _$FeedChunks extends FeedChunks {
 
   _$FeedChunks._(
       {this.first,
+      this.unfilteredFirst,
       this.lastFetchedTime,
       this.hasReachedEnd,
       this.disableLoadingMore})
       : super._() {
     if (first == null) {
       throw new BuiltValueNullFieldError('FeedChunks', 'first');
+    }
+    if (unfilteredFirst == null) {
+      throw new BuiltValueNullFieldError('FeedChunks', 'unfilteredFirst');
     }
     if (hasReachedEnd == null) {
       throw new BuiltValueNullFieldError('FeedChunks', 'hasReachedEnd');
@@ -131,6 +147,7 @@ class _$FeedChunks extends FeedChunks {
     if (identical(other, this)) return true;
     return other is FeedChunks &&
         first == other.first &&
+        unfilteredFirst == other.unfilteredFirst &&
         lastFetchedTime == other.lastFetchedTime &&
         hasReachedEnd == other.hasReachedEnd &&
         disableLoadingMore == other.disableLoadingMore;
@@ -139,7 +156,9 @@ class _$FeedChunks extends FeedChunks {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, first.hashCode), lastFetchedTime.hashCode),
+        $jc(
+            $jc($jc($jc(0, first.hashCode), unfilteredFirst.hashCode),
+                lastFetchedTime.hashCode),
             hasReachedEnd.hashCode),
         disableLoadingMore.hashCode));
   }
@@ -148,6 +167,7 @@ class _$FeedChunks extends FeedChunks {
   String toString() {
     return (newBuiltValueToStringHelper('FeedChunks')
           ..add('first', first)
+          ..add('unfilteredFirst', unfilteredFirst)
           ..add('lastFetchedTime', lastFetchedTime)
           ..add('hasReachedEnd', hasReachedEnd)
           ..add('disableLoadingMore', disableLoadingMore))
@@ -162,6 +182,12 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
   ListBuilder<TimelineFeed> get first =>
       _$this._first ??= new ListBuilder<TimelineFeed>();
   set first(ListBuilder<TimelineFeed> first) => _$this._first = first;
+
+  ListBuilder<TimelineFeed> _unfilteredFirst;
+  ListBuilder<TimelineFeed> get unfilteredFirst =>
+      _$this._unfilteredFirst ??= new ListBuilder<TimelineFeed>();
+  set unfilteredFirst(ListBuilder<TimelineFeed> unfilteredFirst) =>
+      _$this._unfilteredFirst = unfilteredFirst;
 
   DateTime _lastFetchedTime;
   DateTime get lastFetchedTime => _$this._lastFetchedTime;
@@ -183,6 +209,7 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
   FeedChunksBuilder get _$this {
     if (_$v != null) {
       _first = _$v.first?.toBuilder();
+      _unfilteredFirst = _$v.unfilteredFirst?.toBuilder();
       _lastFetchedTime = _$v.lastFetchedTime;
       _hasReachedEnd = _$v.hasReachedEnd;
       _disableLoadingMore = _$v.disableLoadingMore;
@@ -211,6 +238,7 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
       _$result = _$v ??
           new _$FeedChunks._(
               first: first.build(),
+              unfilteredFirst: unfilteredFirst.build(),
               lastFetchedTime: lastFetchedTime,
               hasReachedEnd: hasReachedEnd,
               disableLoadingMore: disableLoadingMore);
@@ -219,6 +247,8 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
       try {
         _$failedField = 'first';
         first.build();
+        _$failedField = 'unfilteredFirst';
+        unfilteredFirst.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FeedChunks', _$failedField, e.toString());

@@ -21,13 +21,15 @@ List<Epic<AppState>> createSubjectEpics(
   ];
 }
 
-Stream<dynamic> _getSubject(BangumiSubjectService bangumiSubjectService,
+Stream<dynamic> _getSubject(EpicStore<AppState> store,
+    BangumiSubjectService bangumiSubjectService,
     GetSubjectAction action) async* {
   try {
     yield GetSubjectLoadingAction(subjectId: action.subjectId);
 
-    BangumiSubject subject =
-    await bangumiSubjectService.getSubjectFromHttp(subjectId: action.subjectId);
+    BangumiSubject subject = await bangumiSubjectService.getSubjectFromHttp(
+        subjectId: action.subjectId,
+        mutedUsers: store.state.settingState.muteSetting.mutedUsers);
 
     // If the api call is successful, dispatch the results for display
     yield GetSubjectSuccessAction(subject);
@@ -49,7 +51,8 @@ Epic<AppState> _createGetSubjectEpic(
     // Narrow down to SearchAction actions
         .ofType(TypeToken<GetSubjectAction>())
     // Cancel the previous search and start a new one with switchMap
-        .switchMap((action) => _getSubject(bangumiSubjectService, action));
+        .switchMap(
+            (action) => _getSubject(store, bangumiSubjectService, action));
   };
 }
 
@@ -62,13 +65,12 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
 
     futures.add(bangumiSubjectService.getCollectionInfo(action.subjectId));
 
-
-    bool isSubjectAbsent = store.state.subjectState.subjects[[
-      action.subjectId
-    ]] == null;
+    bool isSubjectAbsent =
+        store.state.subjectState.subjects[[action.subjectId]] == null;
     if (isSubjectAbsent) {
       futures.add(bangumiSubjectService.getSubjectFromHttp(
-          subjectId: action.subjectId));
+          subjectId: action.subjectId,
+          mutedUsers: store.state.settingState.muteSetting.mutedUsers));
     }
 
     List responses = await Future.wait(futures);
@@ -105,8 +107,7 @@ Epic<AppState> _createGetCollectionInfoEpic(
     // Narrow down to SearchAction actions
         .ofType(TypeToken<GetCollectionInfoAction>())
     // Cancel the previous search and start a new one with switchMap
-        .switchMap(
-            (action) =>
+        .switchMap((action) =>
             _getCollectionInfo(bangumiSubjectService, action, store));
   };
 }

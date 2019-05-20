@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/setting/MuninTheme.dart';
-import 'package:munin/models/bangumi/setting/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
 

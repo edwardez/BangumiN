@@ -2,10 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/discussion/common/DiscussionItemWidget.dart';
@@ -55,7 +61,7 @@ class _DiscussionBodyState extends State<DiscussionBody> {
           _ViewModel.fromStore(store, widget.fetchDiscussionRequest),
       distinct: true,
       onInitialBuild: (_ViewModel vm) {
-        /// Auto-refresh if data doesn't exist or is null
+        /// Auto-refresh if data is null or stale
         if (vm.rakuenTopics == null || vm.rakuenTopics.isStale) {
           /// Use null-aware operators to avoid
           /// `NoSuchMethodError: The method 'show' was called on null.`
@@ -76,13 +82,20 @@ class _DiscussionBodyState extends State<DiscussionBody> {
             }
             return DiscussionItemWidget(
               discussionItem: vm.rakuenTopics.discussionItemsAsList[index],
+              onMute: (DiscussionItem item) {
+                vm.muteGroup(MutedGroup.fromGroupDiscussionPost(
+                    item as GroupDiscussionPost));
+              },
+              onUnmute: (DiscussionItem item) {
+                vm.unMuteGroup((item as GroupDiscussionPost).postedGroupId);
+              },
+              isMuted: vm.isMuted,
             );
           },
           itemCount: vm.rakuenTopics?.discussionItemsAsList?.length ?? 0,
           emptyAfterRefreshWidget: _buildEmptyRakuenWidget(),
           appBar: widget.oneMuninBar,
           separatorBuilder: null,
-
         );
       },
     );
@@ -92,6 +105,13 @@ class _DiscussionBodyState extends State<DiscussionBody> {
 class _ViewModel {
   final FetchDiscussionRequest fetchDiscussionRequest;
   final FetchDiscussionResponse rakuenTopics;
+  final MuteSetting muteSetting;
+
+  final bool Function(DiscussionItem item) isMuted;
+
+  final Function(MutedGroup mutedGroup) muteGroup;
+  final Function(String groupId) unMuteGroup;
+
   final Function(BuildContext context) getRakuenTopics;
 
   factory _ViewModel.fromStore(
@@ -103,25 +123,67 @@ class _ViewModel {
       return action.completer.future;
     }
 
+    _muteGroup(MutedGroup mutedGroup) {
+      final action = MuteGroupAction(mutedGroup: mutedGroup);
+      store.dispatch(action);
+      store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
+    }
+
+    _unMuteGroup(String groupId) {
+      final action = UnmuteGroupAction(groupId: groupId);
+      store.dispatch(action);
+      store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
+    }
+
+    bool _isMuted(DiscussionItem item) {
+      assert(item is GroupDiscussionPost, 'Only GroupDiscussionPost has a valid mute status');
+      if (item is! GroupDiscussionPost) {
+        return false;
+      }
+
+
+      String postedGroupId = (item as GroupDiscussionPost).postedGroupId;
+
+      return postedGroupId != null &&
+          store.state.settingState.muteSetting.mutedGroups.containsKey(
+              postedGroupId);
+    }
+
     return _ViewModel(
       fetchDiscussionRequest: fetchDiscussionRequest,
       rakuenTopics: store.state.discussionState.results[fetchDiscussionRequest],
-      getRakuenTopics: (BuildContext context) => _getRakuenTopics(context),
+      getRakuenTopics: _getRakuenTopics,
+      muteSetting: store.state.settingState.muteSetting,
+      muteGroup: _muteGroup,
+      unMuteGroup: _unMuteGroup,
+      isMuted: _isMuted,
     );
   }
 
-  _ViewModel(
-      {this.fetchDiscussionRequest, this.rakuenTopics, this.getRakuenTopics});
+  _ViewModel({
+    this.fetchDiscussionRequest,
+    this.rakuenTopics,
+    this.getRakuenTopics,
+    this.isMuted,
+    this.muteGroup,
+    this.unMuteGroup,
+    this.muteSetting,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          fetchDiscussionRequest == other.fetchDiscussionRequest &&
-          rakuenTopics == other.rakuenTopics;
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              fetchDiscussionRequest == other.fetchDiscussionRequest &&
+              rakuenTopics == other.rakuenTopics &&
+              muteSetting == other.muteSetting;
 
   @override
   int get hashCode =>
-      hash2(fetchDiscussionRequest.hashCode, rakuenTopics.hashCode);
+      hash3(
+          fetchDiscussionRequest.hashCode,
+          rakuenTopics.hashCode,
+          muteSetting.hashCode);
+
 }

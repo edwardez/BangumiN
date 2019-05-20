@@ -1,16 +1,19 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
+import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createTimelineEpics(
-    BangumiTimelineService bangumiTimelineService) {
+List<Epic<AppState>> createTimelineEpics(BangumiTimelineService bangumiTimelineService) {
   final loadTimelineFeedEpic = _createLoadTimelineEpics(bangumiTimelineService);
 
   return [
@@ -25,6 +28,9 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
         action.feedLoadType == FeedLoadType.Newer ||
         action.feedLoadType == FeedLoadType.Older);
 
+    BuiltMap<String, MutedUser> mutedUsers = store.state.settingState
+        .muteSetting.mutedUsers;
+
     int upperFeedId = IntegerHelper.MAX_VALUE;
     int lowerFeedId = IntegerHelper.MIN_VALUE;
     int nextPageNum;
@@ -38,7 +44,9 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       ///if firstChunkMaxIdOrNull is null, most likely it's a [UnknownTimelineActivity]
       /// so feedId cannot be filled in we just load all new feeds
       /// TODO: clean up all older feeds in this case?
-      upperFeedId = feedChunks.firstChunkMaxIdOrNull ?? IntegerHelper.MIN_VALUE;
+      upperFeedId =
+          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFirst)?.user
+              ?.feedId ?? IntegerHelper.MIN_VALUE;
     }
 
     if (action.feedLoadType == FeedLoadType.Older) {
@@ -46,9 +54,12 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// [UnknownTimelineActivity] so feedId cannot be filled in
       /// we just load all new feeds
       /// TODO: clean up all newer feeds in this case?
-      lowerFeedId = feedChunks.firstChunkMinIdOrNull ?? IntegerHelper.MAX_VALUE;
+      lowerFeedId =
+          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFirst)?.user
+              ?.feedId ?? IntegerHelper.MAX_VALUE;
 
-      int tentativeNextPageNum = 1 + feedChunks.first.length ~/ feedsPerPage;
+      int tentativeNextPageNum = 1 +
+          feedChunks.unfilteredFirst.length ~/ feedsPerPage;
 
       /// To ensure all feeds are delivered, we need to consider all scenarios
       /// (assume every time we fetch 10 feeds)
@@ -77,16 +88,17 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// tl;dr: if current feed length cannot be divided by [feedsPerPage], fetch
       /// the next possible page num first, if that returns 0 feed, then fetch
       /// the page after next possible page num
-      if (feedChunks.first.length % feedsPerPage == 0) {
+      if (feedChunks.unfilteredFirst.length % feedsPerPage == 0) {
         nextPageNum = tentativeNextPageNum;
       } else {
         FetchFeedsResult fetchFeedsResult =
-            await bangumiTimelineService.getTimeline(
-                fetchTimelineRequest: action.fetchTimelineRequest,
-                nextPageNum: tentativeNextPageNum,
-                feedLoadType: action.feedLoadType,
-                lowerFeedId: lowerFeedId,
-                upperFeedId: upperFeedId);
+        await bangumiTimelineService.getTimeline(
+            fetchTimelineRequest: action.fetchTimelineRequest,
+            nextPageNum: tentativeNextPageNum,
+            feedLoadType: action.feedLoadType,
+            lowerFeedId: lowerFeedId,
+            upperFeedId: upperFeedId,
+            mutedUsers: mutedUsers);
         if (fetchFeedsResult.feeds.length == 0) {
           nextPageNum = tentativeNextPageNum + 1;
         } else {
@@ -108,15 +120,17 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
     }
 
     FetchFeedsResult fetchFeedsResult =
-        await bangumiTimelineService.getTimeline(
-            fetchTimelineRequest: action.fetchTimelineRequest,
-            nextPageNum: nextPageNum,
-            feedLoadType: action.feedLoadType,
-            lowerFeedId: lowerFeedId,
-            upperFeedId: upperFeedId);
+    await bangumiTimelineService.getTimeline(
+        fetchTimelineRequest: action.fetchTimelineRequest,
+        nextPageNum: nextPageNum,
+        feedLoadType: action.feedLoadType,
+        lowerFeedId: lowerFeedId,
+        upperFeedId: upperFeedId,
+        mutedUsers: mutedUsers);
 
-    debugPrint('Feeds number before loading: ${feedChunks.first.length}.'
-        ' Recevied ${fetchFeedsResult.feeds.length} new feeds.');
+    debugPrint(
+        'Feeds number before loading: ${feedChunks.unfilteredFirst.length}.'
+            ' Recevied ${fetchFeedsResult.feeds.length} new feeds.');
 
     yield LoadTimelineSuccess(
         fetchTimelineRequest: action.fetchTimelineRequest,
@@ -142,8 +156,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
   }
 }
 
-Epic<AppState> _createLoadTimelineEpics(
-    BangumiTimelineService bangumiTimelineService) {
+Epic<AppState> _createLoadTimelineEpics(BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<LoadTimelineRequest>())

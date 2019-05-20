@@ -5,6 +5,10 @@ import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
+import 'package:munin/widgets/setting/Setting.dart';
+import 'package:munin/widgets/setting/mute/ImportBlockedBangumiUsersWidget.dart';
+import 'package:munin/widgets/setting/mute/MuteSettingWidget.dart';
+import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
 import 'package:munin/widgets/subject/SubjectWidget.dart';
 import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
@@ -66,5 +70,26 @@ var userProfileRouteHandler = Handler(
           username: username,
         ),
       );
+    });
+
+/// Setting
+var settingRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return SettingHome();
+    });
+
+var themeSettingRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return ThemeSettingWidget();
+    });
+
+var muteSettingRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MuteSettingWidget();
+    });
+
+var muteSettingBatchImportUsersRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return ImportBlockedBangumiUsersWidget();
     });
 

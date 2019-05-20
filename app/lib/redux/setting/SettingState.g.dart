@@ -22,6 +22,9 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
       'themeSetting',
       serializers.serialize(object.themeSetting,
           specifiedType: const FullType(ThemeSetting)),
+      'muteSetting',
+      serializers.serialize(object.muteSetting,
+          specifiedType: const FullType(MuteSetting)),
     ];
 
     return result;
@@ -42,6 +45,10 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
           result.themeSetting.replace(serializers.deserialize(value,
               specifiedType: const FullType(ThemeSetting)) as ThemeSetting);
           break;
+        case 'muteSetting':
+          result.muteSetting.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MuteSetting)) as MuteSetting);
+          break;
       }
     }
 
@@ -52,13 +59,18 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
 class _$SettingState extends SettingState {
   @override
   final ThemeSetting themeSetting;
+  @override
+  final MuteSetting muteSetting;
 
   factory _$SettingState([void Function(SettingStateBuilder) updates]) =>
       (new SettingStateBuilder()..update(updates)).build();
 
-  _$SettingState._({this.themeSetting}) : super._() {
+  _$SettingState._({this.themeSetting, this.muteSetting}) : super._() {
     if (themeSetting == null) {
       throw new BuiltValueNullFieldError('SettingState', 'themeSetting');
+    }
+    if (muteSetting == null) {
+      throw new BuiltValueNullFieldError('SettingState', 'muteSetting');
     }
   }
 
@@ -72,18 +84,21 @@ class _$SettingState extends SettingState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SettingState && themeSetting == other.themeSetting;
+    return other is SettingState &&
+        themeSetting == other.themeSetting &&
+        muteSetting == other.muteSetting;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, themeSetting.hashCode));
+    return $jf($jc($jc(0, themeSetting.hashCode), muteSetting.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SettingState')
-          ..add('themeSetting', themeSetting))
+          ..add('themeSetting', themeSetting)
+          ..add('muteSetting', muteSetting))
         .toString();
   }
 }
@@ -98,11 +113,18 @@ class SettingStateBuilder
   set themeSetting(ThemeSettingBuilder themeSetting) =>
       _$this._themeSetting = themeSetting;
 
+  MuteSettingBuilder _muteSetting;
+  MuteSettingBuilder get muteSetting =>
+      _$this._muteSetting ??= new MuteSettingBuilder();
+  set muteSetting(MuteSettingBuilder muteSetting) =>
+      _$this._muteSetting = muteSetting;
+
   SettingStateBuilder();
 
   SettingStateBuilder get _$this {
     if (_$v != null) {
       _themeSetting = _$v.themeSetting?.toBuilder();
+      _muteSetting = _$v.muteSetting?.toBuilder();
       _$v = null;
     }
     return this;
@@ -125,13 +147,17 @@ class SettingStateBuilder
   _$SettingState build() {
     _$SettingState _$result;
     try {
-      _$result =
-          _$v ?? new _$SettingState._(themeSetting: themeSetting.build());
+      _$result = _$v ??
+          new _$SettingState._(
+              themeSetting: themeSetting.build(),
+              muteSetting: muteSetting.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'themeSetting';
         themeSetting.build();
+        _$failedField = 'muteSetting';
+        muteSetting.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SettingState', _$failedField, e.toString());

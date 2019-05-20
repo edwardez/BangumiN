@@ -39,6 +39,12 @@ class _$GroupJoinSingleSerializer
         ..add(serializers.serialize(object.groupDescription,
             specifiedType: const FullType(String)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -74,6 +80,10 @@ class _$GroupJoinSingleSerializer
           result.groupId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -92,6 +102,8 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   final String groupDescription;
   @override
   final String groupId;
+  @override
+  final bool isFromMutedUser;
 
   factory _$GroupJoinSingle([void Function(GroupJoinSingleBuilder) updates]) =>
       (new GroupJoinSingleBuilder()..update(updates)).build();
@@ -101,7 +113,8 @@ class _$GroupJoinSingle extends GroupJoinSingle {
       this.groupCoverImageUrl,
       this.groupName,
       this.groupDescription,
-      this.groupId})
+      this.groupId,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'user');
@@ -134,17 +147,20 @@ class _$GroupJoinSingle extends GroupJoinSingle {
         groupCoverImageUrl == other.groupCoverImageUrl &&
         groupName == other.groupName &&
         groupDescription == other.groupDescription &&
-        groupId == other.groupId;
+        groupId == other.groupId &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), groupCoverImageUrl.hashCode),
-                groupName.hashCode),
-            groupDescription.hashCode),
-        groupId.hashCode));
+            $jc(
+                $jc($jc($jc(0, user.hashCode), groupCoverImageUrl.hashCode),
+                    groupName.hashCode),
+                groupDescription.hashCode),
+            groupId.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -154,13 +170,16 @@ class _$GroupJoinSingle extends GroupJoinSingle {
           ..add('groupCoverImageUrl', groupCoverImageUrl)
           ..add('groupName', groupName)
           ..add('groupDescription', groupDescription)
-          ..add('groupId', groupId))
+          ..add('groupId', groupId)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class GroupJoinSingleBuilder
-    implements Builder<GroupJoinSingle, GroupJoinSingleBuilder> {
+    implements
+        Builder<GroupJoinSingle, GroupJoinSingleBuilder>,
+        TimelineFeedBuilder {
   _$GroupJoinSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -185,6 +204,11 @@ class GroupJoinSingleBuilder
   String get groupId => _$this._groupId;
   set groupId(String groupId) => _$this._groupId = groupId;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   GroupJoinSingleBuilder();
 
   GroupJoinSingleBuilder get _$this {
@@ -194,13 +218,14 @@ class GroupJoinSingleBuilder
       _groupName = _$v.groupName;
       _groupDescription = _$v.groupDescription;
       _groupId = _$v.groupId;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(GroupJoinSingle other) {
+  void replace(covariant GroupJoinSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -222,7 +247,8 @@ class GroupJoinSingleBuilder
               groupCoverImageUrl: groupCoverImageUrl,
               groupName: groupName,
               groupDescription: groupDescription,
-              groupId: groupId);
+              groupId: groupId,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

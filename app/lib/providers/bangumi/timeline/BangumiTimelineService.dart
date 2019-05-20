@@ -1,5 +1,7 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
@@ -18,12 +20,13 @@ class BangumiTimelineService {
       : assert(cookieClient != null);
 
   // get bangumi user basic info through api
-  Future<FetchFeedsResult> getTimeline(
-      {@required FetchTimelineRequest fetchTimelineRequest,
-        @required int nextPageNum,
-        @required FeedLoadType feedLoadType,
-        @required int upperFeedId,
-        @required int lowerFeedId}) async {
+  Future<FetchFeedsResult> getTimeline({@required FetchTimelineRequest fetchTimelineRequest,
+    @required int nextPageNum,
+    @required FeedLoadType feedLoadType,
+    @required int upperFeedId,
+    @required int lowerFeedId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+  }) async {
     Map<String, dynamic> queryParameters = {'ajax': '1'};
 
     if (nextPageNum != null) {
@@ -39,10 +42,11 @@ class BangumiTimelineService {
     TimelineParser timelineParser = TimelineParser();
 
     FetchFeedsResult fetchFeedsResult = timelineParser.process(
-      feedsHtml.data,
-      feedLoadType: feedLoadType,
-      upperFeedId: upperFeedId,
-      lowerFeedId: lowerFeedId,
+        feedsHtml.data,
+        feedLoadType: feedLoadType,
+        upperFeedId: upperFeedId,
+        lowerFeedId: lowerFeedId,
+        mutedUsers: mutedUsers
     );
 
     return fetchFeedsResult;

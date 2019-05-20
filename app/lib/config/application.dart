@@ -108,7 +108,7 @@ abstract class Application {
       ...createTimelineEpics(bangumiTimelineService),
       ...createUserEpics(bangumiUserService),
       ...createProgressEpics(bangumiProgressService),
-      ...createSettingEpics(),
+      ...createSettingEpics(bangumiUserService),
     ]);
     final store = Store<AppState>(appReducer, initialState: appState,
         middleware: [

@@ -38,6 +38,12 @@ class _$IndexFavoriteSingleSerializer
         ..add(serializers.serialize(object.summary,
             specifiedType: const FullType(String)));
     }
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -69,6 +75,10 @@ class _$IndexFavoriteSingleSerializer
           result.summary = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -85,12 +95,15 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
   final String id;
   @override
   final String summary;
+  @override
+  final bool isFromMutedUser;
 
   factory _$IndexFavoriteSingle(
           [void Function(IndexFavoriteSingleBuilder) updates]) =>
       (new IndexFavoriteSingleBuilder()..update(updates)).build();
 
-  _$IndexFavoriteSingle._({this.user, this.title, this.id, this.summary})
+  _$IndexFavoriteSingle._(
+      {this.user, this.title, this.id, this.summary, this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('IndexFavoriteSingle', 'user');
@@ -119,13 +132,16 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
         user == other.user &&
         title == other.title &&
         id == other.id &&
-        summary == other.summary;
+        summary == other.summary &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc($jc(0, user.hashCode), title.hashCode), id.hashCode),
-        summary.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, user.hashCode), title.hashCode), id.hashCode),
+            summary.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
@@ -134,13 +150,16 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
           ..add('user', user)
           ..add('title', title)
           ..add('id', id)
-          ..add('summary', summary))
+          ..add('summary', summary)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class IndexFavoriteSingleBuilder
-    implements Builder<IndexFavoriteSingle, IndexFavoriteSingleBuilder> {
+    implements
+        Builder<IndexFavoriteSingle, IndexFavoriteSingleBuilder>,
+        TimelineFeedBuilder {
   _$IndexFavoriteSingle _$v;
 
   FeedMetaInfoBuilder _user;
@@ -159,6 +178,11 @@ class IndexFavoriteSingleBuilder
   String get summary => _$this._summary;
   set summary(String summary) => _$this._summary = summary;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   IndexFavoriteSingleBuilder();
 
   IndexFavoriteSingleBuilder get _$this {
@@ -167,13 +191,14 @@ class IndexFavoriteSingleBuilder
       _title = _$v.title;
       _id = _$v.id;
       _summary = _$v.summary;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(IndexFavoriteSingle other) {
+  void replace(covariant IndexFavoriteSingle other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -191,7 +216,11 @@ class IndexFavoriteSingleBuilder
     try {
       _$result = _$v ??
           new _$IndexFavoriteSingle._(
-              user: user.build(), title: title, id: id, summary: summary);
+              user: user.build(),
+              title: title,
+              id: id,
+              summary: summary,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

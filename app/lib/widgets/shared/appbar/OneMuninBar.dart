@@ -1,9 +1,11 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
-import 'package:munin/widgets/setting/Setting.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:redux/redux.dart';
 
@@ -75,11 +77,10 @@ class _OneMuninBarState extends State<OneMuninBar> {
                   ),
                   tooltip: '头像，更多选项',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SettingHome()),
-                    );
+                    Application.router.navigateTo(
+                        context,
+                        Routes.settingRoute,
+                        transition: TransitionType.native);
                   },
                 ),
               )

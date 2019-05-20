@@ -1,9 +1,12 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
+import 'package:munin/providers/bangumi/user/parser/ImportBlockedUserParser.dart';
 import 'package:munin/providers/bangumi/user/parser/UserParser.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 
@@ -13,10 +16,9 @@ class BangumiUserService {
   BangumiOauthService oauthClient;
   BangumiCookieService cookieClient;
 
-  BangumiUserService(
-      {@required this.oauthClient,
-      @required this.cookieClient,
-        @required this.sharedPreferenceService})
+  BangumiUserService({@required this.oauthClient,
+    @required this.cookieClient,
+    @required this.sharedPreferenceService})
       : assert(oauthClient != null),
         assert(cookieClient != null),
         assert(sharedPreferenceService != null);
@@ -34,7 +36,7 @@ class BangumiUserService {
         .bangumiApiHost}/user/$username');
 
     BangumiUserBasic basicInfo =
-        BangumiUserBasic.fromJson(response.body);
+    BangumiUserBasic.fromJson(response.body);
     return basicInfo;
   }
 
@@ -48,5 +50,14 @@ class BangumiUserService {
     return profile;
   }
 
+  // Imports blocked users
+  Future<BuiltMap<String, MutedUser>> importBlockedUser() async {
+    final response =
+    await cookieClient.dio.get<String>('https://${Application.environmentValue
+        .bangumiNonCdnHost}/settings/privacy');
 
+    BuiltMap<String, MutedUser> users = ImportBlockedUserParser().process(
+        response.data);
+    return users;
+  }
 }

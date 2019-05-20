@@ -30,6 +30,12 @@ class _$PublicMessageNoReplySerializer
       serializers.serialize(object.content,
           specifiedType: const FullType(String)),
     ];
+    if (object.isFromMutedUser != null) {
+      result
+        ..add('isFromMutedUser')
+        ..add(serializers.serialize(object.isFromMutedUser,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -53,6 +59,10 @@ class _$PublicMessageNoReplySerializer
           result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isFromMutedUser':
+          result.isFromMutedUser = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -65,12 +75,15 @@ class _$PublicMessageNoReply extends PublicMessageNoReply {
   final FeedMetaInfo user;
   @override
   final String content;
+  @override
+  final bool isFromMutedUser;
 
   factory _$PublicMessageNoReply(
           [void Function(PublicMessageNoReplyBuilder) updates]) =>
       (new PublicMessageNoReplyBuilder()..update(updates)).build();
 
-  _$PublicMessageNoReply._({this.user, this.content}) : super._() {
+  _$PublicMessageNoReply._({this.user, this.content, this.isFromMutedUser})
+      : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PublicMessageNoReply', 'user');
     }
@@ -93,25 +106,30 @@ class _$PublicMessageNoReply extends PublicMessageNoReply {
     if (identical(other, this)) return true;
     return other is PublicMessageNoReply &&
         user == other.user &&
-        content == other.content;
+        content == other.content &&
+        isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, user.hashCode), content.hashCode));
+    return $jf($jc($jc($jc(0, user.hashCode), content.hashCode),
+        isFromMutedUser.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PublicMessageNoReply')
           ..add('user', user)
-          ..add('content', content))
+          ..add('content', content)
+          ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
 }
 
 class PublicMessageNoReplyBuilder
-    implements Builder<PublicMessageNoReply, PublicMessageNoReplyBuilder> {
+    implements
+        Builder<PublicMessageNoReply, PublicMessageNoReplyBuilder>,
+        TimelineFeedBuilder {
   _$PublicMessageNoReply _$v;
 
   FeedMetaInfoBuilder _user;
@@ -122,19 +140,25 @@ class PublicMessageNoReplyBuilder
   String get content => _$this._content;
   set content(String content) => _$this._content = content;
 
+  bool _isFromMutedUser;
+  bool get isFromMutedUser => _$this._isFromMutedUser;
+  set isFromMutedUser(bool isFromMutedUser) =>
+      _$this._isFromMutedUser = isFromMutedUser;
+
   PublicMessageNoReplyBuilder();
 
   PublicMessageNoReplyBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _content = _$v.content;
+      _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(PublicMessageNoReply other) {
+  void replace(covariant PublicMessageNoReply other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -151,7 +175,10 @@ class PublicMessageNoReplyBuilder
     _$PublicMessageNoReply _$result;
     try {
       _$result = _$v ??
-          new _$PublicMessageNoReply._(user: user.build(), content: content);
+          new _$PublicMessageNoReply._(
+              user: user.build(),
+              content: content,
+              isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {

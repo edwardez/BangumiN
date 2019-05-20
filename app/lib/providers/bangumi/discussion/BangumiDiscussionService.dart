@@ -7,6 +7,7 @@ import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
+import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/discussion/parser/DiscussionParser.dart';
 
@@ -22,7 +23,7 @@ class BangumiDiscussionService {
   /// According to https://bgm.tv/group/topic/4428#post_56015, it seems like
   /// pagination is hidden intentionally
   Future<FetchDiscussionResponse> getRakuenTopics(
-      {@required FetchDiscussionRequest fetchDiscussionRequest}) async {
+      {@required FetchDiscussionRequest fetchDiscussionRequest, @required MuteSetting muteSetting}) async {
     assert(fetchDiscussionRequest.discussionType == DiscussionType.Rakuen);
     assert(fetchDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
@@ -44,7 +45,7 @@ class BangumiDiscussionService {
         .get(requestUrl, queryParameters: queryParameters);
 
     List<DiscussionItem> discussionItems =
-        DiscussionParser().process(response.data);
+    DiscussionParser().process(response.data, muteSetting: muteSetting);
 
     FetchDiscussionResponse fetchDiscussionResponse =
         FetchDiscussionResponse((b) => b

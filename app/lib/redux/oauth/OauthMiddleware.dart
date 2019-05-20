@@ -69,7 +69,6 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
         cookieService.persistCredentials(),
         sharedPreferenceService.persistAppState(updatedAppState)
       ]);
-      await oauthService.client.refreshCredentials();
       store.dispatch(OAuthLoginSuccess(userInfo));
       Navigator.of(action.context).pushReplacementNamed('/home');
     } catch (error, stack) {

@@ -94,8 +94,10 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
     b
       ..addAll(unfilteredFeedsResponse));
 
-    BuiltList<TimelineFeed> updatedFilteredFeeds = feedChunksInStore.first
-        .rebuild((b) => b..insertAll(0, filteredFeedsResponse));
+    BuiltList<TimelineFeed> updatedFilteredFeeds =
+    feedChunksInStore.first.rebuild((b) =>
+    b
+      ..addAll(filteredFeedsResponse));
 
     return timelineState.rebuild((b) => b
       ..timeline.addAll({

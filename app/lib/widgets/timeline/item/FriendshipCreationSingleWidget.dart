@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 class FriendshipCreationSingleWidget extends StatelessWidget {
   final FriendshipCreationSingle friendshipCreationSingle;

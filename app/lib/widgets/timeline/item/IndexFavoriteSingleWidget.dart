@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/IndexFavoriteSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 class IndexFavoriteSingleWidget extends StatelessWidget {
   final IndexFavoriteSingle indexFavoriteSingle;

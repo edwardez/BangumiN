@@ -2,9 +2,9 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 import 'package:quiver/strings.dart';
 
 class CollectionUpdateSingleWidget extends StatelessWidget {

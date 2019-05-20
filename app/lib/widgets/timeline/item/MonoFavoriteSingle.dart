@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/MonoFavoriteSingle.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/TimelineCommonListTile.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 // currently person(real) and character(fictional) shares exactly same code, we call them 'mono'(japanese romaji) so a common widget is created
 class MonoFavoriteSingleWidget extends StatelessWidget {

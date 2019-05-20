@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
-import 'package:munin/widgets/Timeline/TimelineItem/common/WrappableHyperTextLinkList.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
+import 'package:munin/widgets/timeline/item/common/WrappableHyperTextLinkList.dart';
 
 /// see [StatusUpdateMultiple] for further explanation
 class StatusUpdateMultipleWidget extends StatelessWidget {

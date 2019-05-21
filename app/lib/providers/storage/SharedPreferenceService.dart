@@ -105,7 +105,12 @@ class SharedPreferenceService {
         basicAppStateKey, basicAppState.toJson());
   }
 
-  Future<bool> deleteAppState() {
-    return this.sharedPreferences.remove(appStateKey);
+  Future<bool> deleteAppState() async {
+    List<bool> futures = await Future.wait([
+      this.sharedPreferences.remove(appStateKey),
+      this.sharedPreferences.remove(basicAppStateKey),
+    ]);
+
+    return futures[0] && futures[1];
   }
 }

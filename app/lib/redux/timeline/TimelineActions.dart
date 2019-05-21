@@ -2,27 +2,30 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/models/Bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/Bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
-class LoadTimelineFeed {
+class LoadTimelineRequest {
   final Completer completer;
   final BuildContext context;
+  final FetchTimelineRequest fetchTimelineRequest;
   final FeedLoadType feedLoadType;
 
-  LoadTimelineFeed(
+  LoadTimelineRequest(
       {@required this.context,
       @required this.feedLoadType,
+        @required this.fetchTimelineRequest,
       Completer completer})
-      : this.completer = completer ?? new Completer();
+      : this.completer = completer ?? Completer();
 }
 
-class LoadTimelineFeedSuccess {
-  final List<TimelineFeed> feeds;
-  final FeedLoadType feedLoadType;
+class LoadTimelineSuccess {
+  final FetchTimelineRequest fetchTimelineRequest;
+  final FetchFeedsResult fetchFeedsResult;
 
-  final bool hasGap;
-
-  LoadTimelineFeedSuccess(
-      {@required this.feeds, @required this.feedLoadType, this.hasGap});
+  LoadTimelineSuccess({
+    @required this.fetchFeedsResult,
+    @required this.fetchTimelineRequest,
+  });
 }

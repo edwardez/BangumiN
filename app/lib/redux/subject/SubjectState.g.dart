@@ -115,7 +115,7 @@ class _$SubjectState extends SubjectState {
   @override
   final BuiltMap<int, LoadingStatus> collectionsSubmissionStatus;
 
-  factory _$SubjectState([void updates(SubjectStateBuilder b)]) =>
+  factory _$SubjectState([void Function(SubjectStateBuilder) updates]) =>
       (new SubjectStateBuilder()..update(updates)).build();
 
   _$SubjectState._(
@@ -143,7 +143,7 @@ class _$SubjectState extends SubjectState {
   }
 
   @override
-  SubjectState rebuild(void updates(SubjectStateBuilder b)) =>
+  SubjectState rebuild(void Function(SubjectStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -244,7 +244,7 @@ class SubjectStateBuilder
   }
 
   @override
-  void update(void updates(SubjectStateBuilder b)) {
+  void update(void Function(SubjectStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -9,14 +11,15 @@ part 'TimelineState.g.dart';
 
 abstract class TimelineState
     implements Built<TimelineState, TimelineStateBuilder> {
-  @nullable
-  FeedChunks get feedChunks;
+
+  BuiltMap<FetchTimelineRequest, FeedChunks> get timeline;
 
   TimelineState._();
 
   factory TimelineState([updates(TimelineStateBuilder b)]) =>
       _$TimelineState((b) => b
-        ..feedChunks.replace(FeedChunks())
+        ..timeline.replace(
+            BuiltMap<FetchTimelineRequest, FeedChunks>())
         ..update(updates));
 
   String toJson() {

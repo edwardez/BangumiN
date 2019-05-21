@@ -2,10 +2,15 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/Bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
+import 'package:munin/redux/progress/ProgressState.dart';
+import 'package:munin/redux/search/SearchState.dart';
+import 'package:munin/redux/setting/SettingState.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
+import 'package:munin/redux/user/UserState.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'AppState.g.dart';
@@ -22,12 +27,28 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   SubjectState get subjectState;
 
+  SearchState get searchState;
+
+  DiscussionState get discussionState;
+
+  UserState get userState;
+
+  ProgressState get progressState;
+
+  SettingState get settingState;
+
   factory AppState([updates(AppStateBuilder b)]) =>
       _$AppState((b) =>
       b
+        ..isAuthenticated = false
         ..oauthState.replace(OauthState())
         ..timelineState.replace(TimelineState())
         ..subjectState.replace(SubjectState())
+        ..searchState.replace(SearchState())
+        ..discussionState.replace(DiscussionState())
+        ..userState.replace(UserState())
+        ..progressState.replace(ProgressState())
+        ..settingState.replace(SettingState())
         ..update(updates));
 
   AppState._();

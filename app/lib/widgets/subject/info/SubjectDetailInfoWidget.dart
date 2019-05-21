@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:redux/redux.dart';
@@ -40,7 +39,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
           widgets.add(InkWell(
             child: Text(
               infoBoxItem.name,
-              style: body1TextWithPrimaryColor(context),
+              style: body1TextWithLightPrimaryDarkAccentColor(context),
             ),
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: infoBoxItem.type,
@@ -55,51 +54,12 @@ class SubjectDetailInfoWidget extends StatelessWidget {
     });
 
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemBuilder: (BuildContext context, int index) {
         return wraps[index];
       },
       itemCount: wraps.length,
     );
-  }
-
-  void _settingModalBottomSheet(BuildContext context, BangumiSubject subject) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: Wrap(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制标题'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(context, subject.name,
-                          popContext: true);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制简介'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(context, subject.summary,
-                          popContext: true);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.content_copy),
-                    title: Text('复制Staff信息'),
-                    onTap: () {
-                      ClipboardService.copyAsPlainText(
-                          context, subject.infoBoxRowsPlainText,
-                          popContext: true);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   @override
@@ -115,9 +75,13 @@ class SubjectDetailInfoWidget extends StatelessWidget {
         }
 
         return ScaffoldWithSliverAppBar(
-          appBarMainTitle: '',
+          appBarMainTitle: Text('介绍与制作人员'),
           nestedScrollViewBody: _buildDetailInfoBody(context, vm.subject),
-          safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+          safeAreaChildPadding: const EdgeInsets.only(
+              left: defaultDensePortraitHorizontalPadding,
+              right: defaultDensePortraitHorizontalPadding,
+              top: largeVerticalPadding
+          ),
           appBarActions: subjectCommonActions(context, vm.subject),
         );
       },

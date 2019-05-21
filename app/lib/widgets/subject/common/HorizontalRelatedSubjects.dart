@@ -1,41 +1,47 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
-import 'package:munin/widgets/shared/images/RoundedImageWithVerticalText.dart';
+import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
 class HorizontalRelatedSubjects extends StatelessWidget {
+  static const titleMaxLines = 2;
+  static const subTitleMaxLines = 1;
+
+  /// Each line of text occupies one factor, considering spacing the final factor
+  /// is * 2
+  static const double textSpaceScaleBaseFactor = 1.5;
+
   final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
   final double horizontalImagePadding;
   final double imageWidth;
   final double imageHeight;
 
-  /// related subject has title, subtitle, each counts for 1 factor, we add 1 more for spacing
-  final int textFactor = 3;
-
-  HorizontalRelatedSubjects(
-      {Key key,
-      @required this.relatedSubjects,
-      this.horizontalImagePadding = 2.0,
-      this.imageHeight = 48.0,
-      this.imageWidth = 48.0})
+  const HorizontalRelatedSubjects({Key key,
+    @required this.relatedSubjects,
+    this.horizontalImagePadding = 8.0,
+    this.imageWidth = 71,
+    this.imageHeight = 100.0,
+  })
       : super(key: key);
 
-  List<RoundedImageWithVerticalText> _buildCharacterLists(
+  List<RoundedElevatedImageWithBottomText> _buildCharacterLists(
       BuiltListMultimap<String, RelatedSubject> relatedSubjects) {
-    List<RoundedImageWithVerticalText> imageWidgets = [];
+    List<RoundedElevatedImageWithBottomText> imageWidgets = [];
     for (var subject in relatedSubjects.values) {
-      imageWidgets.add(RoundedImageWithVerticalText(
+      imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Subject,
         imageUrl: subject.images.medium,
         id: subject.id?.toString(),
-        imageHeight: imageHeight,
         imageWidth: imageWidth,
+        imageHeight: imageHeight,
         horizontalImagePadding:
-            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+        imageWidgets.length == 0 ? 0 : horizontalImagePadding,
         title: subject.name,
         subtitle: subject.subjectSubTypeName,
+        titleMaxLines: titleMaxLines,
+        subTitleMaxLines: subTitleMaxLines,
       ));
     }
 
@@ -47,7 +53,12 @@ class HorizontalRelatedSubjects extends StatelessWidget {
     return HorizontalScrollableWidget(
       horizontalList: _buildCharacterLists(relatedSubjects),
       listHeight:
-          imageHeight + Theme.of(context).textTheme.body1.fontSize * textFactor,
+      imageHeight + Theme
+          .of(context)
+          .textTheme
+          .caption
+          .fontSize * (titleMaxLines + subTitleMaxLines) *
+          textSpaceScaleBaseFactor,
     );
   }
 }

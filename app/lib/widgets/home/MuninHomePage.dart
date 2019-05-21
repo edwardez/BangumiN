@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/widgets/MoreOptions/MoreOptionsHome.dart';
-import 'package:munin/widgets/Progress/Progress.dart';
-import 'package:munin/widgets/TimeLine/Timeline.dart';
-import 'package:munin/widgets/UserProfile/UserHome.dart';
-import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/discussion/DiscussionHome.dart';
+import 'package:munin/widgets/home/MuninBottomNavigationBar.dart';
+import 'package:munin/widgets/progress/Progress.dart';
+import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
+import 'package:munin/widgets/timeline/Timeline.dart';
+import 'package:munin/widgets/userprofile/UserHome.dart';
+import 'package:munin/widgets/userprofile/UserProfileWidget.dart';
 
 class MuninHomePage extends StatefulWidget {
   @override
@@ -16,17 +17,39 @@ class MuninHomePage extends StatefulWidget {
 class _MuninHomePageState extends State<MuninHomePage> {
   MuninTimeline muninTimeline;
   MuninSubjectProgress muninSubjectProgress;
-  MuninUserProfile muninUserProfile;
+  UserProfileWidget muninUserProfile;
+  DiscussionHome discussionHome;
+  SearchHomeDelegate searchHomeDelegate;
 
   final PageController controller = PageController();
   int currentIndex = 0;
 
+  final List<Widget> pages = [
+    MuninTimeline(
+      key: PageStorageKey('Page1'),
+    ),
+    MuninSubjectProgress(
+      key: PageStorageKey('Page2'),
+    ),
+    DiscussionHome(
+      key: PageStorageKey('Page4'),
+    ),
+    UserHome(
+      key: PageStorageKey('Page3'),
+    ),
+  ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
+
   @override
   void initState() {
-    muninTimeline = MuninTimeline();
-    muninSubjectProgress = MuninSubjectProgress();
-    muninUserProfile = MuninUserProfile();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   _onSelectedIndexChanged(int index) {
@@ -34,7 +57,6 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
     setState(() {
       currentIndex = index;
-      controller.jumpToPage(index);
     });
   }
 
@@ -47,66 +69,18 @@ class _MuninHomePageState extends State<MuninHomePage> {
           state: store.state,
         );
       },
-      builder: (BuildContext context, _ViewModel vm) {
+      builder: (BuildContext builderContext, _ViewModel vm) {
         return Scaffold(
           body: SafeArea(
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      pinned: false,
-                      actions: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.search),
-                          tooltip: '搜索',
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: CachedCircleAvatar(
-                            imageUrl: vm.state.currentAuthenticatedUserBasicInfo
-                                ?.avatar?.small ??
-                                'https://lain.bgm.tv/pic/user/m/icon.jpg',
-                            radius: 15.0,
-
-                            /// maybe avoid hard coding this value?
-                          ),
-                          tooltip: '头像，更多选项',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MoreOptionsHomePage()),
-                            );
-                          },
-                        )
-                      ])
-                ];
-              },
-              body: PageView(
-                controller: controller,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  muninTimeline,
-                  muninSubjectProgress,
-                  muninUserProfile,
-                ],
-                onPageChanged: (index) => setState(() => currentIndex = index),
-              ),
+            top: false,
+            child: PageStorage(
+              child: pages[currentIndex],
+              bucket: bucket,
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
+          bottomNavigationBar: MuninBottomNavigationBar(
+            onSelectedIndexChanged: _onSelectedIndexChanged,
             currentIndex: currentIndex,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.home), title: Text('动态')),
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.done), title: Text('进度')),
-              BottomNavigationBarItem(
-                  icon: Icon(OMIcons.person), title: Text('主页')),
-            ],
-            onTap: _onSelectedIndexChanged,
           ),
         );
       },
@@ -117,7 +91,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
 class _ViewModel {
   final AppState state;
 
-  _ViewModel({this.state});
+  const _ViewModel({this.state});
 
   @override
   int get hashCode => state.hashCode;

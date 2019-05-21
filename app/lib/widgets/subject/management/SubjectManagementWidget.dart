@@ -1,8 +1,10 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 
 class SubjectManagementWidget extends StatelessWidget {
   final BangumiSubject subject;
@@ -12,6 +14,9 @@ class SubjectManagementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String collectionActionText = subject.userSubjectCollectionInfoPreview
+        .status == CollectionStatus.Untouched ? '加入' : '编辑';
+
     return Column(
       children: <Widget>[
         Row(
@@ -19,11 +24,8 @@ class SubjectManagementWidget extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
+                child: MuninOutlineButton(
                   child: Text('观看进度管理'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
                   onPressed: () {},
                 ),
               ),
@@ -35,11 +37,8 @@ class SubjectManagementWidget extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: OutlineButton(
-                  child: Text('编辑收藏'),
-                  textColor: Theme.of(context).primaryColor,
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.0),
+                child: MuninOutlineButton(
+                  child: Text('$collectionActionText收藏'),
                   onPressed: () {
                     Application.router.navigateTo(
                         context,

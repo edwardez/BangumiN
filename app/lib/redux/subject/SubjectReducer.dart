@@ -1,5 +1,5 @@
-import 'package:munin/models/Bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
@@ -71,15 +71,27 @@ SubjectState getCollectionInfoLoadingReducer(SubjectState subjectState,
 }
 
 SubjectState getCollectionInfoSuccessReducer(SubjectState subjectState,
-    GetCollectionInfoSuccessAction getCollectionInfoSuccessAction) {
+    GetCollectionInfoSuccessAction action) {
   SubjectCollectionInfo collectionInfo =
-      getCollectionInfoSuccessAction.collectionInfo;
+      action.collectionInfo;
 
-  return subjectState.rebuild((b) => b
+  BangumiSubject subject =
+      action.bangumiSubject;
+
+  subjectState = subjectState.rebuild((b) =>
+  b
     ..collections
-        .addAll({getCollectionInfoSuccessAction.subjectId: collectionInfo})
+        .addAll({action.subjectId: collectionInfo})
     ..collectionsLoadingStatus.addAll(
-        {getCollectionInfoSuccessAction.subjectId: LoadingStatus.Success}));
+        {action.subjectId: LoadingStatus.Success}));
+
+  if (subject != null) {
+    subjectState = subjectState.rebuild((b) =>
+    b
+      ..subjects.addAll({action.subjectId: subject}));
+  }
+
+  return subjectState;
 }
 
 SubjectState getCollectionInfoFailureReducer(SubjectState subjectState,

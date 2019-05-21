@@ -1,4 +1,4 @@
-import 'dart:math' show min;
+import 'dart:math' show min, max;
 
 String upgradeToHttps(String link) {
   if (link?.runtimeType != String) {
@@ -8,10 +8,24 @@ String upgradeToHttps(String link) {
   return link.replaceFirst('http://', 'https://');
 }
 
-String truncateStringTo(String stringToTruncate, maxLength) {
-  if (stringToTruncate == null) return '';
+/// returns first N characters of a string, or
+/// the whole string if its length is less than N
+/// [fallbackValue] if [input] is null
+String firstNChars(String input, int firstN, {String fallbackValue}) {
+  assert(firstN >= 0);
+  if (input == null) return fallbackValue;
 
-  return stringToTruncate.substring(0, min(stringToTruncate.length, maxLength));
+  return input.substring(0, min(input.length, firstN));
+}
+
+/// returns last N characters of a string, or
+/// the whole string if its length is less than N
+/// [fallbackValue] if [input] is null
+String lastNChars(String input, int lastN, {fallbackValue = ''}) {
+  assert(lastN >= 0);
+  if (input == null) return fallbackValue;
+  int inputLength = input.length;
+  return input.substring(max(0, inputLength - lastN), inputLength);
 }
 
 /// safely parse an int string, or returns null if intStr is null
@@ -30,6 +44,41 @@ double tryParseDouble(String doubleStr, {defaultValue = 0}) {
     return defaultValue;
   }
   return double.tryParse(doubleStr) ?? defaultValue;
+}
+
+/// Returns first captures string or null
+/// [input] should never be null, if it's null, null will be returned
+/// This method assumes [regExp] contains at least one capture group
+String firstCapturedStringOrNull(RegExp regExp, String input) {
+  /// Ensure input [regExp] contains at least one capture group
+  assert(RegExp(r'\(.+\)').hasMatch(regExp.pattern));
+  assert(input != null);
+
+  if (input == null) {
+    return null;
+  }
+
+  Match match = regExp.firstMatch(input);
+
+  if (match != null && match.groupCount >= 1) {
+    return match.group(1);
+  }
+
+  return null;
+}
+
+bool doubleIsInt(double input) {
+  if (input == null) return false;
+  return input % 1 == 0;
+}
+
+/// Tries to format a double like `1.0`
+String tryFormatDoubleAsInt(double input) {
+  if (doubleIsInt(input)) {
+    return input.toStringAsFixed(0);
+  }
+
+  return input.toString();
 }
 
 /// https://www.dartlang.org/articles/server/numeric-computation

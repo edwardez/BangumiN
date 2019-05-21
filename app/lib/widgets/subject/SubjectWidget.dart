@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
-import 'package:munin/widgets/subject/MainPage/CharactersPreview.dart';
-import 'package:munin/widgets/subject/MainPage/CommentsPreview.dart';
-import 'package:munin/widgets/subject/MainPage/RelatedSubjectsPreview.dart';
-import 'package:munin/widgets/subject/MainPage/SubjectCoverAndBasicInfo.dart';
-import 'package:munin/widgets/subject/MainPage/SubjectSummary.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
+import 'package:munin/widgets/subject/mainpage/CharactersPreview.dart';
+import 'package:munin/widgets/subject/mainpage/CommentsPreview.dart';
+import 'package:munin/widgets/subject/mainpage/RelatedSubjectsPreview.dart';
+import 'package:munin/widgets/subject/mainpage/SubjectCoverAndBasicInfo.dart';
+import 'package:munin/widgets/subject/mainpage/SubjectRatingOverview.dart';
+import 'package:munin/widgets/subject/mainpage/SubjectSummary.dart';
 import 'package:munin/widgets/subject/management/SubjectManagementWidget.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
@@ -61,6 +62,10 @@ class SubjectWidget extends StatelessWidget {
       subject: subject,
     ));
 
+    widgets.add(SubjectRatingOverview(
+      subject: subject,
+    ));
+
     widgets.add(SubjectManagementWidget(subject: subject));
 
     widgets.add(SubjectSummary(subject: subject));
@@ -73,11 +78,15 @@ class SubjectWidget extends StatelessWidget {
       widgets.add(RelatedSubjectsPreview(subject: subject));
     }
 
-    widgets.add(CommentsPreview(subject: subject));
+    /// Add a padding in the bottom so bottom comments are easier to read
+    widgets.add(Padding(
+      padding: const EdgeInsets.only(bottom: 30.0),
+      child: CommentsPreview(subject: subject),
+    ));
 
     return ScaffoldWithSliverAppBar(
-      appBarMainTitle: '关于这${subject.type.quantifiedChineseNameByType}',
-      appBarSecondaryTitle: subject.name,
+      appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
+      appBarSecondaryTitle: Text(subject.name),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -86,7 +95,12 @@ class SubjectWidget extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: widgets.length,
       ),
-      safeAreaChildHorizontalPadding: defaultDensePortraitHorizontalPadding,
+      safeAreaChildPadding: const EdgeInsets.only(
+          left: defaultDensePortraitHorizontalPadding,
+          right: defaultDensePortraitHorizontalPadding,
+          top: largeVerticalPadding
+      ),
+      enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );
   }

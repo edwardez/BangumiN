@@ -77,7 +77,10 @@ class WrappableText extends StatelessWidget {
           text,
           maxLines: maxLines,
           overflow: TextOverflow.ellipsis,
-          style: textStyle,
+          style: textStyle ?? Theme
+              .of(context)
+              .textTheme
+              .body1,
         ),
       ),
     );

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "674801028596",
+    "firebase_url": "https://bangumin-app.firebaseio.com",
+    "project_id": "bangumin-app",
+    "storage_bucket": "bangumin-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674801028596:android:d491dfd4aaa1866d",
+        "android_client_info": {
+          "package_name": "com.bangumin.munin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc2YXK0oboNJ5sXn9OkfEPqBci5T5PnLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674801028596-2k3eh6d6uvg3sqi2u9aot3norttfekid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bangumin.munin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

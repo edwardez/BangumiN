@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class CachedRoundedCover extends StatelessWidget {

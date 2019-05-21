@@ -15,6 +15,9 @@ class BangumiOauthWebview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String host = Application.environmentValue.bangumiNonCdnHost;
+    final String clientId =
+        Application.environmentValue.bangumiOauthClientIdentifier;
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) {
         return _ViewModel(
@@ -26,9 +29,9 @@ class BangumiOauthWebview extends StatelessWidget {
             onWillPop: vm.onGoBackPressed,
             child: WebviewScaffold(
               hidden: true,
+              clearCookies: true,
               url:
-              'https://bgm.tv/oauth/authorize?response_type=code&client_id=${Application
-                  .environmentValue.bangumiOauthClientIdentifier}',
+              'https://$host/oauth/authorize?response_type=code&client_id=$clientId',
               appBar: new AppBar(
                 title: new Text("完成授权"),
                 elevation: 4.0,

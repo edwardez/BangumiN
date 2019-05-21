@@ -4,6 +4,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munin/shared/utils/collections/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/chips/StrokeChoiceChip.dart';
 import 'package:munin/widgets/subject/management/MuninExpandIcon.dart';
 import 'package:munin/widgets/subject/management/MuninExpandablePanel.dart';
@@ -32,7 +33,7 @@ class SubjectTagsField extends StatefulWidget {
     return _SubjectTagsFieldState();
   }
 
-  SubjectTagsField(
+  const SubjectTagsField(
       {@required LinkedHashMap<String, bool> headerTags,
       @required LinkedHashMap<String, bool> candidateTags,
       @required this.maxTags,
@@ -86,7 +87,9 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     };
   }
 
-  _onSelectedCallBackForNewTag(BuildContext context) {
+  /// callback for 'Add new tag' chip, it will open a new dialog
+  /// which let user enter a customized tag
+  _onSelectedCallBackForTagInputDialog(BuildContext context) {
     if (_hasReachedMaxTags()) {
       return null;
     }
@@ -191,19 +194,24 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
         tagsType == TagsType.HeaderSelectedTags);
 
     List<Widget> chips = [];
-    tags.forEach((String tagName, bool currentSelectionStatus) {
+    tags.forEach((String tagName, bool isSelected) {
+      /// if user has selected maximum number of tags and this tag is currently
+      /// not selected, it will be disabled and wrapped with an alert dialog
+      /// if user tries to tap it, it's determined by [wrapAlertDialog]
       bool wrapAlertDialog = _hasReachedMaxTags() && !tags[tagName];
+
       StrokeChoiceChip choiceChip = StrokeChoiceChip(
         label: Text(tagName),
-        selected: currentSelectionStatus,
+        selected: isSelected,
         onSelected: _onSelectedCallBackForExistingTag(tags, tagsType, tagName),
         labelStyle: Theme.of(context).chipTheme.labelStyle.copyWith(
             color:
-                currentSelectionStatus ? Theme.of(context).primaryColor : null),
+            isSelected ? lightPrimaryDarkAccentColor(context) : null),
       );
       chips.add(_maxTagsAlertWrapper(context, choiceChip, wrapAlertDialog));
     });
 
+    /// Add a 'Add new tag' chip if current tags are displayed in the expanded panel
     if (tagsType == TagsType.ExpandedCandidateTags) {
       bool wrapAlertDialog = _hasReachedMaxTags();
       StrokeChoiceChip choiceChip = StrokeChoiceChip(
@@ -212,7 +220,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
           children: <Widget>[Icon(Icons.add), Text('新标签')],
         ),
         selected: false,
-        onSelected: _onSelectedCallBackForNewTag(context),
+        onSelected: _onSelectedCallBackForTagInputDialog(context),
       );
       chips.add(_maxTagsAlertWrapper(context, choiceChip, wrapAlertDialog));
     }

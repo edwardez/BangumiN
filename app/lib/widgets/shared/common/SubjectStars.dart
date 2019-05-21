@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 /// A read-only subject star widget
 /// Currently max stars are 5
@@ -15,9 +15,9 @@ class SubjectStars extends StatelessWidget {
         this.starColor = MuninColor.score})
       : super(key: key);
 
-  /// score: min 0, max 10
+  /// score: min 0.0, max 10.0
   List<Widget> _buildStarIconsWith5StarMax(double score) {
-    assert(score <= 10.0);
+    assert(score <= 10.0 && score >= 0.0);
 
     const maxStars = 5;
     final int numOfFullStars = score ~/ 2;
@@ -37,6 +37,10 @@ class SubjectStars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (subjectScore == null) {
+      return Container();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: _buildStarIconsWith5StarMax(subjectScore),

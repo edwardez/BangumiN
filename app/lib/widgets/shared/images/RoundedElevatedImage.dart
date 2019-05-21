@@ -1,43 +1,99 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/common/Images.dart';
 
 /// a subject cover
 class RoundedElevatedImage extends StatelessWidget {
   final String imageUrl;
+
+  /// if [imageUrl] is null, [fallbackImageUrl] will be used
+  /// default to [Images.defaultCoverImage]
+  final String fallbackImageUrl;
+
   final double imageWidth;
   final double imageHeight;
-  final Color borderColor;
-  final double borderWidth;
   final double elevation;
-  final double borderRadius;
 
-  const RoundedElevatedImage(
-      {Key key,
-      @required this.imageUrl,
-      this.borderColor = Colors.black12,
-      this.borderWidth = 0.5,
-      this.elevation = 1.5,
-      this.borderRadius = 4.0,
-      this.imageWidth,
-      this.imageHeight})
-      : super(key: key);
+  final BoxFit imageFit;
+
+  /// Semantics label of this image
+  final String semanticsLabel;
+
+  final GestureTapCallback onTapImage;
+
+  final EdgeInsetsGeometry cardMargin;
+
+  const RoundedElevatedImage({
+    Key key,
+    @required this.imageUrl,
+    this.fallbackImageUrl = Images.defaultCoverImage,
+    this.elevation = 1.0,
+    this.imageWidth,
+    this.imageHeight,
+    this.imageFit,
+    this.semanticsLabel, this.cardMargin,
+  })
+      : this.onTapImage = null,
+        super(key: key);
+
+  /// If a callback needs to be added to the image, it's mandatory to specify
+  /// imageWidth and imageHeight, otherwise image won't be displayed
+  /// (might be a bug in flutter?)
+  const RoundedElevatedImage.withOnTapCallBack({
+    Key key,
+    @required this.imageUrl,
+    @required this.onTapImage,
+    @required this.imageWidth,
+    @required this.imageHeight,
+    this.fallbackImageUrl = Images.defaultCoverImage,
+    this.elevation = 1.0,
+    this.imageFit,
+    this.semanticsLabel, this.cardMargin,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Material(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: borderColor, width: borderWidth),
-          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-        ),
+    Widget image;
+    if (onTapImage == null) {
+      image = Card(
+        margin: cardMargin,
         elevation: elevation,
         child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          height: imageHeight,
+          imageUrl: imageUrl ?? fallbackImageUrl,
           width: imageWidth,
+          height: imageHeight,
+          fit: imageFit,
         ),
-        clipBehavior: Clip.hardEdge,
-      ),
-    );
+        clipBehavior: Clip.antiAlias,
+      );
+    } else {
+      image = Card(
+        margin: cardMargin,
+        elevation: elevation,
+        child: InkWell(
+          child: Ink.image(
+            image: CachedNetworkImageProvider(
+              imageUrl ?? fallbackImageUrl,
+            ),
+            child: Container(
+              width: imageWidth,
+              height: imageHeight,
+            ),
+            fit: imageFit,
+          ),
+          onTap: onTapImage,
+        ),
+        clipBehavior: Clip.antiAlias,
+      );
+    }
+
+    if (semanticsLabel != null) {
+      return Semantics(
+        child: image,
+        label: semanticsLabel,
+      );
+    }
+
+    return image;
   }
 }

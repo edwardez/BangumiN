@@ -30,6 +30,21 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'subjectState',
       serializers.serialize(object.subjectState,
           specifiedType: const FullType(SubjectState)),
+      'searchState',
+      serializers.serialize(object.searchState,
+          specifiedType: const FullType(SearchState)),
+      'discussionState',
+      serializers.serialize(object.discussionState,
+          specifiedType: const FullType(DiscussionState)),
+      'userState',
+      serializers.serialize(object.userState,
+          specifiedType: const FullType(UserState)),
+      'progressState',
+      serializers.serialize(object.progressState,
+          specifiedType: const FullType(ProgressState)),
+      'settingState',
+      serializers.serialize(object.settingState,
+          specifiedType: const FullType(SettingState)),
     ];
     if (object.currentAuthenticatedUserBasicInfo != null) {
       result
@@ -74,6 +89,27 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.subjectState.replace(serializers.deserialize(value,
               specifiedType: const FullType(SubjectState)) as SubjectState);
           break;
+        case 'searchState':
+          result.searchState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(SearchState)) as SearchState);
+          break;
+        case 'discussionState':
+          result.discussionState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(DiscussionState))
+              as DiscussionState);
+          break;
+        case 'userState':
+          result.userState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserState)) as UserState);
+          break;
+        case 'progressState':
+          result.progressState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ProgressState)) as ProgressState);
+          break;
+        case 'settingState':
+          result.settingState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(SettingState)) as SettingState);
+          break;
       }
     }
 
@@ -92,8 +128,18 @@ class _$AppState extends AppState {
   final TimelineState timelineState;
   @override
   final SubjectState subjectState;
+  @override
+  final SearchState searchState;
+  @override
+  final DiscussionState discussionState;
+  @override
+  final UserState userState;
+  @override
+  final ProgressState progressState;
+  @override
+  final SettingState settingState;
 
-  factory _$AppState([void updates(AppStateBuilder b)]) =>
+  factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
@@ -101,7 +147,12 @@ class _$AppState extends AppState {
       this.isAuthenticated,
       this.oauthState,
       this.timelineState,
-      this.subjectState})
+      this.subjectState,
+      this.searchState,
+      this.discussionState,
+      this.userState,
+      this.progressState,
+      this.settingState})
       : super._() {
     if (isAuthenticated == null) {
       throw new BuiltValueNullFieldError('AppState', 'isAuthenticated');
@@ -115,10 +166,25 @@ class _$AppState extends AppState {
     if (subjectState == null) {
       throw new BuiltValueNullFieldError('AppState', 'subjectState');
     }
+    if (searchState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'searchState');
+    }
+    if (discussionState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'discussionState');
+    }
+    if (userState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'userState');
+    }
+    if (progressState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'progressState');
+    }
+    if (settingState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'settingState');
+    }
   }
 
   @override
-  AppState rebuild(void updates(AppStateBuilder b)) =>
+  AppState rebuild(void Function(AppStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -133,7 +199,12 @@ class _$AppState extends AppState {
         isAuthenticated == other.isAuthenticated &&
         oauthState == other.oauthState &&
         timelineState == other.timelineState &&
-        subjectState == other.subjectState;
+        subjectState == other.subjectState &&
+        searchState == other.searchState &&
+        discussionState == other.discussionState &&
+        userState == other.userState &&
+        progressState == other.progressState &&
+        settingState == other.settingState;
   }
 
   @override
@@ -141,11 +212,25 @@ class _$AppState extends AppState {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc(0, currentAuthenticatedUserBasicInfo.hashCode),
-                    isAuthenticated.hashCode),
-                oauthState.hashCode),
-            timelineState.hashCode),
-        subjectState.hashCode));
+                $jc(
+                    $jc(
+                        $jc(
+                            $jc(
+                                $jc(
+                                    $jc(
+                                        $jc(
+                                            0,
+                                            currentAuthenticatedUserBasicInfo
+                                                .hashCode),
+                                        isAuthenticated.hashCode),
+                                    oauthState.hashCode),
+                                timelineState.hashCode),
+                            subjectState.hashCode),
+                        searchState.hashCode),
+                    discussionState.hashCode),
+                userState.hashCode),
+            progressState.hashCode),
+        settingState.hashCode));
   }
 
   @override
@@ -156,7 +241,12 @@ class _$AppState extends AppState {
           ..add('isAuthenticated', isAuthenticated)
           ..add('oauthState', oauthState)
           ..add('timelineState', timelineState)
-          ..add('subjectState', subjectState))
+          ..add('subjectState', subjectState)
+          ..add('searchState', searchState)
+          ..add('discussionState', discussionState)
+          ..add('userState', userState)
+          ..add('progressState', progressState)
+          ..add('settingState', settingState))
         .toString();
   }
 }
@@ -196,6 +286,35 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set subjectState(SubjectStateBuilder subjectState) =>
       _$this._subjectState = subjectState;
 
+  SearchStateBuilder _searchState;
+  SearchStateBuilder get searchState =>
+      _$this._searchState ??= new SearchStateBuilder();
+  set searchState(SearchStateBuilder searchState) =>
+      _$this._searchState = searchState;
+
+  DiscussionStateBuilder _discussionState;
+  DiscussionStateBuilder get discussionState =>
+      _$this._discussionState ??= new DiscussionStateBuilder();
+  set discussionState(DiscussionStateBuilder discussionState) =>
+      _$this._discussionState = discussionState;
+
+  UserStateBuilder _userState;
+  UserStateBuilder get userState =>
+      _$this._userState ??= new UserStateBuilder();
+  set userState(UserStateBuilder userState) => _$this._userState = userState;
+
+  ProgressStateBuilder _progressState;
+  ProgressStateBuilder get progressState =>
+      _$this._progressState ??= new ProgressStateBuilder();
+  set progressState(ProgressStateBuilder progressState) =>
+      _$this._progressState = progressState;
+
+  SettingStateBuilder _settingState;
+  SettingStateBuilder get settingState =>
+      _$this._settingState ??= new SettingStateBuilder();
+  set settingState(SettingStateBuilder settingState) =>
+      _$this._settingState = settingState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -206,6 +325,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _oauthState = _$v.oauthState?.toBuilder();
       _timelineState = _$v.timelineState?.toBuilder();
       _subjectState = _$v.subjectState?.toBuilder();
+      _searchState = _$v.searchState?.toBuilder();
+      _discussionState = _$v.discussionState?.toBuilder();
+      _userState = _$v.userState?.toBuilder();
+      _progressState = _$v.progressState?.toBuilder();
+      _settingState = _$v.settingState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -220,7 +344,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   }
 
   @override
-  void update(void updates(AppStateBuilder b)) {
+  void update(void Function(AppStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -235,7 +359,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               isAuthenticated: isAuthenticated,
               oauthState: oauthState.build(),
               timelineState: timelineState.build(),
-              subjectState: subjectState.build());
+              subjectState: subjectState.build(),
+              searchState: searchState.build(),
+              discussionState: discussionState.build(),
+              userState: userState.build(),
+              progressState: progressState.build(),
+              settingState: settingState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -248,6 +377,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         timelineState.build();
         _$failedField = 'subjectState';
         subjectState.build();
+        _$failedField = 'searchState';
+        searchState.build();
+        _$failedField = 'discussionState';
+        discussionState.build();
+        _$failedField = 'userState';
+        userState.build();
+        _$failedField = 'progressState';
+        progressState.build();
+        _$failedField = 'settingState';
+        settingState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

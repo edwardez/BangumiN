@@ -78,7 +78,7 @@ class _$OauthState extends OauthState {
   @override
   final String error;
 
-  factory _$OauthState([void updates(OauthStateBuilder b)]) =>
+  factory _$OauthState([void Function(OauthStateBuilder) updates]) =>
       (new OauthStateBuilder()..update(updates)).build();
 
   _$OauthState._(
@@ -86,7 +86,7 @@ class _$OauthState extends OauthState {
       : super._();
 
   @override
-  OauthState rebuild(void updates(OauthStateBuilder b)) =>
+  OauthState rebuild(void Function(OauthStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -157,7 +157,7 @@ class OauthStateBuilder implements Builder<OauthState, OauthStateBuilder> {
   }
 
   @override
-  void update(void updates(OauthStateBuilder b)) {
+  void update(void Function(OauthStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 

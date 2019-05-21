@@ -18,13 +18,14 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
   @override
   Iterable serialize(Serializers serializers, TimelineState object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    if (object.feedChunks != null) {
-      result
-        ..add('feedChunks')
-        ..add(serializers.serialize(object.feedChunks,
-            specifiedType: const FullType(FeedChunks)));
-    }
+    final result = <Object>[
+      'timeline',
+      serializers.serialize(object.timeline,
+          specifiedType: const FullType(BuiltMap, const [
+            const FullType(FetchTimelineRequest),
+            const FullType(FeedChunks)
+          ])),
+    ];
 
     return result;
   }
@@ -40,9 +41,12 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'feedChunks':
-          result.feedChunks.replace(serializers.deserialize(value,
-              specifiedType: const FullType(FeedChunks)) as FeedChunks);
+        case 'timeline':
+          result.timeline.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(FetchTimelineRequest),
+                const FullType(FeedChunks)
+              ])) as BuiltMap);
           break;
       }
     }
@@ -53,15 +57,19 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
 
 class _$TimelineState extends TimelineState {
   @override
-  final FeedChunks feedChunks;
+  final BuiltMap<FetchTimelineRequest, FeedChunks> timeline;
 
-  factory _$TimelineState([void updates(TimelineStateBuilder b)]) =>
+  factory _$TimelineState([void Function(TimelineStateBuilder) updates]) =>
       (new TimelineStateBuilder()..update(updates)).build();
 
-  _$TimelineState._({this.feedChunks}) : super._();
+  _$TimelineState._({this.timeline}) : super._() {
+    if (timeline == null) {
+      throw new BuiltValueNullFieldError('TimelineState', 'timeline');
+    }
+  }
 
   @override
-  TimelineState rebuild(void updates(TimelineStateBuilder b)) =>
+  TimelineState rebuild(void Function(TimelineStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -70,18 +78,18 @@ class _$TimelineState extends TimelineState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TimelineState && feedChunks == other.feedChunks;
+    return other is TimelineState && timeline == other.timeline;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, feedChunks.hashCode));
+    return $jf($jc(0, timeline.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TimelineState')
-          ..add('feedChunks', feedChunks))
+          ..add('timeline', timeline))
         .toString();
   }
 }
@@ -90,17 +98,17 @@ class TimelineStateBuilder
     implements Builder<TimelineState, TimelineStateBuilder> {
   _$TimelineState _$v;
 
-  FeedChunksBuilder _feedChunks;
-  FeedChunksBuilder get feedChunks =>
-      _$this._feedChunks ??= new FeedChunksBuilder();
-  set feedChunks(FeedChunksBuilder feedChunks) =>
-      _$this._feedChunks = feedChunks;
+  MapBuilder<FetchTimelineRequest, FeedChunks> _timeline;
+  MapBuilder<FetchTimelineRequest, FeedChunks> get timeline =>
+      _$this._timeline ??= new MapBuilder<FetchTimelineRequest, FeedChunks>();
+  set timeline(MapBuilder<FetchTimelineRequest, FeedChunks> timeline) =>
+      _$this._timeline = timeline;
 
   TimelineStateBuilder();
 
   TimelineStateBuilder get _$this {
     if (_$v != null) {
-      _feedChunks = _$v.feedChunks?.toBuilder();
+      _timeline = _$v.timeline?.toBuilder();
       _$v = null;
     }
     return this;
@@ -115,7 +123,7 @@ class TimelineStateBuilder
   }
 
   @override
-  void update(void updates(TimelineStateBuilder b)) {
+  void update(void Function(TimelineStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -123,12 +131,12 @@ class TimelineStateBuilder
   _$TimelineState build() {
     _$TimelineState _$result;
     try {
-      _$result = _$v ?? new _$TimelineState._(feedChunks: _feedChunks?.build());
+      _$result = _$v ?? new _$TimelineState._(timeline: timeline.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'feedChunks';
-        _feedChunks?.build();
+        _$failedField = 'timeline';
+        timeline.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'TimelineState', _$failedField, e.toString());

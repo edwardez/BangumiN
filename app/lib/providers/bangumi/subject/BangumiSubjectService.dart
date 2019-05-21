@@ -2,21 +2,23 @@ import 'dart:convert' show json;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
+import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:quiver/strings.dart';
 
 // A Bangumi subject service that handles subject-related http requests
 class BangumiSubjectService {
-  BangumiCookieClient cookieClient;
-  BangumiOauthClient oauthClient;
+  BangumiCookieService cookieClient;
+  BangumiOauthService oauthClient;
 
   BangumiSubjectService(
       {@required this.cookieClient, @required this.oauthClient})
@@ -24,11 +26,15 @@ class BangumiSubjectService {
         assert(oauthClient != null);
 
   // get bangumi subject info through parsing html response
-  Future<BangumiSubject> getSubject({int subjectId}) async {
-    Dio.Response<String> response = await cookieClient.dio.get<String>(
-        '/subject/$subjectId');
+  Future<BangumiSubject> getSubjectFromHttp({
+    @required int subjectId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+  }) async {
+    Dio.Response<String> response =
+    await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject = SubjectParser().process(response.data);
+    BangumiSubject subject = SubjectParser().process(
+        response.data, mutedUsers: mutedUsers);
 
     return subject;
   }
@@ -43,14 +49,15 @@ class BangumiSubjectService {
     if (response.statusCode == 200) {
       var decodedBody = json.decode(response.body);
       if (decodedBody['code'] == 400) {
-        /// generates a dummy new collection info
+        /// code = 400 means user has not collected this subject
+        /// we initialize a dummy new collection here
         subjectCollectionInfo = SubjectCollectionInfo();
       } else if (decodedBody['code'] == null) {
         subjectCollectionInfo = SubjectCollectionInfo.fromJson(response.body);
         BuiltList<String> tags = subjectCollectionInfo.tags;
 
-        /// if tags is null, Bangumi will returns a list with a empty string instead of
-        /// a empty list or null(i.e. [""]). Thus this extra trick is needed to clean
+        /// if tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
+        /// a empty list or null. Thus this extra trick is needed to clean
         /// up the data
         if (tags.length == 1 && isEmpty(tags[0])) {
           subjectCollectionInfo =
@@ -61,6 +68,8 @@ class BangumiSubjectService {
         throw BangumiResponseIncomprehensibleException(
             '出现了未知错误: 从Bangumi返回了无法处理的数据');
       }
+    } else {
+      throw GeneralUnknownException('出现了未知错误: Bangumi此刻无法响应请求');
     }
 
     return subjectCollectionInfo;
@@ -71,7 +80,7 @@ class BangumiSubjectService {
       SubjectCollectionInfo collectionUpdateRequest) async {
     Map<String, String> formData = {};
     String tagSeparator = ' ';
-    formData['status'] = collectionUpdateRequest.status.type.wiredNameByType;
+    formData['status'] = collectionUpdateRequest.status.type.wiredName;
     formData['comment'] = collectionUpdateRequest.comment;
     formData['tags'] = collectionUpdateRequest.tags.join(tagSeparator);
     formData['rating'] = collectionUpdateRequest.rating.toString();
@@ -85,11 +94,11 @@ class BangumiSubjectService {
     formData['private'] = collectionUpdateRequest.private.toString();
     formData['privacy'] = formData['private'];
 
-    Http.Response response = await oauthClient.client.post(''
-        'https://${Application.environmentValue
-        .bangumiApiHost}/collection/$subjectId/update',
-        body: formData
-    );
+    Http.Response response = await oauthClient.client.post(
+        ''
+            'https://${Application.environmentValue
+            .bangumiApiHost}/collection/$subjectId/update',
+        body: formData);
 
     SubjectCollectionInfo subjectCollectionInfo;
     if (response.statusCode == 200) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 /// A [ChoiceChip] that has a background which is by default same as
 /// CanvasColor of the Theme, textColor/borderColor is primary color if selected
@@ -69,7 +70,7 @@ class StrokeChoiceChip extends StatelessWidget {
         label: label,
         labelStyle: labelStyle ??
             (Theme.of(context).chipTheme.labelStyle.copyWith(
-                color: selected ? Theme.of(context).primaryColor : null)),
+                color: selected ? lightPrimaryDarkAccentColor(context) : null)),
         labelPadding: labelPadding,
         onSelected: onSelected,
         pressElevation: pressElevation,
@@ -81,7 +82,7 @@ class StrokeChoiceChip extends StatelessWidget {
             StadiumBorder(
                 side: BorderSide(
                     color: selected
-                        ? Theme.of(context).primaryColor
+                        ? lightPrimaryDarkAccentColor(context)
                         : Theme.of(context).hintColor.withOpacity(0.2))),
         clipBehavior: clipBehavior,
         backgroundColor: Theme.of(context).canvasColor,

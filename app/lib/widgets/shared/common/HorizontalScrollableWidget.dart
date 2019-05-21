@@ -5,10 +5,13 @@ class HorizontalScrollableWidget extends StatelessWidget {
 
   final double listHeight;
 
+  final ScrollPhysics physics;
+
   HorizontalScrollableWidget({
     Key key,
     @required this.horizontalList,
     @required this.listHeight,
+    this.physics,
   }) : super(key: key);
 
   @override
@@ -16,6 +19,7 @@ class HorizontalScrollableWidget extends StatelessWidget {
     return Container(
       height: listHeight,
       child: ListView.builder(
+        physics: physics,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, index) {
           return horizontalList[index];

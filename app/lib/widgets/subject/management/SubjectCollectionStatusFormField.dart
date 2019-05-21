@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/Bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 
 typedef void ChipSelectedCallBack(CollectionStatus status);
 
 class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
+  static const selectableCollectionStatus = [
+    CollectionStatus.Wish,
+    CollectionStatus.Collect,
+    CollectionStatus.Do,
+    CollectionStatus.OnHold,
+    CollectionStatus.Dropped,
+  ];
+
   static _onChipSelected(FormFieldState<CollectionStatus> state, bool selected,
       CollectionStatus status, ChipSelectedCallBack chipSelectedCallBack) {
     assert(!CollectionStatus.isInvalid(status));
@@ -16,69 +24,68 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
     }
   }
 
-  SubjectCollectionStatusFormField(
-      {@required SubjectType subjectType,
-      FormFieldSetter<CollectionStatus> onSaved,
-      FormFieldValidator<CollectionStatus> validator,
-      ChipSelectedCallBack onChipSelected,
-      CollectionStatus initialStatus = CollectionStatus.Untouched,
-      bool autovalidate = false})
+  /// If `isDarkTheme` is set to true, FilterChip will be used
+  /// If `isDarkTheme` is set to false, ChoiceChip will be used
+  /// This is an workaround for a current bug in ChoiceChip under dark theme
+  static Widget workaroundChip(FormFieldState<CollectionStatus> state,
+      CollectionStatus collectionStatus, SubjectType subjectType,
+      bool isDarkTheme, ChipSelectedCallBack onChipSelected) {
+    if (isDarkTheme) {
+      return FilterChip(
+        label:
+        Text(CollectionStatus.chineseNameWithSubjectType(
+            collectionStatus, subjectType)),
+        selected: state.value == collectionStatus,
+        onSelected: (bool selected) {
+          _onChipSelected(state, selected, collectionStatus,
+              onChipSelected);
+        },
+      );
+    }
+
+    return ChoiceChip(
+      label:
+      Text(CollectionStatus.chineseNameWithSubjectType(
+          collectionStatus, subjectType)),
+      selected: state.value == collectionStatus,
+      onSelected: (bool selected) {
+        _onChipSelected(state, selected, collectionStatus,
+            onChipSelected);
+      },
+    );
+  }
+
+
+  SubjectCollectionStatusFormField({@required SubjectType subjectType,
+    @required bool isDarkTheme,
+    FormFieldSetter<CollectionStatus> onSaved,
+    FormFieldValidator<CollectionStatus> validator,
+    ChipSelectedCallBack onChipSelected,
+    CollectionStatus initialStatus = CollectionStatus.Untouched,
+    bool autovalidate = false,
+  })
       : assert(subjectType != null),
+
+  /// selectableCollectionStatus must not contain duplicates
+        assert(Set
+            .from(selectableCollectionStatus)
+            .length == selectableCollectionStatus.length),
         super(
-            onSaved: onSaved,
-            validator: validator,
-            initialValue: initialStatus,
-            autovalidate: autovalidate,
-            builder: (FormFieldState<CollectionStatus> state) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  ChoiceChip(
-                    label:
-                        Text('想${subjectType.activityVerbChineseNameByType}'),
-                    selected: state.value == CollectionStatus.Wish,
-                    onSelected: (bool selected) {
-                      _onChipSelected(state, selected, CollectionStatus.Wish,
-                          onChipSelected);
-                    },
-                  ),
-                  ChoiceChip(
-                    label:
-                        Text('${subjectType.activityVerbChineseNameByType}过'),
-                    selected: state.value == CollectionStatus.Collect,
-                    onSelected: (bool selected) {
-                      _onChipSelected(state, selected, CollectionStatus.Collect,
-                          onChipSelected);
-                    },
-                  ),
-                  ChoiceChip(
-                    label:
-                        Text('在${subjectType.activityVerbChineseNameByType}'),
-                    selected: state.value == CollectionStatus.Do,
-                    onSelected: (bool selected) {
-                      _onChipSelected(
-                          state, selected, CollectionStatus.Do, onChipSelected);
-                    },
-                  ),
-                  ChoiceChip(
-                    label: Text('搁置'),
-                    selected: state.value == CollectionStatus.OnHold,
-                    onSelected: (bool selected) {
-                      _onChipSelected(state, selected, CollectionStatus.OnHold,
-                          onChipSelected);
-                    },
-                  ),
-                  ChoiceChip(
-                    label: Text('抛弃'),
-                    selected: state.value == CollectionStatus.Dropped,
-                    onSelected: (bool selected) {
-                      _onChipSelected(state, selected, CollectionStatus.Dropped,
-                          onChipSelected);
-                    },
-                  ),
-                ],
-              );
-            });
+          onSaved: onSaved,
+          validator: validator,
+          initialValue: initialStatus,
+          autovalidate: autovalidate,
+          builder: (FormFieldState<CollectionStatus> state) {
+            return Wrap(
+              alignment: WrapAlignment.spaceAround,
+              children: [
+                for (var collectionStatus in selectableCollectionStatus)
+                  workaroundChip(
+                      state, collectionStatus, subjectType, isDarkTheme,
+                      onChipSelected)
+              ],
+            );
+          });
 
   @override
   _SubjectCollectionStatusFormFieldState createState() {

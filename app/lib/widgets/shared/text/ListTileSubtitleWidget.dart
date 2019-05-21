@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/common/SubjectStars.dart';
 import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 
@@ -7,27 +8,50 @@ import 'package:munin/widgets/shared/utils/ExpandedEmpty.dart';
 /// this widget assumes actionName will never be null or empty
 class ListTileSubtitleWidget extends StatelessWidget {
   final String actionName;
-  final String updatedAt;
+  final int updatedAt;
+  final DisplayTimeIn timeDisplayFormat;
+
+  /// see [AbsoluteTimeFormat]
+  /// This won't work if time is displayed in relative format
+  final AbsoluteTimeFormat formatAbsoluteTimeAs;
   final double score;
 
-  ListTileSubtitleWidget(
-      {@required this.actionName, @required this.updatedAt, this.score});
+  static const double starCaptionFontSizeRatio = 1.2;
+
+  const ListTileSubtitleWidget({
+    @required this.actionName,
+    @required this.updatedAt,
+    this.score,
+    this.timeDisplayFormat = DisplayTimeIn.AlwaysRelative,
+    this.formatAbsoluteTimeAs,
+  });
 
   @override
   Widget build(BuildContext context) {
+    TextStyle captionStyle = Theme
+        .of(context)
+        .textTheme
+        .caption;
+
     if (score == null) {
       return Row(
         children: [
           Expanded(
               child: Text(
-            actionName,
+                actionName,
 
-            /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )),
+                /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: captionStyle,
+              )),
           Text(
-            updatedAt,
+            TimeUtils.formatMilliSecondsEpochTime(
+              updatedAt,
+              displayTimeIn: timeDisplayFormat,
+              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+            ),
+            style: captionStyle,
           )
         ],
       );
@@ -38,13 +62,20 @@ class ListTileSubtitleWidget extends StatelessWidget {
         children: [
           Text(
             actionName,
+            style: captionStyle,
           ),
           SubjectStars(
             subjectScore: score,
+            starSize: captionStyle.fontSize * starCaptionFontSizeRatio,
           ),
           ExpandedEmpty(),
           Text(
-            updatedAt,
+            TimeUtils.formatMilliSecondsEpochTime(
+              updatedAt,
+              displayTimeIn: timeDisplayFormat,
+              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+            ),
+            style: captionStyle,
           )
         ],
       );

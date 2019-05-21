@@ -13,6 +13,15 @@ class Routes {
   static String subjectCollectionManagementRoute =
       "/subject/:subjectId/collection";
 
+  static String userProfileRoute = "/user/:username";
+
+  /// Setting
+  static String settingRoute = "/setting";
+  static String themeSettingRoute = "/setting/theme";
+  static String muteSettingRoute = "/setting/mute";
+  static String muteSettingBatchImportUsersRoute =
+      "/setting/mute/users/import/bangumi";
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -26,5 +35,11 @@ class Routes {
         handler: subjectDetailInfoRouteHandler);
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
+    router.define(userProfileRoute, handler: userProfileRouteHandler);
+    router.define(settingRoute, handler: settingRouteHandler);
+    router.define(themeSettingRoute, handler: themeSettingRouteHandler);
+    router.define(muteSettingRoute, handler: muteSettingRouteHandler);
+    router.define(muteSettingBatchImportUsersRoute,
+        handler: muteSettingBatchImportUsersRouteHandler);
   }
 }

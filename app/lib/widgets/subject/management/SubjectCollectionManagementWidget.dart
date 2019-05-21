@@ -3,14 +3,14 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/models/Bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/Bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
-import 'package:munin/styles/theme/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
@@ -56,6 +56,7 @@ class _SubjectCollectionManagementWidgetState
   SubjectCollectionInfo unmodifiedSubjectCollectionInfo;
 
   SubjectType subjectType;
+  BangumiSubject subject;
 
   ///Looks like flutter doesn't expose list of current form errors so we maintain
   ///errors ourselves here
@@ -133,17 +134,17 @@ class _SubjectCollectionManagementWidgetState
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: const Text('放弃编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        true); // Pops the confirmation dialog but not the page.
-                  },
-                ),
-                FlatButton(
                   child: const Text('继续编辑'),
                   onPressed: () {
                     Navigator.of(context).pop(
                         false); // Returning true to _onWillPop will pop again.
+                  },
+                ),
+                FlatButton(
+                  child: const Text('放弃编辑'),
+                  onPressed: () {
+                    Navigator.of(context).pop(
+                        true); // Pops the confirmation dialog but not the page.
                   },
                 ),
               ],
@@ -174,7 +175,7 @@ class _SubjectCollectionManagementWidgetState
 
   String _buildErrorMessages(
       final Map<SubjectCollectionError, String> formErrors) {
-//    assert(formErrors.keys.isNotEmpty);
+    assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
       errorMessages
@@ -252,6 +253,9 @@ class _SubjectCollectionManagementWidgetState
               .rebuild((b) => b..status.update((b) => b..type = status));
         });
       },
+      isDarkTheme: Theme
+          .of(context)
+          .brightness == Brightness.dark,
     );
   }
 
@@ -299,7 +303,6 @@ class _SubjectCollectionManagementWidgetState
           formErrors.remove(SubjectCollectionError.LengthyComment);
         }
       },
-      keyboardAppearance: Theme.of(context).brightness,
       maxLines: 3,
       onSaved: (String comment) {
         localSubjectCollectionInfo =
@@ -323,33 +326,44 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  _initFormData(Store<AppState> store) {
-    if (store.state.subjectState.collections[widget.subjectId] == null) {
+  _onInitialBuild(Store<AppState> store) {
+    bool isSubjectAbsent = store.state.subjectState.subjects[widget
+        .subjectId] == null;
+    bool isCollectionInfoAbsent = store.state.subjectState.collections[widget
+        .subjectId] == null;
+    if (isSubjectAbsent || isCollectionInfoAbsent) {
       final action = GetCollectionInfoAction(
           context: context, subjectId: widget.subjectId);
       store.dispatch(action);
+      action.completer.future
+          .then((_) {
+        _initFormData(store.state.subjectState.subjects[widget.subjectId]);
+      });
+    } else {
+      _initFormData(store.state.subjectState.subjects[widget.subjectId]);
     }
+  }
 
-    BangumiSubject subject =
-        store.state.subjectState.subjects[widget.subjectId];
-
+  _initFormData(BangumiSubject loadedSubject) {
     /// subject should never be null: user must enters this page BEFORE
-    /// they enters the subject page
-    assert(subject != null);
+    /// they enters the subject page, or this data will be fetched before this method
+    /// is called
+    assert(loadedSubject != null, 'Subject must not be null');
 
-    if (subject == null) {
+    subject = loadedSubject;
+    if (loadedSubject == null) {
       /// in case it's null(exception!), assign a default type
-      /// note: [subjectType] only affects action name users see on the ui
+      /// note: [subjectType] only affects action name user sees on the ui
       subjectType = SubjectType.Anime;
     } else {
-      subjectType = subject.type;
-      for (String userSelectedTag in subject.userSelectedTags) {
+      subjectType = loadedSubject.type;
+      for (String userSelectedTag in loadedSubject.userSelectedTags) {
         candidateTags[userSelectedTag] = true;
         headerTags[userSelectedTag] = true;
       }
 
       /// suggestedTag might be in current user subject tags, or it might not
-      for (String suggestedTag in subject.bangumiSuggestedTags) {
+      for (String suggestedTag in loadedSubject.bangumiSuggestedTags) {
         /// Only if [headerTags] doesn't contain this tag, we need to add it to
         /// [candidateTags]
         if (!headerTags.containsKey(suggestedTag)) {
@@ -378,7 +392,7 @@ class _SubjectCollectionManagementWidgetState
                       context, subjectId, localSubjectCollectionInfo);
                 }
               : null,
-          textColor: Theme.of(context).primaryColor,
+          textColor: lightPrimaryDarkAccentColor(context),
           child: Text('更新收藏')),
       onTap: _canSubmitForm()
           ? null
@@ -394,7 +408,7 @@ class _SubjectCollectionManagementWidgetState
       converter: (Store store) => _ViewModel.fromStore(store, widget.subjectId),
       distinct: true,
       onInit: (store) {
-        _initFormData(store);
+        _onInitialBuild(store);
       },
       onDispose: (store) {
         store
@@ -425,7 +439,7 @@ class _SubjectCollectionManagementWidgetState
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
-            title: Text('作品标题'),
+            title: Text(subject?.name ?? '作品标题'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],
           ),
           safeAreaChild: Form(
@@ -453,7 +467,7 @@ class _ViewModel {
   final SubjectCollectionInfo subjectCollectionInfo;
   final LoadingStatus collectionLoadingStatus;
   final LoadingStatus collectionsSubmissionStatus;
-  final Function(BuildContext context, int subjectId) getCollectionInfo;
+  final Future Function(BuildContext context, int subjectId) getCollectionInfo;
   final Function(BuildContext context, int subjectId,
           SubjectCollectionInfo collectionUpdateRequest)
       collectionInfoUpdateRequest;
@@ -468,10 +482,11 @@ class _ViewModel {
       store.dispatch(action);
     }
 
-    _getCollectionInfo(BuildContext context, int subjectId) {
+    Future _getCollectionInfo(BuildContext context, int subjectId) {
       final action =
           GetCollectionInfoAction(context: context, subjectId: subjectId);
       store.dispatch(action);
+      return action.completer.future;
     }
 
     return _ViewModel(

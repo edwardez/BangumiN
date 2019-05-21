@@ -1,20 +1,25 @@
+import 'dart:collection';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
-import 'package:munin/models/Bangumi/common/Images.dart';
-import 'package:munin/models/Bangumi/mono/Actor.dart';
-import 'package:munin/models/Bangumi/mono/Character.dart';
-import 'package:munin/models/Bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/Bangumi/subject/Count.dart';
-import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/Bangumi/subject/InfoBox/InfoBoxRow.dart';
-import 'package:munin/models/Bangumi/subject/Rating.dart';
-import 'package:munin/models/Bangumi/subject/RelatedSubject.dart';
-import 'package:munin/models/Bangumi/subject/SubjectCollection.dart';
-import 'package:munin/models/Bangumi/subject/comment/SubjectComment.dart';
-import 'package:munin/models/Bangumi/subject/comment/SubjectCommentMetaInfo.dart';
-import 'package:munin/models/Bangumi/subject/common/SubjectType.dart';
-import 'package:munin/models/Bangumi/timeline/common/BangumiContent.dart';
+import 'package:meta/meta.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
+import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/mono/Actor.dart';
+import 'package:munin/models/bangumi/mono/Character.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/Count.dart';
+import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/Rating.dart';
+import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
+import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
+import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/providers/bangumi/subject/parser/common.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/collection.dart';
@@ -23,7 +28,15 @@ import 'package:quiver/strings.dart';
 class SubjectParser {
   final curatedRowMappings = {
     SubjectType.Anime: {
-    '话数', '动画制作', '原作', '制作', '监督', '放送开始'
+      '话数',
+      '动画制作',
+      '原作',
+      '制作',
+      '监督',
+      '放送开始',
+      '发售日',
+      '发售日期',
+      '上映年度'
     },
     SubjectType.Game: {'开发', '平台', '发行日期'},
     SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
@@ -64,7 +77,7 @@ class SubjectParser {
       /// we don't check whether the link is
       infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.Person
-        ..id = parseHrefId(element)
+        ..id = parseHrefId(element, digitOnly: true)
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
       infoBoxItem = InfoBoxItem((b) => b
@@ -75,8 +88,8 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  List<InfoBoxItem> parseInfoBoxRow(
-      Element infoBoxRowElement, SubjectType subjectType) {
+  List<InfoBoxItem> parseInfoBoxRow(Element infoBoxRowElement,
+      SubjectType subjectType) {
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -89,10 +102,10 @@ class SubjectParser {
     return infoBoxItems;
   }
 
-  Rating parseRating(DocumentFragment subjectElement) {
+  Rating parseRating(Element ratingElement) {
     List<int> scoreArray = [];
     int totalVotesCount = 0;
-    subjectElement.querySelectorAll('.horizontalChart li').forEach((element) {
+    ratingElement.querySelectorAll('.horizontalChart li').forEach((element) {
       int scoreVotesCount = tryParseInt(element
           .querySelector('.count')
           ?.text
@@ -103,12 +116,14 @@ class SubjectParser {
 
     Count count = Count.fromDescendingScoreArray(scoreArray);
     double score = tryParseDouble(
-        subjectElement.querySelector('[property="v:average"]')?.text);
+        ratingElement
+            .querySelector('[property="v:average"]')
+            ?.text);
 
-    Element friendScoreElement = subjectElement.querySelector('.frdScore');
-    int friendScoreVotesCount = extractFirstInt(
+    Element friendScoreElement = ratingElement.querySelector('.frdScore');
+    int friendScoreVotesCount = extractFirstIntGroup(
         friendScoreElement?.querySelector('a')?.text,
-        defaultValue: null);
+        defaultValue: 0);
 
     double friendScore = tryParseDouble(
         friendScoreElement?.querySelector('.num')?.text,
@@ -117,18 +132,39 @@ class SubjectParser {
     return Rating((b) => b
       ..score = score
       ..count.replace(count)
-      ..total = totalVotesCount
+      ..totalScoreVotesCount = totalVotesCount
       ..friendScore = friendScore
       ..friendScoreVotesCount = friendScoreVotesCount);
+  }
+
+  SubjectCollectionInfoPreview parseSubjectCollectionInfoPreview(
+      Element collectionStatusElement,
+      Element scoreElement,) {
+    int score = scoreElement == null
+        ? 0
+        : tryParseInt(scoreElement.attributes['value']);
+
+    CollectionStatus status =
+    CollectionStatus.guessCollectionStatusByChineseName(
+        collectionStatusElement
+            .querySelector('.interest_now')
+            ?.text,
+        fallbackCollectionStatus: CollectionStatus.Untouched);
+
+    return SubjectCollectionInfoPreview((b) =>
+    b
+      ..score = score
+      ..status = status);
   }
 
   BuiltList<Actor> parseActors(Element characterElement) {
     List<Actor> actors = [];
     List<Element> actorElements =
-        characterElement.querySelectorAll('a[rel=\"v:starring\"]');
+    characterElement.querySelectorAll('a[rel=\"v:starring\"]');
 
     for (Element actorElement in actorElements) {
-      int actorId = tryParseInt(parseHrefId(actorElement));
+      int actorId = tryParseInt(parseHrefId(actorElement, digitOnly: true),
+          defaultValue: null);
       String actorName = actorElement.text ?? '';
       actors.add(Actor((b) => b
         ..name = actorName
@@ -138,68 +174,75 @@ class SubjectParser {
     return BuiltList<Actor>(actors);
   }
 
-  BuiltList<SubjectComment> parseComments(DocumentFragment subjectElement,
-      {defaultActionName = '无评分'}) {
-    List<Element> commentElements =
-        subjectElement.querySelectorAll('#comment_box>.item');
+  BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement,
+      BuiltMap<String, MutedUser> mutedUsers,
+      {String defaultActionName = '评价道'}) {
+    /// a [SplayTreeSet] that contains a sorted set of reviews where
+    /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
+    /// sorted in descending order
+    SplayTreeSet<SubjectReview> reviews = SplayTreeSet<SubjectReview>(
+            (SubjectReview reviewA, SubjectReview reviewB) {
+          /// If username is the same, always skipping insertion
+          if (reviewA.metaInfo.username == reviewB.metaInfo.username) {
+            return 0;
+          }
 
-    List<SubjectComment> comments = [];
+          int reviewAUpdatedAt = reviewA.metaInfo.updatedAt ?? 0;
+          int reviewBUpdatedAt = reviewB.metaInfo.updatedAt ?? 0;
+          if (reviewAUpdatedAt != reviewBUpdatedAt) {
+            return reviewBUpdatedAt - reviewAUpdatedAt;
+          }
 
-    for (Element commentElement in commentElements) {
-      Element avatarElement = commentElement.querySelector('a.avatar');
-      int userId = tryParseInt(parseHrefId(avatarElement));
-      String userAvatarSmall = imageUrlFromBackgroundImage(avatarElement);
-      Images images = Images.fromImageUrl(
-          userAvatarSmall, ImageSize.Unknown, ImageType.UserAvatar);
-      String updatedAt = commentElement
-              .querySelector('.grey')
-              ?.text
-              ?.replaceAll('@', '')
-              ?.trim() ??
-          '神秘时间';
-      String commentContent = commentElement.querySelector('p')?.text ?? '';
-      String nickName = commentElement.querySelector('.text > a')?.text ?? '';
-      double score = parseSubjectScore(commentElement);
+          /// If [UpdatedAt] is the same, we sort by username
+          return reviewB.metaInfo.username.compareTo(reviewA.metaInfo.username);
+        });
 
-      String actionName = score == null ? defaultActionName : '';
+    List<Element> commentBoxElements =
+    subjectElement.querySelectorAll('#comment_box>.item');
 
-      SubjectCommentMetaInfo metaInfo = SubjectCommentMetaInfo((b) => b
-        ..updatedAt = updatedAt
-        ..nickName = nickName
-        ..actionName = actionName
-        ..score = score
-        ..userId = userId?.toString()
-        ..images.replace(images));
-
-      SubjectComment subjectComment = SubjectComment((b) => b
-        ..content = commentContent
-        ..metaInfo.replace(metaInfo));
-      comments.add(subjectComment);
+    /// Elements that are in the comment box
+    for (Element commentElement in commentBoxElements) {
+      SubjectReview review = parseSubjectReview(
+          commentElement, ReviewElement.CommentBox);
+      if (!mutedUsers.containsKey(review.metaInfo.username)) {
+        reviews.add(review);
+      }
     }
 
-    return BuiltList<SubjectComment>(comments);
+    List<Element> recentCollectionElements = subjectElement
+        .querySelectorAll('#subjectPanelCollect > .groupsLine > li');
+    for (Element recentCollectionElement in recentCollectionElements) {
+      SubjectReview review = parseSubjectReview(
+          recentCollectionElement, ReviewElement.CollectionPreview);
+      if (!mutedUsers.containsKey(review.metaInfo.username)) {
+        reviews.add(review);
+      }
+    }
+
+    return BuiltList<SubjectReview>(reviews);
   }
 
   BuiltList<Character> parseCharacters(DocumentFragment subjectElement) {
     List<Character> characters = [];
 
     List<Element> characterElements =
-        subjectElement.querySelectorAll('.subject_section .user');
+    subjectElement.querySelectorAll('.subject_section .user');
 
     for (Element characterElement in characterElements) {
       Element avatarElement = characterElement.querySelector('a.avatar');
-      int characterId = tryParseInt(parseHrefId(avatarElement));
+      int characterId = tryParseInt(parseHrefId(avatarElement, digitOnly: true),
+          defaultValue: null);
       String characterName = avatarElement?.text?.trim() ?? '';
       String roleName =
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
 
       String characterImageSmall = imageUrlFromBackgroundImage(avatarElement);
       Images images = Images.fromImageUrl(
-          characterImageSmall, ImageSize.Unknown, ImageType.CharacterAvatar);
+          characterImageSmall, ImageSize.Unknown, ImageType.MonoAvatar);
 
       String collectionCountsStr =
           characterElement.querySelector('.fade.rr')?.text ?? '0';
-      int collectionCounts = extractFirstInt(collectionCountsStr);
+      int collectionCounts = extractFirstIntGroup(collectionCountsStr);
       BuiltList<Actor> actors = parseActors(characterElement);
 
       Character character = Character((b) => b
@@ -218,16 +261,19 @@ class SubjectParser {
   BuiltListMultimap<String, RelatedSubject> parseRelatedSubjects(
       DocumentFragment subjectElement, SubjectType subjectType) {
     ListMultimap<String, RelatedSubject> relatedSubjects =
-        ListMultimap<String, RelatedSubject>();
+    ListMultimap<String, RelatedSubject>();
     List<Element> relatedSubjectElements =
-        subjectElement.querySelectorAll('.browserCoverMedium > li');
+    subjectElement.querySelectorAll('.browserCoverMedium > li');
 
     String lastValidSubjectSubType = '';
 
     /// parse 关联条目
     for (Element subjectElement in relatedSubjectElements) {
       String subjectSubType =
-          subjectElement.querySelector('.sub')?.text?.trim();
+      subjectElement
+          .querySelector('.sub')
+          ?.text
+          ?.trim();
 
       /// bangumi will not set subject type if current subject has the same
       /// subject type as previous ones, hence we need to store and use the
@@ -242,8 +288,9 @@ class SubjectParser {
 
       Element subjectTitleElement = subjectElement.querySelector('a.title');
       String subjectName = subjectTitleElement?.text?.trim() ?? '';
-      int subjectId =
-          tryParseInt(parseHrefId(subjectTitleElement), defaultValue: null);
+      int subjectId = tryParseInt(
+          parseHrefId(subjectTitleElement, digitOnly: true),
+          defaultValue: null);
 
       Element coverElement = subjectElement.querySelector('a.avatar');
       String subjectNameCn;
@@ -274,7 +321,7 @@ class SubjectParser {
     /// it's possible book is associated with 单行本(tankobon), which is only
     /// valid for book
     List<Element> tankobonElements =
-        subjectElement.querySelectorAll('.browserCoverSmall > li');
+    subjectElement.querySelectorAll('.browserCoverSmall > li');
 
     String typeTankobon = '单行本';
     for (Element tankobonElement in tankobonElements) {
@@ -286,8 +333,8 @@ class SubjectParser {
         continue;
       }
 
-      int subjectId =
-          tryParseInt(parseHrefId(coverElement), defaultValue: null);
+      int subjectId = tryParseInt(parseHrefId(coverElement, digitOnly: true),
+          defaultValue: null);
 
       /// for Tankobon, subject original name is stored in `data-original-title`
       /// for non-Tankobon, subject chinese name is stored in `data-original-title`
@@ -315,7 +362,7 @@ class SubjectParser {
 
   InfoBoxRow parseSubjectSubtype(DocumentFragment subjectElement) {
     final subtypeElements =
-        subjectElement.querySelectorAll('.nameSingle > .grey');
+    subjectElement.querySelectorAll('.nameSingle > .grey');
     String subTypeName = '';
     for (Element element in subtypeElements) {
       subTypeName += element?.text?.trim() ?? '';
@@ -354,7 +401,6 @@ class SubjectParser {
     List<String> userTags = [];
 
     Element tagElement = subjectElement.querySelector('#tags');
-    String subTypeName = '';
     RegExp invalidChars = RegExp(',| +');
     if (tagElement != null) {
       String concatenatedTags = tagElement.attributes['value'] ?? '';
@@ -382,7 +428,8 @@ class SubjectParser {
     infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
   }
 
-  BangumiSubject process(String rawHtml) {
+  BangumiSubject process(String rawHtml,
+      {@required BuiltMap<String, MutedUser> mutedUsers}) {
     DocumentFragment document = parseFragment(rawHtml);
     final SubjectType subjectType = SubjectType.getTypeByChineseName(
         document.querySelector('#navMenuNeue .focus')?.text);
@@ -395,7 +442,7 @@ class SubjectParser {
     if (nameElement != null) {
       name = nameElement.text;
       nameCn = nameElement.attributes['title'];
-      subjectId = tryParseInt(parseHrefId(nameElement));
+      subjectId = tryParseInt(parseHrefId(nameElement, digitOnly: true));
     }
     name ??= '-';
     nameCn ??= '-';
@@ -439,7 +486,12 @@ class SubjectParser {
       }
     }
 
-    Rating rating = parseRating(document);
+    Element reviewElement = document.querySelector('#panelInterestWrapper');
+
+    Rating rating = parseRating(reviewElement);
+
+    SubjectCollectionInfoPreview preview = parseSubjectCollectionInfoPreview(
+        reviewElement, document.querySelector('.rating[checked]'));
 
     int rank = tryParseInt(
         document
@@ -454,10 +506,10 @@ class SubjectParser {
 
     BuiltList<Character> characters = parseCharacters(document);
 
-    BuiltList<SubjectComment> comments = parseComments(document);
+    BuiltList<SubjectReview> comments = parseReviews(document, mutedUsers);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
-        parseRelatedSubjects(document, subjectType);
+    parseRelatedSubjects(document, subjectType);
 
     String summary = document
         .querySelector('#subject_summary')
@@ -483,24 +535,7 @@ class SubjectParser {
       ..commentsPreview.replace(comments)
       ..relatedSubjects.replace(relatedSubjects)
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
-      ..userSelectedTags.replace(userSelectedTags));
-  }
-
-  /// currently not in use
-  SubjectCollection parseSubjectCollection(DocumentFragment subjectElement) {
-    Element subjectPanelCollectElement =
-        subjectElement.querySelector('subjectPanelCollect');
-    int wish = 0;
-    int collect = 0;
-    int doing = 0;
-    int onHold = 0;
-    int dropped = 0;
-
-    return SubjectCollection((b) => b
-      ..wish = wish
-      ..collect = collect
-      ..doing = doing
-      ..onHold = onHold
-      ..dropped = dropped);
+      ..userSelectedTags.replace(userSelectedTags)
+      ..userSubjectCollectionInfoPreview.replace(preview));
   }
 }

@@ -4,19 +4,25 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 import 'package:munin/config/application.dart';
-import 'package:munin/models/Bangumi/BangumiCookieCredentials.dart';
-import 'package:munin/providers/bangumi/BangumiCookieClient.dart';
-import 'package:munin/providers/bangumi/BangumiOauthClient.dart';
-import 'package:munin/providers/bangumi/BangumiUserService.dart';
+import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
+import 'package:munin/providers/bangumi/BangumiOauthService.dart';
+import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
+import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
+import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
+import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
+import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> injector(GetIt getIt) async {
   final FlutterSecureStorage secureStorage = new FlutterSecureStorage();
   Map<String, String> credentials = await secureStorage.readAll();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
 
   String serializedBangumiCookieCredentials = credentials['bangumiCookieCredentials'];
   BangumiCookieCredentials bangumiCookieCredential;
@@ -29,52 +35,78 @@ Future<void> injector(GetIt getIt) async {
   CookieJar bangumiCookieJar = CookieJar();
   getIt.registerSingleton<CookieJar>(bangumiCookieJar);
 
-  final BangumiCookieClient _bangumiCookieClient = BangumiCookieClient(
+  SecureStorageService secureStorageService = SecureStorageService(
+      secureStorage: secureStorage);
+  SharedPreferenceService sharedPreferenceService = SharedPreferenceService(
+      sharedPreferences: await SharedPreferences.getInstance()
+  );
+
+  final BangumiCookieService _bangumiCookieService = BangumiCookieService(
       bangumiCookieCredential: bangumiCookieCredential,
-      secureStorage: secureStorage,
-      dio: _createDioForBangumiCookieClient(
+      secureStorageService: secureStorageService,
+      dio: _createDioForBangumiCookieService(
           bangumiCookieCredential, bangumiCookieJar)
   );
 
   final String serializedBangumiOauthCredentials =
   credentials['bangumiOauthCredentials'];
-  final BangumiOauthClient _bangumiOauthClient = BangumiOauthClient(
-    cookieClient: _bangumiCookieClient,
+
+  OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
+  final BangumiOauthService _bangumiOauthService = BangumiOauthService(
+    cookieClient: _bangumiCookieService,
     serializedBangumiOauthCredentials: serializedBangumiOauthCredentials,
-    secureStorage: secureStorage,
+    secureStorageService: secureStorageService,
+    oauthHttpClient: oauthHttpClient,
   );
 
-  getIt.registerSingleton<SharedPreferences>(preferences);
-  getIt.registerSingleton<FlutterSecureStorage>(secureStorage);
-  getIt.registerSingleton<BangumiCookieClient>(_bangumiCookieClient);
-  getIt.registerSingleton<BangumiOauthClient>(_bangumiOauthClient);
+  getIt.registerSingleton<SharedPreferenceService>(sharedPreferenceService);
+  getIt.registerSingleton<SecureStorageService>(secureStorageService);
+  getIt.registerSingleton<BangumiCookieService>(_bangumiCookieService);
+  getIt.registerSingleton<BangumiOauthService>(_bangumiOauthService);
 
   final bangumiUserService = BangumiUserService(
-      cookieClient: _bangumiCookieClient,
-      oauthClient: _bangumiOauthClient,
-      sharedPreferences: preferences);
+      cookieClient: _bangumiCookieService,
+      oauthClient: _bangumiOauthService,
+      sharedPreferenceService: sharedPreferenceService);
   getIt.registerSingleton<BangumiUserService>(bangumiUserService);
 
   final bangumiTimelineService = BangumiTimelineService(
-      cookieClient: _bangumiCookieClient);
+      cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiTimelineService>(bangumiTimelineService);
 
 
   final bangumiSubjectService = BangumiSubjectService(
-      cookieClient: _bangumiCookieClient, oauthClient: _bangumiOauthClient
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
   );
   getIt.registerSingleton<BangumiSubjectService>(bangumiSubjectService);
+
+  final bangumiSearchService = BangumiSearchService(
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
+  );
+  getIt.registerSingleton<BangumiSearchService>(bangumiSearchService);
+
+  final bangumiDiscussionService = BangumiDiscussionService(
+      cookieClient: _bangumiCookieService
+  );
+  getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
+
+  final bangumiProgressService = BangumiProgressService(
+    cookieClient: _bangumiCookieService,
+    oauthClient: _bangumiOauthService,
+  );
+  getIt.registerSingleton<BangumiProgressService>(bangumiProgressService);
 
   return;
 }
 
 /// create a new dio client with present settings
-Dio _createDioForBangumiCookieClient(
+Dio _createDioForBangumiCookieService(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
   Map<String, dynamic> headers = {
-    HttpHeaders.hostHeader: Application.environmentValue.bangumiMainHost,
-
+    HttpHeaders.hostHeader: Application.environmentValue.bangumiNonCdnHost,
+    HttpHeaders.refererHeader: 'https://${Application.environmentValue
+        .bangumiNonCdnHost}/',
   };
 
   /// attach user agent and cookie to dio  if these are not null
@@ -86,6 +118,14 @@ Dio _createDioForBangumiCookieClient(
       cookies.add(Cookie('chii_auth', bangumiCookieCredential.authCookie));
     }
 
+    if (bangumiCookieCredential.sessionCookie != null) {
+      cookies.add(Cookie('chii_sid', bangumiCookieCredential.sessionCookie));
+    }
+
+    /// https://github.com/bangumi/api/issues/43#issuecomment-414563212 requires
+    /// [chii_searchDateLine] to be present
+    cookies.add(Cookie('chii_searchDateLine', '0'));
+
     if (bangumiCookieCredential.userAgent != null) {
       headers[HttpHeaders.userAgentHeader] = bangumiCookieCredential.userAgent;
     }
@@ -93,10 +133,14 @@ Dio _createDioForBangumiCookieClient(
     bangumiCookieJar.saveFromResponse(
         Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
         cookies);
+
+    bangumiCookieJar.saveFromResponse(
+        Uri.parse("https://${Application.environmentValue.bangumiNonCdnHost}"),
+        cookies);
   }
 
   var dio = Dio(BaseOptions(
-    baseUrl: "https://${Application.environmentValue.bangumiMainHost}",
+    baseUrl: "https://${Application.environmentValue.bangumiNonCdnHost}",
     connectTimeout: Duration(seconds: 15).inMilliseconds,
     receiveTimeout: Duration(seconds: 15).inMilliseconds,
     headers: headers,
@@ -111,7 +155,7 @@ Dio _createDioForBangumiCookieClient(
   /// enable logging in development environment
   if (Application.environmentValue.environmentType ==
       EnvironmentType.Development) {
-//    dio.interceptors.add(LogInterceptor(responseBody: false));
+//    dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   return dio;

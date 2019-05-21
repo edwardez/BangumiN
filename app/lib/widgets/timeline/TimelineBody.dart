@@ -133,7 +133,14 @@ class _TimelineBodyState extends State<TimelineBody> {
     return Container();
   }
 
-  IndexedWidgetBuilder _createItemBuilder(_ViewModel viewModel) {
+  IndexedWidgetBuilder _createItemBuilder(_ViewModel viewModel,
+      bool hasFilterAllFeeds) {
+    if (hasFilterAllFeeds) {
+      return (BuildContext context, int index) {
+        Semantics(child: Container(), excludeSemantics: true);
+      };
+    }
+
     FeedChunks feedChunks = viewModel.feedChunks;
     return (BuildContext context, int index) {
       return Row(
@@ -186,6 +193,13 @@ class _TimelineBodyState extends State<TimelineBody> {
     );
   }
 
+  /// Checks whether user has filtered all available feeds by checking if unfiltered
+  /// list is not empty while filtered list is empty
+  bool userHasFilterAllFeeds(FeedChunks feedChunks) {
+    return feedChunks.first.length == 0 &&
+        feedChunks.unfilteredFirst.length != 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -198,21 +212,26 @@ class _TimelineBodyState extends State<TimelineBody> {
         }
       },
       builder: (BuildContext context, _ViewModel vm) {
+        bool hasFilterAllFeeds = userHasFilterAllFeeds(vm.feedChunks);
+
+        /// Build timeline refresh list
+        /// If user has filtered all available feeds, attach an empty `Container()`
+        /// to the timeline to ensure load more button will show up
         return MuninRefresh(
             key: _muninRefreshKey,
             onRefresh: () {
               return vm.fetchLatestFeed(context);
             },
-            itemBuilder: _createItemBuilder(vm),
+            itemBuilder: _createItemBuilder(vm, hasFilterAllFeeds),
             onLoadMore: () {
               return vm.fetchOlderFeed(context);
             },
             refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
-            itemCount: vm.feedChunks.first.length,
+            itemCount: hasFilterAllFeeds ? 1 : vm.feedChunks.first.length,
             appBar: widget.oneMuninBar,
             emptyAfterRefreshWidget: _buildEmptyTimelineWidget(),
             noMoreItemsToLoad:
-                vm.feedChunks.disableLoadingMore || vm.feedChunks.hasReachedEnd,
+            vm.feedChunks.disableLoadingMore || vm.feedChunks.hasReachedEnd,
             noMoreItemsWidget: _buildNoMoreItemsWidget());
       },
     );
@@ -227,12 +246,13 @@ class _ViewModel {
 
   factory _ViewModel.fromStore(
       Store<AppState> store, FetchTimelineRequest fetchTimelineRequest) {
+
     Future _fetchLatestFeed(BuildContext context) {
       FeedChunks feedChunks =
           store.state.timelineState.timeline[fetchTimelineRequest] ??
               FeedChunks();
       FeedLoadType feedLoadType;
-      if (isIterableNullOrEmpty(feedChunks.first)) {
+      if (isIterableNullOrEmpty(feedChunks.unfilteredFirst)) {
         feedLoadType = FeedLoadType.Initial;
       } else {
         feedLoadType = FeedLoadType.Newer;

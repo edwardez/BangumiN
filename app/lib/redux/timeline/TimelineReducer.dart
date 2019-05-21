@@ -25,7 +25,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
   List<TimelineFeed> unfilteredFeedsResponse = result.feeds;
 
   List<TimelineFeed> filteredFeedsResponse =
-  unfilteredFeedsResponse.skipWhile((feed) => feed.isFromMutedUser).toList();
+  unfilteredFeedsResponse.where((feed) => !feed.isFromMutedUser).toList();
 
   if (result.feedLoadType == FeedLoadType.Initial) {
     bool hasReachedEnd = false;

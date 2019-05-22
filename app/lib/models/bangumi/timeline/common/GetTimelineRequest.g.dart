@@ -1,26 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FetchTimelineRequest.dart';
+part of 'GetTimelineRequest.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FetchTimelineRequest> _$fetchTimelineRequestSerializer =
-    new _$FetchTimelineRequestSerializer();
+Serializer<GetTimelineRequest> _$getTimelineRequestSerializer =
+    new _$GetTimelineRequestSerializer();
 
-class _$FetchTimelineRequestSerializer
-    implements StructuredSerializer<FetchTimelineRequest> {
+class _$GetTimelineRequestSerializer
+    implements StructuredSerializer<GetTimelineRequest> {
   @override
-  final Iterable<Type> types = const [
-    FetchTimelineRequest,
-    _$FetchTimelineRequest
-  ];
+  final Iterable<Type> types = const [GetTimelineRequest, _$GetTimelineRequest];
   @override
-  final String wireName = 'FetchTimelineRequest';
+  final String wireName = 'GetTimelineRequest';
 
   @override
-  Iterable serialize(Serializers serializers, FetchTimelineRequest object,
+  Iterable serialize(Serializers serializers, GetTimelineRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'timelineSource',
@@ -35,9 +32,9 @@ class _$FetchTimelineRequestSerializer
   }
 
   @override
-  FetchTimelineRequest deserialize(Serializers serializers, Iterable serialized,
+  GetTimelineRequest deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new FetchTimelineRequestBuilder();
+    final result = new GetTimelineRequestBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -61,26 +58,26 @@ class _$FetchTimelineRequestSerializer
   }
 }
 
-class _$FetchTimelineRequest extends FetchTimelineRequest {
+class _$GetTimelineRequest extends GetTimelineRequest {
   @override
   final TimelineSource timelineSource;
   @override
   final TimelineCategoryFilter timelineCategoryFilter;
   String __chineseName;
 
-  factory _$FetchTimelineRequest(
-          [void Function(FetchTimelineRequestBuilder) updates]) =>
-      (new FetchTimelineRequestBuilder()..update(updates)).build();
+  factory _$GetTimelineRequest(
+          [void Function(GetTimelineRequestBuilder) updates]) =>
+      (new GetTimelineRequestBuilder()..update(updates)).build();
 
-  _$FetchTimelineRequest._({this.timelineSource, this.timelineCategoryFilter})
+  _$GetTimelineRequest._({this.timelineSource, this.timelineCategoryFilter})
       : super._() {
     if (timelineSource == null) {
       throw new BuiltValueNullFieldError(
-          'FetchTimelineRequest', 'timelineSource');
+          'GetTimelineRequest', 'timelineSource');
     }
     if (timelineCategoryFilter == null) {
       throw new BuiltValueNullFieldError(
-          'FetchTimelineRequest', 'timelineCategoryFilter');
+          'GetTimelineRequest', 'timelineCategoryFilter');
     }
   }
 
@@ -88,18 +85,18 @@ class _$FetchTimelineRequest extends FetchTimelineRequest {
   String get chineseName => __chineseName ??= super.chineseName;
 
   @override
-  FetchTimelineRequest rebuild(
-          void Function(FetchTimelineRequestBuilder) updates) =>
+  GetTimelineRequest rebuild(
+          void Function(GetTimelineRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FetchTimelineRequestBuilder toBuilder() =>
-      new FetchTimelineRequestBuilder()..replace(this);
+  GetTimelineRequestBuilder toBuilder() =>
+      new GetTimelineRequestBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FetchTimelineRequest &&
+    return other is GetTimelineRequest &&
         timelineSource == other.timelineSource &&
         timelineCategoryFilter == other.timelineCategoryFilter;
   }
@@ -112,16 +109,16 @@ class _$FetchTimelineRequest extends FetchTimelineRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('FetchTimelineRequest')
+    return (newBuiltValueToStringHelper('GetTimelineRequest')
           ..add('timelineSource', timelineSource)
           ..add('timelineCategoryFilter', timelineCategoryFilter))
         .toString();
   }
 }
 
-class FetchTimelineRequestBuilder
-    implements Builder<FetchTimelineRequest, FetchTimelineRequestBuilder> {
-  _$FetchTimelineRequest _$v;
+class GetTimelineRequestBuilder
+    implements Builder<GetTimelineRequest, GetTimelineRequestBuilder> {
+  _$GetTimelineRequest _$v;
 
   TimelineSource _timelineSource;
   TimelineSource get timelineSource => _$this._timelineSource;
@@ -134,9 +131,9 @@ class FetchTimelineRequestBuilder
   set timelineCategoryFilter(TimelineCategoryFilter timelineCategoryFilter) =>
       _$this._timelineCategoryFilter = timelineCategoryFilter;
 
-  FetchTimelineRequestBuilder();
+  GetTimelineRequestBuilder();
 
-  FetchTimelineRequestBuilder get _$this {
+  GetTimelineRequestBuilder get _$this {
     if (_$v != null) {
       _timelineSource = _$v.timelineSource;
       _timelineCategoryFilter = _$v.timelineCategoryFilter;
@@ -146,22 +143,22 @@ class FetchTimelineRequestBuilder
   }
 
   @override
-  void replace(FetchTimelineRequest other) {
+  void replace(GetTimelineRequest other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$FetchTimelineRequest;
+    _$v = other as _$GetTimelineRequest;
   }
 
   @override
-  void update(void Function(FetchTimelineRequestBuilder) updates) {
+  void update(void Function(GetTimelineRequestBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$FetchTimelineRequest build() {
+  _$GetTimelineRequest build() {
     final _$result = _$v ??
-        new _$FetchTimelineRequest._(
+        new _$GetTimelineRequest._(
             timelineSource: timelineSource,
             timelineCategoryFilter: timelineCategoryFilter);
     replace(_$result);

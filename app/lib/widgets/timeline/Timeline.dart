@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 
 class TimelineBody {
-  final FetchTimelineRequest fetchTimelineRequest;
+  final GetTimelineRequest getTimelineRequest;
   final TimelineBodyWidget widget;
 
   TimelineBody({
-    @required this.fetchTimelineRequest,
+    @required this.getTimelineRequest,
     @required this.widget,
   });
 }
@@ -43,13 +43,13 @@ class _MuninTimelineState extends State<MuninTimeline> {
     return pageController?.page?.toInt();
   }
 
-  TimelineBodyWidget _buildTimelineBodyWidget(
-      FetchTimelineRequest fetchTimelineRequest, OneMuninBar oneMuninBar) {
+  TimelineBodyWidget _buildTimelineBodyWidget(GetTimelineRequest request,
+      OneMuninBar oneMuninBar) {
     return TimelineBodyWidget(
-      key: PageStorageKey<FetchTimelineRequest>(
-          fetchTimelineRequest),
+      key: PageStorageKey<GetTimelineRequest>(
+          request),
       oneMuninBar: oneMuninBar,
-      fetchTimelineRequest: fetchTimelineRequest,
+      getTimelineRequest: request,
     );
   }
 
@@ -61,11 +61,11 @@ class _MuninTimelineState extends State<MuninTimeline> {
 
           for (TimelineBody timelineBody in timelineBodies) {
             options.add(ListTile(
-              title: Text(timelineBody.fetchTimelineRequest.chineseName),
+              title: Text(timelineBody.getTimelineRequest.chineseName),
               onTap: () {
                 setState(() {
                   int pageIndex = timelineBody
-                      .fetchTimelineRequest.timelineCategoryFilter.pageIndex;
+                      .getTimelineRequest.timelineCategoryFilter.pageIndex;
                   if (currentIndex != pageIndex) {
                     pageController.jumpToPage(pageIndex);
                   }
@@ -93,7 +93,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
             initialPage: widget.preferredTimelineLaunchPage.pageIndex);
 
     for (TimelineCategoryFilter filter in TimelineCategoryFilter.values) {
-      FetchTimelineRequest request = FetchTimelineRequest((b) =>
+      GetTimelineRequest request = GetTimelineRequest((b) =>
       b
         ..timelineSource = TimelineSource.FriendsOnly
         ..timelineCategoryFilter = filter);
@@ -110,7 +110,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
 
       TimelineBody timelineBody = TimelineBody(
           widget: _buildTimelineBodyWidget(request, oneMuninBar),
-          fetchTimelineRequest: request);
+          getTimelineRequest: request);
       timelineBodies[filter.pageIndex] = timelineBody;
       pages[filter.pageIndex] = timelineBody.widget;
     }

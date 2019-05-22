@@ -18,10 +18,7 @@ class BangumiDiscussionService {
   BangumiDiscussionService({@required this.cookieClient})
       : assert(cookieClient != null);
 
-  /// Currently Mono search doesn't support pagination as Bangumi doesn't support
-  /// (actually Bangumi has pagination for mono search, but second page is hidden)
-  /// According to https://bgm.tv/group/topic/4428#post_56015, it seems like
-  /// pagination is hidden intentionally
+
   Future<GetDiscussionResponse> getRakuenTopics(
       {@required GetDiscussionRequest getDiscussionRequest, @required MuteSetting muteSetting}) async {
     assert(getDiscussionRequest.discussionType == DiscussionType.Rakuen);
@@ -47,12 +44,12 @@ class BangumiDiscussionService {
     List<DiscussionItem> discussionItems =
     DiscussionParser().process(response.data, muteSetting: muteSetting);
 
-    GetDiscussionResponse fetchDiscussionResponse =
+    GetDiscussionResponse getDiscussionResponse =
     GetDiscussionResponse((b) =>
     b
           ..discussionItems.replace(BuiltSet<DiscussionItem>(discussionItems))
       ..appLastUpdatedAt = DateTime.now().toUtc());
 
-    return fetchDiscussionResponse;
+    return getDiscussionResponse;
   }
 }

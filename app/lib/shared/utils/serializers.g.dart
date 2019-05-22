@@ -32,13 +32,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(EpisodeType.serializer)
       ..add(FeedChunks.serializer)
       ..add(FeedMetaInfo.serializer)
-      ..add(FetchTimelineRequest.serializer)
       ..add(FriendshipCreationSingle.serializer)
       ..add(GeneralDiscussionItem.serializer)
       ..add(GeneralSetting.serializer)
       ..add(GetDiscussionRequest.serializer)
       ..add(GetDiscussionResponse.serializer)
       ..add(GetProgressRequest.serializer)
+      ..add(GetTimelineRequest.serializer)
       ..add(GroupDiscussionPost.serializer)
       ..add(GroupJoinSingle.serializer)
       ..add(HyperBangumiItem.serializer)
@@ -175,12 +175,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new MapBuilder<CollectionStatus, BuiltList<SubjectPreview>>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
-            const FullType(FetchTimelineRequest),
-            const FullType(FeedChunks)
-          ]),
-          () => new MapBuilder<FetchTimelineRequest, FeedChunks>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap, const [
             const FullType(GetDiscussionRequest),
             const FullType(GetDiscussionResponse)
           ]),
@@ -192,6 +186,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () => new MapBuilder<GetDiscussionRequest, LoadingStatus>())
       ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(GetTimelineRequest), const FullType(FeedChunks)]),
+          () => new MapBuilder<GetTimelineRequest, FeedChunks>())
+      ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(SearchRequest),
             const FullType(BangumiSearchResponse)
@@ -202,7 +200,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(SearchRequest), const FullType(LoadingStatus)]),
           () => new MapBuilder<SearchRequest, LoadingStatus>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]),
+          const FullType(
+              BuiltMap, const [const FullType(String), const FullType(MutedUser)]),
           () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())

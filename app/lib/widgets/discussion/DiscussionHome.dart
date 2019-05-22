@@ -6,10 +6,10 @@ import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 
 class DiscussionBody {
   final int index;
-  final GetDiscussionRequest fetchDiscussionRequest;
+  final GetDiscussionRequest getDiscussionRequest;
   final DiscussionBodyWidget widget;
 
-  const DiscussionBody({this.index, this.fetchDiscussionRequest, this.widget});
+  const DiscussionBody({this.index, this.getDiscussionRequest, this.widget});
 }
 
 class DiscussionHome extends StatefulWidget {
@@ -38,12 +38,12 @@ class _DiscussionHomeState extends State<DiscussionHome> {
     return pageController?.page?.toInt();
   }
 
-  DiscussionBodyWidget _buildDiscussionBodyWidget(
-      GetDiscussionRequest fetchDiscussionRequest, OneMuninBar oneMuninBar) {
+  DiscussionBodyWidget _buildDiscussionBodyWidget(GetDiscussionRequest request,
+      OneMuninBar oneMuninBar) {
     return DiscussionBodyWidget(
-      key: PageStorageKey<GetDiscussionRequest>(fetchDiscussionRequest),
+      key: PageStorageKey<GetDiscussionRequest>(request),
       oneMuninBar: oneMuninBar,
-      getDiscussionRequest: fetchDiscussionRequest,
+      getDiscussionRequest: request,
     );
   }
 
@@ -56,11 +56,11 @@ class _DiscussionHomeState extends State<DiscussionHome> {
           for (DiscussionBody page in discussionBodyPages) {
             options.add(ListTile(
               title: Text(
-                  page.fetchDiscussionRequest.discussionFilter.chineseName),
+                  page.getDiscussionRequest.discussionFilter.chineseName),
               onTap: () {
-                if (currentIndex != page.fetchDiscussionRequest.pageIndex) {
+                if (currentIndex != page.getDiscussionRequest.pageIndex) {
                   pageController.jumpToPage(
-                      page.fetchDiscussionRequest.pageIndex);
+                      page.getDiscussionRequest.pageIndex);
                 }
                 Navigator.pop(context);
               },
@@ -96,11 +96,11 @@ class _DiscussionHomeState extends State<DiscussionHome> {
 
       var discussionBody = DiscussionBody(
           widget: _buildDiscussionBodyWidget(request, oneMuninBar),
-          fetchDiscussionRequest: request);
+          getDiscussionRequest: request);
 
-      discussionBodyPages[discussionBody.fetchDiscussionRequest.pageIndex] =
+      discussionBodyPages[discussionBody.getDiscussionRequest.pageIndex] =
           discussionBody;
-      pages[discussionBody.fetchDiscussionRequest.pageIndex] =
+      pages[discussionBody.getDiscussionRequest.pageIndex] =
           discussionBody.widget;
     }
   }

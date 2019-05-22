@@ -296,7 +296,7 @@ class UserProfileWidget extends StatelessWidget {
           _ViewModel.fromStore(store, username),
       distinct: true,
       onInitialBuild: (_ViewModel vm) {
-        vm.fetchUserProfile(context);
+        vm.getUserProfile(context);
       },
       builder: (BuildContext context, _ViewModel vm) {
         LoadingStatus loadingStatus = vm.loadingStatus;
@@ -333,7 +333,7 @@ class UserProfileWidget extends StatelessWidget {
                     FlatButton(
                       child: Text('点击重试'),
                       onPressed: () {
-                        vm.fetchUserProfile(context);
+                        vm.getUserProfile(context);
                       },
                     ),
                     FlatButton(
@@ -385,7 +385,7 @@ class _ViewModel {
   final String username;
   final UserProfile userProfile;
   final LoadingStatus loadingStatus;
-  final Function(BuildContext context) fetchUserProfile;
+  final Function(BuildContext context) getUserProfile;
   final Function() muteUser;
   final Function() unMuteUser;
 
@@ -451,7 +451,7 @@ class _ViewModel {
     return _ViewModel(
       username: username,
       userProfile: store.state.userState.profiles[username],
-      fetchUserProfile: (BuildContext context) => _fetchUserProfile(context),
+      getUserProfile: (BuildContext context) => _fetchUserProfile(context),
       isCurrentAppUser: _isCurrentAppUser(),
       loadingStatus: store.state.userState.profilesLoadingStatus[username],
 
@@ -464,7 +464,7 @@ class _ViewModel {
   _ViewModel({
     @required this.username,
     @required this.userProfile,
-    @required this.fetchUserProfile,
+    @required this.getUserProfile,
     @required this.isCurrentAppUser,
     @required this.loadingStatus,
     @required this.isMuted,

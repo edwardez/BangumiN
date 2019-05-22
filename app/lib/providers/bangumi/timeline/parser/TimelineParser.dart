@@ -31,7 +31,7 @@ import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
-class FetchFeedsResult {
+class GetTimelineParsedResponse {
   /// http feeds response
   final List<TimelineFeed> feeds;
   final FeedLoadType feedLoadType;
@@ -44,7 +44,7 @@ class FetchFeedsResult {
   /// see [lastFetchedTime] in [FeedChunks]
   final DateTime fetchedTime;
 
-  FetchFeedsResult({
+  GetTimelineParsedResponse({
     @required this.feeds,
     @required this.feedLoadType,
     @required this.fetchedTime,
@@ -784,7 +784,7 @@ class TimelineParser {
   /// then startsWith parsing is processed
   /// finally unknown event is processed
   /// note: if feedLoadType is set, upperFeedId/lowerFeedId might also need to be set
-  FetchFeedsResult process(String rawHtml, {
+  GetTimelineParsedResponse process(String rawHtml, {
     @required BuiltMap<String, MutedUser> mutedUsers,
     feedLoadType = FeedLoadType.Initial,
     upperFeedId = IntegerHelper.MAX_VALUE,
@@ -858,7 +858,7 @@ class TimelineParser {
 
     /// If user deletes some feeds after munin loads feed, some feed might get lost.
     /// However even Web Page version loses these feeds
-    return FetchFeedsResult(
+    return GetTimelineParsedResponse(
         feeds: feeds,
         truncateFeedsInStore: truncateFeedsInStore,
         feedLoadType: feedLoadType,

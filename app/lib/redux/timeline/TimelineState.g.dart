@@ -22,7 +22,7 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
       'timeline',
       serializers.serialize(object.timeline,
           specifiedType: const FullType(BuiltMap, const [
-            const FullType(FetchTimelineRequest),
+            const FullType(GetTimelineRequest),
             const FullType(FeedChunks)
           ])),
     ];
@@ -44,7 +44,7 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
         case 'timeline':
           result.timeline.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(FetchTimelineRequest),
+                const FullType(GetTimelineRequest),
                 const FullType(FeedChunks)
               ])) as BuiltMap);
           break;
@@ -57,7 +57,7 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
 
 class _$TimelineState extends TimelineState {
   @override
-  final BuiltMap<FetchTimelineRequest, FeedChunks> timeline;
+  final BuiltMap<GetTimelineRequest, FeedChunks> timeline;
 
   factory _$TimelineState([void Function(TimelineStateBuilder) updates]) =>
       (new TimelineStateBuilder()..update(updates)).build();
@@ -98,10 +98,10 @@ class TimelineStateBuilder
     implements Builder<TimelineState, TimelineStateBuilder> {
   _$TimelineState _$v;
 
-  MapBuilder<FetchTimelineRequest, FeedChunks> _timeline;
-  MapBuilder<FetchTimelineRequest, FeedChunks> get timeline =>
-      _$this._timeline ??= new MapBuilder<FetchTimelineRequest, FeedChunks>();
-  set timeline(MapBuilder<FetchTimelineRequest, FeedChunks> timeline) =>
+  MapBuilder<GetTimelineRequest, FeedChunks> _timeline;
+  MapBuilder<GetTimelineRequest, FeedChunks> get timeline =>
+      _$this._timeline ??= new MapBuilder<GetTimelineRequest, FeedChunks>();
+  set timeline(MapBuilder<GetTimelineRequest, FeedChunks> timeline) =>
       _$this._timeline = timeline;
 
   TimelineStateBuilder();

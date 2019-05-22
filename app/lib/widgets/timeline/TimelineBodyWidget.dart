@@ -15,7 +15,7 @@ import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
 import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
@@ -43,13 +43,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class TimelineBodyWidget extends StatefulWidget {
   final OneMuninBar oneMuninBar;
-  final FetchTimelineRequest fetchTimelineRequest;
+  final GetTimelineRequest getTimelineRequest;
 
   const TimelineBodyWidget(
       {Key key,
       @required this.oneMuninBar,
-      @required this.fetchTimelineRequest})
-      : assert(fetchTimelineRequest != null),
+        @required this.getTimelineRequest})
+      : assert(getTimelineRequest != null),
         assert(oneMuninBar != null),
         super(key: key);
 
@@ -205,7 +205,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
       converter: (Store store) =>
-          _ViewModel.fromStore(store, widget.fetchTimelineRequest),
+          _ViewModel.fromStore(store, widget.getTimelineRequest),
       onInitialBuild: (_ViewModel vm) {
         if (vm.feedChunks.isStale || vm.feedChunks.first.isEmpty) {
           _muninRefreshKey?.currentState?.callOnRefresh();
@@ -240,16 +240,16 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
 
 class _ViewModel {
   final FeedChunks feedChunks;
-  final FetchTimelineRequest fetchTimelineRequest;
+  final GetTimelineRequest getTimelineRequest;
   final Future Function(BuildContext context) fetchLatestFeed;
   final Future Function(BuildContext context) fetchOlderFeed;
 
-  factory _ViewModel.fromStore(
-      Store<AppState> store, FetchTimelineRequest fetchTimelineRequest) {
+  factory _ViewModel.fromStore(Store<AppState> store,
+      GetTimelineRequest getTimelineRequest) {
 
     Future _fetchLatestFeed(BuildContext context) {
       FeedChunks feedChunks =
-          store.state.timelineState.timeline[fetchTimelineRequest] ??
+          store.state.timelineState.timeline[getTimelineRequest] ??
               FeedChunks();
       FeedLoadType feedLoadType;
       if (isIterableNullOrEmpty(feedChunks.unfilteredFirst)) {
@@ -261,7 +261,7 @@ class _ViewModel {
       final action = LoadTimelineRequest(
           context: context,
           feedLoadType: feedLoadType,
-          fetchTimelineRequest: fetchTimelineRequest);
+          getTimelineRequest: getTimelineRequest);
       store.dispatch(action);
 
       return action.completer.future;
@@ -273,16 +273,16 @@ class _ViewModel {
       final action = LoadTimelineRequest(
           context: context,
           feedLoadType: feedLoadType,
-          fetchTimelineRequest: fetchTimelineRequest);
+          getTimelineRequest: getTimelineRequest);
       store.dispatch(action);
 
       return action.completer.future;
     }
 
     return _ViewModel(
-      feedChunks: store.state.timelineState.timeline[fetchTimelineRequest] ??
+      feedChunks: store.state.timelineState.timeline[getTimelineRequest] ??
           FeedChunks(),
-      fetchTimelineRequest: fetchTimelineRequest,
+      getTimelineRequest: getTimelineRequest,
       fetchLatestFeed: (context) => _fetchLatestFeed(context),
       fetchOlderFeed: (context) => _fetchOlderFeed(context),
     );
@@ -290,7 +290,7 @@ class _ViewModel {
 
   _ViewModel(
       {@required this.feedChunks,
-      @required this.fetchTimelineRequest,
+        @required this.getTimelineRequest,
       @required this.fetchLatestFeed,
       @required this.fetchOlderFeed});
 
@@ -300,8 +300,8 @@ class _ViewModel {
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
           feedChunks == other.feedChunks &&
-          fetchTimelineRequest == other.fetchTimelineRequest;
+          getTimelineRequest == other.getTimelineRequest;
 
   @override
-  int get hashCode => hash2(feedChunks.hashCode, fetchTimelineRequest.hashCode);
+  int get hashCode => hash2(feedChunks.hashCode, getTimelineRequest.hashCode);
 }

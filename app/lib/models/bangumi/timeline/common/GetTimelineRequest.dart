@@ -6,14 +6,14 @@ import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'FetchTimelineRequest.g.dart';
+part 'GetTimelineRequest.g.dart';
 
-/// Class to represent possible request to fetch timeline
+/// Class to represent possible request to get timeline
 /// For source, currently munin only supports [TimelineSource.FriendsOnly]
 /// Setting source to other values will request in unexpected behavior
-abstract class FetchTimelineRequest
-    implements Built<FetchTimelineRequest, FetchTimelineRequestBuilder> {
-  FetchTimelineRequest._();
+abstract class GetTimelineRequest
+    implements Built<GetTimelineRequest, GetTimelineRequestBuilder> {
+  GetTimelineRequest._();
 
   TimelineSource get timelineSource;
 
@@ -30,20 +30,20 @@ abstract class FetchTimelineRequest
     return '${timelineSource.chineseName} - ${timelineCategoryFilter.chineseName}';
   }
 
-  factory FetchTimelineRequest(
-          [void Function(FetchTimelineRequestBuilder) updates]) =
-      _$FetchTimelineRequest;
+  factory GetTimelineRequest(
+      [void Function(GetTimelineRequestBuilder) updates]) =
+  _$GetTimelineRequest;
 
   String toJson() {
     return json.encode(
-        serializers.serializeWith(FetchTimelineRequest.serializer, this));
+        serializers.serializeWith(GetTimelineRequest.serializer, this));
   }
 
-  static FetchTimelineRequest fromJson(String jsonString) {
+  static GetTimelineRequest fromJson(String jsonString) {
     return serializers.deserializeWith(
-        FetchTimelineRequest.serializer, json.decode(jsonString));
+        GetTimelineRequest.serializer, json.decode(jsonString));
   }
 
-  static Serializer<FetchTimelineRequest> get serializer =>
-      _$fetchTimelineRequestSerializer;
+  static Serializer<GetTimelineRequest> get serializer =>
+      _$getTimelineRequestSerializer;
 }

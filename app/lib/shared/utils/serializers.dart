@@ -69,7 +69,7 @@ import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/Mono.dart';
@@ -116,7 +116,7 @@ part 'serializers.g.dart';
 
   /// Timeline
   TimelineState,
-  FetchTimelineRequest,
+  GetTimelineRequest,
   TimelineCategoryFilter,
   TimelineSource,
   BangumiUserBasic,

@@ -27,10 +27,10 @@ class _$DiscussionStateSerializer
             const FullType(GetDiscussionResponse)
           ])),
     ];
-    if (object.fetchDiscussionRequestStatus != null) {
+    if (object.getDiscussionRequestStatus != null) {
       result
-        ..add('fetchDiscussionRequestStatus')
-        ..add(serializers.serialize(object.fetchDiscussionRequestStatus,
+        ..add('getDiscussionRequestStatus')
+        ..add(serializers.serialize(object.getDiscussionRequestStatus,
             specifiedType: const FullType(BuiltMap, const [
               const FullType(GetDiscussionRequest),
               const FullType(LoadingStatus)
@@ -58,8 +58,8 @@ class _$DiscussionStateSerializer
                 const FullType(GetDiscussionResponse)
               ])) as BuiltMap);
           break;
-        case 'fetchDiscussionRequestStatus':
-          result.fetchDiscussionRequestStatus.replace(serializers.deserialize(
+        case 'getDiscussionRequestStatus':
+          result.getDiscussionRequestStatus.replace(serializers.deserialize(
               value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(GetDiscussionRequest),
@@ -78,12 +78,12 @@ class _$DiscussionState extends DiscussionState {
   final BuiltMap<GetDiscussionRequest, GetDiscussionResponse> results;
   @override
   final BuiltMap<GetDiscussionRequest, LoadingStatus>
-      fetchDiscussionRequestStatus;
+      getDiscussionRequestStatus;
 
   factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
       (new DiscussionStateBuilder()..update(updates)).build();
 
-  _$DiscussionState._({this.results, this.fetchDiscussionRequestStatus})
+  _$DiscussionState._({this.results, this.getDiscussionRequestStatus})
       : super._() {
     if (results == null) {
       throw new BuiltValueNullFieldError('DiscussionState', 'results');
@@ -103,20 +103,20 @@ class _$DiscussionState extends DiscussionState {
     if (identical(other, this)) return true;
     return other is DiscussionState &&
         results == other.results &&
-        fetchDiscussionRequestStatus == other.fetchDiscussionRequestStatus;
+        getDiscussionRequestStatus == other.getDiscussionRequestStatus;
   }
 
   @override
   int get hashCode {
     return $jf(
-        $jc($jc(0, results.hashCode), fetchDiscussionRequestStatus.hashCode));
+        $jc($jc(0, results.hashCode), getDiscussionRequestStatus.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('DiscussionState')
           ..add('results', results)
-          ..add('fetchDiscussionRequestStatus', fetchDiscussionRequestStatus))
+          ..add('getDiscussionRequestStatus', getDiscussionRequestStatus))
         .toString();
   }
 }
@@ -133,23 +133,21 @@ class DiscussionStateBuilder
           MapBuilder<GetDiscussionRequest, GetDiscussionResponse> results) =>
       _$this._results = results;
 
-  MapBuilder<GetDiscussionRequest, LoadingStatus> _fetchDiscussionRequestStatus;
+  MapBuilder<GetDiscussionRequest, LoadingStatus> _getDiscussionRequestStatus;
   MapBuilder<GetDiscussionRequest, LoadingStatus>
-      get fetchDiscussionRequestStatus =>
-          _$this._fetchDiscussionRequestStatus ??=
-              new MapBuilder<GetDiscussionRequest, LoadingStatus>();
-  set fetchDiscussionRequestStatus(
+      get getDiscussionRequestStatus => _$this._getDiscussionRequestStatus ??=
+          new MapBuilder<GetDiscussionRequest, LoadingStatus>();
+  set getDiscussionRequestStatus(
           MapBuilder<GetDiscussionRequest, LoadingStatus>
-              fetchDiscussionRequestStatus) =>
-      _$this._fetchDiscussionRequestStatus = fetchDiscussionRequestStatus;
+              getDiscussionRequestStatus) =>
+      _$this._getDiscussionRequestStatus = getDiscussionRequestStatus;
 
   DiscussionStateBuilder();
 
   DiscussionStateBuilder get _$this {
     if (_$v != null) {
       _results = _$v.results?.toBuilder();
-      _fetchDiscussionRequestStatus =
-          _$v.fetchDiscussionRequestStatus?.toBuilder();
+      _getDiscussionRequestStatus = _$v.getDiscussionRequestStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -175,15 +173,14 @@ class DiscussionStateBuilder
       _$result = _$v ??
           new _$DiscussionState._(
               results: results.build(),
-              fetchDiscussionRequestStatus:
-                  _fetchDiscussionRequestStatus?.build());
+              getDiscussionRequestStatus: _getDiscussionRequestStatus?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'results';
         results.build();
-        _$failedField = 'fetchDiscussionRequestStatus';
-        _fetchDiscussionRequestStatus?.build();
+        _$failedField = 'getDiscussionRequestStatus';
+        _getDiscussionRequestStatus?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'DiscussionState', _$failedField, e.toString());

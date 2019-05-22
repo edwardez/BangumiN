@@ -16,7 +16,7 @@ abstract class DiscussionState
 
   @nullable
   BuiltMap<GetDiscussionRequest, LoadingStatus>
-      get fetchDiscussionRequestStatus;
+  get getDiscussionRequestStatus;
 
   bool shouldFetchResponse(GetDiscussionRequest request) {
     return results[request] == null ||
@@ -27,7 +27,7 @@ abstract class DiscussionState
       _$DiscussionState((b) => b
         ..results.replace(
             BuiltMap<GetDiscussionRequest, GetDiscussionResponse>())
-        ..fetchDiscussionRequestStatus
+        ..getDiscussionRequestStatus
             .replace(BuiltMap<GetDiscussionRequest, LoadingStatus>())
         ..update(updates));
 

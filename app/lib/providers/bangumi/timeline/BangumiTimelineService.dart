@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
@@ -20,7 +20,8 @@ class BangumiTimelineService {
       : assert(cookieClient != null);
 
   // get bangumi user basic info through api
-  Future<FetchFeedsResult> getTimeline({@required FetchTimelineRequest fetchTimelineRequest,
+  Future<GetTimelineParsedResponse> getTimeline(
+      {@required GetTimelineRequest request,
     @required int nextPageNum,
     @required FeedLoadType feedLoadType,
     @required int upperFeedId,
@@ -33,7 +34,7 @@ class BangumiTimelineService {
       queryParameters['page'] = nextPageNum;
     }
 
-    queryParameters['type'] = fetchTimelineRequest
+    queryParameters['type'] = request
         .timelineCategoryFilter.toBangumiQueryParameterValue;
 
     Response feedsHtml = await cookieClient.dio
@@ -41,7 +42,7 @@ class BangumiTimelineService {
 
     TimelineParser timelineParser = TimelineParser();
 
-    FetchFeedsResult fetchFeedsResult = timelineParser.process(
+    GetTimelineParsedResponse fetchFeedsResult = timelineParser.process(
         feedsHtml.data,
         feedLoadType: feedLoadType,
         upperFeedId: upperFeedId,

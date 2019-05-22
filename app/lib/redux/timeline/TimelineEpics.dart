@@ -36,7 +36,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
     int nextPageNum;
 
     FeedChunks feedChunks =
-        store.state.timelineState.timeline[action.fetchTimelineRequest] ??
+        store.state.timelineState.timeline[action.getTimelineRequest] ??
             FeedChunks();
 
     /// For newer feeds, we don't need to set [nextPageNum]
@@ -91,9 +91,9 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       if (feedChunks.unfilteredFirst.length % feedsPerPage == 0) {
         nextPageNum = tentativeNextPageNum;
       } else {
-        FetchFeedsResult fetchFeedsResult =
+        GetTimelineParsedResponse fetchFeedsResult =
         await bangumiTimelineService.getTimeline(
-            fetchTimelineRequest: action.fetchTimelineRequest,
+            request: action.getTimelineRequest,
             nextPageNum: tentativeNextPageNum,
             feedLoadType: action.feedLoadType,
             lowerFeedId: lowerFeedId,
@@ -104,8 +104,8 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
         } else {
           action.completer.complete();
           yield LoadTimelineSuccess(
-              fetchTimelineRequest: action.fetchTimelineRequest,
-              fetchFeedsResult: fetchFeedsResult);
+              getTimelineRequest: action.getTimelineRequest,
+              parsedResponse: fetchFeedsResult);
           return;
         }
       }
@@ -119,9 +119,9 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
           '${action.feedLoadType} is currently not implemented');
     }
 
-    FetchFeedsResult fetchFeedsResult =
+    GetTimelineParsedResponse fetchFeedsResult =
     await bangumiTimelineService.getTimeline(
-        fetchTimelineRequest: action.fetchTimelineRequest,
+        request: action.getTimelineRequest,
         nextPageNum: nextPageNum,
         feedLoadType: action.feedLoadType,
         lowerFeedId: lowerFeedId,
@@ -133,8 +133,8 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
             ' Recevied ${fetchFeedsResult.feeds.length} new feeds.');
 
     yield LoadTimelineSuccess(
-        fetchTimelineRequest: action.fetchTimelineRequest,
-        fetchFeedsResult: fetchFeedsResult);
+        getTimelineRequest: action.getTimelineRequest,
+        parsedResponse: fetchFeedsResult);
     action.completer.complete();
   } catch (error, stack) {
     action.completer.completeError(error, stack);

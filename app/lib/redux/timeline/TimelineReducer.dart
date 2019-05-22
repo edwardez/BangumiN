@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
@@ -16,11 +16,11 @@ final timelineReducers = combineReducers<TimelineState>([
 
 TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
     LoadTimelineSuccess loadTimelineFeedSuccess) {
-  FetchTimelineRequest fetchTimelineRequest =
-      loadTimelineFeedSuccess.fetchTimelineRequest;
+  GetTimelineRequest getTimelineRequest =
+      loadTimelineFeedSuccess.getTimelineRequest;
   FeedChunks feedChunksInStore =
-      timelineState.timeline[fetchTimelineRequest] ?? FeedChunks();
-  FetchFeedsResult result = loadTimelineFeedSuccess.fetchFeedsResult;
+      timelineState.timeline[getTimelineRequest] ?? FeedChunks();
+  GetTimelineParsedResponse result = loadTimelineFeedSuccess.parsedResponse;
 
   List<TimelineFeed> unfilteredFeedsResponse = result.feeds;
 
@@ -40,7 +40,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
     return timelineState.rebuild((b) => b
       ..timeline.addAll({
-        fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+        getTimelineRequest: feedChunksInStore.rebuild((b) =>
         b
           ..first.replace(BuiltList<TimelineFeed>(filteredFeedsResponse))
           ..unfilteredFirst.replace(
@@ -56,7 +56,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
       /// clean up feeds
       return timelineState.rebuild((b) => b
         ..timeline.addAll({
-          fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+          getTimelineRequest: feedChunksInStore.rebuild((b) =>
           b
             ..first.replace(BuiltList<TimelineFeed>(filteredFeedsResponse))
             ..unfilteredFirst.replace(
@@ -75,7 +75,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
       return timelineState.rebuild((b) => b
         ..timeline.addAll({
-          fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+          getTimelineRequest: feedChunksInStore.rebuild((b) =>
           b
             ..first.replace(updatedFilteredFeeds)
             ..unfilteredFirst.replace(unfilteredUpdatedFeeds)
@@ -101,7 +101,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
     return timelineState.rebuild((b) => b
       ..timeline.addAll({
-        fetchTimelineRequest: feedChunksInStore.rebuild((b) =>
+        getTimelineRequest: feedChunksInStore.rebuild((b) =>
         b
           ..first.replace(updatedFilteredFeeds)
           ..unfilteredFirst.replace(unfilteredUpdatedFeeds)

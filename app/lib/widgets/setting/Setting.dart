@@ -20,6 +20,20 @@ class SettingHome extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(
+              title: Text('通用'),
+              trailing: Icon(
+                AdaptiveIcons.forwardIconData,
+                size: smallerIconSize,
+              ),
+              onTap: () {
+                Application.router.navigateTo(
+                    context,
+                    Routes.generalSettingRoute,
+                    transition: TransitionType.native);
+              },
+            ),
+            Divider(),
+            ListTile(
               title: Text('主题'),
               trailing: Icon(
                 AdaptiveIcons.forwardIconData,

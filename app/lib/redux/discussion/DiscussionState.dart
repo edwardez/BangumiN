@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -12,23 +12,23 @@ part 'DiscussionState.g.dart';
 
 abstract class DiscussionState
     implements Built<DiscussionState, DiscussionStateBuilder> {
-  BuiltMap<FetchDiscussionRequest, FetchDiscussionResponse> get results;
+  BuiltMap<GetDiscussionRequest, GetDiscussionResponse> get results;
 
   @nullable
-  BuiltMap<FetchDiscussionRequest, LoadingStatus>
+  BuiltMap<GetDiscussionRequest, LoadingStatus>
       get fetchDiscussionRequestStatus;
 
-  bool shouldFetchResponse(FetchDiscussionRequest fetchDiscussionRequest) {
-    return results[fetchDiscussionRequest] == null ||
-        results[fetchDiscussionRequest].isStale;
+  bool shouldFetchResponse(GetDiscussionRequest request) {
+    return results[request] == null ||
+        results[request].isStale;
   }
 
   factory DiscussionState([updates(DiscussionStateBuilder b)]) =>
       _$DiscussionState((b) => b
         ..results.replace(
-            BuiltMap<FetchDiscussionRequest, FetchDiscussionResponse>())
+            BuiltMap<GetDiscussionRequest, GetDiscussionResponse>())
         ..fetchDiscussionRequestStatus
-            .replace(BuiltMap<FetchDiscussionRequest, LoadingStatus>())
+            .replace(BuiltMap<GetDiscussionRequest, LoadingStatus>())
         ..update(updates));
 
   DiscussionState._();

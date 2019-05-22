@@ -1,55 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
-import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/widgets/progress/ProgressBody.dart';
+import 'package:munin/widgets/progress/ProgressBodyWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 
-
-final List<GetProgressRequest> validGetProgressRequests = [
-  GetProgressRequest((b) =>
-  b
-    ..requestedSubjectTypes.addAll(
-        [SubjectType.Anime, SubjectType.Real, SubjectType.Book])),
-  GetProgressRequest((b) =>
-  b
-    ..requestedSubjectTypes.addAll([SubjectType.Anime])),
-  GetProgressRequest((b) =>
-  b
-    ..requestedSubjectTypes.addAll([SubjectType.Real])),
-  GetProgressRequest((b) =>
-  b
-    ..requestedSubjectTypes.addAll([SubjectType.Book])),
-];
-
-class ProgressBodyPage {
-  final int index;
+class ProgressBody {
   final GetProgressRequest getProgressRequest;
-  final ProgressBody body;
+  final ProgressBodyWidget widget;
 
-  const ProgressBodyPage({@required this.index,
-    @required this.getProgressRequest,
-    @required this.body});
+  const ProgressBody(
+      {@required this.getProgressRequest, @required this.widget});
 }
 
 class MuninSubjectProgress extends StatefulWidget {
-  const MuninSubjectProgress({Key key}) : super(key: key);
+  final GetProgressRequest preferredProgressLaunchPage;
+
+  const MuninSubjectProgress(
+      {Key key, @required this.preferredProgressLaunchPage})
+      : super(key: key);
 
   @override
   _MuninSubjectProgressState createState() => _MuninSubjectProgressState();
 }
 
 class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
-  final PageController pageController = PageController();
+  final List<ProgressBody> progressBodies =
+  List(GetProgressRequest.totalGetProgressRequestTypes);
+  final List<Widget> pages = List(
+      GetProgressRequest.totalGetProgressRequestTypes);
 
-  int currentIndex = 0;
+  PageController pageController;
 
-  List<ProgressBodyPage> progressBodyViews = [];
-  List<Widget> pages = [];
+  /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
+  /// we should be fine
+  int get currentIndex {
+    assert(pageController.page.toInt() - pageController.page == 0);
 
-  ProgressBody _buildProgressBodyWidget(GetProgressRequest getProgressRequest,
-      OneMuninBar oneMuninBar) {
-    return ProgressBody(
+    return pageController?.page?.toInt();
+  }
+
+
+  ProgressBodyWidget _buildProgressBodyWidget(
+      GetProgressRequest getProgressRequest, OneMuninBar oneMuninBar) {
+    return ProgressBodyWidget(
       key: PageStorageKey<GetProgressRequest>(getProgressRequest),
       oneMuninBar: oneMuninBar,
       subjectTypes: getProgressRequest.requestedSubjectTypes,
@@ -62,13 +55,16 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
         builder: (BuildContext context) {
           List<ListTile> options = [];
 
-          for (ProgressBodyPage progressBodyView in progressBodyViews) {
+          for (ProgressBody progressBody in progressBodies) {
             options.add(ListTile(
-              title: Text(progressBodyView.getProgressRequest.chineseName),
+              title: Text(progressBody.getProgressRequest.chineseName),
               onTap: () {
                 setState(() {
-                  currentIndex = progressBodyView.index;
-                  pageController.jumpToPage(currentIndex);
+                  if (currentIndex !=
+                      progressBody.getProgressRequest.pageIndex) {
+                    pageController.jumpToPage(
+                        progressBody.getProgressRequest.pageIndex);
+                  }
                 });
                 Navigator.pop(context);
               },
@@ -87,10 +83,14 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
   @override
   void initState() {
     super.initState();
+    assert(GetProgressRequest.validGetProgressRequests.length ==
+        GetProgressRequest.totalGetProgressRequestTypes);
 
-    int index = 0;
+    pageController = PageController(
+        initialPage: widget.preferredProgressLaunchPage.pageIndex);
 
-    validGetProgressRequests.forEach((GetProgressRequest getProgressRequest) {
+    GetProgressRequest.validGetProgressRequests
+        .forEach((GetProgressRequest getProgressRequest) {
       OneMuninBar oneMuninBar = OneMuninBar(
         title: FlatButton(
           onPressed: () {
@@ -99,17 +99,18 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
           child: Text(getProgressRequest.chineseName),
         ),
       );
-      progressBodyViews.add(ProgressBodyPage(
-        index: index,
-        body: _buildProgressBodyWidget(getProgressRequest, oneMuninBar),
+
+      var progressBodyPage = ProgressBody(
+        widget: _buildProgressBodyWidget(getProgressRequest, oneMuninBar),
         getProgressRequest: getProgressRequest,
-      ));
-      index++;
+      );
+      progressBodies[progressBodyPage.getProgressRequest.pageIndex] =
+          progressBodyPage;
+      pages[progressBodyPage.getProgressRequest.pageIndex] =
+          progressBodyPage.widget;
     });
 
 
-    pages =
-        progressBodyViews.map((ProgressBodyPage view) => view.body).toList();
   }
 
   @override

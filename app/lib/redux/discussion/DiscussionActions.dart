@@ -2,26 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 
 class GetDiscussionRequestAction {
   final BuildContext context;
-  final FetchDiscussionRequest fetchDiscussionRequest;
+  final GetDiscussionRequest getDiscussionRequest;
   final Completer completer;
 
   GetDiscussionRequestAction(
       {@required this.context,
-      @required this.fetchDiscussionRequest,
+        @required this.getDiscussionRequest,
       Completer completer})
       : this.completer = completer ?? new Completer();
 }
 
 class GetDiscussionRequestSuccessAction {
-  final FetchDiscussionRequest fetchDiscussionRequest;
-  final FetchDiscussionResponse fetchDiscussionResponse;
+  final GetDiscussionRequest getDiscussionRequest;
+  final GetDiscussionResponse getDiscussionResponse;
 
-  GetDiscussionRequestSuccessAction(
-      {@required this.fetchDiscussionRequest,
-      @required this.fetchDiscussionResponse});
+  GetDiscussionRequestSuccessAction({@required this.getDiscussionRequest,
+    @required this.getDiscussionResponse});
 }

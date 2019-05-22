@@ -25,6 +25,10 @@ class MuteSettingWidget extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
       converter: (store) => _ViewModel.fromStore(store),
       distinct: true,
+      onDispose: (store) {
+        store.dispatch(ImportBlockedBangumiUsersCleanupAction());
+        store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
+      },
       builder: (BuildContext context, _ViewModel vm) {
         return ScaffoldWithSliverAppBar(
             enableTopSafeArea: false,

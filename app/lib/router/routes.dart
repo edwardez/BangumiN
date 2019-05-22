@@ -6,7 +6,6 @@ import './RouteHandlers.dart';
 class Routes {
   static String root = "/";
   static String loginRoute = "/login";
-  static String homeRoute = "/home";
   static String bangumiOauthRoute = "/bangumiOauth";
   static String subjectMainPageRoute = "/subject/:subjectId";
   static String subjectDetailInfoPageRoute = "/subject/:subjectId/info";
@@ -17,6 +16,7 @@ class Routes {
 
   /// Setting
   static String settingRoute = "/setting";
+  static String generalSettingRoute = "/setting/general";
   static String themeSettingRoute = "/setting/theme";
   static String muteSettingRoute = "/setting/mute";
   static String muteSettingBatchImportUsersRoute =
@@ -28,7 +28,6 @@ class Routes {
       print("Route is not found!");
     });
     router.define(loginRoute, handler: loginRouteHandler);
-    router.define(homeRoute, handler: homeRouteHandler);
     router.define(bangumiOauthRoute, handler: bangumiOauthRouteHandler);
     router.define(subjectMainPageRoute, handler: subjectMainPageRouteHandler);
     router.define(subjectDetailInfoPageRoute,
@@ -37,6 +36,7 @@ class Routes {
         handler: subjectCollectionManagementRouteHandler);
     router.define(userProfileRoute, handler: userProfileRouteHandler);
     router.define(settingRoute, handler: settingRouteHandler);
+    router.define(generalSettingRoute, handler: generalSettingRouteHandler);
     router.define(themeSettingRoute, handler: themeSettingRouteHandler);
     router.define(muteSettingRoute, handler: muteSettingRouteHandler);
     router.define(muteSettingBatchImportUsersRoute,

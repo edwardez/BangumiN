@@ -41,11 +41,11 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TimelineBody extends StatefulWidget {
+class TimelineBodyWidget extends StatefulWidget {
   final OneMuninBar oneMuninBar;
   final FetchTimelineRequest fetchTimelineRequest;
 
-  const TimelineBody(
+  const TimelineBodyWidget(
       {Key key,
       @required this.oneMuninBar,
       @required this.fetchTimelineRequest})
@@ -55,11 +55,11 @@ class TimelineBody extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _TimelineBodyState();
+    return _TimelineBodyWidgetState();
   }
 }
 
-class _TimelineBodyState extends State<TimelineBody> {
+class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
       GlobalKey<MuninRefreshState>();
 

@@ -1,10 +1,19 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+
+/// Updates general settings.
+class UpdateGeneralSettingAction {
+  final GeneralSetting generalSetting;
+
+  UpdateGeneralSettingAction({@required this.generalSetting});
+}
+
 
 /// Updates theme settings.
 class UpdateThemeSettingAction {

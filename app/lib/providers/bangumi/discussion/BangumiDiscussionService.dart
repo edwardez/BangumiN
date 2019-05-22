@@ -3,8 +3,8 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
@@ -22,10 +22,10 @@ class BangumiDiscussionService {
   /// (actually Bangumi has pagination for mono search, but second page is hidden)
   /// According to https://bgm.tv/group/topic/4428#post_56015, it seems like
   /// pagination is hidden intentionally
-  Future<FetchDiscussionResponse> getRakuenTopics(
-      {@required FetchDiscussionRequest fetchDiscussionRequest, @required MuteSetting muteSetting}) async {
-    assert(fetchDiscussionRequest.discussionType == DiscussionType.Rakuen);
-    assert(fetchDiscussionRequest.discussionFilter is RakuenTopicFilter);
+  Future<GetDiscussionResponse> getRakuenTopics(
+      {@required GetDiscussionRequest getDiscussionRequest, @required MuteSetting muteSetting}) async {
+    assert(getDiscussionRequest.discussionType == DiscussionType.Rakuen);
+    assert(getDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
     String requestUrl =
         '/rakuen/topiclist';
@@ -33,7 +33,7 @@ class BangumiDiscussionService {
     Map<String, String> queryParameters = {};
 
     RakuenTopicFilter filter =
-        fetchDiscussionRequest.discussionFilter as RakuenTopicFilter;
+    getDiscussionRequest.discussionFilter as RakuenTopicFilter;
 
     /// [RakuenTopicFilter.Unrestricted] doesn't need a type filter
     /// otherwise we'll need to add one
@@ -47,10 +47,11 @@ class BangumiDiscussionService {
     List<DiscussionItem> discussionItems =
     DiscussionParser().process(response.data, muteSetting: muteSetting);
 
-    FetchDiscussionResponse fetchDiscussionResponse =
-        FetchDiscussionResponse((b) => b
+    GetDiscussionResponse fetchDiscussionResponse =
+    GetDiscussionResponse((b) =>
+    b
           ..discussionItems.replace(BuiltSet<DiscussionItem>(discussionItems))
-          ..lastFetchedTime = DateTime.now().toUtc());
+      ..appLastUpdatedAt = DateTime.now().toUtc());
 
     return fetchDiscussionResponse;
   }

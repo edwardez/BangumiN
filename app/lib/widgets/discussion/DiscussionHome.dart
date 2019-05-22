@@ -1,43 +1,49 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/widgets/discussion/rakuen/DiscussionBody.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/widgets/discussion/rakuen/DiscussionBodyWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 
-final BuiltList<FetchDiscussionRequest> _allRakuenRequests =
-FetchDiscussionRequest.allRakuenRequests();
-
-class DiscussionBodyPage {
+class DiscussionBody {
   final int index;
-  final FetchDiscussionRequest fetchDiscussionRequest;
-  final DiscussionBody body;
+  final GetDiscussionRequest fetchDiscussionRequest;
+  final DiscussionBodyWidget widget;
 
-  const DiscussionBodyPage(
-      {this.index, this.fetchDiscussionRequest, this.body});
+  const DiscussionBody({this.index, this.fetchDiscussionRequest, this.widget});
 }
 
 class DiscussionHome extends StatefulWidget {
-  const DiscussionHome({Key key}) : super(key: key);
+  final GetDiscussionRequest preferredDiscussionLaunchPage;
+
+  const DiscussionHome({Key key, @required this.preferredDiscussionLaunchPage})
+      : super(key: key);
 
   @override
   _DiscussionHomeState createState() => _DiscussionHomeState();
 }
 
 class _DiscussionHomeState extends State<DiscussionHome> {
-  final PageController pageController = PageController();
+  final List<DiscussionBody> discussionBodyPages =
+  List(GetDiscussionRequest.totalGetProgressRequestTypes);
+  final List<Widget> pages =
+  List(GetDiscussionRequest.totalGetProgressRequestTypes);
 
-  int currentIndex = 0;
+  PageController pageController;
 
-  List<DiscussionBodyPage> discussionBodyPages = [];
-  List<Widget> pages = [];
+  /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
+  /// we should be fine
+  int get currentIndex {
+    assert(pageController.page.toInt() - pageController.page == 0);
 
-  DiscussionBody _buildDiscussionBodyWidget(
-      FetchDiscussionRequest fetchDiscussionRequest, OneMuninBar oneMuninBar) {
-    return DiscussionBody(
-      key: PageStorageKey<FetchDiscussionRequest>(fetchDiscussionRequest),
+    return pageController?.page?.toInt();
+  }
+
+  DiscussionBodyWidget _buildDiscussionBodyWidget(
+      GetDiscussionRequest fetchDiscussionRequest, OneMuninBar oneMuninBar) {
+    return DiscussionBodyWidget(
+      key: PageStorageKey<GetDiscussionRequest>(fetchDiscussionRequest),
       oneMuninBar: oneMuninBar,
-      fetchDiscussionRequest: fetchDiscussionRequest,
+      getDiscussionRequest: fetchDiscussionRequest,
     );
   }
 
@@ -47,15 +53,15 @@ class _DiscussionHomeState extends State<DiscussionHome> {
         builder: (BuildContext context) {
           List<ListTile> options = [];
 
-          for (DiscussionBodyPage page in discussionBodyPages) {
+          for (DiscussionBody page in discussionBodyPages) {
             options.add(ListTile(
               title: Text(
                   page.fetchDiscussionRequest.discussionFilter.chineseName),
               onTap: () {
-                setState(() {
-                  currentIndex = page.index;
-                  pageController.jumpToPage(currentIndex);
-                });
+                if (currentIndex != page.fetchDiscussionRequest.pageIndex) {
+                  pageController.jumpToPage(
+                      page.fetchDiscussionRequest.pageIndex);
+                }
                 Navigator.pop(context);
               },
             ));
@@ -73,8 +79,11 @@ class _DiscussionHomeState extends State<DiscussionHome> {
   void initState() {
     super.initState();
 
-    int index = 0;
-    for (FetchDiscussionRequest request in _allRakuenRequests) {
+    pageController = PageController(
+        initialPage: widget.preferredDiscussionLaunchPage.pageIndex);
+
+    for (GetDiscussionRequest request
+    in GetDiscussionRequest.validGetDiscussionRequests) {
       /// Maybe we can initialize only one app bar
       OneMuninBar oneMuninBar = OneMuninBar(
         title: FlatButton(
@@ -84,16 +93,16 @@ class _DiscussionHomeState extends State<DiscussionHome> {
           child: Text(request.discussionFilter.chineseName),
         ),
       );
-      discussionBodyPages.add(DiscussionBodyPage(
-          index: index,
-          body: _buildDiscussionBodyWidget(request, oneMuninBar),
-          fetchDiscussionRequest: request));
-      index++;
-    }
 
-    pages = discussionBodyPages
-        .map((DiscussionBodyPage page) => page.body)
-        .toList();
+      var discussionBody = DiscussionBody(
+          widget: _buildDiscussionBodyWidget(request, oneMuninBar),
+          fetchDiscussionRequest: request);
+
+      discussionBodyPages[discussionBody.fetchDiscussionRequest.pageIndex] =
+          discussionBody;
+      pages[discussionBody.fetchDiscussionRequest.pageIndex] =
+          discussionBody.widget;
+    }
   }
 
   @override
@@ -107,7 +116,7 @@ class _DiscussionHomeState extends State<DiscussionHome> {
 
   @override
   void dispose() {
-    pageController.dispose();
+    pageController?.dispose();
     super.dispose();
   }
 }

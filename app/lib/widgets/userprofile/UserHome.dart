@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:redux/redux.dart';
@@ -20,7 +21,7 @@ class UserHome extends StatelessWidget {
           username: username,
           appBar: OneMuninBar(
             title: Text(
-              '我的时光机',
+              PreferredLaunchNavTab.Timeline.chineseName,
             ),
           ),
         );

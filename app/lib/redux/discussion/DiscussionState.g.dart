@@ -23,8 +23,8 @@ class _$DiscussionStateSerializer
       'results',
       serializers.serialize(object.results,
           specifiedType: const FullType(BuiltMap, const [
-            const FullType(FetchDiscussionRequest),
-            const FullType(FetchDiscussionResponse)
+            const FullType(GetDiscussionRequest),
+            const FullType(GetDiscussionResponse)
           ])),
     ];
     if (object.fetchDiscussionRequestStatus != null) {
@@ -32,7 +32,7 @@ class _$DiscussionStateSerializer
         ..add('fetchDiscussionRequestStatus')
         ..add(serializers.serialize(object.fetchDiscussionRequestStatus,
             specifiedType: const FullType(BuiltMap, const [
-              const FullType(FetchDiscussionRequest),
+              const FullType(GetDiscussionRequest),
               const FullType(LoadingStatus)
             ])));
     }
@@ -54,15 +54,15 @@ class _$DiscussionStateSerializer
         case 'results':
           result.results.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(FetchDiscussionRequest),
-                const FullType(FetchDiscussionResponse)
+                const FullType(GetDiscussionRequest),
+                const FullType(GetDiscussionResponse)
               ])) as BuiltMap);
           break;
         case 'fetchDiscussionRequestStatus':
           result.fetchDiscussionRequestStatus.replace(serializers.deserialize(
               value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(FetchDiscussionRequest),
+                const FullType(GetDiscussionRequest),
                 const FullType(LoadingStatus)
               ])) as BuiltMap);
           break;
@@ -75,9 +75,9 @@ class _$DiscussionStateSerializer
 
 class _$DiscussionState extends DiscussionState {
   @override
-  final BuiltMap<FetchDiscussionRequest, FetchDiscussionResponse> results;
+  final BuiltMap<GetDiscussionRequest, GetDiscussionResponse> results;
   @override
-  final BuiltMap<FetchDiscussionRequest, LoadingStatus>
+  final BuiltMap<GetDiscussionRequest, LoadingStatus>
       fetchDiscussionRequestStatus;
 
   factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
@@ -125,23 +125,21 @@ class DiscussionStateBuilder
     implements Builder<DiscussionState, DiscussionStateBuilder> {
   _$DiscussionState _$v;
 
-  MapBuilder<FetchDiscussionRequest, FetchDiscussionResponse> _results;
-  MapBuilder<FetchDiscussionRequest, FetchDiscussionResponse> get results =>
+  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> _results;
+  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> get results =>
       _$this._results ??=
-          new MapBuilder<FetchDiscussionRequest, FetchDiscussionResponse>();
+          new MapBuilder<GetDiscussionRequest, GetDiscussionResponse>();
   set results(
-          MapBuilder<FetchDiscussionRequest, FetchDiscussionResponse>
-              results) =>
+          MapBuilder<GetDiscussionRequest, GetDiscussionResponse> results) =>
       _$this._results = results;
 
-  MapBuilder<FetchDiscussionRequest, LoadingStatus>
-      _fetchDiscussionRequestStatus;
-  MapBuilder<FetchDiscussionRequest, LoadingStatus>
+  MapBuilder<GetDiscussionRequest, LoadingStatus> _fetchDiscussionRequestStatus;
+  MapBuilder<GetDiscussionRequest, LoadingStatus>
       get fetchDiscussionRequestStatus =>
           _$this._fetchDiscussionRequestStatus ??=
-              new MapBuilder<FetchDiscussionRequest, LoadingStatus>();
+              new MapBuilder<GetDiscussionRequest, LoadingStatus>();
   set fetchDiscussionRequestStatus(
-          MapBuilder<FetchDiscussionRequest, LoadingStatus>
+          MapBuilder<GetDiscussionRequest, LoadingStatus>
               fetchDiscussionRequestStatus) =>
       _$this._fetchDiscussionRequestStatus = fetchDiscussionRequestStatus;
 

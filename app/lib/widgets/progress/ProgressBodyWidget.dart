@@ -44,21 +44,21 @@ typedef Future<void> UpdateBookProgress({
   @required InProgressSubjectInfo subject,
 });
 
-class ProgressBody extends StatefulWidget {
+class ProgressBodyWidget extends StatefulWidget {
   final OneMuninBar oneMuninBar;
   final BuiltSet<SubjectType> subjectTypes;
 
-  const ProgressBody(
+  const ProgressBodyWidget(
       {Key key, @required this.oneMuninBar, @required this.subjectTypes})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ProgressBodyState();
+    return _ProgressBodyWidgetState();
   }
 }
 
-class _ProgressBodyState extends State<ProgressBody> {
+class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
       GlobalKey<MuninRefreshState>();
 

@@ -7,11 +7,11 @@ import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/time.dart';
 
-part 'FetchDiscussionResponse.g.dart';
+part 'GetDiscussionResponse.g.dart';
 
-abstract class FetchDiscussionResponse
-    implements Built<FetchDiscussionResponse, FetchDiscussionResponseBuilder> {
-  FetchDiscussionResponse._();
+abstract class GetDiscussionResponse
+    implements Built<GetDiscussionResponse, GetDiscussionResponseBuilder> {
+  GetDiscussionResponse._();
 
   static const Duration staleDataThreshold = anHour;
 
@@ -19,11 +19,11 @@ abstract class FetchDiscussionResponse
   /// might need to be looked up
   BuiltSet<DiscussionItem> get discussionItems;
 
-  /// The last time munin tries to fetch this response
-  DateTime get lastFetchedTime;
+  /// The last time munin tries to get this response
+  DateTime get appLastUpdatedAt;
 
   bool get isStale {
-    return DateTime.now().difference(lastFetchedTime) >= staleDataThreshold;
+    return DateTime.now().difference(appLastUpdatedAt) >= staleDataThreshold;
   }
 
   @memoized
@@ -31,19 +31,19 @@ abstract class FetchDiscussionResponse
     return this.discussionItems.toBuiltList();
   }
 
-  factory FetchDiscussionResponse([updates(FetchDiscussionResponseBuilder b)]) =
-      _$FetchDiscussionResponse;
+  factory GetDiscussionResponse([updates(GetDiscussionResponseBuilder b)]) =
+  _$GetDiscussionResponse;
 
   String toJson() {
     return json.encode(
-        serializers.serializeWith(FetchDiscussionResponse.serializer, this));
+        serializers.serializeWith(GetDiscussionResponse.serializer, this));
   }
 
-  static FetchDiscussionResponse fromJson(String jsonString) {
+  static GetDiscussionResponse fromJson(String jsonString) {
     return serializers.deserializeWith(
-        FetchDiscussionResponse.serializer, json.decode(jsonString));
+        GetDiscussionResponse.serializer, json.decode(jsonString));
   }
 
-  static Serializer<FetchDiscussionResponse> get serializer =>
-      _$fetchDiscussionResponseSerializer;
+  static Serializer<GetDiscussionResponse> get serializer =>
+      _$getDiscussionResponseSerializer;
 }

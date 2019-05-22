@@ -2,10 +2,10 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
-import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
 import 'package:munin/widgets/setting/Setting.dart';
+import 'package:munin/widgets/setting/general/GeneralSettingWidget.dart';
 import 'package:munin/widgets/setting/mute/ImportBlockedBangumiUsersWidget.dart';
 import 'package:munin/widgets/setting/mute/MuteSettingWidget.dart';
 import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
@@ -16,11 +16,6 @@ import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidg
 var loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return MuninLoginPage();
-});
-
-var homeRouteHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return MuninHomePage();
 });
 
 var bangumiOauthRouteHandler = Handler(
@@ -76,6 +71,11 @@ var userProfileRouteHandler = Handler(
 var settingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return SettingHome();
+    });
+
+var generalSettingRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return GeneralSettingWidget();
     });
 
 var themeSettingRouteHandler = Handler(

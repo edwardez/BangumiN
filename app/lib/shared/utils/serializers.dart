@@ -10,9 +10,9 @@ import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
@@ -25,6 +25,7 @@ import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart'
 import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
+import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
@@ -35,6 +36,8 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
@@ -177,8 +180,8 @@ part 'serializers.g.dart';
   DiscussionType,
   DiscussionFilter,
   RakuenTopicFilter,
-  FetchDiscussionRequest,
-  FetchDiscussionResponse,
+  GetDiscussionRequest,
+  GetDiscussionResponse,
   DiscussionState,
 
 
@@ -206,6 +209,7 @@ part 'serializers.g.dart';
   EpisodeStatus,
   EpisodeType,
   AirStatus,
+  GetProgressRequest,
 
   /// Settings
   SettingState,
@@ -214,7 +218,9 @@ part 'serializers.g.dart';
   ThemeSwitchMode,
   MuteSetting,
   MutedUser,
-  MutedGroup
+  MutedGroup,
+  GeneralSetting,
+  PreferredLaunchNavTab
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()

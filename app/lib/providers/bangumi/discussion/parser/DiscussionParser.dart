@@ -10,6 +10,7 @@ import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -188,6 +189,10 @@ class DiscussionParser {
           !isMutedItem(maybeDiscussionItem.value, muteSetting)) {
         discussionItems.add(maybeDiscussionItem.value);
       }
+    }
+
+    if (discussionItems.isEmpty) {
+      throw BangumiResponseIncomprehensibleException('从Bangumi返回的讨论列表为空');
     }
 
     return discussionItems;

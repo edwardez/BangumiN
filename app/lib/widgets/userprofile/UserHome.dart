@@ -21,7 +21,7 @@ class UserHome extends StatelessWidget {
           username: username,
           appBar: OneMuninBar(
             title: Text(
-              PreferredLaunchNavTab.Timeline.chineseName,
+              PreferredLaunchNavTab.HomePage.generalSettingPageChineseName,
             ),
           ),
         );

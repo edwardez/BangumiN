@@ -26,18 +26,15 @@ class _$MonoFavoriteSingleSerializer
       'monoName',
       serializers.serialize(object.monoName,
           specifiedType: const FullType(String)),
+      'avatar',
+      serializers.serialize(object.avatar,
+          specifiedType: const FullType(Images)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'monoType',
       serializers.serialize(object.monoType,
           specifiedType: const FullType(Mono)),
     ];
-    if (object.monoAvatarImageUrl != null) {
-      result
-        ..add('monoAvatarImageUrl')
-        ..add(serializers.serialize(object.monoAvatarImageUrl,
-            specifiedType: const FullType(String)));
-    }
     if (object.isFromMutedUser != null) {
       result
         ..add('isFromMutedUser')
@@ -67,9 +64,9 @@ class _$MonoFavoriteSingleSerializer
           result.monoName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'monoAvatarImageUrl':
-          result.monoAvatarImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'avatar':
+          result.avatar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Images)) as Images);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -96,7 +93,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   @override
   final String monoName;
   @override
-  final String monoAvatarImageUrl;
+  final Images avatar;
   @override
   final String id;
   @override
@@ -111,7 +108,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   _$MonoFavoriteSingle._(
       {this.user,
       this.monoName,
-      this.monoAvatarImageUrl,
+      this.avatar,
       this.id,
       this.monoType,
       this.isFromMutedUser})
@@ -121,6 +118,9 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     }
     if (monoName == null) {
       throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'monoName');
+    }
+    if (avatar == null) {
+      throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'avatar');
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'id');
@@ -145,7 +145,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     return other is MonoFavoriteSingle &&
         user == other.user &&
         monoName == other.monoName &&
-        monoAvatarImageUrl == other.monoAvatarImageUrl &&
+        avatar == other.avatar &&
         id == other.id &&
         monoType == other.monoType &&
         isFromMutedUser == other.isFromMutedUser;
@@ -157,7 +157,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
         $jc(
             $jc(
                 $jc($jc($jc(0, user.hashCode), monoName.hashCode),
-                    monoAvatarImageUrl.hashCode),
+                    avatar.hashCode),
                 id.hashCode),
             monoType.hashCode),
         isFromMutedUser.hashCode));
@@ -168,7 +168,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     return (newBuiltValueToStringHelper('MonoFavoriteSingle')
           ..add('user', user)
           ..add('monoName', monoName)
-          ..add('monoAvatarImageUrl', monoAvatarImageUrl)
+          ..add('avatar', avatar)
           ..add('id', id)
           ..add('monoType', monoType)
           ..add('isFromMutedUser', isFromMutedUser))
@@ -190,10 +190,9 @@ class MonoFavoriteSingleBuilder
   String get monoName => _$this._monoName;
   set monoName(String monoName) => _$this._monoName = monoName;
 
-  String _monoAvatarImageUrl;
-  String get monoAvatarImageUrl => _$this._monoAvatarImageUrl;
-  set monoAvatarImageUrl(String monoAvatarImageUrl) =>
-      _$this._monoAvatarImageUrl = monoAvatarImageUrl;
+  ImagesBuilder _avatar;
+  ImagesBuilder get avatar => _$this._avatar ??= new ImagesBuilder();
+  set avatar(ImagesBuilder avatar) => _$this._avatar = avatar;
 
   String _id;
   String get id => _$this._id;
@@ -214,7 +213,7 @@ class MonoFavoriteSingleBuilder
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _monoName = _$v.monoName;
-      _monoAvatarImageUrl = _$v.monoAvatarImageUrl;
+      _avatar = _$v.avatar?.toBuilder();
       _id = _$v.id;
       _monoType = _$v.monoType;
       _isFromMutedUser = _$v.isFromMutedUser;
@@ -244,7 +243,7 @@ class MonoFavoriteSingleBuilder
           new _$MonoFavoriteSingle._(
               user: user.build(),
               monoName: monoName,
-              monoAvatarImageUrl: monoAvatarImageUrl,
+              avatar: avatar.build(),
               id: id,
               monoType: monoType,
               isFromMutedUser: isFromMutedUser);
@@ -253,6 +252,9 @@ class MonoFavoriteSingleBuilder
       try {
         _$failedField = 'user';
         user.build();
+
+        _$failedField = 'avatar';
+        avatar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'MonoFavoriteSingle', _$failedField, e.toString());

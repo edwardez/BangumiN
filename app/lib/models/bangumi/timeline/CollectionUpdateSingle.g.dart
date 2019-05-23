@@ -29,6 +29,9 @@ class _$CollectionUpdateSingleSerializer
       'subjectId',
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
+      'subjectCover',
+      serializers.serialize(object.subjectCover,
+          specifiedType: const FullType(Images)),
       'subjectName',
       serializers.serialize(object.subjectName,
           specifiedType: const FullType(String)),
@@ -37,12 +40,6 @@ class _$CollectionUpdateSingleSerializer
       result
         ..add('subjectComment')
         ..add(serializers.serialize(object.subjectComment,
-            specifiedType: const FullType(String)));
-    }
-    if (object.subjectImageUrl != null) {
-      result
-        ..add('subjectImageUrl')
-        ..add(serializers.serialize(object.subjectImageUrl,
             specifiedType: const FullType(String)));
     }
     if (object.subjectScore != null) {
@@ -85,9 +82,9 @@ class _$CollectionUpdateSingleSerializer
           result.subjectId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'subjectImageUrl':
-          result.subjectImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'subjectCover':
+          result.subjectCover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Images)) as Images);
           break;
         case 'subjectScore':
           result.subjectScore = serializers.deserialize(value,
@@ -116,7 +113,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   @override
   final String subjectId;
   @override
-  final String subjectImageUrl;
+  final Images subjectCover;
   @override
   final double subjectScore;
   @override
@@ -132,7 +129,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
       {this.user,
       this.subjectComment,
       this.subjectId,
-      this.subjectImageUrl,
+      this.subjectCover,
       this.subjectScore,
       this.subjectName,
       this.isFromMutedUser})
@@ -142,6 +139,10 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
     }
     if (subjectId == null) {
       throw new BuiltValueNullFieldError('CollectionUpdateSingle', 'subjectId');
+    }
+    if (subjectCover == null) {
+      throw new BuiltValueNullFieldError(
+          'CollectionUpdateSingle', 'subjectCover');
     }
     if (subjectName == null) {
       throw new BuiltValueNullFieldError(
@@ -165,7 +166,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
         user == other.user &&
         subjectComment == other.subjectComment &&
         subjectId == other.subjectId &&
-        subjectImageUrl == other.subjectImageUrl &&
+        subjectCover == other.subjectCover &&
         subjectScore == other.subjectScore &&
         subjectName == other.subjectName &&
         isFromMutedUser == other.isFromMutedUser;
@@ -179,7 +180,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
                 $jc(
                     $jc($jc($jc(0, user.hashCode), subjectComment.hashCode),
                         subjectId.hashCode),
-                    subjectImageUrl.hashCode),
+                    subjectCover.hashCode),
                 subjectScore.hashCode),
             subjectName.hashCode),
         isFromMutedUser.hashCode));
@@ -191,7 +192,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
           ..add('user', user)
           ..add('subjectComment', subjectComment)
           ..add('subjectId', subjectId)
-          ..add('subjectImageUrl', subjectImageUrl)
+          ..add('subjectCover', subjectCover)
           ..add('subjectScore', subjectScore)
           ..add('subjectName', subjectName)
           ..add('isFromMutedUser', isFromMutedUser))
@@ -218,10 +219,11 @@ class CollectionUpdateSingleBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
-  String _subjectImageUrl;
-  String get subjectImageUrl => _$this._subjectImageUrl;
-  set subjectImageUrl(String subjectImageUrl) =>
-      _$this._subjectImageUrl = subjectImageUrl;
+  ImagesBuilder _subjectCover;
+  ImagesBuilder get subjectCover =>
+      _$this._subjectCover ??= new ImagesBuilder();
+  set subjectCover(ImagesBuilder subjectCover) =>
+      _$this._subjectCover = subjectCover;
 
   double _subjectScore;
   double get subjectScore => _$this._subjectScore;
@@ -243,7 +245,7 @@ class CollectionUpdateSingleBuilder
       _user = _$v.user?.toBuilder();
       _subjectComment = _$v.subjectComment;
       _subjectId = _$v.subjectId;
-      _subjectImageUrl = _$v.subjectImageUrl;
+      _subjectCover = _$v.subjectCover?.toBuilder();
       _subjectScore = _$v.subjectScore;
       _subjectName = _$v.subjectName;
       _isFromMutedUser = _$v.isFromMutedUser;
@@ -274,7 +276,7 @@ class CollectionUpdateSingleBuilder
               user: user.build(),
               subjectComment: subjectComment,
               subjectId: subjectId,
-              subjectImageUrl: subjectImageUrl,
+              subjectCover: subjectCover.build(),
               subjectScore: subjectScore,
               subjectName: subjectName,
               isFromMutedUser: isFromMutedUser);
@@ -283,6 +285,9 @@ class CollectionUpdateSingleBuilder
       try {
         _$failedField = 'user';
         user.build();
+
+        _$failedField = 'subjectCover';
+        subjectCover.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'CollectionUpdateSingle', _$failedField, e.toString());

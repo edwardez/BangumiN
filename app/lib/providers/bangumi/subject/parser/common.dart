@@ -71,7 +71,7 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
     ..collectionStatus = collectionStatus
     ..score = score
     ..username = username
-    ..userAvatars.replace(images));
+    ..avatars.replace(images));
 
   SubjectReview subjectReview = SubjectReview((b) => b
     ..content = commentContent

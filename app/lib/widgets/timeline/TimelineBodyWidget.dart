@@ -151,7 +151,11 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
               ?.user
               ?.username != null)
             CachedCircleAvatar(
-              imageUrl: feedChunks.getFeedAt(index)?.user?.avatarImageUrl,
+              imageUrl: feedChunks
+                  .getFeedAt(index)
+                  ?.user
+                  ?.avatars
+                  ?.medium,
               navigateToUserRouteOnTap: true,
               username: feedChunks
                   .getFeedAt(index)

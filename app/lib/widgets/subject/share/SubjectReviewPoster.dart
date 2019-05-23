@@ -178,7 +178,7 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                               children: <Widget>[
                                 CachedCircleAvatar(
                                   imageUrl:
-                                  widget.review.metaInfo.userAvatars.medium,
+                                  widget.review.metaInfo.avatars.medium,
                                   radius: 15,
                                   navigateToUserRouteOnTap: false,
                                 ),

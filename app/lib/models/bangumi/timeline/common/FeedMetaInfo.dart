@@ -7,11 +7,8 @@ part 'FeedMetaInfo.g.dart';
 
 abstract class FeedMetaInfo
     implements ItemMetaInfo, Built<FeedMetaInfo, FeedMetaInfoBuilder> {
-  /// bangumi feed id
+  /// Bangumi feed id.
   int get feedId;
-
-  @nullable
-  Images get images;
 
   FeedMetaInfo._();
 

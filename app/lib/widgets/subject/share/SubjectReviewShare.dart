@@ -65,9 +65,8 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
     return review.rebuild((b) => b
       ..metaInfo.update((metaInfoBuilder) => metaInfoBuilder
         ..nickName = 'Bangumi用户'
-        ..avatarImageUrl = bangumiAnonymousUserMediumAvatar
         ..username = ''
-        ..userAvatars.replace(
+        ..avatars.replace(
             Images.useSameImageUrlForAll(bangumiAnonymousUserMediumAvatar))));
   }
 

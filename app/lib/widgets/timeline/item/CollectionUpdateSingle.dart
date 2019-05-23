@@ -62,7 +62,7 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
         _buildCommentWidget(collectionUpdateSingle.subjectComment),
         TimelineCommonListTile(
           leadingWidget: CachedRoundedCover.asGridSize(
-            imageUrl: collectionUpdateSingle.subjectImageUrl,
+            imageUrl: collectionUpdateSingle.subjectCover.medium,
           ),
           title: collectionUpdateSingle.subjectName,
           onTap: () {

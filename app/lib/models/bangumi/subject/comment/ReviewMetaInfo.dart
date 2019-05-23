@@ -9,9 +9,6 @@ part 'ReviewMetaInfo.g.dart';
 abstract class ReviewMetaInfo
     implements ItemMetaInfo, Built<ReviewMetaInfo, ReviewMetaInfoBuilder> {
   @nullable
-  Images get userAvatars;
-
-  @nullable
   double get score;
 
   @nullable

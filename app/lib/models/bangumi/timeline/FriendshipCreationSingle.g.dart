@@ -29,9 +29,9 @@ class _$FriendshipCreationSingleSerializer
       'friendNickName',
       serializers.serialize(object.friendNickName,
           specifiedType: const FullType(String)),
-      'friendAvatarImageUrl',
-      serializers.serialize(object.friendAvatarImageUrl,
-          specifiedType: const FullType(String)),
+      'friendAvatar',
+      serializers.serialize(object.friendAvatar,
+          specifiedType: const FullType(Images)),
       'friendId',
       serializers.serialize(object.friendId,
           specifiedType: const FullType(String)),
@@ -66,9 +66,9 @@ class _$FriendshipCreationSingleSerializer
           result.friendNickName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'friendAvatarImageUrl':
-          result.friendAvatarImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'friendAvatar':
+          result.friendAvatar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Images)) as Images);
           break;
         case 'friendId':
           result.friendId = serializers.deserialize(value,
@@ -91,7 +91,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   @override
   final String friendNickName;
   @override
-  final String friendAvatarImageUrl;
+  final Images friendAvatar;
   @override
   final String friendId;
   @override
@@ -104,7 +104,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   _$FriendshipCreationSingle._(
       {this.user,
       this.friendNickName,
-      this.friendAvatarImageUrl,
+      this.friendAvatar,
       this.friendId,
       this.isFromMutedUser})
       : super._() {
@@ -115,9 +115,9 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
       throw new BuiltValueNullFieldError(
           'FriendshipCreationSingle', 'friendNickName');
     }
-    if (friendAvatarImageUrl == null) {
+    if (friendAvatar == null) {
       throw new BuiltValueNullFieldError(
-          'FriendshipCreationSingle', 'friendAvatarImageUrl');
+          'FriendshipCreationSingle', 'friendAvatar');
     }
     if (friendId == null) {
       throw new BuiltValueNullFieldError(
@@ -140,7 +140,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     return other is FriendshipCreationSingle &&
         user == other.user &&
         friendNickName == other.friendNickName &&
-        friendAvatarImageUrl == other.friendAvatarImageUrl &&
+        friendAvatar == other.friendAvatar &&
         friendId == other.friendId &&
         isFromMutedUser == other.isFromMutedUser;
   }
@@ -150,7 +150,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     return $jf($jc(
         $jc(
             $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
-                friendAvatarImageUrl.hashCode),
+                friendAvatar.hashCode),
             friendId.hashCode),
         isFromMutedUser.hashCode));
   }
@@ -160,7 +160,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     return (newBuiltValueToStringHelper('FriendshipCreationSingle')
           ..add('user', user)
           ..add('friendNickName', friendNickName)
-          ..add('friendAvatarImageUrl', friendAvatarImageUrl)
+          ..add('friendAvatar', friendAvatar)
           ..add('friendId', friendId)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
@@ -182,10 +182,11 @@ class FriendshipCreationSingleBuilder
   set friendNickName(String friendNickName) =>
       _$this._friendNickName = friendNickName;
 
-  String _friendAvatarImageUrl;
-  String get friendAvatarImageUrl => _$this._friendAvatarImageUrl;
-  set friendAvatarImageUrl(String friendAvatarImageUrl) =>
-      _$this._friendAvatarImageUrl = friendAvatarImageUrl;
+  ImagesBuilder _friendAvatar;
+  ImagesBuilder get friendAvatar =>
+      _$this._friendAvatar ??= new ImagesBuilder();
+  set friendAvatar(ImagesBuilder friendAvatar) =>
+      _$this._friendAvatar = friendAvatar;
 
   String _friendId;
   String get friendId => _$this._friendId;
@@ -202,7 +203,7 @@ class FriendshipCreationSingleBuilder
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _friendNickName = _$v.friendNickName;
-      _friendAvatarImageUrl = _$v.friendAvatarImageUrl;
+      _friendAvatar = _$v.friendAvatar?.toBuilder();
       _friendId = _$v.friendId;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
@@ -231,7 +232,7 @@ class FriendshipCreationSingleBuilder
           new _$FriendshipCreationSingle._(
               user: user.build(),
               friendNickName: friendNickName,
-              friendAvatarImageUrl: friendAvatarImageUrl,
+              friendAvatar: friendAvatar.build(),
               friendId: friendId,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
@@ -239,6 +240,9 @@ class FriendshipCreationSingleBuilder
       try {
         _$failedField = 'user';
         user.build();
+
+        _$failedField = 'friendAvatar';
+        friendAvatar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FriendshipCreationSingle', _$failedField, e.toString());

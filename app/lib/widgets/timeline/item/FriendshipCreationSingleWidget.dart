@@ -20,7 +20,7 @@ class FriendshipCreationSingleWidget extends StatelessWidget {
         ),
         TimelineCommonListTile(
           leadingWidget: CachedCircleAvatar(
-            imageUrl: friendshipCreationSingle.friendAvatarImageUrl,
+            imageUrl: friendshipCreationSingle.friendAvatar.medium,
             navigateToUserRouteOnTap: true,
             username: friendshipCreationSingle.friendId,
           ),

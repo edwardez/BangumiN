@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/common/Images.dart';
 
 part 'BangumiContent.g.dart';
 
@@ -86,6 +87,26 @@ class BangumiContent extends EnumClass {
       /// we should never use default directly
         assert(false, 'Cannot find chineseName for $this');
         return '条目';
+    }
+  }
+
+  ImageType get imageType {
+    switch (this) {
+      case BangumiContent.Person:
+      case BangumiContent.Character:
+      case BangumiContent.Subject:
+      case BangumiContent.SubjectTopic:
+      case BangumiContent.Episode:
+      case BangumiContent.Doujin:
+        return ImageType.SubjectCover;
+      case BangumiContent.User:
+      case BangumiContent.GroupTopic:
+        return ImageType.UserAvatar;
+      case BangumiContent.Group:
+        return ImageType.GroupIcon;
+      default:
+        assert(false, '$this doesn\'t have a valid ImageType');
+        return ImageType.SubjectCover;
     }
   }
 

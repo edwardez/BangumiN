@@ -24,13 +24,7 @@ class DiscussionParser {
     'group': BangumiContent.GroupTopic,
   };
 
-  static const Map<BangumiContent, ImageType> contentTypeToImageType = {
-    BangumiContent.Person: ImageType.MonoAvatar,
-    BangumiContent.Character: ImageType.MonoAvatar,
-    BangumiContent.Episode: ImageType.SubjectCover,
-    BangumiContent.SubjectTopic: ImageType.SubjectCover,
-    BangumiContent.GroupTopic: ImageType.UserAvatar,
-  };
+
 
   static final elementTypeRegex = RegExp(r'_(\w+)_');
 
@@ -66,7 +60,7 @@ class DiscussionParser {
     }
 
     String imageUrlSmall = imageUrlFromBackgroundImage(discussionItemElement);
-    ImageType imageType = contentTypeToImageType[contentType];
+    ImageType imageType = contentType.imageType;
     Images images;
     if (imageType == null) {
       images = Images.useSameImageUrlForAll(imageUrlSmall);

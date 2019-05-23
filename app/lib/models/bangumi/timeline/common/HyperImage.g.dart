@@ -23,9 +23,9 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
       'contentType',
       serializers.serialize(object.contentType,
           specifiedType: const FullType(BangumiContent)),
-      'imageUrl',
-      serializers.serialize(object.imageUrl,
-          specifiedType: const FullType(String)),
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(Images)),
     ];
     if (object.pageUrl != null) {
       result
@@ -56,9 +56,9 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
           result.contentType = serializers.deserialize(value,
               specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
-        case 'imageUrl':
-          result.imageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'image':
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Images)) as Images);
           break;
         case 'pageUrl':
           result.pageUrl = serializers.deserialize(value,
@@ -77,14 +77,14 @@ class _$HyperImage extends HyperImage {
   @override
   final BangumiContent contentType;
   @override
-  final String imageUrl;
+  final Images image;
   @override
   final String pageUrl;
 
   factory _$HyperImage([void Function(HyperImageBuilder) updates]) =>
       (new HyperImageBuilder()..update(updates)).build();
 
-  _$HyperImage._({this.id, this.contentType, this.imageUrl, this.pageUrl})
+  _$HyperImage._({this.id, this.contentType, this.image, this.pageUrl})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('HyperImage', 'id');
@@ -92,8 +92,8 @@ class _$HyperImage extends HyperImage {
     if (contentType == null) {
       throw new BuiltValueNullFieldError('HyperImage', 'contentType');
     }
-    if (imageUrl == null) {
-      throw new BuiltValueNullFieldError('HyperImage', 'imageUrl');
+    if (image == null) {
+      throw new BuiltValueNullFieldError('HyperImage', 'image');
     }
   }
 
@@ -110,14 +110,14 @@ class _$HyperImage extends HyperImage {
     return other is HyperImage &&
         id == other.id &&
         contentType == other.contentType &&
-        imageUrl == other.imageUrl &&
+        image == other.image &&
         pageUrl == other.pageUrl;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, id.hashCode), contentType.hashCode), imageUrl.hashCode),
+        $jc($jc($jc(0, id.hashCode), contentType.hashCode), image.hashCode),
         pageUrl.hashCode));
   }
 
@@ -126,7 +126,7 @@ class _$HyperImage extends HyperImage {
     return (newBuiltValueToStringHelper('HyperImage')
           ..add('id', id)
           ..add('contentType', contentType)
-          ..add('imageUrl', imageUrl)
+          ..add('image', image)
           ..add('pageUrl', pageUrl))
         .toString();
   }
@@ -144,9 +144,9 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 
-  String _imageUrl;
-  String get imageUrl => _$this._imageUrl;
-  set imageUrl(String imageUrl) => _$this._imageUrl = imageUrl;
+  ImagesBuilder _image;
+  ImagesBuilder get image => _$this._image ??= new ImagesBuilder();
+  set image(ImagesBuilder image) => _$this._image = image;
 
   String _pageUrl;
   String get pageUrl => _$this._pageUrl;
@@ -158,7 +158,7 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
     if (_$v != null) {
       _id = _$v.id;
       _contentType = _$v.contentType;
-      _imageUrl = _$v.imageUrl;
+      _image = _$v.image?.toBuilder();
       _pageUrl = _$v.pageUrl;
       _$v = null;
     }
@@ -180,12 +180,25 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
 
   @override
   _$HyperImage build() {
-    final _$result = _$v ??
-        new _$HyperImage._(
-            id: id,
-            contentType: contentType,
-            imageUrl: imageUrl,
-            pageUrl: pageUrl);
+    _$HyperImage _$result;
+    try {
+      _$result = _$v ??
+          new _$HyperImage._(
+              id: id,
+              contentType: contentType,
+              image: image.build(),
+              pageUrl: pageUrl);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'image';
+        image.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'HyperImage', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

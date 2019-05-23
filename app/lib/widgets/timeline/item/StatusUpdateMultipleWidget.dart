@@ -17,28 +17,30 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
   const StatusUpdateMultipleWidget({Key key, @required this.statusUpdateMultiple})
       : super(key: key);
 
-  List<Widget> _buildImageLists(BuiltList<HyperImage> images) {
+  List<Widget> _buildImageLists(BuiltList<HyperImage> hyperImages) {
     List<Widget> imageWidgets = [];
     if (statusUpdateMultiple.contentType == BangumiContent.User) {
-      for (var image in images) {
+      for (var hyperImage in hyperImages) {
         imageWidgets.add(Padding(
           padding: const EdgeInsets.only(right: horizontalImagePadding),
           child: CachedCircleAvatar(
-            imageUrl: image.imageUrl,
-            username: image.id,
+            imageUrl: hyperImage.image.medium,
+            username: hyperImage.id,
             navigateToUserRouteOnTap: true,
           ),
         ));
       }
     } else {
-      for (var image in images) {
+      for (var hyperImage in hyperImages) {
+        bool isMono = statusUpdateMultiple.contentType.isMono;
         imageWidgets.add(RoundedElevatedImageWithBottomText(
           horizontalImagePadding: horizontalImagePadding,
           verticalImagePadding: verticalImagePadding,
-          contentType: image.contentType,
-          imageUrl: image.imageUrl,
-          id: image.id,
-          pageUrl: image.pageUrl,
+          contentType: hyperImage.contentType,
+          // for mono, grid has a correctly cropped square image
+          imageUrl: isMono ? hyperImage.image.grid : hyperImage.image.medium,
+          id: hyperImage.id,
+          pageUrl: hyperImage.pageUrl,
         ));
       }
     }

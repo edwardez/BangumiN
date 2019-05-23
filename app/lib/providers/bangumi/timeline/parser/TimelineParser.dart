@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
+import 'package:munin/models/bangumi/common/Images.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
@@ -28,6 +29,7 @@ import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -233,7 +235,8 @@ class TimelineParser {
       ..updatedAt = absoluteTime?.millisecondsSinceEpoch
       ..feedId = feedId
       ..username = username
-      ..avatarImageUrl = avatarImageUrl
+      ..avatars.replace(Images.fromImageUrl(
+          avatarImageUrl, ImageSize.Unknown, ImageType.UserAvatar))
       ..actionName = '');
 
     userAvatarImageCache[username] = avatarImageUrl;
@@ -341,7 +344,9 @@ class TimelineParser {
 
     return MonoFavoriteSingle((b) => b
       ..id = id
-      ..monoAvatarImageUrl = imageSrcOrNull(monoImageElement)
+      ..avatar.replace(Images.fromImageUrl(
+          imageSrcOrNull(monoImageElement), ImageSize.Unknown,
+          ImageType.MonoAvatar))
       ..monoName = monoName
       ..monoType = monoType
       ..user.replace(userInfo));
@@ -363,10 +368,12 @@ class TimelineParser {
       }
 
       String pageUrl = imageElement.parent?.attributes['href'];
+      String imageUrl = imageSrcOrNull(imageElement);
 
       HyperImage hyperImage = HyperImage((b) => b
         ..id = id
-        ..imageUrl = imageSrcOrNull(imageElement)
+        ..image.replace(Images.fromImageUrl(
+            imageUrl, ImageSize.Unknown, contentType.imageType))
         ..contentType = contentType
         ..pageUrl = pageUrl);
       hyperImages.add(hyperImage);
@@ -483,7 +490,10 @@ class TimelineParser {
       ..user.replace(userInfo)
       ..friendNickName = friendNickName
       ..friendId = friendId
-      ..friendAvatarImageUrl = imageSrcOrNull(hyperImageElement));
+      ..friendAvatar.replace(Images.fromImageUrl(
+          imageSrcOrNull(hyperImageElement), ImageSize.Unknown,
+          ImageType.UserAvatar))
+    );
   }
 
   TimelineFeed parseFriendshipCreationMultiple(Element singleTimelineContent,
@@ -616,9 +626,9 @@ class TimelineParser {
     if (hyperLinkList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
     }
-    String groupCoverImageUrl = imageList.length == 0
-        ? 'https://lain.bgm.tv/pic/icon/m/no_icon.jpg'
-        : imageList[0].imageUrl;
+    Images groupIcon = imageList.length == 0
+        ? Images.useSameImageUrlForAll(bangumiTextOnlyGroupIcon)
+        : imageList[0].image;
     String groupName = hyperLinkList[0].name;
 
     Element groupIntroElement = singleTimelineContent.querySelector('.tip_j');
@@ -627,10 +637,11 @@ class TimelineParser {
 
     return GroupJoinSingle((b) => b
       ..user.replace(userInfo)
-      ..groupCoverImageUrl = groupCoverImageUrl
+      ..groupIcon.replace(groupIcon)
       ..groupName = groupName
       ..groupId = groupId
-      ..groupDescription = groupDescription);
+      ..groupDescription = groupDescription
+    );
   }
 
   TimelineFeed parseGroupJoinMultiple(Element singleTimelineContent,
@@ -727,8 +738,10 @@ class TimelineParser {
       userInfo = userInfo.rebuild((b) => b..actionName = actionName);
 
       double subjectScore = parseSubjectScore(singleTimelineContent);
-      String subjectImageUrl =
-      imageList.length == 1 ? imageList[0].imageUrl : null;
+      Images subjectCover =
+      imageList.length == 1 ? imageList[0].image : Images.useSameImageUrlForAll(
+          bangumiTextOnlySubjectCover);
+
       String subjectComment =
           singleTimelineContent.querySelector('.quote')?.text ?? null;
 
@@ -736,7 +749,7 @@ class TimelineParser {
         ..user.replace(userInfo)
         ..subjectId = hyperLinkList[0].id
         ..subjectScore = subjectScore
-        ..subjectImageUrl = subjectImageUrl
+        ..subjectCover.replace(subjectCover)
         ..subjectComment = subjectComment
         ..subjectName = hyperLinkList[0].name ?? '');
     } else {

@@ -4,12 +4,13 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
 import 'package:munin/shared/utils/serializers.dart';
+import 'package:quiver/strings.dart';
 
 part 'Images.g.dart';
 
 enum ImageSize { Large, Common, Medium, Small, Grid, Unknown }
 
-enum ImageType { UserAvatar, MonoAvatar, SubjectCover }
+enum ImageType { UserAvatar, MonoAvatar, SubjectCover, GroupIcon }
 
 abstract class Images implements Built<Images, ImagesBuilder> {
   static const String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
@@ -52,7 +53,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   /// Image from the larger size tier is used instead
   factory Images.fromImageUrl(
       String imageUrl, ImageSize imageSize, ImageType imageType) {
-    if (imageUrl == null) {
+    if (isEmpty(imageUrl)) {
       imageUrl = defaultCoverImage;
       return Images.useSameImageUrlForAll(imageUrl);
     }
@@ -96,7 +97,9 @@ abstract class Images implements Built<Images, ImagesBuilder> {
 
     String commonImage;
     if (imageType == ImageType.UserAvatar ||
-        imageType == ImageType.MonoAvatar) {
+        imageType == ImageType.MonoAvatar ||
+        imageType == ImageType.GroupIcon
+    ) {
       commonImage = largeImage;
     } else {
       commonImage = imageUrl.replaceFirst(replacePattern, '/c/');
@@ -106,7 +109,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
     String smallImage = imageUrl.replaceFirst(replacePattern, '/s/');
 
     String gridImage;
-    if (imageType == ImageType.UserAvatar) {
+    if (imageType == ImageType.UserAvatar || imageType == ImageType.GroupIcon) {
       gridImage = smallImage;
     } else {
       gridImage = imageUrl.replaceFirst(replacePattern, '/g/');

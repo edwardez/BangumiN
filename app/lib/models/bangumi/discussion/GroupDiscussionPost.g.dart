@@ -31,9 +31,9 @@ class _$GroupDiscussionPostSerializer
       'bangumiContent',
       serializers.serialize(object.bangumiContent,
           specifiedType: const FullType(BangumiContent)),
-      'images',
-      serializers.serialize(object.images,
-          specifiedType: const FullType(Images)),
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(BangumiImage)),
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
@@ -97,9 +97,9 @@ class _$GroupDiscussionPostSerializer
           result.bangumiContent = serializers.deserialize(value,
               specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'image':
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'title':
           result.title = serializers.deserialize(value,
@@ -136,7 +136,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
   @override
   final BangumiContent bangumiContent;
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final String title;
   @override
@@ -156,7 +156,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
       this.postedGroupId,
       this.id,
       this.bangumiContent,
-      this.images,
+      this.image,
       this.title,
       this.subTitle,
       this.replyCount,
@@ -173,8 +173,8 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
       throw new BuiltValueNullFieldError(
           'GroupDiscussionPost', 'bangumiContent');
     }
-    if (images == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'images');
+    if (image == null) {
+      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'image');
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('GroupDiscussionPost', 'title');
@@ -205,7 +205,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
         postedGroupId == other.postedGroupId &&
         id == other.id &&
         bangumiContent == other.bangumiContent &&
-        images == other.images &&
+        image == other.image &&
         title == other.title &&
         subTitle == other.subTitle &&
         replyCount == other.replyCount &&
@@ -227,7 +227,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
                                     postedGroupId.hashCode),
                                 id.hashCode),
                             bangumiContent.hashCode),
-                        images.hashCode),
+                        image.hashCode),
                     title.hashCode),
                 subTitle.hashCode),
             replyCount.hashCode),
@@ -242,7 +242,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
           ..add('postedGroupId', postedGroupId)
           ..add('id', id)
           ..add('bangumiContent', bangumiContent)
-          ..add('images', images)
+          ..add('image', image)
           ..add('title', title)
           ..add('subTitle', subTitle)
           ..add('replyCount', replyCount)
@@ -281,9 +281,9 @@ class GroupDiscussionPostBuilder
   set bangumiContent(BangumiContent bangumiContent) =>
       _$this._bangumiContent = bangumiContent;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _title;
   String get title => _$this._title;
@@ -310,7 +310,7 @@ class GroupDiscussionPostBuilder
       _postedGroupId = _$v.postedGroupId;
       _id = _$v.id;
       _bangumiContent = _$v.bangumiContent;
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _title = _$v.title;
       _subTitle = _$v.subTitle;
       _replyCount = _$v.replyCount;
@@ -344,7 +344,7 @@ class GroupDiscussionPostBuilder
               postedGroupId: postedGroupId,
               id: id,
               bangumiContent: bangumiContent,
-              images: images.build(),
+              image: image.build(),
               title: title,
               subTitle: subTitle,
               replyCount: replyCount,
@@ -352,8 +352,8 @@ class GroupDiscussionPostBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        images.build();
+        _$failedField = 'image';
+        image.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'GroupDiscussionPost', _$failedField, e.toString());

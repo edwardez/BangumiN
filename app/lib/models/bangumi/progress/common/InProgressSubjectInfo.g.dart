@@ -35,11 +35,11 @@ class _$InProgressSubjectInfoSerializer
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-    if (object.images != null) {
+    if (object.cover != null) {
       result
         ..add('images')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add(serializers.serialize(object.cover,
+            specifiedType: const FullType(BangumiImage)));
     }
     if (object.totalEpisodesCount != null) {
       result
@@ -92,8 +92,8 @@ class _$InProgressSubjectInfoSerializer
               specifiedType: const FullType(SubjectType)) as SubjectType;
           break;
         case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.cover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'air_date':
           result.airDate = serializers.deserialize(value,
@@ -138,7 +138,7 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
   @override
   final SubjectType type;
   @override
-  final Images images;
+  final BangumiImage cover;
   @override
   final String airDate;
   @override
@@ -162,7 +162,7 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
 
   _$InProgressSubjectInfo._(
       {this.type,
-      this.images,
+      this.cover,
       this.airDate,
       this.airWeekday,
       this.totalEpisodesCount,
@@ -200,7 +200,7 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
     if (identical(other, this)) return true;
     return other is InProgressSubjectInfo &&
         type == other.type &&
-        images == other.images &&
+        cover == other.cover &&
         airDate == other.airDate &&
         airWeekday == other.airWeekday &&
         totalEpisodesCount == other.totalEpisodesCount &&
@@ -220,7 +220,7 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc($jc(0, type.hashCode), images.hashCode),
+                                $jc($jc($jc(0, type.hashCode), cover.hashCode),
                                     airDate.hashCode),
                                 airWeekday.hashCode),
                             totalEpisodesCount.hashCode),
@@ -235,7 +235,7 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
   String toString() {
     return (newBuiltValueToStringHelper('InProgressSubjectInfo')
           ..add('type', type)
-          ..add('images', images)
+          ..add('cover', cover)
           ..add('airDate', airDate)
           ..add('airWeekday', airWeekday)
           ..add('totalEpisodesCount', totalEpisodesCount)
@@ -258,9 +258,9 @@ class InProgressSubjectInfoBuilder
   SubjectType get type => _$this._type;
   set type(SubjectType type) => _$this._type = type;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _cover;
+  BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
+  set cover(BangumiImageBuilder cover) => _$this._cover = cover;
 
   String _airDate;
   String get airDate => _$this._airDate;
@@ -302,7 +302,7 @@ class InProgressSubjectInfoBuilder
   InProgressSubjectInfoBuilder get _$this {
     if (_$v != null) {
       _type = _$v.type;
-      _images = _$v.images?.toBuilder();
+      _cover = _$v.cover?.toBuilder();
       _airDate = _$v.airDate;
       _airWeekday = _$v.airWeekday;
       _totalEpisodesCount = _$v.totalEpisodesCount;
@@ -336,7 +336,7 @@ class InProgressSubjectInfoBuilder
       _$result = _$v ??
           new _$InProgressSubjectInfo._(
               type: type,
-              images: _images?.build(),
+              cover: _cover?.build(),
               airDate: airDate,
               airWeekday: airWeekday,
               totalEpisodesCount: totalEpisodesCount,
@@ -348,8 +348,8 @@ class InProgressSubjectInfoBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'cover';
+        _cover?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'InProgressSubjectInfo', _$failedField, e.toString());

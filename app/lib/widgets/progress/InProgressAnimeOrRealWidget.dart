@@ -270,7 +270,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
               children: <Widget>[
                 ClickableCachedRoundedCover(
                   width: 48,
-                  imageUrl: subject.subject?.images?.large ??
+                  imageUrl: subject.subject?.cover?.large ??
                       bangumiTextOnlySubjectCover,
                   height: 48,
                   contentType: BangumiContent.Subject,

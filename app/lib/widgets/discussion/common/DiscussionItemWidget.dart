@@ -37,10 +37,10 @@ class DiscussionItemWidget extends StatelessWidget {
     /// For mono, grid image is manually cropped by user which is more likely
     /// to result in a correct cropping
     if (discussionItem.bangumiContent.isMono) {
-      return discussionItem.images.grid;
+      return discussionItem.image.grid;
     }
 
-    return discussionItem.images.medium;
+    return discussionItem.image.medium;
   }
 
   GestureLongPressCallback _generateOnLongPressCallback(BuildContext context) {

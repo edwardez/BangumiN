@@ -21,9 +21,9 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
       'role_name',
       serializers.serialize(object.roleName,
           specifiedType: const FullType(String)),
-      'images',
-      serializers.serialize(object.images,
-          specifiedType: const FullType(Images)),
+      'avatar',
+      serializers.serialize(object.avatar,
+          specifiedType: const FullType(BangumiImage)),
       'actors',
       serializers.serialize(object.actors,
           specifiedType:
@@ -80,9 +80,9 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
           result.roleName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'avatar':
+          result.avatar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'comment':
           result.commentCount = serializers.deserialize(value,
@@ -123,7 +123,7 @@ class _$Character extends Character {
   @override
   final String roleName;
   @override
-  final Images images;
+  final BangumiImage avatar;
   @override
   final int commentCount;
   @override
@@ -143,7 +143,7 @@ class _$Character extends Character {
   _$Character._(
       {this.nameCn,
       this.roleName,
-      this.images,
+      this.avatar,
       this.commentCount,
       this.collectionCounts,
       this.actors,
@@ -154,8 +154,8 @@ class _$Character extends Character {
     if (roleName == null) {
       throw new BuiltValueNullFieldError('Character', 'roleName');
     }
-    if (images == null) {
-      throw new BuiltValueNullFieldError('Character', 'images');
+    if (avatar == null) {
+      throw new BuiltValueNullFieldError('Character', 'avatar');
     }
     if (actors == null) {
       throw new BuiltValueNullFieldError('Character', 'actors');
@@ -181,7 +181,7 @@ class _$Character extends Character {
     return other is Character &&
         nameCn == other.nameCn &&
         roleName == other.roleName &&
-        images == other.images &&
+        avatar == other.avatar &&
         commentCount == other.commentCount &&
         collectionCounts == other.collectionCounts &&
         actors == other.actors &&
@@ -199,7 +199,7 @@ class _$Character extends Character {
                     $jc(
                         $jc(
                             $jc($jc($jc(0, nameCn.hashCode), roleName.hashCode),
-                                images.hashCode),
+                                avatar.hashCode),
                             commentCount.hashCode),
                         collectionCounts.hashCode),
                     actors.hashCode),
@@ -213,7 +213,7 @@ class _$Character extends Character {
     return (newBuiltValueToStringHelper('Character')
           ..add('nameCn', nameCn)
           ..add('roleName', roleName)
-          ..add('images', images)
+          ..add('avatar', avatar)
           ..add('commentCount', commentCount)
           ..add('collectionCounts', collectionCounts)
           ..add('actors', actors)
@@ -236,9 +236,10 @@ class CharacterBuilder
   String get roleName => _$this._roleName;
   set roleName(String roleName) => _$this._roleName = roleName;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _avatar;
+  BangumiImageBuilder get avatar =>
+      _$this._avatar ??= new BangumiImageBuilder();
+  set avatar(BangumiImageBuilder avatar) => _$this._avatar = avatar;
 
   int _commentCount;
   int get commentCount => _$this._commentCount;
@@ -271,7 +272,7 @@ class CharacterBuilder
     if (_$v != null) {
       _nameCn = _$v.nameCn;
       _roleName = _$v.roleName;
-      _images = _$v.images?.toBuilder();
+      _avatar = _$v.avatar?.toBuilder();
       _commentCount = _$v.commentCount;
       _collectionCounts = _$v.collectionCounts;
       _actors = _$v.actors?.toBuilder();
@@ -304,7 +305,7 @@ class CharacterBuilder
           new _$Character._(
               nameCn: nameCn,
               roleName: roleName,
-              images: images.build(),
+              avatar: avatar.build(),
               commentCount: commentCount,
               collectionCounts: collectionCounts,
               actors: actors.build(),
@@ -314,8 +315,8 @@ class CharacterBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        images.build();
+        _$failedField = 'avatar';
+        avatar.build();
 
         _$failedField = 'actors';
         actors.build();

@@ -25,7 +25,7 @@ class _$GroupJoinSingleSerializer
           specifiedType: const FullType(FeedMetaInfo)),
       'groupIcon',
       serializers.serialize(object.groupIcon,
-          specifiedType: const FullType(Images)),
+          specifiedType: const FullType(BangumiImage)),
       'groupName',
       serializers.serialize(object.groupName,
           specifiedType: const FullType(String)),
@@ -66,7 +66,7 @@ class _$GroupJoinSingleSerializer
           break;
         case 'groupIcon':
           result.groupIcon.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'groupName':
           result.groupName = serializers.deserialize(value,
@@ -95,7 +95,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   @override
   final FeedMetaInfo user;
   @override
-  final Images groupIcon;
+  final BangumiImage groupIcon;
   @override
   final String groupName;
   @override
@@ -185,9 +185,10 @@ class GroupJoinSingleBuilder
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
-  ImagesBuilder _groupIcon;
-  ImagesBuilder get groupIcon => _$this._groupIcon ??= new ImagesBuilder();
-  set groupIcon(ImagesBuilder groupIcon) => _$this._groupIcon = groupIcon;
+  BangumiImageBuilder _groupIcon;
+  BangumiImageBuilder get groupIcon =>
+      _$this._groupIcon ??= new BangumiImageBuilder();
+  set groupIcon(BangumiImageBuilder groupIcon) => _$this._groupIcon = groupIcon;
 
   String _groupName;
   String get groupName => _$this._groupName;

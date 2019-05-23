@@ -1,6 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
@@ -10,7 +10,7 @@ abstract class GroupJoinSingle
     implements Built<GroupJoinSingle, GroupJoinSingleBuilder>, TimelineFeed {
   FeedMetaInfo get user;
 
-  Images get groupIcon;
+  BangumiImage get groupIcon;
 
   String get groupName;
 

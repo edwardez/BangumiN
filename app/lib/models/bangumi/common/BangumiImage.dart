@@ -6,13 +6,14 @@ import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
 import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/strings.dart';
 
-part 'Images.g.dart';
+part 'BangumiImage.g.dart';
 
 enum ImageSize { Large, Common, Medium, Small, Grid, Unknown }
 
 enum ImageType { UserAvatar, MonoAvatar, SubjectCover, GroupIcon }
 
-abstract class Images implements Built<Images, ImagesBuilder> {
+abstract class BangumiImage
+    implements Built<BangumiImage, BangumiImageBuilder> {
   static const String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
 
   @BuiltValueField(wireName: 'large')
@@ -34,11 +35,11 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   @BuiltValueField(wireName: 'grid')
   String get grid;
 
-  Images._();
+  BangumiImage._();
 
-  factory Images([updates(ImagesBuilder b)]) = _$Images;
+  factory BangumiImage([updates(BangumiImageBuilder b)]) = _$BangumiImage;
 
-  /// initiate [Images] from a Image
+  /// initiate [BangumiImage] from a Image
   /// this works because bangumi image url follows same pattern
   /// [imageSize] is the image size of [imageUrl], this constructor will
   /// use these info to guess network addressed of all sizes of this image
@@ -51,11 +52,11 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   /// for [ImageType.MonoAvatar], [ImageSize.Common] is not available
   /// for [ImageType.UserAvatar], [ImageSize.Common] and [ImageSize.Grid] is not available
   /// Image from the larger size tier is used instead
-  factory Images.fromImageUrl(
+  factory BangumiImage.fromImageUrl(
       String imageUrl, ImageSize imageSize, ImageType imageType) {
     if (isEmpty(imageUrl)) {
       imageUrl = defaultCoverImage;
-      return Images.useSameImageUrlForAll(imageUrl);
+      return BangumiImage.useSameImageUrlForAll(imageUrl);
     }
 
     String replacePattern;
@@ -86,7 +87,7 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       /// `urlMatcher == null` means something like a default subject cover image
       /// is used, in that case, use original imageUrl for  all sizes
       if (urlMatcher == null) {
-        return Images.useSameImageUrlForAll(imageUrl);
+        return BangumiImage.useSameImageUrlForAll(imageUrl);
       } else {
         replacePattern = urlMatcher.group(0);
       }
@@ -115,7 +116,8 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       gridImage = imageUrl.replaceFirst(replacePattern, '/g/');
     }
 
-    return Images((b) => b
+    return BangumiImage((b) =>
+    b
       ..large = largeImage
       ..common = commonImage
       ..medium = mediumImage
@@ -123,8 +125,8 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       ..grid = gridImage);
   }
 
-  factory Images.fromBangumiUserAvatar(BangumiUserAvatar avatar){
-    return Images((b) =>
+  factory BangumiImage.fromBangumiUserAvatar(BangumiUserAvatar avatar){
+    return BangumiImage((b) =>
     b
       ..large = avatar.large
       ..common = avatar.large
@@ -133,12 +135,13 @@ abstract class Images implements Built<Images, ImagesBuilder> {
       ..grid = avatar.small);
   }
 
-  factory Images.useSameImageUrlForAll(String imageUrl) {
+  factory BangumiImage.useSameImageUrlForAll(String imageUrl) {
     if (imageUrl == null) {
       imageUrl = defaultCoverImage;
     }
 
-    return Images((b) => b
+    return BangumiImage((b) =>
+    b
       ..large = imageUrl
       ..common = imageUrl
       ..medium = imageUrl
@@ -147,13 +150,14 @@ abstract class Images implements Built<Images, ImagesBuilder> {
   }
 
   String toJson() {
-    return json.encode(serializers.serializeWith(Images.serializer, this));
+    return json.encode(
+        serializers.serializeWith(BangumiImage.serializer, this));
   }
 
-  static Images fromJson(String jsonString) {
+  static BangumiImage fromJson(String jsonString) {
     return serializers.deserializeWith(
-        Images.serializer, json.decode(jsonString));
+        BangumiImage.serializer, json.decode(jsonString));
   }
 
-  static Serializer<Images> get serializer => _$imagesSerializer;
+  static Serializer<BangumiImage> get serializer => _$bangumiImageSerializer;
 }

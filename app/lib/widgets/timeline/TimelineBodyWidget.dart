@@ -154,7 +154,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
               imageUrl: feedChunks
                   .getFeedAt(index)
                   ?.user
-                  ?.avatars
+                  ?.avatar
                   ?.medium,
               navigateToUserRouteOnTap: true,
               username: feedChunks

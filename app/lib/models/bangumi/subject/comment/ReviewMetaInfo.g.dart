@@ -26,9 +26,9 @@ class _$ReviewMetaInfoSerializer
       'nickName',
       serializers.serialize(object.nickName,
           specifiedType: const FullType(String)),
-      'avatars',
-      serializers.serialize(object.avatars,
-          specifiedType: const FullType(Images)),
+      'avatar',
+      serializers.serialize(object.avatar,
+          specifiedType: const FullType(BangumiImage)),
       'username',
       serializers.serialize(object.username,
           specifiedType: const FullType(String)),
@@ -83,9 +83,9 @@ class _$ReviewMetaInfoSerializer
           result.nickName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'avatars':
-          result.avatars.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'avatar':
+          result.avatar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'username':
           result.username = serializers.deserialize(value,
@@ -112,7 +112,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
   @override
   final String nickName;
   @override
-  final Images avatars;
+  final BangumiImage avatar;
   @override
   final String username;
   @override
@@ -126,7 +126,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
       this.collectionStatus,
       this.updatedAt,
       this.nickName,
-      this.avatars,
+      this.avatar,
       this.username,
       this.actionName})
       : super._() {
@@ -136,8 +136,8 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
     if (nickName == null) {
       throw new BuiltValueNullFieldError('ReviewMetaInfo', 'nickName');
     }
-    if (avatars == null) {
-      throw new BuiltValueNullFieldError('ReviewMetaInfo', 'avatars');
+    if (avatar == null) {
+      throw new BuiltValueNullFieldError('ReviewMetaInfo', 'avatar');
     }
     if (username == null) {
       throw new BuiltValueNullFieldError('ReviewMetaInfo', 'username');
@@ -160,7 +160,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
         collectionStatus == other.collectionStatus &&
         updatedAt == other.updatedAt &&
         nickName == other.nickName &&
-        avatars == other.avatars &&
+        avatar == other.avatar &&
         username == other.username &&
         actionName == other.actionName;
   }
@@ -174,7 +174,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
                     $jc($jc($jc(0, score.hashCode), collectionStatus.hashCode),
                         updatedAt.hashCode),
                     nickName.hashCode),
-                avatars.hashCode),
+                avatar.hashCode),
             username.hashCode),
         actionName.hashCode));
   }
@@ -186,7 +186,7 @@ class _$ReviewMetaInfo extends ReviewMetaInfo {
           ..add('collectionStatus', collectionStatus)
           ..add('updatedAt', updatedAt)
           ..add('nickName', nickName)
-          ..add('avatars', avatars)
+          ..add('avatar', avatar)
           ..add('username', username)
           ..add('actionName', actionName))
         .toString();
@@ -214,9 +214,10 @@ class ReviewMetaInfoBuilder
   String get nickName => _$this._nickName;
   set nickName(String nickName) => _$this._nickName = nickName;
 
-  ImagesBuilder _avatars;
-  ImagesBuilder get avatars => _$this._avatars ??= new ImagesBuilder();
-  set avatars(ImagesBuilder avatars) => _$this._avatars = avatars;
+  BangumiImageBuilder _avatar;
+  BangumiImageBuilder get avatar =>
+      _$this._avatar ??= new BangumiImageBuilder();
+  set avatar(BangumiImageBuilder avatar) => _$this._avatar = avatar;
 
   String _username;
   String get username => _$this._username;
@@ -234,7 +235,7 @@ class ReviewMetaInfoBuilder
       _collectionStatus = _$v.collectionStatus;
       _updatedAt = _$v.updatedAt;
       _nickName = _$v.nickName;
-      _avatars = _$v.avatars?.toBuilder();
+      _avatar = _$v.avatar?.toBuilder();
       _username = _$v.username;
       _actionName = _$v.actionName;
       _$v = null;
@@ -265,14 +266,14 @@ class ReviewMetaInfoBuilder
               collectionStatus: collectionStatus,
               updatedAt: updatedAt,
               nickName: nickName,
-              avatars: avatars.build(),
+              avatar: avatar.build(),
               username: username,
               actionName: actionName);
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'avatars';
-        avatars.build();
+        _$failedField = 'avatar';
+        avatar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ReviewMetaInfo', _$failedField, e.toString());

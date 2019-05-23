@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
@@ -235,7 +235,7 @@ class TimelineParser {
       ..updatedAt = absoluteTime?.millisecondsSinceEpoch
       ..feedId = feedId
       ..username = username
-      ..avatars.replace(Images.fromImageUrl(
+      ..avatar.replace(BangumiImage.fromImageUrl(
           avatarImageUrl, ImageSize.Unknown, ImageType.UserAvatar))
       ..actionName = '');
 
@@ -344,7 +344,7 @@ class TimelineParser {
 
     return MonoFavoriteSingle((b) => b
       ..id = id
-      ..avatar.replace(Images.fromImageUrl(
+      ..avatar.replace(BangumiImage.fromImageUrl(
           imageSrcOrNull(monoImageElement), ImageSize.Unknown,
           ImageType.MonoAvatar))
       ..monoName = monoName
@@ -372,7 +372,7 @@ class TimelineParser {
 
       HyperImage hyperImage = HyperImage((b) => b
         ..id = id
-        ..image.replace(Images.fromImageUrl(
+        ..image.replace(BangumiImage.fromImageUrl(
             imageUrl, ImageSize.Unknown, contentType.imageType))
         ..contentType = contentType
         ..pageUrl = pageUrl);
@@ -490,7 +490,7 @@ class TimelineParser {
       ..user.replace(userInfo)
       ..friendNickName = friendNickName
       ..friendId = friendId
-      ..friendAvatar.replace(Images.fromImageUrl(
+      ..friendAvatar.replace(BangumiImage.fromImageUrl(
           imageSrcOrNull(hyperImageElement), ImageSize.Unknown,
           ImageType.UserAvatar))
     );
@@ -626,8 +626,8 @@ class TimelineParser {
     if (hyperLinkList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
     }
-    Images groupIcon = imageList.length == 0
-        ? Images.useSameImageUrlForAll(bangumiTextOnlyGroupIcon)
+    BangumiImage groupIcon = imageList.length == 0
+        ? BangumiImage.useSameImageUrlForAll(bangumiTextOnlyGroupIcon)
         : imageList[0].image;
     String groupName = hyperLinkList[0].name;
 
@@ -738,8 +738,9 @@ class TimelineParser {
       userInfo = userInfo.rebuild((b) => b..actionName = actionName);
 
       double subjectScore = parseSubjectScore(singleTimelineContent);
-      Images subjectCover =
-      imageList.length == 1 ? imageList[0].image : Images.useSameImageUrlForAll(
+      BangumiImage subjectCover =
+      imageList.length == 1 ? imageList[0].image : BangumiImage
+          .useSameImageUrlForAll(
           bangumiTextOnlySubjectCover);
 
       String subjectComment =

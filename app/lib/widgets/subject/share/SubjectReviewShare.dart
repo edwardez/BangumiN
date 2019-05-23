@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
@@ -66,8 +66,9 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
       ..metaInfo.update((metaInfoBuilder) => metaInfoBuilder
         ..nickName = 'Bangumi用户'
         ..username = ''
-        ..avatars.replace(
-            Images.useSameImageUrlForAll(bangumiAnonymousUserMediumAvatar))));
+        ..avatar.replace(
+            BangumiImage.useSameImageUrlForAll(
+                bangumiAnonymousUserMediumAvatar))));
   }
 
   /// Currently this calculation might block ui thread
@@ -105,7 +106,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
         );
       }
 
-      _updatePaletteGenerator(widget.subject.images.large);
+      _updatePaletteGenerator(widget.subject.cover.large);
       return Center(
         child: Text('正在生成海报...'),
       );

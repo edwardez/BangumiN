@@ -134,7 +134,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
               children: <Widget>[
                 ClickableCachedRoundedCover(
                   width: 48,
-                  imageUrl: widget.subject.subject?.images?.large ??
+                  imageUrl: widget.subject.subject?.cover?.large ??
                       bangumiTextOnlySubjectCover,
                   height: 48,
                   contentType: BangumiContent.Subject,

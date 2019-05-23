@@ -28,7 +28,7 @@ class _$MonoFavoriteSingleSerializer
           specifiedType: const FullType(String)),
       'avatar',
       serializers.serialize(object.avatar,
-          specifiedType: const FullType(Images)),
+          specifiedType: const FullType(BangumiImage)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'monoType',
@@ -66,7 +66,7 @@ class _$MonoFavoriteSingleSerializer
           break;
         case 'avatar':
           result.avatar.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -93,7 +93,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   @override
   final String monoName;
   @override
-  final Images avatar;
+  final BangumiImage avatar;
   @override
   final String id;
   @override
@@ -190,9 +190,10 @@ class MonoFavoriteSingleBuilder
   String get monoName => _$this._monoName;
   set monoName(String monoName) => _$this._monoName = monoName;
 
-  ImagesBuilder _avatar;
-  ImagesBuilder get avatar => _$this._avatar ??= new ImagesBuilder();
-  set avatar(ImagesBuilder avatar) => _$this._avatar = avatar;
+  BangumiImageBuilder _avatar;
+  BangumiImageBuilder get avatar =>
+      _$this._avatar ??= new BangumiImageBuilder();
+  set avatar(BangumiImageBuilder avatar) => _$this._avatar = avatar;
 
   String _id;
   String get id => _$this._id;

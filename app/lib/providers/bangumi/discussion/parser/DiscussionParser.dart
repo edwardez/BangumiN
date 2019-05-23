@@ -1,7 +1,7 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
@@ -61,11 +61,12 @@ class DiscussionParser {
 
     String imageUrlSmall = imageUrlFromBackgroundImage(discussionItemElement);
     ImageType imageType = contentType.imageType;
-    Images images;
+    BangumiImage image;
     if (imageType == null) {
-      images = Images.useSameImageUrlForAll(imageUrlSmall);
+      image = BangumiImage.useSameImageUrlForAll(imageUrlSmall);
     } else {
-      images = Images.fromImageUrl(imageUrlSmall, ImageSize.Unknown, imageType);
+      image = BangumiImage.fromImageUrl(
+          imageUrlSmall, ImageSize.Unknown, imageType);
     }
 
     String title = discussionItemElement.querySelector('.title')?.text;
@@ -100,14 +101,14 @@ class DiscussionParser {
       b
         ..id = itemId
         ..bangumiContent = contentType
-        ..images.replace(images)
+        ..image.replace(image)
         ..title = title
         ..subTitle = subtitle
         ..updatedAt = absoluteTime?.millisecondsSinceEpoch
         ..replyCount = replyCount));
     } else {
       int originalPosterUserId = tryParseInt(
-          firstCapturedStringOrNull(userIdInAvatarGroupRegex, images.small),
+          firstCapturedStringOrNull(userIdInAvatarGroupRegex, image.small),
           defaultValue: null);
 
       Element groupElement =
@@ -118,7 +119,7 @@ class DiscussionParser {
       b
         ..id = itemId
         ..bangumiContent = contentType
-        ..images.replace(images)
+        ..image.replace(image)
         ..title = title
         ..subTitle = subtitle
         ..updatedAt = absoluteTime?.millisecondsSinceEpoch
@@ -144,7 +145,7 @@ class DiscussionParser {
     bool muteOPWithDefaultIcon;
 
     if (muteSetting.muteOriginalPosterWithDefaultIcon &&
-        item.images.small.contains('icon.jpg')) {
+        item.image.small.contains('icon.jpg')) {
       muteOPWithDefaultIcon = true;
     } else {
       muteOPWithDefaultIcon = false;

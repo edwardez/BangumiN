@@ -5,7 +5,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
@@ -237,7 +237,7 @@ class SubjectParser {
           characterElement.querySelector('.badge_job_tip')?.text ?? '';
 
       String characterImageSmall = imageUrlFromBackgroundImage(avatarElement);
-      Images images = Images.fromImageUrl(
+      BangumiImage avatar = BangumiImage.fromImageUrl(
           characterImageSmall, ImageSize.Unknown, ImageType.MonoAvatar);
 
       String collectionCountsStr =
@@ -249,7 +249,7 @@ class SubjectParser {
         ..id = characterId
         ..name = characterName
         ..roleName = roleName
-        ..images.replace(images)
+        ..avatar.replace(avatar)
         ..collectionCounts = collectionCounts
         ..actors.replace(actors));
       characters.add(character);
@@ -294,14 +294,14 @@ class SubjectParser {
 
       Element coverElement = subjectElement.querySelector('a.avatar');
       String subjectNameCn;
-      Images images;
+      BangumiImage cover;
 
       if (coverElement != null) {
         subjectNameCn = coverElement.attributes['data-original-title'] ??
             coverElement.attributes['title'];
         String coverImage = imageUrlFromBackgroundImage(coverElement);
-        coverImage ??= Images.defaultCoverImage;
-        images = Images.fromImageUrl(
+        coverImage ??= BangumiImage.defaultCoverImage;
+        cover = BangumiImage.fromImageUrl(
             coverImage, ImageSize.Unknown, ImageType.SubjectCover);
       }
 
@@ -309,7 +309,7 @@ class SubjectParser {
         ..name = subjectName
         ..nameCn = subjectNameCn
         ..id = subjectId
-        ..images.replace(images)
+        ..cover.replace(cover)
         ..subjectSubTypeName = subjectSubType);
 
       relatedSubjects.add(subjectSubType, relatedSubject);
@@ -349,14 +349,14 @@ class SubjectParser {
           '';
 
       String coverImage = imageUrlFromBackgroundImage(coverElement);
-      coverImage ??= Images.defaultCoverImage;
-      Images images = Images.fromImageUrl(
+      coverImage ??= BangumiImage.defaultCoverImage;
+      BangumiImage cover = BangumiImage.fromImageUrl(
           coverImage, ImageSize.Unknown, ImageType.SubjectCover);
 
       RelatedSubject relatedSubject = RelatedSubject((b) => b
         ..name = subjectName
         ..id = subjectId
-        ..images.replace(images)
+        ..cover.replace(cover)
         ..subjectSubTypeName = typeTankobon);
 
       relatedSubjects.add(typeTankobon, relatedSubject);
@@ -506,7 +506,8 @@ class SubjectParser {
         defaultValue: null);
 
     Element commonImageElement = document.querySelector('.infobox img.cover');
-    Images images = Images.fromImageUrl(imageSrcOrNull(commonImageElement),
+    BangumiImage cover = BangumiImage.fromImageUrl(
+        imageSrcOrNull(commonImageElement),
         ImageSize.Common, ImageType.SubjectCover);
 
     BuiltList<Character> characters = parseCharacters(document);
@@ -535,7 +536,7 @@ class SubjectParser {
       ..summary = summary
       ..rating.replace(rating)
       ..rank = rank
-      ..images.replace(images)
+      ..cover.replace(cover)
       ..characters.replace(characters)
       ..commentsPreview.replace(comments)
       ..relatedSubjects.replace(relatedSubjects)

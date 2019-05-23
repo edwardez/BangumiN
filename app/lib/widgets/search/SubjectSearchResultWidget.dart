@@ -85,7 +85,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: RoundedElevatedImage(
-                imageUrl: subjectSearchResult.images?.large,
+                imageUrl: subjectSearchResult.image?.large,
               ),
               flex: coverFlex,
               fit: FlexFit.tight,

@@ -37,7 +37,7 @@ class HorizontalRelatedSubjects extends StatelessWidget {
     for (var subject in relatedSubjects.values) {
       imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Subject,
-        imageUrl: subject.images.medium,
+        imageUrl: subject.cover.medium,
         id: subject.id?.toString(),
         imageWidth: imageWidth,
         imageHeight: imageHeight,

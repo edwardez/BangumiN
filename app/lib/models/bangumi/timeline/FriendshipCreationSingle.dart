@@ -1,6 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
@@ -14,7 +14,7 @@ abstract class FriendshipCreationSingle
 
   String get friendNickName;
 
-  Images get friendAvatar;
+  BangumiImage get friendAvatar;
 
   String get friendId;
 

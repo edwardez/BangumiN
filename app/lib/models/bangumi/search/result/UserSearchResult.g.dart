@@ -31,11 +31,11 @@ class _$UserSearchResultSerializer
       serializers.serialize(object.type,
           specifiedType: const FullType(SearchType)),
     ];
-    if (object.images != null) {
+    if (object.image != null) {
       result
         ..add('avatar')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add(serializers.serialize(object.image,
+            specifiedType: const FullType(BangumiImage)));
     }
 
     return result;
@@ -53,8 +53,8 @@ class _$UserSearchResultSerializer
       final dynamic value = iterator.current;
       switch (key) {
         case 'avatar':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'nickname':
           result.name = serializers.deserialize(value,
@@ -81,7 +81,7 @@ class _$UserSearchResultSerializer
 
 class _$UserSearchResult extends UserSearchResult {
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final String name;
   @override
@@ -96,7 +96,7 @@ class _$UserSearchResult extends UserSearchResult {
       (new UserSearchResultBuilder()..update(updates)).build();
 
   _$UserSearchResult._(
-      {this.images, this.name, this.id, this.username, this.type})
+      {this.image, this.name, this.id, this.username, this.type})
       : super._() {
     if (name == null) {
       throw new BuiltValueNullFieldError('UserSearchResult', 'name');
@@ -124,7 +124,7 @@ class _$UserSearchResult extends UserSearchResult {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserSearchResult &&
-        images == other.images &&
+        image == other.image &&
         name == other.name &&
         id == other.id &&
         username == other.username &&
@@ -134,7 +134,7 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, images.hashCode), name.hashCode), id.hashCode),
+        $jc($jc($jc($jc(0, image.hashCode), name.hashCode), id.hashCode),
             username.hashCode),
         type.hashCode));
   }
@@ -142,7 +142,7 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserSearchResult')
-          ..add('images', images)
+          ..add('image', image)
           ..add('name', name)
           ..add('id', id)
           ..add('username', username)
@@ -157,9 +157,9 @@ class UserSearchResultBuilder
         SearchResultBuilder {
   _$UserSearchResult _$v;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _name;
   String get name => _$this._name;
@@ -181,7 +181,7 @@ class UserSearchResultBuilder
 
   UserSearchResultBuilder get _$this {
     if (_$v != null) {
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _name = _$v.name;
       _id = _$v.id;
       _username = _$v.username;
@@ -210,7 +210,7 @@ class UserSearchResultBuilder
     try {
       _$result = _$v ??
           new _$UserSearchResult._(
-              images: _images?.build(),
+              image: _image?.build(),
               name: name,
               id: id,
               username: username,
@@ -218,8 +218,8 @@ class UserSearchResultBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'image';
+        _image?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserSearchResult', _$failedField, e.toString());

@@ -25,7 +25,7 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
           specifiedType: const FullType(BangumiContent)),
       'image',
       serializers.serialize(object.image,
-          specifiedType: const FullType(Images)),
+          specifiedType: const FullType(BangumiImage)),
     ];
     if (object.pageUrl != null) {
       result
@@ -58,7 +58,7 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
           break;
         case 'image':
           result.image.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'pageUrl':
           result.pageUrl = serializers.deserialize(value,
@@ -77,7 +77,7 @@ class _$HyperImage extends HyperImage {
   @override
   final BangumiContent contentType;
   @override
-  final Images image;
+  final BangumiImage image;
   @override
   final String pageUrl;
 
@@ -144,9 +144,9 @@ class HyperImageBuilder implements Builder<HyperImage, HyperImageBuilder> {
   set contentType(BangumiContent contentType) =>
       _$this._contentType = contentType;
 
-  ImagesBuilder _image;
-  ImagesBuilder get image => _$this._image ??= new ImagesBuilder();
-  set image(ImagesBuilder image) => _$this._image = image;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _pageUrl;
   String get pageUrl => _$this._pageUrl;

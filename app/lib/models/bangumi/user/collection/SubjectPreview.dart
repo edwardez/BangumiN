@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -14,7 +14,7 @@ abstract class SubjectPreview
   /// Images might be intentionally set to null because
   /// of [displayedAsPlainText] in [CollectionPreview]
   @nullable
-  Images get images;
+  BangumiImage get cover;
 
   SubjectPreview._();
 

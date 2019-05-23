@@ -88,7 +88,7 @@ class CollectionPreviewWidget extends StatelessWidget {
       List<Widget> subjects =
           preview.subjects[firstNonEmptyStatus].map((SubjectPreview subject) {
         return ClickableCachedRoundedCover.asGridSize(
-          imageUrl: subject.images.medium,
+          imageUrl: subject.cover.medium,
           contentType: BangumiContent.Subject,
           id: subject.id.toString(),
         );

@@ -31,7 +31,7 @@ class _$CollectionUpdateSingleSerializer
           specifiedType: const FullType(String)),
       'subjectCover',
       serializers.serialize(object.subjectCover,
-          specifiedType: const FullType(Images)),
+          specifiedType: const FullType(BangumiImage)),
       'subjectName',
       serializers.serialize(object.subjectName,
           specifiedType: const FullType(String)),
@@ -84,7 +84,7 @@ class _$CollectionUpdateSingleSerializer
           break;
         case 'subjectCover':
           result.subjectCover.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'subjectScore':
           result.subjectScore = serializers.deserialize(value,
@@ -113,7 +113,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   @override
   final String subjectId;
   @override
-  final Images subjectCover;
+  final BangumiImage subjectCover;
   @override
   final double subjectScore;
   @override
@@ -219,10 +219,10 @@ class CollectionUpdateSingleBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
-  ImagesBuilder _subjectCover;
-  ImagesBuilder get subjectCover =>
-      _$this._subjectCover ??= new ImagesBuilder();
-  set subjectCover(ImagesBuilder subjectCover) =>
+  BangumiImageBuilder _subjectCover;
+  BangumiImageBuilder get subjectCover =>
+      _$this._subjectCover ??= new BangumiImageBuilder();
+  set subjectCover(BangumiImageBuilder subjectCover) =>
       _$this._subjectCover = subjectCover;
 
   double _subjectScore;

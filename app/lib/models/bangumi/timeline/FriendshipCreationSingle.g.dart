@@ -31,7 +31,7 @@ class _$FriendshipCreationSingleSerializer
           specifiedType: const FullType(String)),
       'friendAvatar',
       serializers.serialize(object.friendAvatar,
-          specifiedType: const FullType(Images)),
+          specifiedType: const FullType(BangumiImage)),
       'friendId',
       serializers.serialize(object.friendId,
           specifiedType: const FullType(String)),
@@ -68,7 +68,7 @@ class _$FriendshipCreationSingleSerializer
           break;
         case 'friendAvatar':
           result.friendAvatar.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'friendId':
           result.friendId = serializers.deserialize(value,
@@ -91,7 +91,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   @override
   final String friendNickName;
   @override
-  final Images friendAvatar;
+  final BangumiImage friendAvatar;
   @override
   final String friendId;
   @override
@@ -182,10 +182,10 @@ class FriendshipCreationSingleBuilder
   set friendNickName(String friendNickName) =>
       _$this._friendNickName = friendNickName;
 
-  ImagesBuilder _friendAvatar;
-  ImagesBuilder get friendAvatar =>
-      _$this._friendAvatar ??= new ImagesBuilder();
-  set friendAvatar(ImagesBuilder friendAvatar) =>
+  BangumiImageBuilder _friendAvatar;
+  BangumiImageBuilder get friendAvatar =>
+      _$this._friendAvatar ??= new BangumiImageBuilder();
+  set friendAvatar(BangumiImageBuilder friendAvatar) =>
       _$this._friendAvatar = friendAvatar;
 
   String _friendId;

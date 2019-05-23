@@ -26,11 +26,11 @@ class _$RelatedSubjectSerializer
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-    if (object.images != null) {
+    if (object.cover != null) {
       result
-        ..add('images')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add('cover')
+        ..add(serializers.serialize(object.cover,
+            specifiedType: const FullType(BangumiImage)));
     }
     if (object.id != null) {
       result
@@ -69,9 +69,9 @@ class _$RelatedSubjectSerializer
           result.subjectSubTypeName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'cover':
+          result.cover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -100,7 +100,7 @@ class _$RelatedSubject extends RelatedSubject {
   @override
   final String subjectSubTypeName;
   @override
-  final Images images;
+  final BangumiImage cover;
   @override
   final int id;
   @override
@@ -115,7 +115,7 @@ class _$RelatedSubject extends RelatedSubject {
 
   _$RelatedSubject._(
       {this.subjectSubTypeName,
-      this.images,
+      this.cover,
       this.id,
       this.pageUrlFromApi,
       this.name,
@@ -143,7 +143,7 @@ class _$RelatedSubject extends RelatedSubject {
     if (identical(other, this)) return true;
     return other is RelatedSubject &&
         subjectSubTypeName == other.subjectSubTypeName &&
-        images == other.images &&
+        cover == other.cover &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
@@ -155,7 +155,7 @@ class _$RelatedSubject extends RelatedSubject {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, subjectSubTypeName.hashCode), images.hashCode),
+                $jc($jc($jc(0, subjectSubTypeName.hashCode), cover.hashCode),
                     id.hashCode),
                 pageUrlFromApi.hashCode),
             name.hashCode),
@@ -166,7 +166,7 @@ class _$RelatedSubject extends RelatedSubject {
   String toString() {
     return (newBuiltValueToStringHelper('RelatedSubject')
           ..add('subjectSubTypeName', subjectSubTypeName)
-          ..add('images', images)
+          ..add('cover', cover)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
@@ -186,9 +186,9 @@ class RelatedSubjectBuilder
   set subjectSubTypeName(String subjectSubTypeName) =>
       _$this._subjectSubTypeName = subjectSubTypeName;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _cover;
+  BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
+  set cover(BangumiImageBuilder cover) => _$this._cover = cover;
 
   int _id;
   int get id => _$this._id;
@@ -212,7 +212,7 @@ class RelatedSubjectBuilder
   RelatedSubjectBuilder get _$this {
     if (_$v != null) {
       _subjectSubTypeName = _$v.subjectSubTypeName;
-      _images = _$v.images?.toBuilder();
+      _cover = _$v.cover?.toBuilder();
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
@@ -242,7 +242,7 @@ class RelatedSubjectBuilder
       _$result = _$v ??
           new _$RelatedSubject._(
               subjectSubTypeName: subjectSubTypeName,
-              images: _images?.build(),
+              cover: _cover?.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
               name: name,
@@ -250,8 +250,8 @@ class RelatedSubjectBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'cover';
+        _cover?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'RelatedSubject', _$failedField, e.toString());

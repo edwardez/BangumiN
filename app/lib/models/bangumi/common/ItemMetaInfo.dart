@@ -1,5 +1,5 @@
 import 'package:built_value/built_value.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 
 /// a base TimelineFeed interface
 abstract class ItemMetaInfo {
@@ -10,7 +10,7 @@ abstract class ItemMetaInfo {
   String get nickName;
 
   /// User avatars
-  Images get avatars;
+  BangumiImage get avatar;
 
   /// user name, can only have digit and alphabetic
   String get username;

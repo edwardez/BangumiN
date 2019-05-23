@@ -1,6 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/common/ItemMetaInfo.dart';
 
 part 'FeedMetaInfo.g.dart';

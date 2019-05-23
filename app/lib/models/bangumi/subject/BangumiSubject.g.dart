@@ -30,8 +30,8 @@ class _$BangumiSubjectSerializer
       serializers.serialize(object.rating,
           specifiedType: const FullType(Rating)),
       'images',
-      serializers.serialize(object.images,
-          specifiedType: const FullType(Images)),
+      serializers.serialize(object.cover,
+          specifiedType: const FullType(BangumiImage)),
       'userSubjectCollectionInfoPreview',
       serializers.serialize(object.userSubjectCollectionInfoPreview,
           specifiedType: const FullType(SubjectCollectionInfoPreview)),
@@ -156,8 +156,8 @@ class _$BangumiSubjectSerializer
               specifiedType: const FullType(int)) as int;
           break;
         case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.cover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'crt':
           result.characters.replace(serializers.deserialize(value,
@@ -252,7 +252,7 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final int rank;
   @override
-  final Images images;
+  final BangumiImage cover;
   @override
   final BuiltList<Character> characters;
   @override
@@ -291,7 +291,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.summary,
       this.rating,
       this.rank,
-      this.images,
+      this.cover,
       this.characters,
       this.relatedSubjects,
       this.commentsPreview,
@@ -315,8 +315,8 @@ class _$BangumiSubject extends BangumiSubject {
     if (rating == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'rating');
     }
-    if (images == null) {
-      throw new BuiltValueNullFieldError('BangumiSubject', 'images');
+    if (cover == null) {
+      throw new BuiltValueNullFieldError('BangumiSubject', 'cover');
     }
     if (userSubjectCollectionInfoPreview == null) {
       throw new BuiltValueNullFieldError(
@@ -359,7 +359,7 @@ class _$BangumiSubject extends BangumiSubject {
         summary == other.summary &&
         rating == other.rating &&
         rank == other.rank &&
-        images == other.images &&
+        cover == other.cover &&
         characters == other.characters &&
         relatedSubjects == other.relatedSubjects &&
         commentsPreview == other.commentsPreview &&
@@ -407,7 +407,7 @@ class _$BangumiSubject extends BangumiSubject {
                                                                     rating
                                                                         .hashCode),
                                                                 rank.hashCode),
-                                                            images.hashCode),
+                                                            cover.hashCode),
                                                         characters.hashCode),
                                                     relatedSubjects.hashCode),
                                                 commentsPreview.hashCode),
@@ -432,7 +432,7 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('summary', summary)
           ..add('rating', rating)
           ..add('rank', rank)
-          ..add('images', images)
+          ..add('cover', cover)
           ..add('characters', characters)
           ..add('relatedSubjects', relatedSubjects)
           ..add('commentsPreview', commentsPreview)
@@ -477,9 +477,9 @@ class BangumiSubjectBuilder
   int get rank => _$this._rank;
   set rank(int rank) => _$this._rank = rank;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _cover;
+  BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
+  set cover(BangumiImageBuilder cover) => _$this._cover = cover;
 
   ListBuilder<Character> _characters;
   ListBuilder<Character> get characters =>
@@ -569,7 +569,7 @@ class BangumiSubjectBuilder
       _summary = _$v.summary;
       _rating = _$v.rating?.toBuilder();
       _rank = _$v.rank;
-      _images = _$v.images?.toBuilder();
+      _cover = _$v.cover?.toBuilder();
       _characters = _$v.characters?.toBuilder();
       _relatedSubjects = _$v.relatedSubjects?.toBuilder();
       _commentsPreview = _$v.commentsPreview?.toBuilder();
@@ -613,7 +613,7 @@ class BangumiSubjectBuilder
               summary: summary,
               rating: rating.build(),
               rank: rank,
-              images: images.build(),
+              cover: cover.build(),
               characters: _characters?.build(),
               relatedSubjects: _relatedSubjects?.build(),
               commentsPreview: _commentsPreview?.build(),
@@ -634,8 +634,8 @@ class BangumiSubjectBuilder
         _$failedField = 'rating';
         rating.build();
 
-        _$failedField = 'images';
-        images.build();
+        _$failedField = 'cover';
+        cover.build();
         _$failedField = 'characters';
         _characters?.build();
         _$failedField = 'relatedSubjects';

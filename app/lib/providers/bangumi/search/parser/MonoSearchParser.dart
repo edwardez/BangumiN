@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -47,15 +47,15 @@ class MonoSearchParser {
     }
 
     String imageUrl = imageSrcOrNull(monoElement.querySelector('.avatar.ll'));
-    Images images =
-        Images.fromImageUrl(imageUrl, ImageSize.Grid, ImageType.MonoAvatar);
+    BangumiImage image =
+    BangumiImage.fromImageUrl(imageUrl, ImageSize.Grid, ImageType.MonoAvatar);
 
     MonoSearchResult monoSearchResult = MonoSearchResult((b) => b
       ..id = id
       ..name = name
       ..nameCn = nameCn
       ..type = searchType
-      ..images.replace(images)
+      ..image.replace(image)
       ..miscInfo.replace(miscInfo));
 
     return Optional.of(monoSearchResult);

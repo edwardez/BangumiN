@@ -100,7 +100,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: RoundedElevatedImage(
-            imageUrl: subject.images.large,
+            imageUrl: subject.cover.large,
             elevation: 2.0,
           ),
           flex: coverFlex,

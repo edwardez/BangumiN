@@ -8,7 +8,7 @@ import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
@@ -148,7 +148,7 @@ part 'serializers.g.dart';
   SubjectType,
   Count,
   Rating,
-  Images,
+  BangumiImage,
   Character,
   Mono,
   RelatedSubject,

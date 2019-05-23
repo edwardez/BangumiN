@@ -182,8 +182,8 @@ class _ViewModel {
   @override
   int get hashCode =>
       hash3(
-          getDiscussionRequest.hashCode,
-          rakuenTopics.hashCode,
-          muteSetting.hashCode);
+          getDiscussionRequest,
+          rakuenTopics,
+          muteSetting);
 
 }

@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -17,12 +19,13 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class InProgressBookWidget extends StatefulWidget {
   final InProgressBookCollection subject;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   final Future<void> Function(int newEpisodeNumber, int newVolumeNumber)
       onUpdateBookProgress;
 
   const InProgressBookWidget(
-      {Key key, @required this.subject, @required this.onUpdateBookProgress})
+      {Key key, @required this.subject, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   @override
@@ -162,7 +165,9 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(widget.subject.subject.name)),
+                      Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
+                          widget.subject.subject,
+                          widget.preferredSubjectInfoLanguage))),
                     ],
                   ),
                   Row(

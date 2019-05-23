@@ -20,6 +20,12 @@ class _$GeneralSettingSerializer
   Iterable serialize(Serializers serializers, GeneralSetting object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'preferredSubjectInfoLanguage',
+      serializers.serialize(object.preferredSubjectInfoLanguage,
+          specifiedType: const FullType(PreferredSubjectInfoLanguage)),
+      'preferredLaunchNavTab',
+      serializers.serialize(object.preferredLaunchNavTab,
+          specifiedType: const FullType(PreferredLaunchNavTab)),
       'preferredTimelineLaunchPage',
       serializers.serialize(object.preferredTimelineLaunchPage,
           specifiedType: const FullType(TimelineCategoryFilter)),
@@ -30,12 +36,6 @@ class _$GeneralSettingSerializer
       serializers.serialize(object.preferredDiscussionLaunchPage,
           specifiedType: const FullType(GetDiscussionRequest)),
     ];
-    if (object.preferredLaunchNavTab != null) {
-      result
-        ..add('preferredLaunchNavTab')
-        ..add(serializers.serialize(object.preferredLaunchNavTab,
-            specifiedType: const FullType(PreferredLaunchNavTab)));
-    }
 
     return result;
   }
@@ -51,6 +51,11 @@ class _$GeneralSettingSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'preferredSubjectInfoLanguage':
+          result.preferredSubjectInfoLanguage = serializers.deserialize(value,
+                  specifiedType: const FullType(PreferredSubjectInfoLanguage))
+              as PreferredSubjectInfoLanguage;
+          break;
         case 'preferredLaunchNavTab':
           result.preferredLaunchNavTab = serializers.deserialize(value,
                   specifiedType: const FullType(PreferredLaunchNavTab))
@@ -82,6 +87,8 @@ class _$GeneralSettingSerializer
 
 class _$GeneralSetting extends GeneralSetting {
   @override
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+  @override
   final PreferredLaunchNavTab preferredLaunchNavTab;
   @override
   final TimelineCategoryFilter preferredTimelineLaunchPage;
@@ -94,11 +101,20 @@ class _$GeneralSetting extends GeneralSetting {
       (new GeneralSettingBuilder()..update(updates)).build();
 
   _$GeneralSetting._(
-      {this.preferredLaunchNavTab,
+      {this.preferredSubjectInfoLanguage,
+      this.preferredLaunchNavTab,
       this.preferredTimelineLaunchPage,
       this.preferredProgressLaunchPage,
       this.preferredDiscussionLaunchPage})
       : super._() {
+    if (preferredSubjectInfoLanguage == null) {
+      throw new BuiltValueNullFieldError(
+          'GeneralSetting', 'preferredSubjectInfoLanguage');
+    }
+    if (preferredLaunchNavTab == null) {
+      throw new BuiltValueNullFieldError(
+          'GeneralSetting', 'preferredLaunchNavTab');
+    }
     if (preferredTimelineLaunchPage == null) {
       throw new BuiltValueNullFieldError(
           'GeneralSetting', 'preferredTimelineLaunchPage');
@@ -125,6 +141,7 @@ class _$GeneralSetting extends GeneralSetting {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is GeneralSetting &&
+        preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage &&
         preferredLaunchNavTab == other.preferredLaunchNavTab &&
         preferredTimelineLaunchPage == other.preferredTimelineLaunchPage &&
         preferredProgressLaunchPage == other.preferredProgressLaunchPage &&
@@ -135,7 +152,9 @@ class _$GeneralSetting extends GeneralSetting {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc(0, preferredLaunchNavTab.hashCode),
+            $jc(
+                $jc($jc(0, preferredSubjectInfoLanguage.hashCode),
+                    preferredLaunchNavTab.hashCode),
                 preferredTimelineLaunchPage.hashCode),
             preferredProgressLaunchPage.hashCode),
         preferredDiscussionLaunchPage.hashCode));
@@ -144,6 +163,7 @@ class _$GeneralSetting extends GeneralSetting {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('GeneralSetting')
+          ..add('preferredSubjectInfoLanguage', preferredSubjectInfoLanguage)
           ..add('preferredLaunchNavTab', preferredLaunchNavTab)
           ..add('preferredTimelineLaunchPage', preferredTimelineLaunchPage)
           ..add('preferredProgressLaunchPage', preferredProgressLaunchPage)
@@ -155,6 +175,13 @@ class _$GeneralSetting extends GeneralSetting {
 class GeneralSettingBuilder
     implements Builder<GeneralSetting, GeneralSettingBuilder> {
   _$GeneralSetting _$v;
+
+  PreferredSubjectInfoLanguage _preferredSubjectInfoLanguage;
+  PreferredSubjectInfoLanguage get preferredSubjectInfoLanguage =>
+      _$this._preferredSubjectInfoLanguage;
+  set preferredSubjectInfoLanguage(
+          PreferredSubjectInfoLanguage preferredSubjectInfoLanguage) =>
+      _$this._preferredSubjectInfoLanguage = preferredSubjectInfoLanguage;
 
   PreferredLaunchNavTab _preferredLaunchNavTab;
   PreferredLaunchNavTab get preferredLaunchNavTab =>
@@ -188,6 +215,7 @@ class GeneralSettingBuilder
 
   GeneralSettingBuilder get _$this {
     if (_$v != null) {
+      _preferredSubjectInfoLanguage = _$v.preferredSubjectInfoLanguage;
       _preferredLaunchNavTab = _$v.preferredLaunchNavTab;
       _preferredTimelineLaunchPage = _$v.preferredTimelineLaunchPage;
       _preferredProgressLaunchPage =
@@ -218,6 +246,7 @@ class GeneralSettingBuilder
     try {
       _$result = _$v ??
           new _$GeneralSetting._(
+              preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
               preferredLaunchNavTab: preferredLaunchNavTab,
               preferredTimelineLaunchPage: preferredTimelineLaunchPage,
               preferredProgressLaunchPage: preferredProgressLaunchPage.build(),

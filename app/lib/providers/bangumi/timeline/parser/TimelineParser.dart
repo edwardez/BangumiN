@@ -690,7 +690,7 @@ class TimelineParser {
         ..subjectScore = subjectScore
         ..subjectImageUrl = subjectImageUrl
         ..subjectComment = subjectComment
-        ..subjectTitle = hyperLinkList[0].name ?? '');
+        ..subjectName = hyperLinkList[0].name ?? '');
     } else {
       return parseStatusUpdateMultiple(
           singleTimelineContent, userInfo, BangumiContent.Subject,

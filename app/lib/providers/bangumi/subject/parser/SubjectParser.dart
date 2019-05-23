@@ -202,8 +202,8 @@ class SubjectParser {
 
     /// Elements that are in the comment box
     for (Element commentElement in commentBoxElements) {
-      SubjectReview review = parseSubjectReview(
-          commentElement, ReviewElement.CommentBox);
+      SubjectReview review =
+      parseSubjectReview(commentElement, ReviewElement.CommentBox);
       if (!mutedUsers.containsKey(review.metaInfo.username)) {
         reviews.add(review);
       }
@@ -297,7 +297,8 @@ class SubjectParser {
       Images images;
 
       if (coverElement != null) {
-        subjectNameCn = coverElement.attributes['data-original-title'];
+        subjectNameCn = coverElement.attributes['data-original-title'] ??
+            coverElement.attributes['title'];
         String coverImage = imageUrlFromBackgroundImage(coverElement);
         coverImage ??= Images.defaultCoverImage;
         images = Images.fromImageUrl(
@@ -336,12 +337,16 @@ class SubjectParser {
       int subjectId = tryParseInt(parseHrefId(coverElement, digitOnly: true),
           defaultValue: null);
 
-      /// for Tankobon, subject original name is stored in `data-original-title`
-      /// for non-Tankobon, subject chinese name is stored in `data-original-title`
-      /// and in some browser(?), attribute `title` is used instead of `data-original-title`
-      /// It's confusing but it is what Bangumi data is :(
-      String subjectName = coverElement.attributes['data-original-title'];
-      subjectName ??= coverElement.attributes['title'] ?? '';
+      /// subject original name is stored in `title` in plain html
+      /// and seems like bangumi js sets attribute `title` to `data-original-title`
+      /// after execution
+      /// Name is stored in something like [original name] / [chinese name], separated
+      /// by slash, however considering even original title itself might contains
+      /// slash sign, it's better to parse subject name conservatively(instead of splitting
+      /// subject name by slash and guessing original/chinese name )
+      String subjectName = coverElement.attributes['data-original-title'] ??
+          coverElement.attributes['title'] ??
+          '';
 
       String coverImage = imageUrlFromBackgroundImage(coverElement);
       coverImage ??= Images.defaultCoverImage;

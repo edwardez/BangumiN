@@ -64,6 +64,6 @@ class _ViewModel {
   @override
   int get hashCode =>
       hash3(
-          muninTheme.hashCode, isAuthenticated.hashCode,
-          generalSetting.hashCode);
+          muninTheme, isAuthenticated,
+          generalSetting);
 }

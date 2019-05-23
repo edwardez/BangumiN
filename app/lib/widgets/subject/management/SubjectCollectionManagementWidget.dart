@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
@@ -327,16 +329,15 @@ class _SubjectCollectionManagementWidgetState
   }
 
   _onInitialBuild(Store<AppState> store) {
-    bool isSubjectAbsent = store.state.subjectState.subjects[widget
-        .subjectId] == null;
-    bool isCollectionInfoAbsent = store.state.subjectState.collections[widget
-        .subjectId] == null;
+    bool isSubjectAbsent =
+        store.state.subjectState.subjects[widget.subjectId] == null;
+    bool isCollectionInfoAbsent =
+        store.state.subjectState.collections[widget.subjectId] == null;
     if (isSubjectAbsent || isCollectionInfoAbsent) {
       final action = GetCollectionInfoAction(
           context: context, subjectId: widget.subjectId);
       store.dispatch(action);
-      action.completer.future
-          .then((_) {
+      action.completer.future.then((_) {
         _initFormData(store.state.subjectState.subjects[widget.subjectId]);
       });
     } else {
@@ -439,7 +440,10 @@ class _SubjectCollectionManagementWidgetState
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
-            title: Text(subject?.name ?? '作品标题'),
+            title: subject != null
+                ? Text(preferredSubjectTitleFromSubjectBase(
+                subject, vm.preferredSubjectInfoLanguage))
+                : Text('-'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],
           ),
           safeAreaChild: Form(
@@ -465,6 +469,7 @@ class _SubjectCollectionManagementWidgetState
 
 class _ViewModel {
   final SubjectCollectionInfo subjectCollectionInfo;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final LoadingStatus collectionLoadingStatus;
   final LoadingStatus collectionsSubmissionStatus;
   final Future Function(BuildContext context, int subjectId) getCollectionInfo;
@@ -493,6 +498,8 @@ class _ViewModel {
       collectionInfoUpdateRequest: _collectionUpdateRequest,
       getCollectionInfo: _getCollectionInfo,
       subjectCollectionInfo: store.state.subjectState.collections[subjectId],
+      preferredSubjectInfoLanguage:
+      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
       collectionLoadingStatus:
           store.state.subjectState.collectionsLoadingStatus[subjectId],
       collectionsSubmissionStatus:
@@ -502,6 +509,7 @@ class _ViewModel {
 
   _ViewModel({
     @required this.getCollectionInfo,
+    @required this.preferredSubjectInfoLanguage,
     @required this.collectionInfoUpdateRequest,
     @required this.subjectCollectionInfo,
     @required this.collectionLoadingStatus,
@@ -515,9 +523,14 @@ class _ViewModel {
           runtimeType == other.runtimeType &&
           collectionLoadingStatus == other.collectionLoadingStatus &&
           collectionsSubmissionStatus == other.collectionsSubmissionStatus &&
-          subjectCollectionInfo == other.subjectCollectionInfo;
+          subjectCollectionInfo == other.subjectCollectionInfo &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
 
   @override
-  int get hashCode => hash3(collectionLoadingStatus.hashCode,
-      collectionsSubmissionStatus.hashCode, subjectCollectionInfo.hashCode);
+  int get hashCode =>
+      hash4(
+          collectionLoadingStatus,
+          collectionsSubmissionStatus,
+          subjectCollectionInfo,
+          preferredSubjectInfoLanguage);
 }

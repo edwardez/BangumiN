@@ -19,6 +19,8 @@ abstract class GetProgressRequest
     ..requestedSubjectTypes.addAll(
         [SubjectType.Anime, SubjectType.Real, SubjectType.Book]));
 
+  static final allWatchable = defaultProgressLaunchPageType;
+
   static final List<GetProgressRequest> validGetProgressRequests = [
     defaultProgressLaunchPageType,
     GetProgressRequest((b) =>

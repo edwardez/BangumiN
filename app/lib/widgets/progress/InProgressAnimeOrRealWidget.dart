@@ -9,8 +9,10 @@ import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollectio
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Colors.dart';
@@ -19,11 +21,14 @@ import 'package:munin/widgets/shared/button/customization.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InProgressAnimeOrRealWidget extends StatelessWidget {
   final InProgressAnimeOrRealCollection subject;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
   final void Function(EpisodeUpdateType episodeUpdateType, int episodeId,
       double newEpisodeNumber) onUpdateSingleEpisode;
   final void Function(int episodeSequentialNumber) onUpdateBatchEpisodes;
@@ -31,6 +36,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
   const InProgressAnimeOrRealWidget({
     Key key,
     @required this.subject,
+    @required this.preferredSubjectInfoLanguage,
     @required this.onUpdateSingleEpisode,
     @required this.onUpdateBatchEpisodes,
   }) : super(key: key);
@@ -48,8 +54,10 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
     String buildSubtitle() {
       List<String> subtitles = [];
-      if (isNotEmpty(episode.nameCn)) {
-        subtitles.add(episode.nameCn);
+      Optional<String> maybeSecondaryTitle = secondarySubjectTitle(
+          episode.name, episode.nameCn, preferredSubjectInfoLanguage);
+      if (maybeSecondaryTitle.isPresent) {
+        subtitles.add(maybeSecondaryTitle.value);
       }
 
       if (isNotEmpty(episode.duration)) {
@@ -75,7 +83,8 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Text(
-                  episode.name,
+                  preferredSubjectTitle(episode.name, episode.nameCn,
+                      preferredSubjectInfoLanguage),
                   style: Theme.of(context).textTheme.title,
                 ),
                 Text(
@@ -195,7 +204,9 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
       case EpisodeStatus.Wish:
         return Theme
             .of(context)
-            .brightness == Brightness.dark ? bangumiPink.shade200 : Theme
+            .brightness == Brightness.dark
+            ? bangumiPink.shade200
+            : Theme
             .of(context)
             .accentColor;
       case EpisodeStatus.Dropped:
@@ -289,7 +300,8 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(subject.subject.name)),
+                      Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
+                          subject.subject, preferredSubjectInfoLanguage))),
                     ],
                   ),
                   WrappableText(

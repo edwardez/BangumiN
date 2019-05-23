@@ -486,10 +486,10 @@ class _ViewModel {
   @override
   int get hashCode =>
       hashObjects([
-        isCurrentAppUser.hashCode,
-        isMuted.hashCode,
-        username.hashCode,
-        userProfile.hashCode,
-        loadingStatus.hashCode
+        isCurrentAppUser,
+        isMuted,
+        username,
+        userProfile,
+        loadingStatus
       ]);
 }

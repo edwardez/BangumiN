@@ -29,8 +29,8 @@ class _$CollectionUpdateSingleSerializer
       'subjectId',
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
-      'subjectTitle',
-      serializers.serialize(object.subjectTitle,
+      'subjectName',
+      serializers.serialize(object.subjectName,
           specifiedType: const FullType(String)),
     ];
     if (object.subjectComment != null) {
@@ -93,8 +93,8 @@ class _$CollectionUpdateSingleSerializer
           result.subjectScore = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
-        case 'subjectTitle':
-          result.subjectTitle = serializers.deserialize(value,
+        case 'subjectName':
+          result.subjectName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'isFromMutedUser':
@@ -120,7 +120,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   @override
   final double subjectScore;
   @override
-  final String subjectTitle;
+  final String subjectName;
   @override
   final bool isFromMutedUser;
 
@@ -134,7 +134,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
       this.subjectId,
       this.subjectImageUrl,
       this.subjectScore,
-      this.subjectTitle,
+      this.subjectName,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -143,9 +143,9 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
     if (subjectId == null) {
       throw new BuiltValueNullFieldError('CollectionUpdateSingle', 'subjectId');
     }
-    if (subjectTitle == null) {
+    if (subjectName == null) {
       throw new BuiltValueNullFieldError(
-          'CollectionUpdateSingle', 'subjectTitle');
+          'CollectionUpdateSingle', 'subjectName');
     }
   }
 
@@ -167,7 +167,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
         subjectId == other.subjectId &&
         subjectImageUrl == other.subjectImageUrl &&
         subjectScore == other.subjectScore &&
-        subjectTitle == other.subjectTitle &&
+        subjectName == other.subjectName &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -181,7 +181,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
                         subjectId.hashCode),
                     subjectImageUrl.hashCode),
                 subjectScore.hashCode),
-            subjectTitle.hashCode),
+            subjectName.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -193,7 +193,7 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
           ..add('subjectId', subjectId)
           ..add('subjectImageUrl', subjectImageUrl)
           ..add('subjectScore', subjectScore)
-          ..add('subjectTitle', subjectTitle)
+          ..add('subjectName', subjectName)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -227,9 +227,9 @@ class CollectionUpdateSingleBuilder
   double get subjectScore => _$this._subjectScore;
   set subjectScore(double subjectScore) => _$this._subjectScore = subjectScore;
 
-  String _subjectTitle;
-  String get subjectTitle => _$this._subjectTitle;
-  set subjectTitle(String subjectTitle) => _$this._subjectTitle = subjectTitle;
+  String _subjectName;
+  String get subjectName => _$this._subjectName;
+  set subjectName(String subjectName) => _$this._subjectName = subjectName;
 
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
@@ -245,7 +245,7 @@ class CollectionUpdateSingleBuilder
       _subjectId = _$v.subjectId;
       _subjectImageUrl = _$v.subjectImageUrl;
       _subjectScore = _$v.subjectScore;
-      _subjectTitle = _$v.subjectTitle;
+      _subjectName = _$v.subjectName;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -276,7 +276,7 @@ class CollectionUpdateSingleBuilder
               subjectId: subjectId,
               subjectImageUrl: subjectImageUrl,
               subjectScore: subjectScore,
-              subjectTitle: subjectTitle,
+              subjectName: subjectName,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

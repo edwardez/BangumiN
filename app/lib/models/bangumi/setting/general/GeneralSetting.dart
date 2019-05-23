@@ -5,6 +5,7 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -14,7 +15,8 @@ abstract class GeneralSetting
     implements Built<GeneralSetting, GeneralSettingBuilder> {
   GeneralSetting._();
 
-  @nullable
+  PreferredSubjectInfoLanguage get preferredSubjectInfoLanguage;
+
   PreferredLaunchNavTab get preferredLaunchNavTab;
 
   TimelineCategoryFilter get preferredTimelineLaunchPage;
@@ -25,6 +27,7 @@ abstract class GeneralSetting
 
   factory GeneralSetting([updates(GeneralSettingBuilder b)]) =>
       _$GeneralSetting((b) => b
+        ..preferredSubjectInfoLanguage = defaultSubjectInfoLanguage
         ..preferredLaunchNavTab = PreferredLaunchNavTab.Timeline
         ..preferredTimelineLaunchPage = TimelineCategoryFilter.AllFeeds
         ..preferredProgressLaunchPage

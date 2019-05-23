@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
@@ -39,8 +41,7 @@ class SubjectWidget extends StatelessWidget {
         }
       },
       onDispose: (store) {
-        final action =
-        CleanUpLoadingStatusAction(subjectId: subjectId);
+        final action = CleanUpLoadingStatusAction(subjectId: subjectId);
         store.dispatch(action);
       },
       builder: (BuildContext context, _ViewModel vm) {
@@ -50,17 +51,18 @@ class SubjectWidget extends StatelessWidget {
               refreshAction:
               GetSubjectAction(context: context, subjectId: subjectId));
         }
-
-        return _buildSubjectMainPage(context, vm.subject);
+        return _buildSubjectMainPage(
+            context, vm.subject, vm.preferredSubjectInfoLanguage);
       },
     );
   }
 
-  Widget _buildSubjectMainPage(BuildContext context, BangumiSubject subject) {
+  Widget _buildSubjectMainPage(BuildContext context, BangumiSubject subject,
+      PreferredSubjectInfoLanguage preferredSubjectInfoLanguage) {
     List<Widget> widgets = [];
     widgets.add(SubjectCoverAndBasicInfo(
-      subject: subject,
-    ));
+        subject: subject,
+        preferredSubjectInfoLanguage: preferredSubjectInfoLanguage));
 
     widgets.add(SubjectRatingOverview(
       subject: subject,
@@ -75,7 +77,8 @@ class SubjectWidget extends StatelessWidget {
     }
 
     if (!isBuiltListMultimapNullOrEmpty(subject.relatedSubjects)) {
-      widgets.add(RelatedSubjectsPreview(subject: subject));
+      widgets.add(RelatedSubjectsPreview(subject: subject,
+          preferredSubjectInfoLanguage: preferredSubjectInfoLanguage));
     }
 
     /// Add a padding in the bottom so bottom comments are easier to read
@@ -86,7 +89,9 @@ class SubjectWidget extends StatelessWidget {
 
     return ScaffoldWithSliverAppBar(
       appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
-      appBarSecondaryTitle: Text(subject.name),
+      appBarSecondaryTitle:
+      Text(preferredSubjectTitleFromSubjectBase(
+          subject, preferredSubjectInfoLanguage)),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -98,8 +103,7 @@ class SubjectWidget extends StatelessWidget {
       safeAreaChildPadding: const EdgeInsets.only(
           left: defaultDensePortraitHorizontalPadding,
           right: defaultDensePortraitHorizontalPadding,
-          top: largeVerticalPadding
-      ),
+          top: largeVerticalPadding),
       enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );
@@ -108,6 +112,7 @@ class SubjectWidget extends StatelessWidget {
 
 class _ViewModel {
   final BangumiSubject subject;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final LoadingStatus subjectLoadingStatus;
   final Function(BuildContext context) getSubject;
 
@@ -122,14 +127,20 @@ class _ViewModel {
     }
 
     return _ViewModel(
-      subject: store.state.subjectState.subjects[subjectId],
-      subjectLoadingStatus:
-      store.state.subjectState.subjectsLoadingStatus[subjectId],
-      getSubject: (BuildContext context) => _getSubject(context),
-    );
+        subject: store.state.subjectState.subjects[subjectId],
+        subjectLoadingStatus:
+        store.state.subjectState.subjectsLoadingStatus[subjectId],
+        getSubject: (BuildContext context) => _getSubject(context),
+        preferredSubjectInfoLanguage: store
+            .state.settingState.generalSetting.preferredSubjectInfoLanguage);
   }
 
-  _ViewModel({this.subject, this.subjectLoadingStatus, this.getSubject});
+  const _ViewModel({
+    @required this.subject,
+    @required this.subjectLoadingStatus,
+    @required this.getSubject,
+    @required this.preferredSubjectInfoLanguage,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -137,8 +148,12 @@ class _ViewModel {
           other is _ViewModel &&
               runtimeType == other.runtimeType &&
               subject == other.subject &&
+              preferredSubjectInfoLanguage ==
+                  other.preferredSubjectInfoLanguage &&
               subjectLoadingStatus == other.subjectLoadingStatus;
 
   @override
-  int get hashCode => hash2(subject, subjectLoadingStatus);
+  int get hashCode =>
+      hash3(subject,
+          preferredSubjectInfoLanguage, subjectLoadingStatus);
 }

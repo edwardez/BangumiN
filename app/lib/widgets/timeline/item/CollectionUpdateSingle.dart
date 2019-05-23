@@ -64,7 +64,7 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
           leadingWidget: CachedRoundedCover.asGridSize(
             imageUrl: collectionUpdateSingle.subjectImageUrl,
           ),
-          title: collectionUpdateSingle.subjectTitle,
+          title: collectionUpdateSingle.subjectName,
           onTap: () {
             Application
                 .router

@@ -303,5 +303,5 @@ class _ViewModel {
           getTimelineRequest == other.getTimelineRequest;
 
   @override
-  int get hashCode => hash2(feedChunks.hashCode, getTimelineRequest.hashCode);
+  int get hashCode => hash2(feedChunks, getTimelineRequest);
 }

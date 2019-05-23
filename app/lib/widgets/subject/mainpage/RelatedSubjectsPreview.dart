@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
@@ -8,7 +9,10 @@ import 'package:munin/widgets/subject/common/HorizontalRelatedSubjects.dart';
 class RelatedSubjectsPreview extends StatelessWidget {
   final BangumiSubject subject;
 
-  const RelatedSubjectsPreview({Key key, @required this.subject})
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
+  const RelatedSubjectsPreview(
+      {Key key, @required this.subject, @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   @override
@@ -30,6 +34,7 @@ class RelatedSubjectsPreview extends StatelessWidget {
         ),
         HorizontalRelatedSubjects(
           relatedSubjects: subject.relatedSubjects,
+          preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
         )
       ],
     );

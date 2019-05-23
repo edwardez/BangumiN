@@ -4,11 +4,13 @@ import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/setting/general/PreferredLanguageWidget.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/common/TransparentDividerThemeContext.dart';
@@ -30,6 +32,26 @@ class GeneralSettingWidget extends StatelessWidget {
           nestedScrollViewBody: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
+              ListTile(
+                title: Text(
+                  '语言',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2
+                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
+                ),
+              ),
+              PreferredLanguageWidget(
+                currentSubjectLanguage: vm.generalSetting
+                    .preferredSubjectInfoLanguage,
+                onSubjectLanguageUpdate: (
+                    PreferredSubjectInfoLanguage language) {
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild(
+                          (b) => b..preferredSubjectInfoLanguage = language));
+                },
+              ),
+              Divider(),
               ListTile(
                 title: Text(
                   '启动',
@@ -139,6 +161,9 @@ class GeneralSettingWidget extends StatelessWidget {
                                 ..preferredProgressLaunchPage
                                     .replace(launchPage)));
                         },
+                        subtitle: launchPage == GetProgressRequest.allWatchable
+                            ? Text('动画，三次元与书籍')
+                            : null,
                       )
                   ],
                 ),
@@ -181,6 +206,9 @@ class GeneralSettingWidget extends StatelessWidget {
                 subtitle: Text(
                   '可以点击时间线，进度或讨论顶部导航条中间的长方形按钮来随时在各个分组间切换',
                 ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 60),
               ),
             ],
           ),

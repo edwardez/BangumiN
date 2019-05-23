@@ -23,7 +23,7 @@ abstract class CollectionUpdateSingle
   @nullable
   double get subjectScore;
 
-  String get subjectTitle;
+  String get subjectName;
 
   CollectionUpdateSingle._();
 

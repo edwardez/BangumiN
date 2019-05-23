@@ -97,6 +97,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     return (bool selected) {
       showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           // return object of type Dialog
           return AlertDialog(

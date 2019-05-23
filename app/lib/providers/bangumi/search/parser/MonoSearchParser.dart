@@ -8,9 +8,10 @@ import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:quiver/core.dart';
 
 class MonoSearchParser {
-  MonoSearchResult parseMonoSearchResult(
+  Optional<MonoSearchResult> parseMonoSearchResult(
       Element monoElement, SearchType searchType) {
     Element nameElement = monoElement.querySelector('h2 a');
 
@@ -19,14 +20,14 @@ class MonoSearchParser {
     /// if not, we returns null immediately
     if (nameElement == null ||
         nameElement.nodes[0].nodeType != Node.TEXT_NODE) {
-      return null;
+      return Optional.absent();
     }
 
     int id = tryParseInt(
         parseHrefId(nameElement, digitOnly: true), defaultValue: null);
 
     if (id == null) {
-      return null;
+      return Optional.absent();
     }
 
     String name = nameElement.nodes[0].text;
@@ -57,7 +58,7 @@ class MonoSearchParser {
       ..images.replace(images)
       ..miscInfo.replace(miscInfo));
 
-    return monoSearchResult;
+    return Optional.of(monoSearchResult);
   }
 
   LinkedHashMap<int, MonoSearchResult> process(String rawHtml,
@@ -72,9 +73,10 @@ class MonoSearchParser {
         LinkedHashMap<int, MonoSearchResult>();
 
     for (Element monoElement in monoElements) {
-      MonoSearchResult monoSearchResult =
+      Optional<MonoSearchResult> maybeMonoSearchResult =
           parseMonoSearchResult(monoElement, searchType);
-      if (monoSearchResult != null) {
+      if (maybeMonoSearchResult.isPresent) {
+        MonoSearchResult monoSearchResult = maybeMonoSearchResult.value;
         monoSearchResults[monoSearchResult.id] = monoSearchResult;
       }
     }

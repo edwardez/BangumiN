@@ -93,8 +93,11 @@ class TimelineParser {
   /// an [AuthenticationExpiredError] will be thrown
   _verifyAuthentication(DocumentFragment document) {
     Element nextPageIndicatorElement = document.querySelector('#tmlPager');
-    if (nextPageIndicatorElement == null ||
-        !nextPageIndicatorElement.text.contains('下一页')) {
+    if (document.querySelector('#timeline') == null) {
+      throw BangumiResponseIncomprehensibleException();
+    }
+
+    if (!nextPageIndicatorElement.text.contains('下一页')) {
       throw AuthenticationExpiredException('认证已过期');
     }
   }

@@ -43,9 +43,9 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
   Widget _buildEmptyRakuenWidget() {
     return Column(
       children: <Widget>[
-        Text('Bangumi上暂无内容或内容无法解析，可能因为应用或bangumi出错，下拉可重试'),
+        Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
             return launch(rakuenMobileUrl, forceSafariVC: true);
           },

@@ -67,11 +67,11 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
         widget.subjectTypes.map((type) => type.chineseName).join(',');
     return Column(
       children: <Widget>[
-        Text('没有找到在看的$requestSubjectTypes'),
-        Text('1. 您没有任何在看的$requestSubjectTypes'),
-        Text('2. 应用或bangumi出错，下拉可重试'),
+        Text('在看的$requestSubjectTypes列表为空，可能因为：'),
+        Text('1. $appOrBangumiHasAnError，下拉可重试'),
+        Text('2. 目前没有在看的$requestSubjectTypes'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
             return launch(bangumiHomePageUrl, forceSafariVC: true);
           },

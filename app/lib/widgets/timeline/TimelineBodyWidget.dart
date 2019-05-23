@@ -173,11 +173,11 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
   _buildEmptyTimelineWidget() {
     return Column(
       children: <Widget>[
-        Text('时间线为空，可能的原因'),
-        Text('1. 应用或bangumi出错，下拉可重试'),
+        Text('时间线为空，可能因为：'),
+        Text('1. $appOrBangumiHasAnError，下拉可重试'),
         Text('2. 您尚未关注任何已发表动态的用户'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
             return launch(bangumiTimelineUrl, forceSafariVC: true);
           },

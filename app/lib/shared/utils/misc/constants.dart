@@ -13,3 +13,7 @@ const String bangumiAnonymousUserMediumAvatar =
 
 final String bangumiTextOnlySubjectCover = 'https://${Application
     .environmentValue.bangumiMainHost}/img/no_icon_subject.png';
+
+
+const String checkWebVersionPrompt = '查看网页版';
+const String appOrBangumiHasAnError = '应用或bangumi出错';

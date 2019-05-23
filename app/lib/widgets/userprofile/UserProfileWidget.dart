@@ -13,6 +13,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/UserProfile/CollectionPreviewWidget.dart';
 import 'package:munin/widgets/UserProfile/TimelinePreviewWidget.dart';
@@ -103,7 +104,7 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(OMIcons.openInBrowser),
-                    title: Text('查看网页版'),
+                    title: Text(checkWebVersionPrompt),
                     onTap: () {
                       Navigator.of(context).pop();
                       launch(userProfileMainUrl, forceSafariVC: true);
@@ -329,7 +330,7 @@ class UserProfileWidget extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 Column(
                   children: <Widget>[
-                    Text('目前无法加载此用户资料, 可能因为应用或bangumi出错'),
+                    Text('目前无法加载此用户资料, 可能因为$appOrBangumiHasAnError'),
                     FlatButton(
                       child: Text('点击重试'),
                       onPressed: () {
@@ -337,7 +338,7 @@ class UserProfileWidget extends StatelessWidget {
                       },
                     ),
                     FlatButton(
-                      child: Text('查看对应网页版'),
+                      child: Text(checkWebVersionPrompt),
                       onPressed: () {
                         launch(
                             'https://${Application.environmentValue.bangumiMainHost}/user/$username',

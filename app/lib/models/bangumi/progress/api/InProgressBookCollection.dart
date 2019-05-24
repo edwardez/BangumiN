@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -11,7 +11,7 @@ part 'InProgressBookCollection.g.dart';
 abstract class InProgressBookCollection
     implements
         Built<InProgressBookCollection, InProgressBookCollectionBuilder>,
-        InProgressSubject {
+        InProgressCollection {
   InProgressBookCollection._();
 
   factory InProgressBookCollection(

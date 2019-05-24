@@ -211,9 +211,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(SubjectType),
-            const FullType(BuiltList, const [const FullType(InProgressSubject)])
+            const FullType(
+                BuiltList, const [const FullType(InProgressCollection)])
           ]),
-          () => new MapBuilder<SubjectType, BuiltList<InProgressSubject>>())
+          () => new MapBuilder<SubjectType, BuiltList<InProgressCollection>>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(BangumiSubject)]), () => new MapBuilder<int, BangumiSubject>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]), () => new MapBuilder<int, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SubjectCollectionInfo)]), () => new MapBuilder<int, SubjectCollectionInfo>())

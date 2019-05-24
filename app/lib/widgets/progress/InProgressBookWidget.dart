@@ -18,14 +18,14 @@ import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 
 class InProgressBookWidget extends StatefulWidget {
-  final InProgressBookCollection subject;
+  final InProgressBookCollection collection;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   final Future<void> Function(int newEpisodeNumber, int newVolumeNumber)
       onUpdateBookProgress;
 
   const InProgressBookWidget(
-      {Key key, @required this.subject, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage})
+      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   @override
@@ -40,9 +40,9 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
 
   bool get isDirtyOrTouched {
     return episodeEditController.text !=
-            widget.subject.completedEpisodesCount.toString() ||
+        widget.collection.completedEpisodesCount.toString() ||
         volumeEditController.text !=
-            widget.subject.completedVolumesCount.toString() ||
+            widget.collection.completedVolumesCount.toString() ||
         hasTouchedForm;
   }
 
@@ -50,11 +50,11 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
   void initState() {
     super.initState();
     episodeEditController = TextEditingController(
-        text: widget.subject.completedEpisodesCount.toString());
+        text: widget.collection.completedEpisodesCount.toString());
     episodeEditController.addListener(onEpisodeNumberChange);
 
     volumeEditController = TextEditingController(
-        text: widget.subject.completedVolumesCount.toString());
+        text: widget.collection.completedVolumesCount.toString());
     volumeEditController.addListener(onVolumeNumberChange);
   }
 
@@ -120,7 +120,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
         8.0);
 
     return ExpansionTile(
-      key: PageStorageKey<String>('progress-${widget.subject.subject.id}'),
+      key: PageStorageKey<String>('progress-${widget.collection.subject.id}'),
       title: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: math.max(
@@ -134,11 +134,11 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
               children: <Widget>[
                 ClickableCachedRoundedCover(
                   width: 48,
-                  imageUrl: widget.subject.subject?.cover?.large ??
+                  imageUrl: widget.collection.subject?.cover?.large ??
                       bangumiTextOnlySubjectCover,
                   height: 48,
                   contentType: BangumiContent.Subject,
-                  id: widget.subject.subject.id.toString(),
+                  id: widget.collection.subject.id.toString(),
                 ),
                 ButtonTheme.fromButtonThemeData(
                   data: smallButtonTheme(context),
@@ -148,7 +148,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                           context,
                           Routes.subjectCollectionManagementRoute.replaceFirst(
                               ':subjectId',
-                              widget.subject.subject.id.toString()),
+                              widget.collection.subject.id.toString()),
                           transition: TransitionType.nativeModal);
                     },
                     child: Text("编辑"),
@@ -166,18 +166,22 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                   Row(
                     children: <Widget>[
                       Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
-                          widget.subject.subject,
+                          widget.collection.subject,
                           widget.preferredSubjectInfoLanguage))),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       WrappableText(
-                        '${widget.subject.completedEpisodesCount ?? '??'}/${widget.subject.subject.totalEpisodesCount ?? '??'}话  ',
+                        '${widget.collection.completedEpisodesCount ??
+                            '??'}/${widget.collection.subject
+                            .totalEpisodesCount ?? '??'}话  ',
                         textStyle: Theme.of(context).textTheme.caption,
                       ),
                       WrappableText(
-                        '${widget.subject.completedVolumesCount ?? '??'}/${widget.subject.subject.totalVolumesCount ?? '??'}卷',
+                        '${widget.collection.completedVolumesCount ??
+                            '??'}/${widget.collection.subject
+                            .totalVolumesCount ?? '??'}卷',
                         textStyle: Theme.of(context).textTheme.caption,
                       )
                     ],
@@ -197,8 +201,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
             children: <Widget>[
               BookProgressUpdateField(
                 fieldType: FieldType.Episode,
-                maxNumber: widget.subject.subject.totalEpisodesCount,
-                subjectId: widget.subject.subject.id,
+                maxNumber: widget.collection.subject.totalEpisodesCount,
+                subjectId: widget.collection.subject.id,
                 textEditingController: episodeEditController,
               ),
               Padding(
@@ -206,8 +210,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
               ),
               BookProgressUpdateField(
                 fieldType: FieldType.Volume,
-                maxNumber: widget.subject.subject.totalVolumesCount,
-                subjectId: widget.subject.subject.id,
+                maxNumber: widget.collection.subject.totalVolumesCount,
+                subjectId: widget.collection.subject.id,
                 textEditingController: volumeEditController,
               ),
               Padding(padding: const EdgeInsets.symmetric(vertical: 4.0)),

@@ -156,7 +156,7 @@ class _$InProgressBookCollection extends InProgressBookCollection {
 class InProgressBookCollectionBuilder
     implements
         Builder<InProgressBookCollection, InProgressBookCollectionBuilder>,
-        InProgressSubjectBuilder {
+        InProgressCollectionBuilder {
   _$InProgressBookCollection _$v;
 
   int _completedEpisodesCount;

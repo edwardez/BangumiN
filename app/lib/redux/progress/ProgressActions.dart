@@ -5,7 +5,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/shared/CommonActions.dart';
@@ -33,7 +33,7 @@ class GetProgressLoadingAction {
 
 class GetProgressSuccessAction {
   final BuiltSet<SubjectType> subjectTypes;
-  final LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>
+  final LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
       progresses;
 
   GetProgressSuccessAction(

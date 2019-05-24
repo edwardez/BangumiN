@@ -8,7 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
@@ -90,18 +90,18 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
         _muninRefreshKey.currentState?.callOnRefresh();
       },
       builder: (BuildContext context, _ViewModel vm) {
-        bool progressesLoaded = vm.progresses.isPresent;
-        BuiltList<InProgressSubject> subjects = progressesLoaded
-            ? vm.progresses.value
-            : BuiltList<InProgressSubject>();
+        bool progressesLoaded = vm.collections.isPresent;
+        BuiltList<InProgressCollection> collections = progressesLoaded
+            ? vm.collections.value
+            : BuiltList<InProgressCollection>();
 
         List<Widget> widgets = [];
 
-        for (InProgressSubject subject in subjects) {
+        for (InProgressCollection collection in collections) {
           Widget widget;
-          if (subject is InProgressAnimeOrRealCollection) {
+          if (collection is InProgressAnimeOrRealCollection) {
             widget = InProgressAnimeOrRealWidget(
-              subject: subject,
+              collection: collection,
               preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
               onUpdateSingleEpisode: (EpisodeUpdateType episodeUpdateType,
                   int episodeId, double newEpisodeNumber) {
@@ -110,20 +110,20 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
                   episodeId: episodeId,
                   newEpisodeNumber: newEpisodeNumber,
                   episodeUpdateType: episodeUpdateType,
-                  subject: subject.subject,
+                  subject: collection.subject,
                 );
               },
               onUpdateBatchEpisodes: (int episodeSequentialNumber) {
                 vm.updateAnimeOrRealBatchEpisodes(
                   context: context,
-                  subject: subject.subject,
+                  subject: collection.subject,
                   episodeSequentialNumber: episodeSequentialNumber,
                 );
               },
             );
-          } else if (subject is InProgressBookCollection) {
+          } else if (collection is InProgressBookCollection) {
             widget = InProgressBookWidget(
-              subject: subject,
+              collection: collection,
               preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
               onUpdateBookProgress:
                   (int newEpisodeNumber, int newVolumeNumber) {
@@ -131,7 +131,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
                   context: context,
                   newEpisodeNumber: newEpisodeNumber,
                   newVolumeNumber: newVolumeNumber,
-                  subject: subject.subject,
+                  subject: collection.subject,
                 );
 
                 return future;
@@ -175,7 +175,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
 }
 
 class _ViewModel {
-  final Optional<BuiltList<InProgressSubject>> progresses;
+  final Optional<BuiltList<InProgressCollection>> collections;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final Future Function(BuildContext context) getProgress;
   final UpdateAnimeOrRealSingleEpisode updateAnimeOrRealSingleEpisode;
@@ -241,10 +241,11 @@ class _ViewModel {
       return action.completer.future;
     }
 
-    Optional<BuiltList<InProgressSubject>> _progressesSelector() {
-      BuiltMap<SubjectType, BuiltList<InProgressSubject>> progressesInStore =
+    Optional<BuiltList<InProgressCollection>> _progressesSelector() {
+      BuiltMap<SubjectType, BuiltList<InProgressCollection>> progressesInStore =
           store.state.progressState.progresses;
-      BuiltList<InProgressSubject> progresses = BuiltList<InProgressSubject>();
+      BuiltList<InProgressCollection> progresses = BuiltList<
+          InProgressCollection>();
 
       for (SubjectType subjectType in types) {
         if (progressesInStore.containsKey(subjectType)) {
@@ -260,7 +261,7 @@ class _ViewModel {
 
     return _ViewModel(
       getProgress: _getProgress,
-      progresses: _progressesSelector(),
+      collections: _progressesSelector(),
       preferredSubjectInfoLanguage:
       store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
       updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
@@ -270,7 +271,7 @@ class _ViewModel {
   }
 
   const _ViewModel({
-    @required this.progresses,
+    @required this.collections,
     @required this.getProgress,
     @required this.updateAnimeOrRealSingleEpisode,
     @required this.updateAnimeOrRealBatchEpisodes,
@@ -283,11 +284,11 @@ class _ViewModel {
       identical(this, other) ||
           other is _ViewModel &&
               runtimeType == other.runtimeType &&
-              progresses == other.progresses &&
+              collections == other.collections &&
               preferredSubjectInfoLanguage ==
                   other.preferredSubjectInfoLanguage;
 
   @override
   int get hashCode =>
-      hash2(progresses, preferredSubjectInfoLanguage);
+      hash2(collections, preferredSubjectInfoLanguage);
 }

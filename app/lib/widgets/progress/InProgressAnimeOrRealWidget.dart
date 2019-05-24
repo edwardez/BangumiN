@@ -26,7 +26,7 @@ import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InProgressAnimeOrRealWidget extends StatelessWidget {
-  final InProgressAnimeOrRealCollection subject;
+  final InProgressAnimeOrRealCollection collection;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   final void Function(EpisodeUpdateType episodeUpdateType, int episodeId,
@@ -35,7 +35,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
   const InProgressAnimeOrRealWidget({
     Key key,
-    @required this.subject,
+    @required this.collection,
     @required this.preferredSubjectInfoLanguage,
     @required this.onUpdateSingleEpisode,
     @required this.onUpdateBatchEpisodes,
@@ -254,7 +254,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
         8.0);
 
     return ExpansionTile(
-      key: PageStorageKey<String>('progress-${subject.subject.id}'),
+      key: PageStorageKey<String>('progress-${collection.subject.id}'),
       title: Padding(
         /// HACK: ListTile has a default of `EdgeInsets.symmetric(horizontal: 16.0)`
         /// padding, we want a 24.0 padding by default so adding a offset here
@@ -270,11 +270,11 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
               children: <Widget>[
                 ClickableCachedRoundedCover(
                   width: 48,
-                  imageUrl: subject.subject?.cover?.large ??
+                  imageUrl: collection.subject?.cover?.large ??
                       bangumiTextOnlySubjectCover,
                   height: 48,
                   contentType: BangumiContent.Subject,
-                  id: subject.subject.id.toString(),
+                  id: collection.subject.id.toString(),
                 ),
                 ButtonTheme.fromButtonThemeData(
                   data: smallButtonTheme(context),
@@ -283,7 +283,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                       Application.router.navigateTo(
                           context,
                           Routes.subjectCollectionManagementRoute.replaceFirst(
-                              ':subjectId', subject.subject.id.toString()),
+                              ':subjectId', collection.subject.id.toString()),
                           transition: TransitionType.nativeModal);
                     },
                     child: Text("编辑"),
@@ -301,11 +301,12 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
-                          subject.subject, preferredSubjectInfoLanguage))),
+                          collection.subject, preferredSubjectInfoLanguage))),
                     ],
                   ),
                   WrappableText(
-                    '${subject.completedEpisodesCount ?? '??'}/${subject.subject.totalEpisodesCount ?? '??'}话',
+                    '${collection.completedEpisodesCount ?? '??'}/${collection
+                        .subject.totalEpisodesCount ?? '??'}话',
                     textStyle: Theme.of(context).textTheme.caption,
                     outerWrapper: OuterWrapper.Row,
                   ),
@@ -322,7 +323,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: defaultPortraitHorizontalPadding),
             child: Wrap(
-              children: _buildEpisodeChips(context, subject),
+              children: _buildEpisodeChips(context, collection),
             ),
           ),
         ),

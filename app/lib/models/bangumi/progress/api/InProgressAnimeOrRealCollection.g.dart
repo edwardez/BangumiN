@@ -162,7 +162,7 @@ class InProgressAnimeOrRealCollectionBuilder
     implements
         Builder<InProgressAnimeOrRealCollection,
             InProgressAnimeOrRealCollectionBuilder>,
-        InProgressSubjectBuilder {
+        InProgressCollectionBuilder {
   _$InProgressAnimeOrRealCollection _$v;
 
   int _completedEpisodesCount;

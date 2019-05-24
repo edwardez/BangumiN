@@ -26,7 +26,7 @@ import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
@@ -201,11 +201,11 @@ part 'serializers.g.dart';
 
   /// Progress
   ProgressState,
-  InProgressSubject,
+  InProgressCollection,
   EpisodeProgress,
   InProgressAnimeOrRealCollection,
   InProgressBookCollection,
-  InProgressSubject,
+  InProgressCollection,
   InProgressSubjectInfo,
   EpisodeStatus,
   EpisodeType,
@@ -229,8 +229,8 @@ final Serializers serializers =
   ..addBuilderFactory(
       FullType(BuiltList, [ FullType(SubjectPreview)]),
           () => ListBuilder<SubjectPreview>())..addBuilderFactory(
-      FullType(BuiltList, [ FullType(InProgressSubject)]),
-          () => ListBuilder<InProgressSubject>())
+      FullType(BuiltList, [ FullType(InProgressCollection)]),
+          () => ListBuilder<InProgressCollection>())
   ..addPlugin(StandardJsonPlugin())
 
 )

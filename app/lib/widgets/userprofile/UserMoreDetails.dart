@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/widgets/UserProfile/NetworkServiceTagWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/text/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/strings.dart';
@@ -14,35 +14,36 @@ class UserMoreDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWithRegularAppBar(
-      safeAreaChild: Builder(
-        builder: (BuildContext builderContext) {
-          return ListView(
-            children: <Widget>[
-              isEmpty(profile.introductionInPlainText) ? WrappableText(
-                '暂无简介',
-                textStyle: Theme
-                    .of(context)
-                    .textTheme
-                    .caption,
-                fit: FlexFit.tight,
-                outerWrapper: OuterWrapper.Row,
-              ) : BangumiHtml(
-                html: profile.introductionInHtml,
-              ),
-              Wrap(
-                children: <Widget>[
-                  for (NetworkServiceTag tag in profile.networkServiceTags)
-                    NetworkServiceTagWidget(tag: tag)
-                ],
-              )
-            ],
-          );
-        },
-      ),
-      appBar: AppBar(
-        title: Text('${profile.basicInfo.nickname}的更多资料'),
-      ),
-    );
+    return ScaffoldWithSliverAppBar(
+        enableBottomSafeArea: false,
+        nestedScrollViewBody: Builder(
+          builder: (BuildContext builderContext) {
+            return ListView(
+              padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
+              children: <Widget>[
+                isEmpty(profile.introductionInPlainText)
+                    ? WrappableText(
+                  '暂无简介',
+                  textStyle: Theme
+                      .of(context)
+                      .textTheme
+                      .caption,
+                  fit: FlexFit.tight,
+                  outerWrapper: OuterWrapper.Row,
+                )
+                    : BangumiHtml(
+                  html: profile.introductionInHtml * 10,
+                ),
+                Wrap(
+                  children: <Widget>[
+                    for (NetworkServiceTag tag in profile.networkServiceTags)
+                      NetworkServiceTagWidget(tag: tag)
+                  ],
+                )
+              ],
+            );
+          },
+        ),
+        appBarMainTitle: Text('${profile.basicInfo.nickname}的更多资料'));
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:math' show min;
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
@@ -8,6 +10,7 @@ import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/router/routes.dart';
 import 'package:redux/redux.dart';
 
 List<Middleware<AppState>> createOauthMiddleware(
@@ -70,7 +73,10 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
         sharedPreferenceService.persistAppState(updatedAppState)
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
-      Navigator.of(action.context).pushReplacementNamed('/home');
+      Application.router.navigateTo(
+          action.context,
+          Routes.homeRoute,
+          transition: TransitionType.native);
     } catch (error, stack) {
       final maxErrorMessageMaxLength = 200;
       final errorMessage = error.toString();

@@ -1,7 +1,9 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
+import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
 import 'package:munin/widgets/setting/Setting.dart';
@@ -17,6 +19,11 @@ var loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return MuninLoginPage();
 });
+
+var homeRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MuninHomePage(generalSetting: GeneralSetting(),);
+    });
 
 var bangumiOauthRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

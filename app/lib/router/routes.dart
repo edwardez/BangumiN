@@ -6,6 +6,7 @@ import './RouteHandlers.dart';
 class Routes {
   static String root = "/";
   static String loginRoute = "/login";
+  static String homeRoute = "/home";
   static String bangumiOauthRoute = "/bangumiOauth";
   static String subjectMainPageRoute = "/subject/:subjectId";
   static String subjectDetailInfoPageRoute = "/subject/:subjectId/info";
@@ -28,6 +29,7 @@ class Routes {
       print("Route is not found!");
     });
     router.define(loginRoute, handler: loginRouteHandler);
+    router.define(homeRoute, handler: homeRouteHandler);
     router.define(bangumiOauthRoute, handler: bangumiOauthRouteHandler);
     router.define(subjectMainPageRoute, handler: subjectMainPageRouteHandler);
     router.define(subjectDetailInfoPageRoute,

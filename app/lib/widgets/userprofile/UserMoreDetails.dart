@@ -32,7 +32,7 @@ class UserMoreDetails extends StatelessWidget {
                   outerWrapper: OuterWrapper.Row,
                 )
                     : BangumiHtml(
-                  html: profile.introductionInHtml * 10,
+                  html: profile.introductionInHtml,
                 ),
                 Wrap(
                   children: <Widget>[

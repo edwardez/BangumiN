@@ -26,7 +26,7 @@ class CollectionPreviewWidget extends StatelessWidget {
   _navigateToCollectionPage(SubjectType subjectType) {
     String url =
         'https://${Application.environmentValue.bangumiMainHost}/${subjectType.toString().toLowerCase()}/list/$userName';
-    launch(url, forceSafariVC: true);
+    launch(url, forceSafariVC: false);
   }
 
   @override

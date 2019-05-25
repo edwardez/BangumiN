@@ -223,7 +223,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
               return launch(
                   'https://${Application.environmentValue
                       .bangumiMainHost}/user/$username/timeline?type=$category',
-                  forceSafariVC: true);
+                  forceSafariVC: false);
             },
           )
         ],
@@ -238,7 +238,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
         FlatButton(
           child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(bangumiTimelineUrl, forceSafariVC: true);
+            return launch(bangumiTimelineUrl, forceSafariVC: false);
           },
         )
       ],

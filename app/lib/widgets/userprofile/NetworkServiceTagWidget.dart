@@ -47,7 +47,7 @@ class NetworkServiceTagWidget extends StatelessWidget {
       ),
       onTap: () {
         if (isLink) {
-          launch((tag as NetworkServiceTagLink).link, forceSafariVC: true);
+          launch((tag as NetworkServiceTagLink).link, forceSafariVC: false);
         } else {
           ClipboardService.copyConfirmationDialog(context, tag.content);
         }

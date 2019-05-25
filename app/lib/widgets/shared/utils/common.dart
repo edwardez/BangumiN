@@ -50,7 +50,7 @@ generateOnTapCallbackForBangumiContent({
 
   if (webPageUrl != null) {
     return () {
-      launch(webPageUrl, forceSafariVC: true);
+      launch(webPageUrl, forceSafariVC: false);
     };
   }
 

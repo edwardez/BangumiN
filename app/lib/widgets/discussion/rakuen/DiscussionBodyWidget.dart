@@ -47,7 +47,7 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
         FlatButton(
           child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(rakuenMobileUrl, forceSafariVC: true);
+            return launch(rakuenMobileUrl, forceSafariVC: false);
           },
         )
       ],

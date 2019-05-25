@@ -73,7 +73,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
         FlatButton(
           child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(bangumiHomePageUrl, forceSafariVC: true);
+            return launch(bangumiHomePageUrl, forceSafariVC: false);
           },
         )
       ],

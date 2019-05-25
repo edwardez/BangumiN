@@ -102,7 +102,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                   ),
                   onTap: () {
                     launch('https://bgm.tv/ep/${episode.id}',
-                        forceSafariVC: true);
+                        forceSafariVC: false);
                     Navigator.of(context).pop();
                   },
                 ),

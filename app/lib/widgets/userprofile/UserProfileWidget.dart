@@ -107,7 +107,7 @@ class UserProfileWidget extends StatelessWidget {
                     title: Text(checkWebVersionPrompt),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch(userProfileMainUrl, forceSafariVC: true);
+                      launch(userProfileMainUrl, forceSafariVC: false);
                     },
                   ),
                   _buildMuteAction(outerContext, vm),
@@ -216,7 +216,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/mono', forceSafariVC: true);
+          launch('$userProfileMainUrl/mono', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -237,7 +237,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/friends', forceSafariVC: true);
+          launch('$userProfileMainUrl/friends', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -258,7 +258,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/index', forceSafariVC: true);
+          launch('$userProfileMainUrl/index', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -279,7 +279,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/groups', forceSafariVC: true);
+          launch('$userProfileMainUrl/groups', forceSafariVC: false);
         },
       ),
     ]);
@@ -343,7 +343,7 @@ class UserProfileWidget extends StatelessWidget {
                       onPressed: () {
                         launch(
                             'https://${Application.environmentValue.bangumiMainHost}/user/$username',
-                            forceSafariVC: true);
+                            forceSafariVC: false);
                       },
                     ),
                   ],

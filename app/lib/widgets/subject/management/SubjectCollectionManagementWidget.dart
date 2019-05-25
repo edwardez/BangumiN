@@ -16,6 +16,8 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
+import 'package:munin/widgets/shared/form/SimpleFormSubmitWidget.dart';
+import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionIsPrivateFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionStatusFormField.dart';
@@ -354,25 +356,21 @@ class _SubjectCollectionManagementWidgetState
 
   _buildSubmitWidget(BuildContext context, _ViewModel vm, int subjectId) {
     if (vm.collectionsSubmissionStatus == LoadingStatus.Loading) {
-      return IconButton(
-        icon: SizedBox(
-          child: CircularProgressIndicator(),
-        ),
-        onPressed: null,
+      return AdaptiveProgressIndicator(
+        indicatorStyle: IndicatorStyle.Material,
       );
     }
 
     return GestureDetector(
-      child: FlatButton(
-          onPressed: _canSubmitForm
-              ? () {
-                  _formKey?.currentState?.save();
-                  vm.collectionInfoUpdateRequest(
-                      context, subjectId, localSubjectCollectionInfo);
-                }
-              : null,
-          textColor: lightPrimaryDarkAccentColor(context),
-          child: Text('更新收藏')),
+      child: SimpleFormSubmitWidget(
+        loadingStatus: vm.collectionsSubmissionStatus,
+        onSubmitPressed: (BuildContext context) {
+          _formKey?.currentState?.save();
+          vm.collectionInfoUpdateRequest(
+              context, subjectId, localSubjectCollectionInfo);
+        },
+        canSubmit: _canSubmitForm,
+      ),
       onTap: _canSubmitForm
           ? null
           : () {

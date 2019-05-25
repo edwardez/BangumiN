@@ -56,10 +56,8 @@ var subjectCollectionManagementRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String subjectIdStr = params["subjectId"]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
-      return Scaffold(
-        body: SubjectCollectionManagementWidget(
-          subjectId: subjectId,
-        ),
+      return SubjectCollectionManagementWidget(
+        subjectId: subjectId,
       );
     });
 

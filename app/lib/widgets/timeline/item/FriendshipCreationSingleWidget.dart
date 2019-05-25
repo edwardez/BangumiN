@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
@@ -29,6 +30,10 @@ class FriendshipCreationSingleWidget extends StatelessWidget {
             username: friendshipCreationSingle.friendId,
           ),
           title: friendshipCreationSingle.friendNickName,
+            onTap: generateOnTapCallbackForBangumiContent(
+                contentType: friendshipCreationSingle.bangumiContent,
+                id: friendshipCreationSingle.friendId,
+                context: context)
         ),
       ],
     );

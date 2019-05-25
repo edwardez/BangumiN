@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/MonoFavoriteSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
@@ -27,6 +28,10 @@ class MonoFavoriteSingleWidget extends StatelessWidget {
           leadingWidget: CachedRoundedCover.asGridSize(
               imageUrl: monoFavoriteSingle.avatar.grid),
           title: monoFavoriteSingle.monoName,
+          onTap: generateOnTapCallbackForBangumiContent(
+              contentType: monoFavoriteSingle.bangumiContent,
+              id: monoFavoriteSingle.id,
+              context: context),
         ),
       ],
     );

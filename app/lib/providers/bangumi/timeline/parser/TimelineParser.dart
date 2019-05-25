@@ -903,7 +903,7 @@ class TimelineParser {
       ..user.replace(userInfo)
       ..newItemId = hyperLinkList[0].id
       ..newItemName = hyperLinkList[0].name
-      ..bangumiContent = BangumiContent.Wiki);
+      ..bangumiContent = BangumiContent.Subject);
   }
 
   TimelineFeed parseDoujinActivity(Element singleTimelineContent,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 
@@ -43,7 +45,11 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
                 ),
               ],
             ),
-            onTap: () => {},
+            onTap: generateOnTapCallbackForBangumiContent(
+                contentType: BangumiContent.Subject,
+                id: progressUpdateEpisodeUntil.subjectId,
+                context: context
+            ),
           ),
         )
       ],

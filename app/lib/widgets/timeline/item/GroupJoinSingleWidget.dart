@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/GroupJoinSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
@@ -28,6 +29,10 @@ class GroupJoinSingleWidget extends StatelessWidget {
               imageUrl: groupJoinSingle.groupIcon.medium),
           title: groupJoinSingle.groupName,
           subtitle: groupJoinSingle.groupDescription,
+          onTap: generateOnTapCallbackForBangumiContent(
+              contentType: groupJoinSingle.bangumiContent,
+              id: groupJoinSingle.groupId,
+              context: context),
         ),
       ],
     );

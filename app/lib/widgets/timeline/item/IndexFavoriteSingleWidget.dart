@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/IndexFavoriteSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
@@ -24,6 +25,10 @@ class IndexFavoriteSingleWidget extends StatelessWidget {
         TimelineCommonListTile(
           title: indexFavoriteSingle.title,
           subtitle: indexFavoriteSingle.summary,
+          onTap: generateOnTapCallbackForBangumiContent(
+              contentType: indexFavoriteSingle.bangumiContent,
+              id: indexFavoriteSingle.id,
+              context: context),
         ),
       ],
     );

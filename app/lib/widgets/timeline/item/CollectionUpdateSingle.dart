@@ -1,9 +1,8 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
@@ -70,13 +69,10 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
             imageUrl: collectionUpdateSingle.subjectCover.medium,
           ),
           title: collectionUpdateSingle.subjectName,
-          onTap: () {
-            Application
-                .router
-                .navigateTo(context,
-                '/subject/${collectionUpdateSingle.subjectId}',
-                transition: TransitionType.native);
-          },
+          onTap: generateOnTapCallbackForBangumiContent(
+              contentType: collectionUpdateSingle.bangumiContent,
+              id: collectionUpdateSingle.subjectId,
+              context: context),
         ),
       ],
     );

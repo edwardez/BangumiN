@@ -3,29 +3,35 @@ import 'package:flutter/material.dart';
 
 import './RouteHandlers.dart';
 
+class RoutesVariable {
+  static const subjectId = ':subjectId';
+  static const username = ':username';
+}
+
 class Routes {
-  static String root = "/";
-  static String loginRoute = "/login";
-  static String homeRoute = "/home";
-  static String bangumiOauthRoute = "/bangumiOauth";
-  static String subjectMainPageRoute = "/subject/:subjectId";
-  static String subjectDetailInfoPageRoute = "/subject/:subjectId/info";
-  static String subjectCollectionManagementRoute =
-      "/subject/:subjectId/collection";
+  static const root = "/";
+  static const loginRoute = "/login";
+  static const homeRoute = "/home";
+  static const bangumiOauthRoute = "/bangumiOauth";
+  static const subjectMainPageRoute = "/subject/${RoutesVariable.subjectId}";
+  static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
+      .subjectId}/info";
+  static const subjectCollectionManagementRoute =
+      "/subject/${RoutesVariable.subjectId}/collection";
 
   // User
-  static String userProfileRoute = "/user/:username";
-  static String userProfileTimelineRoute =
-      "/user/:username/timeline";
+  static const userProfileRoute = "/user/${RoutesVariable.username}";
+  static const userProfileTimelineRoute =
+      "/user/${RoutesVariable.username}/timeline";
   static String composeTimelineMessageRoute =
-      "/user/:username/timeline/new";
+      "/user/${RoutesVariable.username}/timeline/new";
 
   // Setting
-  static String settingRoute = "/setting";
-  static String generalSettingRoute = "/setting/general";
-  static String themeSettingRoute = "/setting/theme";
-  static String muteSettingRoute = "/setting/mute";
-  static String muteSettingBatchImportUsersRoute =
+  static const settingRoute = "/setting";
+  static const generalSettingRoute = "/setting/general";
+  static const themeSettingRoute = "/setting/theme";
+  static const muteSettingRoute = "/setting/mute";
+  static const muteSettingBatchImportUsersRoute =
       "/setting/mute/users/import/bangumi";
 
 

@@ -28,6 +28,7 @@ import 'package:url_launcher/url_launcher.dart';
 class InProgressAnimeOrRealWidget extends StatelessWidget {
   final InProgressAnimeOrRealCollection collection;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+  final bool expandAllProgressTiles;
 
   final void Function(EpisodeUpdateType episodeUpdateType, int episodeId,
       double newEpisodeNumber) onUpdateSingleEpisode;
@@ -39,6 +40,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
     @required this.preferredSubjectInfoLanguage,
     @required this.onUpdateSingleEpisode,
     @required this.onUpdateBatchEpisodes,
+    @required this.expandAllProgressTiles,
   }) : super(key: key);
 
   _showEpisodeSheet(BuildContext context, EpisodeProgress episode) {
@@ -255,6 +257,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
     return ExpansionTile(
       key: PageStorageKey<String>('progress-${collection.subject.id}'),
+      initiallyExpanded: expandAllProgressTiles,
       title: Padding(
         /// HACK: ListTile has a default of `EdgeInsets.symmetric(horizontal: 16.0)`
         /// padding, we want a 24.0 padding by default so adding a offset here

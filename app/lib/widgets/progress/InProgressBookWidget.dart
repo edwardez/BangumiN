@@ -20,12 +20,13 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 class InProgressBookWidget extends StatefulWidget {
   final InProgressBookCollection collection;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+  final bool expandAllProgressTiles;
 
   final Future<void> Function(int newEpisodeNumber, int newVolumeNumber)
       onUpdateBookProgress;
 
   const InProgressBookWidget(
-      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage})
+      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage, @required this.expandAllProgressTiles})
       : super(key: key);
 
   @override
@@ -121,6 +122,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
 
     return ExpansionTile(
       key: PageStorageKey<String>('progress-${widget.collection.subject.id}'),
+      initiallyExpanded: widget.expandAllProgressTiles,
       title: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: math.max(

@@ -43,13 +43,35 @@ class GeneralSettingWidget extends StatelessWidget {
                 ),
               ),
               PreferredLanguageWidget(
-                currentSubjectLanguage: vm.generalSetting
-                    .preferredSubjectInfoLanguage,
-                onSubjectLanguageUpdate: (
-                    PreferredSubjectInfoLanguage language) {
+                currentSubjectLanguage:
+                vm.generalSetting.preferredSubjectInfoLanguage,
+                onSubjectLanguageUpdate:
+                    (PreferredSubjectInfoLanguage language) {
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
                           (b) => b..preferredSubjectInfoLanguage = language));
                 },
+              ),
+              Divider(),
+              ListTile(
+                title: Text(
+                  '进度',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2
+                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
+                ),
+              ),
+              SwitchListTile.adaptive(
+                value: vm.generalSetting.expandAllProgressTiles,
+                title: Text('展开所有在看作品的话数面板'),
+                onChanged: (bool value) {
+                  final currentValue =
+                      vm.generalSetting.expandAllProgressTiles;
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild(
+                          (b) => b..expandAllProgressTiles = !currentValue));
+                },
+                activeColor: lightPrimaryDarkAccentColor(context),
               ),
               Divider(),
               ListTile(

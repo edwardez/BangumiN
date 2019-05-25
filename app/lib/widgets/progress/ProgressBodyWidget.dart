@@ -103,6 +103,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
             widget = InProgressAnimeOrRealWidget(
               collection: collection,
               preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
+              expandAllProgressTiles: vm.expandAllProgressTiles,
               onUpdateSingleEpisode: (EpisodeUpdateType episodeUpdateType,
                   int episodeId, double newEpisodeNumber) {
                 vm.updateAnimeOrRealSingleEpisode(
@@ -120,11 +121,13 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
                   episodeSequentialNumber: episodeSequentialNumber,
                 );
               },
+
             );
           } else if (collection is InProgressBookCollection) {
             widget = InProgressBookWidget(
               collection: collection,
               preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
+              expandAllProgressTiles: vm.expandAllProgressTiles,
               onUpdateBookProgress:
                   (int newEpisodeNumber, int newVolumeNumber) {
                 Future<void> future = vm.updateBookProgress(
@@ -177,6 +180,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
 class _ViewModel {
   final Optional<BuiltList<InProgressCollection>> collections;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+  final bool expandAllProgressTiles;
   final Future Function(BuildContext context) getProgress;
   final UpdateAnimeOrRealSingleEpisode updateAnimeOrRealSingleEpisode;
   final UpdateAnimeOrRealBatchEpisodes updateAnimeOrRealBatchEpisodes;
@@ -244,8 +248,8 @@ class _ViewModel {
     Optional<BuiltList<InProgressCollection>> _progressesSelector() {
       BuiltMap<SubjectType, BuiltList<InProgressCollection>> progressesInStore =
           store.state.progressState.progresses;
-      BuiltList<InProgressCollection> progresses = BuiltList<
-          InProgressCollection>();
+      BuiltList<InProgressCollection> progresses =
+      BuiltList<InProgressCollection>();
 
       for (SubjectType subjectType in types) {
         if (progressesInStore.containsKey(subjectType)) {
@@ -264,20 +268,21 @@ class _ViewModel {
       collections: _progressesSelector(),
       preferredSubjectInfoLanguage:
       store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
+      expandAllProgressTiles: store.state.settingState.generalSetting
+          .expandAllProgressTiles,
       updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
       updateAnimeOrRealBatchEpisodes: _updateAnimeOrRealBatchEpisodes,
       updateBookProgress: _updateBookProgress,
     );
   }
 
-  const _ViewModel({
-    @required this.collections,
+  const _ViewModel({@required this.collections,
     @required this.getProgress,
     @required this.updateAnimeOrRealSingleEpisode,
     @required this.updateAnimeOrRealBatchEpisodes,
     @required this.updateBookProgress,
     @required this.preferredSubjectInfoLanguage,
-  });
+    @required this.expandAllProgressTiles});
 
   @override
   bool operator ==(Object other) =>
@@ -286,9 +291,10 @@ class _ViewModel {
               runtimeType == other.runtimeType &&
               collections == other.collections &&
               preferredSubjectInfoLanguage ==
-                  other.preferredSubjectInfoLanguage;
+                  other.preferredSubjectInfoLanguage &&
+              expandAllProgressTiles == other.expandAllProgressTiles;
 
   @override
   int get hashCode =>
-      hash2(collections, preferredSubjectInfoLanguage);
+      hash3(collections, preferredSubjectInfoLanguage, expandAllProgressTiles);
 }

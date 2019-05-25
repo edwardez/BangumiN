@@ -97,7 +97,7 @@ class _SubjectCollectionManagementWidgetState
     return CollectionStatus.isInvalid(status);
   }
 
-  bool _canSubmitForm() {
+  bool get _canSubmitForm {
     return !commentHasError() && !collectionStatusHasError();
   }
 
@@ -386,7 +386,7 @@ class _SubjectCollectionManagementWidgetState
 
     return GestureDetector(
       child: FlatButton(
-          onPressed: _canSubmitForm()
+          onPressed: _canSubmitForm
               ? () {
                   _formKey?.currentState?.save();
                   vm.collectionInfoUpdateRequest(
@@ -395,7 +395,7 @@ class _SubjectCollectionManagementWidgetState
               : null,
           textColor: lightPrimaryDarkAccentColor(context),
           child: Text('更新收藏')),
-      onTap: _canSubmitForm()
+      onTap: _canSubmitForm
           ? null
           : () {
               _showDialog(context, formErrors);

@@ -23,7 +23,8 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
       serializers.serialize(object.progresses,
           specifiedType: const FullType(BuiltMap, const [
             const FullType(SubjectType),
-            const FullType(BuiltList, const [const FullType(InProgressSubject)])
+            const FullType(
+                BuiltList, const [const FullType(InProgressCollection)])
           ])),
     ];
 
@@ -46,7 +47,7 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(SubjectType),
                 const FullType(
-                    BuiltList, const [const FullType(InProgressSubject)])
+                    BuiltList, const [const FullType(InProgressCollection)])
               ])) as BuiltMap);
           break;
       }
@@ -58,7 +59,7 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
 
 class _$ProgressState extends ProgressState {
   @override
-  final BuiltMap<SubjectType, BuiltList<InProgressSubject>> progresses;
+  final BuiltMap<SubjectType, BuiltList<InProgressCollection>> progresses;
 
   factory _$ProgressState([void Function(ProgressStateBuilder) updates]) =>
       (new ProgressStateBuilder()..update(updates)).build();
@@ -99,12 +100,13 @@ class ProgressStateBuilder
     implements Builder<ProgressState, ProgressStateBuilder> {
   _$ProgressState _$v;
 
-  MapBuilder<SubjectType, BuiltList<InProgressSubject>> _progresses;
-  MapBuilder<SubjectType, BuiltList<InProgressSubject>> get progresses =>
+  MapBuilder<SubjectType, BuiltList<InProgressCollection>> _progresses;
+  MapBuilder<SubjectType, BuiltList<InProgressCollection>> get progresses =>
       _$this._progresses ??=
-          new MapBuilder<SubjectType, BuiltList<InProgressSubject>>();
+          new MapBuilder<SubjectType, BuiltList<InProgressCollection>>();
   set progresses(
-          MapBuilder<SubjectType, BuiltList<InProgressSubject>> progresses) =>
+          MapBuilder<SubjectType, BuiltList<InProgressCollection>>
+              progresses) =>
       _$this._progresses = progresses;
 
   ProgressStateBuilder();

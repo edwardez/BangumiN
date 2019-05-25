@@ -29,20 +29,20 @@ class _$CollectionUpdateSingleSerializer
       'subjectId',
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
-      'subjectTitle',
-      serializers.serialize(object.subjectTitle,
+      'subjectCover',
+      serializers.serialize(object.subjectCover,
+          specifiedType: const FullType(BangumiImage)),
+      'subjectName',
+      serializers.serialize(object.subjectName,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.subjectComment != null) {
       result
         ..add('subjectComment')
         ..add(serializers.serialize(object.subjectComment,
-            specifiedType: const FullType(String)));
-    }
-    if (object.subjectImageUrl != null) {
-      result
-        ..add('subjectImageUrl')
-        ..add(serializers.serialize(object.subjectImageUrl,
             specifiedType: const FullType(String)));
     }
     if (object.subjectScore != null) {
@@ -85,17 +85,21 @@ class _$CollectionUpdateSingleSerializer
           result.subjectId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'subjectImageUrl':
-          result.subjectImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'subjectCover':
+          result.subjectCover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'subjectScore':
           result.subjectScore = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
-        case 'subjectTitle':
-          result.subjectTitle = serializers.deserialize(value,
+        case 'subjectName':
+          result.subjectName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
+          break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
@@ -116,11 +120,13 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
   @override
   final String subjectId;
   @override
-  final String subjectImageUrl;
+  final BangumiImage subjectCover;
   @override
   final double subjectScore;
   @override
-  final String subjectTitle;
+  final String subjectName;
+  @override
+  final BangumiContent bangumiContent;
   @override
   final bool isFromMutedUser;
 
@@ -132,9 +138,10 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
       {this.user,
       this.subjectComment,
       this.subjectId,
-      this.subjectImageUrl,
+      this.subjectCover,
       this.subjectScore,
-      this.subjectTitle,
+      this.subjectName,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -143,9 +150,17 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
     if (subjectId == null) {
       throw new BuiltValueNullFieldError('CollectionUpdateSingle', 'subjectId');
     }
-    if (subjectTitle == null) {
+    if (subjectCover == null) {
       throw new BuiltValueNullFieldError(
-          'CollectionUpdateSingle', 'subjectTitle');
+          'CollectionUpdateSingle', 'subjectCover');
+    }
+    if (subjectName == null) {
+      throw new BuiltValueNullFieldError(
+          'CollectionUpdateSingle', 'subjectName');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'CollectionUpdateSingle', 'bangumiContent');
     }
   }
 
@@ -165,9 +180,10 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
         user == other.user &&
         subjectComment == other.subjectComment &&
         subjectId == other.subjectId &&
-        subjectImageUrl == other.subjectImageUrl &&
+        subjectCover == other.subjectCover &&
         subjectScore == other.subjectScore &&
-        subjectTitle == other.subjectTitle &&
+        subjectName == other.subjectName &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -177,11 +193,13 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, user.hashCode), subjectComment.hashCode),
-                        subjectId.hashCode),
-                    subjectImageUrl.hashCode),
-                subjectScore.hashCode),
-            subjectTitle.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, user.hashCode), subjectComment.hashCode),
+                            subjectId.hashCode),
+                        subjectCover.hashCode),
+                    subjectScore.hashCode),
+                subjectName.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -191,9 +209,10 @@ class _$CollectionUpdateSingle extends CollectionUpdateSingle {
           ..add('user', user)
           ..add('subjectComment', subjectComment)
           ..add('subjectId', subjectId)
-          ..add('subjectImageUrl', subjectImageUrl)
+          ..add('subjectCover', subjectCover)
           ..add('subjectScore', subjectScore)
-          ..add('subjectTitle', subjectTitle)
+          ..add('subjectName', subjectName)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -218,18 +237,24 @@ class CollectionUpdateSingleBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
-  String _subjectImageUrl;
-  String get subjectImageUrl => _$this._subjectImageUrl;
-  set subjectImageUrl(String subjectImageUrl) =>
-      _$this._subjectImageUrl = subjectImageUrl;
+  BangumiImageBuilder _subjectCover;
+  BangumiImageBuilder get subjectCover =>
+      _$this._subjectCover ??= new BangumiImageBuilder();
+  set subjectCover(BangumiImageBuilder subjectCover) =>
+      _$this._subjectCover = subjectCover;
 
   double _subjectScore;
   double get subjectScore => _$this._subjectScore;
   set subjectScore(double subjectScore) => _$this._subjectScore = subjectScore;
 
-  String _subjectTitle;
-  String get subjectTitle => _$this._subjectTitle;
-  set subjectTitle(String subjectTitle) => _$this._subjectTitle = subjectTitle;
+  String _subjectName;
+  String get subjectName => _$this._subjectName;
+  set subjectName(String subjectName) => _$this._subjectName = subjectName;
+
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
 
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
@@ -243,9 +268,10 @@ class CollectionUpdateSingleBuilder
       _user = _$v.user?.toBuilder();
       _subjectComment = _$v.subjectComment;
       _subjectId = _$v.subjectId;
-      _subjectImageUrl = _$v.subjectImageUrl;
+      _subjectCover = _$v.subjectCover?.toBuilder();
       _subjectScore = _$v.subjectScore;
-      _subjectTitle = _$v.subjectTitle;
+      _subjectName = _$v.subjectName;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -274,15 +300,19 @@ class CollectionUpdateSingleBuilder
               user: user.build(),
               subjectComment: subjectComment,
               subjectId: subjectId,
-              subjectImageUrl: subjectImageUrl,
+              subjectCover: subjectCover.build(),
               subjectScore: subjectScore,
-              subjectTitle: subjectTitle,
+              subjectName: subjectName,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         user.build();
+
+        _$failedField = 'subjectCover';
+        subjectCover.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'CollectionUpdateSingle', _$failedField, e.toString());

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -17,7 +17,7 @@ abstract class InProgressSubjectInfo
 
   @nullable
   @BuiltValueField(wireName: 'images')
-  Images get images;
+  BangumiImage get cover;
 
   @BuiltValueField(wireName: 'air_date')
   String get airDate;

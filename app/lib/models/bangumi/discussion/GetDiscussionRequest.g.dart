@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FetchDiscussionRequest.dart';
+part of 'GetDiscussionRequest.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FetchDiscussionRequest> _$fetchDiscussionRequestSerializer =
-    new _$FetchDiscussionRequestSerializer();
+Serializer<GetDiscussionRequest> _$getDiscussionRequestSerializer =
+    new _$GetDiscussionRequestSerializer();
 
-class _$FetchDiscussionRequestSerializer
-    implements StructuredSerializer<FetchDiscussionRequest> {
+class _$GetDiscussionRequestSerializer
+    implements StructuredSerializer<GetDiscussionRequest> {
   @override
   final Iterable<Type> types = const [
-    FetchDiscussionRequest,
-    _$FetchDiscussionRequest
+    GetDiscussionRequest,
+    _$GetDiscussionRequest
   ];
   @override
-  final String wireName = 'FetchDiscussionRequest';
+  final String wireName = 'GetDiscussionRequest';
 
   @override
-  Iterable serialize(Serializers serializers, FetchDiscussionRequest object,
+  Iterable serialize(Serializers serializers, GetDiscussionRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'discussionType',
@@ -35,10 +35,9 @@ class _$FetchDiscussionRequestSerializer
   }
 
   @override
-  FetchDiscussionRequest deserialize(
-      Serializers serializers, Iterable serialized,
+  GetDiscussionRequest deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new FetchDiscussionRequestBuilder();
+    final result = new GetDiscussionRequestBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -62,41 +61,45 @@ class _$FetchDiscussionRequestSerializer
   }
 }
 
-class _$FetchDiscussionRequest extends FetchDiscussionRequest {
+class _$GetDiscussionRequest extends GetDiscussionRequest {
   @override
   final DiscussionType discussionType;
   @override
   final DiscussionFilter discussionFilter;
+  int __pageIndex;
 
-  factory _$FetchDiscussionRequest(
-          [void Function(FetchDiscussionRequestBuilder) updates]) =>
-      (new FetchDiscussionRequestBuilder()..update(updates)).build();
+  factory _$GetDiscussionRequest(
+          [void Function(GetDiscussionRequestBuilder) updates]) =>
+      (new GetDiscussionRequestBuilder()..update(updates)).build();
 
-  _$FetchDiscussionRequest._({this.discussionType, this.discussionFilter})
+  _$GetDiscussionRequest._({this.discussionType, this.discussionFilter})
       : super._() {
     if (discussionType == null) {
       throw new BuiltValueNullFieldError(
-          'FetchDiscussionRequest', 'discussionType');
+          'GetDiscussionRequest', 'discussionType');
     }
     if (discussionFilter == null) {
       throw new BuiltValueNullFieldError(
-          'FetchDiscussionRequest', 'discussionFilter');
+          'GetDiscussionRequest', 'discussionFilter');
     }
   }
 
   @override
-  FetchDiscussionRequest rebuild(
-          void Function(FetchDiscussionRequestBuilder) updates) =>
+  int get pageIndex => __pageIndex ??= super.pageIndex;
+
+  @override
+  GetDiscussionRequest rebuild(
+          void Function(GetDiscussionRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FetchDiscussionRequestBuilder toBuilder() =>
-      new FetchDiscussionRequestBuilder()..replace(this);
+  GetDiscussionRequestBuilder toBuilder() =>
+      new GetDiscussionRequestBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FetchDiscussionRequest &&
+    return other is GetDiscussionRequest &&
         discussionType == other.discussionType &&
         discussionFilter == other.discussionFilter;
   }
@@ -108,16 +111,16 @@ class _$FetchDiscussionRequest extends FetchDiscussionRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('FetchDiscussionRequest')
+    return (newBuiltValueToStringHelper('GetDiscussionRequest')
           ..add('discussionType', discussionType)
           ..add('discussionFilter', discussionFilter))
         .toString();
   }
 }
 
-class FetchDiscussionRequestBuilder
-    implements Builder<FetchDiscussionRequest, FetchDiscussionRequestBuilder> {
-  _$FetchDiscussionRequest _$v;
+class GetDiscussionRequestBuilder
+    implements Builder<GetDiscussionRequest, GetDiscussionRequestBuilder> {
+  _$GetDiscussionRequest _$v;
 
   DiscussionType _discussionType;
   DiscussionType get discussionType => _$this._discussionType;
@@ -129,9 +132,9 @@ class FetchDiscussionRequestBuilder
   set discussionFilter(DiscussionFilter discussionFilter) =>
       _$this._discussionFilter = discussionFilter;
 
-  FetchDiscussionRequestBuilder();
+  GetDiscussionRequestBuilder();
 
-  FetchDiscussionRequestBuilder get _$this {
+  GetDiscussionRequestBuilder get _$this {
     if (_$v != null) {
       _discussionType = _$v.discussionType;
       _discussionFilter = _$v.discussionFilter;
@@ -141,22 +144,22 @@ class FetchDiscussionRequestBuilder
   }
 
   @override
-  void replace(FetchDiscussionRequest other) {
+  void replace(GetDiscussionRequest other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$FetchDiscussionRequest;
+    _$v = other as _$GetDiscussionRequest;
   }
 
   @override
-  void update(void Function(FetchDiscussionRequestBuilder) updates) {
+  void update(void Function(GetDiscussionRequestBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$FetchDiscussionRequest build() {
+  _$GetDiscussionRequest build() {
     final _$result = _$v ??
-        new _$FetchDiscussionRequest._(
+        new _$GetDiscussionRequest._(
             discussionType: discussionType, discussionFilter: discussionFilter);
     replace(_$result);
     return _$result;

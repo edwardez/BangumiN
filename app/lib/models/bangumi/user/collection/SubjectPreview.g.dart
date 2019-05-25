@@ -23,11 +23,11 @@ class _$SubjectPreviewSerializer
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-    if (object.images != null) {
+    if (object.cover != null) {
       result
-        ..add('images')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add('cover')
+        ..add(serializers.serialize(object.cover,
+            specifiedType: const FullType(BangumiImage)));
     }
     if (object.id != null) {
       result
@@ -62,9 +62,9 @@ class _$SubjectPreviewSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'cover':
+          result.cover.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -91,7 +91,7 @@ class _$SubjectPreviewSerializer
 
 class _$SubjectPreview extends SubjectPreview {
   @override
-  final Images images;
+  final BangumiImage cover;
   @override
   final int id;
   @override
@@ -105,7 +105,7 @@ class _$SubjectPreview extends SubjectPreview {
       (new SubjectPreviewBuilder()..update(updates)).build();
 
   _$SubjectPreview._(
-      {this.images, this.id, this.pageUrlFromApi, this.name, this.nameCn})
+      {this.cover, this.id, this.pageUrlFromApi, this.name, this.nameCn})
       : super._() {
     if (name == null) {
       throw new BuiltValueNullFieldError('SubjectPreview', 'name');
@@ -124,7 +124,7 @@ class _$SubjectPreview extends SubjectPreview {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is SubjectPreview &&
-        images == other.images &&
+        cover == other.cover &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
@@ -135,7 +135,7 @@ class _$SubjectPreview extends SubjectPreview {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, images.hashCode), id.hashCode),
+            $jc($jc($jc(0, cover.hashCode), id.hashCode),
                 pageUrlFromApi.hashCode),
             name.hashCode),
         nameCn.hashCode));
@@ -144,7 +144,7 @@ class _$SubjectPreview extends SubjectPreview {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubjectPreview')
-          ..add('images', images)
+          ..add('cover', cover)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
@@ -159,9 +159,9 @@ class SubjectPreviewBuilder
         SubjectBaseBuilder {
   _$SubjectPreview _$v;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _cover;
+  BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
+  set cover(BangumiImageBuilder cover) => _$this._cover = cover;
 
   int _id;
   int get id => _$this._id;
@@ -184,7 +184,7 @@ class SubjectPreviewBuilder
 
   SubjectPreviewBuilder get _$this {
     if (_$v != null) {
-      _images = _$v.images?.toBuilder();
+      _cover = _$v.cover?.toBuilder();
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
@@ -213,7 +213,7 @@ class SubjectPreviewBuilder
     try {
       _$result = _$v ??
           new _$SubjectPreview._(
-              images: _images?.build(),
+              cover: _cover?.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
               name: name,
@@ -221,8 +221,8 @@ class SubjectPreviewBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'cover';
+        _cover?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SubjectPreview', _$failedField, e.toString());

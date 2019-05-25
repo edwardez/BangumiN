@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
@@ -19,15 +19,15 @@ Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetDiscussionRequestAction action) async* {
   try {
-    FetchDiscussionResponse fetchDiscussionResponse =
+    GetDiscussionResponse getDiscussionResponse =
         await bangumiDiscussionService.getRakuenTopics(
-            fetchDiscussionRequest: action.fetchDiscussionRequest,
+            getDiscussionRequest: action.getDiscussionRequest,
             muteSetting: store.state.settingState.muteSetting
         );
 
     yield GetDiscussionRequestSuccessAction(
-        fetchDiscussionRequest: action.fetchDiscussionRequest,
-        fetchDiscussionResponse: fetchDiscussionResponse);
+        getDiscussionRequest: action.getDiscussionRequest,
+        getDiscussionResponse: getDiscussionResponse);
     action.completer.complete();
   } catch (error, stack) {
     print(error.toString());

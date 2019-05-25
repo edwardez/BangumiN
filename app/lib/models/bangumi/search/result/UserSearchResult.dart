@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -15,7 +15,7 @@ abstract class UserSearchResult
   @nullable
   @override
   @BuiltValueField(wireName: 'avatar')
-  Images get images;
+  BangumiImage get image;
 
   /// User nickname
   @override
@@ -53,7 +53,8 @@ abstract class UserSearchResult
       ..id = bangumiUserBasic.id
       ..name = bangumiUserBasic.nickname
       ..username = bangumiUserBasic.username
-      ..images.replace(Images.fromBangumiUserAvatar(bangumiUserBasic.avatar))
+      ..image.replace(
+          BangumiImage.fromBangumiUserAvatar(bangumiUserBasic.avatar))
       ..type = SearchType.User);
   }
 

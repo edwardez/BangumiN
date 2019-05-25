@@ -13,15 +13,16 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/UserProfile/CollectionPreviewWidget.dart';
-import 'package:munin/widgets/UserProfile/TimelinePreviewWidget.dart';
-import 'package:munin/widgets/UserProfile/UserIntroductionPreview.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:munin/widgets/userprofile/CollectionPreviewWidget.dart';
+import 'package:munin/widgets/userprofile/TimelinePreviewWidget.dart';
+import 'package:munin/widgets/userprofile/UserIntroductionPreview.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -103,10 +104,10 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(OMIcons.openInBrowser),
-                    title: Text('查看网页版'),
+                    title: Text(checkWebVersionPrompt),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch(userProfileMainUrl, forceSafariVC: true);
+                      launch(userProfileMainUrl, forceSafariVC: false);
                     },
                   ),
                   _buildMuteAction(outerContext, vm),
@@ -195,6 +196,7 @@ class UserProfileWidget extends StatelessWidget {
     widgets.addAll([
       TimelinePreviewWidget(
         profile: profile,
+          isCurrentAppUser: vm.isCurrentAppUser
       ),
       Divider(),
       InkWell(
@@ -214,7 +216,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/mono', forceSafariVC: true);
+          launch('$userProfileMainUrl/mono', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -235,7 +237,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/friends', forceSafariVC: true);
+          launch('$userProfileMainUrl/friends', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -256,7 +258,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/index', forceSafariVC: true);
+          launch('$userProfileMainUrl/index', forceSafariVC: false);
         },
       ),
       Divider(),
@@ -277,7 +279,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/groups', forceSafariVC: true);
+          launch('$userProfileMainUrl/groups', forceSafariVC: false);
         },
       ),
     ]);
@@ -296,7 +298,7 @@ class UserProfileWidget extends StatelessWidget {
           _ViewModel.fromStore(store, username),
       distinct: true,
       onInitialBuild: (_ViewModel vm) {
-        vm.fetchUserProfile(context);
+        vm.getUserProfile(context);
       },
       builder: (BuildContext context, _ViewModel vm) {
         LoadingStatus loadingStatus = vm.loadingStatus;
@@ -329,19 +331,19 @@ class UserProfileWidget extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 Column(
                   children: <Widget>[
-                    Text('目前无法加载此用户资料, 可能因为应用或bangumi出错'),
+                    Text('目前无法加载此用户资料, 可能因为$appOrBangumiHasAnError'),
                     FlatButton(
                       child: Text('点击重试'),
                       onPressed: () {
-                        vm.fetchUserProfile(context);
+                        vm.getUserProfile(context);
                       },
                     ),
                     FlatButton(
-                      child: Text('查看对应网页版'),
+                      child: Text(checkWebVersionPrompt),
                       onPressed: () {
                         launch(
                             'https://${Application.environmentValue.bangumiMainHost}/user/$username',
-                            forceSafariVC: true);
+                            forceSafariVC: false);
                       },
                     ),
                   ],
@@ -385,7 +387,7 @@ class _ViewModel {
   final String username;
   final UserProfile userProfile;
   final LoadingStatus loadingStatus;
-  final Function(BuildContext context) fetchUserProfile;
+  final Function(BuildContext context) getUserProfile;
   final Function() muteUser;
   final Function() unMuteUser;
 
@@ -451,7 +453,7 @@ class _ViewModel {
     return _ViewModel(
       username: username,
       userProfile: store.state.userState.profiles[username],
-      fetchUserProfile: (BuildContext context) => _fetchUserProfile(context),
+      getUserProfile: (BuildContext context) => _fetchUserProfile(context),
       isCurrentAppUser: _isCurrentAppUser(),
       loadingStatus: store.state.userState.profilesLoadingStatus[username],
 
@@ -464,7 +466,7 @@ class _ViewModel {
   _ViewModel({
     @required this.username,
     @required this.userProfile,
-    @required this.fetchUserProfile,
+    @required this.getUserProfile,
     @required this.isCurrentAppUser,
     @required this.loadingStatus,
     @required this.isMuted,
@@ -486,10 +488,10 @@ class _ViewModel {
   @override
   int get hashCode =>
       hashObjects([
-        isCurrentAppUser.hashCode,
-        isMuted.hashCode,
-        username.hashCode,
-        userProfile.hashCode,
-        loadingStatus.hashCode
+        isCurrentAppUser,
+        isMuted,
+        username,
+        userProfile,
+        loadingStatus
       ]);
 }

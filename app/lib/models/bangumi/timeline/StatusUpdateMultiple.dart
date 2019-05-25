@@ -28,10 +28,12 @@ abstract class StatusUpdateMultiple
 
   BuiltList<HyperBangumiItem> get hyperBangumiItems;
 
+
   /// content type of the timeline feed, note: Bangumi might merge different activities
   /// into one feed so this value is just as a reference for the 'main type'
   /// check [hyperImages] and [hyperBangumiItems] for individual types
-  BangumiContent get contentType;
+  @override
+  BangumiContent get bangumiContent;
 
   StatusUpdateMultiple._();
 

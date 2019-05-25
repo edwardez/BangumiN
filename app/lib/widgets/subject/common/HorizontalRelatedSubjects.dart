@@ -1,7 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
@@ -14,12 +16,15 @@ class HorizontalRelatedSubjects extends StatelessWidget {
   static const double textSpaceScaleBaseFactor = 1.5;
 
   final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
   final double horizontalImagePadding;
   final double imageWidth;
   final double imageHeight;
 
   const HorizontalRelatedSubjects({Key key,
     @required this.relatedSubjects,
+    @required this.preferredSubjectInfoLanguage,
     this.horizontalImagePadding = 8.0,
     this.imageWidth = 71,
     this.imageHeight = 100.0,
@@ -32,13 +37,14 @@ class HorizontalRelatedSubjects extends StatelessWidget {
     for (var subject in relatedSubjects.values) {
       imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Subject,
-        imageUrl: subject.images.medium,
+        imageUrl: subject.cover.medium,
         id: subject.id?.toString(),
         imageWidth: imageWidth,
         imageHeight: imageHeight,
         horizontalImagePadding:
         imageWidgets.length == 0 ? 0 : horizontalImagePadding,
-        title: subject.name,
+        title: preferredSubjectTitleFromSubjectBase(
+            subject, preferredSubjectInfoLanguage),
         subtitle: subject.subjectSubTypeName,
         titleMaxLines: titleMaxLines,
         subTitleMaxLines: subTitleMaxLines,

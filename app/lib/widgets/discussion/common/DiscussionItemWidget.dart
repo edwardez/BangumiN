@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
@@ -33,14 +34,18 @@ class DiscussionItemWidget extends StatelessWidget {
     @required this.onUnmute})
       : super(key: key);
 
-  String getImageUrl(DiscussionItem discussionItem) {
+  String get imageUrl {
     /// For mono, grid image is manually cropped by user which is more likely
     /// to result in a correct cropping
     if (discussionItem.bangumiContent.isMono) {
-      return discussionItem.images.grid;
+      return discussionItem.image.grid;
     }
 
-    return discussionItem.images.medium;
+    if (discussionItem.bangumiContent == BangumiContent.GroupTopic) {
+      return discussionItem.image.large;
+    }
+
+    return discussionItem.image.medium;
   }
 
   GestureLongPressCallback _generateOnLongPressCallback(BuildContext context) {
@@ -93,7 +98,7 @@ class DiscussionItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CachedRoundedCover.asGridSize(
-              imageUrl: getImageUrl(discussionItem),
+              imageUrl: imageUrl,
             ),
             Expanded(
               child: Padding(

@@ -5,7 +5,6 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
-import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'FeedChunks.g.dart';
@@ -13,12 +12,12 @@ part 'FeedChunks.g.dart';
 abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
   static const Duration staleDataThreshold = Duration(minutes: 5);
 
-  BuiltList<TimelineFeed> get first;
+  BuiltList<TimelineFeed> get filteredFeeds;
 
   /// A list of feeds that include feed has been muted by the user
   /// It's used to track actual count of feeds in order to send next fetch timeline
   /// request
-  BuiltList<TimelineFeed> get unfilteredFirst;
+  BuiltList<TimelineFeed> get unfilteredFeeds;
 
   /// The last time munin completes fetching feed response
   @nullable
@@ -42,17 +41,7 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
 
   @memoized
   int get feedsCount {
-    return first.length;
-  }
-
-  @memoized
-  int get firstChunkMaxIdOrNull {
-    return firstOrNullInBuiltList<TimelineFeed>(first)?.user?.feedId;
-  }
-
-  @memoized
-  int get firstChunkMinIdOrNull {
-    return lastOrNullInIterable<TimelineFeed>(first)?.user?.feedId;
+    return filteredFeeds.length;
   }
 
   /// reserved, currently not in use
@@ -73,14 +62,15 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
       return null;
     }
 
-    return first[index];
+
+    return filteredFeeds[index];
   }
 
   FeedChunks._();
 
   factory FeedChunks([updates(FeedChunksBuilder b)]) => _$FeedChunks((b) => b
-    ..first.replace(BuiltList<TimelineFeed>())
-    ..unfilteredFirst.replace(BuiltList<TimelineFeed>())
+    ..filteredFeeds.replace(BuiltList<TimelineFeed>())
+    ..unfilteredFeeds.replace(BuiltList<TimelineFeed>())
     ..hasReachedEnd = false
     ..disableLoadingMore = false
     ..update(updates));

@@ -16,6 +16,10 @@ class TimelineSource extends EnumClass {
   /// web: https://bgm.tv/timeline?type=say
   static const TimelineSource FriendsOnly = _$FriendsOnly;
 
+  /// Feeds for a single user
+  /// web: https://bgm.tv/user/example/timeline?
+  static const TimelineSource UserProfile = _$UserProfile;
+
   const TimelineSource._(String name) : super(name);
 
   static BuiltSet<TimelineSource> get values => _$values;
@@ -33,8 +37,9 @@ class TimelineSource extends EnumClass {
       case TimelineSource.FriendsOnly:
         return '好友';
       default:
+        return '-';
 
-        /// we should never use default value, this error needs to be caught
+        /// Default value shouldn\'t be used, this error needs to be caught
         /// in dev environment
         assert(false, 'Cannot find chineseName for $this');
         return '-';

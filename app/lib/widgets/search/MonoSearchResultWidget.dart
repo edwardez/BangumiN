@@ -63,7 +63,7 @@ class MonoSearchResultWidget extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: RoundedElevatedImage(
-                imageUrl: monoSearchResult.images?.grid,
+                imageUrl: monoSearchResult.image?.grid,
               ),
               flex: coverFlex,
               fit: FlexFit.tight,

@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -29,7 +29,7 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
     List<
         Future<
             LinkedHashMap<SubjectType,
-                LinkedHashMap<int, InProgressSubject>>>> futures = [];
+                LinkedHashMap<int, InProgressCollection>>>> futures = [];
 
     /// If at least one valid watchable types are in action,
     /// execute the method to get watchable subjects
@@ -40,12 +40,12 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
           username: username, subjectTypes: action.subjectTypes));
     }
 
-    List<LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>>
+    List<LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>>
         subjectsPerType = await Future.wait(futures);
 
-    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>
+    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
         mergedSubjects = subjectsPerType.fold(
-            LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>(),
+        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>(),
             (mapSoFar, subjects) {
       mapSoFar.addAll(subjects);
       return mapSoFar;
@@ -88,7 +88,7 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
         episodeUpdateType: action.episodeUpdateType,
       );
     } else if (action is UpdateAnimeOrRealBatchEpisodesAction) {
-      InProgressSubject progress = store
+      InProgressCollection progress = store
           .state.progressState.progresses[action.subject.type]
           .firstWhere((subject) => subject.subject.id == action.subject.id);
       assert(progress != null);

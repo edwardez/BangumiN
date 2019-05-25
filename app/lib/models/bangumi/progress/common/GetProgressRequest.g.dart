@@ -6,10 +6,57 @@ part of 'GetProgressRequest.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<GetProgressRequest> _$getProgressRequestSerializer =
+    new _$GetProgressRequestSerializer();
+
+class _$GetProgressRequestSerializer
+    implements StructuredSerializer<GetProgressRequest> {
+  @override
+  final Iterable<Type> types = const [GetProgressRequest, _$GetProgressRequest];
+  @override
+  final String wireName = 'GetProgressRequest';
+
+  @override
+  Iterable serialize(Serializers serializers, GetProgressRequest object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'requestedSubjectTypes',
+      serializers.serialize(object.requestedSubjectTypes,
+          specifiedType:
+              const FullType(BuiltSet, const [const FullType(SubjectType)])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GetProgressRequest deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GetProgressRequestBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'requestedSubjectTypes':
+          result.requestedSubjectTypes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(
+                  BuiltSet, const [const FullType(SubjectType)])) as BuiltSet);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$GetProgressRequest extends GetProgressRequest {
   @override
   final BuiltSet<SubjectType> requestedSubjectTypes;
   String __chineseName;
+  int __pageIndex;
 
   factory _$GetProgressRequest(
           [void Function(GetProgressRequestBuilder) updates]) =>
@@ -24,6 +71,9 @@ class _$GetProgressRequest extends GetProgressRequest {
 
   @override
   String get chineseName => __chineseName ??= super.chineseName;
+
+  @override
+  int get pageIndex => __pageIndex ??= super.pageIndex;
 
   @override
   GetProgressRequest rebuild(

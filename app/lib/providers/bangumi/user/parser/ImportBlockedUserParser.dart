@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -68,7 +68,8 @@ class ImportBlockedUserParser {
         ..userId = userId
         ..nickname = nickname
         ..userAvatar.replace(
-            Images.useSameImageUrlForAll(bangumiAnonymousUserMediumAvatar))
+            BangumiImage.useSameImageUrlForAll(
+                bangumiAnonymousUserMediumAvatar))
         ..isImportedFromBangumi = true);
     }
 

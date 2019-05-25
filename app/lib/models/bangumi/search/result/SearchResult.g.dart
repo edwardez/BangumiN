@@ -9,8 +9,8 @@ part of 'SearchResult.dart';
 abstract class SearchResultBuilder {
   void replace(SearchResult other);
   void update(void Function(SearchResultBuilder) updates);
-  ImagesBuilder get images;
-  set images(ImagesBuilder images);
+  BangumiImageBuilder get image;
+  set image(BangumiImageBuilder image);
 
   String get name;
   set name(String name);

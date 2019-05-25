@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:quiver/strings.dart';
+import 'package:quiver/core.dart';
 
 class SubjectCoverAndBasicInfo extends StatelessWidget {
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
   final BangumiSubject subject;
 
   /// Whether score info should be displayed at the end of info box rows
@@ -20,21 +24,25 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     this.coverFlex = 2,
     this.curatedInfoBoxFlex = 4,
     this.displayScore = false,
+    this.preferredSubjectInfoLanguage = PreferredSubjectInfoLanguage.Original,
   }) : super(key: key);
 
   _buildInfoWidgets(BuildContext context, BangumiSubject subject) {
     List<Widget> widgets = [];
     widgets.add(WrappableText(
-      subject.name,
+      preferredSubjectTitleFromSubjectBase(
+          subject, preferredSubjectInfoLanguage),
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
       outerWrapper: OuterWrapper.Row,
       maxLines: 3,
     ));
 
-    if (!isEmpty(subject.nameCn)) {
+    Optional<String> maybeSecondaryTitle = secondarySubjectTitleFromSubjectBase(
+        subject, preferredSubjectInfoLanguage);
+    if (maybeSecondaryTitle.isPresent) {
       widgets.add(WrappableText(
-        subject.nameCn,
+        maybeSecondaryTitle.value,
         textStyle: Theme
             .of(context)
             .textTheme
@@ -92,7 +100,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: RoundedElevatedImage(
-            imageUrl: subject.images.large,
+            imageUrl: subject.cover.large,
             elevation: 2.0,
           ),
           flex: coverFlex,

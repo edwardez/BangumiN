@@ -96,8 +96,8 @@ abstract class Application {
 
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
-    bangumiOauthService.client.currentUser =
-        appState.currentAuthenticatedUserBasicInfo;
+    bangumiOauthService?.client?.currentUser =
+        appState?.currentAuthenticatedUserBasicInfo;
 
     /// redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
@@ -105,7 +105,7 @@ abstract class Application {
       ...createSubjectEpics(bangumiSubjectService),
       ...createSearchEpics(bangumiSearchService),
       ...createDiscussionEpics(bangumiDiscussionService),
-      ...createTimelineEpics(bangumiTimelineService),
+      ...createTimelineEpics(bangumiTimelineService, bangumiUserService),
       ...createUserEpics(bangumiUserService),
       ...createProgressEpics(bangumiProgressService),
       ...createSettingEpics(bangumiUserService),
@@ -144,7 +144,7 @@ abstract class Application {
   }
 
   _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {
-    if (bangumiOauthService.client
+    if (bangumiOauthService.client != null && bangumiOauthService.client
         .shouldRefreshAccessToken()) {
       await bangumiOauthService.client.refreshCredentials();
     }

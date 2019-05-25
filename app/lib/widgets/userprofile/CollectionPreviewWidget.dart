@@ -26,7 +26,7 @@ class CollectionPreviewWidget extends StatelessWidget {
   _navigateToCollectionPage(SubjectType subjectType) {
     String url =
         'https://${Application.environmentValue.bangumiMainHost}/${subjectType.toString().toLowerCase()}/list/$userName';
-    launch(url, forceSafariVC: true);
+    launch(url, forceSafariVC: false);
   }
 
   @override
@@ -88,7 +88,7 @@ class CollectionPreviewWidget extends StatelessWidget {
       List<Widget> subjects =
           preview.subjects[firstNonEmptyStatus].map((SubjectPreview subject) {
         return ClickableCachedRoundedCover.asGridSize(
-          imageUrl: subject.images.medium,
+          imageUrl: subject.cover.medium,
           contentType: BangumiContent.Subject,
           id: subject.id.toString(),
         );

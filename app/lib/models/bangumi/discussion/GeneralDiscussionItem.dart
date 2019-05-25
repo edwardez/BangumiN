@@ -2,14 +2,13 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'GeneralDiscussionItem.g.dart';
 
-/// a base TimelineFeed interface
 abstract class GeneralDiscussionItem
     implements
         Built<GeneralDiscussionItem, GeneralDiscussionItemBuilder>,

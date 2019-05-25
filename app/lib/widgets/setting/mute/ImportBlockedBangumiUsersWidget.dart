@@ -24,7 +24,7 @@ class ImportBlockedBangumiUsersWidget extends StatelessWidget {
     }
 
     if (vm.importedBangumiBlockedUsers.isEmpty) {
-      return [Text('你没有在Bangumi和任何用户绝交过。')];
+      return [Text('你没有在Bangumi和任何用户绝交过，或Bangumi出现了错误。')];
     }
 
     List<Widget> users = [];

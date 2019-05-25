@@ -4,14 +4,15 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/router/routes.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 generateOnTapCallbackForBangumiContent({
-  BangumiContent contentType,
-  String id,
+  @required BangumiContent contentType,
+  @required String id,
+  @required BuildContext context,
   String pageUrl,
-  BuildContext context,
 }) {
   assert(contentType != null);
   assert(id != null);
@@ -25,24 +26,17 @@ generateOnTapCallbackForBangumiContent({
   }
   if (contentType == BangumiContent.Subject) {
     return () {
-      Application.router.navigateTo(context, '/subject/$id',
+      Application.router.navigateTo(context,
+          Routes.subjectMainPageRoute.replaceAll(RoutesVariable.subjectId, id),
           transition: TransitionType.native);
     };
   }
 
   if (contentType == BangumiContent.User) {
     return () {
-      Application.router.navigateTo(context, '/user/$id',
+      Application.router.navigateTo(context,
+          Routes.userProfileRoute.replaceAll(RoutesVariable.username, id),
           transition: TransitionType.native);
-    };
-  }
-
-  String routeUrl = _getRouterUrlByContentType(contentType, id);
-
-  if (routeUrl != null) {
-    return () {
-      Application.router
-          .navigateTo(context, routeUrl, transition: TransitionType.native);
     };
   }
 
@@ -56,7 +50,7 @@ generateOnTapCallbackForBangumiContent({
 
   if (webPageUrl != null) {
     return () {
-      launch(webPageUrl, forceSafariVC: true);
+      launch(webPageUrl, forceSafariVC: false);
     };
   }
 
@@ -78,16 +72,6 @@ String _getWebPageUrlByContentType(BangumiContent contentType, String id) {
 
   return 'https://${Application.environmentValue
       .bangumiMainHost}/$webPageSubRouteName/$id';
-}
-
-/// checks whether the content type current has a web route page
-/// returns null corresponding Bangumi web page cannot be found
-String _getRouterUrlByContentType(BangumiContent contentType, String id) {
-  if (contentType == BangumiContent.Subject) {
-    return '/subject/$id';
-  }
-
-  return null;
 }
 
 /// TODO: figure out a better way to calculate text height

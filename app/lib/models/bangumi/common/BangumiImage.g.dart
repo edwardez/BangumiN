@@ -1,21 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Images.dart';
+part of 'BangumiImage.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<Images> _$imagesSerializer = new _$ImagesSerializer();
+Serializer<BangumiImage> _$bangumiImageSerializer =
+    new _$BangumiImageSerializer();
 
-class _$ImagesSerializer implements StructuredSerializer<Images> {
+class _$BangumiImageSerializer implements StructuredSerializer<BangumiImage> {
   @override
-  final Iterable<Type> types = const [Images, _$Images];
+  final Iterable<Type> types = const [BangumiImage, _$BangumiImage];
   @override
-  final String wireName = 'Images';
+  final String wireName = 'BangumiImage';
 
   @override
-  Iterable serialize(Serializers serializers, Images object,
+  Iterable serialize(Serializers serializers, BangumiImage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'large',
@@ -45,9 +46,9 @@ class _$ImagesSerializer implements StructuredSerializer<Images> {
   }
 
   @override
-  Images deserialize(Serializers serializers, Iterable serialized,
+  BangumiImage deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new ImagesBuilder();
+    final result = new BangumiImageBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -82,7 +83,7 @@ class _$ImagesSerializer implements StructuredSerializer<Images> {
   }
 }
 
-class _$Images extends Images {
+class _$BangumiImage extends BangumiImage {
   @override
   final String large;
   @override
@@ -94,33 +95,34 @@ class _$Images extends Images {
   @override
   final String grid;
 
-  factory _$Images([void Function(ImagesBuilder) updates]) =>
-      (new ImagesBuilder()..update(updates)).build();
+  factory _$BangumiImage([void Function(BangumiImageBuilder) updates]) =>
+      (new BangumiImageBuilder()..update(updates)).build();
 
-  _$Images._({this.large, this.common, this.medium, this.small, this.grid})
+  _$BangumiImage._(
+      {this.large, this.common, this.medium, this.small, this.grid})
       : super._() {
     if (large == null) {
-      throw new BuiltValueNullFieldError('Images', 'large');
+      throw new BuiltValueNullFieldError('BangumiImage', 'large');
     }
     if (medium == null) {
-      throw new BuiltValueNullFieldError('Images', 'medium');
+      throw new BuiltValueNullFieldError('BangumiImage', 'medium');
     }
     if (small == null) {
-      throw new BuiltValueNullFieldError('Images', 'small');
+      throw new BuiltValueNullFieldError('BangumiImage', 'small');
     }
   }
 
   @override
-  Images rebuild(void Function(ImagesBuilder) updates) =>
+  BangumiImage rebuild(void Function(BangumiImageBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  ImagesBuilder toBuilder() => new ImagesBuilder()..replace(this);
+  BangumiImageBuilder toBuilder() => new BangumiImageBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Images &&
+    return other is BangumiImage &&
         large == other.large &&
         common == other.common &&
         medium == other.medium &&
@@ -138,7 +140,7 @@ class _$Images extends Images {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Images')
+    return (newBuiltValueToStringHelper('BangumiImage')
           ..add('large', large)
           ..add('common', common)
           ..add('medium', medium)
@@ -148,8 +150,9 @@ class _$Images extends Images {
   }
 }
 
-class ImagesBuilder implements Builder<Images, ImagesBuilder> {
-  _$Images _$v;
+class BangumiImageBuilder
+    implements Builder<BangumiImage, BangumiImageBuilder> {
+  _$BangumiImage _$v;
 
   String _large;
   String get large => _$this._large;
@@ -171,9 +174,9 @@ class ImagesBuilder implements Builder<Images, ImagesBuilder> {
   String get grid => _$this._grid;
   set grid(String grid) => _$this._grid = grid;
 
-  ImagesBuilder();
+  BangumiImageBuilder();
 
-  ImagesBuilder get _$this {
+  BangumiImageBuilder get _$this {
     if (_$v != null) {
       _large = _$v.large;
       _common = _$v.common;
@@ -186,22 +189,22 @@ class ImagesBuilder implements Builder<Images, ImagesBuilder> {
   }
 
   @override
-  void replace(Images other) {
+  void replace(BangumiImage other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$Images;
+    _$v = other as _$BangumiImage;
   }
 
   @override
-  void update(void Function(ImagesBuilder) updates) {
+  void update(void Function(BangumiImageBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$Images build() {
+  _$BangumiImage build() {
     final _$result = _$v ??
-        new _$Images._(
+        new _$BangumiImage._(
             large: large,
             common: common,
             medium: medium,

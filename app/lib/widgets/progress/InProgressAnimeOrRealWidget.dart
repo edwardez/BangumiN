@@ -9,8 +9,10 @@ import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollectio
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Colors.dart';
@@ -19,18 +21,22 @@ import 'package:munin/widgets/shared/button/customization.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InProgressAnimeOrRealWidget extends StatelessWidget {
-  final InProgressAnimeOrRealCollection subject;
+  final InProgressAnimeOrRealCollection collection;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
   final void Function(EpisodeUpdateType episodeUpdateType, int episodeId,
       double newEpisodeNumber) onUpdateSingleEpisode;
   final void Function(int episodeSequentialNumber) onUpdateBatchEpisodes;
 
   const InProgressAnimeOrRealWidget({
     Key key,
-    @required this.subject,
+    @required this.collection,
+    @required this.preferredSubjectInfoLanguage,
     @required this.onUpdateSingleEpisode,
     @required this.onUpdateBatchEpisodes,
   }) : super(key: key);
@@ -48,8 +54,10 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
     String buildSubtitle() {
       List<String> subtitles = [];
-      if (isNotEmpty(episode.nameCn)) {
-        subtitles.add(episode.nameCn);
+      Optional<String> maybeSecondaryTitle = secondarySubjectTitle(
+          episode.name, episode.nameCn, preferredSubjectInfoLanguage);
+      if (maybeSecondaryTitle.isPresent) {
+        subtitles.add(maybeSecondaryTitle.value);
       }
 
       if (isNotEmpty(episode.duration)) {
@@ -75,7 +83,8 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Text(
-                  episode.name,
+                  preferredSubjectTitle(episode.name, episode.nameCn,
+                      preferredSubjectInfoLanguage),
                   style: Theme.of(context).textTheme.title,
                 ),
                 Text(
@@ -93,7 +102,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                   ),
                   onTap: () {
                     launch('https://bgm.tv/ep/${episode.id}',
-                        forceSafariVC: true);
+                        forceSafariVC: false);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -195,7 +204,9 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
       case EpisodeStatus.Wish:
         return Theme
             .of(context)
-            .brightness == Brightness.dark ? bangumiPink.shade200 : Theme
+            .brightness == Brightness.dark
+            ? bangumiPink.shade200
+            : Theme
             .of(context)
             .accentColor;
       case EpisodeStatus.Dropped:
@@ -243,7 +254,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
         8.0);
 
     return ExpansionTile(
-      key: PageStorageKey<String>('progress-${subject.subject.id}'),
+      key: PageStorageKey<String>('progress-${collection.subject.id}'),
       title: Padding(
         /// HACK: ListTile has a default of `EdgeInsets.symmetric(horizontal: 16.0)`
         /// padding, we want a 24.0 padding by default so adding a offset here
@@ -259,11 +270,11 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
               children: <Widget>[
                 ClickableCachedRoundedCover(
                   width: 48,
-                  imageUrl: subject.subject?.images?.large ??
+                  imageUrl: collection.subject?.cover?.large ??
                       bangumiTextOnlySubjectCover,
                   height: 48,
                   contentType: BangumiContent.Subject,
-                  id: subject.subject.id.toString(),
+                  id: collection.subject.id.toString(),
                 ),
                 ButtonTheme.fromButtonThemeData(
                   data: smallButtonTheme(context),
@@ -272,7 +283,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                       Application.router.navigateTo(
                           context,
                           Routes.subjectCollectionManagementRoute.replaceFirst(
-                              ':subjectId', subject.subject.id.toString()),
+                              ':subjectId', collection.subject.id.toString()),
                           transition: TransitionType.nativeModal);
                     },
                     child: Text("编辑"),
@@ -289,11 +300,13 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(subject.subject.name)),
+                      Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
+                          collection.subject, preferredSubjectInfoLanguage))),
                     ],
                   ),
                   WrappableText(
-                    '${subject.completedEpisodesCount ?? '??'}/${subject.subject.totalEpisodesCount ?? '??'}话',
+                    '${collection.completedEpisodesCount ?? '??'}/${collection
+                        .subject.totalEpisodesCount ?? '??'}话',
                     textStyle: Theme.of(context).textTheme.caption,
                     outerWrapper: OuterWrapper.Row,
                   ),
@@ -310,7 +323,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: defaultPortraitHorizontalPadding),
             child: Wrap(
-              children: _buildEpisodeChips(context, subject),
+              children: _buildEpisodeChips(context, collection),
             ),
           ),
         ),

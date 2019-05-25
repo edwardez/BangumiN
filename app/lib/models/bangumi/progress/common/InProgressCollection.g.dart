@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'InProgressSubject.dart';
+part of 'InProgressCollection.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-abstract class InProgressSubjectBuilder {
-  void replace(InProgressSubject other);
-  void update(void Function(InProgressSubjectBuilder) updates);
+abstract class InProgressCollectionBuilder {
+  void replace(InProgressCollection other);
+  void update(void Function(InProgressCollectionBuilder) updates);
   int get userUpdatedAt;
   set userUpdatedAt(int userUpdatedAt);
 

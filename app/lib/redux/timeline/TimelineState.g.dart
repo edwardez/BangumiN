@@ -22,9 +22,12 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
       'timeline',
       serializers.serialize(object.timeline,
           specifiedType: const FullType(BuiltMap, const [
-            const FullType(FetchTimelineRequest),
+            const FullType(GetTimelineRequest),
             const FullType(FeedChunks)
           ])),
+      'messageSubmissionStatus',
+      serializers.serialize(object.messageSubmissionStatus,
+          specifiedType: const FullType(LoadingStatus)),
     ];
 
     return result;
@@ -44,9 +47,13 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
         case 'timeline':
           result.timeline.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(FetchTimelineRequest),
+                const FullType(GetTimelineRequest),
                 const FullType(FeedChunks)
               ])) as BuiltMap);
+          break;
+        case 'messageSubmissionStatus':
+          result.messageSubmissionStatus = serializers.deserialize(value,
+              specifiedType: const FullType(LoadingStatus)) as LoadingStatus;
           break;
       }
     }
@@ -57,14 +64,20 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
 
 class _$TimelineState extends TimelineState {
   @override
-  final BuiltMap<FetchTimelineRequest, FeedChunks> timeline;
+  final BuiltMap<GetTimelineRequest, FeedChunks> timeline;
+  @override
+  final LoadingStatus messageSubmissionStatus;
 
   factory _$TimelineState([void Function(TimelineStateBuilder) updates]) =>
       (new TimelineStateBuilder()..update(updates)).build();
 
-  _$TimelineState._({this.timeline}) : super._() {
+  _$TimelineState._({this.timeline, this.messageSubmissionStatus}) : super._() {
     if (timeline == null) {
       throw new BuiltValueNullFieldError('TimelineState', 'timeline');
+    }
+    if (messageSubmissionStatus == null) {
+      throw new BuiltValueNullFieldError(
+          'TimelineState', 'messageSubmissionStatus');
     }
   }
 
@@ -78,18 +91,22 @@ class _$TimelineState extends TimelineState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TimelineState && timeline == other.timeline;
+    return other is TimelineState &&
+        timeline == other.timeline &&
+        messageSubmissionStatus == other.messageSubmissionStatus;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, timeline.hashCode));
+    return $jf(
+        $jc($jc(0, timeline.hashCode), messageSubmissionStatus.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TimelineState')
-          ..add('timeline', timeline))
+          ..add('timeline', timeline)
+          ..add('messageSubmissionStatus', messageSubmissionStatus))
         .toString();
   }
 }
@@ -98,17 +115,23 @@ class TimelineStateBuilder
     implements Builder<TimelineState, TimelineStateBuilder> {
   _$TimelineState _$v;
 
-  MapBuilder<FetchTimelineRequest, FeedChunks> _timeline;
-  MapBuilder<FetchTimelineRequest, FeedChunks> get timeline =>
-      _$this._timeline ??= new MapBuilder<FetchTimelineRequest, FeedChunks>();
-  set timeline(MapBuilder<FetchTimelineRequest, FeedChunks> timeline) =>
+  MapBuilder<GetTimelineRequest, FeedChunks> _timeline;
+  MapBuilder<GetTimelineRequest, FeedChunks> get timeline =>
+      _$this._timeline ??= new MapBuilder<GetTimelineRequest, FeedChunks>();
+  set timeline(MapBuilder<GetTimelineRequest, FeedChunks> timeline) =>
       _$this._timeline = timeline;
+
+  LoadingStatus _messageSubmissionStatus;
+  LoadingStatus get messageSubmissionStatus => _$this._messageSubmissionStatus;
+  set messageSubmissionStatus(LoadingStatus messageSubmissionStatus) =>
+      _$this._messageSubmissionStatus = messageSubmissionStatus;
 
   TimelineStateBuilder();
 
   TimelineStateBuilder get _$this {
     if (_$v != null) {
       _timeline = _$v.timeline?.toBuilder();
+      _messageSubmissionStatus = _$v.messageSubmissionStatus;
       _$v = null;
     }
     return this;
@@ -131,7 +154,10 @@ class TimelineStateBuilder
   _$TimelineState build() {
     _$TimelineState _$result;
     try {
-      _$result = _$v ?? new _$TimelineState._(timeline: timeline.build());
+      _$result = _$v ??
+          new _$TimelineState._(
+              timeline: timeline.build(),
+              messageSubmissionStatus: messageSubmissionStatus);
     } catch (_) {
       String _$failedField;
       try {

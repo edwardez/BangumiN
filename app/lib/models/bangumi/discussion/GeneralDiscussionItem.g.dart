@@ -28,9 +28,9 @@ class _$GeneralDiscussionItemSerializer
       'bangumiContent',
       serializers.serialize(object.bangumiContent,
           specifiedType: const FullType(BangumiContent)),
-      'images',
-      serializers.serialize(object.images,
-          specifiedType: const FullType(Images)),
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(BangumiImage)),
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
@@ -71,9 +71,9 @@ class _$GeneralDiscussionItemSerializer
           result.bangumiContent = serializers.deserialize(value,
               specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
-        case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+        case 'image':
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'title':
           result.title = serializers.deserialize(value,
@@ -104,7 +104,7 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
   @override
   final BangumiContent bangumiContent;
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final String title;
   @override
@@ -121,7 +121,7 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
   _$GeneralDiscussionItem._(
       {this.id,
       this.bangumiContent,
-      this.images,
+      this.image,
       this.title,
       this.subTitle,
       this.replyCount,
@@ -134,8 +134,8 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
       throw new BuiltValueNullFieldError(
           'GeneralDiscussionItem', 'bangumiContent');
     }
-    if (images == null) {
-      throw new BuiltValueNullFieldError('GeneralDiscussionItem', 'images');
+    if (image == null) {
+      throw new BuiltValueNullFieldError('GeneralDiscussionItem', 'image');
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('GeneralDiscussionItem', 'title');
@@ -163,7 +163,7 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
     return other is GeneralDiscussionItem &&
         id == other.id &&
         bangumiContent == other.bangumiContent &&
-        images == other.images &&
+        image == other.image &&
         title == other.title &&
         subTitle == other.subTitle &&
         replyCount == other.replyCount &&
@@ -177,7 +177,7 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
             $jc(
                 $jc(
                     $jc($jc($jc(0, id.hashCode), bangumiContent.hashCode),
-                        images.hashCode),
+                        image.hashCode),
                     title.hashCode),
                 subTitle.hashCode),
             replyCount.hashCode),
@@ -189,7 +189,7 @@ class _$GeneralDiscussionItem extends GeneralDiscussionItem {
     return (newBuiltValueToStringHelper('GeneralDiscussionItem')
           ..add('id', id)
           ..add('bangumiContent', bangumiContent)
-          ..add('images', images)
+          ..add('image', image)
           ..add('title', title)
           ..add('subTitle', subTitle)
           ..add('replyCount', replyCount)
@@ -213,9 +213,9 @@ class GeneralDiscussionItemBuilder
   set bangumiContent(BangumiContent bangumiContent) =>
       _$this._bangumiContent = bangumiContent;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _title;
   String get title => _$this._title;
@@ -239,7 +239,7 @@ class GeneralDiscussionItemBuilder
     if (_$v != null) {
       _id = _$v.id;
       _bangumiContent = _$v.bangumiContent;
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _title = _$v.title;
       _subTitle = _$v.subTitle;
       _replyCount = _$v.replyCount;
@@ -270,7 +270,7 @@ class GeneralDiscussionItemBuilder
           new _$GeneralDiscussionItem._(
               id: id,
               bangumiContent: bangumiContent,
-              images: images.build(),
+              image: image.build(),
               title: title,
               subTitle: subTitle,
               replyCount: replyCount,
@@ -278,8 +278,8 @@ class GeneralDiscussionItemBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        images.build();
+        _$failedField = 'image';
+        image.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'GeneralDiscussionItem', _$failedField, e.toString());

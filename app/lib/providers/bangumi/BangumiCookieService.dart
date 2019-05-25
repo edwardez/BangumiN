@@ -3,10 +3,14 @@ import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:html/dom.dart';
+import 'package:html/parser.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
+import 'package:quiver/strings.dart';
 
 // A client for Bangumi thst sends requests with cookie and handles relevant persistence
 class BangumiCookieService {
@@ -72,12 +76,27 @@ class BangumiCookieService {
     dio.options.headers[HttpHeaders.userAgentHeader] = userAgent;
   }
 
+  Future<void> clearCredentials() {
+    return secureStorageService.clearBangumiCookieCredentials();
+  }
+
   Future<void> persistCredentials() {
-    return this.secureStorageService.persistBangumiCookieCredentials(
+    return secureStorageService.persistBangumiCookieCredentials(
         bangumiCookieCredential);
   }
 
-  Future<void> clearCredentials() {
-    return this.secureStorageService.clearBangumiCookieCredentials();
+  Future<String> getXsrfToken() async {
+    /// TODO: find a better place where xsrf token is stored
+    Response response = await dio.get('/settings/password');
+    if (response.statusCode == 200) {
+      DocumentFragment document = parseFragment(response.data);
+      Element tokenElement = document.querySelector('input[name=formhash]');
+      if (tokenElement != null &&
+          isNotEmpty(tokenElement.attributes['value'])) {
+        return tokenElement.attributes['value'];
+      }
+    }
+
+    throw BangumiResponseIncomprehensibleException();
   }
 }

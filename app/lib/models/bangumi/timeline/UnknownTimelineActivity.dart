@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
@@ -14,6 +15,9 @@ abstract class UnknownTimelineActivity
   FeedMetaInfo get user;
 
   String get content;
+
+  @nullable
+  BangumiContent get bangumiContent;
 
   UnknownTimelineActivity._();
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/MonoBase.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -23,7 +23,7 @@ abstract class Character
   @BuiltValueField(wireName: 'role_name')
   String get roleName;
 
-  Images get images;
+  BangumiImage get avatar;
 
   @nullable
   @BuiltValueField(wireName: 'comment')

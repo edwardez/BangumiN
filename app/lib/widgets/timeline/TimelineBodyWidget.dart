@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
@@ -15,7 +16,9 @@ import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
 import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
@@ -41,29 +44,43 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TimelineBody extends StatefulWidget {
-  final OneMuninBar oneMuninBar;
-  final FetchTimelineRequest fetchTimelineRequest;
+/// [possibleFeedFilter] means
+typedef DeleteFeedCallback = void Function(BuildContext context, TimelineFeed feed);
 
-  const TimelineBody(
-      {Key key,
-      @required this.oneMuninBar,
-      @required this.fetchTimelineRequest})
-      : assert(fetchTimelineRequest != null),
-        assert(oneMuninBar != null),
+class TimelineBodyWidget extends StatefulWidget {
+  final Widget appBar;
+  final GetTimelineRequest getTimelineRequest;
+
+  const TimelineBodyWidget(
+      {Key key, @required this.appBar, @required this.getTimelineRequest})
+      : assert(getTimelineRequest != null),
+        assert(appBar != null),
         super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _TimelineBodyState();
+    assert(appBar is OneMuninBar || appBar is SliverAppBar);
+    return _TimelineBodyWidgetState();
   }
 }
 
-class _TimelineBodyState extends State<TimelineBody> {
+class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
       GlobalKey<MuninRefreshState>();
 
-  Widget getWidgetByType(timelineItem) {
+  Widget getWidgetByType(timelineItem, String appUsername,
+      DeleteFeedCallback dispatchDeleteAction) {
+    String feedUsername = timelineItem?.user?.username;
+
+    DeleteFeedCallback callback;
+
+    /// Sets callback to a non-null dispatchDeleteAction only if user is authorized
+    /// to do so
+    if (feedUsername != null && feedUsername == appUsername) {
+      callback = dispatchDeleteAction;
+    }
+
+
     if (timelineItem is PublicMessageNoReply) {
       return PublicMessageNoReplyWidget(
         publicMessageNoReply: timelineItem,
@@ -72,51 +89,61 @@ class _TimelineBodyState extends State<TimelineBody> {
     if (timelineItem is PublicMessageNormal) {
       return PublicMessageNormalWidget(
         publicMessageNormal: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is BlogCreationSingle) {
       return BlogCreationSingleWidget(
         blogCreationSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is CollectionUpdateSingle) {
       return CollectionUpdateSingleWidget(
         collectionUpdateSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is FriendshipCreationSingle) {
       return FriendshipCreationSingleWidget(
         friendshipCreationSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is GroupJoinSingle) {
       return GroupJoinSingleWidget(
         groupJoinSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is IndexFavoriteSingle) {
       return IndexFavoriteSingleWidget(
         indexFavoriteSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is MonoFavoriteSingle) {
       return MonoFavoriteSingleWidget(
         monoFavoriteSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is ProgressUpdateEpisodeSingle) {
       return ProgressUpdateEpisodeSingleWidget(
         progressUpdateEpisodeSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is ProgressUpdateEpisodeUntil) {
       return ProgressUpdateEpisodeUntilWidget(
         progressUpdateEpisodeUntil: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is StatusUpdateMultiple) {
       return StatusUpdateMultipleWidget(
         statusUpdateMultiple: timelineItem,
+          onDeleteFeed: callback
       );
     }
     if (timelineItem is UnknownTimelineActivity) {
@@ -127,24 +154,36 @@ class _TimelineBodyState extends State<TimelineBody> {
     if (timelineItem is WikiCreationSingle) {
       return WikiCreationSingleWidget(
         wikiCreationSingle: timelineItem,
+          onDeleteFeed: callback
       );
     }
 
     return Container();
   }
 
-  IndexedWidgetBuilder _createItemBuilder(_ViewModel viewModel) {
-    FeedChunks feedChunks = viewModel.feedChunks;
+  IndexedWidgetBuilder _createItemBuilder(_ViewModel vm,
+      bool hasFilterAllFeeds) {
+    if (hasFilterAllFeeds) {
+      return (BuildContext context, int index) {
+        Semantics(child: Container(), excludeSemantics: true);
+      };
+    }
+
+    FeedChunks feedChunks = vm.feedChunks;
     return (BuildContext context, int index) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if(feedChunks
+          if (feedChunks
               .getFeedAt(index)
               ?.user
               ?.username != null)
             CachedCircleAvatar(
-              imageUrl: feedChunks.getFeedAt(index)?.user?.avatarImageUrl,
+              imageUrl: feedChunks
+                  .getFeedAt(index)
+                  ?.user
+                  ?.avatar
+                  ?.medium,
               navigateToUserRouteOnTap: true,
               username: feedChunks
                   .getFeedAt(index)
@@ -154,7 +193,8 @@ class _TimelineBodyState extends State<TimelineBody> {
           Expanded(
             child: Container(
               padding: EdgeInsets.only(left: 8),
-              child: getWidgetByType(feedChunks.getFeedAt(index)),
+              child: getWidgetByType(
+                  feedChunks.getFeedAt(index), vm.appUsername, vm.deleteFeed),
             ),
           )
         ],
@@ -164,15 +204,41 @@ class _TimelineBodyState extends State<TimelineBody> {
 
   /// A widget that will show up if the timeline is empty
   _buildEmptyTimelineWidget() {
+    if (widget.getTimelineRequest.timelineSource ==
+        TimelineSource.UserProfile) {
+      return Column(
+        children: <Widget>[
+          Text('时间线为空，可能因为：'),
+          Text('1. $appOrBangumiHasAnError，下拉可重试'),
+          Text(
+              '2. 用户未发表任何${widget.getTimelineRequest.timelineCategoryFilter
+                  .chineseName}分类下的动态'),
+          FlatButton(
+            child: Text(checkWebVersionPrompt),
+            onPressed: () {
+              String username = widget.getTimelineRequest.username;
+              String category = widget.getTimelineRequest.timelineCategoryFilter
+                  .bangumiQueryParameterValue;
+
+              return launch(
+                  'https://${Application.environmentValue
+                      .bangumiMainHost}/user/$username/timeline?type=$category',
+                  forceSafariVC: false);
+            },
+          )
+        ],
+      );
+    }
+
     return Column(
       children: <Widget>[
-        Text('时间线为空，可能的原因'),
-        Text('1. 应用或bangumi出错，下拉可重试'),
+        Text('时间线为空，可能因为：'),
+        Text('1. $appOrBangumiHasAnError，下拉可重试'),
         Text('2. 您尚未关注任何已发表动态的用户'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(bangumiTimelineUrl, forceSafariVC: true);
+            return launch(bangumiTimelineUrl, forceSafariVC: false);
           },
         )
       ],
@@ -186,33 +252,46 @@ class _TimelineBodyState extends State<TimelineBody> {
     );
   }
 
+  /// Checks whether user has filtered all available feeds by checking if unfiltered
+  /// list is not empty while filtered list is empty
+  bool userHasFilterAllFeeds(FeedChunks feedChunks) {
+    return feedChunks.filteredFeeds.length == 0 &&
+        feedChunks.unfilteredFeeds.length != 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
       converter: (Store store) =>
-          _ViewModel.fromStore(store, widget.fetchTimelineRequest),
+          _ViewModel.fromStore(store, widget.getTimelineRequest),
       onInitialBuild: (_ViewModel vm) {
-        if (vm.feedChunks.isStale || vm.feedChunks.first.isEmpty) {
+        if (vm.feedChunks.isStale || vm.feedChunks.filteredFeeds.isEmpty) {
           _muninRefreshKey?.currentState?.callOnRefresh();
         }
       },
       builder: (BuildContext context, _ViewModel vm) {
+        bool hasFilterAllFeeds = userHasFilterAllFeeds(vm.feedChunks);
+
+        /// Build timeline refresh list
+        /// If user has filtered all available feeds, attach an empty `Container()`
+        /// to the timeline to ensure load more button will show up
         return MuninRefresh(
             key: _muninRefreshKey,
             onRefresh: () {
               return vm.fetchLatestFeed(context);
             },
-            itemBuilder: _createItemBuilder(vm),
+            itemBuilder: _createItemBuilder(vm, hasFilterAllFeeds),
             onLoadMore: () {
               return vm.fetchOlderFeed(context);
             },
             refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
-            itemCount: vm.feedChunks.first.length,
-            appBar: widget.oneMuninBar,
+            itemCount: hasFilterAllFeeds ? 1 : vm.feedChunks.filteredFeeds
+                .length,
+            appBar: widget.appBar,
             emptyAfterRefreshWidget: _buildEmptyTimelineWidget(),
             noMoreItemsToLoad:
-                vm.feedChunks.disableLoadingMore || vm.feedChunks.hasReachedEnd,
+            vm.feedChunks.disableLoadingMore || vm.feedChunks.hasReachedEnd,
             noMoreItemsWidget: _buildNoMoreItemsWidget());
       },
     );
@@ -220,28 +299,35 @@ class _TimelineBodyState extends State<TimelineBody> {
 }
 
 class _ViewModel {
+  /// user name of the user who is using the app
+  final String appUsername;
+
   final FeedChunks feedChunks;
-  final FetchTimelineRequest fetchTimelineRequest;
+  final GetTimelineRequest getTimelineRequest;
   final Future Function(BuildContext context) fetchLatestFeed;
   final Future Function(BuildContext context) fetchOlderFeed;
 
-  factory _ViewModel.fromStore(
-      Store<AppState> store, FetchTimelineRequest fetchTimelineRequest) {
+  final DeleteFeedCallback deleteFeed;
+
+  factory _ViewModel.fromStore(Store<AppState> store,
+      GetTimelineRequest getTimelineRequest) {
     Future _fetchLatestFeed(BuildContext context) {
       FeedChunks feedChunks =
-          store.state.timelineState.timeline[fetchTimelineRequest] ??
+          store.state.timelineState.timeline[getTimelineRequest] ??
               FeedChunks();
+
       FeedLoadType feedLoadType;
-      if (isIterableNullOrEmpty(feedChunks.first)) {
+      if (isIterableNullOrEmpty(feedChunks.unfilteredFeeds)) {
         feedLoadType = FeedLoadType.Initial;
       } else {
         feedLoadType = FeedLoadType.Newer;
       }
 
-      final action = LoadTimelineRequest(
-          context: context,
-          feedLoadType: feedLoadType,
-          fetchTimelineRequest: fetchTimelineRequest);
+      final action = GetTimelineRequestAction(
+        context: context,
+        feedLoadType: feedLoadType,
+        getTimelineRequest: getTimelineRequest,
+      );
       store.dispatch(action);
 
       return action.completer.future;
@@ -250,38 +336,52 @@ class _ViewModel {
     Future _fetchOlderFeed(BuildContext context) {
       FeedLoadType feedLoadType = FeedLoadType.Older;
 
-      final action = LoadTimelineRequest(
+      final action = GetTimelineRequestAction(
           context: context,
           feedLoadType: feedLoadType,
-          fetchTimelineRequest: fetchTimelineRequest);
+          getTimelineRequest: getTimelineRequest);
       store.dispatch(action);
 
       return action.completer.future;
     }
 
+    void _deleteFeed(BuildContext context, TimelineFeed feed) {
+      store.dispatch(DeleteTimelineAction(
+          context: context,
+          feed: feed,
+          getTimelineRequest: getTimelineRequest
+      ));
+    }
+
     return _ViewModel(
-      feedChunks: store.state.timelineState.timeline[fetchTimelineRequest] ??
+      feedChunks: store.state.timelineState.timeline[getTimelineRequest] ??
           FeedChunks(),
-      fetchTimelineRequest: fetchTimelineRequest,
+      getTimelineRequest: getTimelineRequest,
       fetchLatestFeed: (context) => _fetchLatestFeed(context),
       fetchOlderFeed: (context) => _fetchOlderFeed(context),
+      deleteFeed: _deleteFeed,
+      appUsername: store.state.currentAuthenticatedUserBasicInfo.username,
     );
   }
 
-  _ViewModel(
-      {@required this.feedChunks,
-      @required this.fetchTimelineRequest,
-      @required this.fetchLatestFeed,
-      @required this.fetchOlderFeed});
+  _ViewModel({@required this.feedChunks,
+    @required this.getTimelineRequest,
+    @required this.fetchLatestFeed,
+    @required this.fetchOlderFeed,
+    @required this.appUsername,
+    @required this.deleteFeed,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          feedChunks == other.feedChunks &&
-          fetchTimelineRequest == other.fetchTimelineRequest;
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              feedChunks == other.feedChunks &&
+              getTimelineRequest == other.getTimelineRequest &&
+              appUsername == other.appUsername
+  ;
 
   @override
-  int get hashCode => hash2(feedChunks.hashCode, fetchTimelineRequest.hashCode);
+  int get hashCode => hash3(feedChunks, getTimelineRequest, appUsername);
 }

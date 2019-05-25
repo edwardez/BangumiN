@@ -1,18 +1,21 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
+import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
+import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 import 'package:quiver/strings.dart';
 
 class CollectionUpdateSingleWidget extends StatelessWidget {
   final CollectionUpdateSingle collectionUpdateSingle;
+  final DeleteFeedCallback onDeleteFeed;
 
   const CollectionUpdateSingleWidget({
     Key key,
     @required this.collectionUpdateSingle,
+    @required this.onDeleteFeed
   }) : super(key: key);
 
   /// https://github.com/dart-lang/sdk/issues/11155
@@ -58,20 +61,18 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
         UserListTile.fromUser(
           user: collectionUpdateSingle.user,
           score: collectionUpdateSingle.subjectScore,
+          trailing: buildTrailingWidget(collectionUpdateSingle, onDeleteFeed),
         ),
         _buildCommentWidget(collectionUpdateSingle.subjectComment),
         TimelineCommonListTile(
           leadingWidget: CachedRoundedCover.asGridSize(
-            imageUrl: collectionUpdateSingle.subjectImageUrl,
+            imageUrl: collectionUpdateSingle.subjectCover.medium,
           ),
-          title: collectionUpdateSingle.subjectTitle,
-          onTap: () {
-            Application
-                .router
-                .navigateTo(context,
-                '/subject/${collectionUpdateSingle.subjectId}',
-                transition: TransitionType.native);
-          },
+          title: collectionUpdateSingle.subjectName,
+          onTap: generateOnTapCallbackForBangumiContent(
+              contentType: collectionUpdateSingle.bangumiContent,
+              id: collectionUpdateSingle.subjectId,
+              context: context),
         ),
       ],
     );

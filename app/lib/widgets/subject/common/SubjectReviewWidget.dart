@@ -76,7 +76,7 @@ class SubjectReviewWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           CachedCircleAvatar(
-            imageUrl: review.metaInfo.userAvatars.medium,
+              imageUrl: review.metaInfo.avatar.medium,
               navigateToUserRouteOnTap: true,
               username: review.metaInfo.username
           ),

@@ -1,5 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
@@ -17,13 +19,12 @@ abstract class CollectionUpdateSingle
 
   String get subjectId;
 
-  @nullable
-  String get subjectImageUrl;
+  BangumiImage get subjectCover;
 
   @nullable
   double get subjectScore;
 
-  String get subjectTitle;
+  String get subjectName;
 
   CollectionUpdateSingle._();
 

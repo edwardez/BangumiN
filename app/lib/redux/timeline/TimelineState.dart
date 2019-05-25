@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
+import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -12,14 +13,17 @@ part 'TimelineState.g.dart';
 abstract class TimelineState
     implements Built<TimelineState, TimelineStateBuilder> {
 
-  BuiltMap<FetchTimelineRequest, FeedChunks> get timeline;
+  BuiltMap<GetTimelineRequest, FeedChunks> get timeline;
+
+  LoadingStatus get messageSubmissionStatus;
 
   TimelineState._();
 
   factory TimelineState([updates(TimelineStateBuilder b)]) =>
       _$TimelineState((b) => b
         ..timeline.replace(
-            BuiltMap<FetchTimelineRequest, FeedChunks>())
+            BuiltMap<GetTimelineRequest, FeedChunks>())
+        ..messageSubmissionStatus = LoadingStatus.Initial
         ..update(updates));
 
   String toJson() {

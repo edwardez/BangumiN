@@ -23,15 +23,18 @@ class _$GroupJoinSingleSerializer
       'user',
       serializers.serialize(object.user,
           specifiedType: const FullType(FeedMetaInfo)),
-      'groupCoverImageUrl',
-      serializers.serialize(object.groupCoverImageUrl,
-          specifiedType: const FullType(String)),
+      'groupIcon',
+      serializers.serialize(object.groupIcon,
+          specifiedType: const FullType(BangumiImage)),
       'groupName',
       serializers.serialize(object.groupName,
           specifiedType: const FullType(String)),
       'groupId',
       serializers.serialize(object.groupId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.groupDescription != null) {
       result
@@ -64,9 +67,9 @@ class _$GroupJoinSingleSerializer
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
           break;
-        case 'groupCoverImageUrl':
-          result.groupCoverImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'groupIcon':
+          result.groupIcon.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'groupName':
           result.groupName = serializers.deserialize(value,
@@ -79,6 +82,10 @@ class _$GroupJoinSingleSerializer
         case 'groupId':
           result.groupId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
+          break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
@@ -95,13 +102,15 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   @override
   final FeedMetaInfo user;
   @override
-  final String groupCoverImageUrl;
+  final BangumiImage groupIcon;
   @override
   final String groupName;
   @override
   final String groupDescription;
   @override
   final String groupId;
+  @override
+  final BangumiContent bangumiContent;
   @override
   final bool isFromMutedUser;
 
@@ -110,24 +119,27 @@ class _$GroupJoinSingle extends GroupJoinSingle {
 
   _$GroupJoinSingle._(
       {this.user,
-      this.groupCoverImageUrl,
+      this.groupIcon,
       this.groupName,
       this.groupDescription,
       this.groupId,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'user');
     }
-    if (groupCoverImageUrl == null) {
-      throw new BuiltValueNullFieldError(
-          'GroupJoinSingle', 'groupCoverImageUrl');
+    if (groupIcon == null) {
+      throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupIcon');
     }
     if (groupName == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupName');
     }
     if (groupId == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupId');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError('GroupJoinSingle', 'bangumiContent');
     }
   }
 
@@ -144,10 +156,11 @@ class _$GroupJoinSingle extends GroupJoinSingle {
     if (identical(other, this)) return true;
     return other is GroupJoinSingle &&
         user == other.user &&
-        groupCoverImageUrl == other.groupCoverImageUrl &&
+        groupIcon == other.groupIcon &&
         groupName == other.groupName &&
         groupDescription == other.groupDescription &&
         groupId == other.groupId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -156,10 +169,12 @@ class _$GroupJoinSingle extends GroupJoinSingle {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), groupCoverImageUrl.hashCode),
-                    groupName.hashCode),
-                groupDescription.hashCode),
-            groupId.hashCode),
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), groupIcon.hashCode),
+                        groupName.hashCode),
+                    groupDescription.hashCode),
+                groupId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -167,10 +182,11 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   String toString() {
     return (newBuiltValueToStringHelper('GroupJoinSingle')
           ..add('user', user)
-          ..add('groupCoverImageUrl', groupCoverImageUrl)
+          ..add('groupIcon', groupIcon)
           ..add('groupName', groupName)
           ..add('groupDescription', groupDescription)
           ..add('groupId', groupId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -186,10 +202,10 @@ class GroupJoinSingleBuilder
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
-  String _groupCoverImageUrl;
-  String get groupCoverImageUrl => _$this._groupCoverImageUrl;
-  set groupCoverImageUrl(String groupCoverImageUrl) =>
-      _$this._groupCoverImageUrl = groupCoverImageUrl;
+  BangumiImageBuilder _groupIcon;
+  BangumiImageBuilder get groupIcon =>
+      _$this._groupIcon ??= new BangumiImageBuilder();
+  set groupIcon(BangumiImageBuilder groupIcon) => _$this._groupIcon = groupIcon;
 
   String _groupName;
   String get groupName => _$this._groupName;
@@ -204,6 +220,11 @@ class GroupJoinSingleBuilder
   String get groupId => _$this._groupId;
   set groupId(String groupId) => _$this._groupId = groupId;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -214,10 +235,11 @@ class GroupJoinSingleBuilder
   GroupJoinSingleBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
-      _groupCoverImageUrl = _$v.groupCoverImageUrl;
+      _groupIcon = _$v.groupIcon?.toBuilder();
       _groupName = _$v.groupName;
       _groupDescription = _$v.groupDescription;
       _groupId = _$v.groupId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -244,16 +266,19 @@ class GroupJoinSingleBuilder
       _$result = _$v ??
           new _$GroupJoinSingle._(
               user: user.build(),
-              groupCoverImageUrl: groupCoverImageUrl,
+              groupIcon: groupIcon.build(),
               groupName: groupName,
               groupDescription: groupDescription,
               groupId: groupId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         user.build();
+        _$failedField = 'groupIcon';
+        groupIcon.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'GroupJoinSingle', _$failedField, e.toString());

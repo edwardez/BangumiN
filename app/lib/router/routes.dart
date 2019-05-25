@@ -3,24 +3,37 @@ import 'package:flutter/material.dart';
 
 import './RouteHandlers.dart';
 
+class RoutesVariable {
+  static const subjectId = ':subjectId';
+  static const username = ':username';
+}
+
 class Routes {
-  static String root = "/";
-  static String loginRoute = "/login";
-  static String homeRoute = "/home";
-  static String bangumiOauthRoute = "/bangumiOauth";
-  static String subjectMainPageRoute = "/subject/:subjectId";
-  static String subjectDetailInfoPageRoute = "/subject/:subjectId/info";
-  static String subjectCollectionManagementRoute =
-      "/subject/:subjectId/collection";
+  static const root = "/";
+  static const loginRoute = "/login";
+  static const homeRoute = "/home";
+  static const bangumiOauthRoute = "/bangumiOauth";
+  static const subjectMainPageRoute = "/subject/${RoutesVariable.subjectId}";
+  static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
+      .subjectId}/info";
+  static const subjectCollectionManagementRoute =
+      "/subject/${RoutesVariable.subjectId}/collection";
 
-  static String userProfileRoute = "/user/:username";
+  // User
+  static const userProfileRoute = "/user/${RoutesVariable.username}";
+  static const userProfileTimelineRoute =
+      "/user/${RoutesVariable.username}/timeline";
+  static String composeTimelineMessageRoute =
+      "/user/${RoutesVariable.username}/timeline/new";
 
-  /// Setting
-  static String settingRoute = "/setting";
-  static String themeSettingRoute = "/setting/theme";
-  static String muteSettingRoute = "/setting/mute";
-  static String muteSettingBatchImportUsersRoute =
+  // Setting
+  static const settingRoute = "/setting";
+  static const generalSettingRoute = "/setting/general";
+  static const themeSettingRoute = "/setting/theme";
+  static const muteSettingRoute = "/setting/mute";
+  static const muteSettingBatchImportUsersRoute =
       "/setting/mute/users/import/bangumi";
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
@@ -36,7 +49,10 @@ class Routes {
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
     router.define(userProfileRoute, handler: userProfileRouteHandler);
+    router.define(composeTimelineMessageRoute,
+        handler: composeTimelineMessageRouteHandler);
     router.define(settingRoute, handler: settingRouteHandler);
+    router.define(generalSettingRoute, handler: generalSettingRouteHandler);
     router.define(themeSettingRoute, handler: themeSettingRouteHandler);
     router.define(muteSettingRoute, handler: muteSettingRouteHandler);
     router.define(muteSettingBatchImportUsersRoute,

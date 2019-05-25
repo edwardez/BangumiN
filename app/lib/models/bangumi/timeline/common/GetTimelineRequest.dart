@@ -6,44 +6,50 @@ import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'FetchTimelineRequest.g.dart';
+part 'GetTimelineRequest.g.dart';
 
-/// Class to represent possible request to fetch timeline
+/// Class to represent possible request to get timeline
 /// For source, currently munin only supports [TimelineSource.FriendsOnly]
+/// and [TimelineSource.UserProfile]
 /// Setting source to other values will request in unexpected behavior
-abstract class FetchTimelineRequest
-    implements Built<FetchTimelineRequest, FetchTimelineRequestBuilder> {
-  FetchTimelineRequest._();
+abstract class GetTimelineRequest
+    implements Built<GetTimelineRequest, GetTimelineRequestBuilder> {
+  GetTimelineRequest._();
 
   TimelineSource get timelineSource;
 
   TimelineCategoryFilter get timelineCategoryFilter;
 
+  /// Needs to be present if [timelineSource] is set to [TimelineSource.UserProfile]
+  @nullable
+  String get username;
+
   @memoized
   String get chineseName {
     /// Most people will stick with checking status from their friends only,
     /// there is no need to explicitly add source prefix for this type
-    if (timelineSource == TimelineSource.FriendsOnly) {
+    if (timelineSource == TimelineSource.FriendsOnly ||
+        timelineSource == TimelineSource.UserProfile) {
       return timelineCategoryFilter.chineseName;
     }
 
     return '${timelineSource.chineseName} - ${timelineCategoryFilter.chineseName}';
   }
 
-  factory FetchTimelineRequest(
-          [void Function(FetchTimelineRequestBuilder) updates]) =
-      _$FetchTimelineRequest;
+  factory GetTimelineRequest(
+      [void Function(GetTimelineRequestBuilder) updates]) =
+  _$GetTimelineRequest;
 
   String toJson() {
-    return json.encode(
-        serializers.serializeWith(FetchTimelineRequest.serializer, this));
+    return json
+        .encode(serializers.serializeWith(GetTimelineRequest.serializer, this));
   }
 
-  static FetchTimelineRequest fromJson(String jsonString) {
+  static GetTimelineRequest fromJson(String jsonString) {
     return serializers.deserializeWith(
-        FetchTimelineRequest.serializer, json.decode(jsonString));
+        GetTimelineRequest.serializer, json.decode(jsonString));
   }
 
-  static Serializer<FetchTimelineRequest> get serializer =>
-      _$fetchTimelineRequestSerializer;
+  static Serializer<GetTimelineRequest> get serializer =>
+      _$getTimelineRequestSerializer;
 }

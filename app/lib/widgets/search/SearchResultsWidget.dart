@@ -5,6 +5,7 @@ import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/search/SearchActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
@@ -101,6 +102,8 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
           itemBuilder: (BuildContext context, int index) {
             return SearchResultDelegate(
               searchResult: results[index],
+              preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
+
             );
           }),
       onRefresh: null,
@@ -164,6 +167,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
 
 class _ViewModel {
   final BangumiGeneralSearchResponse bangumiSearchResponse;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final SearchRequest searchRequest;
   final LoadingStatus loadingStatus;
   final Function(BuildContext context, SearchRequest externalSearchRequest)
@@ -187,14 +191,17 @@ class _ViewModel {
       dispatchSearchAction:
           (BuildContext context, SearchRequest externalSearchRequest) =>
               _dispatchSearchAction(context, externalSearchRequest),
+      preferredSubjectInfoLanguage: store.state.settingState.generalSetting
+          .preferredSubjectInfoLanguage,
     );
   }
 
   _ViewModel({
-    this.searchRequest,
-    this.bangumiSearchResponse,
-    this.loadingStatus,
-    this.dispatchSearchAction,
+    @required this.searchRequest,
+    @required this.bangumiSearchResponse,
+    @required this.loadingStatus,
+    @required this.dispatchSearchAction,
+    @required this.preferredSubjectInfoLanguage,
   });
 
   @override
@@ -204,11 +211,14 @@ class _ViewModel {
           runtimeType == other.runtimeType &&
           bangumiSearchResponse == other.bangumiSearchResponse &&
           loadingStatus == other.loadingStatus &&
-          searchRequest == other.searchRequest;
+          searchRequest == other.searchRequest &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage
+  ;
 
   @override
   int get hashCode =>
-      hash3(bangumiSearchResponse, loadingStatus, searchRequest);
+      hash4(bangumiSearchResponse, loadingStatus, searchRequest,
+          preferredSubjectInfoLanguage);
 }
 
 _createSearchAction(BuildContext context, SearchRequest externalSearchRequest) {

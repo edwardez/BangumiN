@@ -59,12 +59,22 @@ class SharedPreferenceService {
         );
         return Optional.of(fullAppState);
       } catch (error, stack) {
+        /// If data other than core data is corrupted, saves a serialized basic app
+        /// state
+        if (appState != null) {
+          await persistAppState(appState);
+        }
         debugPrint(
             'Error occurred during serializing AppState: $error. Stack: $stack');
       }
     }
 
-    return appState == null ? Optional.absent() : Optional.of(appState);
+    if (appState == null) {
+      return Optional.absent();
+    } else {
+      return Optional.of(appState);
+    }
+
   }
 
   /// Saves [AppState] with key [appStateKey] and a basicAppState with key
@@ -105,7 +115,12 @@ class SharedPreferenceService {
         basicAppStateKey, basicAppState.toJson());
   }
 
-  Future<bool> deleteAppState() {
-    return this.sharedPreferences.remove(appStateKey);
+  Future<bool> deleteAppState() async {
+    List<bool> futures = await Future.wait([
+      this.sharedPreferences.remove(appStateKey),
+      this.sharedPreferences.remove(basicAppStateKey),
+    ]);
+
+    return futures[0] && futures[1];
   }
 }

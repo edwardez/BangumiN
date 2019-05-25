@@ -1,5 +1,5 @@
 import 'package:built_value/built_value.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 
 part 'DiscussionItem.g.dart';
@@ -11,7 +11,7 @@ abstract class DiscussionItem {
 
   BangumiContent get bangumiContent;
 
-  Images get images;
+  BangumiImage get image;
 
   /// For person/character, it's person/character name
   /// For episode, it's episode name

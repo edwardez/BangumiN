@@ -1,42 +1,74 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
-import 'package:munin/widgets/timeline/TimelineBody.dart';
+import 'package:munin/widgets/shared/button/FlatButtonWithTrailingIcon.dart';
+import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
-class TimelineBodyPage {
-  final int index;
-  final FetchTimelineRequest fetchTimelineRequest;
-  final TimelineBody body;
+class TimelineBody {
+  final GetTimelineRequest getTimelineRequest;
+  final TimelineBodyWidget widget;
 
-  TimelineBodyPage({@required this.index,
-    @required this.fetchTimelineRequest,
-    @required this.body});
+  TimelineBody({
+    @required this.getTimelineRequest,
+    @required this.widget,
+  });
 }
 
 class MuninTimeline extends StatefulWidget {
-  const MuninTimeline({Key key}) : super(key: key);
+  final TimelineCategoryFilter preferredTimelineLaunchPage;
+
+  final TimelineSource timelineSource;
+
+  /// If [timelineSource] is [TimelineSource.UserProfile]
+  /// [username] must not be null
+  final String username;
+
+  const MuninTimeline.onHomePage({
+    Key key,
+    @required this.preferredTimelineLaunchPage,
+    this.timelineSource = TimelineSource.FriendsOnly,
+  })
+      : this.username = null,
+        super(key: key);
+
+  const MuninTimeline.onUserProfile({
+    Key key,
+    @required this.username,
+    this.preferredTimelineLaunchPage = TimelineCategoryFilter.AllFeeds,
+  })
+      : this.timelineSource = TimelineSource.UserProfile,
+        super(key: key);
 
   @override
   _MuninTimelineState createState() => _MuninTimelineState();
 }
 
 class _MuninTimelineState extends State<MuninTimeline> {
-  final PageController pageController = PageController();
+  PageController pageController;
 
-  int currentIndex = 0;
+  final List<TimelineBody> timelineBodies =
+  List(TimelineCategoryFilter.totalTimelineTypes);
+  final List<TimelineBodyWidget> pages =
+  List(TimelineCategoryFilter.totalTimelineTypes);
 
-  List<TimelineBodyPage> timelineBodyViews = [];
-  List<TimelineBody> pages = [];
+  /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
+  /// we should be fine
+  int get currentIndex {
+    assert(pageController.page.toInt() - pageController.page == 0);
 
-  TimelineBody _buildTimelineBodyWidget(
-      FetchTimelineRequest fetchTimelineRequest, OneMuninBar oneMuninBar) {
-    return TimelineBody(
-      key: PageStorageKey<FetchTimelineRequest>(fetchTimelineRequest),
-      oneMuninBar: oneMuninBar,
-      fetchTimelineRequest: fetchTimelineRequest,
+    return pageController?.page?.toInt();
+  }
+
+  TimelineBodyWidget _buildTimelineBodyWidget(GetTimelineRequest request,
+      Widget appBar) {
+    return TimelineBodyWidget(
+      key: PageStorageKey<GetTimelineRequest>(request),
+      appBar: appBar,
+      getTimelineRequest: request,
     );
   }
 
@@ -46,13 +78,16 @@ class _MuninTimelineState extends State<MuninTimeline> {
         builder: (BuildContext context) {
           List<ListTile> options = [];
 
-          for (TimelineBodyPage timelineBodyView in timelineBodyViews) {
+          for (TimelineBody timelineBody in timelineBodies) {
             options.add(ListTile(
-              title: Text(timelineBodyView.fetchTimelineRequest.chineseName),
+              title: Text(timelineBody.getTimelineRequest.chineseName),
               onTap: () {
                 setState(() {
-                  currentIndex = timelineBodyView.index;
-                  pageController.jumpToPage(currentIndex);
+                  int pageIndex = timelineBody
+                      .getTimelineRequest.timelineCategoryFilter.pageIndex;
+                  if (currentIndex != pageIndex) {
+                    pageController.jumpToPage(pageIndex);
+                  }
                 });
                 Navigator.pop(context);
               },
@@ -72,36 +107,50 @@ class _MuninTimelineState extends State<MuninTimeline> {
   void initState() {
     super.initState();
 
-    int index = 0;
+    pageController = PageController(
+        initialPage: widget.preferredTimelineLaunchPage.pageIndex);
+
     for (TimelineCategoryFilter filter in TimelineCategoryFilter.values) {
-      FetchTimelineRequest request = FetchTimelineRequest((b) =>
+      GetTimelineRequest request = GetTimelineRequest((b) =>
       b
-        ..timelineSource = TimelineSource.FriendsOnly
+        ..timelineSource = widget.timelineSource
+        ..username = widget.username
         ..timelineCategoryFilter = filter);
 
-      /// Maybe we can initialize only one app bar
-      OneMuninBar oneMuninBar = OneMuninBar(
-        title: FlatButton(
-          onPressed: () {
-            _filterModalBottomSheet();
-          },
-          child: Text(request.chineseName),
-        ),
-      );
-      timelineBodyViews.add(TimelineBodyPage(
-          index: index,
-          body: _buildTimelineBodyWidget(request, oneMuninBar),
-          fetchTimelineRequest: request));
-      index++;
-    }
+      Widget appBar;
+      if (request.timelineSource == TimelineSource.UserProfile) {
+        appBar = SliverAppBar(
+          pinned: true,
+          title: FlatButtonWithTrailingIcon(
+            onPressed: () {
+              _filterModalBottomSheet();
+            },
+            label: Text(request.chineseName),
+            icon: Icon(OMIcons.expandMore),
+          ),
+        );
+      } else {
+        appBar = OneMuninBar(
+          title: FlatButton(
+            onPressed: () {
+              _filterModalBottomSheet();
+            },
+            child: Text(request.chineseName),
+          ),
+        );
+      }
 
-    pages =
-        timelineBodyViews.map((TimelineBodyPage view) => view.body).toList();
+      TimelineBody timelineBody = TimelineBody(
+          widget: _buildTimelineBodyWidget(request, appBar),
+          getTimelineRequest: request);
+      timelineBodies[filter.pageIndex] = timelineBody;
+      pages[filter.pageIndex] = timelineBody.widget;
+    }
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    pageController?.dispose();
     super.dispose();
   }
 

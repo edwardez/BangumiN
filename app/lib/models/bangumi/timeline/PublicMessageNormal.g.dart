@@ -32,6 +32,9 @@ class _$PublicMessageNormalSerializer
       'replyCount',
       serializers.serialize(object.replyCount,
           specifiedType: const FullType(int)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.id != null) {
       result
@@ -76,6 +79,10 @@ class _$PublicMessageNormalSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -97,6 +104,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   @override
   final String id;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$PublicMessageNormal(
@@ -104,7 +113,12 @@ class _$PublicMessageNormal extends PublicMessageNormal {
       (new PublicMessageNormalBuilder()..update(updates)).build();
 
   _$PublicMessageNormal._(
-      {this.user, this.content, this.replyCount, this.id, this.isFromMutedUser})
+      {this.user,
+      this.content,
+      this.replyCount,
+      this.id,
+      this.bangumiContent,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'user');
@@ -114,6 +128,10 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     }
     if (replyCount == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'replyCount');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'PublicMessageNormal', 'bangumiContent');
     }
   }
 
@@ -134,6 +152,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
         content == other.content &&
         replyCount == other.replyCount &&
         id == other.id &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -141,9 +160,11 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), content.hashCode),
-                replyCount.hashCode),
-            id.hashCode),
+            $jc(
+                $jc($jc($jc(0, user.hashCode), content.hashCode),
+                    replyCount.hashCode),
+                id.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -154,6 +175,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
           ..add('content', content)
           ..add('replyCount', replyCount)
           ..add('id', id)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -181,6 +203,11 @@ class PublicMessageNormalBuilder
   String get id => _$this._id;
   set id(String id) => _$this._id = id;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -194,6 +221,7 @@ class PublicMessageNormalBuilder
       _content = _$v.content;
       _replyCount = _$v.replyCount;
       _id = _$v.id;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -223,6 +251,7 @@ class PublicMessageNormalBuilder
               content: content,
               replyCount: replyCount,
               id: id,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

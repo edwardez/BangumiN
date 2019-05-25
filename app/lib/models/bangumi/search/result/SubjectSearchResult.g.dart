@@ -43,11 +43,11 @@ class _$SubjectSearchResultSerializer
         ..add(serializers.serialize(object.rating,
             specifiedType: const FullType(Rating)));
     }
-    if (object.images != null) {
+    if (object.image != null) {
       result
         ..add('images')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add(serializers.serialize(object.image,
+            specifiedType: const FullType(BangumiImage)));
     }
 
     return result;
@@ -77,8 +77,8 @@ class _$SubjectSearchResultSerializer
               specifiedType: const FullType(Rating)) as Rating);
           break;
         case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -107,7 +107,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   @override
   final Rating rating;
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final String name;
   @override
@@ -124,7 +124,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
       {this.startDate,
       this.nameCn,
       this.rating,
-      this.images,
+      this.image,
       this.name,
       this.id,
       this.type})
@@ -165,7 +165,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
         startDate == other.startDate &&
         nameCn == other.nameCn &&
         rating == other.rating &&
-        images == other.images &&
+        image == other.image &&
         name == other.name &&
         id == other.id &&
         type == other.type;
@@ -179,7 +179,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
                 $jc(
                     $jc($jc($jc(0, startDate.hashCode), nameCn.hashCode),
                         rating.hashCode),
-                    images.hashCode),
+                    image.hashCode),
                 name.hashCode),
             id.hashCode),
         type.hashCode));
@@ -191,7 +191,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
           ..add('startDate', startDate)
           ..add('nameCn', nameCn)
           ..add('rating', rating)
-          ..add('images', images)
+          ..add('image', image)
           ..add('name', name)
           ..add('id', id)
           ..add('type', type))
@@ -217,9 +217,9 @@ class SubjectSearchResultBuilder
   RatingBuilder get rating => _$this._rating ??= new RatingBuilder();
   set rating(RatingBuilder rating) => _$this._rating = rating;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _name;
   String get name => _$this._name;
@@ -240,7 +240,7 @@ class SubjectSearchResultBuilder
       _startDate = _$v.startDate;
       _nameCn = _$v.nameCn;
       _rating = _$v.rating?.toBuilder();
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _name = _$v.name;
       _id = _$v.id;
       _type = _$v.type;
@@ -271,7 +271,7 @@ class SubjectSearchResultBuilder
               startDate: startDate,
               nameCn: nameCn,
               rating: _rating?.build(),
-              images: _images?.build(),
+              image: _image?.build(),
               name: name,
               id: id,
               type: type);
@@ -280,8 +280,8 @@ class SubjectSearchResultBuilder
       try {
         _$failedField = 'rating';
         _rating?.build();
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'image';
+        _image?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SubjectSearchResult', _$failedField, e.toString());

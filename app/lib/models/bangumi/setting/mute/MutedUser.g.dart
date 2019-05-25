@@ -38,7 +38,7 @@ class _$MutedUserSerializer implements StructuredSerializer<MutedUser> {
       result
         ..add('userAvatar')
         ..add(serializers.serialize(object.userAvatar,
-            specifiedType: const FullType(Images)));
+            specifiedType: const FullType(BangumiImage)));
     }
 
     return result;
@@ -69,7 +69,7 @@ class _$MutedUserSerializer implements StructuredSerializer<MutedUser> {
           break;
         case 'userAvatar':
           result.userAvatar.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'isImportedFromBangumi':
           result.isImportedFromBangumi = serializers.deserialize(value,
@@ -90,7 +90,7 @@ class _$MutedUser extends MutedUser {
   @override
   final String nickname;
   @override
-  final Images userAvatar;
+  final BangumiImage userAvatar;
   @override
   final bool isImportedFromBangumi;
 
@@ -170,9 +170,11 @@ class MutedUserBuilder implements Builder<MutedUser, MutedUserBuilder> {
   String get nickname => _$this._nickname;
   set nickname(String nickname) => _$this._nickname = nickname;
 
-  ImagesBuilder _userAvatar;
-  ImagesBuilder get userAvatar => _$this._userAvatar ??= new ImagesBuilder();
-  set userAvatar(ImagesBuilder userAvatar) => _$this._userAvatar = userAvatar;
+  BangumiImageBuilder _userAvatar;
+  BangumiImageBuilder get userAvatar =>
+      _$this._userAvatar ??= new BangumiImageBuilder();
+  set userAvatar(BangumiImageBuilder userAvatar) =>
+      _$this._userAvatar = userAvatar;
 
   bool _isImportedFromBangumi;
   bool get isImportedFromBangumi => _$this._isImportedFromBangumi;

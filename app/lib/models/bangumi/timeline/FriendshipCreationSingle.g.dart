@@ -29,12 +29,15 @@ class _$FriendshipCreationSingleSerializer
       'friendNickName',
       serializers.serialize(object.friendNickName,
           specifiedType: const FullType(String)),
-      'friendAvatarImageUrl',
-      serializers.serialize(object.friendAvatarImageUrl,
-          specifiedType: const FullType(String)),
+      'friendAvatar',
+      serializers.serialize(object.friendAvatar,
+          specifiedType: const FullType(BangumiImage)),
       'friendId',
       serializers.serialize(object.friendId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
       result
@@ -66,13 +69,17 @@ class _$FriendshipCreationSingleSerializer
           result.friendNickName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'friendAvatarImageUrl':
-          result.friendAvatarImageUrl = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'friendAvatar':
+          result.friendAvatar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'friendId':
           result.friendId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
+          break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
@@ -91,9 +98,11 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   @override
   final String friendNickName;
   @override
-  final String friendAvatarImageUrl;
+  final BangumiImage friendAvatar;
   @override
   final String friendId;
+  @override
+  final BangumiContent bangumiContent;
   @override
   final bool isFromMutedUser;
 
@@ -104,8 +113,9 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   _$FriendshipCreationSingle._(
       {this.user,
       this.friendNickName,
-      this.friendAvatarImageUrl,
+      this.friendAvatar,
       this.friendId,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -115,13 +125,17 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
       throw new BuiltValueNullFieldError(
           'FriendshipCreationSingle', 'friendNickName');
     }
-    if (friendAvatarImageUrl == null) {
+    if (friendAvatar == null) {
       throw new BuiltValueNullFieldError(
-          'FriendshipCreationSingle', 'friendAvatarImageUrl');
+          'FriendshipCreationSingle', 'friendAvatar');
     }
     if (friendId == null) {
       throw new BuiltValueNullFieldError(
           'FriendshipCreationSingle', 'friendId');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'FriendshipCreationSingle', 'bangumiContent');
     }
   }
 
@@ -140,8 +154,9 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     return other is FriendshipCreationSingle &&
         user == other.user &&
         friendNickName == other.friendNickName &&
-        friendAvatarImageUrl == other.friendAvatarImageUrl &&
+        friendAvatar == other.friendAvatar &&
         friendId == other.friendId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -149,9 +164,11 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
-                friendAvatarImageUrl.hashCode),
-            friendId.hashCode),
+            $jc(
+                $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
+                    friendAvatar.hashCode),
+                friendId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -160,8 +177,9 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     return (newBuiltValueToStringHelper('FriendshipCreationSingle')
           ..add('user', user)
           ..add('friendNickName', friendNickName)
-          ..add('friendAvatarImageUrl', friendAvatarImageUrl)
+          ..add('friendAvatar', friendAvatar)
           ..add('friendId', friendId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -182,14 +200,20 @@ class FriendshipCreationSingleBuilder
   set friendNickName(String friendNickName) =>
       _$this._friendNickName = friendNickName;
 
-  String _friendAvatarImageUrl;
-  String get friendAvatarImageUrl => _$this._friendAvatarImageUrl;
-  set friendAvatarImageUrl(String friendAvatarImageUrl) =>
-      _$this._friendAvatarImageUrl = friendAvatarImageUrl;
+  BangumiImageBuilder _friendAvatar;
+  BangumiImageBuilder get friendAvatar =>
+      _$this._friendAvatar ??= new BangumiImageBuilder();
+  set friendAvatar(BangumiImageBuilder friendAvatar) =>
+      _$this._friendAvatar = friendAvatar;
 
   String _friendId;
   String get friendId => _$this._friendId;
   set friendId(String friendId) => _$this._friendId = friendId;
+
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
 
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
@@ -202,8 +226,9 @@ class FriendshipCreationSingleBuilder
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _friendNickName = _$v.friendNickName;
-      _friendAvatarImageUrl = _$v.friendAvatarImageUrl;
+      _friendAvatar = _$v.friendAvatar?.toBuilder();
       _friendId = _$v.friendId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -231,14 +256,18 @@ class FriendshipCreationSingleBuilder
           new _$FriendshipCreationSingle._(
               user: user.build(),
               friendNickName: friendNickName,
-              friendAvatarImageUrl: friendAvatarImageUrl,
+              friendAvatar: friendAvatar.build(),
               friendId: friendId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         user.build();
+
+        _$failedField = 'friendAvatar';
+        friendAvatar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FriendshipCreationSingle', _$failedField, e.toString());

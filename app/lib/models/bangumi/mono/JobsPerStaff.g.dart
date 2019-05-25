@@ -23,8 +23,8 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
       serializers.serialize(object.roleName,
           specifiedType: const FullType(String)),
       'images',
-      serializers.serialize(object.images,
-          specifiedType: const FullType(Images)),
+      serializers.serialize(object.image,
+          specifiedType: const FullType(BangumiImage)),
       'jobs',
       serializers.serialize(object.jobs,
           specifiedType:
@@ -82,8 +82,8 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
               specifiedType: const FullType(String)) as String;
           break;
         case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'comment':
           result.commentCount = serializers.deserialize(value,
@@ -124,7 +124,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   @override
   final String roleName;
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final int commentCount;
   @override
@@ -144,7 +144,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   _$JobsPerStaff._(
       {this.nameCn,
       this.roleName,
-      this.images,
+      this.image,
       this.commentCount,
       this.collectionCounts,
       this.jobs,
@@ -155,8 +155,8 @@ class _$JobsPerStaff extends JobsPerStaff {
     if (roleName == null) {
       throw new BuiltValueNullFieldError('JobsPerStaff', 'roleName');
     }
-    if (images == null) {
-      throw new BuiltValueNullFieldError('JobsPerStaff', 'images');
+    if (image == null) {
+      throw new BuiltValueNullFieldError('JobsPerStaff', 'image');
     }
     if (jobs == null) {
       throw new BuiltValueNullFieldError('JobsPerStaff', 'jobs');
@@ -182,7 +182,7 @@ class _$JobsPerStaff extends JobsPerStaff {
     return other is JobsPerStaff &&
         nameCn == other.nameCn &&
         roleName == other.roleName &&
-        images == other.images &&
+        image == other.image &&
         commentCount == other.commentCount &&
         collectionCounts == other.collectionCounts &&
         jobs == other.jobs &&
@@ -200,7 +200,7 @@ class _$JobsPerStaff extends JobsPerStaff {
                     $jc(
                         $jc(
                             $jc($jc($jc(0, nameCn.hashCode), roleName.hashCode),
-                                images.hashCode),
+                                image.hashCode),
                             commentCount.hashCode),
                         collectionCounts.hashCode),
                     jobs.hashCode),
@@ -214,7 +214,7 @@ class _$JobsPerStaff extends JobsPerStaff {
     return (newBuiltValueToStringHelper('JobsPerStaff')
           ..add('nameCn', nameCn)
           ..add('roleName', roleName)
-          ..add('images', images)
+          ..add('image', image)
           ..add('commentCount', commentCount)
           ..add('collectionCounts', collectionCounts)
           ..add('jobs', jobs)
@@ -237,9 +237,9 @@ class JobsPerStaffBuilder
   String get roleName => _$this._roleName;
   set roleName(String roleName) => _$this._roleName = roleName;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   int _commentCount;
   int get commentCount => _$this._commentCount;
@@ -272,7 +272,7 @@ class JobsPerStaffBuilder
     if (_$v != null) {
       _nameCn = _$v.nameCn;
       _roleName = _$v.roleName;
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _commentCount = _$v.commentCount;
       _collectionCounts = _$v.collectionCounts;
       _jobs = _$v.jobs?.toBuilder();
@@ -305,7 +305,7 @@ class JobsPerStaffBuilder
           new _$JobsPerStaff._(
               nameCn: nameCn,
               roleName: roleName,
-              images: images.build(),
+              image: image.build(),
               commentCount: commentCount,
               collectionCounts: collectionCounts,
               jobs: jobs.build(),
@@ -315,8 +315,8 @@ class JobsPerStaffBuilder
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'images';
-        images.build();
+        _$failedField = 'image';
+        image.build();
 
         _$failedField = 'jobs';
         jobs.build();

@@ -1,34 +1,34 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FetchDiscussionResponse.dart';
+part of 'GetDiscussionResponse.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FetchDiscussionResponse> _$fetchDiscussionResponseSerializer =
-    new _$FetchDiscussionResponseSerializer();
+Serializer<GetDiscussionResponse> _$getDiscussionResponseSerializer =
+    new _$GetDiscussionResponseSerializer();
 
-class _$FetchDiscussionResponseSerializer
-    implements StructuredSerializer<FetchDiscussionResponse> {
+class _$GetDiscussionResponseSerializer
+    implements StructuredSerializer<GetDiscussionResponse> {
   @override
   final Iterable<Type> types = const [
-    FetchDiscussionResponse,
-    _$FetchDiscussionResponse
+    GetDiscussionResponse,
+    _$GetDiscussionResponse
   ];
   @override
-  final String wireName = 'FetchDiscussionResponse';
+  final String wireName = 'GetDiscussionResponse';
 
   @override
-  Iterable serialize(Serializers serializers, FetchDiscussionResponse object,
+  Iterable serialize(Serializers serializers, GetDiscussionResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'discussionItems',
       serializers.serialize(object.discussionItems,
           specifiedType:
               const FullType(BuiltSet, const [const FullType(DiscussionItem)])),
-      'lastFetchedTime',
-      serializers.serialize(object.lastFetchedTime,
+      'appLastUpdatedAt',
+      serializers.serialize(object.appLastUpdatedAt,
           specifiedType: const FullType(DateTime)),
     ];
 
@@ -36,10 +36,10 @@ class _$FetchDiscussionResponseSerializer
   }
 
   @override
-  FetchDiscussionResponse deserialize(
+  GetDiscussionResponse deserialize(
       Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new FetchDiscussionResponseBuilder();
+    final result = new GetDiscussionResponseBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -53,8 +53,8 @@ class _$FetchDiscussionResponseSerializer
                       BuiltSet, const [const FullType(DiscussionItem)]))
               as BuiltSet);
           break;
-        case 'lastFetchedTime':
-          result.lastFetchedTime = serializers.deserialize(value,
+        case 'appLastUpdatedAt':
+          result.appLastUpdatedAt = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime;
           break;
       }
@@ -64,26 +64,26 @@ class _$FetchDiscussionResponseSerializer
   }
 }
 
-class _$FetchDiscussionResponse extends FetchDiscussionResponse {
+class _$GetDiscussionResponse extends GetDiscussionResponse {
   @override
   final BuiltSet<DiscussionItem> discussionItems;
   @override
-  final DateTime lastFetchedTime;
+  final DateTime appLastUpdatedAt;
   BuiltList<DiscussionItem> __discussionItemsAsList;
 
-  factory _$FetchDiscussionResponse(
-          [void Function(FetchDiscussionResponseBuilder) updates]) =>
-      (new FetchDiscussionResponseBuilder()..update(updates)).build();
+  factory _$GetDiscussionResponse(
+          [void Function(GetDiscussionResponseBuilder) updates]) =>
+      (new GetDiscussionResponseBuilder()..update(updates)).build();
 
-  _$FetchDiscussionResponse._({this.discussionItems, this.lastFetchedTime})
+  _$GetDiscussionResponse._({this.discussionItems, this.appLastUpdatedAt})
       : super._() {
     if (discussionItems == null) {
       throw new BuiltValueNullFieldError(
-          'FetchDiscussionResponse', 'discussionItems');
+          'GetDiscussionResponse', 'discussionItems');
     }
-    if (lastFetchedTime == null) {
+    if (appLastUpdatedAt == null) {
       throw new BuiltValueNullFieldError(
-          'FetchDiscussionResponse', 'lastFetchedTime');
+          'GetDiscussionResponse', 'appLastUpdatedAt');
     }
   }
 
@@ -92,40 +92,40 @@ class _$FetchDiscussionResponse extends FetchDiscussionResponse {
       __discussionItemsAsList ??= super.discussionItemsAsList;
 
   @override
-  FetchDiscussionResponse rebuild(
-          void Function(FetchDiscussionResponseBuilder) updates) =>
+  GetDiscussionResponse rebuild(
+          void Function(GetDiscussionResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FetchDiscussionResponseBuilder toBuilder() =>
-      new FetchDiscussionResponseBuilder()..replace(this);
+  GetDiscussionResponseBuilder toBuilder() =>
+      new GetDiscussionResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FetchDiscussionResponse &&
+    return other is GetDiscussionResponse &&
         discussionItems == other.discussionItems &&
-        lastFetchedTime == other.lastFetchedTime;
+        appLastUpdatedAt == other.appLastUpdatedAt;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, discussionItems.hashCode), lastFetchedTime.hashCode));
+    return $jf(
+        $jc($jc(0, discussionItems.hashCode), appLastUpdatedAt.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('FetchDiscussionResponse')
+    return (newBuiltValueToStringHelper('GetDiscussionResponse')
           ..add('discussionItems', discussionItems)
-          ..add('lastFetchedTime', lastFetchedTime))
+          ..add('appLastUpdatedAt', appLastUpdatedAt))
         .toString();
   }
 }
 
-class FetchDiscussionResponseBuilder
-    implements
-        Builder<FetchDiscussionResponse, FetchDiscussionResponseBuilder> {
-  _$FetchDiscussionResponse _$v;
+class GetDiscussionResponseBuilder
+    implements Builder<GetDiscussionResponse, GetDiscussionResponseBuilder> {
+  _$GetDiscussionResponse _$v;
 
   SetBuilder<DiscussionItem> _discussionItems;
   SetBuilder<DiscussionItem> get discussionItems =>
@@ -133,43 +133,43 @@ class FetchDiscussionResponseBuilder
   set discussionItems(SetBuilder<DiscussionItem> discussionItems) =>
       _$this._discussionItems = discussionItems;
 
-  DateTime _lastFetchedTime;
-  DateTime get lastFetchedTime => _$this._lastFetchedTime;
-  set lastFetchedTime(DateTime lastFetchedTime) =>
-      _$this._lastFetchedTime = lastFetchedTime;
+  DateTime _appLastUpdatedAt;
+  DateTime get appLastUpdatedAt => _$this._appLastUpdatedAt;
+  set appLastUpdatedAt(DateTime appLastUpdatedAt) =>
+      _$this._appLastUpdatedAt = appLastUpdatedAt;
 
-  FetchDiscussionResponseBuilder();
+  GetDiscussionResponseBuilder();
 
-  FetchDiscussionResponseBuilder get _$this {
+  GetDiscussionResponseBuilder get _$this {
     if (_$v != null) {
       _discussionItems = _$v.discussionItems?.toBuilder();
-      _lastFetchedTime = _$v.lastFetchedTime;
+      _appLastUpdatedAt = _$v.appLastUpdatedAt;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(FetchDiscussionResponse other) {
+  void replace(GetDiscussionResponse other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$FetchDiscussionResponse;
+    _$v = other as _$GetDiscussionResponse;
   }
 
   @override
-  void update(void Function(FetchDiscussionResponseBuilder) updates) {
+  void update(void Function(GetDiscussionResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$FetchDiscussionResponse build() {
-    _$FetchDiscussionResponse _$result;
+  _$GetDiscussionResponse build() {
+    _$GetDiscussionResponse _$result;
     try {
       _$result = _$v ??
-          new _$FetchDiscussionResponse._(
+          new _$GetDiscussionResponse._(
               discussionItems: discussionItems.build(),
-              lastFetchedTime: lastFetchedTime);
+              appLastUpdatedAt: appLastUpdatedAt);
     } catch (_) {
       String _$failedField;
       try {
@@ -177,7 +177,7 @@ class FetchDiscussionResponseBuilder
         discussionItems.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'FetchDiscussionResponse', _$failedField, e.toString());
+            'GetDiscussionResponse', _$failedField, e.toString());
       }
       rethrow;
     }

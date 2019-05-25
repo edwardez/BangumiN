@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
@@ -21,21 +21,21 @@ import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DiscussionBody extends StatefulWidget {
-  final FetchDiscussionRequest fetchDiscussionRequest;
+class DiscussionBodyWidget extends StatefulWidget {
+  final GetDiscussionRequest getDiscussionRequest;
 
   final OneMuninBar oneMuninBar;
 
-  const DiscussionBody({Key key,
-    @required this.fetchDiscussionRequest,
+  const DiscussionBodyWidget({Key key,
+    @required this.getDiscussionRequest,
     @required this.oneMuninBar})
       : super(key: key);
 
   @override
-  _DiscussionBodyState createState() => _DiscussionBodyState();
+  _DiscussionBodyWidgetState createState() => _DiscussionBodyWidgetState();
 }
 
-class _DiscussionBodyState extends State<DiscussionBody> {
+class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
   GlobalKey<MuninRefreshState>();
 
@@ -43,11 +43,11 @@ class _DiscussionBodyState extends State<DiscussionBody> {
   Widget _buildEmptyRakuenWidget() {
     return Column(
       children: <Widget>[
-        Text('Bangumi上暂无内容或内容无法解析，可能因为应用或bangumi出错，下拉可重试'),
+        Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(rakuenMobileUrl, forceSafariVC: true);
+            return launch(rakuenMobileUrl, forceSafariVC: false);
           },
         )
       ],
@@ -58,7 +58,7 @@ class _DiscussionBodyState extends State<DiscussionBody> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) =>
-          _ViewModel.fromStore(store, widget.fetchDiscussionRequest),
+          _ViewModel.fromStore(store, widget.getDiscussionRequest),
       distinct: true,
       onInitialBuild: (_ViewModel vm) {
         /// Auto-refresh if data is null or stale
@@ -103,8 +103,8 @@ class _DiscussionBodyState extends State<DiscussionBody> {
 }
 
 class _ViewModel {
-  final FetchDiscussionRequest fetchDiscussionRequest;
-  final FetchDiscussionResponse rakuenTopics;
+  final GetDiscussionRequest getDiscussionRequest;
+  final GetDiscussionResponse rakuenTopics;
   final MuteSetting muteSetting;
 
   final bool Function(DiscussionItem item) isMuted;
@@ -114,11 +114,11 @@ class _ViewModel {
 
   final Function(BuildContext context) getRakuenTopics;
 
-  factory _ViewModel.fromStore(
-      Store<AppState> store, FetchDiscussionRequest fetchDiscussionRequest) {
+  factory _ViewModel.fromStore(Store<AppState> store,
+      GetDiscussionRequest getDiscussionRequest) {
     Future _getRakuenTopics(BuildContext context) {
       final action = GetDiscussionRequestAction(
-          context: context, fetchDiscussionRequest: fetchDiscussionRequest);
+          context: context, getDiscussionRequest: getDiscussionRequest);
       store.dispatch(action);
       return action.completer.future;
     }
@@ -150,8 +150,8 @@ class _ViewModel {
     }
 
     return _ViewModel(
-      fetchDiscussionRequest: fetchDiscussionRequest,
-      rakuenTopics: store.state.discussionState.results[fetchDiscussionRequest],
+      getDiscussionRequest: getDiscussionRequest,
+      rakuenTopics: store.state.discussionState.results[getDiscussionRequest],
       getRakuenTopics: _getRakuenTopics,
       muteSetting: store.state.settingState.muteSetting,
       muteGroup: _muteGroup,
@@ -161,7 +161,7 @@ class _ViewModel {
   }
 
   _ViewModel({
-    this.fetchDiscussionRequest,
+    this.getDiscussionRequest,
     this.rakuenTopics,
     this.getRakuenTopics,
     this.isMuted,
@@ -175,15 +175,15 @@ class _ViewModel {
       identical(this, other) ||
           other is _ViewModel &&
               runtimeType == other.runtimeType &&
-              fetchDiscussionRequest == other.fetchDiscussionRequest &&
+              getDiscussionRequest == other.getDiscussionRequest &&
               rakuenTopics == other.rakuenTopics &&
               muteSetting == other.muteSetting;
 
   @override
   int get hashCode =>
       hash3(
-          fetchDiscussionRequest.hashCode,
-          rakuenTopics.hashCode,
-          muteSetting.hashCode);
+          getDiscussionRequest,
+          rakuenTopics,
+          muteSetting);
 
 }

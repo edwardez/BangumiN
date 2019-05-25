@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
@@ -43,7 +43,7 @@ abstract class BangumiSubject
   int get rank;
 
   @BuiltValueField(wireName: 'images')
-  Images get images;
+  BangumiImage get cover;
 
   @nullable
   @BuiltValueField(wireName: 'crt')

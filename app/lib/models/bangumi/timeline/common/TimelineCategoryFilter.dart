@@ -8,6 +8,10 @@ part 'TimelineCategoryFilter.g.dart';
 /// Category level filter for timeline, it determines feed category
 /// see [TimelineSource]
 class TimelineCategoryFilter extends EnumClass {
+  /// This value need to keep sync with [TimelineCategoryFilter.values.length]
+  /// This value decides how many sub menus timeline widget has
+  static const totalTimelineTypes = 11;
+
   /// web: https://bgm.tv/timeline?
   static const TimelineCategoryFilter AllFeeds = _$AllFeeds;
 
@@ -36,7 +40,7 @@ class TimelineCategoryFilter extends EnumClass {
   static const TimelineCategoryFilter Wiki = _$Wiki;
 
   /// web: https://bgm.tv/timeline?type=index
-  static const TimelineCategoryFilter Index = _$Index;
+  static const TimelineCategoryFilter Catalog = _$Catalog;
 
   /// web: https://bgm.tv/timeline?type=doujin
   static const TimelineCategoryFilter Doujin = _$Doujin;
@@ -51,7 +55,7 @@ class TimelineCategoryFilter extends EnumClass {
       _$timelineCategoryFilterSerializer;
 
   @memoized
-  String get toBangumiQueryParameterValue {
+  String get bangumiQueryParameterValue {
     switch (this) {
       case TimelineCategoryFilter.AllFeeds:
         return '';
@@ -71,14 +75,14 @@ class TimelineCategoryFilter extends EnumClass {
         return 'group';
       case TimelineCategoryFilter.Wiki:
         return 'wiki';
-      case TimelineCategoryFilter.Index:
+      case TimelineCategoryFilter.Catalog:
         return 'index';
       case TimelineCategoryFilter.Doujin:
         return 'doujin';
       default:
 
-        /// we should never use default value, this error needs to be caught
-        /// in dev environment
+      /// we should never use default value, this error needs to be caught
+      /// in dev environment
         assert(false, 'Cannot find BangumiQueryParameterValue for $this');
         return '';
     }
@@ -105,16 +109,51 @@ class TimelineCategoryFilter extends EnumClass {
         return '小组';
       case TimelineCategoryFilter.Wiki:
         return '维基';
-      case TimelineCategoryFilter.Index:
+      case TimelineCategoryFilter.Catalog:
         return '目录';
       case TimelineCategoryFilter.Doujin:
         return '天窗';
       default:
 
-        /// we should never use default value, this error needs to be caught
-        /// in dev environment
+      /// we should never use default value, this error needs to be caught
+      /// in dev environment
         assert(false, 'Cannot find chineseName for $this');
         return '-';
+    }
+  }
+
+  /// Get current page index in timeline page
+  /// Index must be consecutive and unique
+  int get pageIndex {
+    switch (this) {
+      case TimelineCategoryFilter.AllFeeds:
+        return 0;
+      case TimelineCategoryFilter.PublicMessage:
+        return 1;
+      case TimelineCategoryFilter.Collection:
+        return 2;
+      case TimelineCategoryFilter.Progress:
+        return 3;
+      case TimelineCategoryFilter.Blog:
+        return 4;
+      case TimelineCategoryFilter.Mono:
+        return 5;
+      case TimelineCategoryFilter.FriendShip:
+        return 6;
+      case TimelineCategoryFilter.Group:
+        return 7;
+      case TimelineCategoryFilter.Wiki:
+        return 8;
+      case TimelineCategoryFilter.Catalog:
+        return 9;
+      case TimelineCategoryFilter.Doujin:
+        return 10;
+      default:
+
+      /// we should never use default value, this error needs to be caught
+      /// in dev environment
+        assert(false, '$this doesn\'t have a valid page index');
+        return 0;
     }
   }
 }

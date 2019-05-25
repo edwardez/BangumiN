@@ -13,6 +13,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(BangumiContent.serializer)
       ..add(BangumiCookieCredentials.serializer)
       ..add(BangumiGeneralSearchResponse.serializer)
+      ..add(BangumiImage.serializer)
       ..add(BangumiSubject.serializer)
       ..add(BangumiUserAvatar.serializer)
       ..add(BangumiUserBasic.serializer)
@@ -32,16 +33,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(EpisodeType.serializer)
       ..add(FeedChunks.serializer)
       ..add(FeedMetaInfo.serializer)
-      ..add(FetchDiscussionRequest.serializer)
-      ..add(FetchDiscussionResponse.serializer)
-      ..add(FetchTimelineRequest.serializer)
       ..add(FriendshipCreationSingle.serializer)
       ..add(GeneralDiscussionItem.serializer)
+      ..add(GeneralSetting.serializer)
+      ..add(GetDiscussionRequest.serializer)
+      ..add(GetDiscussionResponse.serializer)
+      ..add(GetProgressRequest.serializer)
+      ..add(GetTimelineRequest.serializer)
       ..add(GroupDiscussionPost.serializer)
       ..add(GroupJoinSingle.serializer)
       ..add(HyperBangumiItem.serializer)
       ..add(HyperImage.serializer)
-      ..add(Images.serializer)
       ..add(InProgressAnimeOrRealCollection.serializer)
       ..add(InProgressBookCollection.serializer)
       ..add(InProgressSubjectInfo.serializer)
@@ -60,6 +62,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NetworkServiceTagPlainText.serializer)
       ..add(NetworkServiceType.serializer)
       ..add(OauthState.serializer)
+      ..add(PreferredLaunchNavTab.serializer)
+      ..add(PreferredSubjectInfoLanguage.serializer)
       ..add(ProgressState.serializer)
       ..add(ProgressUpdateEpisodeSingle.serializer)
       ..add(ProgressUpdateEpisodeUntil.serializer)
@@ -137,8 +141,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(NetworkServiceTag)]),
           () => new ListBuilder<NetworkServiceTag>())
       ..addBuilderFactory(
-          const FullType(BuiltMap,
-              const [const FullType(SubjectType), const FullType(CollectionPreview)]),
+          const FullType(BuiltMap, const [
+            const FullType(SubjectType),
+            const FullType(CollectionPreview)
+          ]),
           () => new MapBuilder<SubjectType, CollectionPreview>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelinePreview)]),
@@ -170,23 +176,20 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new MapBuilder<CollectionStatus, BuiltList<SubjectPreview>>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
-            const FullType(FetchDiscussionRequest),
-            const FullType(FetchDiscussionResponse)
+            const FullType(GetDiscussionRequest),
+            const FullType(GetDiscussionResponse)
           ]),
-          () =>
-              new MapBuilder<FetchDiscussionRequest, FetchDiscussionResponse>())
+          () => new MapBuilder<GetDiscussionRequest, GetDiscussionResponse>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
-            const FullType(FetchDiscussionRequest),
+            const FullType(GetDiscussionRequest),
             const FullType(LoadingStatus)
           ]),
-          () => new MapBuilder<FetchDiscussionRequest, LoadingStatus>())
+          () => new MapBuilder<GetDiscussionRequest, LoadingStatus>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(FetchTimelineRequest),
-            const FullType(FeedChunks)
-          ]),
-          () => new MapBuilder<FetchTimelineRequest, FeedChunks>())
+          const FullType(BuiltMap,
+              const [const FullType(GetTimelineRequest), const FullType(FeedChunks)]),
+          () => new MapBuilder<GetTimelineRequest, FeedChunks>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(SearchRequest),
@@ -197,7 +200,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltMap,
               const [const FullType(SearchRequest), const FullType(LoadingStatus)]),
           () => new MapBuilder<SearchRequest, LoadingStatus>())
-      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltMap, const [const FullType(String), const FullType(MutedUser)]),
+          () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(UserProfile)]), () => new MapBuilder<String, UserProfile>())
@@ -205,9 +211,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(SubjectType),
-            const FullType(BuiltList, const [const FullType(InProgressSubject)])
+            const FullType(
+                BuiltList, const [const FullType(InProgressCollection)])
           ]),
-          () => new MapBuilder<SubjectType, BuiltList<InProgressSubject>>())
+          () => new MapBuilder<SubjectType, BuiltList<InProgressCollection>>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(BangumiSubject)]), () => new MapBuilder<int, BangumiSubject>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]), () => new MapBuilder<int, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SubjectCollectionInfo)]), () => new MapBuilder<int, SubjectCollectionInfo>())
@@ -215,7 +222,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(LoadingStatus)]), () => new MapBuilder<int, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(EpisodeProgress)]), () => new MapBuilder<int, EpisodeProgress>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SearchResult)]), () => new MapBuilder<int, SearchResult>())
-      ..addBuilderFactory(const FullType(BuiltSet, const [const FullType(DiscussionItem)]), () => new SetBuilder<DiscussionItem>()))
+      ..addBuilderFactory(const FullType(BuiltSet, const [const FullType(DiscussionItem)]), () => new SetBuilder<DiscussionItem>())
+      ..addBuilderFactory(const FullType(BuiltSet, const [const FullType(SubjectType)]), () => new SetBuilder<SubjectType>()))
     .build();
 
 // ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:quiver/strings.dart';
+import 'package:quiver/core.dart';
 
 /// TODO: we should reuse code in this class and [MonoSearchResultWidget]
 class SubjectSearchResultWidget extends StatelessWidget {
   final SubjectSearchResult subjectSearchResult;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+
   static const double paddingBetweenSubject = 8.0;
   static const double coverTextPadding = 10.0;
   static const int coverFlex = 2;
   static const int textFlex = 8;
 
-  const SubjectSearchResultWidget({Key key, @required this.subjectSearchResult})
+  const SubjectSearchResultWidget({Key key,
+    @required this.subjectSearchResult,
+    @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   List<Widget> _buildSubInfoRows(BuildContext context) {
@@ -26,13 +32,21 @@ class SubjectSearchResultWidget extends StatelessWidget {
     TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
     subInfoRows.add(Text(
-      subjectSearchResult.name ?? '',
+      preferredSubjectTitle(subjectSearchResult.name,
+          subjectSearchResult.nameCn,
+          preferredSubjectInfoLanguage),
       maxLines: titleMaxLines,
       overflow: TextOverflow.ellipsis,
     ));
-    if (!isEmpty(subjectSearchResult.nameCn)) {
-      subInfoRows.add(Text(
+
+    Optional<String> maybeSecondaryTitle = secondarySubjectTitle(
+        subjectSearchResult.name,
         subjectSearchResult.nameCn,
+        preferredSubjectInfoLanguage);
+
+    if (maybeSecondaryTitle.isPresent) {
+      subInfoRows.add(Text(
+        maybeSecondaryTitle.value,
         style: captionStyle,
         maxLines: subtitleMaxLines,
         overflow: TextOverflow.ellipsis,
@@ -71,7 +85,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: RoundedElevatedImage(
-                imageUrl: subjectSearchResult.images?.large,
+                imageUrl: subjectSearchResult.image?.large,
               ),
               flex: coverFlex,
               fit: FlexFit.tight,

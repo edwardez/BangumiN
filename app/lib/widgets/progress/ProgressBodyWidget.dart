@@ -8,12 +8,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/progress/InProgressAnimeOrRealWidget.dart';
 import 'package:munin/widgets/progress/InProgressBookWidget.dart';
@@ -44,21 +44,21 @@ typedef Future<void> UpdateBookProgress({
   @required InProgressSubjectInfo subject,
 });
 
-class ProgressBody extends StatefulWidget {
+class ProgressBodyWidget extends StatefulWidget {
   final OneMuninBar oneMuninBar;
   final BuiltSet<SubjectType> subjectTypes;
 
-  const ProgressBody(
+  const ProgressBodyWidget(
       {Key key, @required this.oneMuninBar, @required this.subjectTypes})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ProgressBodyState();
+    return _ProgressBodyWidgetState();
   }
 }
 
-class _ProgressBodyState extends State<ProgressBody> {
+class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
       GlobalKey<MuninRefreshState>();
 
@@ -67,13 +67,13 @@ class _ProgressBodyState extends State<ProgressBody> {
         widget.subjectTypes.map((type) => type.chineseName).join(',');
     return Column(
       children: <Widget>[
-        Text('没有找到在看的$requestSubjectTypes'),
-        Text('1. 您没有任何在看的$requestSubjectTypes'),
-        Text('2. 应用或bangumi出错，下拉可重试'),
+        Text('在看的$requestSubjectTypes列表为空，可能因为：'),
+        Text('1. $appOrBangumiHasAnError，下拉可重试'),
+        Text('2. 目前没有在看的$requestSubjectTypes'),
         FlatButton(
-          child: Text('查看网页版'),
+          child: Text(checkWebVersionPrompt),
           onPressed: () {
-            return launch(bangumiHomePageUrl, forceSafariVC: true);
+            return launch(bangumiHomePageUrl, forceSafariVC: false);
           },
         )
       ],
@@ -90,18 +90,19 @@ class _ProgressBodyState extends State<ProgressBody> {
         _muninRefreshKey.currentState?.callOnRefresh();
       },
       builder: (BuildContext context, _ViewModel vm) {
-        bool progressesLoaded = vm.progresses.isPresent;
-        BuiltList<InProgressSubject> subjects = progressesLoaded
-            ? vm.progresses.value
-            : BuiltList<InProgressSubject>();
+        bool progressesLoaded = vm.collections.isPresent;
+        BuiltList<InProgressCollection> collections = progressesLoaded
+            ? vm.collections.value
+            : BuiltList<InProgressCollection>();
 
         List<Widget> widgets = [];
 
-        for (InProgressSubject subject in subjects) {
+        for (InProgressCollection collection in collections) {
           Widget widget;
-          if (subject is InProgressAnimeOrRealCollection) {
+          if (collection is InProgressAnimeOrRealCollection) {
             widget = InProgressAnimeOrRealWidget(
-              subject: subject,
+              collection: collection,
+              preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
               onUpdateSingleEpisode: (EpisodeUpdateType episodeUpdateType,
                   int episodeId, double newEpisodeNumber) {
                 vm.updateAnimeOrRealSingleEpisode(
@@ -109,27 +110,28 @@ class _ProgressBodyState extends State<ProgressBody> {
                   episodeId: episodeId,
                   newEpisodeNumber: newEpisodeNumber,
                   episodeUpdateType: episodeUpdateType,
-                  subject: subject.subject,
+                  subject: collection.subject,
                 );
               },
               onUpdateBatchEpisodes: (int episodeSequentialNumber) {
                 vm.updateAnimeOrRealBatchEpisodes(
                   context: context,
-                  subject: subject.subject,
+                  subject: collection.subject,
                   episodeSequentialNumber: episodeSequentialNumber,
                 );
               },
             );
-          } else if (subject is InProgressBookCollection) {
+          } else if (collection is InProgressBookCollection) {
             widget = InProgressBookWidget(
-              subject: subject,
+              collection: collection,
+              preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
               onUpdateBookProgress:
                   (int newEpisodeNumber, int newVolumeNumber) {
                 Future<void> future = vm.updateBookProgress(
                   context: context,
                   newEpisodeNumber: newEpisodeNumber,
                   newVolumeNumber: newVolumeNumber,
-                  subject: subject.subject,
+                  subject: collection.subject,
                 );
 
                 return future;
@@ -173,8 +175,8 @@ class _ProgressBodyState extends State<ProgressBody> {
 }
 
 class _ViewModel {
-  final Optional<BuiltList<InProgressSubject>> progresses;
-  final LoadingStatus getProgressLoadingStatus;
+  final Optional<BuiltList<InProgressCollection>> collections;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final Future Function(BuildContext context) getProgress;
   final UpdateAnimeOrRealSingleEpisode updateAnimeOrRealSingleEpisode;
   final UpdateAnimeOrRealBatchEpisodes updateAnimeOrRealBatchEpisodes;
@@ -239,10 +241,11 @@ class _ViewModel {
       return action.completer.future;
     }
 
-    Optional<BuiltList<InProgressSubject>> _progressesSelector() {
-      BuiltMap<SubjectType, BuiltList<InProgressSubject>> progressesInStore =
+    Optional<BuiltList<InProgressCollection>> _progressesSelector() {
+      BuiltMap<SubjectType, BuiltList<InProgressCollection>> progressesInStore =
           store.state.progressState.progresses;
-      BuiltList<InProgressSubject> progresses = BuiltList<InProgressSubject>();
+      BuiltList<InProgressCollection> progresses = BuiltList<
+          InProgressCollection>();
 
       for (SubjectType subjectType in types) {
         if (progressesInStore.containsKey(subjectType)) {
@@ -257,21 +260,23 @@ class _ViewModel {
     }
 
     return _ViewModel(
-        getProgressLoadingStatus: null,
-        getProgress: _getProgress,
-        progresses: _progressesSelector(),
-        updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
-        updateAnimeOrRealBatchEpisodes: _updateAnimeOrRealBatchEpisodes,
-        updateBookProgress: _updateBookProgress);
+      getProgress: _getProgress,
+      collections: _progressesSelector(),
+      preferredSubjectInfoLanguage:
+      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
+      updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
+      updateAnimeOrRealBatchEpisodes: _updateAnimeOrRealBatchEpisodes,
+      updateBookProgress: _updateBookProgress,
+    );
   }
 
   const _ViewModel({
-    @required this.progresses,
-    @required this.getProgressLoadingStatus,
+    @required this.collections,
     @required this.getProgress,
     @required this.updateAnimeOrRealSingleEpisode,
     @required this.updateAnimeOrRealBatchEpisodes,
     @required this.updateBookProgress,
+    @required this.preferredSubjectInfoLanguage,
   });
 
   @override
@@ -279,13 +284,11 @@ class _ViewModel {
       identical(this, other) ||
           other is _ViewModel &&
               runtimeType == other.runtimeType &&
-              progresses == other.progresses &&
-              getProgressLoadingStatus == other.getProgressLoadingStatus;
+              collections == other.collections &&
+              preferredSubjectInfoLanguage ==
+                  other.preferredSubjectInfoLanguage;
 
   @override
   int get hashCode =>
-      hash2(
-          progresses.hashCode,
-          getProgressLoadingStatus.hashCode);
-
+      hash2(collections, preferredSubjectInfoLanguage);
 }

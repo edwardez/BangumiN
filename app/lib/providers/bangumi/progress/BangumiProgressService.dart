@@ -12,7 +12,7 @@ import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollectio
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
@@ -106,7 +106,7 @@ class BangumiProgressService {
   /// Get all watchable subjects from API
   /// Watchable subject is defined as anime/real/(+books) by bangumi api
   /// if [includeBooks] is set to false, books won't be returned
-  Future<LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>>
+  Future<LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>>
       getInProgressWatchableSubjectsFromApi(
           {@required String username,
           @required BuiltSet<SubjectType> subjectTypes}) async {
@@ -230,11 +230,12 @@ class BangumiProgressService {
     return episodesPerSubject;
   }
 
-  LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>
+  LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
       _serializeWatchableBookCollection(dynamic decodedCollection) {
-    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>> progress =
-        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>();
-    progress[SubjectType.Book] = LinkedHashMap<int, InProgressSubject>();
+    LinkedHashMap<SubjectType,
+        LinkedHashMap<int, InProgressCollection>> progress =
+    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
+    progress[SubjectType.Book] = LinkedHashMap<int, InProgressCollection>();
 
     for (var rawCollection in decodedCollection) {
       /// BuiltValueEnumConst requires wireName to be string
@@ -245,7 +246,7 @@ class BangumiProgressService {
         continue;
       }
 
-      InProgressSubject inProgressSubject =
+      InProgressCollection inProgressSubject =
           InProgressBookCollection.fromJson(json.encode(rawCollection));
 
       progress[inProgressSubject.subject.type]
@@ -254,17 +255,18 @@ class BangumiProgressService {
     return progress;
   }
 
-  LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>
+  LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
       _serializeAllWatchableCollection(
     dynamic decodedCollection,
     LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject,
     BuiltSet<SubjectType> requestedSubjectTypes,
   ) {
-    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>> progress =
-        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressSubject>>();
+    LinkedHashMap<SubjectType,
+        LinkedHashMap<int, InProgressCollection>> progress =
+    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
 
     requestedSubjectTypes.forEach((subjectType) {
-      progress[subjectType] = LinkedHashMap<int, InProgressSubject>();
+      progress[subjectType] = LinkedHashMap<int, InProgressCollection>();
     });
 
     /// Adds episodes info to the model and serializes data
@@ -285,7 +287,7 @@ class BangumiProgressService {
         continue;
       }
 
-      InProgressSubject inProgressSubject;
+      InProgressCollection inProgressSubject;
 
       if (rawCollection['subject']['type'] == SubjectType.Book.wiredName) {
         inProgressSubject =

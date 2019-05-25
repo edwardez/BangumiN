@@ -8,11 +8,11 @@ import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionRequest.dart';
-import 'package:munin/models/bangumi/discussion/FetchDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
+import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
@@ -25,7 +25,8 @@ import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart'
 import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
@@ -35,6 +36,9 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
@@ -66,7 +70,7 @@ import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
 import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
-import 'package:munin/models/bangumi/timeline/common/FetchTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperBangumiItem.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/models/bangumi/timeline/common/Mono.dart';
@@ -113,7 +117,7 @@ part 'serializers.g.dart';
 
   /// Timeline
   TimelineState,
-  FetchTimelineRequest,
+  GetTimelineRequest,
   TimelineCategoryFilter,
   TimelineSource,
   BangumiUserBasic,
@@ -144,7 +148,7 @@ part 'serializers.g.dart';
   SubjectType,
   Count,
   Rating,
-  Images,
+  BangumiImage,
   Character,
   Mono,
   RelatedSubject,
@@ -177,8 +181,8 @@ part 'serializers.g.dart';
   DiscussionType,
   DiscussionFilter,
   RakuenTopicFilter,
-  FetchDiscussionRequest,
-  FetchDiscussionResponse,
+  GetDiscussionRequest,
+  GetDiscussionResponse,
   DiscussionState,
 
 
@@ -197,15 +201,16 @@ part 'serializers.g.dart';
 
   /// Progress
   ProgressState,
-  InProgressSubject,
+  InProgressCollection,
   EpisodeProgress,
   InProgressAnimeOrRealCollection,
   InProgressBookCollection,
-  InProgressSubject,
+  InProgressCollection,
   InProgressSubjectInfo,
   EpisodeStatus,
   EpisodeType,
   AirStatus,
+  GetProgressRequest,
 
   /// Settings
   SettingState,
@@ -214,15 +219,18 @@ part 'serializers.g.dart';
   ThemeSwitchMode,
   MuteSetting,
   MutedUser,
-  MutedGroup
+  MutedGroup,
+  GeneralSetting,
+  PreferredLaunchNavTab,
+  PreferredSubjectInfoLanguage
 ])
 final Serializers serializers =
 (_$serializers.toBuilder()
   ..addBuilderFactory(
       FullType(BuiltList, [ FullType(SubjectPreview)]),
           () => ListBuilder<SubjectPreview>())..addBuilderFactory(
-      FullType(BuiltList, [ FullType(InProgressSubject)]),
-          () => ListBuilder<InProgressSubject>())
+      FullType(BuiltList, [ FullType(InProgressCollection)]),
+          () => ListBuilder<InProgressCollection>())
   ..addPlugin(StandardJsonPlugin())
 
 )

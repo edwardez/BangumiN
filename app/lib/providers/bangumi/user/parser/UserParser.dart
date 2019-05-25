@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
@@ -70,7 +70,7 @@ class UserParser {
       }
 
       SubjectPreview subjectPreview = SubjectPreview((b) => b
-        ..images.replace(Images.fromImageUrl(
+        ..cover.replace(BangumiImage.fromImageUrl(
             subjectCover, ImageSize.Small, ImageType.SubjectCover))
         ..id = subjectId
         ..name = subjectName);
@@ -118,8 +118,8 @@ class UserParser {
         }
 
         SubjectPreview subjectPreview = SubjectPreview((b) => b
-          ..images.replace(
-              Images.useSameImageUrlForAll(bangumiTextOnlySubjectCover))
+          ..cover.replace(
+              BangumiImage.useSameImageUrlForAll(bangumiTextOnlySubjectCover))
           ..id = subjectId
           ..name = subjectName);
 

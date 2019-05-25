@@ -1,6 +1,6 @@
 import 'package:html/dom.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -30,7 +30,7 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
   Element avatarElement = element.querySelector('a.avatar');
   String username = parseHrefId(avatarElement);
   String userAvatarSmall = imageUrlFromBackgroundImage(avatarElement);
-  Images images = Images.fromImageUrl(
+  BangumiImage avatar = BangumiImage.fromImageUrl(
       userAvatarSmall, ImageSize.Unknown, ImageType.UserAvatar);
   String updatedAt = element.querySelector('.grey')?.text;
 
@@ -71,7 +71,7 @@ SubjectReview parseSubjectReview(Element element, ReviewElement elementType,
     ..collectionStatus = collectionStatus
     ..score = score
     ..username = username
-    ..userAvatars.replace(images));
+    ..avatar.replace(avatar));
 
   SubjectReview subjectReview = SubjectReview((b) => b
     ..content = commentContent

@@ -5,6 +5,8 @@ import 'package:munin/redux/setting/SettingState.dart';
 import 'package:redux/redux.dart';
 
 final settingReducers = combineReducers<SettingState>([
+  TypedReducer<SettingState, UpdateGeneralSettingAction>(
+      updateGeneralSettingReducer),
   TypedReducer<SettingState, UpdateThemeSettingAction>(
       updateThemeActionReducer),
   TypedReducer<SettingState, UpdateMuteSettingAction>(
@@ -24,6 +26,14 @@ final settingReducers = combineReducers<SettingState>([
   TypedReducer<SettingState, ImportBlockedBangumiUsersCleanupAction>(
       importBlockedBangumiUsersCleanupReducer),
 ]);
+
+///General-related
+/// Mute-related
+SettingState updateGeneralSettingReducer(SettingState settingState,
+    UpdateGeneralSettingAction action) {
+  return settingState.rebuild(
+          (b) => b..generalSetting.replace(action.generalSetting));
+}
 
 /// Theme-related
 SettingState updateThemeActionReducer(SettingState settingState, UpdateThemeSettingAction action) {

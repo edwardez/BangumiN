@@ -15,8 +15,8 @@ abstract class DiscussionItemBuilder {
   BangumiContent get bangumiContent;
   set bangumiContent(BangumiContent bangumiContent);
 
-  ImagesBuilder get images;
-  set images(ImagesBuilder images);
+  BangumiImageBuilder get image;
+  set image(BangumiImageBuilder image);
 
   String get title;
   set title(String title);

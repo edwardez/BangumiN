@@ -29,6 +29,9 @@ class _$WikiCreationSingleSerializer
       'newItemId',
       serializers.serialize(object.newItemId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
       result
@@ -63,6 +66,10 @@ class _$WikiCreationSingleSerializer
           result.newItemId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -82,6 +89,8 @@ class _$WikiCreationSingle extends WikiCreationSingle {
   @override
   final String newItemId;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$WikiCreationSingle(
@@ -89,7 +98,11 @@ class _$WikiCreationSingle extends WikiCreationSingle {
       (new WikiCreationSingleBuilder()..update(updates)).build();
 
   _$WikiCreationSingle._(
-      {this.user, this.newItemName, this.newItemId, this.isFromMutedUser})
+      {this.user,
+      this.newItemName,
+      this.newItemId,
+      this.bangumiContent,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('WikiCreationSingle', 'user');
@@ -99,6 +112,10 @@ class _$WikiCreationSingle extends WikiCreationSingle {
     }
     if (newItemId == null) {
       throw new BuiltValueNullFieldError('WikiCreationSingle', 'newItemId');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'WikiCreationSingle', 'bangumiContent');
     }
   }
 
@@ -118,14 +135,17 @@ class _$WikiCreationSingle extends WikiCreationSingle {
         user == other.user &&
         newItemName == other.newItemName &&
         newItemId == other.newItemId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), newItemName.hashCode),
-            newItemId.hashCode),
+        $jc(
+            $jc($jc($jc(0, user.hashCode), newItemName.hashCode),
+                newItemId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -135,6 +155,7 @@ class _$WikiCreationSingle extends WikiCreationSingle {
           ..add('user', user)
           ..add('newItemName', newItemName)
           ..add('newItemId', newItemId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -158,6 +179,11 @@ class WikiCreationSingleBuilder
   String get newItemId => _$this._newItemId;
   set newItemId(String newItemId) => _$this._newItemId = newItemId;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -170,6 +196,7 @@ class WikiCreationSingleBuilder
       _user = _$v.user?.toBuilder();
       _newItemName = _$v.newItemName;
       _newItemId = _$v.newItemId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -198,6 +225,7 @@ class WikiCreationSingleBuilder
               user: user.build(),
               newItemName: newItemName,
               newItemId: newItemId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

@@ -39,7 +39,7 @@ class HorizontalCharacters extends StatelessWidget {
         /// However Bangumi allows user to crop image and produces a corresponding small/grid image
         /// We can let user select using a high-res but incorrectly cropped version
         /// Or a lo-res but correctly cropped version
-        imageUrl: character.images.grid,
+        imageUrl: character.avatar.grid,
         id: character.id.toString(),
         imageHeight: imageHeight,
         imageWidth: imageWidth,

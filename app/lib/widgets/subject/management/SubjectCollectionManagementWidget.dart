@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
+import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
+import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/dialog/common.dart';
+import 'package:munin/widgets/shared/form/SimpleFormSubmitWidget.dart';
+import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionIsPrivateFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionStatusFormField.dart';
@@ -95,7 +100,7 @@ class _SubjectCollectionManagementWidgetState
     return CollectionStatus.isInvalid(status);
   }
 
-  bool _canSubmitForm() {
+  bool get _canSubmitForm {
     return !commentHasError() && !collectionStatusHasError();
   }
 
@@ -124,33 +129,10 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('放弃编辑这份收藏？'),
-              content: Text(
-                '放弃后输入的信息将不会被保存',
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: const Text('继续编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        false); // Returning true to _onWillPop will pop again.
-                  },
-                ),
-                FlatButton(
-                  child: const Text('放弃编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        true); // Pops the confirmation dialog but not the page.
-                  },
-                ),
-              ],
-            );
-          },
-        ) ??
+    return await showMuninConfirmDiscardEditDialog(
+        context,
+        title: '确认放弃编辑这份收藏？'
+    ) ??
         false;
   }
 
@@ -327,16 +309,15 @@ class _SubjectCollectionManagementWidgetState
   }
 
   _onInitialBuild(Store<AppState> store) {
-    bool isSubjectAbsent = store.state.subjectState.subjects[widget
-        .subjectId] == null;
-    bool isCollectionInfoAbsent = store.state.subjectState.collections[widget
-        .subjectId] == null;
+    bool isSubjectAbsent =
+        store.state.subjectState.subjects[widget.subjectId] == null;
+    bool isCollectionInfoAbsent =
+        store.state.subjectState.collections[widget.subjectId] == null;
     if (isSubjectAbsent || isCollectionInfoAbsent) {
       final action = GetCollectionInfoAction(
           context: context, subjectId: widget.subjectId);
       store.dispatch(action);
-      action.completer.future
-          .then((_) {
+      action.completer.future.then((_) {
         _initFormData(store.state.subjectState.subjects[widget.subjectId]);
       });
     } else {
@@ -375,26 +356,22 @@ class _SubjectCollectionManagementWidgetState
 
   _buildSubmitWidget(BuildContext context, _ViewModel vm, int subjectId) {
     if (vm.collectionsSubmissionStatus == LoadingStatus.Loading) {
-      return IconButton(
-        icon: SizedBox(
-          child: CircularProgressIndicator(),
-        ),
-        onPressed: null,
+      return AdaptiveProgressIndicator(
+        indicatorStyle: IndicatorStyle.Material,
       );
     }
 
     return GestureDetector(
-      child: FlatButton(
-          onPressed: _canSubmitForm()
-              ? () {
-                  _formKey?.currentState?.save();
-                  vm.collectionInfoUpdateRequest(
-                      context, subjectId, localSubjectCollectionInfo);
-                }
-              : null,
-          textColor: lightPrimaryDarkAccentColor(context),
-          child: Text('更新收藏')),
-      onTap: _canSubmitForm()
+      child: SimpleFormSubmitWidget(
+        loadingStatus: vm.collectionsSubmissionStatus,
+        onSubmitPressed: (BuildContext context) {
+          _formKey?.currentState?.save();
+          vm.collectionInfoUpdateRequest(
+              context, subjectId, localSubjectCollectionInfo);
+        },
+        canSubmit: _canSubmitForm,
+      ),
+      onTap: _canSubmitForm
           ? null
           : () {
               _showDialog(context, formErrors);
@@ -439,7 +416,10 @@ class _SubjectCollectionManagementWidgetState
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
-            title: Text(subject?.name ?? '作品标题'),
+            title: subject != null
+                ? Text(preferredSubjectTitleFromSubjectBase(
+                subject, vm.preferredSubjectInfoLanguage))
+                : Text('-'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],
           ),
           safeAreaChild: Form(
@@ -465,6 +445,7 @@ class _SubjectCollectionManagementWidgetState
 
 class _ViewModel {
   final SubjectCollectionInfo subjectCollectionInfo;
+  final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final LoadingStatus collectionLoadingStatus;
   final LoadingStatus collectionsSubmissionStatus;
   final Future Function(BuildContext context, int subjectId) getCollectionInfo;
@@ -493,6 +474,8 @@ class _ViewModel {
       collectionInfoUpdateRequest: _collectionUpdateRequest,
       getCollectionInfo: _getCollectionInfo,
       subjectCollectionInfo: store.state.subjectState.collections[subjectId],
+      preferredSubjectInfoLanguage:
+      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
       collectionLoadingStatus:
           store.state.subjectState.collectionsLoadingStatus[subjectId],
       collectionsSubmissionStatus:
@@ -502,6 +485,7 @@ class _ViewModel {
 
   _ViewModel({
     @required this.getCollectionInfo,
+    @required this.preferredSubjectInfoLanguage,
     @required this.collectionInfoUpdateRequest,
     @required this.subjectCollectionInfo,
     @required this.collectionLoadingStatus,
@@ -515,9 +499,14 @@ class _ViewModel {
           runtimeType == other.runtimeType &&
           collectionLoadingStatus == other.collectionLoadingStatus &&
           collectionsSubmissionStatus == other.collectionsSubmissionStatus &&
-          subjectCollectionInfo == other.subjectCollectionInfo;
+          subjectCollectionInfo == other.subjectCollectionInfo &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
 
   @override
-  int get hashCode => hash3(collectionLoadingStatus.hashCode,
-      collectionsSubmissionStatus.hashCode, subjectCollectionInfo.hashCode);
+  int get hashCode =>
+      hash4(
+          collectionLoadingStatus,
+          collectionsSubmissionStatus,
+          subjectCollectionInfo,
+          preferredSubjectInfoLanguage);
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'MutedUser.g.dart';
@@ -20,7 +20,7 @@ abstract class MutedUser implements Built<MutedUser, MutedUserBuilder> {
 
   /// Currently not in use and not properly populated
   @nullable
-  Images get userAvatar;
+  BangumiImage get userAvatar;
 
   bool get isImportedFromBangumi;
 
@@ -34,7 +34,8 @@ abstract class MutedUser implements Built<MutedUser, MutedUserBuilder> {
       ..nickname = bangumiUserBasic.nickname
       ..isImportedFromBangumi = false
       ..userAvatar
-          .replace(Images.fromBangumiUserAvatar(bangumiUserBasic.avatar)));
+          .replace(
+          BangumiImage.fromBangumiUserAvatar(bangumiUserBasic.avatar)));
   }
 
   String toJson() {

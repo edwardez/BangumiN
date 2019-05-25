@@ -25,7 +25,7 @@ class BangumiHtml extends StatelessWidget {
           }
         },
         onLinkTap: (url) {
-          launch(url, forceSafariVC: true);
+          launch(url, forceSafariVC: false);
         },
         linkStyle: TextStyle(
             decoration: TextDecoration.underline,

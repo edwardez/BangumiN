@@ -6,7 +6,7 @@ import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollectio
 import 'package:munin/models/bangumi/progress/api/InProgressBookCollection.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/common/InProgressSubject.dart';
+import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/progress/Common.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
@@ -36,7 +36,7 @@ ProgressState getProgressLoadingReducer(
 ProgressState getProgressSuccessReducer(ProgressState progressState,
     GetProgressSuccessAction getProgressSuccessAction) {
   for (SubjectType type in getProgressSuccessAction.subjectTypes) {
-    LinkedHashMap<int, InProgressSubject> subjects =
+    LinkedHashMap<int, InProgressCollection> subjects =
         getProgressSuccessAction.progresses[type];
 
     assert(subjects != null);
@@ -46,7 +46,7 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
 
     progressState = progressState.rebuild((b) => b
       ..progresses
-          .addAll({type: BuiltList<InProgressSubject>(subjects.values)}));
+          .addAll({type: BuiltList<InProgressCollection>(subjects.values)}));
   }
 
   return progressState;
@@ -60,9 +60,9 @@ ProgressState getProgressFailureReducer(
 ProgressState updateAnimeOrRealSingleEpisodeSuccessReducer(
     ProgressState progressState,
     UpdateAnimeOrRealSingleEpisodeSuccessAction action) {
-  Iterable<InProgressSubject> progresses = progressState
+  Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
-      .map<InProgressSubject>((InProgressSubject progress) {
+      .map<InProgressCollection>((InProgressCollection progress) {
     if (progress.subject.id == action.subject.id &&
         progress is InProgressAnimeOrRealCollection) {
       EpisodeStatus prevEpisodeStatus;
@@ -74,7 +74,8 @@ ProgressState updateAnimeOrRealSingleEpisodeSuccessReducer(
               action.episodeUpdateType.destinationEpisodeStatus;
       });
 
-      InProgressSubject newInProgressSubject = progress.rebuild((b) => b
+      InProgressCollection newInProgressSubject = progress.rebuild((b) =>
+      b
         ..episodes.addAll({action.episodeId: newEpisodeProgress})
         ..completedEpisodesCount += EpisodeUpdateType.watchedEpisodeCountChange(
             prevEpisodeStatus, action.episodeUpdateType));
@@ -86,15 +87,15 @@ ProgressState updateAnimeOrRealSingleEpisodeSuccessReducer(
 
   return progressState.rebuild((b) => b
     ..progresses.addAll(
-        {action.subject.type: BuiltList<InProgressSubject>(progresses)}));
+        {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
 }
 
 ProgressState updateAnimeOrRealBatchEpisodesSuccessReducer(
     ProgressState progressState,
     UpdateAnimeOrRealBatchEpisodesSuccessAction action) {
-  Iterable<InProgressSubject> progresses = progressState
+  Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
-      .map<InProgressSubject>((InProgressSubject progress) {
+      .map<InProgressCollection>((InProgressCollection progress) {
     if (progress.subject.id == action.subject.id &&
         progress is InProgressAnimeOrRealCollection) {
       LinkedHashMap<int, EpisodeProgress> updatedEpisodes = LinkedHashMap();
@@ -125,14 +126,14 @@ ProgressState updateAnimeOrRealBatchEpisodesSuccessReducer(
 
   return progressState.rebuild((b) => b
     ..progresses.addAll(
-        {action.subject.type: BuiltList<InProgressSubject>(progresses)}));
+        {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
 }
 
 ProgressState updateBookProgressSuccessReducer(
     ProgressState progressState, UpdateBookProgressSuccessAction action) {
-  Iterable<InProgressSubject> progresses = progressState
+  Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
-      .map<InProgressSubject>((InProgressSubject progress) {
+      .map<InProgressCollection>((InProgressCollection progress) {
     if (progress.subject.id == action.subject.id &&
         progress is InProgressBookCollection) {
       InProgressBookCollection newEpisodeProgress = progress.rebuild((b) => b
@@ -146,5 +147,5 @@ ProgressState updateBookProgressSuccessReducer(
 
   return progressState.rebuild((b) => b
     ..progresses.addAll(
-        {action.subject.type: BuiltList<InProgressSubject>(progresses)}));
+        {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
 }

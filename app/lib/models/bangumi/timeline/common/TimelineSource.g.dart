@@ -8,6 +8,7 @@ part of 'TimelineSource.dart';
 
 const TimelineSource _$AllFeeds = const TimelineSource._('AllUsers');
 const TimelineSource _$FriendsOnly = const TimelineSource._('FriendsOnly');
+const TimelineSource _$UserProfile = const TimelineSource._('UserProfile');
 
 TimelineSource _$valueOf(String name) {
   switch (name) {
@@ -15,6 +16,8 @@ TimelineSource _$valueOf(String name) {
       return _$AllFeeds;
     case 'FriendsOnly':
       return _$FriendsOnly;
+    case 'UserProfile':
+      return _$UserProfile;
     default:
       throw new ArgumentError(name);
   }
@@ -24,6 +27,7 @@ final BuiltSet<TimelineSource> _$values =
     new BuiltSet<TimelineSource>(const <TimelineSource>[
   _$AllFeeds,
   _$FriendsOnly,
+  _$UserProfile,
 ]);
 
 Serializer<TimelineSource> _$timelineSourceSerializer =

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -10,6 +11,9 @@ part 'SettingState.g.dart';
 
 abstract class SettingState
     implements Built<SettingState, SettingStateBuilder> {
+  @nullable
+  GeneralSetting get generalSetting;
+
   ThemeSetting get themeSetting;
 
   MuteSetting get muteSetting;
@@ -18,6 +22,7 @@ abstract class SettingState
       _$SettingState((b) => b
         ..themeSetting.replace(ThemeSetting())
         ..muteSetting.replace(MuteSetting())
+        ..generalSetting.replace(GeneralSetting())
         ..update(updates));
 
   SettingState._();

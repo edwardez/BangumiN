@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 
@@ -19,6 +20,7 @@ abstract class BlogCreationSingle
 
   /// blog id
   String get id;
+
 
   BlogCreationSingle._();
 

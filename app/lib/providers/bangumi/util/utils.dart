@@ -184,7 +184,8 @@ double parseSubjectScore(Element element) {
   return null;
 }
 
-FeedMetaInfo updateUserAction(Element singleTimelineContent, FeedMetaInfo userInfo) {
+FeedMetaInfo updateUserAction(Element singleTimelineContent,
+    FeedMetaInfo userInfo,) {
   assert(singleTimelineContent != null);
   assert(userInfo != null);
 
@@ -192,7 +193,9 @@ FeedMetaInfo updateUserAction(Element singleTimelineContent, FeedMetaInfo userIn
   getMergedTextNodeContent(singleTimelineContent.nodes);
 
   userInfo = userInfo.rebuild((b) =>
-  b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
+  b
+    ..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value
+  );
 
   return userInfo;
 }

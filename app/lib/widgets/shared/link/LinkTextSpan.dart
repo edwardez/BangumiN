@@ -17,8 +17,8 @@ class LinkTextSpan extends TextSpan {
   // stateful widget that then hands the recognizer to the TextSpan.
 
   LinkTextSpan(
-      {TextStyle style, @required String url, String text, bool forceSafariVC = true,
-        bool forceWebView = true,})
+      {TextStyle style, @required String url, String text, bool forceSafariVC = false,
+        bool forceWebView = false,})
       : super(
             style: style,
             text: text ?? url,

@@ -1,16 +1,21 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:munin/widgets/timeline/Timeline.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 class TimelinePreviewWidget extends StatelessWidget {
   final UserProfile profile;
+  final bool isCurrentAppUser;
 
-  const TimelinePreviewWidget({Key key, @required this.profile})
+  const TimelinePreviewWidget(
+      {Key key, @required this.profile, @required this.isCurrentAppUser})
       : super(key: key);
 
   RichText _buildFeed(BuildContext context, TimelinePreview previewFeed) {
@@ -21,9 +26,28 @@ class TimelinePreviewWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.body1),
         TextSpan(
             text:
-                ' ${TimeUtils.formatMilliSecondsEpochTime(previewFeed.userUpdatedAt, displayTimeIn: DisplayTimeIn.AlwaysRelative)}',
+            ' ${TimeUtils.formatMilliSecondsEpochTime(previewFeed.userUpdatedAt, displayTimeIn: DisplayTimeIn.AlwaysRelative)}',
             style: Theme.of(context).textTheme.caption),
       ]),
+    );
+  }
+
+  _buildFloatingComposeMessageButton(BuildContext context, String username) {
+    /// Show floating button only if user is on its own profile widget
+    if (!isCurrentAppUser) {
+      return null;
+    }
+
+    return FloatingActionButton(
+      tooltip: '发表新吐槽',
+      child: Icon(OMIcons.add),
+      onPressed: () {
+        Application.router.navigateTo(
+            context,
+            Routes.composeTimelineMessageRoute.replaceAll(
+                ':username', username),
+            transition: TransitionType.nativeModal);
+      },
     );
   }
 
@@ -57,9 +81,22 @@ class TimelinePreviewWidget extends StatelessWidget {
         ],
       ),
       onTap: () {
-        launch(
-            'https://${Application.environmentValue.bangumiMainHost}/user/${profile.basicInfo.username}/timeline',
-            forceSafariVC: true);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                Scaffold(
+                  body: MuninTimeline.onUserProfile(
+                    username: profile.basicInfo.username,
+                  ),
+                  floatingActionButton: _buildFloatingComposeMessageButton(
+                      context, profile.basicInfo.username),
+                ),
+            settings: RouteSettings(
+                name: Routes.userProfileTimelineRoute.replaceAll(
+                    ':username', profile.basicInfo.username)),
+          ),
+        );
       },
     );
   }

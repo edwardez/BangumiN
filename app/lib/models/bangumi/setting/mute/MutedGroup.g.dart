@@ -29,7 +29,7 @@ class _$MutedGroupSerializer implements StructuredSerializer<MutedGroup> {
       result
         ..add('groupIcon')
         ..add(serializers.serialize(object.groupIcon,
-            specifiedType: const FullType(Images)));
+            specifiedType: const FullType(BangumiImage)));
     }
 
     return result;
@@ -56,7 +56,7 @@ class _$MutedGroupSerializer implements StructuredSerializer<MutedGroup> {
           break;
         case 'groupIcon':
           result.groupIcon.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
       }
     }
@@ -71,7 +71,7 @@ class _$MutedGroup extends MutedGroup {
   @override
   final String groupId;
   @override
-  final Images groupIcon;
+  final BangumiImage groupIcon;
 
   factory _$MutedGroup([void Function(MutedGroupBuilder) updates]) =>
       (new MutedGroupBuilder()..update(updates)).build();
@@ -130,9 +130,10 @@ class MutedGroupBuilder implements Builder<MutedGroup, MutedGroupBuilder> {
   String get groupId => _$this._groupId;
   set groupId(String groupId) => _$this._groupId = groupId;
 
-  ImagesBuilder _groupIcon;
-  ImagesBuilder get groupIcon => _$this._groupIcon ??= new ImagesBuilder();
-  set groupIcon(ImagesBuilder groupIcon) => _$this._groupIcon = groupIcon;
+  BangumiImageBuilder _groupIcon;
+  BangumiImageBuilder get groupIcon =>
+      _$this._groupIcon ??= new BangumiImageBuilder();
+  set groupIcon(BangumiImageBuilder groupIcon) => _$this._groupIcon = groupIcon;
 
   MutedGroupBuilder();
 

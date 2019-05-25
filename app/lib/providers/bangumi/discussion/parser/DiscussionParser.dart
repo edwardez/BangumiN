@@ -1,7 +1,7 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/common/Images.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
@@ -10,6 +10,7 @@ import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -23,13 +24,7 @@ class DiscussionParser {
     'group': BangumiContent.GroupTopic,
   };
 
-  static const Map<BangumiContent, ImageType> contentTypeToImageType = {
-    BangumiContent.Person: ImageType.MonoAvatar,
-    BangumiContent.Character: ImageType.MonoAvatar,
-    BangumiContent.Episode: ImageType.SubjectCover,
-    BangumiContent.SubjectTopic: ImageType.SubjectCover,
-    BangumiContent.GroupTopic: ImageType.UserAvatar,
-  };
+
 
   static final elementTypeRegex = RegExp(r'_(\w+)_');
 
@@ -65,12 +60,13 @@ class DiscussionParser {
     }
 
     String imageUrlSmall = imageUrlFromBackgroundImage(discussionItemElement);
-    ImageType imageType = contentTypeToImageType[contentType];
-    Images images;
+    ImageType imageType = contentType.imageType;
+    BangumiImage image;
     if (imageType == null) {
-      images = Images.useSameImageUrlForAll(imageUrlSmall);
+      image = BangumiImage.useSameImageUrlForAll(imageUrlSmall);
     } else {
-      images = Images.fromImageUrl(imageUrlSmall, ImageSize.Unknown, imageType);
+      image = BangumiImage.fromImageUrl(
+          imageUrlSmall, ImageSize.Unknown, imageType);
     }
 
     String title = discussionItemElement.querySelector('.title')?.text;
@@ -105,14 +101,14 @@ class DiscussionParser {
       b
         ..id = itemId
         ..bangumiContent = contentType
-        ..images.replace(images)
+        ..image.replace(image)
         ..title = title
         ..subTitle = subtitle
         ..updatedAt = absoluteTime?.millisecondsSinceEpoch
         ..replyCount = replyCount));
     } else {
       int originalPosterUserId = tryParseInt(
-          firstCapturedStringOrNull(userIdInAvatarGroupRegex, images.small),
+          firstCapturedStringOrNull(userIdInAvatarGroupRegex, image.small),
           defaultValue: null);
 
       Element groupElement =
@@ -123,7 +119,7 @@ class DiscussionParser {
       b
         ..id = itemId
         ..bangumiContent = contentType
-        ..images.replace(images)
+        ..image.replace(image)
         ..title = title
         ..subTitle = subtitle
         ..updatedAt = absoluteTime?.millisecondsSinceEpoch
@@ -149,7 +145,7 @@ class DiscussionParser {
     bool muteOPWithDefaultIcon;
 
     if (muteSetting.muteOriginalPosterWithDefaultIcon &&
-        item.images.small.contains('icon.jpg')) {
+        item.image.small.contains('icon.jpg')) {
       muteOPWithDefaultIcon = true;
     } else {
       muteOPWithDefaultIcon = false;
@@ -188,6 +184,10 @@ class DiscussionParser {
           !isMutedItem(maybeDiscussionItem.value, muteSetting)) {
         discussionItems.add(maybeDiscussionItem.value);
       }
+    }
+
+    if (discussionItems.isEmpty) {
+      throw BangumiResponseIncomprehensibleException('从Bangumi返回的讨论列表为空');
     }
 
     return discussionItems;

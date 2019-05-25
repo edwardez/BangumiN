@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
+import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
+import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 
 class PublicMessageNormalWidget extends StatelessWidget {
   final PublicMessageNormal publicMessageNormal;
   final double paddingFromItemToTop;
   final double paddingBetweenCommentIconAndCount;
+  final DeleteFeedCallback onDeleteFeed;
 
   const PublicMessageNormalWidget({
     Key key,
     @required this.publicMessageNormal,
     this.paddingFromItemToTop = 3,
     this.paddingBetweenCommentIconAndCount = 2,
+    this.onDeleteFeed,
   }) : super(key: key);
 
   @override
@@ -22,6 +26,7 @@ class PublicMessageNormalWidget extends StatelessWidget {
       children: <Widget>[
         UserListTile.fromUser(
           user: publicMessageNormal.user,
+          trailing: buildTrailingWidget(publicMessageNormal, onDeleteFeed),
         ),
         Row(
           children: <Widget>[

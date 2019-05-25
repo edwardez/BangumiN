@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperItem.dart';
 
@@ -14,8 +15,7 @@ abstract class HyperImage
   /// content type
   BangumiContent get contentType;
 
-  /// url of the image
-  String get imageUrl;
+  BangumiImage get image;
 
   /// if we cannot parse content, a fallback webview might be used
   /// hence an optional link is needed

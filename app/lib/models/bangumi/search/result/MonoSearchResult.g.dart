@@ -35,11 +35,11 @@ class _$MonoSearchResultSerializer
       serializers.serialize(object.type,
           specifiedType: const FullType(SearchType)),
     ];
-    if (object.images != null) {
+    if (object.image != null) {
       result
         ..add('images')
-        ..add(serializers.serialize(object.images,
-            specifiedType: const FullType(Images)));
+        ..add(serializers.serialize(object.image,
+            specifiedType: const FullType(BangumiImage)));
     }
 
     return result;
@@ -67,8 +67,8 @@ class _$MonoSearchResultSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'images':
-          result.images.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Images)) as Images);
+          result.image.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BangumiImage)) as BangumiImage);
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -95,7 +95,7 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   final String nameCn;
   @override
-  final Images images;
+  final BangumiImage image;
   @override
   final String name;
   @override
@@ -108,7 +108,7 @@ class _$MonoSearchResult extends MonoSearchResult {
       (new MonoSearchResultBuilder()..update(updates)).build();
 
   _$MonoSearchResult._(
-      {this.miscInfo, this.nameCn, this.images, this.name, this.id, this.type})
+      {this.miscInfo, this.nameCn, this.image, this.name, this.id, this.type})
       : super._() {
     if (miscInfo == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'miscInfo');
@@ -141,7 +141,7 @@ class _$MonoSearchResult extends MonoSearchResult {
     return other is MonoSearchResult &&
         miscInfo == other.miscInfo &&
         nameCn == other.nameCn &&
-        images == other.images &&
+        image == other.image &&
         name == other.name &&
         id == other.id &&
         type == other.type;
@@ -153,7 +153,7 @@ class _$MonoSearchResult extends MonoSearchResult {
         $jc(
             $jc(
                 $jc($jc($jc(0, miscInfo.hashCode), nameCn.hashCode),
-                    images.hashCode),
+                    image.hashCode),
                 name.hashCode),
             id.hashCode),
         type.hashCode));
@@ -164,7 +164,7 @@ class _$MonoSearchResult extends MonoSearchResult {
     return (newBuiltValueToStringHelper('MonoSearchResult')
           ..add('miscInfo', miscInfo)
           ..add('nameCn', nameCn)
-          ..add('images', images)
+          ..add('image', image)
           ..add('name', name)
           ..add('id', id)
           ..add('type', type))
@@ -187,9 +187,9 @@ class MonoSearchResultBuilder
   String get nameCn => _$this._nameCn;
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
-  ImagesBuilder _images;
-  ImagesBuilder get images => _$this._images ??= new ImagesBuilder();
-  set images(ImagesBuilder images) => _$this._images = images;
+  BangumiImageBuilder _image;
+  BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
+  set image(BangumiImageBuilder image) => _$this._image = image;
 
   String _name;
   String get name => _$this._name;
@@ -209,7 +209,7 @@ class MonoSearchResultBuilder
     if (_$v != null) {
       _miscInfo = _$v.miscInfo?.toBuilder();
       _nameCn = _$v.nameCn;
-      _images = _$v.images?.toBuilder();
+      _image = _$v.image?.toBuilder();
       _name = _$v.name;
       _id = _$v.id;
       _type = _$v.type;
@@ -239,7 +239,7 @@ class MonoSearchResultBuilder
           new _$MonoSearchResult._(
               miscInfo: miscInfo.build(),
               nameCn: nameCn,
-              images: _images?.build(),
+              image: _image?.build(),
               name: name,
               id: id,
               type: type);
@@ -249,8 +249,8 @@ class MonoSearchResultBuilder
         _$failedField = 'miscInfo';
         miscInfo.build();
 
-        _$failedField = 'images';
-        _images?.build();
+        _$failedField = 'image';
+        _image?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'MonoSearchResult', _$failedField, e.toString());

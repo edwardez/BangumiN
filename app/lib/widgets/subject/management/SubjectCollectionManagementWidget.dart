@@ -15,6 +15,7 @@ import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionIsPrivateFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionStatusFormField.dart';
@@ -126,33 +127,10 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('放弃编辑这份收藏？'),
-              content: Text(
-                '放弃后输入的信息将不会被保存',
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: const Text('继续编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        false); // Returning true to _onWillPop will pop again.
-                  },
-                ),
-                FlatButton(
-                  child: const Text('放弃编辑'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        true); // Pops the confirmation dialog but not the page.
-                  },
-                ),
-              ],
-            );
-          },
-        ) ??
+    return await showMuninConfirmDiscardEditDialog(
+        context,
+        title: '确认放弃编辑这份收藏？'
+    ) ??
         false;
   }
 

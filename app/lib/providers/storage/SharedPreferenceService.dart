@@ -59,12 +59,22 @@ class SharedPreferenceService {
         );
         return Optional.of(fullAppState);
       } catch (error, stack) {
+        /// If data other than core data is corrupted, saves a serialized basic app
+        /// state
+        if (appState != null) {
+          await persistAppState(appState);
+        }
         debugPrint(
             'Error occurred during serializing AppState: $error. Stack: $stack');
       }
     }
 
-    return appState == null ? Optional.absent() : Optional.of(appState);
+    if (appState == null) {
+      return Optional.absent();
+    } else {
+      return Optional.of(appState);
+    }
+
   }
 
   /// Saves [AppState] with key [appStateKey] and a basicAppState with key

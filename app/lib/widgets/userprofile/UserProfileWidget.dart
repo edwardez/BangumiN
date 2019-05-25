@@ -15,14 +15,14 @@ import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/UserProfile/CollectionPreviewWidget.dart';
-import 'package:munin/widgets/UserProfile/TimelinePreviewWidget.dart';
-import 'package:munin/widgets/UserProfile/UserIntroductionPreview.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:munin/widgets/userprofile/CollectionPreviewWidget.dart';
+import 'package:munin/widgets/userprofile/TimelinePreviewWidget.dart';
+import 'package:munin/widgets/userprofile/UserIntroductionPreview.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -196,6 +196,7 @@ class UserProfileWidget extends StatelessWidget {
     widgets.addAll([
       TimelinePreviewWidget(
         profile: profile,
+          isCurrentAppUser: vm.isCurrentAppUser
       ),
       Divider(),
       InkWell(

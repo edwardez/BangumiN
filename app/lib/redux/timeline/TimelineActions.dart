@@ -36,8 +36,11 @@ class DeleteTimelineAction {
   final BuildContext context;
   final TimelineFeed feed;
 
-  DeleteTimelineAction(
-      {@required this.context, @required this.feed, @required this.getTimelineRequest,});
+  DeleteTimelineAction({
+    @required this.context,
+    @required this.feed,
+    @required this.getTimelineRequest,
+  });
 }
 
 class DeleteTimelineSuccessAction {
@@ -47,6 +50,27 @@ class DeleteTimelineSuccessAction {
   /// user name of the current app user
   final String appUsername;
 
-  DeleteTimelineSuccessAction(
-      { @required this.feed, @required this.getTimelineRequest, @required this.appUsername});
+  DeleteTimelineSuccessAction({@required this.feed,
+    @required this.getTimelineRequest,
+    @required this.appUsername});
 }
+
+class SubmitTimelineMessageAction {
+  final BuildContext context;
+  final String message;
+
+  SubmitTimelineMessageAction(
+      {@required this.context, @required this.message, Completer completer});
+}
+
+class SubmitTimelineMessageSuccessAction {
+  final String message;
+
+  SubmitTimelineMessageSuccessAction({@required this.message});
+}
+
+class SubmitTimelineMessageLoadingAction {}
+
+class SubmitTimelineMessageFailureAction {}
+
+class CleanUpSubmitTimelineMessageAction {}

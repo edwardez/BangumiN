@@ -17,6 +17,8 @@ class Routes {
   static String userProfileRoute = "/user/:username";
   static String userProfileTimelineRoute =
       "/user/:username/timeline";
+  static String composeTimelineMessageRoute =
+      "/user/:username/timeline/new";
 
   // Setting
   static String settingRoute = "/setting";
@@ -41,6 +43,8 @@ class Routes {
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
     router.define(userProfileRoute, handler: userProfileRouteHandler);
+    router.define(composeTimelineMessageRoute,
+        handler: composeTimelineMessageRouteHandler);
     router.define(settingRoute, handler: settingRouteHandler);
     router.define(generalSettingRoute, handler: generalSettingRouteHandler);
     router.define(themeSettingRoute, handler: themeSettingRouteHandler);

@@ -14,6 +14,7 @@ import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
 import 'package:munin/widgets/subject/SubjectWidget.dart';
 import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
+import 'package:munin/widgets/timeline/compose/ComposeTimelineMessage.dart';
 
 var loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -61,6 +62,7 @@ var subjectCollectionManagementRouteHandler = Handler(
       );
     });
 
+/// User
 var userProfileRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String username = params["username"]?.first;
@@ -70,6 +72,11 @@ var userProfileRouteHandler = Handler(
           username: username,
         ),
       );
+    });
+
+var composeTimelineMessageRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return ComposeTimelineMessage();
     });
 
 /// Setting

@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
@@ -16,8 +20,7 @@ import 'package:munin/shared/utils/common.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createTimelineEpics(
-    BangumiTimelineService bangumiTimelineService,
+List<Epic<AppState>> createTimelineEpics(BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   final loadTimelineFeedEpic =
   _createLoadTimelineEpics(bangumiTimelineService, bangumiUserService);
@@ -25,7 +28,14 @@ List<Epic<AppState>> createTimelineEpics(
   final createDeleteTimelineEpic =
   _createDeleteTimelineEpic(bangumiTimelineService);
 
-  return [loadTimelineFeedEpic, createDeleteTimelineEpic];
+  final createSubmitTimelineMessageEpic =
+  _createSubmitTimelineMessageEpic(bangumiTimelineService);
+
+  return [
+    loadTimelineFeedEpic,
+    createDeleteTimelineEpic,
+    createSubmitTimelineMessageEpic
+  ];
 }
 
 Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
@@ -192,8 +202,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
   }
 }
 
-Epic<AppState> _createLoadTimelineEpics(
-    BangumiTimelineService bangumiTimelineService,
+Epic<AppState> _createLoadTimelineEpics(BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
@@ -213,8 +222,7 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
         feed: action.feed,
         getTimelineRequest: action.getTimelineRequest,
         appUsername: store.state.currentAuthenticatedUserBasicInfo.username);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text('时间线已删除')));
+    Scaffold.of(action.context).showSnackBar(SnackBar(content: Text('时间线已删除')));
   } catch (error, stack) {
     print(error.toString());
     print(stack);
@@ -223,12 +231,64 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
   }
 }
 
-Epic<AppState> _createDeleteTimelineEpic(
-    BangumiTimelineService bangumiTimelineService) {
+Epic<AppState> _createDeleteTimelineEpic(BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<DeleteTimelineAction>())
         .concatMap(
             (action) => _deleteTimeline(bangumiTimelineService, action, store));
+  };
+}
+
+Stream<dynamic> _submitTimelineMessage(
+    BangumiTimelineService bangumiTimelineService,
+    SubmitTimelineMessageAction action,
+    EpicStore<AppState> store) async* {
+  try {
+    yield SubmitTimelineMessageLoadingAction();
+
+    await bangumiTimelineService.submitTimelineMessage(action.message);
+
+    Navigator.of(action.context).pop();
+
+    // Refreshes main profile timeline
+    GetTimelineRequest request = GetTimelineRequest((b) =>
+    b
+      ..timelineSource = TimelineSource.UserProfile
+      ..username = store.state.currentAuthenticatedUserBasicInfo.username
+      ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds);
+
+    Completer completer = Completer();
+    yield GetTimelineRequestAction(
+        getTimelineRequest: request,
+        context: action.context,
+        feedLoadType: FeedLoadType.Newer,
+        completer: completer);
+
+    await completer.future;
+
+    // Once refreshing main profile timeline complete, refreshes PublicMessage timeline, too
+    request = request.rebuild((b) =>
+    b..timelineCategoryFilter = TimelineCategoryFilter.PublicMessage);
+    yield GetTimelineRequestAction(
+      getTimelineRequest: request,
+      context: action.context,
+      feedLoadType: FeedLoadType.Newer,
+    );
+  } catch (error, stack) {
+    print(error.toString());
+    print(stack);
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text('发表消息时出错')));
+  }
+}
+
+Epic<AppState> _createSubmitTimelineMessageEpic(
+    BangumiTimelineService bangumiTimelineService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<SubmitTimelineMessageAction>())
+        .concatMap((action) =>
+        _submitTimelineMessage(bangumiTimelineService, action, store));
   };
 }

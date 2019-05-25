@@ -28,7 +28,8 @@ class BangumiTimelineService {
       : assert(cookieClient != null);
 
   // Gets timeline on home page or user profile page by parsing html
-  Future<GetTimelineParsedResponse> getTimeline({@required GetTimelineRequest request,
+  Future<GetTimelineParsedResponse> getTimeline({
+    @required GetTimelineRequest request,
     @required int nextPageNum,
     @required FeedLoadType feedLoadType,
     @required int upperFeedId,
@@ -42,16 +43,14 @@ class BangumiTimelineService {
       queryParameters['page'] = nextPageNum;
     }
 
-    queryParameters['type'] = request
-        .timelineCategoryFilter.bangumiQueryParameterValue;
+    queryParameters['type'] =
+        request.timelineCategoryFilter.bangumiQueryParameterValue;
 
     String requestPath;
-    if (request.timelineSource ==
-        TimelineSource.UserProfile) {
+    if (request.timelineSource == TimelineSource.UserProfile) {
       assert(request.username != null);
       requestPath = '/user/${request.username}/timeline';
-    } else if (request.timelineSource ==
-        TimelineSource.FriendsOnly) {
+    } else if (request.timelineSource == TimelineSource.FriendsOnly) {
       requestPath = '/timeline';
     } else {
       throw UnimplementedError('尚未支持读取这种时间线');
@@ -69,8 +68,7 @@ class BangumiTimelineService {
         lowerFeedId: lowerFeedId,
         mutedUsers: mutedUsers,
         timelineSource: request.timelineSource,
-        userInfo: userInfo
-    );
+        userInfo: userInfo);
 
     return fetchFeedsResult;
   }
@@ -78,18 +76,13 @@ class BangumiTimelineService {
   Future<void> deleteTimeline(int feedId) async {
     String xsrfToken = await cookieClient.getXsrfToken();
 
-    Map<String, dynamic> queryParameters = {
-      'ajax': '1',
-      'gh': xsrfToken
-    };
+    Map<String, dynamic> queryParameters = {'ajax': '1', 'gh': xsrfToken};
 
-    Response response = await cookieClient.dio.get(
-        '/erase/tml/$feedId', queryParameters: queryParameters,
+    Response response = await cookieClient.dio.get('/erase/tml/$feedId',
+        queryParameters: queryParameters,
         options: Options(
-            contentType: ContentType.parse("application/x-www-form-urlencoded")
-        )
-
-    );
+            contentType:
+            ContentType.parse("application/x-www-form-urlencoded")));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.data);
@@ -98,6 +91,33 @@ class BangumiTimelineService {
       }
     }
 
+    throw BangumiResponseIncomprehensibleException();
+  }
+
+  Future<void> submitTimelineMessage(String message) async {
+    String xsrfToken = await cookieClient.getXsrfToken();
+
+    Map<String, String> body = {
+      'say_input': message,
+      'formhash': xsrfToken,
+      'submit': 'submit',
+    };
+
+    Map<String, dynamic> queryParameters = {'ajax': '1'};
+
+    Response response = await cookieClient.dio.post('/update/user/say?ajax=1',
+        queryParameters: queryParameters,
+        data: body,
+        options: Options(
+            contentType:
+            ContentType.parse("application/x-www-form-urlencoded")));
+
+    if (response.statusCode == 200) {
+      var decodedResponse = json.decode(response.data);
+      if (isBangumiWebPageOkResponse(decodedResponse)) {
+        return;
+      }
+    }
 
     throw BangumiResponseIncomprehensibleException();
   }

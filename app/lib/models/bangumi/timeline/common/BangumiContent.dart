@@ -81,6 +81,8 @@ class BangumiContent extends EnumClass {
       case BangumiContent.Person:
       case BangumiContent.CharacterOrPerson:
         return TimelineCategoryFilter.Mono;
+      case BangumiContent.PublicMessage:
+        return TimelineCategoryFilter.PublicMessage;
       default:
 
       /// we should never use default directly

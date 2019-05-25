@@ -6,6 +6,7 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
+import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
@@ -16,6 +17,14 @@ final timelineReducers = combineReducers<TimelineState>([
       loadTimelineFeedSuccessReducer),
   TypedReducer<TimelineState, DeleteTimelineSuccessAction>(
       deleteTimelineFeedSuccessReducer),
+  TypedReducer<TimelineState, SubmitTimelineMessageLoadingAction>(
+      submitTimelineMessageLoadingReducer),
+  TypedReducer<TimelineState, SubmitTimelineMessageSuccessAction>(
+      submitTimelineMessageSuccessReducer),
+  TypedReducer<TimelineState, SubmitTimelineMessageFailureAction>(
+      submitTimelineMessageFailureReducer),
+  TypedReducer<TimelineState, CleanUpSubmitTimelineMessageAction>(
+      cleanUpSubmitTimelineMessageActionReducer),
 ]);
 
 TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
@@ -208,3 +217,33 @@ TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
   return timelineState;
 }
 
+/// Message submission
+TimelineState submitTimelineMessageLoadingReducer(TimelineState timelineState,
+    SubmitTimelineMessageLoadingAction action) {
+  return timelineState.rebuild((b) =>
+  b
+    ..messageSubmissionStatus = LoadingStatus.Loading);
+}
+
+TimelineState submitTimelineMessageSuccessReducer(TimelineState timelineState,
+    SubmitTimelineMessageSuccessAction action) {
+  return timelineState.rebuild((b) =>
+  b
+    ..messageSubmissionStatus = LoadingStatus.Success);
+}
+
+
+TimelineState submitTimelineMessageFailureReducer(TimelineState timelineState,
+    SubmitTimelineMessageFailureAction action) {
+  return timelineState.rebuild((b) =>
+  b
+    ..messageSubmissionStatus = LoadingStatus.UnknownException);
+}
+
+TimelineState cleanUpSubmitTimelineMessageActionReducer(
+    TimelineState timelineState,
+    CleanUpSubmitTimelineMessageAction action) {
+  return timelineState.rebuild((b) =>
+  b
+    ..messageSubmissionStatus = LoadingStatus.Initial);
+}

@@ -28,6 +28,9 @@ class _$BlogCreationSingleSerializer
           specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.summary != null) {
       result
@@ -72,6 +75,10 @@ class _$BlogCreationSingleSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -93,6 +100,8 @@ class _$BlogCreationSingle extends BlogCreationSingle {
   @override
   final String id;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$BlogCreationSingle(
@@ -100,7 +109,12 @@ class _$BlogCreationSingle extends BlogCreationSingle {
       (new BlogCreationSingleBuilder()..update(updates)).build();
 
   _$BlogCreationSingle._(
-      {this.user, this.title, this.summary, this.id, this.isFromMutedUser})
+      {this.user,
+      this.title,
+      this.summary,
+      this.id,
+      this.bangumiContent,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('BlogCreationSingle', 'user');
@@ -110,6 +124,10 @@ class _$BlogCreationSingle extends BlogCreationSingle {
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('BlogCreationSingle', 'id');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'BlogCreationSingle', 'bangumiContent');
     }
   }
 
@@ -130,14 +148,19 @@ class _$BlogCreationSingle extends BlogCreationSingle {
         title == other.title &&
         summary == other.summary &&
         id == other.id &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), title.hashCode), summary.hashCode),
-            id.hashCode),
+        $jc(
+            $jc(
+                $jc($jc($jc(0, user.hashCode), title.hashCode),
+                    summary.hashCode),
+                id.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -148,6 +171,7 @@ class _$BlogCreationSingle extends BlogCreationSingle {
           ..add('title', title)
           ..add('summary', summary)
           ..add('id', id)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -175,6 +199,11 @@ class BlogCreationSingleBuilder
   String get id => _$this._id;
   set id(String id) => _$this._id = id;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -188,6 +217,7 @@ class BlogCreationSingleBuilder
       _title = _$v.title;
       _summary = _$v.summary;
       _id = _$v.id;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -217,6 +247,7 @@ class BlogCreationSingleBuilder
               title: title,
               summary: summary,
               id: id,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

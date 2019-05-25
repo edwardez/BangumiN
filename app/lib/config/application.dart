@@ -105,7 +105,7 @@ abstract class Application {
       ...createSubjectEpics(bangumiSubjectService),
       ...createSearchEpics(bangumiSearchService),
       ...createDiscussionEpics(bangumiDiscussionService),
-      ...createTimelineEpics(bangumiTimelineService),
+      ...createTimelineEpics(bangumiTimelineService, bangumiUserService),
       ...createUserEpics(bangumiUserService),
       ...createProgressEpics(bangumiProgressService),
       ...createSettingEpics(bangumiUserService),

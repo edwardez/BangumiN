@@ -21,7 +21,8 @@ const TimelineCategoryFilter _$FriendShip =
 const TimelineCategoryFilter _$ProgressUpdate =
     const TimelineCategoryFilter._('Group');
 const TimelineCategoryFilter _$Wiki = const TimelineCategoryFilter._('Wiki');
-const TimelineCategoryFilter _$Index = const TimelineCategoryFilter._('Index');
+const TimelineCategoryFilter _$Catalog =
+    const TimelineCategoryFilter._('Catalog');
 const TimelineCategoryFilter _$Doujin =
     const TimelineCategoryFilter._('Doujin');
 
@@ -45,8 +46,8 @@ TimelineCategoryFilter _$valueOf(String name) {
       return _$ProgressUpdate;
     case 'Wiki':
       return _$Wiki;
-    case 'Index':
-      return _$Index;
+    case 'Catalog':
+      return _$Catalog;
     case 'Doujin':
       return _$Doujin;
     default:
@@ -65,7 +66,7 @@ final BuiltSet<TimelineCategoryFilter> _$values =
   _$FriendShip,
   _$ProgressUpdate,
   _$Wiki,
-  _$Index,
+  _$Catalog,
   _$Doujin,
 ]);
 

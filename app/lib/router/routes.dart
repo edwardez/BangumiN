@@ -13,15 +13,19 @@ class Routes {
   static String subjectCollectionManagementRoute =
       "/subject/:subjectId/collection";
 
+  // User
   static String userProfileRoute = "/user/:username";
+  static String userProfileTimelineRoute =
+      "/user/:username/timeline";
 
-  /// Setting
+  // Setting
   static String settingRoute = "/setting";
   static String generalSettingRoute = "/setting/general";
   static String themeSettingRoute = "/setting/theme";
   static String muteSettingRoute = "/setting/mute";
   static String muteSettingBatchImportUsersRoute =
       "/setting/mute/users/import/bangumi";
+
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(

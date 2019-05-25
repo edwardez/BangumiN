@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:munin/widgets/timeline/Timeline.dart';
 
 class TimelinePreviewWidget extends StatelessWidget {
   final UserProfile profile;
@@ -57,9 +57,20 @@ class TimelinePreviewWidget extends StatelessWidget {
         ],
       ),
       onTap: () {
-        launch(
-            'https://${Application.environmentValue.bangumiMainHost}/user/${profile.basicInfo.username}/timeline',
-            forceSafariVC: true);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                Scaffold(
+                  body: MuninTimeline.onUserProfile(
+                    username: profile.basicInfo.username,
+                  ),
+                ),
+            settings: RouteSettings(
+                name: Routes.userProfileTimelineRoute.replaceAll(
+                    ':username', profile.basicInfo.username)),
+          ),
+        );
       },
     );
   }

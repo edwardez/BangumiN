@@ -31,6 +31,9 @@ class _$IndexFavoriteSingleSerializer
           specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.summary != null) {
       result
@@ -75,6 +78,10 @@ class _$IndexFavoriteSingleSerializer
           result.summary = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -96,6 +103,8 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
   @override
   final String summary;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$IndexFavoriteSingle(
@@ -103,7 +112,12 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
       (new IndexFavoriteSingleBuilder()..update(updates)).build();
 
   _$IndexFavoriteSingle._(
-      {this.user, this.title, this.id, this.summary, this.isFromMutedUser})
+      {this.user,
+      this.title,
+      this.id,
+      this.summary,
+      this.bangumiContent,
+      this.isFromMutedUser})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('IndexFavoriteSingle', 'user');
@@ -113,6 +127,10 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
     }
     if (id == null) {
       throw new BuiltValueNullFieldError('IndexFavoriteSingle', 'id');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'IndexFavoriteSingle', 'bangumiContent');
     }
   }
 
@@ -133,14 +151,17 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
         title == other.title &&
         id == other.id &&
         summary == other.summary &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), title.hashCode), id.hashCode),
-            summary.hashCode),
+        $jc(
+            $jc($jc($jc($jc(0, user.hashCode), title.hashCode), id.hashCode),
+                summary.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -151,6 +172,7 @@ class _$IndexFavoriteSingle extends IndexFavoriteSingle {
           ..add('title', title)
           ..add('id', id)
           ..add('summary', summary)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -178,6 +200,11 @@ class IndexFavoriteSingleBuilder
   String get summary => _$this._summary;
   set summary(String summary) => _$this._summary = summary;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -191,6 +218,7 @@ class IndexFavoriteSingleBuilder
       _title = _$v.title;
       _id = _$v.id;
       _summary = _$v.summary;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -220,6 +248,7 @@ class IndexFavoriteSingleBuilder
               title: title,
               id: id,
               summary: summary,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

@@ -22,6 +22,10 @@ class UserHome extends StatelessWidget {
           appBar: OneMuninBar(
             title: Text(
               PreferredLaunchNavTab.HomePage.generalSettingPageChineseName,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .button,
             ),
           ),
         );

@@ -4,15 +4,19 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
+import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 import 'package:quiver/strings.dart';
 
 class CollectionUpdateSingleWidget extends StatelessWidget {
   final CollectionUpdateSingle collectionUpdateSingle;
+  final DeleteFeedCallback onDeleteFeed;
 
   const CollectionUpdateSingleWidget({
     Key key,
     @required this.collectionUpdateSingle,
+    @required this.onDeleteFeed
   }) : super(key: key);
 
   /// https://github.com/dart-lang/sdk/issues/11155
@@ -58,6 +62,7 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
         UserListTile.fromUser(
           user: collectionUpdateSingle.user,
           score: collectionUpdateSingle.subjectScore,
+          trailing: buildTrailingWidget(collectionUpdateSingle, onDeleteFeed),
         ),
         _buildCommentWidget(collectionUpdateSingle.subjectComment),
         TimelineCommonListTile(

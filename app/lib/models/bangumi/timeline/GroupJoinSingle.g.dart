@@ -32,6 +32,9 @@ class _$GroupJoinSingleSerializer
       'groupId',
       serializers.serialize(object.groupId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.groupDescription != null) {
       result
@@ -80,6 +83,10 @@ class _$GroupJoinSingleSerializer
           result.groupId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -103,6 +110,8 @@ class _$GroupJoinSingle extends GroupJoinSingle {
   @override
   final String groupId;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$GroupJoinSingle([void Function(GroupJoinSingleBuilder) updates]) =>
@@ -114,6 +123,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
       this.groupName,
       this.groupDescription,
       this.groupId,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -127,6 +137,9 @@ class _$GroupJoinSingle extends GroupJoinSingle {
     }
     if (groupId == null) {
       throw new BuiltValueNullFieldError('GroupJoinSingle', 'groupId');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError('GroupJoinSingle', 'bangumiContent');
     }
   }
 
@@ -147,6 +160,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
         groupName == other.groupName &&
         groupDescription == other.groupDescription &&
         groupId == other.groupId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -155,10 +169,12 @@ class _$GroupJoinSingle extends GroupJoinSingle {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), groupIcon.hashCode),
-                    groupName.hashCode),
-                groupDescription.hashCode),
-            groupId.hashCode),
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), groupIcon.hashCode),
+                        groupName.hashCode),
+                    groupDescription.hashCode),
+                groupId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -170,6 +186,7 @@ class _$GroupJoinSingle extends GroupJoinSingle {
           ..add('groupName', groupName)
           ..add('groupDescription', groupDescription)
           ..add('groupId', groupId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -203,6 +220,11 @@ class GroupJoinSingleBuilder
   String get groupId => _$this._groupId;
   set groupId(String groupId) => _$this._groupId = groupId;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -217,6 +239,7 @@ class GroupJoinSingleBuilder
       _groupName = _$v.groupName;
       _groupDescription = _$v.groupDescription;
       _groupId = _$v.groupId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -247,6 +270,7 @@ class GroupJoinSingleBuilder
               groupName: groupName,
               groupDescription: groupDescription,
               groupId: groupId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

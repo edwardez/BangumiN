@@ -34,8 +34,8 @@ class _$StatusUpdateMultipleSerializer
       serializers.serialize(object.hyperBangumiItems,
           specifiedType: const FullType(
               BuiltList, const [const FullType(HyperBangumiItem)])),
-      'contentType',
-      serializers.serialize(object.contentType,
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
           specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
@@ -74,8 +74,8 @@ class _$StatusUpdateMultipleSerializer
                       BuiltList, const [const FullType(HyperBangumiItem)]))
               as BuiltList);
           break;
-        case 'contentType':
-          result.contentType = serializers.deserialize(value,
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
               specifiedType: const FullType(BangumiContent)) as BangumiContent;
           break;
         case 'isFromMutedUser':
@@ -97,7 +97,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
   @override
   final BuiltList<HyperBangumiItem> hyperBangumiItems;
   @override
-  final BangumiContent contentType;
+  final BangumiContent bangumiContent;
   @override
   final bool isFromMutedUser;
 
@@ -109,7 +109,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
       {this.user,
       this.hyperImages,
       this.hyperBangumiItems,
-      this.contentType,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -122,8 +122,9 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
       throw new BuiltValueNullFieldError(
           'StatusUpdateMultiple', 'hyperBangumiItems');
     }
-    if (contentType == null) {
-      throw new BuiltValueNullFieldError('StatusUpdateMultiple', 'contentType');
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'StatusUpdateMultiple', 'bangumiContent');
     }
   }
 
@@ -143,7 +144,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
         user == other.user &&
         hyperImages == other.hyperImages &&
         hyperBangumiItems == other.hyperBangumiItems &&
-        contentType == other.contentType &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -153,7 +154,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
         $jc(
             $jc($jc($jc(0, user.hashCode), hyperImages.hashCode),
                 hyperBangumiItems.hashCode),
-            contentType.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -163,7 +164,7 @@ class _$StatusUpdateMultiple extends StatusUpdateMultiple {
           ..add('user', user)
           ..add('hyperImages', hyperImages)
           ..add('hyperBangumiItems', hyperBangumiItems)
-          ..add('contentType', contentType)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -191,10 +192,10 @@ class StatusUpdateMultipleBuilder
   set hyperBangumiItems(ListBuilder<HyperBangumiItem> hyperBangumiItems) =>
       _$this._hyperBangumiItems = hyperBangumiItems;
 
-  BangumiContent _contentType;
-  BangumiContent get contentType => _$this._contentType;
-  set contentType(BangumiContent contentType) =>
-      _$this._contentType = contentType;
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
 
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
@@ -208,7 +209,7 @@ class StatusUpdateMultipleBuilder
       _user = _$v.user?.toBuilder();
       _hyperImages = _$v.hyperImages?.toBuilder();
       _hyperBangumiItems = _$v.hyperBangumiItems?.toBuilder();
-      _contentType = _$v.contentType;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -237,7 +238,7 @@ class StatusUpdateMultipleBuilder
               user: user.build(),
               hyperImages: hyperImages.build(),
               hyperBangumiItems: hyperBangumiItems.build(),
-              contentType: contentType,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

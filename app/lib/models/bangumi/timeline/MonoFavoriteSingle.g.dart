@@ -34,6 +34,9 @@ class _$MonoFavoriteSingleSerializer
       'monoType',
       serializers.serialize(object.monoType,
           specifiedType: const FullType(Mono)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
       result
@@ -76,6 +79,10 @@ class _$MonoFavoriteSingleSerializer
           result.monoType = serializers.deserialize(value,
               specifiedType: const FullType(Mono)) as Mono;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -99,6 +106,8 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
   @override
   final Mono monoType;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$MonoFavoriteSingle(
@@ -111,6 +120,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
       this.avatar,
       this.id,
       this.monoType,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -127,6 +137,10 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     }
     if (monoType == null) {
       throw new BuiltValueNullFieldError('MonoFavoriteSingle', 'monoType');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'MonoFavoriteSingle', 'bangumiContent');
     }
   }
 
@@ -148,6 +162,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
         avatar == other.avatar &&
         id == other.id &&
         monoType == other.monoType &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -156,10 +171,12 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), monoName.hashCode),
-                    avatar.hashCode),
-                id.hashCode),
-            monoType.hashCode),
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), monoName.hashCode),
+                        avatar.hashCode),
+                    id.hashCode),
+                monoType.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -171,6 +188,7 @@ class _$MonoFavoriteSingle extends MonoFavoriteSingle {
           ..add('avatar', avatar)
           ..add('id', id)
           ..add('monoType', monoType)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -203,6 +221,11 @@ class MonoFavoriteSingleBuilder
   Mono get monoType => _$this._monoType;
   set monoType(Mono monoType) => _$this._monoType = monoType;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -217,6 +240,7 @@ class MonoFavoriteSingleBuilder
       _avatar = _$v.avatar?.toBuilder();
       _id = _$v.id;
       _monoType = _$v.monoType;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -247,6 +271,7 @@ class MonoFavoriteSingleBuilder
               avatar: avatar.build(),
               id: id,
               monoType: monoType,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

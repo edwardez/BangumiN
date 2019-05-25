@@ -10,3 +10,7 @@ bool is2xxCode(int code) {
 bool isBangumi2xxCode(int code) {
   return code != null && code >= 200 && code < 300;
 }
+
+bool isBangumiWebPageOkResponse(dynamic decodedResponse) {
+  return decodedResponse is Map && decodedResponse['status'] == 'ok';
+}

@@ -18,12 +18,12 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
   Iterable serialize(Serializers serializers, FeedChunks object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'first',
-      serializers.serialize(object.first,
+      'filteredFeeds',
+      serializers.serialize(object.filteredFeeds,
           specifiedType:
               const FullType(BuiltList, const [const FullType(TimelineFeed)])),
-      'unfilteredFirst',
-      serializers.serialize(object.unfilteredFirst,
+      'unfilteredFeeds',
+      serializers.serialize(object.unfilteredFeeds,
           specifiedType:
               const FullType(BuiltList, const [const FullType(TimelineFeed)])),
       'hasReachedEnd',
@@ -54,14 +54,14 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'first':
-          result.first.replace(serializers.deserialize(value,
+        case 'filteredFeeds':
+          result.filteredFeeds.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimelineFeed)]))
               as BuiltList);
           break;
-        case 'unfilteredFirst':
-          result.unfilteredFirst.replace(serializers.deserialize(value,
+        case 'unfilteredFeeds':
+          result.unfilteredFeeds.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimelineFeed)]))
               as BuiltList);
@@ -87,9 +87,9 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
 
 class _$FeedChunks extends FeedChunks {
   @override
-  final BuiltList<TimelineFeed> first;
+  final BuiltList<TimelineFeed> filteredFeeds;
   @override
-  final BuiltList<TimelineFeed> unfilteredFirst;
+  final BuiltList<TimelineFeed> unfilteredFeeds;
   @override
   final DateTime lastFetchedTime;
   @override
@@ -97,24 +97,22 @@ class _$FeedChunks extends FeedChunks {
   @override
   final bool disableLoadingMore;
   int __feedsCount;
-  int __firstChunkMaxIdOrNull;
-  int __firstChunkMinIdOrNull;
 
   factory _$FeedChunks([void Function(FeedChunksBuilder) updates]) =>
       (new FeedChunksBuilder()..update(updates)).build();
 
   _$FeedChunks._(
-      {this.first,
-      this.unfilteredFirst,
+      {this.filteredFeeds,
+      this.unfilteredFeeds,
       this.lastFetchedTime,
       this.hasReachedEnd,
       this.disableLoadingMore})
       : super._() {
-    if (first == null) {
-      throw new BuiltValueNullFieldError('FeedChunks', 'first');
+    if (filteredFeeds == null) {
+      throw new BuiltValueNullFieldError('FeedChunks', 'filteredFeeds');
     }
-    if (unfilteredFirst == null) {
-      throw new BuiltValueNullFieldError('FeedChunks', 'unfilteredFirst');
+    if (unfilteredFeeds == null) {
+      throw new BuiltValueNullFieldError('FeedChunks', 'unfilteredFeeds');
     }
     if (hasReachedEnd == null) {
       throw new BuiltValueNullFieldError('FeedChunks', 'hasReachedEnd');
@@ -128,14 +126,6 @@ class _$FeedChunks extends FeedChunks {
   int get feedsCount => __feedsCount ??= super.feedsCount;
 
   @override
-  int get firstChunkMaxIdOrNull =>
-      __firstChunkMaxIdOrNull ??= super.firstChunkMaxIdOrNull;
-
-  @override
-  int get firstChunkMinIdOrNull =>
-      __firstChunkMinIdOrNull ??= super.firstChunkMinIdOrNull;
-
-  @override
   FeedChunks rebuild(void Function(FeedChunksBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
@@ -146,8 +136,8 @@ class _$FeedChunks extends FeedChunks {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is FeedChunks &&
-        first == other.first &&
-        unfilteredFirst == other.unfilteredFirst &&
+        filteredFeeds == other.filteredFeeds &&
+        unfilteredFeeds == other.unfilteredFeeds &&
         lastFetchedTime == other.lastFetchedTime &&
         hasReachedEnd == other.hasReachedEnd &&
         disableLoadingMore == other.disableLoadingMore;
@@ -157,7 +147,7 @@ class _$FeedChunks extends FeedChunks {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, first.hashCode), unfilteredFirst.hashCode),
+            $jc($jc($jc(0, filteredFeeds.hashCode), unfilteredFeeds.hashCode),
                 lastFetchedTime.hashCode),
             hasReachedEnd.hashCode),
         disableLoadingMore.hashCode));
@@ -166,8 +156,8 @@ class _$FeedChunks extends FeedChunks {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('FeedChunks')
-          ..add('first', first)
-          ..add('unfilteredFirst', unfilteredFirst)
+          ..add('filteredFeeds', filteredFeeds)
+          ..add('unfilteredFeeds', unfilteredFeeds)
           ..add('lastFetchedTime', lastFetchedTime)
           ..add('hasReachedEnd', hasReachedEnd)
           ..add('disableLoadingMore', disableLoadingMore))
@@ -178,16 +168,17 @@ class _$FeedChunks extends FeedChunks {
 class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
   _$FeedChunks _$v;
 
-  ListBuilder<TimelineFeed> _first;
-  ListBuilder<TimelineFeed> get first =>
-      _$this._first ??= new ListBuilder<TimelineFeed>();
-  set first(ListBuilder<TimelineFeed> first) => _$this._first = first;
+  ListBuilder<TimelineFeed> _filteredFeeds;
+  ListBuilder<TimelineFeed> get filteredFeeds =>
+      _$this._filteredFeeds ??= new ListBuilder<TimelineFeed>();
+  set filteredFeeds(ListBuilder<TimelineFeed> filteredFeeds) =>
+      _$this._filteredFeeds = filteredFeeds;
 
-  ListBuilder<TimelineFeed> _unfilteredFirst;
-  ListBuilder<TimelineFeed> get unfilteredFirst =>
-      _$this._unfilteredFirst ??= new ListBuilder<TimelineFeed>();
-  set unfilteredFirst(ListBuilder<TimelineFeed> unfilteredFirst) =>
-      _$this._unfilteredFirst = unfilteredFirst;
+  ListBuilder<TimelineFeed> _unfilteredFeeds;
+  ListBuilder<TimelineFeed> get unfilteredFeeds =>
+      _$this._unfilteredFeeds ??= new ListBuilder<TimelineFeed>();
+  set unfilteredFeeds(ListBuilder<TimelineFeed> unfilteredFeeds) =>
+      _$this._unfilteredFeeds = unfilteredFeeds;
 
   DateTime _lastFetchedTime;
   DateTime get lastFetchedTime => _$this._lastFetchedTime;
@@ -208,8 +199,8 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
 
   FeedChunksBuilder get _$this {
     if (_$v != null) {
-      _first = _$v.first?.toBuilder();
-      _unfilteredFirst = _$v.unfilteredFirst?.toBuilder();
+      _filteredFeeds = _$v.filteredFeeds?.toBuilder();
+      _unfilteredFeeds = _$v.unfilteredFeeds?.toBuilder();
       _lastFetchedTime = _$v.lastFetchedTime;
       _hasReachedEnd = _$v.hasReachedEnd;
       _disableLoadingMore = _$v.disableLoadingMore;
@@ -237,18 +228,18 @@ class FeedChunksBuilder implements Builder<FeedChunks, FeedChunksBuilder> {
     try {
       _$result = _$v ??
           new _$FeedChunks._(
-              first: first.build(),
-              unfilteredFirst: unfilteredFirst.build(),
+              filteredFeeds: filteredFeeds.build(),
+              unfilteredFeeds: unfilteredFeeds.build(),
               lastFetchedTime: lastFetchedTime,
               hasReachedEnd: hasReachedEnd,
               disableLoadingMore: disableLoadingMore);
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'first';
-        first.build();
-        _$failedField = 'unfilteredFirst';
-        unfilteredFirst.build();
+        _$failedField = 'filteredFeeds';
+        filteredFeeds.build();
+        _$failedField = 'unfilteredFeeds';
+        unfilteredFeeds.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FeedChunks', _$failedField, e.toString());

@@ -29,7 +29,7 @@ class _MuninHomePageState extends State<MuninHomePage> {
   void initState() {
     super.initState();
 
-    pages[PreferredLaunchNavTab.Timeline.pageIndex] = MuninTimeline(
+    pages[PreferredLaunchNavTab.Timeline.pageIndex] = MuninTimeline.onHomePage(
       key: PageStorageKey<PreferredLaunchNavTab>(
           PreferredLaunchNavTab.Timeline),
       preferredTimelineLaunchPage: widget.generalSetting

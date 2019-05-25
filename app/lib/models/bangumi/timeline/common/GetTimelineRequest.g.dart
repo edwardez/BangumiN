@@ -27,6 +27,12 @@ class _$GetTimelineRequestSerializer
       serializers.serialize(object.timelineCategoryFilter,
           specifiedType: const FullType(TimelineCategoryFilter)),
     ];
+    if (object.username != null) {
+      result
+        ..add('username')
+        ..add(serializers.serialize(object.username,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -51,6 +57,10 @@ class _$GetTimelineRequestSerializer
                   specifiedType: const FullType(TimelineCategoryFilter))
               as TimelineCategoryFilter;
           break;
+        case 'username':
+          result.username = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -63,13 +73,16 @@ class _$GetTimelineRequest extends GetTimelineRequest {
   final TimelineSource timelineSource;
   @override
   final TimelineCategoryFilter timelineCategoryFilter;
+  @override
+  final String username;
   String __chineseName;
 
   factory _$GetTimelineRequest(
           [void Function(GetTimelineRequestBuilder) updates]) =>
       (new GetTimelineRequestBuilder()..update(updates)).build();
 
-  _$GetTimelineRequest._({this.timelineSource, this.timelineCategoryFilter})
+  _$GetTimelineRequest._(
+      {this.timelineSource, this.timelineCategoryFilter, this.username})
       : super._() {
     if (timelineSource == null) {
       throw new BuiltValueNullFieldError(
@@ -98,20 +111,23 @@ class _$GetTimelineRequest extends GetTimelineRequest {
     if (identical(other, this)) return true;
     return other is GetTimelineRequest &&
         timelineSource == other.timelineSource &&
-        timelineCategoryFilter == other.timelineCategoryFilter;
+        timelineCategoryFilter == other.timelineCategoryFilter &&
+        username == other.username;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc(0, timelineSource.hashCode), timelineCategoryFilter.hashCode));
+    return $jf($jc(
+        $jc($jc(0, timelineSource.hashCode), timelineCategoryFilter.hashCode),
+        username.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('GetTimelineRequest')
           ..add('timelineSource', timelineSource)
-          ..add('timelineCategoryFilter', timelineCategoryFilter))
+          ..add('timelineCategoryFilter', timelineCategoryFilter)
+          ..add('username', username))
         .toString();
   }
 }
@@ -131,12 +147,17 @@ class GetTimelineRequestBuilder
   set timelineCategoryFilter(TimelineCategoryFilter timelineCategoryFilter) =>
       _$this._timelineCategoryFilter = timelineCategoryFilter;
 
+  String _username;
+  String get username => _$this._username;
+  set username(String username) => _$this._username = username;
+
   GetTimelineRequestBuilder();
 
   GetTimelineRequestBuilder get _$this {
     if (_$v != null) {
       _timelineSource = _$v.timelineSource;
       _timelineCategoryFilter = _$v.timelineCategoryFilter;
+      _username = _$v.username;
       _$v = null;
     }
     return this;
@@ -160,7 +181,8 @@ class GetTimelineRequestBuilder
     final _$result = _$v ??
         new _$GetTimelineRequest._(
             timelineSource: timelineSource,
-            timelineCategoryFilter: timelineCategoryFilter);
+            timelineCategoryFilter: timelineCategoryFilter,
+            username: username);
     replace(_$result);
     return _$result;
   }

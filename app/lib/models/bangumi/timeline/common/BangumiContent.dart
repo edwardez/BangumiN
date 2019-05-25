@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 
 part 'BangumiContent.g.dart';
 
@@ -55,6 +56,37 @@ class BangumiContent extends EnumClass {
   @memoized
   bool get isMono {
     return monoTypes.contains(this);
+  }
+
+  /// Possible applicable filter of the relevant feed.
+  /// Feed will show up even if user applies [applicableFeedFilter] to the timeline.
+  @memoized
+  TimelineCategoryFilter get applicableFeedFilter {
+    switch (this) {
+      case BangumiContent.Subject:
+        return TimelineCategoryFilter.Collection;
+      case BangumiContent.Episode:
+        return TimelineCategoryFilter.Progress;
+      case BangumiContent.User:
+        return TimelineCategoryFilter.FriendShip;
+      case BangumiContent.Group:
+        return TimelineCategoryFilter.Group;
+      case BangumiContent.Blog:
+        return TimelineCategoryFilter.Blog;
+      case BangumiContent.Catalog:
+        return TimelineCategoryFilter.Catalog;
+      case BangumiContent.Doujin:
+        return TimelineCategoryFilter.Doujin;
+      case BangumiContent.Character:
+      case BangumiContent.Person:
+      case BangumiContent.CharacterOrPerson:
+        return TimelineCategoryFilter.Mono;
+      default:
+
+      /// we should never use default directly
+        assert(false, 'Cannot find applicableFeedFilter for $this');
+        return TimelineCategoryFilter.AllFeeds;
+    }
   }
 
   @memoized

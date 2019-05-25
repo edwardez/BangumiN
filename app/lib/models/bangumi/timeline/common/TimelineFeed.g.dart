@@ -12,6 +12,9 @@ abstract class TimelineFeedBuilder {
   FeedMetaInfoBuilder get user;
   set user(FeedMetaInfoBuilder user);
 
+  BangumiContent get bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent);
+
   bool get isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser);
 }

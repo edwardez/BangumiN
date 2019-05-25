@@ -35,6 +35,9 @@ class _$FriendshipCreationSingleSerializer
       'friendId',
       serializers.serialize(object.friendId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
       result
@@ -74,6 +77,10 @@ class _$FriendshipCreationSingleSerializer
           result.friendId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -95,6 +102,8 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   @override
   final String friendId;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$FriendshipCreationSingle(
@@ -106,6 +115,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
       this.friendNickName,
       this.friendAvatar,
       this.friendId,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -122,6 +132,10 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
     if (friendId == null) {
       throw new BuiltValueNullFieldError(
           'FriendshipCreationSingle', 'friendId');
+    }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'FriendshipCreationSingle', 'bangumiContent');
     }
   }
 
@@ -142,6 +156,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
         friendNickName == other.friendNickName &&
         friendAvatar == other.friendAvatar &&
         friendId == other.friendId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -149,9 +164,11 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
-                friendAvatar.hashCode),
-            friendId.hashCode),
+            $jc(
+                $jc($jc($jc(0, user.hashCode), friendNickName.hashCode),
+                    friendAvatar.hashCode),
+                friendId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -162,6 +179,7 @@ class _$FriendshipCreationSingle extends FriendshipCreationSingle {
           ..add('friendNickName', friendNickName)
           ..add('friendAvatar', friendAvatar)
           ..add('friendId', friendId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -192,6 +210,11 @@ class FriendshipCreationSingleBuilder
   String get friendId => _$this._friendId;
   set friendId(String friendId) => _$this._friendId = friendId;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -205,6 +228,7 @@ class FriendshipCreationSingleBuilder
       _friendNickName = _$v.friendNickName;
       _friendAvatar = _$v.friendAvatar?.toBuilder();
       _friendId = _$v.friendId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -234,6 +258,7 @@ class FriendshipCreationSingleBuilder
               friendNickName: friendNickName,
               friendAvatar: friendAvatar.build(),
               friendId: friendId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

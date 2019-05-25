@@ -40,7 +40,7 @@ class TimelineCategoryFilter extends EnumClass {
   static const TimelineCategoryFilter Wiki = _$Wiki;
 
   /// web: https://bgm.tv/timeline?type=index
-  static const TimelineCategoryFilter Index = _$Index;
+  static const TimelineCategoryFilter Catalog = _$Catalog;
 
   /// web: https://bgm.tv/timeline?type=doujin
   static const TimelineCategoryFilter Doujin = _$Doujin;
@@ -55,7 +55,7 @@ class TimelineCategoryFilter extends EnumClass {
       _$timelineCategoryFilterSerializer;
 
   @memoized
-  String get toBangumiQueryParameterValue {
+  String get bangumiQueryParameterValue {
     switch (this) {
       case TimelineCategoryFilter.AllFeeds:
         return '';
@@ -75,7 +75,7 @@ class TimelineCategoryFilter extends EnumClass {
         return 'group';
       case TimelineCategoryFilter.Wiki:
         return 'wiki';
-      case TimelineCategoryFilter.Index:
+      case TimelineCategoryFilter.Catalog:
         return 'index';
       case TimelineCategoryFilter.Doujin:
         return 'doujin';
@@ -109,7 +109,7 @@ class TimelineCategoryFilter extends EnumClass {
         return '小组';
       case TimelineCategoryFilter.Wiki:
         return '维基';
-      case TimelineCategoryFilter.Index:
+      case TimelineCategoryFilter.Catalog:
         return '目录';
       case TimelineCategoryFilter.Doujin:
         return '天窗';
@@ -144,7 +144,7 @@ class TimelineCategoryFilter extends EnumClass {
         return 7;
       case TimelineCategoryFilter.Wiki:
         return 8;
-      case TimelineCategoryFilter.Index:
+      case TimelineCategoryFilter.Catalog:
         return 9;
       case TimelineCategoryFilter.Doujin:
         return 10;

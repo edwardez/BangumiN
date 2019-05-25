@@ -4,7 +4,9 @@ import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
+import 'package:munin/widgets/shared/button/FlatButtonWithTrailingIcon.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 class TimelineBody {
   final GetTimelineRequest getTimelineRequest;
@@ -19,8 +21,27 @@ class TimelineBody {
 class MuninTimeline extends StatefulWidget {
   final TimelineCategoryFilter preferredTimelineLaunchPage;
 
-  const MuninTimeline({Key key, @required this.preferredTimelineLaunchPage})
-      : super(key: key);
+  final TimelineSource timelineSource;
+
+  /// If [timelineSource] is [TimelineSource.UserProfile]
+  /// [username] must not be null
+  final String username;
+
+  const MuninTimeline.onHomePage({
+    Key key,
+    @required this.preferredTimelineLaunchPage,
+    this.timelineSource = TimelineSource.FriendsOnly,
+  })
+      : this.username = null,
+        super(key: key);
+
+  const MuninTimeline.onUserProfile({
+    Key key,
+    @required this.username,
+    this.preferredTimelineLaunchPage = TimelineCategoryFilter.AllFeeds,
+  })
+      : this.timelineSource = TimelineSource.UserProfile,
+        super(key: key);
 
   @override
   _MuninTimelineState createState() => _MuninTimelineState();
@@ -29,11 +50,10 @@ class MuninTimeline extends StatefulWidget {
 class _MuninTimelineState extends State<MuninTimeline> {
   PageController pageController;
 
-
-  final List<TimelineBody> timelineBodies = List(
-      TimelineCategoryFilter.totalTimelineTypes);
-  final List<TimelineBodyWidget> pages = List(
-      TimelineCategoryFilter.totalTimelineTypes);
+  final List<TimelineBody> timelineBodies =
+  List(TimelineCategoryFilter.totalTimelineTypes);
+  final List<TimelineBodyWidget> pages =
+  List(TimelineCategoryFilter.totalTimelineTypes);
 
   /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
   /// we should be fine
@@ -44,11 +64,10 @@ class _MuninTimelineState extends State<MuninTimeline> {
   }
 
   TimelineBodyWidget _buildTimelineBodyWidget(GetTimelineRequest request,
-      OneMuninBar oneMuninBar) {
+      Widget appBar) {
     return TimelineBodyWidget(
-      key: PageStorageKey<GetTimelineRequest>(
-          request),
-      oneMuninBar: oneMuninBar,
+      key: PageStorageKey<GetTimelineRequest>(request),
+      appBar: appBar,
       getTimelineRequest: request,
     );
   }
@@ -88,28 +107,41 @@ class _MuninTimelineState extends State<MuninTimeline> {
   void initState() {
     super.initState();
 
-    pageController =
-        PageController(
-            initialPage: widget.preferredTimelineLaunchPage.pageIndex);
+    pageController = PageController(
+        initialPage: widget.preferredTimelineLaunchPage.pageIndex);
 
     for (TimelineCategoryFilter filter in TimelineCategoryFilter.values) {
       GetTimelineRequest request = GetTimelineRequest((b) =>
       b
-        ..timelineSource = TimelineSource.FriendsOnly
+        ..timelineSource = widget.timelineSource
+        ..username = widget.username
         ..timelineCategoryFilter = filter);
 
-      /// Maybe we can initialize only one app bar
-      OneMuninBar oneMuninBar = OneMuninBar(
-        title: FlatButton(
-          onPressed: () {
-            _filterModalBottomSheet();
-          },
-          child: Text(request.chineseName),
-        ),
-      );
+      Widget appBar;
+      if (request.timelineSource == TimelineSource.UserProfile) {
+        appBar = SliverAppBar(
+          pinned: true,
+          title: FlatButtonWithTrailingIcon(
+            onPressed: () {
+              _filterModalBottomSheet();
+            },
+            label: Text(request.chineseName),
+            icon: Icon(OMIcons.expandMore),
+          ),
+        );
+      } else {
+        appBar = OneMuninBar(
+          title: FlatButton(
+            onPressed: () {
+              _filterModalBottomSheet();
+            },
+            child: Text(request.chineseName),
+          ),
+        );
+      }
 
       TimelineBody timelineBody = TimelineBody(
-          widget: _buildTimelineBodyWidget(request, oneMuninBar),
+          widget: _buildTimelineBodyWidget(request, appBar),
           getTimelineRequest: request);
       timelineBodies[filter.pageIndex] = timelineBody;
       pages[filter.pageIndex] = timelineBody.widget;

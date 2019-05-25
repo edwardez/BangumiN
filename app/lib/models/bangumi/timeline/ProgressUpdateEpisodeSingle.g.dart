@@ -40,6 +40,9 @@ class _$ProgressUpdateEpisodeSingleSerializer
       'subjectId',
       serializers.serialize(object.subjectId,
           specifiedType: const FullType(String)),
+      'bangumiContent',
+      serializers.serialize(object.bangumiContent,
+          specifiedType: const FullType(BangumiContent)),
     ];
     if (object.isFromMutedUser != null) {
       result
@@ -83,6 +86,10 @@ class _$ProgressUpdateEpisodeSingleSerializer
           result.subjectId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'bangumiContent':
+          result.bangumiContent = serializers.deserialize(value,
+              specifiedType: const FullType(BangumiContent)) as BangumiContent;
+          break;
         case 'isFromMutedUser':
           result.isFromMutedUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -106,6 +113,8 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
   @override
   final String subjectId;
   @override
+  final BangumiContent bangumiContent;
+  @override
   final bool isFromMutedUser;
 
   factory _$ProgressUpdateEpisodeSingle(
@@ -118,6 +127,7 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
       this.episodeId,
       this.subjectName,
       this.subjectId,
+      this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
     if (user == null) {
@@ -139,6 +149,10 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
       throw new BuiltValueNullFieldError(
           'ProgressUpdateEpisodeSingle', 'subjectId');
     }
+    if (bangumiContent == null) {
+      throw new BuiltValueNullFieldError(
+          'ProgressUpdateEpisodeSingle', 'bangumiContent');
+    }
   }
 
   @override
@@ -159,6 +173,7 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
         episodeId == other.episodeId &&
         subjectName == other.subjectName &&
         subjectId == other.subjectId &&
+        bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
 
@@ -167,10 +182,12 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), episodeName.hashCode),
-                    episodeId.hashCode),
-                subjectName.hashCode),
-            subjectId.hashCode),
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), episodeName.hashCode),
+                        episodeId.hashCode),
+                    subjectName.hashCode),
+                subjectId.hashCode),
+            bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
 
@@ -182,6 +199,7 @@ class _$ProgressUpdateEpisodeSingle extends ProgressUpdateEpisodeSingle {
           ..add('episodeId', episodeId)
           ..add('subjectName', subjectName)
           ..add('subjectId', subjectId)
+          ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
   }
@@ -214,6 +232,11 @@ class ProgressUpdateEpisodeSingleBuilder
   String get subjectId => _$this._subjectId;
   set subjectId(String subjectId) => _$this._subjectId = subjectId;
 
+  BangumiContent _bangumiContent;
+  BangumiContent get bangumiContent => _$this._bangumiContent;
+  set bangumiContent(BangumiContent bangumiContent) =>
+      _$this._bangumiContent = bangumiContent;
+
   bool _isFromMutedUser;
   bool get isFromMutedUser => _$this._isFromMutedUser;
   set isFromMutedUser(bool isFromMutedUser) =>
@@ -228,6 +251,7 @@ class ProgressUpdateEpisodeSingleBuilder
       _episodeId = _$v.episodeId;
       _subjectName = _$v.subjectName;
       _subjectId = _$v.subjectId;
+      _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
     }
@@ -258,6 +282,7 @@ class ProgressUpdateEpisodeSingleBuilder
               episodeId: episodeId,
               subjectName: subjectName,
               subjectId: subjectId,
+              bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {
       String _$failedField;

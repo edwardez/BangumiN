@@ -1,4 +1,5 @@
 import 'package:built_value/built_value.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 
 part 'TimelineFeed.g.dart';
@@ -7,6 +8,8 @@ part 'TimelineFeed.g.dart';
 @BuiltValue(instantiable: false)
 abstract class TimelineFeed {
   FeedMetaInfo get user;
+
+  BangumiContent get bangumiContent;
 
   /// To keep a complete timeline, muted user feeds will still be stored
   /// but not shown to user, this is controlled by `isFromMutedUser` field

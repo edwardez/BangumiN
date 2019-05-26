@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
+import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
@@ -75,6 +76,11 @@ Epic<AppState> _createGetProgressEpic(
   };
 }
 
+/// Updates relevant subject progress.
+/// Some requests are send twice, it's to ensure progress is reflected on bangumi
+/// website and api.
+//  After first request bangumi updates data in internal database but not api/website
+//  After second request bangumi updates api/website
 Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
     UpdateProgressAction action, EpicStore<AppState> store) async* {
   try {
@@ -82,6 +88,13 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
       await bangumiProgressService.updateSingleAnimeOrRealSingleEpisode(
           episodeId: action.episodeId,
           episodeUpdateType: action.episodeUpdateType);
+      // For removal, seems like one request works
+      if (action.episodeUpdateType != EpisodeUpdateType.Remove) {
+        await bangumiProgressService.updateSingleAnimeOrRealSingleEpisode(
+            episodeId: action.episodeId,
+            episodeUpdateType: action.episodeUpdateType);
+      }
+
       yield UpdateAnimeOrRealSingleEpisodeSuccessAction(
         episodeId: action.episodeId,
         subject: action.subject,
@@ -104,10 +117,6 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
 
         return episodeIdsSoFar;
       });
-
-      /// Sends the request twice to ensure it's reflected on bangumi website and api
-      /// After first request bangumi updates data in internal database but not api/website
-      /// After second request bangumi updates api/website
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
           episodeIds: episodeIds);
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(

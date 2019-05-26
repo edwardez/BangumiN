@@ -77,8 +77,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                       onPressed: vm.onLoginPressed,
                       color: lightPrimaryDarkAccentColor(context),
                       child: Text(
-                        '开始授权',
-                        // TODO: set a theme-awareness text color(bypass ButtonTextTheme)
+                        'Bangumi账号登录',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

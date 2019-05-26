@@ -7,6 +7,7 @@ import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingHome extends StatelessWidget {
 
@@ -64,6 +65,10 @@ class SettingHome extends StatelessWidget {
             Divider(),
             ListTile(
               title: Text('反馈'),
+              onTap: () {
+                launch('https://bgm.tv/group/bangumin', forceSafariVC: false,
+                    forceWebView: false);
+              },
             ),
             Divider(),
             ListTile(

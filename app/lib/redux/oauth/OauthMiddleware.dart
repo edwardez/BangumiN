@@ -76,15 +76,21 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
       Application.router.navigateTo(
           action.context,
           Routes.homeRoute,
-          transition: TransitionType.native);
+          transition: TransitionType.native,
+          clearStack: true
+      );
     } catch (error, stack) {
       final maxErrorMessageMaxLength = 200;
       final errorMessage = error.toString();
 
       print(errorMessage);
       print(stack);
-      Navigator.of(action.context)
-          .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+      Application.router.navigateTo(
+          action.context,
+          Routes.loginRoute,
+          transition: TransitionType.native,
+          clearStack: true
+      );
       store.dispatch(OAuthLoginFailure(
           action.context,
           error.toString().substring(

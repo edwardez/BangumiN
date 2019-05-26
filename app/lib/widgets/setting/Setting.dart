@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
@@ -62,10 +63,14 @@ class SettingHome extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              title: Text('帮助'),
-            ),
-            ListTile(
               title: Text('反馈'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('关于'),
+              onTap: () {
+                showMuninAboutDialog(context);
+              },
             ),
             Divider(),
             Logout(),

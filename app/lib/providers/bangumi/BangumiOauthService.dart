@@ -10,6 +10,7 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/oauth/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:oauth2/oauth2.dart'
     show AuthorizationCodeGrant, Client, Credentials;
@@ -106,6 +107,11 @@ class BangumiOauthService {
         if (authCookie != null && sessionCookie != null) {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
+
+          /// on some devices, flutter webview plugin returns a trailing
+          /// dummy quotation mark.
+          userAgent = userAgent.replaceAll(userAgentDummyStringRegex, '');
+
           this._cookieClient.updateBangumiAuthInfo(
               authCookie: authCookie,
               sessionCookie: sessionCookie,

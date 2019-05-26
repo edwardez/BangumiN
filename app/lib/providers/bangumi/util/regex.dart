@@ -36,6 +36,7 @@ final RegExp scoreRegex = RegExp(r'sstars(\d+)');
 
 final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');
 
-
 final RegExp blockedUserIdGroupRegex = RegExp(
     r'privacy\?ignore_reset=(\d+)&gh=');
+
+final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');

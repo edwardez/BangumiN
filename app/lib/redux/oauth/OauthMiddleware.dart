@@ -121,8 +121,12 @@ Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
       sharedPreferenceService.deleteAppState(),
     ]);
     store.dispatch(LogoutSuccess(action.context));
-    Navigator.of(action.context)
-        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+    Application.router.navigateTo(
+        action.context,
+        Routes.loginRoute,
+        transition: TransitionType.native,
+        clearStack: true
+    );
     next(action);
   };
 }

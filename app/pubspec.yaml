@@ -61,10 +61,21 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: 0.7.0
+  #  image is required by https://github.com/fluttercommunity/flutter_launcher_icons/issues/98
+  image: 2.0.7 # <- Put this here
   flutter_test:
     sdk: flutter
   build_runner: ^1.4.0
   built_value_generator: ^6.5.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/logo/bangumin_logo-android-1200x1200.png"
+  image_path_ios: "assets/logo/bangumin_logo-ios-1200x1200.png"
+  adaptive_icon_background: "#F09199"
+  adaptive_icon_foreground: "assets/logo/bangumin_logo-android-1200x1200.png"
 
 
 # For information on the generic Dart part of this file, see the

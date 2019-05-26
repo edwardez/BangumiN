@@ -37,7 +37,11 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
               maxLines: episodeNameMaxLines,
               overflow: TextOverflow.ellipsis,
             ),
-            onTap: () => {},
+            onTap: generateOnTapCallbackForBangumiContent(
+                contentType: BangumiContent.Episode,
+                id: progressUpdateEpisodeSingle.episodeId,
+                context: context
+            ),
           ),
           subtitle: InkWell(
             child: Row(

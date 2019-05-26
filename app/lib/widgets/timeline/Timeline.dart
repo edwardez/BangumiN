@@ -58,9 +58,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
   /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
   /// we should be fine
   int get currentIndex {
-    assert(pageController.page.toInt() - pageController.page == 0);
-
-    return pageController?.page?.toInt();
+    return pageController?.page?.round();
   }
 
   TimelineBodyWidget _buildTimelineBodyWidget(GetTimelineRequest request,

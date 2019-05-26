@@ -73,7 +73,7 @@ class _SubjectCollectionManagementWidgetState
   /// This is the length limitation set by Bangumi and cannot be modified by us
   final int maxTags = 10;
 
-  /// maintains current comment validation status to avoid rebuilding the whole
+  /// Maintains current comment validation status to avoid rebuilding the whole
   /// widget every time user types a comment character
   /// see [_listenToCommentController]
   bool _isCommentFieldValid = true;
@@ -136,7 +136,7 @@ class _SubjectCollectionManagementWidgetState
         false;
   }
 
-  /// listen to comment controller, set [_isCommentFieldValid] if form is currently invalid
+  /// Listens to comment controller, set [_isCommentFieldValid] if form is currently invalid
   /// triggers a rebuild only if comment validation status has changed
   _listenToCommentController() {
     if (!commentHasError(comment: commentController.text)) {
@@ -176,8 +176,8 @@ class _SubjectCollectionManagementWidgetState
           .add('收藏状态无效: 请选择一个收藏状态（如：想$activityVerb, $activityVerb过...）');
     }
 
-    /// errorMessages shouldn't be empty at this time
-    /// in case it happens, show use something
+    // errorMessages shouldn't be empty at this time
+    // in case it happens, show use something
     if (errorMessages.isEmpty) {
       errorMessages.add('神秘错误: app出了点小问题(请考虑向我们汇报此bug)');
     }
@@ -326,15 +326,15 @@ class _SubjectCollectionManagementWidgetState
   }
 
   _initFormData(BangumiSubject loadedSubject) {
-    /// subject should never be null: user must enters this page BEFORE
-    /// they enters the subject page, or this data will be fetched before this method
-    /// is called
+    // subject should never be null: user must enters this page BEFORE
+    // they enters the subject page, or this data will be fetched before this method
+    // is called
     assert(loadedSubject != null, 'Subject must not be null');
 
     subject = loadedSubject;
     if (loadedSubject == null) {
-      /// in case it's null(exception!), assign a default type
-      /// note: [subjectType] only affects action name user sees on the ui
+      // in case it's null(exception!), assign a default type
+      // note: [subjectType] only affects action name user sees on the ui
       subjectType = SubjectType.Anime;
     } else {
       subjectType = loadedSubject.type;
@@ -343,10 +343,10 @@ class _SubjectCollectionManagementWidgetState
         headerTags[userSelectedTag] = true;
       }
 
-      /// suggestedTag might be in current user subject tags, or it might not
+      // suggestedTag might be in current user subject tags, or it might not
       for (String suggestedTag in loadedSubject.bangumiSuggestedTags) {
-        /// Only if [headerTags] doesn't contain this tag, we need to add it to
-        /// [candidateTags]
+        // Only if [headerTags] doesn't contain this tag, we need to add it to
+        // [candidateTags]
         if (!headerTags.containsKey(suggestedTag)) {
           candidateTags[suggestedTag] = false;
         }
@@ -401,16 +401,16 @@ class _SubjectCollectionManagementWidgetState
               loadingStatus: vm.collectionLoadingStatus, refreshAction: action);
         }
 
-        /// If it's the first time widget tries to build the form
-        /// subjectCollectionInfo will be null, assigning collection info from
-        /// vm state
+        // If it's the first time widget tries to build the form
+        // subjectCollectionInfo will be null, assigning collection info from
+        // vm state
         if (localSubjectCollectionInfo == null) {
           localSubjectCollectionInfo = vm.subjectCollectionInfo;
           unmodifiedSubjectCollectionInfo = localSubjectCollectionInfo;
 
-          /// [commentController] and [initialValue] cannot be both non-null
-          /// Since we'are using commentController, initial value should be set
-          /// through commentController
+          // [commentController] and [initialValue] cannot be both non-null
+          // Since we'are using commentController, initial value should be set
+          // through commentController
           commentController.text = localSubjectCollectionInfo.comment;
         }
 

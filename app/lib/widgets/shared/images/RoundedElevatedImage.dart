@@ -6,7 +6,7 @@ import 'package:munin/models/bangumi/common/BangumiImage.dart';
 class RoundedElevatedImage extends StatelessWidget {
   final String imageUrl;
 
-  /// if [imageUrl] is null, [fallbackImageUrl] will be used
+  /// If [imageUrl] is null, [fallbackImageUrl] will be used
   /// default to [BangumiImage.defaultCoverImage]
   final String fallbackImageUrl;
 

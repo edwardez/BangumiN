@@ -68,10 +68,10 @@ abstract class Application {
   _initialize() async {
     environmentValue = this;
 
-    /// misc utils initialization
+    // misc utils initialization
     TimeUtils.initializeTimeago();
 
-    /// service locator initialization
+    // service locator initialization
     await injector(getIt);
 
     final BangumiCookieService bangumiCookieService =
@@ -99,7 +99,7 @@ abstract class Application {
     bangumiOauthService?.client?.currentUser =
         appState?.currentAuthenticatedUserBasicInfo;
 
-    /// redux initialization
+    // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
       ...createAppEpics(sharedPreferenceService),
       ...createSubjectEpics(bangumiSubjectService),
@@ -131,7 +131,7 @@ abstract class Application {
 
     await _checkAuthenticationInfo(bangumiOauthService);
 
-    /// flutter initialization
+    // flutter initialization
     runApp(MuninApp(this, store));
   }
 

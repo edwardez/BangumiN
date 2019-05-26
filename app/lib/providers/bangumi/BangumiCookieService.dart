@@ -34,14 +34,14 @@ class BangumiCookieService {
         bangumiCookieCredential.authCookie != null;
   }
 
-  /// update in-memory bangumi auth credentials info
+  /// Updates in-memory bangumi auth credentials info
   void updateBangumiAuthInfo(
       {String authCookie, String sessionCookie, String userAgent}) {
     assert(authCookie != null);
     assert(userAgent != null);
     assert(sessionCookie != null);
 
-    /// write to keystore/keychain
+    // Writes to keystore/keychain
     bangumiCookieCredential = BangumiCookieCredentials((b) => {
     b
       ..authCookie = authCookie

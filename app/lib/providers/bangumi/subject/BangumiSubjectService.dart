@@ -25,7 +25,7 @@ class BangumiSubjectService {
       : assert(cookieClient != null),
         assert(oauthClient != null);
 
-  // get bangumi subject info through parsing html response
+  /// Gets bangumi subject info through parsing html response
   Future<BangumiSubject> getSubjectFromHttp({
     @required int subjectId,
     @required BuiltMap<String, MutedUser> mutedUsers,
@@ -39,7 +39,7 @@ class BangumiSubjectService {
     return subject;
   }
 
-  // get a bangumi user collection info through api
+  /// Gets a bangumi user collection info through api
   Future<SubjectCollectionInfo> getCollectionInfo(int subjectId) async {
     Http.Response response = await oauthClient.client.get(''
         'https://${Application.environmentValue
@@ -49,22 +49,22 @@ class BangumiSubjectService {
     if (response.statusCode == 200) {
       var decodedBody = json.decode(response.body);
       if (decodedBody['code'] == 400) {
-        /// code = 400 means user has not collected this subject
-        /// we initialize a dummy new collection here
+        // code = 400 means user has not collected this subject
+        // we initialize a dummy new collection here
         subjectCollectionInfo = SubjectCollectionInfo();
       } else if (decodedBody['code'] == null) {
         subjectCollectionInfo = SubjectCollectionInfo.fromJson(response.body);
         BuiltList<String> tags = subjectCollectionInfo.tags;
 
-        /// if tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
-        /// a empty list or null. Thus this extra trick is needed to clean
-        /// up the data
+        // If tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
+        // a empty list or null. Thus this extra trick is needed to clean
+        // up the data
         if (tags.length == 1 && isEmpty(tags[0])) {
           subjectCollectionInfo =
               subjectCollectionInfo.rebuild((b) => b..tags.replace([]));
         }
       } else {
-        /// otherwise, Munin cannot understand this response
+        // Otherwise, Munin cannot understand this response
         throw BangumiResponseIncomprehensibleException(
             '出现了未知错误: 从Bangumi返回了无法处理的数据');
       }
@@ -85,12 +85,12 @@ class BangumiSubjectService {
     formData['tags'] = collectionUpdateRequest.tags.join(tagSeparator);
     formData['rating'] = collectionUpdateRequest.rating.toString();
 
-    /// For some reason, bangumi uses `private` in Response and `privacy` in Request
-    /// It sounds like an undocumented mistake that might be corrected in the
-    /// future at any time without advanced inform
-    /// sending both values just as an extra guard
-    /// This trick might result in error if Bangumi guards their server to reject
-    /// a request if it contains unknown parameter
+    // For some reason, bangumi uses `private` in Response and `privacy` in Request
+    // It sounds like an undocumented mistake that might be corrected in the
+    // future at any time without advanced inform
+    // sending both values just as an extra guard
+    // This trick might result in error if Bangumi guards their server to reject
+    // a request if it contains unknown parameter
     formData['private'] = collectionUpdateRequest.private.toString();
     formData['privacy'] = formData['private'];
 

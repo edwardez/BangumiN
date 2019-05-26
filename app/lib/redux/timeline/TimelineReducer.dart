@@ -40,11 +40,11 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
 
   if (action.getTimelineRequest.timelineSource == TimelineSource.UserProfile) {
-    /// Copies unfilteredFeedsResponse to filteredFeedsResponse as-is if feeds
-    /// are intended to be displayed on user profile page
-    /// This does mean data is redundant but it actually makes the code cleaner
-    /// since there's no need to add separate logic for profile page feeds in the
-    /// following code
+    // Copies unfilteredFeedsResponse to filteredFeedsResponse as-is if feeds
+    // are intended to be displayed on user profile page
+    // This does mean data is redundant but it actually makes the code cleaner
+    // since there's no need to add separate logic for profile page feeds in the
+    // following code
     filteredFeedsResponse = unfilteredFeedsResponse.toList();
   } else {
     filteredFeedsResponse =
@@ -55,8 +55,8 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
     bool hasReachedEnd = false;
     bool disableLoadingMore = false;
 
-    /// Even the initial load returns less than [feedsPerPage] feeds
-    /// Which means there are no more feeds to load
+    // Even the initial load returns less than [feedsPerPage] feeds
+    // Which means there are no more feeds to load
     if (unfilteredFeedsResponse.length < feedsPerPage) {
       hasReachedEnd = true;
       disableLoadingMore = true;
@@ -78,7 +78,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
   if (result.feedLoadType == FeedLoadType.Newer) {
     if (result.truncateFeedsInStore) {
-      /// clean up feeds
+      // clean up feeds
       return timelineState.rebuild((b) => b
         ..timeline.addAll({
           getTimelineRequest: feedChunksInStore.rebuild((b) =>

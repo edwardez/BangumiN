@@ -19,9 +19,8 @@ final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
     iconTheme: IconThemeData(color: Colors.black54),
   ),
   primaryColor: Colors.blue,
-
-  /// TODO: flutter by default calculates abd set it to [Brightness.dark]
-  /// verify whether [Brightness.light] meets color contrast requirement
+  // TODO: flutter by default calculates abd set it to [Brightness.dark], need to
+  // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: bangumiPink,
 );

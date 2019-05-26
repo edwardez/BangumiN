@@ -81,7 +81,7 @@ class SubjectWidget extends StatelessWidget {
           preferredSubjectInfoLanguage: preferredSubjectInfoLanguage));
     }
 
-    /// Add a padding in the bottom so bottom comments are easier to read
+    // Adds a padding in the bottom so bottom comments are easier to read
     widgets.add(Padding(
       padding: const EdgeInsets.only(bottom: 30.0),
       child: CommentsPreview(subject: subject),

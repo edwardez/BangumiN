@@ -99,7 +99,7 @@ Future<void> injector(GetIt getIt) async {
   return;
 }
 
-/// create a new dio client with present settings
+/// Creates a new dio client with present settings
 Dio _createDioForBangumiCookieService(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
@@ -109,9 +109,9 @@ Dio _createDioForBangumiCookieService(
         .bangumiNonCdnHost}/',
   };
 
-  /// attach user agent and cookie to dio  if these are not null
-  /// user agent is handled by us, we manually attach it to headers
-  /// cookie is handled by dio with [CookieJar]
+  // Attaches user agent and cookie to dio  if these are not null
+  // user agent is handled by us, we manually attach it to headers
+  // cookie is handled by dio with [CookieJar]
   if (bangumiCookieCredential != null) {
     List<Cookie> cookies = [];
     if (bangumiCookieCredential.authCookie != null) {
@@ -122,8 +122,8 @@ Dio _createDioForBangumiCookieService(
       cookies.add(Cookie('chii_sid', bangumiCookieCredential.sessionCookie));
     }
 
-    /// https://github.com/bangumi/api/issues/43#issuecomment-414563212 requires
-    /// [chii_searchDateLine] to be present
+    // https://github.com/bangumi/api/issues/43#issuecomment-414563212 requires
+    // [chii_searchDateLine] to be present
     cookies.add(Cookie('chii_searchDateLine', '0'));
 
     if (bangumiCookieCredential.userAgent != null) {
@@ -152,7 +152,7 @@ Dio _createDioForBangumiCookieService(
 
   dio.interceptors.add(CookieManager(bangumiCookieJar));
 
-  /// enable logging in development environment
+  // Enables logging in development environment
   if (Application.environmentValue.environmentType ==
       EnvironmentType.Development) {
 //    dio.interceptors.add(LogInterceptor(responseBody: true));

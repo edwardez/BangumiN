@@ -27,11 +27,11 @@ abstract class CollectionStatusFromBangumi
   @BuiltValueField(wireName: 'type')
   CollectionStatus get type;
 
-  /// these fields are currently not in use
-  ///  @BuiltValueField(wireName: 'id')
-  /// int get id;
-  /// @BuiltValueField(wireName: 'name')
-  ///  String get name;
+  // these fields are currently not in use
+  //  @BuiltValueField(wireName: 'id')
+  // int get id;
+  // @BuiltValueField(wireName: 'name')
+  //  String get name;
   String toJson() {
     return json.encode(serializers.serializeWith(
         CollectionStatusFromBangumi.serializer, this));

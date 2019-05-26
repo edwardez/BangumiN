@@ -103,7 +103,7 @@ SubjectState getCollectionInfoFailureReducer(SubjectState subjectState,
     }));
 }
 
-/// Remove all collection-related info for this subject from store
+/// Removes all collection-related info for this subject from store
 SubjectState collectionInfoCleanUpReducer(SubjectState subjectState,
     CleanUpCollectionInfoAction cleanUpCollectionInfoAction) {
   return subjectState.rebuild((b) => b

@@ -95,10 +95,10 @@ class BangumiOauthService {
               Application.environmentValue.bangumiNonCdnHost) {
         Map<String, String> cookies = await _flutterWebviewPlugin.getCookies();
 
-        /// TODO: fix cookie parsing problem in flutter webview plugin(There must be something
-        /// wrong with this plugin...)
-        /// TODO: figure out why sometimes [chii_auth] is never in returned
-        /// cookies while user is actually logged-in
+        // TODO: fix cookie parsing problem in flutter webview plugin(There must be something
+        // wrong with this plugin...)
+        // TODO: figure out why sometimes [chii_auth] is never in returned
+        // cookies while user is actually logged-in
         String authCookie = cookies['chii_auth'] ??
             cookies[' chii_auth'] ??
             cookies['"chii_auth'];
@@ -108,8 +108,8 @@ class BangumiOauthService {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
 
-          /// on some devices, flutter webview plugin returns a trailing
-          /// dummy quotation mark.
+          // On some devices, flutter webview plugin returns a trailing
+          // dummy quotation mark.
           userAgent = userAgent.replaceAll(userAgentDummyStringRegex, '');
 
           this._cookieClient.updateBangumiAuthInfo(
@@ -123,8 +123,8 @@ class BangumiOauthService {
     Stream<String> onCode = await _server();
     final String code = await onCode.first;
 
-    /// HACK: injects original oauth client and initializes a new customized
-    /// client
+    // HACK: injects original oauth client and initializes a new customized
+    // client
     Client baseOauthClient = await grant.handleAuthorizationResponse(
         {'code': code});
     Credentials credentials = Credentials.fromJson(

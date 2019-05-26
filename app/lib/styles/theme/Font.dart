@@ -26,7 +26,7 @@ TextTheme _textTheme(TextTheme base) {
   );
 }
 
-/// TODO: figure out a way to configure fonts without using workarounds
+/// TODO: Figure out a way to configure fonts without using workarounds
 /// currently approach in https://medium.com/@najeira/flutter-and-cjk-font-4e372b37083c
 /// is used
 const Locale kLocale = const Locale('zh', '');

@@ -3,7 +3,7 @@ import 'package:munin/styles/theme/Common.dart';
 
 typedef void RatingChangeCallback(double rating);
 
-/// adapted from https://github.com/goops17/flutter_rating/blob/master/lib/flutter_rating.dart
+/// This class is adapted from https://github.com/goops17/flutter_rating/blob/master/lib/flutter_rating.dart
 class StarRating extends StatelessWidget {
   /// default to true, add a clear icon on the left to allow user clear rating
   final bool allowClearRating;
@@ -15,7 +15,7 @@ class StarRating extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
   final RatingChangeCallback onRatingChanged;
 
-  /// for some reason MediaQuery.of(context).size.width won't correctly returns
+  /// For some reason MediaQuery.of(context).size.width won't correctly returns
   /// padding, thus we have a hack here to get a pass-in padding
   final double horizontalPadding;
 

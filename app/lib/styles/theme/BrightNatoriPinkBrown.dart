@@ -19,9 +19,8 @@ final ThemeData brightNatoriPinkBrownThemeData = ThemeData(
     iconTheme: IconThemeData(color: Colors.black54),
   ),
   primaryColor: natoriPink,
-
-  /// TODO: flutter by default calculates abd set it to [Brightness.dark]
-  /// verify whether [Brightness.light] meets color contrast requirement
+  // TODO: flutter by default calculates abd set it to [Brightness.dark]
+  // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: natoriBrown,
 );

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/async.dart';
+import 'package:munin/shared/workarounds/refresh_indicator/refresh_indicator.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
@@ -124,7 +125,7 @@ class MuninRefresh extends StatefulWidget {
         horizontal: defaultPortraitHorizontalPadding),
     this.appBarUnderneathPadding = const EdgeInsets.only(
         bottom: largeVerticalPadding),
-    this.materialRefreshIndicatorDisplacement = 50,
+    this.materialRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
     this.loadMoreTriggerDistance = 200,
@@ -158,8 +159,8 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// is still empty after first refresh
   int itemCountBeforeNextRefresh;
 
-  GlobalKey<RefreshIndicatorState> _materialRefreshKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<MuninRefreshIndicatorState> _materialRefreshKey =
+  GlobalKey<MuninRefreshIndicatorState>();
 
   @override
   void initState() {
@@ -409,31 +410,35 @@ class MuninRefreshState extends State<MuninRefresh> {
       slivers.add(widget.appBar);
     }
 
-    /// TODO: Waiting for https://github.com/flutter/flutter/issues/31376 to be fixed
-    /// then this code bock can be removed
-    /// Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
-    /// [RefreshWidgetStyle.Cupertino]
-    if (showPlaceholderCupertinoRefreshIndicator()) {
-      SliverFixedExtentList progressIndicator = SliverFixedExtentList(
-        itemExtent: sliverGeneralExtent,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return AdaptiveProgressIndicator();
-          },
-          childCount: 1,
-        ),
-      );
+    if (includeCupertinoRefreshWidget) {
+      // TODO: Waiting for https://github.com/flutter/flutter/issues/31376 to be fixed
+      // then this code bock can be removed
+      // Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
+      // [RefreshWidgetStyle.Cupertino]
+      if (showPlaceholderCupertinoRefreshIndicator()) {
+        SliverFixedExtentList progressIndicator = SliverFixedExtentList(
+          itemExtent: sliverGeneralExtent,
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              return AdaptiveProgressIndicator();
+            },
+            childCount: 1,
+          ),
+        );
 
-      slivers.add(progressIndicator);
-    } else {
-      /// TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
-      /// resolved to switch back to the official widget
-      slivers.add(MuninCupertinoSliverRefreshControl(
-        onRefresh: _generateOnRefreshCallBack(),
-        refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
-        refreshTriggerPullDistance: widget.cupertinoRefreshTriggerPullDistance,
-      ));
+        slivers.add(progressIndicator);
+      } else {
+        // TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
+        // resolved to switch back to the official widget
+        slivers.add(MuninCupertinoSliverRefreshControl(
+          onRefresh: _generateOnRefreshCallBack(),
+          refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
+          refreshTriggerPullDistance: widget
+              .cupertinoRefreshTriggerPullDistance,
+        ));
+      }
     }
+
 
     if (widget.appBarUnderneathPadding != null) {
       slivers.add(SliverPadding(
@@ -504,7 +509,7 @@ class MuninRefreshState extends State<MuninRefresh> {
           includeCupertinoRefreshWidget: true,
           includeLoadMoreStatusWidget: includeLoadMoreStatusWidget);
     } else {
-      return RefreshIndicator(
+      return MuninRefreshIndicator(
         key: _materialRefreshKey,
         displacement: widget.materialRefreshIndicatorDisplacement,
         child: _buildCustomScrollViewBody(

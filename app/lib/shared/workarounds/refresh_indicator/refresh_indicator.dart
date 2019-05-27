@@ -25,11 +25,11 @@ const Duration _kIndicatorSnapDuration = Duration(milliseconds: 150);
 const Duration _kIndicatorScaleDuration = Duration(milliseconds: 200);
 
 /// The signature for a function that's called when the user has dragged a
-/// [RefreshIndicator] far enough to demonstrate that they want the app to
+/// [MuninRefreshIndicator] far enough to demonstrate that they want the app to
 /// refresh. The returned [Future] must complete when the refresh operation is
 /// finished.
 ///
-/// Used by [RefreshIndicator.onRefresh].
+/// Used by [MuninRefreshIndicator.onRefresh].
 typedef RefreshCallback = Future<void> Function();
 
 // The state machine moves through these modes only when the scrollable
@@ -63,21 +63,21 @@ enum _RefreshIndicatorMode {
 /// ```
 ///
 /// Using [AlwaysScrollableScrollPhysics] will ensure that the scroll view is
-/// always scrollable and, therefore, can trigger the [RefreshIndicator].
+/// always scrollable and, therefore, can trigger the [MuninRefreshIndicator].
 ///
-/// A [RefreshIndicator] can only be used with a vertical scroll view.
+/// A [MuninRefreshIndicator] can only be used with a vertical scroll view.
 ///
 /// See also:
 ///
 ///  * <https://material.io/design/platform-guidance/android-swipe-to-refresh.html>
-///  * [RefreshIndicatorState], can be used to programmatically show the refresh indicator.
-///  * [RefreshProgressIndicator], widget used by [RefreshIndicator] to show
+///  * [MuninRefreshIndicatorState], can be used to programmatically show the refresh indicator.
+///  * [RefreshProgressIndicator], widget used by [MuninRefreshIndicator] to show
 ///    the inner circular progress spinner during refreshes.
 ///  * [CupertinoSliverRefreshControl], an iOS equivalent of the pull-to-refresh pattern.
 ///    Must be used as a sliver inside a [CustomScrollView] instead of wrapping
 ///    around a [ScrollView] because it's a part of the scrollable instead of
 ///    being overlaid on top of it.
-class RefreshIndicator extends StatefulWidget {
+class MuninRefreshIndicator extends StatefulWidget {
   /// Creates a refresh indicator.
   ///
   /// The [onRefresh], [child], and [notificationPredicate] arguments must be
@@ -88,7 +88,7 @@ class RefreshIndicator extends StatefulWidget {
   /// If it is null, it will be defaulted to [MaterialLocalizations.refreshIndicatorSemanticLabel].
   /// An empty string may be passed to avoid having anything read by screen reading software.
   /// The [semanticsValue] may be used to specify progress on the widget.
-  const RefreshIndicator({
+  const MuninRefreshIndicator({
     Key key,
     @required this.child,
     this.displacement = 40.0,
@@ -146,13 +146,13 @@ class RefreshIndicator extends StatefulWidget {
   final String semanticsValue;
 
   @override
-  RefreshIndicatorState createState() => RefreshIndicatorState();
+  MuninRefreshIndicatorState createState() => MuninRefreshIndicatorState();
 }
 
-/// Contains the state for a [RefreshIndicator]. This class can be used to
+/// Contains the state for a [MuninRefreshIndicator]. This class can be used to
 /// programmatically show the refresh indicator, see the [show] method.
-class RefreshIndicatorState extends State<RefreshIndicator>
-    with TickerProviderStateMixin<RefreshIndicator> {
+class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
+    with TickerProviderStateMixin<MuninRefreshIndicator> {
   AnimationController _positionController;
   AnimationController _scaleController;
   Animation<double> _positionFactor;
@@ -252,7 +252,7 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     } else if (notification is OverscrollNotification) {
       if (_mode == _RefreshIndicatorMode.drag ||
           _mode == _RefreshIndicatorMode.armed) {
-        _dragOffset -= notification.overscroll / 2.0;
+        _dragOffset -= notification.overscroll;
         _checkDragOffset(notification.metrics.viewportDimension);
       }
     } else if (notification is ScrollEndNotification) {
@@ -391,11 +391,11 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   /// been started interactively. If this method is called while the refresh
   /// callback is running, it quietly does nothing.
   ///
-  /// Creating the [RefreshIndicator] with a [GlobalKey<RefreshIndicatorState>]
-  /// makes it possible to refer to the [RefreshIndicatorState].
+  /// Creating the [MuninRefreshIndicator] with a [GlobalKey<RefreshIndicatorState>]
+  /// makes it possible to refer to the [MuninRefreshIndicatorState].
   ///
   /// The future returned from this method completes when the
-  /// [RefreshIndicator.onRefresh] callback's future completes.
+  /// [MuninRefreshIndicator.onRefresh] callback's future completes.
   ///
   /// If you await the future returned by this function from a [State], you
   /// should check that the state is still [mounted] before calling [setState].

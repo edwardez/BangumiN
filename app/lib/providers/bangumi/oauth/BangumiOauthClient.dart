@@ -23,8 +23,6 @@ class BangumiOauthClient extends Client {
   /// This field might be null after initialization
   BangumiUserBasic currentUser;
 
-  updateUserId() {}
-
   /// A storage service that's used to persist oauth credentials
   final SecureStorageService secureStorageService;
 
@@ -91,12 +89,17 @@ class BangumiOauthClient extends Client {
     /// number of retry has reached
     if (!isValidRefreshToken && triedTimes <= maxRetriesToRefreshCredentials) {
       debugPrint(
-          'Retrying to refresh access token the $triedTimes time since returned user info doesn\'t match app user');
+          'Retrying to refresh access token the ${triedTimes +
+              1} time since returned user info doesn\'t match app user');
       newClient = await refreshCredentials(null, triedTimes + 1);
     }
 
-    debugPrint(
-        'Successfully refreshed bangumi oauth credentials, new token expires on ${newClient.credentials.expiration}');
+    if (isValidRefreshToken) {
+      debugPrint(
+          'Successfully refreshed bangumi oauth credentials, new token expires on ${newClient
+              .credentials.expiration}');
+    }
+
     return newClient;
   }
 }

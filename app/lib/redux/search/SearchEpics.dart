@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/search/SearchActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -36,10 +38,20 @@ Stream<dynamic> _searchSubject(BangumiSearchService bangumiSearchService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield SearchFailureAction.fromUnknownException(
         searchRequest: action.searchRequest);
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+
   } finally {
     action.completer.complete();
   }

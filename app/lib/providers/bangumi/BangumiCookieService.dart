@@ -14,8 +14,10 @@ import 'package:quiver/strings.dart';
 
 // A client for Bangumi thst sends requests with cookie and handles relevant persistence
 class BangumiCookieService {
-  BangumiCookieCredentials bangumiCookieCredential;
-  SecureStorageService secureStorageService;
+  BangumiCookieCredentials _bangumiCookieCredential;
+
+  SecureStorageService _secureStorageService;
+
   Dio dio;
 
   BangumiCookieService({
@@ -23,33 +25,59 @@ class BangumiCookieService {
     @required SecureStorageService secureStorageService,
     @required Dio dio,
   }) {
-    this.bangumiCookieCredential = bangumiCookieCredential;
-    this.secureStorageService = secureStorageService;
+    this._bangumiCookieCredential = bangumiCookieCredential;
+    this._secureStorageService = secureStorageService;
     this.dio = dio;
   }
 
-  bool readyToUse() {
-    return bangumiCookieCredential != null &&
-        bangumiCookieCredential.userAgent != null &&
-        bangumiCookieCredential.authCookie != null;
+  bool get hasCookieCredential {
+    return _bangumiCookieCredential != null &&
+        _bangumiCookieCredential.userAgent != null &&
+        _bangumiCookieCredential.authCookie != null;
   }
 
   /// Updates in-memory bangumi auth credentials info
-  void updateBangumiAuthInfo(
-      {String authCookie, String sessionCookie, String userAgent}) {
+  void updateBangumiAuthInfo({String authCookie,
+    String sessionCookie,
+    String userAgent,
+    int expiresOnInSeconds}) {
     assert(authCookie != null);
     assert(userAgent != null);
     assert(sessionCookie != null);
 
+    // A small offset to ensure expiration check passes
+    const int expirationOffsetInSeconds = 10;
+
+    DateTime expiresOn;
+
+    if (expiresOnInSeconds != null &&
+        expiresOnInSeconds != 0 &&
+        expiresOnInSeconds - expirationOffsetInSeconds > 0) {
+      expiresOn = DateTime.now()
+          .add(Duration(
+          seconds: (expiresOnInSeconds - expirationOffsetInSeconds)))
+          .toUtc();
+    } else {
+      // If bangumi returns 0 or null for expiresOnInSeconds(=chii_cookietime)
+      // Most likely user has selected a session life-length cookie time
+      // There is no good way to know actual expiration time in this case
+      // But bangumi always assign a cookie that expires in 30 days, assigning
+      // a cookie that expires after 29 days should be fine for NOW.
+      expiresOn = DateTime.now().add(Duration(days: 29)).toUtc();
+    }
+
     // Writes to keystore/keychain
-    bangumiCookieCredential = BangumiCookieCredentials((b) => {
-    b
-      ..authCookie = authCookie
-      ..sessionCookie = sessionCookie
-      ..userAgent = userAgent
+    _bangumiCookieCredential = BangumiCookieCredentials((b) =>
+    {
+      b
+        ..authCookie = authCookie
+        ..sessionCookie = sessionCookie
+        ..userAgent = userAgent
+        ..expiresOn = expiresOn
     });
 
-    updateDioHeaders(authCookie: authCookie,
+    updateDioHeaders(
+        authCookie: authCookie,
         sessionCookie: sessionCookie,
         userAgent: userAgent);
   }
@@ -57,8 +85,8 @@ class BangumiCookieService {
   void updateDioHeaders(
       {String authCookie, String sessionCookie, String userAgent}) {
     final String bangumiMainHost = Application.environmentValue.bangumiMainHost;
-    final String bangumiNonCdnHost = Application.environmentValue
-        .bangumiNonCdnHost;
+    final String bangumiNonCdnHost =
+        Application.environmentValue.bangumiNonCdnHost;
     List<Cookie> cookies = [
       Cookie("chii_auth", authCookie),
       Cookie("chii_sid", sessionCookie)
@@ -67,22 +95,19 @@ class BangumiCookieService {
     var cookieJar = getIt.get<CookieJar>();
 
     /// Save authenticated cookie for both version of bangumi
+    cookieJar.saveFromResponse(Uri.parse("https://$bangumiMainHost"), cookies);
     cookieJar.saveFromResponse(
-        Uri.parse("https://$bangumiMainHost"),
-        cookies);
-    cookieJar.saveFromResponse(
-        Uri.parse("https://$bangumiNonCdnHost"),
-        cookies);
+        Uri.parse("https://$bangumiNonCdnHost"), cookies);
     dio.options.headers[HttpHeaders.userAgentHeader] = userAgent;
   }
 
   Future<void> clearCredentials() {
-    return secureStorageService.clearBangumiCookieCredentials();
+    return _secureStorageService.clearBangumiCookieCredentials();
   }
 
   Future<void> persistCredentials() {
-    return secureStorageService.persistBangumiCookieCredentials(
-        bangumiCookieCredential);
+    return _secureStorageService
+        .persistBangumiCookieCredentials(_bangumiCookieCredential);
   }
 
   Future<String> getXsrfToken() async {
@@ -98,5 +123,28 @@ class BangumiCookieService {
     }
 
     throw BangumiResponseIncomprehensibleException();
+  }
+
+  /// Tries to logout by sending a get request to web `https://bangumi.tv/logout`
+  /// end point.
+  /// Due to its fragile and unreliable nature(mocking a webpage request), there
+  /// is no guarantee this action will succeed.
+  Future<void> logout() async {
+    var xsrfToken = await getXsrfToken();
+    await dio.get('/logout/$xsrfToken');
+  }
+
+  /// Silently tries to logout without reporting any errors to upstream
+  Future<void> silentlyTryLogout(
+      {timeoutThreshold: const Duration(seconds: 3)}) async {
+    try {
+      await Future.any([
+        logout(),
+        Future.delayed(timeoutThreshold),
+      ]);
+    } catch (error, stack) {
+      print(error);
+      print(stack);
+    }
   }
 }

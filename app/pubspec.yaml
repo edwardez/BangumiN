@@ -34,6 +34,11 @@ dependencies:
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.1
   flutter_svg: ^0.12.4
+  # Waiting https://github.com/fluttercommunity/flutter_webview_plugin/issues/200 to be fixed to switch
+  # back to main branch
+  flutter_webview_plugin:
+    git:
+      url: git://github.com/edwardez/flutter_webview_plugin.git
   get_it: ^1.0.3
   html: ^0.13.4
   http: ^0.12.0
@@ -53,7 +58,6 @@ dependencies:
   shared_preferences: ^0.5.2
   tuple: ^1.0.2
   quiver: ^2.0.2
-  flutter_webview_plugin: ^0.3.5
   url_launcher: ^5.0.2
 
   # The following adds the Cupertino Icons font to your application.

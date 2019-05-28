@@ -55,7 +55,16 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
     assert(action.context != null);
 
     try {
-      Navigator.of(action.context).pushNamed('/bangumiOauth');
+      /// Tries to invalidate previous cookie if user has logged in
+      if (cookieService.hasCookieCredential) {
+        cookieService.silentlyTryLogout();
+      }
+
+      Application.router.navigateTo(
+        action.context,
+        Routes.bangumiOauthRoute,
+        transition: TransitionType.native,
+      );
       await oauthService.initializeAuthentication();
       int userId = await oauthService.verifyUser();
       BangumiUserBasic userInfo =
@@ -111,13 +120,14 @@ Middleware<AppState> _createOAuthCancel(BangumiOauthService oauthClient,
 }
 
 Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
-    BangumiCookieService cookieClient,
+    BangumiCookieService cookieService,
     SharedPreferenceService sharedPreferenceService) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
+    cookieService.silentlyTryLogout();
     await Future.wait([
       oauthClient.clearCredentials(),
-      cookieClient.clearCredentials(),
+      cookieService.clearCredentials(),
       sharedPreferenceService.deleteAppState(),
     ]);
     store.dispatch(LogoutSuccess(action.context));

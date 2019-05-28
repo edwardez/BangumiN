@@ -7,8 +7,10 @@ import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/progress/Common.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -56,10 +58,20 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
         progresses: mergedSubjects, subjectTypes: action.subjectTypes);
     action.completer.complete();
   } catch (error, stack) {
-    action.completer.completeError(error, stack);
     print(error.toString());
     print(stack);
-    yield GetProgressFailureAction.fromUnknownException(username: username);
+    action.completer.completeError(error, stack);
+
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+
     if (action.showSnackBar) {
       Scaffold.of(action.context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
@@ -139,6 +151,14 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
 
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text(error.toString())));

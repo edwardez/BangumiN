@@ -155,7 +155,8 @@ abstract class Application {
       BangumiOauthService bangumiOauthService,
       SharedPreferenceService sharedPreferenceService) async {
     bool isAuthenticated =
-        bangumiCookieService.readyToUse() && bangumiOauthService.readyToUse();
+        bangumiCookieService.hasCookieCredential &&
+            bangumiOauthService.hasOauthClient;
     Optional<AppState> maybePersistedAppState =
     await sharedPreferenceService.readAppState();
     AppState persistedAppState;

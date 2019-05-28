@@ -16,6 +16,7 @@ import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
+import 'package:munin/providers/bangumi/util/DioInterceptors.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,8 @@ Future<void> injector(GetIt getIt) async {
   final FlutterSecureStorage secureStorage = new FlutterSecureStorage();
   Map<String, String> credentials = await secureStorage.readAll();
 
-  String serializedBangumiCookieCredentials = credentials['bangumiCookieCredentials'];
+  String serializedBangumiCookieCredentials =
+  credentials['bangumiCookieCredentials'];
   BangumiCookieCredentials bangumiCookieCredential;
 
   if (serializedBangumiCookieCredentials != null) {
@@ -35,18 +37,16 @@ Future<void> injector(GetIt getIt) async {
   CookieJar bangumiCookieJar = CookieJar();
   getIt.registerSingleton<CookieJar>(bangumiCookieJar);
 
-  SecureStorageService secureStorageService = SecureStorageService(
-      secureStorage: secureStorage);
+  SecureStorageService secureStorageService =
+  SecureStorageService(secureStorage: secureStorage);
   SharedPreferenceService sharedPreferenceService = SharedPreferenceService(
-      sharedPreferences: await SharedPreferences.getInstance()
-  );
+      sharedPreferences: await SharedPreferences.getInstance());
 
   final BangumiCookieService _bangumiCookieService = BangumiCookieService(
       bangumiCookieCredential: bangumiCookieCredential,
       secureStorageService: secureStorageService,
       dio: _createDioForBangumiCookieService(
-          bangumiCookieCredential, bangumiCookieJar)
-  );
+          bangumiCookieCredential, bangumiCookieJar));
 
   final String serializedBangumiOauthCredentials =
   credentials['bangumiOauthCredentials'];
@@ -70,24 +70,20 @@ Future<void> injector(GetIt getIt) async {
       sharedPreferenceService: sharedPreferenceService);
   getIt.registerSingleton<BangumiUserService>(bangumiUserService);
 
-  final bangumiTimelineService = BangumiTimelineService(
-      cookieClient: _bangumiCookieService);
+  final bangumiTimelineService =
+  BangumiTimelineService(cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiTimelineService>(bangumiTimelineService);
 
-
   final bangumiSubjectService = BangumiSubjectService(
-      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
-  );
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService);
   getIt.registerSingleton<BangumiSubjectService>(bangumiSubjectService);
 
   final bangumiSearchService = BangumiSearchService(
-      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService
-  );
+      cookieClient: _bangumiCookieService, oauthClient: _bangumiOauthService);
   getIt.registerSingleton<BangumiSearchService>(bangumiSearchService);
 
-  final bangumiDiscussionService = BangumiDiscussionService(
-      cookieClient: _bangumiCookieService
-  );
+  final bangumiDiscussionService =
+  BangumiDiscussionService(cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
 
   final bangumiProgressService = BangumiProgressService(
@@ -105,8 +101,8 @@ Dio _createDioForBangumiCookieService(
     CookieJar bangumiCookieJar) {
   Map<String, dynamic> headers = {
     HttpHeaders.hostHeader: Application.environmentValue.bangumiNonCdnHost,
-    HttpHeaders.refererHeader: 'https://${Application.environmentValue
-        .bangumiNonCdnHost}/',
+    HttpHeaders.refererHeader:
+    'https://${Application.environmentValue.bangumiNonCdnHost}/',
   };
 
   // Attaches user agent and cookie to dio  if these are not null
@@ -151,6 +147,11 @@ Dio _createDioForBangumiCookieService(
   ));
 
   dio.interceptors.add(CookieManager(bangumiCookieJar));
+
+  if (bangumiCookieCredential != null) {
+    dio.interceptors.add(createBangumiCookieExpirationCheckInterceptor(
+        bangumiCookieCredential.expiresOn));
+  }
 
   // Enables logging in development environment
   if (Application.environmentValue.environmentType ==

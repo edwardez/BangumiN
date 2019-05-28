@@ -32,6 +32,9 @@ class _$BangumiCookieCredentialsSerializer
       'userAgent',
       serializers.serialize(object.userAgent,
           specifiedType: const FullType(String)),
+      'expiresOn',
+      serializers.serialize(object.expiresOn,
+          specifiedType: const FullType(DateTime)),
     ];
 
     return result;
@@ -61,6 +64,10 @@ class _$BangumiCookieCredentialsSerializer
           result.userAgent = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'expiresOn':
+          result.expiresOn = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
       }
     }
 
@@ -75,13 +82,15 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
   final String sessionCookie;
   @override
   final String userAgent;
+  @override
+  final DateTime expiresOn;
 
   factory _$BangumiCookieCredentials(
           [void Function(BangumiCookieCredentialsBuilder) updates]) =>
       (new BangumiCookieCredentialsBuilder()..update(updates)).build();
 
   _$BangumiCookieCredentials._(
-      {this.authCookie, this.sessionCookie, this.userAgent})
+      {this.authCookie, this.sessionCookie, this.userAgent, this.expiresOn})
       : super._() {
     if (authCookie == null) {
       throw new BuiltValueNullFieldError(
@@ -94,6 +103,10 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
     if (userAgent == null) {
       throw new BuiltValueNullFieldError(
           'BangumiCookieCredentials', 'userAgent');
+    }
+    if (expiresOn == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiCookieCredentials', 'expiresOn');
     }
   }
 
@@ -112,13 +125,16 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
     return other is BangumiCookieCredentials &&
         authCookie == other.authCookie &&
         sessionCookie == other.sessionCookie &&
-        userAgent == other.userAgent;
+        userAgent == other.userAgent &&
+        expiresOn == other.expiresOn;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, authCookie.hashCode), sessionCookie.hashCode),
-        userAgent.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, authCookie.hashCode), sessionCookie.hashCode),
+            userAgent.hashCode),
+        expiresOn.hashCode));
   }
 
   @override
@@ -126,7 +142,8 @@ class _$BangumiCookieCredentials extends BangumiCookieCredentials {
     return (newBuiltValueToStringHelper('BangumiCookieCredentials')
           ..add('authCookie', authCookie)
           ..add('sessionCookie', sessionCookie)
-          ..add('userAgent', userAgent))
+          ..add('userAgent', userAgent)
+          ..add('expiresOn', expiresOn))
         .toString();
   }
 }
@@ -149,6 +166,10 @@ class BangumiCookieCredentialsBuilder
   String get userAgent => _$this._userAgent;
   set userAgent(String userAgent) => _$this._userAgent = userAgent;
 
+  DateTime _expiresOn;
+  DateTime get expiresOn => _$this._expiresOn;
+  set expiresOn(DateTime expiresOn) => _$this._expiresOn = expiresOn;
+
   BangumiCookieCredentialsBuilder();
 
   BangumiCookieCredentialsBuilder get _$this {
@@ -156,6 +177,7 @@ class BangumiCookieCredentialsBuilder
       _authCookie = _$v.authCookie;
       _sessionCookie = _$v.sessionCookie;
       _userAgent = _$v.userAgent;
+      _expiresOn = _$v.expiresOn;
       _$v = null;
     }
     return this;
@@ -180,7 +202,8 @@ class BangumiCookieCredentialsBuilder
         new _$BangumiCookieCredentials._(
             authCookie: authCookie,
             sessionCookie: sessionCookie,
-            userAgent: userAgent);
+            userAgent: userAgent,
+            expiresOn: expiresOn);
     replace(_$result);
     return _$result;
   }

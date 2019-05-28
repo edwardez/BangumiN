@@ -10,11 +10,13 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/oauth/BangumiOauthClient.dart';
+import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:oauth2/oauth2.dart'
     show AuthorizationCodeGrant, Client, Credentials;
-
 
 // A client for Bangumi that authorizes user, send requests with oauth token and handles relevant persistence
 class BangumiOauthService {
@@ -52,11 +54,9 @@ class BangumiOauthService {
           httpClient: _baseOauthHttpClient,
           secureStorageService: secureStorageService);
     }
-
   }
 
-
-  bool readyToUse() {
+  bool get hasOauthClient {
     return client != null;
   }
 
@@ -73,13 +73,18 @@ class BangumiOauthService {
   Future<void> initializeAuthentication() async {
     assert(_cookieClient != null);
 
-    AuthorizationCodeGrant grant = new AuthorizationCodeGrant(
+    // Creates a http client that retries 5 times for each request
+    // This client is only used during oauth authorization, it's because bangumi
+    // oauth has a pretty high error rate and this process is very important so
+    // retrying every requests multiple times.
+    var retryableAuthHttpClient = OauthHttpClient(http.Client(), retries: 5);
+
+    AuthorizationCodeGrant grant = AuthorizationCodeGrant(
         Application.environmentValue.bangumiOauthClientIdentifier,
-        Uri.parse(
-            Application.bangumiOauthAuthorizationEndpoint),
+        Uri.parse(Application.bangumiOauthAuthorizationEndpoint),
         Uri.parse(Application.bangumiOauthTokenEndpoint),
         secret: Application.environmentValue.bangumiOauthClientSecret,
-        httpClient: _baseOauthHttpClient);
+        httpClient: retryableAuthHttpClient);
     authorizationUrl = grant
         .getAuthorizationUrl(
         Uri.parse(Application.environmentValue.bangumiRedirectUrl))
@@ -101,9 +106,13 @@ class BangumiOauthService {
         // cookies while user is actually logged-in
         String authCookie = cookies['chii_auth'] ??
             cookies[' chii_auth'] ??
-            cookies['"chii_auth'];
-        String sessionCookie =
-            cookies['chii_sid'] ?? cookies[' chii_sid'] ?? cookies['"chii_sid'];
+            cookies['"chii_auth'] ??
+            cookies['chii_auth"'];
+        String sessionCookie = cookies['chii_sid'] ??
+            cookies[' chii_sid'] ??
+            cookies['"chii_sid'] ??
+            cookies['chii_sid"'];
+
         if (authCookie != null && sessionCookie != null) {
           String userAgent =
               await _flutterWebviewPlugin.evalJavascript('navigator.userAgent');
@@ -112,10 +121,17 @@ class BangumiOauthService {
           // dummy quotation mark.
           userAgent = userAgent.replaceAll(userAgentDummyStringRegex, '');
 
+          String expiresOnInSecondsStr = cookies['chii_cookietime'] ??
+              cookies[' chii_cookietime'] ??
+              cookies['"chii_cookietime'] ??
+              cookies['chii_cookietime"'];
+
           this._cookieClient.updateBangumiAuthInfo(
               authCookie: authCookie,
               sessionCookie: sessionCookie,
-              userAgent: userAgent);
+              userAgent: userAgent,
+              expiresOnInSeconds:
+              tryParseInt(expiresOnInSecondsStr, defaultValue: null));
         }
       }
     });
@@ -125,10 +141,10 @@ class BangumiOauthService {
 
     // HACK: injects original oauth client and initializes a new customized
     // client
-    Client baseOauthClient = await grant.handleAuthorizationResponse(
-        {'code': code});
-    Credentials credentials = Credentials.fromJson(
-        baseOauthClient.credentials.toJson());
+    Client baseOauthClient =
+    await grant.handleAuthorizationResponse({'code': code});
+    Credentials credentials =
+    Credentials.fromJson(baseOauthClient.credentials.toJson());
 
     client = BangumiOauthClient(credentials,
         identifier: Application.environmentValue.bangumiOauthClientIdentifier,
@@ -137,11 +153,15 @@ class BangumiOauthService {
         httpClient: _baseOauthHttpClient,
         secureStorageService: secureStorageService);
 
-    await secureStorageService.persistBangumiOauthCredentials(
-        client.credentials);
-    await _cookieClient.persistCredentials();
     _flutterWebviewPlugin.close();
     _flutterWebviewPlugin.dispose();
+
+    // At the end of authentication, `bangumiCookieCredential` must not be null.
+    // In other words, `_flutterWebviewPlugin.onStateChanged.listen` must have
+    // received a valid `bangumiCookieCredential`, if not, authentication has failed.
+    if (!_cookieClient.hasCookieCredential) {
+      throw AuthenticationFailedException('认证失败，请稍后重试');
+    }
   }
 
   Future<Stream<String>> _server() async {
@@ -176,12 +196,12 @@ class BangumiOauthService {
   }
 
   Future<void> persistCredentials() {
-    return this.secureStorageService.persistBangumiOauthCredentials(
-        client.credentials);
+    return this
+        .secureStorageService
+        .persistBangumiOauthCredentials(client.credentials);
   }
 
   Future<void> clearCredentials() async {
     return this.secureStorageService.clearBangumiOauthCredentials();
   }
-
 }

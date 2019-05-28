@@ -8,8 +8,6 @@ import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/redux/shared/CommonActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 
 /// Get progress related actions
 class GetProgressAction {
@@ -38,17 +36,6 @@ class GetProgressSuccessAction {
 
   GetProgressSuccessAction(
       {@required this.progresses, @required this.subjectTypes});
-}
-
-class GetProgressFailureAction extends FailureAction {
-  final String username;
-
-  GetProgressFailureAction(
-      {@required this.username, @required LoadingStatus loadingStatus})
-      : super(loadingStatus: loadingStatus);
-
-  GetProgressFailureAction.fromUnknownException({@required this.username})
-      : super.fromUnknownException();
 }
 
 /// Update progress related actions

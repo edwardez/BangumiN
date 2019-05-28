@@ -18,8 +18,6 @@ final progressReducers = combineReducers<ProgressState>([
       getProgressLoadingReducer),
   TypedReducer<ProgressState, GetProgressSuccessAction>(
       getProgressSuccessReducer),
-  TypedReducer<ProgressState, GetProgressFailureAction>(
-      getProgressFailureReducer),
   TypedReducer<ProgressState, UpdateAnimeOrRealSingleEpisodeSuccessAction>(
       updateAnimeOrRealSingleEpisodeSuccessReducer),
   TypedReducer<ProgressState, UpdateAnimeOrRealBatchEpisodesSuccessAction>(
@@ -49,11 +47,6 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
           .addAll({type: BuiltList<InProgressCollection>(subjects.values)}));
   }
 
-  return progressState;
-}
-
-ProgressState getProgressFailureReducer(
-    ProgressState progressState, GetProgressFailureAction action) {
   return progressState;
 }
 

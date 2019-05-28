@@ -3,6 +3,8 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,10 +39,19 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield GetSubjectFailureAction.fromUnknownException(
         subjectId: action.subjectId);
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 
@@ -92,11 +103,22 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield GetCollectionInfoFailureAction.fromUnknownException(
         subjectId: action.subjectId);
     action.completer.completeError(error, stack);
+
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+
   }
 }
 
@@ -128,10 +150,21 @@ Stream<dynamic> _collectionUpdateRequest(
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield UpdateCollectionRequestFailureAction.fromUnknownException(
         subjectId: action.subjectId);
+
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+
   }
 }
 

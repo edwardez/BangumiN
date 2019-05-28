@@ -1,4 +1,17 @@
-/// Error thrown when authentication expired
+/// Exception that signals authentication has failed
+class AuthenticationFailedException implements Exception {
+  /// Message describing the problem. */
+  final message;
+
+  AuthenticationFailedException(this.message);
+
+  @override
+  String toString() {
+    return 'AuthenticationFailedException{message: $message}';
+  }
+}
+
+/// Exception that signals authentication has expired
 class AuthenticationExpiredException implements Exception {
   /// Message describing the problem. */
   final message;

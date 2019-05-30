@@ -21,7 +21,8 @@ generateOnTapCallbackForBangumiContent({
   /// if it's empty or null, returns empty function
   if (isEmpty(id)) {
     debugPrint(
-        'Recevied invalid pair of BangumiContent $contentType and id $id');
+        'Recevied empty id $id with BangumiContent $contentType while trying to'
+            'generate BangumiContent callback');
     return () {};
   }
   if (contentType == BangumiContent.Subject) {
@@ -55,10 +56,11 @@ generateOnTapCallbackForBangumiContent({
   }
 
   /// otherwise returns an empty function and logs it
-  debugPrint('Recevied invalid pair of BangumiContent $contentType and id $id');
+  debugPrint(
+      'Recevied invalid pair of BangumiContent $contentType and id $id while '
+          'trying to generate BangumiContent callback');
   return () {};
 }
-
 
 /// checks whether the content type current has a app route page
 /// returns null corresponding Munin page cannot be found

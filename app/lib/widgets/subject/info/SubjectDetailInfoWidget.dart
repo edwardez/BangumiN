@@ -78,9 +78,9 @@ class SubjectDetailInfoWidget extends StatelessWidget {
           appBarMainTitle: Text('介绍与制作人员'),
           nestedScrollViewBody: _buildDetailInfoBody(context, vm.subject),
           safeAreaChildPadding: const EdgeInsets.only(
-              left: defaultDensePortraitHorizontalPadding,
-              right: defaultDensePortraitHorizontalPadding,
-              top: largeVerticalPadding
+              left: defaultDensePortraitHorizontalOffset,
+              right: defaultDensePortraitHorizontalOffset,
+              top: largeOffset
           ),
           appBarActions: subjectCommonActions(context, vm.subject),
         );

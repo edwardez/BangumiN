@@ -39,9 +39,9 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
     this.appBarElevation = defaultAppBarElevation,
     this.appBarActions = const [],
     this.safeAreaChildPadding = const EdgeInsets.only(
-        left: defaultPortraitHorizontalPadding,
-        right: defaultPortraitHorizontalPadding,
-        top: largeVerticalPadding
+        left: defaultPortraitHorizontalOffset,
+        right: defaultPortraitHorizontalOffset,
+        top: largeOffset
     ),
     this.enableLeftSafeArea = true,
     this.enableTopSafeArea = false,

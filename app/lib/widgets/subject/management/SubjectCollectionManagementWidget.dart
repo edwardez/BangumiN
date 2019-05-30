@@ -84,7 +84,7 @@ class _SubjectCollectionManagementWidgetState
 
   LinkedHashMap<String, bool> headerTags = LinkedHashMap.of({});
 
-  final safeAreaChildHorizontalPadding = defaultPortraitHorizontalPadding;
+  final safeAreaChildHorizontalPadding = defaultPortraitHorizontalOffset;
 
   /// Looks like flutter doesn't have handy validate attribute like what we have in Angular
   /// so every time an extra call to .validate() function is needed

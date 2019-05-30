@@ -78,9 +78,9 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
         builder: (BuildContext bc) {
           return Padding(
             padding: const EdgeInsets.only(
-              top: defaultPortraitHorizontalPadding,
-              left: defaultPortraitHorizontalPadding,
-              right: defaultPortraitHorizontalPadding,
+              top: defaultPortraitHorizontalOffset,
+              left: defaultPortraitHorizontalOffset,
+              right: defaultPortraitHorizontalOffset,
             ),
             child: ListView(
               children: <Widget>[
@@ -251,8 +251,8 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(defaultPortraitHorizontalPadding -
-            defaultDensePortraitHorizontalPadding ==
+    assert(defaultPortraitHorizontalOffset -
+        defaultDensePortraitHorizontalOffset ==
         8.0);
 
     return ExpansionTile(
@@ -264,8 +264,8 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: math.max(
                 0,
-                defaultPortraitHorizontalPadding -
-                    defaultDensePortraitHorizontalPadding)),
+                defaultPortraitHorizontalOffset -
+                    defaultDensePortraitHorizontalOffset)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -324,7 +324,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: defaultPortraitHorizontalPadding),
+                horizontal: defaultPortraitHorizontalOffset),
             child: Wrap(
               children: _buildEpisodeChips(context, collection),
             ),

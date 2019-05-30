@@ -1,17 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
+import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
-import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class DiscussionItemWidget extends StatelessWidget {
   static const titleMaxLines = 2;
   static const subTitleMaxLines = 2;
-  static const double smallPadding = 8.0;
 
   final DiscussionItem discussionItem;
 
@@ -61,7 +62,8 @@ class DiscussionItemWidget extends StatelessWidget {
         onTap: () {
           onUnmute(discussionItem);
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效"),));
+            content: Text("${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -72,7 +74,8 @@ class DiscussionItemWidget extends StatelessWidget {
         onTap: () {
           onMute(discussionItem);
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效"),));
+            content: Text("${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -89,56 +92,102 @@ class DiscussionItemWidget extends StatelessWidget {
     };
   }
 
+  /// Calculates text scale factor for reply count so it can fit into the reply
+  /// icon.
+  /// Currently factor values are hard-coded, if these values are changed,
+  /// [replyCountIconSize] might also need to be changed.
+  double replyCountTextScaleFactor(double textScaleFactor, String text) {
+    if (text.length <= 2) {
+      return 1 * textScaleFactor;
+    }
+
+    if (text.length == 3) {
+      return 0.85 * textScaleFactor;
+    }
+
+    return 3 / text.length * textScaleFactor;
+  }
+
+  /// Calculates size of the reply count icon.
+  /// Currently factor values are hard-coded, if these values are changed,
+  /// [replyCountTextScaleFactor] might also need to be changed.
+  double replyCountIconSize(double textScaleFactor) {
+    return defaultIconSize * 1.5 * textScaleFactor;
+  }
+
   @override
   Widget build(BuildContext context) {
+    String discussionUpdateTime = TimeUtils.formatMilliSecondsEpochTime(
+        discussionItem.updatedAt,
+        displayTimeIn: DisplayTimeIn.AlwaysRelative,
+        fallbackTimeStr: '');
+    double textScaleFactor = MediaQuery
+        .of(context)
+        .textScaleFactor;
+
     return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: smallPadding),
+      child: MuninPadding(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CachedRoundedCover.asGridSize(
               imageUrl: imageUrl,
             ),
+            Padding(
+              padding: EdgeInsets.only(left: largeOffset),
+            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: smallPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    RichText(
-                      maxLines: titleMaxLines,
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: discussionItem.title,
-                            style: Theme.of(context).textTheme.body1),
-                        TextSpan(
-                          text: ' (+${discussionItem.replyCount})',
-                          style: Theme.of(context).textTheme.caption,
-                        )
-                      ]),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        WrappableText(
-                          '${discussionItem.subTitle}',
-                          textStyle: Theme.of(context).textTheme.caption,
-                          fit: FlexFit.tight,
-                          maxLines: subTitleMaxLines,
-                        ),
-                        Text(
-                          TimeUtils.formatMilliSecondsEpochTime(
-                              discussionItem.updatedAt,
-                              displayTimeIn: DisplayTimeIn.AlwaysRelative,
-                              fallbackTimeStr: ''),
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('${discussionItem.subTitle}',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .caption),
+                  Text(
+                    discussionItem.title,
+                    maxLines: titleMaxLines,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
+                  ),
+                  Text('$discussionUpdateTime',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .caption),
+                ],
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(left: largeOffset),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: <Widget>[
+                Icon(
+                  CupertinoIcons.conversation_bubble,
+                  size: replyCountIconSize(textScaleFactor),
+                ),
+                Text(
+                  '${discussionItem.replyCount}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(
+                      fontSize: Theme
+                          .of(context)
+                          .textTheme
+                          .caption
+                          .fontSize),
+                  textScaleFactor: replyCountTextScaleFactor(
+                      textScaleFactor, '${discussionItem.replyCount}'),
+                ),
+              ],
+            ),
+
           ],
         ),
       ),

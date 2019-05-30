@@ -16,6 +16,7 @@ import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/discussion/common/DiscussionItemWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
@@ -41,16 +42,18 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
 
   /// A widget that will show up if the timeline is empty
   Widget _buildEmptyRakuenWidget() {
-    return Column(
-      children: <Widget>[
-        Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
-        FlatButton(
-          child: Text(checkWebVersionPrompt),
-          onPressed: () {
-            return launch(rakuenMobileUrl, forceSafariVC: false);
-          },
-        )
-      ],
+    return MuninPadding(
+      child: Column(
+        children: <Widget>[
+          Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
+          FlatButton(
+            child: Text(checkWebVersionPrompt),
+            onPressed: () {
+              return launch(rakuenMobileUrl, forceSafariVC: false);
+            },
+          )
+        ],
+      ),
     );
   }
 
@@ -95,7 +98,6 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
           itemCount: vm.rakuenTopics?.discussionItemsAsList?.length ?? 0,
           emptyAfterRefreshWidget: _buildEmptyRakuenWidget(),
           appBar: widget.oneMuninBar,
-          separatorBuilder: null,
         );
       },
     );

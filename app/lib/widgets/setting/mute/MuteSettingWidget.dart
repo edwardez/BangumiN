@@ -34,7 +34,7 @@ class MuteSettingWidget extends StatelessWidget {
             enableTopSafeArea: false,
             enableBottomSafeArea: false,
             safeAreaChildPadding: const EdgeInsets.only(
-                left: 0, right: 0, top: largeVerticalPadding),
+                left: 0, right: 0, top: largeOffset),
             appBarMainTitle: Text(
               '屏蔽',
             ),
@@ -67,7 +67,7 @@ class MuteSettingWidget extends StatelessWidget {
                   ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultDensePortraitHorizontalPadding),
+                      horizontal: defaultDensePortraitHorizontalOffset),
                   child: Row(
                     children: <Widget>[
                       Expanded(

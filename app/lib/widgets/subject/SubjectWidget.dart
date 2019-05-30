@@ -101,9 +101,9 @@ class SubjectWidget extends StatelessWidget {
         itemCount: widgets.length,
       ),
       safeAreaChildPadding: const EdgeInsets.only(
-          left: defaultDensePortraitHorizontalPadding,
-          right: defaultDensePortraitHorizontalPadding,
-          top: largeVerticalPadding),
+          left: defaultDensePortraitHorizontalOffset,
+          right: defaultDensePortraitHorizontalOffset,
+          top: largeOffset),
       enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );

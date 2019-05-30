@@ -45,8 +45,7 @@ class UserProfileWidget extends StatelessWidget {
       @required this.username,
         Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
-          vertical: largeVerticalPadding,
-          horizontal: defaultPortraitHorizontalPadding)})
+          vertical: largeOffset, horizontal: defaultPortraitHorizontalOffset)})
       : this.providedAppBar = appBar,
         this.userProfileMainUrl =
             'https://${Application.environmentValue.bangumiMainHost}/user/$username',
@@ -65,8 +64,9 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.unMuteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),));
+            content:
+            Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -77,8 +77,9 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.muteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),));
+            content:
+            Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -195,9 +196,7 @@ class UserProfileWidget extends StatelessWidget {
 
     widgets.addAll([
       TimelinePreviewWidget(
-        profile: profile,
-          isCurrentAppUser: vm.isCurrentAppUser
-      ),
+          profile: profile, isCurrentAppUser: vm.isCurrentAppUser),
       Divider(),
       InkWell(
         child: Row(
@@ -456,7 +455,6 @@ class _ViewModel {
       getUserProfile: (BuildContext context) => _fetchUserProfile(context),
       isCurrentAppUser: _isCurrentAppUser(),
       loadingStatus: store.state.userState.profilesLoadingStatus[username],
-
       muteUser: _muteUser,
       unMuteUser: _unMuteUser,
       isMuted: _isMuted(),
@@ -487,11 +485,6 @@ class _ViewModel {
 
   @override
   int get hashCode =>
-      hashObjects([
-        isCurrentAppUser,
-        isMuted,
-        username,
-        userProfile,
-        loadingStatus
-      ]);
+      hashObjects(
+          [isCurrentAppUser, isMuted, username, userProfile, loadingStatus]);
 }

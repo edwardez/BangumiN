@@ -17,7 +17,7 @@ class SettingHome extends StatelessWidget {
       appBarMainTitle: Text("设置"),
       enableBottomSafeArea: false,
       safeAreaChildPadding:
-      const EdgeInsets.only(left: 0, right: 0, top: largeVerticalPadding),
+      const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
       nestedScrollViewBody: SingleChildScrollView(
         child: Column(
           children: <Widget>[

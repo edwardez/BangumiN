@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 
-const xsVerticalPadding = 1.0;
-const smallVerticalPadding = 5.0;
-const largeVerticalPadding = 10.0;
+/// 4 dp is typically the smallest spacing of material
+/// https://material.io/design/layout/spacing-methods.html
+const baseOffset = 4.0;
 
-const defaultPortraitHorizontalPadding = 24.0;
-const defaultDensePortraitHorizontalPadding = 16.0;
-const defaultLandScapeHorizontalPadding = 48.0;
-const defaultLandScapeDenseHorizontalPadding = 16.0;
+const onePixelOffset = 1.0;
+const smallOffset = baseOffset;
+const mediumOffset = baseOffset * 2;
+const largeOffset = baseOffset * 3;
+const baseOffset4x = baseOffset * 4;
+
+
+const defaultPortraitHorizontalOffset = baseOffset * 6;
+const defaultPortraitHorizontalEdgeInsets = const EdgeInsets.symmetric(
+    horizontal: defaultPortraitHorizontalOffset);
+const defaultDensePortraitHorizontalOffset = baseOffset4x;
+const defaultLandScapeHorizontalOffset = baseOffset * 12;
+const defaultLandScapeDenseHorizontalOffset = baseOffset4x;
 const defaultAppBarElevation = 4.0;
 const defaultImageCircularRadius = 4.0;
-const defaultIconSize = 24.0;
+final defaultIconSize = IconThemeData
+    .fallback()
+    .size;
 
 /// 87.5% of the default icon size
-const smallerIconSize = defaultIconSize * 0.875;
+final smallerIconSize = defaultIconSize * 0.875;
 
 TextStyle body1TextWithLightPrimaryDarkAccentColor(BuildContext context) {
   return Theme.of(context)

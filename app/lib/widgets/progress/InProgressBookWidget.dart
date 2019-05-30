@@ -116,8 +116,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
 
   @override
   Widget build(BuildContext context) {
-    assert(defaultPortraitHorizontalPadding -
-            defaultDensePortraitHorizontalPadding ==
+    assert(defaultPortraitHorizontalOffset -
+        defaultDensePortraitHorizontalOffset ==
         8.0);
 
     return ExpansionTile(
@@ -127,8 +127,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
         padding: EdgeInsets.symmetric(
             horizontal: math.max(
                 0,
-                defaultPortraitHorizontalPadding -
-                    defaultDensePortraitHorizontalPadding)),
+                defaultPortraitHorizontalOffset -
+                    defaultDensePortraitHorizontalOffset)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -197,7 +197,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: defaultPortraitHorizontalPadding),
+              horizontal: defaultPortraitHorizontalOffset),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

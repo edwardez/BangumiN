@@ -27,7 +27,7 @@ class GeneralSettingWidget extends StatelessWidget {
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding: const EdgeInsets.only(
-              left: 0, right: 0, top: largeVerticalPadding),
+              left: 0, right: 0, top: largeOffset),
           appBarMainTitle: Text('通用设置'),
           nestedScrollViewBody: ListView(
             padding: EdgeInsets.zero,

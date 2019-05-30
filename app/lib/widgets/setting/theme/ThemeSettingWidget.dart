@@ -82,7 +82,7 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding: const EdgeInsets.only(
-              left: 0, right: 0, top: largeVerticalPadding),
+              left: 0, right: 0, top: largeOffset),
           appBarMainTitle: GestureDetector(
             child: Text(
               '主题',

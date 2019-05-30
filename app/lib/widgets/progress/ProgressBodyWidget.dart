@@ -156,9 +156,6 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           onRefresh: () {
             return vm.getProgress(context);
           },
-
-          /// padding is handled by ExpansionTile
-          itemPadding: EdgeInsets.zero,
           itemBuilder: (BuildContext context, int index) {
             return widgets[index];
           },
@@ -166,7 +163,6 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
           itemCount: widgets.length,
           appBar: widget.oneMuninBar,
-
           /// all progress subjects will be loaded in once, hence no more items
           /// to load if progresses are laoded
           noMoreItemsToLoad: progressesLoaded,

@@ -31,7 +31,7 @@ class SubjectReviewPoster extends StatefulWidget {
   /// Padding between color background and inner content
   static const double posterOuterVerticalPadding = 24;
   static const double posterOuterHorizontalPadding =
-      defaultDensePortraitHorizontalPadding;
+      defaultDensePortraitHorizontalOffset;
 
   /// Specifies a display theme to avoid conflicting with custom themes
   static final displayTheme = brightBangumiPinkBlueThemeData;

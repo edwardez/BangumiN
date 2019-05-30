@@ -25,7 +25,7 @@ class StarRating extends StatelessWidget {
     this.allowClearRating = true,
     this.onRatingChanged,
     this.color = MuninColor.score,
-    this.horizontalPadding = defaultPortraitHorizontalPadding,
+    this.horizontalPadding = defaultPortraitHorizontalOffset,
     this.borderColor,
     this.size,
     this.mainAxisAlignment = MainAxisAlignment.center,

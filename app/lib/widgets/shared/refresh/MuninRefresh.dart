@@ -8,6 +8,7 @@ import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/shared/workarounds/refresh_indicator/refresh_indicator.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
 
@@ -39,7 +40,11 @@ enum RefreshWidgetStyle {
 /// For more details, please see api doc for these widgets
 class MuninRefresh extends StatefulWidget {
   static Widget _defaultDividerBuilder(BuildContext context, int index) {
-    return Divider();
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: defaultPortraitHorizontalOffset),
+      child: onePixelHeightDivider(),
+    );
   }
 
   /// Called to build a individual child in a list.
@@ -49,7 +54,9 @@ class MuninRefresh extends StatefulWidget {
   /// exists.
   final IndexedWidgetBuilder itemBuilder;
 
-  /// A separator that will be built between each items, default to `Divider()`.
+  /// A separator that will be built between each items, default to a [Divider]
+  /// with 1 pixel height and `defaultPortraitHorizontalPadding` padding on each
+  /// horizontal side.
   /// If [separatorBuilder] is set to null, no separator will be built between child items.
   final IndexedWidgetBuilder separatorBuilder;
 
@@ -98,9 +105,6 @@ class MuninRefresh extends StatefulWidget {
   /// see [refreshIndicatorExtent] in [CupertinoSliverRefreshControl]
   final double cupertinoRefreshIndicatorExtent;
 
-  /// Outer padding for all items, appBar is not included
-  final EdgeInsetsGeometry itemPadding;
-
   /// Padding between appBar and underneath items
   /// Won't take effect if appBar is not set
   final EdgeInsetsGeometry appBarUnderneathPadding;
@@ -121,10 +125,8 @@ class MuninRefresh extends StatefulWidget {
     this.noMoreItemsToLoad = false,
     this.refreshWidgetStyle = RefreshWidgetStyle.Adaptive,
     this.separatorBuilder = _defaultDividerBuilder,
-    this.itemPadding = const EdgeInsets.symmetric(
-        horizontal: defaultPortraitHorizontalPadding),
     this.appBarUnderneathPadding = const EdgeInsets.only(
-        bottom: largeVerticalPadding),
+        bottom: largeOffset),
     this.materialRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
@@ -455,25 +457,10 @@ class MuninRefreshState extends State<MuninRefresh> {
           childCount: 1,
         ),
       );
-      if (widget.itemPadding != null) {
-        slivers.add(SliverPadding(
-          padding: widget.itemPadding,
-          sliver: emptyAfterRefreshWidget,
-        ));
-      } else {
-        slivers.add(emptyAfterRefreshWidget);
-      }
+      slivers.add(emptyAfterRefreshWidget);
     }
 
-    SliverList sliverItemsList = _buildItemsSliverList();
-    if (widget.itemPadding != null) {
-      slivers.add(SliverPadding(
-        padding: widget.itemPadding,
-        sliver: sliverItemsList,
-      ));
-    } else {
-      slivers.add(sliverItemsList);
-    }
+    slivers.add(_buildItemsSliverList());
 
     /// It doesn't make sense(and it's theoretically not possible) to show a
     /// load more status widget if there is currently no item. So we assume

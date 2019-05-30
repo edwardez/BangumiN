@@ -13,7 +13,7 @@ class SearchResultDelegate extends StatelessWidget {
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   static const double portraitHorizontalPadding =
-      defaultPortraitHorizontalPadding;
+      defaultPortraitHorizontalOffset;
 
   const SearchResultDelegate(
       {Key key, @required this.searchResult, @required this.preferredSubjectInfoLanguage})

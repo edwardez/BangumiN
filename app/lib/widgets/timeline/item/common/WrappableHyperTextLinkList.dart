@@ -31,7 +31,8 @@ class WrappableHyperTextLinkList extends StatelessWidget {
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: hyperBangumiItem.contentType,
                 id: hyperBangumiItem.id,
-                context: context
+                context: context,
+                pageUrl: hyperBangumiItem.pageUrl
             ),
           )
       );

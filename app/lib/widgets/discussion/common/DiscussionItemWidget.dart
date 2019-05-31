@@ -11,8 +11,7 @@ import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class DiscussionItemWidget extends StatelessWidget {
-  static const titleMaxLines = 2;
-  static const subTitleMaxLines = 2;
+  static const titleMaxLines = 3;
 
   final DiscussionItem discussionItem;
 
@@ -139,11 +138,14 @@ class DiscussionItemWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${discussionItem.subTitle}',
+                  Text(
+                    '${discussionItem.subTitle}',
                       style: Theme
                           .of(context)
                           .textTheme
-                          .caption),
+                          .caption,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   Text(
                     discussionItem.title,
                     maxLines: titleMaxLines,
@@ -151,12 +153,15 @@ class DiscussionItemWidget extends StatelessWidget {
                         .of(context)
                         .textTheme
                         .body2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text('$discussionUpdateTime',
                       style: Theme
                           .of(context)
                           .textTheme
-                          .caption),
+                          .caption,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),

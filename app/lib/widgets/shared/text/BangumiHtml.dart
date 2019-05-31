@@ -5,7 +5,7 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/text/SpoilerText.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Renders bangumi html and supports some bangumi-spcf
+/// Renders a html with some bangumi-specific configs
 class BangumiHtml extends StatelessWidget {
   final String html;
 

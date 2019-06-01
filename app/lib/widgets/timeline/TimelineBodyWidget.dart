@@ -24,7 +24,6 @@ import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
@@ -173,9 +172,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
 
     FeedChunks feedChunks = vm.feedChunks;
     return (BuildContext context, int index) {
-      return MuninPadding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: defaultPortraitHorizontalOffset, vertical: largeOffset),
+      return MuninPadding.vertical3cxOffset(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

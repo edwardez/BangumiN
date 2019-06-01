@@ -172,7 +172,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
 
     FeedChunks feedChunks = vm.feedChunks;
     return (BuildContext context, int index) {
-      return MuninPadding.vertical3cxOffset(
+      return MuninPadding.vertical3xOffset(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

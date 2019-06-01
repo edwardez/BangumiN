@@ -35,7 +35,7 @@ class MuninPadding extends StatelessWidget {
         this.padding = vertical1xOffsetPadding,
         super(key: key);
 
-  const MuninPadding.vertical3cxOffset({
+  const MuninPadding.vertical3xOffset({
     Key key,
     @required this.child,
   })

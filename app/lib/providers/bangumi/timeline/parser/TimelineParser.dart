@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
@@ -117,7 +117,7 @@ class TimelineParser {
       int feedId, {
         @required TimelineSource timelineSource,
         Map<String, String> userAvatarImageCache,
-        BangumiUserBasic userBasicInfo,
+        BangumiUserSmall userBasicInfo,
       }) {
     Optional<FeedMetaInfo> maybeUserInfo;
 
@@ -234,7 +234,7 @@ class TimelineParser {
 
   Optional<FeedMetaInfo> parseProfilePageFeedMetaInfo(Element timelineItem,
       int feedId,
-      BangumiUserBasic userBasicInfo,) {
+      BangumiUserSmall userBasicInfo,) {
     Optional<int> maybeUpdateTime =
     parseUpdateTime(timelineItem.querySelector('.date'));
 
@@ -930,7 +930,7 @@ class TimelineParser {
   GetTimelineParsedResponse process(String rawHtml, {
     @required BuiltMap<String, MutedUser> mutedUsers,
     @required TimelineSource timelineSource,
-    @required BangumiUserBasic userInfo,
+    @required BangumiUserSmall userInfo,
     feedLoadType = FeedLoadType.Initial,
     upperFeedId = IntegerHelper.MAX_VALUE,
     lowerFeedId = IntegerHelper.MIN_VALUE,

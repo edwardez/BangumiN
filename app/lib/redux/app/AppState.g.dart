@@ -50,7 +50,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       result
         ..add('currentAuthenticatedUserBasicInfo')
         ..add(serializers.serialize(object.currentAuthenticatedUserBasicInfo,
-            specifiedType: const FullType(BangumiUserBasic)));
+            specifiedType: const FullType(BangumiUserSmall)));
     }
 
     return result;
@@ -70,8 +70,8 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'currentAuthenticatedUserBasicInfo':
           result.currentAuthenticatedUserBasicInfo.replace(
               serializers.deserialize(value,
-                      specifiedType: const FullType(BangumiUserBasic))
-                  as BangumiUserBasic);
+                  specifiedType: const FullType(BangumiUserSmall))
+              as BangumiUserSmall);
           break;
         case 'isAuthenticated':
           result.isAuthenticated = serializers.deserialize(value,
@@ -119,7 +119,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 
 class _$AppState extends AppState {
   @override
-  final BangumiUserBasic currentAuthenticatedUserBasicInfo;
+  final BangumiUserSmall currentAuthenticatedUserBasicInfo;
   @override
   final bool isAuthenticated;
   @override
@@ -254,12 +254,13 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
-  BangumiUserBasicBuilder _currentAuthenticatedUserBasicInfo;
-  BangumiUserBasicBuilder get currentAuthenticatedUserBasicInfo =>
+  BangumiUserSmallBuilder _currentAuthenticatedUserBasicInfo;
+
+  BangumiUserSmallBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
-          new BangumiUserBasicBuilder();
+      new BangumiUserSmallBuilder();
   set currentAuthenticatedUserBasicInfo(
-          BangumiUserBasicBuilder currentAuthenticatedUserBasicInfo) =>
+      BangumiUserSmallBuilder currentAuthenticatedUserBasicInfo) =>
       _$this._currentAuthenticatedUserBasicInfo =
           currentAuthenticatedUserBasicInfo;
 

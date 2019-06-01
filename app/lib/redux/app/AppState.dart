@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
 import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
@@ -17,7 +17,7 @@ part 'AppState.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   @nullable
-  BangumiUserBasic get currentAuthenticatedUserBasicInfo;
+  BangumiUserSmall get currentAuthenticatedUserBasicInfo;
 
   bool get isAuthenticated;
 

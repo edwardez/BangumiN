@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/SearchResult.dart';
@@ -46,15 +46,15 @@ abstract class UserSearchResult
         UserSearchResult.serializer, json.decode(jsonString));
   }
 
-  static UserSearchResult fromBangumiUserBasic(
-      BangumiUserBasic bangumiUserBasic) {
+  static UserSearchResult fromBangumiUserSmall(
+      BangumiUserSmall bangumiUserSmall) {
     return UserSearchResult((b) =>
     b
-      ..id = bangumiUserBasic.id
-      ..name = bangumiUserBasic.nickname
-      ..username = bangumiUserBasic.username
+      ..id = bangumiUserSmall.id
+      ..name = bangumiUserSmall.nickname
+      ..username = bangumiUserSmall.username
       ..image.replace(
-          BangumiImage.fromBangumiUserAvatar(bangumiUserBasic.avatar))
+          BangumiImage.fromBangumiUserAvatar(bangumiUserSmall.avatar))
       ..type = SearchType.User);
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -27,7 +27,7 @@ Stream<dynamic> _getDiscussion(BangumiUserService bangumiUserService,
       bangumiUserService.getUserPreview(action.username)
     ]);
 
-    BangumiUserBasic basicInfo = results[0];
+    BangumiUserSmall basicInfo = results[0];
     UserProfile profile = results[1];
 
     profile = profile.rebuild((b) => b..basicInfo.replace(basicInfo));

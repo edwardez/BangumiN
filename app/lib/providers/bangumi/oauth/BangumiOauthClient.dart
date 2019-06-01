@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:quiver/time.dart';
@@ -21,7 +21,7 @@ class BangumiOauthClient extends Client {
 
   /// Current authenticated user info
   /// This field might be null after initialization
-  BangumiUserBasic currentUser;
+  BangumiUserSmall currentUser;
 
   /// A storage service that's used to persist oauth credentials
   final SecureStorageService secureStorageService;

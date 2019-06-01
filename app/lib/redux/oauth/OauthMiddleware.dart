@@ -3,7 +3,7 @@ import 'dart:math' show min;
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
@@ -67,7 +67,7 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
       );
       await oauthService.initializeAuthentication();
       int userId = await oauthService.verifyUser();
-      BangumiUserBasic userInfo =
+      BangumiUserSmall userInfo =
       await bangumiUserService.getUserBasicInfo(userId.toString());
 
       oauthService.client.currentUser = userInfo;

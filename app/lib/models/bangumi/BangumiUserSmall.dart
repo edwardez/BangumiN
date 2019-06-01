@@ -1,5 +1,3 @@
-library bangumi_user_basic;
-
 import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
@@ -7,14 +5,14 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'BangumiUserBaic.g.dart';
+part 'BangumiUserSmall.g.dart';
 
-abstract class BangumiUserBasic
-    implements Built<BangumiUserBasic, BangumiUserBasicBuilder> {
-  BangumiUserBasic._();
+abstract class BangumiUserSmall
+    implements Built<BangumiUserSmall, BangumiUserSmallBuilder> {
+  BangumiUserSmall._();
 
-  factory BangumiUserBasic([updates(BangumiUserBasicBuilder b)]) =
-      _$BangumiUserBasic;
+  factory BangumiUserSmall([updates(BangumiUserSmallBuilder b)]) =
+  _$BangumiUserSmall;
 
   /// Unique identifier for bangumi user as a pure digit
   @BuiltValueField(wireName: 'id')
@@ -46,14 +44,14 @@ abstract class BangumiUserBasic
 
   String toJson() {
     return json
-        .encode(serializers.serializeWith(BangumiUserBasic.serializer, this));
+        .encode(serializers.serializeWith(BangumiUserSmall.serializer, this));
   }
 
-  static BangumiUserBasic fromJson(String jsonString) {
+  static BangumiUserSmall fromJson(String jsonString) {
     return serializers.deserializeWith(
-        BangumiUserBasic.serializer, json.decode(jsonString));
+        BangumiUserSmall.serializer, json.decode(jsonString));
   }
 
-  static Serializer<BangumiUserBasic> get serializer =>
-      _$bangumiUserBasicSerializer;
+  static Serializer<BangumiUserSmall> get serializer =>
+      _$bangumiUserSmallSerializer;
 }

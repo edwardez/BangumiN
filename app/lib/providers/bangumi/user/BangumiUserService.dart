@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
@@ -24,19 +24,19 @@ class BangumiUserService {
         assert(sharedPreferenceService != null);
 
   // persist current bangumi user basic info through api
-  Future<BangumiUserBasic> persistCurrentUserBasicInfo(String username) async {
-    BangumiUserBasic basicInfo = await getUserBasicInfo(username);
+  Future<BangumiUserSmall> persistCurrentUserBasicInfo(String username) async {
+    BangumiUserSmall basicInfo = await getUserBasicInfo(username);
     return basicInfo;
   }
 
   // get bangumi user basic info through api
-  Future<BangumiUserBasic> getUserBasicInfo(String username) async {
+  Future<BangumiUserSmall> getUserBasicInfo(String username) async {
     final response =
     await oauthClient.client.get('https://${Application.environmentValue
         .bangumiApiHost}/user/$username');
 
-    BangumiUserBasic basicInfo =
-    BangumiUserBasic.fromJson(response.body);
+    BangumiUserSmall basicInfo =
+    BangumiUserSmall.fromJson(response.body);
     return basicInfo;
   }
 

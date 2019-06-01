@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
@@ -58,7 +58,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
     int nextPageNum;
 
     FeedChunks feedChunks;
-    BangumiUserBasic userInfo;
+    BangumiUserSmall userInfo;
 
     if (action.getTimelineRequest.timelineSource ==
         TimelineSource.UserProfile) {

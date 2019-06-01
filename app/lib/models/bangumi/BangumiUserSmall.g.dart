@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of bangumi_user_basic;
+part of 'BangumiUserSmall.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<BangumiUserBasic> _$bangumiUserBasicSerializer =
-    new _$BangumiUserBasicSerializer();
+Serializer<BangumiUserSmall> _$bangumiUserSmallSerializer =
+new _$BangumiUserSmallSerializer();
 
-class _$BangumiUserBasicSerializer
-    implements StructuredSerializer<BangumiUserBasic> {
+class _$BangumiUserSmallSerializer
+    implements StructuredSerializer<BangumiUserSmall> {
   @override
-  final Iterable<Type> types = const [BangumiUserBasic, _$BangumiUserBasic];
+  final Iterable<Type> types = const [BangumiUserSmall, _$BangumiUserSmall];
   @override
-  final String wireName = 'BangumiUserBasic';
+  final String wireName = 'BangumiUserSmall';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiUserBasic object,
+  Iterable serialize(Serializers serializers, BangumiUserSmall object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -44,9 +44,9 @@ class _$BangumiUserBasicSerializer
   }
 
   @override
-  BangumiUserBasic deserialize(Serializers serializers, Iterable serialized,
+  BangumiUserSmall deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new BangumiUserBasicBuilder();
+    final result = new BangumiUserSmallBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -90,7 +90,7 @@ class _$BangumiUserBasicSerializer
   }
 }
 
-class _$BangumiUserBasic extends BangumiUserBasic {
+class _$BangumiUserSmall extends BangumiUserSmall {
   @override
   final int id;
   @override
@@ -106,11 +106,12 @@ class _$BangumiUserBasic extends BangumiUserBasic {
   @override
   final int userGroup;
 
-  factory _$BangumiUserBasic(
-          [void Function(BangumiUserBasicBuilder) updates]) =>
-      (new BangumiUserBasicBuilder()..update(updates)).build();
+  factory _$BangumiUserSmall(
+      [void Function(BangumiUserSmallBuilder) updates]) =>
+      (new BangumiUserSmallBuilder()
+        ..update(updates)).build();
 
-  _$BangumiUserBasic._(
+  _$BangumiUserSmall._(
       {this.id,
       this.url,
       this.username,
@@ -120,40 +121,41 @@ class _$BangumiUserBasic extends BangumiUserBasic {
       this.userGroup})
       : super._() {
     if (id == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'id');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'id');
     }
     if (url == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'url');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'url');
     }
     if (username == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'username');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'username');
     }
     if (nickname == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'nickname');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'nickname');
     }
     if (avatar == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'avatar');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'avatar');
     }
     if (sign == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'sign');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'sign');
     }
     if (userGroup == null) {
-      throw new BuiltValueNullFieldError('BangumiUserBasic', 'userGroup');
+      throw new BuiltValueNullFieldError('BangumiUserSmall', 'userGroup');
     }
   }
 
   @override
-  BangumiUserBasic rebuild(void Function(BangumiUserBasicBuilder) updates) =>
+  BangumiUserSmall rebuild(void Function(BangumiUserSmallBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  BangumiUserBasicBuilder toBuilder() =>
-      new BangumiUserBasicBuilder()..replace(this);
+  BangumiUserSmallBuilder toBuilder() =>
+      new BangumiUserSmallBuilder()
+        ..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is BangumiUserBasic &&
+    return other is BangumiUserSmall &&
         id == other.id &&
         url == other.url &&
         username == other.username &&
@@ -179,7 +181,7 @@ class _$BangumiUserBasic extends BangumiUserBasic {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('BangumiUserBasic')
+    return (newBuiltValueToStringHelper('BangumiUserSmall')
           ..add('id', id)
           ..add('url', url)
           ..add('username', username)
@@ -191,9 +193,9 @@ class _$BangumiUserBasic extends BangumiUserBasic {
   }
 }
 
-class BangumiUserBasicBuilder
-    implements Builder<BangumiUserBasic, BangumiUserBasicBuilder> {
-  _$BangumiUserBasic _$v;
+class BangumiUserSmallBuilder
+    implements Builder<BangumiUserSmall, BangumiUserSmallBuilder> {
+  _$BangumiUserSmall _$v;
 
   int _id;
   int get id => _$this._id;
@@ -224,9 +226,9 @@ class BangumiUserBasicBuilder
   int get userGroup => _$this._userGroup;
   set userGroup(int userGroup) => _$this._userGroup = userGroup;
 
-  BangumiUserBasicBuilder();
+  BangumiUserSmallBuilder();
 
-  BangumiUserBasicBuilder get _$this {
+  BangumiUserSmallBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
       _url = _$v.url;
@@ -241,24 +243,24 @@ class BangumiUserBasicBuilder
   }
 
   @override
-  void replace(BangumiUserBasic other) {
+  void replace(BangumiUserSmall other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$BangumiUserBasic;
+    _$v = other as _$BangumiUserSmall;
   }
 
   @override
-  void update(void Function(BangumiUserBasicBuilder) updates) {
+  void update(void Function(BangumiUserSmallBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$BangumiUserBasic build() {
-    _$BangumiUserBasic _$result;
+  _$BangumiUserSmall build() {
+    _$BangumiUserSmall _$result;
     try {
       _$result = _$v ??
-          new _$BangumiUserBasic._(
+          new _$BangumiUserSmall._(
               id: id,
               url: url,
               username: username,
@@ -273,7 +275,7 @@ class BangumiUserBasicBuilder
         avatar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'BangumiUserBasic', _$failedField, e.toString());
+            'BangumiUserSmall', _$failedField, e.toString());
       }
       rethrow;
     }

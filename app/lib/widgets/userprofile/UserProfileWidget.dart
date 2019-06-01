@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
@@ -405,7 +405,7 @@ class _ViewModel {
       }
 
       final action = MuteUserAction(
-          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+          mutedUser: MutedUser.fromBangumiUserSmall(userProfile.basicInfo));
       store.dispatch(action);
       store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
@@ -417,7 +417,7 @@ class _ViewModel {
       }
 
       final action = UnmuteUserAction(
-          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+          mutedUser: MutedUser.fromBangumiUserSmall(userProfile.basicInfo));
       store.dispatch(action);
       store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
@@ -431,7 +431,7 @@ class _ViewModel {
 
     bool _isCurrentAppUser() {
       bool isCurrentAppUser;
-      BangumiUserBasic currentUser =
+      BangumiUserSmall currentUser =
           store.state.currentAuthenticatedUserBasicInfo;
 
       /// If [username] is the same as current app user username

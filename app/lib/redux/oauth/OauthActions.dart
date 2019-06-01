@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 
 class LoginPage {
   final BuildContext context;
@@ -27,7 +27,7 @@ class OAuthLoginFailure {
 }
 
 class OAuthLoginSuccess {
-  final BangumiUserBasic userInfo;
+  final BangumiUserSmall userInfo;
 
   OAuthLoginSuccess(this.userInfo);
 }

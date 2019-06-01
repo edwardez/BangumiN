@@ -47,7 +47,7 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
       result
         ..add('basicInfo')
         ..add(serializers.serialize(object.basicInfo,
-            specifiedType: const FullType(BangumiUserBasic)));
+            specifiedType: const FullType(BangumiUserSmall)));
     }
 
     return result;
@@ -74,8 +74,8 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
           break;
         case 'basicInfo':
           result.basicInfo.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(BangumiUserBasic))
-              as BangumiUserBasic);
+              specifiedType: const FullType(BangumiUserSmall))
+          as BangumiUserSmall);
           break;
         case 'networkServiceTags':
           result.networkServiceTags.replace(serializers.deserialize(value,
@@ -114,7 +114,7 @@ class _$UserProfile extends UserProfile {
   @override
   final String introductionInPlainText;
   @override
-  final BangumiUserBasic basicInfo;
+  final BangumiUserSmall basicInfo;
   @override
   final BuiltList<NetworkServiceTag> networkServiceTags;
   @override
@@ -220,10 +220,12 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
   set introductionInPlainText(String introductionInPlainText) =>
       _$this._introductionInPlainText = introductionInPlainText;
 
-  BangumiUserBasicBuilder _basicInfo;
-  BangumiUserBasicBuilder get basicInfo =>
-      _$this._basicInfo ??= new BangumiUserBasicBuilder();
-  set basicInfo(BangumiUserBasicBuilder basicInfo) =>
+  BangumiUserSmallBuilder _basicInfo;
+
+  BangumiUserSmallBuilder get basicInfo =>
+      _$this._basicInfo ??= new BangumiUserSmallBuilder();
+
+  set basicInfo(BangumiUserSmallBuilder basicInfo) =>
       _$this._basicInfo = basicInfo;
 
   ListBuilder<NetworkServiceTag> _networkServiceTags;

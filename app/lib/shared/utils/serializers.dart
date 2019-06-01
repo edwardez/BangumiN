@@ -3,8 +3,8 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
 import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
@@ -120,7 +120,7 @@ part 'serializers.g.dart';
   GetTimelineRequest,
   TimelineCategoryFilter,
   TimelineSource,
-  BangumiUserBasic,
+  BangumiUserSmall,
   BangumiUserAvatar,
   BangumiUserIdentity,
   BangumiCookieCredentials,

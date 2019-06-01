@@ -19,7 +19,7 @@ class BangumiHtml extends StatelessWidget {
         bodyPadding: EdgeInsets.zero,
         //Optional parameters:
         builderCallback: (NodeMetadata meta, dom.Element e) {
-          if (e.localName == 'span' &&
+          if (e.localName == 'span' && e.attributes['style'] != null &&
               e.attributes['style'].startsWith('background-color:#555')) {
             return lazySet(
                 meta,

@@ -22,7 +22,7 @@ dependencies:
   built_collection: ^4.2.1
   built_value: ^6.5.0
   #  please pay extra attention while upgrading cached_network_image as there is no test for this dep
-  cached_network_image: 0.7.0
+  cached_network_image: 0.8.0
   cookie_jar: ^1.0.0
   expandable: ^2.1.1
   dio: ^2.1.3
@@ -30,7 +30,6 @@ dependencies:
   firebase_crashlytics: ^0.0.4+3
   fluro: ^1.4.0
   flutter_easyrefresh: ^1.2.7
-  flutter_html: ^0.9.6
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.1
   flutter_svg: ^0.12.4
@@ -39,8 +38,9 @@ dependencies:
   flutter_webview_plugin:
     git:
       url: git://github.com/edwardez/flutter_webview_plugin.git
+  flutter_widget_from_html: ^0.2.1+1
   get_it: ^1.0.3
-  html: ^0.13.4
+  html: ^0.14.0+2
   http: ^0.12.0
   intl: ^0.15.8
   image_gallery_saver: ^1.1.0

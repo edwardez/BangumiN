@@ -1,6 +1,8 @@
 import 'package:munin/config/application.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
+final bangumiNonCdnHostUri = Uri.parse(
+    'https://${Application.environmentValue.bangumiNonCdnHost}');
 
 final String bangumiHomePageUrl =
     'https://${Application.environmentValue.bangumiMainHost}';
@@ -18,3 +20,4 @@ final String bangumiTextOnlyGroupIcon = 'https://lain.bgm.tv/pic/icon/m/no_icon.
 
 const String checkWebVersionPrompt = '查看网页版';
 const String appOrBangumiHasAnError = '应用或bangumi出错';
+

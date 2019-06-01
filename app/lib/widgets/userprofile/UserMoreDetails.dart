@@ -3,7 +3,7 @@ import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/widgets/UserProfile/NetworkServiceTagWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/text/BangumiHtml.dart';
+import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/strings.dart';
 

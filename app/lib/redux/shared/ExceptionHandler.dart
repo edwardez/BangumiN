@@ -10,11 +10,14 @@ enum GeneralExceptionHandlerResult {
   /// is needed
   Success,
 
-  /// generalExceptionHandler is unable to handle this exception
+  /// generalExceptionHandler decides this situation can be silently skipped
   Skipped,
 
   /// Caller is responsible for initiating a re-authentication
-  RequiresReAuthentication
+  RequiresReAuthentication,
+
+  /// generalExceptionHandler is unable to handle this situation
+  Unknown,
 }
 
 bool isNeedsReAuthenticationException(dynamic error) {
@@ -73,4 +76,7 @@ Future<GeneralExceptionHandlerResult> generalExceptionHandler(
           );
         });
   }
+
+
+  return GeneralExceptionHandlerResult.Unknown;
 }

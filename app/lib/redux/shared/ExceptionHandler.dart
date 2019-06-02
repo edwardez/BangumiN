@@ -73,6 +73,4 @@ Future<GeneralExceptionHandlerResult> generalExceptionHandler(
           );
         });
   }
-
-  return GeneralExceptionHandlerResult.Skipped;
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/widgets/UserProfile/UserMoreDetails.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:munin/widgets/userprofile/UserMoreDetails.dart';
 import 'package:quiver/strings.dart';
 
 /// A few lines of introduction with a 'read more' button on the right
@@ -52,7 +52,9 @@ class UserIntroductionPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
-          return UserMoreDetails(profile: profile);
+              return Scaffold(
+                body: UserMoreDetails(profile: profile),
+              );
         }));
       },
     );

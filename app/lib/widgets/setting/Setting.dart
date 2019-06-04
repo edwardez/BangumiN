@@ -5,7 +5,7 @@ import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,7 +13,7 @@ class SettingHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWithSliverAppBar(
+    return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text("设置"),
       enableBottomSafeArea: false,
       safeAreaChildPadding:

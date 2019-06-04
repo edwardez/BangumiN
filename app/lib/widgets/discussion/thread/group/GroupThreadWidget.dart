@@ -13,7 +13,7 @@ import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:redux/redux.dart';
 
 /// A single discussion thread.
@@ -64,7 +64,7 @@ class GroupThreadWidget extends StatelessWidget {
             ));
           }
 
-          return ScaffoldWithSliverAppBar(
+          return ScrollViewWithSliverAppBar(
             appBarMainTitle: Text(''),
             appBarSecondaryTitle: Text(vm.thread.title),
             changeAppBarTitleOnScroll: true,

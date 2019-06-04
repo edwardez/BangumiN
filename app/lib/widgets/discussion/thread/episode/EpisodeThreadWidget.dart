@@ -14,7 +14,7 @@ import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:redux/redux.dart';
 
@@ -94,7 +94,7 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
             ));
           }
 
-          return ScaffoldWithSliverAppBar(
+          return ScrollViewWithSliverAppBar(
             appBarMainTitle: Text('章节讨论'),
             appBarSecondaryTitle: AppBarTitleForSubject(
               title: vm.thread.title,

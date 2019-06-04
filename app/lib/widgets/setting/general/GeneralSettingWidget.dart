@@ -12,7 +12,7 @@ import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/general/PreferredLanguageWidget.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/common/TransparentDividerThemeContext.dart';
 import 'package:redux/redux.dart';
 
@@ -23,7 +23,7 @@ class GeneralSettingWidget extends StatelessWidget {
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
-        return ScaffoldWithSliverAppBar(
+        return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding: const EdgeInsets.only(

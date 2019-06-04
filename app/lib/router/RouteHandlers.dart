@@ -30,7 +30,9 @@ var loginRouteHandler = Handler(
 
 var homeRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MuninHomePage(generalSetting: GeneralSetting(),);
+      return MuninHomePage(
+        generalSetting: GeneralSetting(),
+      );
     });
 
 var bangumiOauthRouteHandler = Handler(
@@ -92,12 +94,10 @@ var groupThreadRouteHandler = Handler(
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest(
-              (b) =>
-          b
-            ..threadType = ThreadType.Group
-            ..id = threadId
-      );
+      GetThreadRequest request = GetThreadRequest((b) =>
+      b
+        ..threadType = ThreadType.Group
+        ..id = threadId);
       return Scaffold(
         body: GroupThreadWidget(
           request: request,
@@ -105,18 +105,15 @@ var groupThreadRouteHandler = Handler(
       );
     });
 
-
 var episodeThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest(
-              (b) =>
-          b
-            ..threadType = ThreadType.Episode
-            ..id = threadId
-      );
+      GetThreadRequest request = GetThreadRequest((b) =>
+      b
+        ..threadType = ThreadType.Episode
+        ..id = threadId);
       return Scaffold(
         body: EpisodeThreadWidget(
           request: request,
@@ -129,12 +126,10 @@ var subjectTopicThreadRouteHandler = Handler(
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest(
-              (b) =>
-          b
-            ..threadType = ThreadType.SubjectTopic
-            ..id = threadId
-      );
+      GetThreadRequest request = GetThreadRequest((b) =>
+      b
+        ..threadType = ThreadType.SubjectTopic
+        ..id = threadId);
       return Scaffold(
         body: SubjectTopicThreadWidget(
           request: request,
@@ -147,12 +142,10 @@ var blogThreadRouteHandler = Handler(
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest(
-              (b) =>
-          b
-            ..threadType = ThreadType.Blog
-            ..id = threadId
-      );
+      GetThreadRequest request = GetThreadRequest((b) =>
+      b
+        ..threadType = ThreadType.Blog
+        ..id = threadId);
       return Scaffold(
         body: BlogThreadWidget(
           request: request,
@@ -163,26 +156,33 @@ var blogThreadRouteHandler = Handler(
 /// Setting
 var settingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return SettingHome();
+      return Scaffold(
+        body: SettingHome(),
+      );
     });
 
 var generalSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return GeneralSettingWidget();
+      return Scaffold(
+        body: GeneralSettingWidget(),
+      );
     });
 
 var themeSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return ThemeSettingWidget();
+      return Scaffold(
+        body: ThemeSettingWidget(),
+      );
     });
 
 var muteSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MuteSettingWidget();
+      return Scaffold(
+        body: MuteSettingWidget(),
+      );
     });
 
 var muteSettingBatchImportUsersRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return ImportBlockedBangumiUsersWidget();
     });
-

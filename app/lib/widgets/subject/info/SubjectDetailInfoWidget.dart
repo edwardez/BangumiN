@@ -6,7 +6,7 @@ import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:redux/redux.dart';
@@ -74,7 +74,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
           );
         }
 
-        return ScaffoldWithSliverAppBar(
+        return ScrollViewWithSliverAppBar(
           appBarMainTitle: Text('介绍与制作人员'),
           nestedScrollViewBody: _buildDetailInfoBody(context, vm.subject),
           safeAreaChildPadding: const EdgeInsets.only(

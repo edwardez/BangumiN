@@ -9,7 +9,7 @@ import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:munin/widgets/subject/mainpage/CharactersPreview.dart';
 import 'package:munin/widgets/subject/mainpage/CommentsPreview.dart';
@@ -87,7 +87,7 @@ class SubjectWidget extends StatelessWidget {
       child: CommentsPreview(subject: subject),
     ));
 
-    return ScaffoldWithSliverAppBar(
+    return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
       appBarSecondaryTitle:
       Text(preferredSubjectTitleFromSubjectBase(

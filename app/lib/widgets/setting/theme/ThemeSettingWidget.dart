@@ -9,7 +9,7 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
 import 'package:munin/widgets/setting/theme/FollowScreenBrightnessThemeOptions.dart';
 import 'package:munin/widgets/setting/theme/ManualThemeOptions.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:redux/redux.dart';
 
 class ThemeSettingWidget extends StatefulWidget {
@@ -78,7 +78,7 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
             persistToDisk: true));
       },
       builder: (BuildContext context, _ViewModel vm) {
-        return ScaffoldWithSliverAppBar(
+        return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding: const EdgeInsets.only(

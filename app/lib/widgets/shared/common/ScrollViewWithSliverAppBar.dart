@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
 
 /// uses [NestedScrollView] to implement a [SliverAppBar]
-class ScaffoldWithSliverAppBar extends StatelessWidget {
+class ScrollViewWithSliverAppBar extends StatelessWidget {
   /// be aware that if appBarAutomaticallyImplyLeading is set to false
   /// User might not be able to go back(automaticallyImplyLeading might generate
   /// a 'go back' button for user)
@@ -28,7 +28,7 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
   final bool enableRightSafeArea;
   final bool enableBottomSafeArea;
 
-  const ScaffoldWithSliverAppBar({
+  const ScrollViewWithSliverAppBar({
     Key key,
     @required this.nestedScrollViewBody,
     @required this.appBarMainTitle,
@@ -74,30 +74,28 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
     assert(changeAppBarTitleOnScroll && appBarSecondaryTitle != null ||
         !changeAppBarTitleOnScroll && appBarSecondaryTitle == null);
 
-    return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                automaticallyImplyLeading: appBarAutomaticallyImplyLeading,
-                pinned: appBarAutomaticallyImplyLeading,
-                actions: appBarActions,
-                title: _buildAppBarTitle(context, changeAppBarTitleOnScroll,
-                    innerBoxIsScrolled, appBarMainTitle, appBarSecondaryTitle),
-              )
-            ];
-          },
-          body: Padding(
-            padding: safeAreaChildPadding,
-            child: nestedScrollViewBody,
-          ),
+    return SafeArea(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              automaticallyImplyLeading: appBarAutomaticallyImplyLeading,
+              pinned: appBarAutomaticallyImplyLeading,
+              actions: appBarActions,
+              title: _buildAppBarTitle(context, changeAppBarTitleOnScroll,
+                  innerBoxIsScrolled, appBarMainTitle, appBarSecondaryTitle),
+            )
+          ];
+        },
+        body: Padding(
+          padding: safeAreaChildPadding,
+          child: nestedScrollViewBody,
         ),
-        left: enableLeftSafeArea,
-        top: enableTopSafeArea,
-        right: enableRightSafeArea,
-        bottom: enableBottomSafeArea,
       ),
+      left: enableLeftSafeArea,
+      top: enableTopSafeArea,
+      right: enableRightSafeArea,
+      bottom: enableBottomSafeArea,
     );
   }
 }

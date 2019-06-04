@@ -221,10 +221,8 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
       _$this._introductionInPlainText = introductionInPlainText;
 
   BangumiUserSmallBuilder _basicInfo;
-
   BangumiUserSmallBuilder get basicInfo =>
       _$this._basicInfo ??= new BangumiUserSmallBuilder();
-
   set basicInfo(BangumiUserSmallBuilder basicInfo) =>
       _$this._basicInfo = basicInfo;
 

@@ -7,8 +7,11 @@ const baseOffset = 4.0;
 const onePixelOffset = 1.0;
 const smallOffset = baseOffset;
 const mediumOffset = baseOffset * 2;
-const largeOffset = baseOffset * 3;
+const baseOffset3x = baseOffset * 3;
+const largeOffset = baseOffset3x;
 const baseOffset4x = baseOffset * 4;
+
+const bottomOffset = baseOffset * 10;
 
 
 const defaultPortraitHorizontalOffset = baseOffset * 6;

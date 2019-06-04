@@ -4,8 +4,8 @@ import 'package:munin/redux/shared/LoadingStatus.dart';
 class FailureAction {
   final LoadingStatus loadingStatus;
 
-  FailureAction({@required this.loadingStatus});
+  const FailureAction({@required this.loadingStatus});
 
-  FailureAction.fromUnknownException()
+  const FailureAction.fromUnknownException()
       : this(loadingStatus: LoadingStatus.UnknownException);
 }

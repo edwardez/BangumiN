@@ -8,7 +8,8 @@ abstract class SubjectBase {
   @BuiltValueField(wireName: 'id')
   int get id;
 
-  /// this value is from Bangumi API
+  /// This value is from Bangumi API, it might be null if data is obtained by
+  /// html parser. And even api might not return this value.
   @nullable
   @BuiltValueField(wireName: 'url')
   String get pageUrlFromApi;

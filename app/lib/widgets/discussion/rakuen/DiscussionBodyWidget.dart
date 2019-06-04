@@ -153,7 +153,8 @@ class _ViewModel {
 
     return _ViewModel(
       getDiscussionRequest: getDiscussionRequest,
-      rakuenTopics: store.state.discussionState.results[getDiscussionRequest],
+      rakuenTopics: store.state.discussionState
+          .discussions[getDiscussionRequest],
       getRakuenTopics: _getRakuenTopics,
       muteSetting: store.state.settingState.muteSetting,
       muteGroup: _muteGroup,

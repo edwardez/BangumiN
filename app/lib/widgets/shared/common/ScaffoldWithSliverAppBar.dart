@@ -32,7 +32,7 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
     Key key,
     @required this.nestedScrollViewBody,
     @required this.appBarMainTitle,
-    this.appBarSecondaryTitle = const Text(''),
+    this.appBarSecondaryTitle,
     this.appBarAutomaticallyImplyLeading = true,
     this.appBarPinned = true,
     this.changeAppBarTitleOnScroll = false,
@@ -41,17 +41,18 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
     this.safeAreaChildPadding = const EdgeInsets.only(
         left: defaultPortraitHorizontalOffset,
         right: defaultPortraitHorizontalOffset,
-        top: largeOffset
-    ),
+        top: largeOffset),
     this.enableLeftSafeArea = true,
     this.enableTopSafeArea = false,
     this.enableRightSafeArea = true,
     this.enableBottomSafeArea = true,
   }) : super(key: key);
 
-  _buildAppBarTitle(BuildContext context, bool changeAppBarTitleOnScroll,
+  _buildAppBarTitle(BuildContext context,
+      bool changeAppBarTitleOnScroll,
       bool innerBoxIsScrolled,
-      Widget appBarMainTitle, Widget appBarSecondaryTitle) {
+      Widget appBarMainTitle,
+      Widget appBarSecondaryTitle) {
     if (!changeAppBarTitleOnScroll) {
       return appBarMainTitle;
     }
@@ -70,6 +71,9 @@ class ScaffoldWithSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(changeAppBarTitleOnScroll && appBarSecondaryTitle != null ||
+        !changeAppBarTitleOnScroll && appBarSecondaryTitle == null);
+
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(

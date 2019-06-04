@@ -201,7 +201,8 @@ FeedMetaInfo updateUserAction(Element singleTimelineContent,
 }
 
 final RegExp dummyTimeInfoRegex = RegExp(r'@|\.');
-/// Parse a bangumi time string into an absolute [DateTime] object
+
+/// Parses a bangumi time string into an absolute [DateTime] object
 /// bangumi might represents time in three format
 /// 1. English relative time, 1s ago
 /// 2. Chinese relative time, 1小时前
@@ -229,7 +230,7 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
   return parseDateTime(rawTime);
 }
 
-/// Parse time that's in format ` 2019-4-8 02:12` and returns [DateTime]
+/// Parses time in format like `2019-4-8 02:12` and returns [DateTime]
 /// Bangumi always displays timestamp in GMT+8(Beijing time)
 /// Hence +0800 is default time
 DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
@@ -251,7 +252,7 @@ DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
   return DateTime.tryParse(rawTime);
 }
 
-/// Parse english relative time that's in format `1h 1m ago` and returns
+/// Parses english relative time that's in format `1h 1m ago` and returns
 ///// absoluteTime in [DateTime]
 /// Note: some time unit might not be displayed, i.e. bangumi displays
 /// `1d 1h ago` where minutes are not displayed
@@ -294,7 +295,7 @@ DateTime parseEnglishRelativeTime(String rawRelativeTime,) {
   return absoluteTime;
 }
 
-/// Parse Chinese relative time that's in format `1小时30分钟前` and returns
+/// Parses Chinese relative time that's in format `1小时30分钟前` and returns
 /// absoluteTime in [DateTime]
 /// Note: some time unit might not be displayed, i.e. bangumi displays
 /// `1小时30分钟前` where `天` are not displayed

@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-generateOnTapCallbackForBangumiContent({
+Function generateOnTapCallbackForBangumiContent({
   @required BangumiContent contentType,
   @required String id,
   @required BuildContext context,
@@ -28,7 +29,8 @@ generateOnTapCallbackForBangumiContent({
   if (contentType == BangumiContent.Subject) {
     return () {
       Application.router.navigateTo(context,
-          Routes.subjectMainPageRoute.replaceAll(RoutesVariable.subjectId, id),
+          Routes.subjectMainPageRoute.replaceAll(
+              RoutesVariable.subjectIdParam, id),
           transition: TransitionType.native);
     };
   }
@@ -36,17 +38,54 @@ generateOnTapCallbackForBangumiContent({
   if (contentType == BangumiContent.User) {
     return () {
       Application.router.navigateTo(context,
-          Routes.userProfileRoute.replaceAll(RoutesVariable.username, id),
+          Routes.userProfileRoute.replaceAll(RoutesVariable.usernameParam, id),
           transition: TransitionType.native);
     };
   }
+
+  if (contentType == BangumiContent.GroupTopic) {
+    return () {
+      Application.router.navigateTo(context,
+          Routes.groupThreadRoute.replaceAll(RoutesVariable.threadIdParam, id),
+          transition: TransitionType.native);
+    };
+  }
+
+  if (contentType == BangumiContent.Episode) {
+    return () {
+      Application.router.navigateTo(context,
+          Routes.episodeThreadRoute.replaceAll(
+              RoutesVariable.threadIdParam, id),
+          transition: TransitionType.native);
+    };
+  }
+
+  if (contentType == BangumiContent.SubjectTopic) {
+    return () {
+      Application.router.navigateTo(context,
+          Routes.subjectTopicThreadRoute.replaceAll(
+              RoutesVariable.threadIdParam, id),
+          transition: TransitionType.native);
+    };
+  }
+
+  if (contentType == BangumiContent.Blog) {
+    return () {
+      Application.router.navigateTo(context,
+          Routes.blogThreadRoute.replaceAll(RoutesVariable.threadIdParam, id),
+          transition: TransitionType.native);
+    };
+  }
+
 
   String webPageUrl;
 
   if (contentType == BangumiContent.Doujin) {
     webPageUrl = pageUrl;
   } else {
-    webPageUrl = _getWebPageUrlByContentType(contentType, id);
+    generateWebPageUrlByContentType(contentType, id).ifPresent((url) {
+      webPageUrl = url;
+    });
   }
 
   if (webPageUrl != null) {
@@ -64,16 +103,17 @@ generateOnTapCallbackForBangumiContent({
 
 /// checks whether the content type current has a app route page
 /// returns null corresponding Munin page cannot be found
-String _getWebPageUrlByContentType(BangumiContent contentType, String id) {
+Optional<String> generateWebPageUrlByContentType(BangumiContent contentType,
+    String id) {
   String webPageSubRouteName =
   BangumiContent.enumToWebPageRouteName[contentType];
 
   if (webPageSubRouteName == null || id == null) {
-    return null;
+    return Optional.absent();
   }
 
-  return 'https://${Application.environmentValue
-      .bangumiMainHost}/$webPageSubRouteName/$id';
+  return Optional.of('https://${Application.environmentValue
+      .bangumiMainHost}/$webPageSubRouteName/$id');
 }
 
 /// TODO: figure out a better way to calculate text height

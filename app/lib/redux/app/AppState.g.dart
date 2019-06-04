@@ -255,7 +255,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
   BangumiUserSmallBuilder _currentAuthenticatedUserBasicInfo;
-
   BangumiUserSmallBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
       new BangumiUserSmallBuilder();

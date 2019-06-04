@@ -3,9 +3,20 @@ import 'package:flutter/material.dart';
 
 import './RouteHandlers.dart';
 
+/// Parameters of route variables.
+/// To add a new variable, both the variable and its parameter([paramIdentifier] + variableName)
+/// need to be the variable list.
 class RoutesVariable {
-  static const subjectId = ':subjectId';
+  static const paramIdentifier = ':';
+
+  static const subjectId = 'subjectId';
+  static const subjectIdParam = '$paramIdentifier$subjectId';
+
   static const username = ':username';
+  static const usernameParam = '$paramIdentifier$username';
+
+  static const threadId = 'threadId';
+  static const threadIdParam = '$paramIdentifier$threadId';
 }
 
 class Routes {
@@ -13,18 +24,19 @@ class Routes {
   static const loginRoute = "/login";
   static const homeRoute = "/home";
   static const bangumiOauthRoute = "/bangumiOauth";
-  static const subjectMainPageRoute = "/subject/${RoutesVariable.subjectId}";
+  static const subjectMainPageRoute = "/subject/${RoutesVariable
+      .subjectIdParam}";
   static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
-      .subjectId}/info";
+      .subjectIdParam}/info";
   static const subjectCollectionManagementRoute =
-      "/subject/${RoutesVariable.subjectId}/collection";
+      "/subject/${RoutesVariable.subjectIdParam}/collection";
 
   // User
-  static const userProfileRoute = "/user/${RoutesVariable.username}";
+  static const userProfileRoute = "/user/${RoutesVariable.usernameParam}";
   static const userProfileTimelineRoute =
-      "/user/${RoutesVariable.username}/timeline";
+      "/user/${RoutesVariable.usernameParam}/timeline";
   static String composeTimelineMessageRoute =
-      "/user/${RoutesVariable.username}/timeline/new";
+      "/user/${RoutesVariable.usernameParam}/timeline/new";
 
   // Setting
   static const settingRoute = "/setting";
@@ -35,6 +47,16 @@ class Routes {
       "/setting/mute/users/import/bangumi";
 
 
+  /// Discussion
+  static const groupThreadRoute = "/group/topic/${RoutesVariable
+      .threadIdParam}";
+  static const episodeThreadRoute = "/episode/${RoutesVariable.threadIdParam}";
+  static const subjectTopicThreadRoute = "/subject/topic/${RoutesVariable
+      .threadIdParam}";
+
+  /// Blog
+  static const blogThreadRoute = "/blog/${RoutesVariable.threadIdParam}";
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -43,14 +65,26 @@ class Routes {
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);
     router.define(bangumiOauthRoute, handler: bangumiOauthRouteHandler);
+
     router.define(subjectMainPageRoute, handler: subjectMainPageRouteHandler);
     router.define(subjectDetailInfoPageRoute,
         handler: subjectDetailInfoRouteHandler);
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
     router.define(userProfileRoute, handler: userProfileRouteHandler);
+
     router.define(composeTimelineMessageRoute,
         handler: composeTimelineMessageRouteHandler);
+
+    router.define(groupThreadRoute,
+        handler: groupThreadRouteHandler);
+    router.define(episodeThreadRoute,
+        handler: episodeThreadRouteHandler);
+    router.define(subjectTopicThreadRoute,
+        handler: subjectTopicThreadRouteHandler);
+    router.define(blogThreadRoute,
+        handler: blogThreadRouteHandler);
+
     router.define(settingRoute, handler: settingRouteHandler);
     router.define(generalSettingRoute, handler: generalSettingRouteHandler);
     router.define(themeSettingRoute, handler: themeSettingRouteHandler);

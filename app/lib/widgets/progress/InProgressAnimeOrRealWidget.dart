@@ -21,9 +21,9 @@ import 'package:munin/widgets/shared/button/customization.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class InProgressAnimeOrRealWidget extends StatelessWidget {
   final InProgressAnimeOrRealCollection collection;
@@ -103,9 +103,14 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                         Text('查看讨论', style: Theme.of(context).textTheme.body2),
                   ),
                   onTap: () {
-                    launch('https://bgm.tv/ep/${episode.id}',
-                        forceSafariVC: false);
+                    var callback = generateOnTapCallbackForBangumiContent(
+                      contentType: BangumiContent.Episode,
+                      context: context,
+                      id: episode.id.toString(),
+                    );
+
                     Navigator.of(context).pop();
+                    return callback();
                   },
                 ),
                 onePixelHeightDivider(),

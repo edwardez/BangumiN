@@ -9,6 +9,7 @@ import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
+import 'package:munin/models/bangumi/common/BangumiUserBasic.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
@@ -17,6 +18,18 @@ import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
 import 'package:munin/models/bangumi/discussion/enums/base.dart';
+import 'package:munin/models/bangumi/discussion/thread/blog/BlogContent.dart';
+import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
+import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
+import 'package:munin/models/bangumi/discussion/thread/episode/ThreadRelatedEpisode.dart';
+import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
+import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
+import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
+import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
 import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/progress/api/EpisodeProgress.dart';
@@ -102,7 +115,6 @@ import 'package:munin/redux/user/UserState.dart';
 part 'serializers.g.dart';
 
 @SerializersFor(const [
-
   /// Top level state
   AppState,
 
@@ -114,6 +126,7 @@ part 'serializers.g.dart';
 
   /// Common
   BangumiContent,
+  BangumiUserBasic,
 
   /// Timeline
   TimelineState,
@@ -163,7 +176,6 @@ part 'serializers.g.dart';
   CollectionStatus,
   SubjectState,
 
-
   /// Search
   BangumiSearchResponse,
   BangumiGeneralSearchResponse,
@@ -184,7 +196,18 @@ part 'serializers.g.dart';
   GetDiscussionRequest,
   GetDiscussionResponse,
   DiscussionState,
-
+  EpisodeThread,
+  ThreadRelatedEpisode,
+  ThreadParentSubject,
+  SubjectTopicThread,
+  BlogThread,
+  BlogContent,
+  GroupThread,
+  OriginalPost,
+  MainPostReply,
+  SubPostReply,
+  ThreadType,
+  GetThreadRequest,
 
   /// User
   UserProfile,
@@ -197,7 +220,6 @@ part 'serializers.g.dart';
   TimelinePreview,
   Relationship,
   UserState,
-
 
   /// Progress
   ProgressState,
@@ -224,14 +246,10 @@ part 'serializers.g.dart';
   PreferredLaunchNavTab,
   PreferredSubjectInfoLanguage
 ])
-final Serializers serializers =
-(_$serializers.toBuilder()
-  ..addBuilderFactory(
-      FullType(BuiltList, [ FullType(SubjectPreview)]),
+final Serializers serializers = (_$serializers.toBuilder()
+  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectPreview)]),
           () => ListBuilder<SubjectPreview>())..addBuilderFactory(
-      FullType(BuiltList, [ FullType(InProgressCollection)]),
+      FullType(BuiltList, [FullType(InProgressCollection)]),
           () => ListBuilder<InProgressCollection>())
-  ..addPlugin(StandardJsonPlugin())
-
-)
+  ..addPlugin(StandardJsonPlugin()))
     .build();

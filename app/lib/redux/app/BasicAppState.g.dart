@@ -134,7 +134,6 @@ class BasicAppStateBuilder
   _$BasicAppState _$v;
 
   BangumiUserSmallBuilder _currentAuthenticatedUserBasicInfo;
-
   BangumiUserSmallBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
       new BangumiUserSmallBuilder();

@@ -22,6 +22,16 @@ class _SpoilerTextState extends State<SpoilerText> {
     showSpoiler = widget.showSpoiler;
   }
 
+
+  @override
+  void didUpdateWidget(SpoilerText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.showSpoiler != widget.showSpoiler) {
+      showSpoiler = widget.showSpoiler;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Color textColor = showSpoiler ? Colors.white : Colors.transparent;

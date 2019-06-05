@@ -16,6 +16,7 @@ import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dar
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
+import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
 /// A single discussion thread.
@@ -132,4 +133,15 @@ class _ViewModel {
     @required this.thread,
     @required this.loadingStatus,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              thread == other.thread &&
+              loadingStatus == other.loadingStatus;
+
+  @override
+  int get hashCode => hash2(thread, loadingStatus);
 }

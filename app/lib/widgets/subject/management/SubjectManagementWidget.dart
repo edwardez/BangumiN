@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 
@@ -21,15 +22,17 @@ class SubjectManagementWidget extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: MuninOutlineButton(
-                  child: Text('观看进度管理'),
-                  onPressed: () {},
+            if(subject.type == SubjectType.Anime ||
+                subject.type == SubjectType.Real)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                  child: MuninOutlineButton(
+                    child: Text('查看章节'),
+                    onPressed: () {},
+                  ),
                 ),
               ),
-            ),
           ],
         ),
         Row(

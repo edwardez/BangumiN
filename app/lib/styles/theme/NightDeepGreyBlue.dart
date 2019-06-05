@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData nightDeepGreyBlueThemeData = ThemeData(
@@ -8,7 +9,7 @@ final ThemeData nightDeepGreyBlueThemeData = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),
   dialogTheme: DialogTheme(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: RoundedRectangleBorder(borderRadius: defaultContainerCircularRadius),
   ),
   sliderTheme: SliderThemeData.fromPrimaryColors(
     primaryColor: Colors.lightBlueAccent,

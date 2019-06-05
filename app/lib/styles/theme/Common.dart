@@ -13,6 +13,7 @@ const baseOffset4x = baseOffset * 4;
 
 const bottomOffset = baseOffset * 10;
 
+final defaultContainerCircularRadius = BorderRadius.circular(8.0);
 
 const defaultPortraitHorizontalOffset = baseOffset * 6;
 const defaultPortraitHorizontalEdgeInsets = const EdgeInsets.symmetric(

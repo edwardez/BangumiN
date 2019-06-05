@@ -190,45 +190,33 @@ class EpisodeThreadBuilder
   _$EpisodeThread _$v;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
   String _descriptionHtml;
-
   String get descriptionHtml => _$this._descriptionHtml;
-
   set descriptionHtml(String descriptionHtml) =>
       _$this._descriptionHtml = descriptionHtml;
 
   ListBuilder<ThreadRelatedEpisode> _relatedEpisodes;
-
   ListBuilder<ThreadRelatedEpisode> get relatedEpisodes =>
       _$this._relatedEpisodes ??= new ListBuilder<ThreadRelatedEpisode>();
-
   set relatedEpisodes(ListBuilder<ThreadRelatedEpisode> relatedEpisodes) =>
       _$this._relatedEpisodes = relatedEpisodes;
 
   ThreadParentSubjectBuilder _parentSubject;
-
   ThreadParentSubjectBuilder get parentSubject =>
       _$this._parentSubject ??= new ThreadParentSubjectBuilder();
-
   set parentSubject(ThreadParentSubjectBuilder parentSubject) =>
       _$this._parentSubject = parentSubject;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   ListBuilder<MainPostReply> _mainPostReplies;
-
   ListBuilder<MainPostReply> get mainPostReplies =>
       _$this._mainPostReplies ??= new ListBuilder<MainPostReply>();
-
   set mainPostReplies(ListBuilder<MainPostReply> mainPostReplies) =>
       _$this._mainPostReplies = mainPostReplies;
 

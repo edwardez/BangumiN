@@ -74,8 +74,8 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
           break;
         case 'basicInfo':
           result.basicInfo.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BangumiUserSmall))
-          as BangumiUserSmall);
+                  specifiedType: const FullType(BangumiUserSmall))
+              as BangumiUserSmall);
           break;
         case 'networkServiceTags':
           result.networkServiceTags.replace(serializers.deserialize(value,

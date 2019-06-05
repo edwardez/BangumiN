@@ -44,8 +44,9 @@ class _$DiscussionStateSerializer
               const [const FullType(int), const FullType(BlogThread)])),
     ];
     if (object.getThreadLoadingStatus != null) {
-      result..add('getThreadLoadingStatus')..add(
-          serializers.serialize(object.getThreadLoadingStatus,
+      result
+        ..add('getThreadLoadingStatus')
+        ..add(serializers.serialize(object.getThreadLoadingStatus,
             specifiedType: const FullType(BuiltMap, const [
               const FullType(GetThreadRequest),
               const FullType(LoadingStatus)
@@ -132,12 +133,13 @@ class _$DiscussionState extends DiscussionState {
   factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
       (new DiscussionStateBuilder()..update(updates)).build();
 
-  _$DiscussionState._({this.discussions,
-    this.groupThreads,
-    this.episodeThreads,
-    this.subjectTopicThreads,
-    this.blogThreads,
-    this.getThreadLoadingStatus})
+  _$DiscussionState._(
+      {this.discussions,
+      this.groupThreads,
+      this.episodeThreads,
+      this.subjectTopicThreads,
+      this.blogThreads,
+      this.getThreadLoadingStatus})
       : super._() {
     if (discussions == null) {
       throw new BuiltValueNullFieldError('DiscussionState', 'discussions');
@@ -192,11 +194,12 @@ class _$DiscussionState extends DiscussionState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('DiscussionState')
-      ..add('discussions', discussions)..add('groupThreads', groupThreads)..add(
-          'episodeThreads', episodeThreads)..add(
-          'subjectTopicThreads', subjectTopicThreads)..add(
-          'blogThreads', blogThreads)..add(
-          'getThreadLoadingStatus', getThreadLoadingStatus))
+          ..add('discussions', discussions)
+          ..add('groupThreads', groupThreads)
+          ..add('episodeThreads', episodeThreads)
+          ..add('subjectTopicThreads', subjectTopicThreads)
+          ..add('blogThreads', blogThreads)
+          ..add('getThreadLoadingStatus', getThreadLoadingStatus))
         .toString();
   }
 }
@@ -206,56 +209,45 @@ class DiscussionStateBuilder
   _$DiscussionState _$v;
 
   MapBuilder<GetDiscussionRequest, GetDiscussionResponse> _discussions;
-
   MapBuilder<GetDiscussionRequest, GetDiscussionResponse> get discussions =>
       _$this._discussions ??=
           new MapBuilder<GetDiscussionRequest, GetDiscussionResponse>();
-
-  set discussions(MapBuilder<GetDiscussionRequest, GetDiscussionResponse>
-  discussions) =>
+  set discussions(
+          MapBuilder<GetDiscussionRequest, GetDiscussionResponse>
+              discussions) =>
       _$this._discussions = discussions;
 
   MapBuilder<int, GroupThread> _groupThreads;
-
   MapBuilder<int, GroupThread> get groupThreads =>
       _$this._groupThreads ??= new MapBuilder<int, GroupThread>();
-
   set groupThreads(MapBuilder<int, GroupThread> groupThreads) =>
       _$this._groupThreads = groupThreads;
 
   MapBuilder<int, EpisodeThread> _episodeThreads;
-
   MapBuilder<int, EpisodeThread> get episodeThreads =>
       _$this._episodeThreads ??= new MapBuilder<int, EpisodeThread>();
-
   set episodeThreads(MapBuilder<int, EpisodeThread> episodeThreads) =>
       _$this._episodeThreads = episodeThreads;
 
   MapBuilder<int, SubjectTopicThread> _subjectTopicThreads;
-
   MapBuilder<int, SubjectTopicThread> get subjectTopicThreads =>
       _$this._subjectTopicThreads ??= new MapBuilder<int, SubjectTopicThread>();
-
   set subjectTopicThreads(
-      MapBuilder<int, SubjectTopicThread> subjectTopicThreads) =>
+          MapBuilder<int, SubjectTopicThread> subjectTopicThreads) =>
       _$this._subjectTopicThreads = subjectTopicThreads;
 
   MapBuilder<int, BlogThread> _blogThreads;
-
   MapBuilder<int, BlogThread> get blogThreads =>
       _$this._blogThreads ??= new MapBuilder<int, BlogThread>();
-
   set blogThreads(MapBuilder<int, BlogThread> blogThreads) =>
       _$this._blogThreads = blogThreads;
 
   MapBuilder<GetThreadRequest, LoadingStatus> _getThreadLoadingStatus;
-
   MapBuilder<GetThreadRequest, LoadingStatus> get getThreadLoadingStatus =>
       _$this._getThreadLoadingStatus ??=
-      new MapBuilder<GetThreadRequest, LoadingStatus>();
-
+          new MapBuilder<GetThreadRequest, LoadingStatus>();
   set getThreadLoadingStatus(
-      MapBuilder<GetThreadRequest, LoadingStatus> getThreadLoadingStatus) =>
+          MapBuilder<GetThreadRequest, LoadingStatus> getThreadLoadingStatus) =>
       _$this._getThreadLoadingStatus = getThreadLoadingStatus;
 
   DiscussionStateBuilder();

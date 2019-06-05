@@ -166,36 +166,26 @@ class GroupThreadBuilder
   _$GroupThread _$v;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
   String _groupName;
-
   String get groupName => _$this._groupName;
-
   set groupName(String groupName) => _$this._groupName = groupName;
 
   OriginalPostBuilder _initialPost;
-
   OriginalPostBuilder get initialPost =>
       _$this._initialPost ??= new OriginalPostBuilder();
-
   set initialPost(OriginalPostBuilder initialPost) =>
       _$this._initialPost = initialPost;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   ListBuilder<MainPostReply> _mainPostReplies;
-
   ListBuilder<MainPostReply> get mainPostReplies =>
       _$this._mainPostReplies ??= new ListBuilder<MainPostReply>();
-
   set mainPostReplies(ListBuilder<MainPostReply> mainPostReplies) =>
       _$this._mainPostReplies = mainPostReplies;
 

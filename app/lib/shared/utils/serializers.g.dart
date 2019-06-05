@@ -15,11 +15,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(BangumiGeneralSearchResponse.serializer)
       ..add(BangumiImage.serializer)
       ..add(BangumiSubject.serializer)
-      ..add(BangumiUserAvatar.serializer)..add(
-      BangumiUserBasic.serializer)..add(BangumiUserIdentity.serializer)..add(
-      BangumiUserSmall.serializer)
-      ..add(BasicAppState.serializer)..add(BlogContent.serializer)
-      ..add(BlogCreationSingle.serializer)..add(BlogThread.serializer)
+      ..add(BangumiUserAvatar.serializer)
+      ..add(BangumiUserBasic.serializer)
+      ..add(BangumiUserIdentity.serializer)
+      ..add(BangumiUserSmall.serializer)
+      ..add(BasicAppState.serializer)
+      ..add(BlogContent.serializer)
+      ..add(BlogCreationSingle.serializer)
+      ..add(BlogThread.serializer)
       ..add(Character.serializer)
       ..add(CollectionPreview.serializer)
       ..add(CollectionStatus.serializer)
@@ -29,7 +32,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(DiscussionState.serializer)
       ..add(DiscussionType.serializer)
       ..add(EpisodeProgress.serializer)
-      ..add(EpisodeStatus.serializer)..add(EpisodeThread.serializer)
+      ..add(EpisodeStatus.serializer)
+      ..add(EpisodeThread.serializer)
       ..add(EpisodeType.serializer)
       ..add(FeedChunks.serializer)
       ..add(FeedMetaInfo.serializer)
@@ -38,10 +42,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GeneralSetting.serializer)
       ..add(GetDiscussionRequest.serializer)
       ..add(GetDiscussionResponse.serializer)
-      ..add(GetProgressRequest.serializer)..add(GetThreadRequest.serializer)
+      ..add(GetProgressRequest.serializer)
+      ..add(GetThreadRequest.serializer)
       ..add(GetTimelineRequest.serializer)
       ..add(GroupDiscussionPost.serializer)
-      ..add(GroupJoinSingle.serializer)..add(GroupThread.serializer)
+      ..add(GroupJoinSingle.serializer)
+      ..add(GroupThread.serializer)
       ..add(HyperBangumiItem.serializer)
       ..add(HyperImage.serializer)
       ..add(InProgressAnimeOrRealCollection.serializer)
@@ -50,7 +56,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(IndexFavoriteSingle.serializer)
       ..add(InfoBoxItem.serializer)
       ..add(InfoBoxRow.serializer)
-      ..add(LoadingStatus.serializer)..add(MainPostReply.serializer)
+      ..add(LoadingStatus.serializer)
+      ..add(MainPostReply.serializer)
       ..add(Mono.serializer)
       ..add(MonoFavoriteSingle.serializer)
       ..add(MonoSearchResult.serializer)
@@ -61,7 +68,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NetworkServiceTagLink.serializer)
       ..add(NetworkServiceTagPlainText.serializer)
       ..add(NetworkServiceType.serializer)
-      ..add(OauthState.serializer)..add(OriginalPost.serializer)
+      ..add(OauthState.serializer)
+      ..add(OriginalPost.serializer)
       ..add(PreferredLaunchNavTab.serializer)
       ..add(PreferredSubjectInfoLanguage.serializer)
       ..add(ProgressState.serializer)
@@ -78,18 +86,21 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SearchState.serializer)
       ..add(SearchType.serializer)
       ..add(SettingState.serializer)
-      ..add(StatusUpdateMultiple.serializer)..add(SubPostReply.serializer)
+      ..add(StatusUpdateMultiple.serializer)
+      ..add(SubPostReply.serializer)
       ..add(SubjectCollectionInfo.serializer)
       ..add(SubjectCollectionInfoPreview.serializer)
       ..add(SubjectPreview.serializer)
       ..add(SubjectReview.serializer)
       ..add(SubjectSearchResult.serializer)
-      ..add(SubjectState.serializer)..add(SubjectTopicThread.serializer)
+      ..add(SubjectState.serializer)
+      ..add(SubjectTopicThread.serializer)
       ..add(SubjectType.serializer)
       ..add(ThemeSetting.serializer)
-      ..add(ThemeSwitchMode.serializer)..add(
-      ThreadParentSubject.serializer)..add(
-      ThreadRelatedEpisode.serializer)..add(ThreadType.serializer)
+      ..add(ThemeSwitchMode.serializer)
+      ..add(ThreadParentSubject.serializer)
+      ..add(ThreadRelatedEpisode.serializer)
+      ..add(ThreadType.serializer)
       ..add(TimelineCategoryFilter.serializer)
       ..add(TimelinePreview.serializer)
       ..add(TimelineSource.serializer)
@@ -138,12 +149,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<HyperBangumiItem>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(InfoBoxItem)]),
-          () => new ListBuilder<InfoBoxItem>())..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(MainPostReply)]),
-          () => new ListBuilder<MainPostReply>())..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(MainPostReply)]),
-          () => new ListBuilder<MainPostReply>())..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(MainPostReply)]),
+          () => new ListBuilder<InfoBoxItem>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(MainPostReply)]),
+          () => new ListBuilder<MainPostReply>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(MainPostReply)]),
+          () => new ListBuilder<MainPostReply>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(MainPostReply)]),
           () => new ListBuilder<MainPostReply>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(NetworkServiceTag)]),
@@ -168,16 +182,20 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(SubPostReply)]),
-              () => new ListBuilder<SubPostReply>())..addBuilderFactory(
-      const FullType(
-          BuiltList, const [const FullType(ThreadParentSubject)]),
-          () => new ListBuilder<ThreadParentSubject>())..addBuilderFactory(
-      const FullType(
-          BuiltList, const [const FullType(ThreadRelatedEpisode)]),
-          () => new ListBuilder<ThreadRelatedEpisode>())..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(MainPostReply)]),
-          () => new ListBuilder<MainPostReply>())..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(TimelineFeed)]),
+          () => new ListBuilder<SubPostReply>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ThreadParentSubject)]),
+          () => new ListBuilder<ThreadParentSubject>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ThreadRelatedEpisode)]),
+          () => new ListBuilder<ThreadRelatedEpisode>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(MainPostReply)]),
+          () => new ListBuilder<MainPostReply>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TimelineFeed)]),
           () => new ListBuilder<TimelineFeed>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelineFeed)]),
@@ -201,45 +219,36 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(int), const FullType(GroupThread)]),
-              () => new MapBuilder<int, GroupThread>())..addBuilderFactory(
-      const FullType(BuiltMap,
-          const [const FullType(int), const FullType(EpisodeThread)]),
-          () => new MapBuilder<int, EpisodeThread>())..addBuilderFactory(
-      const FullType(BuiltMap,
-          const [const FullType(int), const FullType(SubjectTopicThread)]),
+          () => new MapBuilder<int, GroupThread>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(EpisodeThread)]),
+          () => new MapBuilder<int, EpisodeThread>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(int), const FullType(SubjectTopicThread)]),
           () => new MapBuilder<int, SubjectTopicThread>())
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(int), const FullType(BlogThread)]),
-              () => new MapBuilder<int, BlogThread>())
+          () => new MapBuilder<int, BlogThread>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(GetThreadRequest),
             const FullType(LoadingStatus)
           ]),
-              () => new MapBuilder<GetThreadRequest, LoadingStatus>())
+          () => new MapBuilder<GetThreadRequest, LoadingStatus>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(GetTimelineRequest),
             const FullType(FeedChunks)
           ]),
-              () => new MapBuilder<GetTimelineRequest, FeedChunks>())
+          () => new MapBuilder<GetTimelineRequest, FeedChunks>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SearchRequest),
-            const FullType(BangumiSearchResponse)
-          ]),
-              () =>
-          new MapBuilder<SearchRequest,
-              BangumiSearchResponse>())..addBuilderFactory(const FullType(
-      BuiltMap, const [
-    const FullType(SearchRequest),
-    const FullType(LoadingStatus)
-  ]), () => new MapBuilder<SearchRequest, LoadingStatus>())..addBuilderFactory(
-      const FullType(BuiltMap, const [
-        const FullType(String),
-        const FullType(MutedUser)
-      ]), () => new MapBuilder<String, MutedUser>())
+          const FullType(BuiltMap, const [const FullType(SearchRequest), const FullType(BangumiSearchResponse)]),
+          () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(SearchRequest), const FullType(LoadingStatus)]), () => new MapBuilder<SearchRequest, LoadingStatus>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(UserProfile)]), () => new MapBuilder<String, UserProfile>())

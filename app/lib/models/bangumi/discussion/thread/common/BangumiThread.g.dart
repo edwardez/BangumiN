@@ -8,19 +8,14 @@ part of 'BangumiThread.dart';
 
 abstract class BangumiThreadBuilder {
   void replace(BangumiThread other);
-
   void update(void Function(BangumiThreadBuilder) updates);
-
   int get id;
-
   set id(int id);
 
   String get title;
-
   set title(String title);
 
   ListBuilder<MainPostReply> get mainPostReplies;
-
   set mainPostReplies(ListBuilder<MainPostReply> mainPostReplies);
 }
 

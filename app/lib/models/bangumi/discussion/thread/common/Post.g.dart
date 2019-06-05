@@ -8,27 +8,20 @@ part of 'Post.dart';
 
 abstract class PostBuilder {
   void replace(Post other);
-
   void update(void Function(PostBuilder) updates);
-
   BangumiUserBasicBuilder get author;
-
   set author(BangumiUserBasicBuilder author);
 
   int get id;
-
   set id(int id);
 
   String get contentHtml;
-
   set contentHtml(String contentHtml);
 
   int get postTimeInMilliSeconds;
-
   set postTimeInMilliSeconds(int postTimeInMilliSeconds);
 
   int get mainSequentialNumber;
-
   set mainSequentialNumber(int mainSequentialNumber);
 }
 

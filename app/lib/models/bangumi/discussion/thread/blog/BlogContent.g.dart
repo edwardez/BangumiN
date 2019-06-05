@@ -146,30 +146,22 @@ class BlogContentBuilder implements Builder<BlogContent, BlogContentBuilder> {
   _$BlogContent _$v;
 
   BangumiUserBasicBuilder _author;
-
   BangumiUserBasicBuilder get author =>
       _$this._author ??= new BangumiUserBasicBuilder();
-
   set author(BangumiUserBasicBuilder author) => _$this._author = author;
 
   String _html;
-
   String get html => _$this._html;
-
   set html(String html) => _$this._html = html;
 
   int _postTimeInMilliSeconds;
-
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
-
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
       _$this._postTimeInMilliSeconds = postTimeInMilliSeconds;
 
   ListBuilder<ThreadParentSubject> _associatedSubjects;
-
   ListBuilder<ThreadParentSubject> get associatedSubjects =>
       _$this._associatedSubjects ??= new ListBuilder<ThreadParentSubject>();
-
   set associatedSubjects(ListBuilder<ThreadParentSubject> associatedSubjects) =>
       _$this._associatedSubjects = associatedSubjects;
 

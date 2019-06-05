@@ -144,30 +144,22 @@ class BlogThreadBuilder
   _$BlogThread _$v;
 
   BlogContentBuilder _blogContent;
-
   BlogContentBuilder get blogContent =>
       _$this._blogContent ??= new BlogContentBuilder();
-
   set blogContent(BlogContentBuilder blogContent) =>
       _$this._blogContent = blogContent;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
   ListBuilder<MainPostReply> _mainPostReplies;
-
   ListBuilder<MainPostReply> get mainPostReplies =>
       _$this._mainPostReplies ??= new ListBuilder<MainPostReply>();
-
   set mainPostReplies(ListBuilder<MainPostReply> mainPostReplies) =>
       _$this._mainPostReplies = mainPostReplies;
 

@@ -7,7 +7,7 @@ part of 'BangumiUserSmall.dart';
 // **************************************************************************
 
 Serializer<BangumiUserSmall> _$bangumiUserSmallSerializer =
-new _$BangumiUserSmallSerializer();
+    new _$BangumiUserSmallSerializer();
 
 class _$BangumiUserSmallSerializer
     implements StructuredSerializer<BangumiUserSmall> {
@@ -107,9 +107,8 @@ class _$BangumiUserSmall extends BangumiUserSmall {
   final int userGroup;
 
   factory _$BangumiUserSmall(
-      [void Function(BangumiUserSmallBuilder) updates]) =>
-      (new BangumiUserSmallBuilder()
-        ..update(updates)).build();
+          [void Function(BangumiUserSmallBuilder) updates]) =>
+      (new BangumiUserSmallBuilder()..update(updates)).build();
 
   _$BangumiUserSmall._(
       {this.id,
@@ -149,8 +148,7 @@ class _$BangumiUserSmall extends BangumiUserSmall {
 
   @override
   BangumiUserSmallBuilder toBuilder() =>
-      new BangumiUserSmallBuilder()
-        ..replace(this);
+      new BangumiUserSmallBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {

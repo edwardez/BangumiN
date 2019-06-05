@@ -165,34 +165,24 @@ class ThreadParentSubjectBuilder
   _$ThreadParentSubject _$v;
 
   BangumiImageBuilder _cover;
-
   BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
-
   set cover(BangumiImageBuilder cover) => _$this._cover = cover;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _pageUrlFromApi;
-
   String get pageUrlFromApi => _$this._pageUrlFromApi;
-
   set pageUrlFromApi(String pageUrlFromApi) =>
       _$this._pageUrlFromApi = pageUrlFromApi;
 
   String _name;
-
   String get name => _$this._name;
-
   set name(String name) => _$this._name = name;
 
   String _nameCn;
-
   String get nameCn => _$this._nameCn;
-
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   ThreadParentSubjectBuilder();

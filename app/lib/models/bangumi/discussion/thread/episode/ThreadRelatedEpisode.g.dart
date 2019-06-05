@@ -146,27 +146,19 @@ class ThreadRelatedEpisodeBuilder
   _$ThreadRelatedEpisode _$v;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   AirStatus _airStatus;
-
   AirStatus get airStatus => _$this._airStatus;
-
   set airStatus(AirStatus airStatus) => _$this._airStatus = airStatus;
 
   String _name;
-
   String get name => _$this._name;
-
   set name(String name) => _$this._name = name;
 
   bool _currentEpisode;
-
   bool get currentEpisode => _$this._currentEpisode;
-
   set currentEpisode(bool currentEpisode) =>
       _$this._currentEpisode = currentEpisode;
 

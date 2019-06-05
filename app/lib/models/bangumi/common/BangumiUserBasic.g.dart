@@ -142,28 +142,20 @@ class BangumiUserBasicBuilder
   _$BangumiUserBasic _$v;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _username;
-
   String get username => _$this._username;
-
   set username(String username) => _$this._username = username;
 
   String _nickname;
-
   String get nickname => _$this._nickname;
-
   set nickname(String nickname) => _$this._nickname = nickname;
 
   BangumiImageBuilder _avatar;
-
   BangumiImageBuilder get avatar =>
       _$this._avatar ??= new BangumiImageBuilder();
-
   set avatar(BangumiImageBuilder avatar) => _$this._avatar = avatar;
 
   BangumiUserBasicBuilder();

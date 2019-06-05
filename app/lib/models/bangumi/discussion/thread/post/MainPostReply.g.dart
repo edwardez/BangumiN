@@ -183,43 +183,31 @@ class MainPostReplyBuilder
   _$MainPostReply _$v;
 
   ListBuilder<SubPostReply> _subReplies;
-
   ListBuilder<SubPostReply> get subReplies =>
       _$this._subReplies ??= new ListBuilder<SubPostReply>();
-
   set subReplies(ListBuilder<SubPostReply> subReplies) =>
       _$this._subReplies = subReplies;
 
   BangumiUserBasicBuilder _author;
-
   BangumiUserBasicBuilder get author =>
       _$this._author ??= new BangumiUserBasicBuilder();
-
   set author(BangumiUserBasicBuilder author) => _$this._author = author;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _contentHtml;
-
   String get contentHtml => _$this._contentHtml;
-
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
   int _postTimeInMilliSeconds;
-
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
-
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
       _$this._postTimeInMilliSeconds = postTimeInMilliSeconds;
 
   int _mainSequentialNumber;
-
   int get mainSequentialNumber => _$this._mainSequentialNumber;
-
   set mainSequentialNumber(int mainSequentialNumber) =>
       _$this._mainSequentialNumber = mainSequentialNumber;
 

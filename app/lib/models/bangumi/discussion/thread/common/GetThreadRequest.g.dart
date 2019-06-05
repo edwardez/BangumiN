@@ -110,15 +110,11 @@ class GetThreadRequestBuilder
   _$GetThreadRequest _$v;
 
   ThreadType _threadType;
-
   ThreadType get threadType => _$this._threadType;
-
   set threadType(ThreadType threadType) => _$this._threadType = threadType;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   GetThreadRequestBuilder();

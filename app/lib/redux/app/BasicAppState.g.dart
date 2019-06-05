@@ -47,8 +47,8 @@ class _$BasicAppStateSerializer implements StructuredSerializer<BasicAppState> {
         case 'currentAuthenticatedUserBasicInfo':
           result.currentAuthenticatedUserBasicInfo.replace(
               serializers.deserialize(value,
-                  specifiedType: const FullType(BangumiUserSmall))
-              as BangumiUserSmall);
+                      specifiedType: const FullType(BangumiUserSmall))
+                  as BangumiUserSmall);
           break;
         case 'isAuthenticated':
           result.isAuthenticated = serializers.deserialize(value,
@@ -136,9 +136,9 @@ class BasicAppStateBuilder
   BangumiUserSmallBuilder _currentAuthenticatedUserBasicInfo;
   BangumiUserSmallBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
-      new BangumiUserSmallBuilder();
+          new BangumiUserSmallBuilder();
   set currentAuthenticatedUserBasicInfo(
-      BangumiUserSmallBuilder currentAuthenticatedUserBasicInfo) =>
+          BangumiUserSmallBuilder currentAuthenticatedUserBasicInfo) =>
       _$this._currentAuthenticatedUserBasicInfo =
           currentAuthenticatedUserBasicInfo;
 

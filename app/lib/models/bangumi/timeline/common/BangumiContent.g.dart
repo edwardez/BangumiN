@@ -16,7 +16,8 @@ const BangumiContent _$Person = const BangumiContent._('Person');
 const BangumiContent _$User = const BangumiContent._('User');
 const BangumiContent _$Group = const BangumiContent._('Group');
 const BangumiContent _$GroupTopic = const BangumiContent._('GroupTopic');
-const BangumiContent _$Wiki = const BangumiContent._('Wiki');
+const BangumiContent _$SubjectCreation =
+    const BangumiContent._('SubjectCreation');
 const BangumiContent _$Catalog = const BangumiContent._('Catalog');
 const BangumiContent _$Doujin = const BangumiContent._('Doujin');
 const BangumiContent _$CharacterOrPerson =
@@ -46,8 +47,8 @@ BangumiContent _$valueOf(String name) {
       return _$Group;
     case 'GroupTopic':
       return _$GroupTopic;
-    case 'Wiki':
-      return _$Wiki;
+    case 'SubjectCreation':
+      return _$SubjectCreation;
     case 'Catalog':
       return _$Catalog;
     case 'Doujin':
@@ -75,7 +76,7 @@ final BuiltSet<BangumiContent> _$values =
   _$User,
   _$Group,
   _$GroupTopic,
-  _$Wiki,
+  _$SubjectCreation,
   _$Catalog,
   _$Doujin,
   _$CharacterOrPerson,

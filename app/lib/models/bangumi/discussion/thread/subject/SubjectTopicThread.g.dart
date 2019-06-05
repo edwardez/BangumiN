@@ -175,38 +175,28 @@ class SubjectTopicThreadBuilder
   _$SubjectTopicThread _$v;
 
   String _title;
-
   String get title => _$this._title;
-
   set title(String title) => _$this._title = title;
 
   OriginalPostBuilder _originalPost;
-
   OriginalPostBuilder get originalPost =>
       _$this._originalPost ??= new OriginalPostBuilder();
-
   set originalPost(OriginalPostBuilder originalPost) =>
       _$this._originalPost = originalPost;
 
   ThreadParentSubjectBuilder _parentSubject;
-
   ThreadParentSubjectBuilder get parentSubject =>
       _$this._parentSubject ??= new ThreadParentSubjectBuilder();
-
   set parentSubject(ThreadParentSubjectBuilder parentSubject) =>
       _$this._parentSubject = parentSubject;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   ListBuilder<MainPostReply> _mainPostReplies;
-
   ListBuilder<MainPostReply> get mainPostReplies =>
       _$this._mainPostReplies ??= new ListBuilder<MainPostReply>();
-
   set mainPostReplies(ListBuilder<MainPostReply> mainPostReplies) =>
       _$this._mainPostReplies = mainPostReplies;
 

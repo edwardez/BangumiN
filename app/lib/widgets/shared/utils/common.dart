@@ -101,14 +101,13 @@ Function generateOnTapCallbackForBangumiContent({
   return () {};
 }
 
-/// checks whether the content type current has a app route page
+/// Generates corresponding bangumi web url.
 /// returns null corresponding Munin page cannot be found
 Optional<String> generateWebPageUrlByContentType(BangumiContent contentType,
     String id) {
-  String webPageSubRouteName =
-  BangumiContent.enumToWebPageRouteName[contentType];
+  String webPageSubRouteName = contentType.webPageRouteName;
 
-  if (webPageSubRouteName == null || id == null) {
+  if (id == null) {
     return Optional.absent();
   }
 

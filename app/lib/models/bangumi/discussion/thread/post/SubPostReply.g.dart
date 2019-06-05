@@ -180,42 +180,30 @@ class SubPostReplyBuilder
   _$SubPostReply _$v;
 
   int _subSequentialNumber;
-
   int get subSequentialNumber => _$this._subSequentialNumber;
-
   set subSequentialNumber(int subSequentialNumber) =>
       _$this._subSequentialNumber = subSequentialNumber;
 
   BangumiUserBasicBuilder _author;
-
   BangumiUserBasicBuilder get author =>
       _$this._author ??= new BangumiUserBasicBuilder();
-
   set author(BangumiUserBasicBuilder author) => _$this._author = author;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _contentHtml;
-
   String get contentHtml => _$this._contentHtml;
-
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
   int _postTimeInMilliSeconds;
-
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
-
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
       _$this._postTimeInMilliSeconds = postTimeInMilliSeconds;
 
   int _mainSequentialNumber;
-
   int get mainSequentialNumber => _$this._mainSequentialNumber;
-
   set mainSequentialNumber(int mainSequentialNumber) =>
       _$this._mainSequentialNumber = mainSequentialNumber;
 

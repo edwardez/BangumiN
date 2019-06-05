@@ -5,6 +5,7 @@ import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/discussion/rakuen/AdaptiveReplyCountIndicator.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
@@ -91,39 +92,14 @@ class DiscussionItemWidget extends StatelessWidget {
     };
   }
 
-  /// Calculates text scale factor for reply count so it can fit into the reply
-  /// icon.
-  /// Currently factor values are hard-coded, if these values are changed,
-  /// [replyCountIconSize] might also need to be changed.
-  double replyCountTextScaleFactor(double textScaleFactor, String text) {
-    if (text.length <= 2) {
-      return 1 * textScaleFactor;
-    }
-
-    if (text.length == 3) {
-      return 0.85 * textScaleFactor;
-    }
-
-    return 3 / text.length * textScaleFactor;
-  }
-
-  /// Calculates size of the reply count icon.
-  /// Currently factor values are hard-coded, if these values are changed,
-  /// [replyCountTextScaleFactor] might also need to be changed.
-  double replyCountIconSize(double textScaleFactor) {
-    return defaultIconSize * 1.5 * textScaleFactor;
-  }
+  String get discussionUpdateTime =>
+      TimeUtils.formatMilliSecondsEpochTime(
+          discussionItem.updatedAt,
+          displayTimeIn: DisplayTimeIn.AlwaysRelative,
+          fallbackTimeStr: '');
 
   @override
   Widget build(BuildContext context) {
-    String discussionUpdateTime = TimeUtils.formatMilliSecondsEpochTime(
-        discussionItem.updatedAt,
-        displayTimeIn: DisplayTimeIn.AlwaysRelative,
-        fallbackTimeStr: '');
-    double textScaleFactor = MediaQuery
-        .of(context)
-        .textScaleFactor;
-
     return InkWell(
       child: MuninPadding(
         child: Row(
@@ -168,30 +144,9 @@ class DiscussionItemWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: largeOffset),
             ),
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: <Widget>[
-                Icon(
-                  CupertinoIcons.conversation_bubble,
-                  size: replyCountIconSize(textScaleFactor),
-                ),
-                Text(
-                  '${discussionItem.replyCount}',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(
-                      fontSize: Theme
-                          .of(context)
-                          .textTheme
-                          .caption
-                          .fontSize),
-                  textScaleFactor: replyCountTextScaleFactor(
-                      textScaleFactor, '${discussionItem.replyCount}'),
-                ),
-              ],
-            ),
+            AdaptiveReplyCountIndicator(
+              replyCount: discussionItem.replyCount,
+            )
 
           ],
         ),

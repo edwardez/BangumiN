@@ -7,17 +7,15 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/thread/shared/AppBarTitleForSubject.dart';
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
+import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
-import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:redux/redux.dart';
 
 /// A single discussion thread.
@@ -53,34 +51,10 @@ class SubjectTopicThreadWidget extends StatelessWidget {
           List<Widget> children = [];
           var parentBangumiContentType = BangumiContent.SubjectTopic;
 
-          children.add(InkWell(
-            child: MuninPadding.vertical1xOffset(
-              child: Row(
-                children: <Widget>[
-                  CachedRoundedCover.asGridSize(
-                    imageUrl: vm.thread?.parentSubject?.cover?.common ??
-                        bangumiTextOnlySubjectCover,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: mediumOffset),
-                  ),
-                  Flexible(
-                    child: Text(vm.thread.parentSubject.name ?? ''),
-                  )
-                ],
-              ),
-            ),
-            onTap: () {
-              if (vm.thread.parentSubject == null ||
-                  vm.thread.parentSubject.id == null) {
-                return null;
-              }
-
-              return generateOnTapCallbackForBangumiContent(
-                  contentType: BangumiContent.Subject,
-                  id: vm.thread.parentSubject.id.toString(),
-                  context: context)();
-            },
+          children.add(SubjectCoverTitleTile(
+            name: vm.thread.parentSubject.name,
+            imageUrl: vm.thread.parentSubject?.cover?.common,
+            id: vm.thread.parentSubject.id,
           ));
 
           children.add(

@@ -88,7 +88,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget body = UserWithPostContent(
-      showSpoiler: false,
+      showSpoiler: showSpoiler,
       onTapMoreActionsIcon: () {
         _showMoreActionsBottomSheet(context);
       },

@@ -12,6 +12,7 @@ import 'package:munin/widgets/discussion/thread/shared/AppBarTitleForSubject.dar
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
+import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
@@ -65,11 +66,11 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
         } else {
           List<Widget> children = [];
           var parentBangumiContentType = BangumiContent.Episode;
-          children.add(MuninPadding.vertical1xOffset(
-            child: Text(
-              vm.thread.parentSubject.name,
-              style: Theme.of(context).textTheme.caption,
-            ),
+
+          children.add(SubjectCoverTitleTile(
+            name: vm.thread.parentSubject.name,
+            imageUrl: vm.thread.parentSubject?.cover?.common,
+            id: vm.thread.parentSubject.id,
           ));
 
           children.add(MuninPadding.vertical1xOffset(

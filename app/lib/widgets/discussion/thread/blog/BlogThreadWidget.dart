@@ -72,7 +72,7 @@ class BlogThreadWidget extends StatelessWidget {
           }
 
           return ScrollViewWithSliverAppBar(
-            appBarMainTitle: Text(''),
+            appBarMainTitle: Text('日志 '),
             appBarSecondaryTitle: Text(vm.thread.title),
             changeAppBarTitleOnScroll: true,
             safeAreaChildPadding: EdgeInsets.zero,

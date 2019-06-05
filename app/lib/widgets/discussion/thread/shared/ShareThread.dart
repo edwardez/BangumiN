@@ -29,7 +29,7 @@ class ShareThread extends StatelessWidget {
             url = '';
           });
 
-        Share.share('${thread.title}\n$url');
+        Share.share('${thread.title} \n$url');
       },
     );
   }

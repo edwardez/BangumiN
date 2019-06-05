@@ -90,7 +90,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// so feedId cannot be filled in we just load all new feeds
       /// TODO: clean up all older feeds in this case?
       upperFeedId =
-          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFeeds)
+          firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
               ?.user
               ?.feedId ??
               IntegerHelper.MIN_VALUE;
@@ -102,7 +102,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// we just load all new feeds
       /// TODO: clean up all newer feeds in this case?
       lowerFeedId =
-          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFeeds)
+          firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
               ?.user
               ?.feedId ??
               IntegerHelper.MAX_VALUE;

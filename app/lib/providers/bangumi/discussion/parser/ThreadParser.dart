@@ -19,6 +19,7 @@ import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThrea
 import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:quiver/core.dart';
@@ -271,7 +272,18 @@ class ThreadParser {
   EpisodeThread processEpisodeThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
 
-    String title = document.querySelector('title')?.text?.trim();
+    // Uses title class on page if any.
+    String title =
+        firstOrNullInIterable<Node>(document
+            .querySelector('.title')
+            ?.nodes)
+            ?.text;
+
+    // If it doesn't exist, use the title html element in head.
+    title ??= document
+        .querySelector('title')
+        ?.text
+        ?.trim();
 
     String descriptionHtml = document.querySelector('.epDesc')?.outerHtml ?? '';
 
@@ -324,7 +336,8 @@ class ThreadParser {
       String coverImageUrl =
           imageSrcOrNull(subjectElement.querySelector('img'));
 
-      int subjectId = tryParseInt(parseHrefId(subjectElement, digitOnly: true),
+      int subjectId = tryParseInt(
+          parseHrefId(subjectElement.querySelector('a'), digitOnly: true),
           defaultValue: null);
 
       subjects.add(ThreadParentSubject((b) => b

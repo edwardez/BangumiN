@@ -14,6 +14,9 @@ class MuninPadding extends StatelessWidget {
   static const vertical3xOffsetPadding = const EdgeInsets.symmetric(
       horizontal: defaultPortraitHorizontalOffset, vertical: baseOffset3x);
 
+  static const noVerticalOffsetPadding = const EdgeInsets.symmetric(
+      horizontal: defaultPortraitHorizontalOffset, vertical: 0);
+
   /// The widget below padding widget in the tree.
   final Widget child;
 
@@ -41,6 +44,14 @@ class MuninPadding extends StatelessWidget {
   })
       : assert(child != null),
         this.padding = vertical3xOffsetPadding,
+        super(key: key);
+
+  const MuninPadding.noVerticalOffset({
+    Key key,
+    @required this.child,
+  })
+      : assert(child != null),
+        this.padding = noVerticalOffsetPadding,
         super(key: key);
 
   @override

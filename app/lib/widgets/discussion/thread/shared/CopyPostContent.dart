@@ -5,7 +5,13 @@ import 'package:munin/widgets/shared/services/Clipboard.dart';
 class CopyPostContent extends StatelessWidget {
   final String contentHtml;
 
-  const CopyPostContent({Key key, @required this.contentHtml})
+  /// An additional context that's under a scaffold. If non-null, copy snackbar
+  /// messages are shown under [contextWithScaffold].
+  /// It's useful if [CopyPostContent] itself is put in a place with no scaffold.
+  final BuildContext contextWithScaffold;
+
+  const CopyPostContent(
+      {Key key, @required this.contentHtml, this.contextWithScaffold})
       : super(key: key);
 
   @override
@@ -16,7 +22,8 @@ class CopyPostContent extends StatelessWidget {
       onTap: () {
         Navigator.pop(context);
         var postContent = (parseFragment(contentHtml).text ?? '').trim();
-        ClipboardService.copyAsPlainText(context, postContent);
+        ClipboardService.copyAsPlainText(
+            contextWithScaffold ?? context, postContent);
       },
     );
   }

@@ -54,6 +54,7 @@ class PostWidget extends StatelessWidget {
       [
         CopyPostContent(
           contentHtml: post.contentHtml,
+          contextWithScaffold: context,
         ),
         if (post is! OriginalPost)
           ListTile(

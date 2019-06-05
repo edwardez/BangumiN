@@ -23,6 +23,7 @@ class BlogContentWidget extends StatelessWidget {
             [
               CopyPostContent(
                 contentHtml: blogContent.html,
+                contextWithScaffold: context,
               ),
             ],
           );

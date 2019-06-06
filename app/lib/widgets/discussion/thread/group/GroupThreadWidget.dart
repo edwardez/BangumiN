@@ -48,11 +48,27 @@ class GroupThreadWidget extends StatelessWidget {
         } else {
           List<Widget> children = [];
           var parentBangumiContentType = BangumiContent.GroupTopic;
+
           children.add(
             MuninPadding.vertical1xOffset(
-              child: Text(
-                vm.thread.title,
-                style: Theme.of(context).textTheme.title,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    vm.thread.groupName,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .caption,
+                  ),
+                  Text(
+                    vm.thread.title,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title,
+                  )
+                ],
               ),
             ),
           );

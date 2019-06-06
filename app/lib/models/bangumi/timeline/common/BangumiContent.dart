@@ -43,7 +43,7 @@ class BangumiContent extends EnumClass {
         return 'user';
       case BangumiContent.Group:
         return 'group';
-      case BangumiContent.Group:
+      case BangumiContent.GroupTopic:
         return 'group/topic';
       case BangumiContent.Blog:
         return 'blog';

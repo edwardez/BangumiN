@@ -370,6 +370,7 @@ class _SubjectCollectionManagementWidgetState
               context, subjectId, localSubjectCollectionInfo);
         },
         canSubmit: _canSubmitForm,
+        submitButtonText: '更新',
       ),
       onTap: _canSubmitForm
           ? null

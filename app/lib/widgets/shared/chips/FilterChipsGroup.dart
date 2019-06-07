@@ -91,7 +91,7 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
       ));
     }
 
-    /// TODO: figure out a better way ro constraint list size
+    /// TODO: figure out a better way to constraint list size
     return Container(
       height: Theme.of(context).textTheme.body1.fontSize * 3.5,
       child: ListView.builder(

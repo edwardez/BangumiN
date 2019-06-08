@@ -32,6 +32,12 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
         ..add(serializers.serialize(object.generalSetting,
             specifiedType: const FullType(GeneralSetting)));
     }
+    if (object.privacySetting != null) {
+      result
+        ..add('privacySetting')
+        ..add(serializers.serialize(object.privacySetting,
+            specifiedType: const FullType(PrivacySetting)));
+    }
 
     return result;
   }
@@ -59,6 +65,10 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
           result.muteSetting.replace(serializers.deserialize(value,
               specifiedType: const FullType(MuteSetting)) as MuteSetting);
           break;
+        case 'privacySetting':
+          result.privacySetting.replace(serializers.deserialize(value,
+              specifiedType: const FullType(PrivacySetting)) as PrivacySetting);
+          break;
       }
     }
 
@@ -73,11 +83,17 @@ class _$SettingState extends SettingState {
   final ThemeSetting themeSetting;
   @override
   final MuteSetting muteSetting;
+  @override
+  final PrivacySetting privacySetting;
 
   factory _$SettingState([void Function(SettingStateBuilder) updates]) =>
       (new SettingStateBuilder()..update(updates)).build();
 
-  _$SettingState._({this.generalSetting, this.themeSetting, this.muteSetting})
+  _$SettingState._(
+      {this.generalSetting,
+      this.themeSetting,
+      this.muteSetting,
+      this.privacySetting})
       : super._() {
     if (themeSetting == null) {
       throw new BuiltValueNullFieldError('SettingState', 'themeSetting');
@@ -100,13 +116,16 @@ class _$SettingState extends SettingState {
     return other is SettingState &&
         generalSetting == other.generalSetting &&
         themeSetting == other.themeSetting &&
-        muteSetting == other.muteSetting;
+        muteSetting == other.muteSetting &&
+        privacySetting == other.privacySetting;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, generalSetting.hashCode), themeSetting.hashCode),
-        muteSetting.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, generalSetting.hashCode), themeSetting.hashCode),
+            muteSetting.hashCode),
+        privacySetting.hashCode));
   }
 
   @override
@@ -114,7 +133,8 @@ class _$SettingState extends SettingState {
     return (newBuiltValueToStringHelper('SettingState')
           ..add('generalSetting', generalSetting)
           ..add('themeSetting', themeSetting)
-          ..add('muteSetting', muteSetting))
+          ..add('muteSetting', muteSetting)
+          ..add('privacySetting', privacySetting))
         .toString();
   }
 }
@@ -141,6 +161,12 @@ class SettingStateBuilder
   set muteSetting(MuteSettingBuilder muteSetting) =>
       _$this._muteSetting = muteSetting;
 
+  PrivacySettingBuilder _privacySetting;
+  PrivacySettingBuilder get privacySetting =>
+      _$this._privacySetting ??= new PrivacySettingBuilder();
+  set privacySetting(PrivacySettingBuilder privacySetting) =>
+      _$this._privacySetting = privacySetting;
+
   SettingStateBuilder();
 
   SettingStateBuilder get _$this {
@@ -148,6 +174,7 @@ class SettingStateBuilder
       _generalSetting = _$v.generalSetting?.toBuilder();
       _themeSetting = _$v.themeSetting?.toBuilder();
       _muteSetting = _$v.muteSetting?.toBuilder();
+      _privacySetting = _$v.privacySetting?.toBuilder();
       _$v = null;
     }
     return this;
@@ -174,7 +201,8 @@ class SettingStateBuilder
           new _$SettingState._(
               generalSetting: _generalSetting?.build(),
               themeSetting: themeSetting.build(),
-              muteSetting: muteSetting.build());
+              muteSetting: muteSetting.build(),
+              privacySetting: _privacySetting?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -184,6 +212,8 @@ class SettingStateBuilder
         themeSetting.build();
         _$failedField = 'muteSetting';
         muteSetting.build();
+        _$failedField = 'privacySetting';
+        _privacySetting?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SettingState', _$failedField, e.toString());

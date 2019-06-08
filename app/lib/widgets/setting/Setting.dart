@@ -64,6 +64,20 @@ class SettingHome extends StatelessWidget {
             ),
             Divider(),
             ListTile(
+              title: Text('隐私'),
+              trailing: Icon(
+                AdaptiveIcons.forwardIconData,
+                size: smallerIconSize,
+              ),
+              onTap: () {
+                Application.router.navigateTo(
+                    context,
+                    Routes.privacySettingRoute,
+                    transition: TransitionType.native);
+              },
+            ),
+            Divider(),
+            ListTile(
               title: Text('反馈'),
               onTap: () {
                 launch('https://bgm.tv/group/bangumin', forceSafariVC: false,

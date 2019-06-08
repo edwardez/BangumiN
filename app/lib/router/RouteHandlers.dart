@@ -17,6 +17,7 @@ import 'package:munin/widgets/setting/Setting.dart';
 import 'package:munin/widgets/setting/general/GeneralSettingWidget.dart';
 import 'package:munin/widgets/setting/mute/ImportBlockedBangumiUsersWidget.dart';
 import 'package:munin/widgets/setting/mute/MuteSettingWidget.dart';
+import 'package:munin/widgets/setting/privacy/PrivacySettingWidget.dart';
 import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
 import 'package:munin/widgets/subject/SubjectWidget.dart';
 import 'package:munin/widgets/subject/episodes/SubjectEpisodesWidget.dart';
@@ -184,6 +185,13 @@ var themeSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: ThemeSettingWidget(),
+      );
+    });
+
+var privacySettingRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return Scaffold(
+        body: PrivacySettingWidget(),
       );
     });
 

@@ -45,6 +45,7 @@ class Routes {
   static const generalSettingRoute = "/setting/general";
   static const themeSettingRoute = "/setting/theme";
   static const muteSettingRoute = "/setting/mute";
+  static const privacySettingRoute = "/setting/privacy";
   static const muteSettingBatchImportUsersRoute =
       "/setting/mute/users/import/bangumi";
 
@@ -93,6 +94,7 @@ class Routes {
     router.define(generalSettingRoute, handler: generalSettingRouteHandler);
     router.define(themeSettingRoute, handler: themeSettingRouteHandler);
     router.define(muteSettingRoute, handler: muteSettingRouteHandler);
+    router.define(privacySettingRoute, handler: privacySettingRouteHandler);
     router.define(muteSettingBatchImportUsersRoute,
         handler: muteSettingBatchImportUsersRouteHandler);
   }

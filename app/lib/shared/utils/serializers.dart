@@ -56,6 +56,7 @@ import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguag
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
@@ -243,6 +244,7 @@ part 'serializers.g.dart';
   ThemeSetting,
   MuninTheme,
   ThemeSwitchMode,
+  PrivacySetting,
   MuteSetting,
   MutedUser,
   MutedGroup,

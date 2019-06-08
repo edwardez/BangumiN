@@ -51,7 +51,7 @@ showEpisodeOptionSheet({
         child: ListView(
           children: <Widget>[
             Text(
-              preferredSubjectTitle(
+              preferredName(
                   episode.name, episode.nameCn, preferredSubjectInfoLanguage),
               style: Theme.of(context).textTheme.title,
             ),

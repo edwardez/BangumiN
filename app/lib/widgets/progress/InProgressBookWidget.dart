@@ -167,7 +167,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
+                      Flexible(child: Text(preferredNameFromSubjectBase(
                           widget.collection.subject,
                           widget.preferredSubjectInfoLanguage))),
                     ],

@@ -30,7 +30,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
   _buildInfoWidgets(BuildContext context, BangumiSubject subject) {
     List<Widget> widgets = [];
     widgets.add(WrappableText(
-      preferredSubjectTitleFromSubjectBase(
+      preferredNameFromSubjectBase(
           subject, preferredSubjectInfoLanguage),
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
@@ -38,7 +38,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       maxLines: 3,
     ));
 
-    Optional<String> maybeSecondaryTitle = secondarySubjectTitleFromSubjectBase(
+    Optional<String> maybeSecondaryTitle = secondaryNameFromSubjectBase(
         subject, preferredSubjectInfoLanguage);
     if (maybeSecondaryTitle.isPresent) {
       widgets.add(WrappableText(

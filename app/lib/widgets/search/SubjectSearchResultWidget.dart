@@ -32,14 +32,14 @@ class SubjectSearchResultWidget extends StatelessWidget {
     TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
     subInfoRows.add(Text(
-      preferredSubjectTitle(subjectSearchResult.name,
+      preferredName(subjectSearchResult.name,
           subjectSearchResult.nameCn,
           preferredSubjectInfoLanguage),
       maxLines: titleMaxLines,
       overflow: TextOverflow.ellipsis,
     ));
 
-    Optional<String> maybeSecondaryTitle = secondarySubjectTitle(
+    Optional<String> maybeSecondaryTitle = secondaryName(
         subjectSearchResult.name,
         subjectSearchResult.nameCn,
         preferredSubjectInfoLanguage);

@@ -418,7 +418,7 @@ class _SubjectCollectionManagementWidgetState
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
             title: subject != null
-                ? Text(preferredSubjectTitleFromSubjectBase(
+                ? Text(preferredNameFromSubjectBase(
                 subject, vm.preferredSubjectInfoLanguage))
                 : Text('-'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],

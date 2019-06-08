@@ -90,7 +90,7 @@ class SubjectWidget extends StatelessWidget {
     return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
       appBarSecondaryTitle:
-      Text(preferredSubjectTitleFromSubjectBase(
+      Text(preferredNameFromSubjectBase(
           subject, preferredSubjectInfoLanguage)),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(

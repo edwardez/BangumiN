@@ -43,7 +43,7 @@ class HorizontalRelatedSubjects extends StatelessWidget {
         imageHeight: imageHeight,
         horizontalImagePadding:
         imageWidgets.length == 0 ? 0 : horizontalImagePadding,
-        title: preferredSubjectTitleFromSubjectBase(
+        title: preferredNameFromSubjectBase(
             subject, preferredSubjectInfoLanguage),
         subtitle: subject.subjectSubTypeName,
         titleMaxLines: titleMaxLines,

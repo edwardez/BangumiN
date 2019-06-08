@@ -364,7 +364,7 @@ class _SubjectCollectionManagementWidgetState
     return GestureDetector(
       child: SimpleFormSubmitWidget(
         loadingStatus: vm.collectionsSubmissionStatus,
-        onSubmitPressed: (BuildContext context) {
+        onSubmitPressed: (innerContext) {
           _formKey?.currentState?.save();
           vm.collectionInfoUpdateRequest(
               context, subjectId, localSubjectCollectionInfo);

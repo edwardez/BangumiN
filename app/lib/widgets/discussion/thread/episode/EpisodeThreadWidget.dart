@@ -87,14 +87,24 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
             ),
           ));
 
-          for (var post in vm.thread.posts) {
-            children.add(PostWidget(
-              post: post,
-              threadId: vm.thread.id,
-              parentBangumiContentType: parentBangumiContentType,
-              showSpoiler: showSpoiler,
+          if (vm.thread.posts.isEmpty) {
+            children.add(MuninPadding(
+              child: Text(
+                '暂无讨论',
+                style: defaultCaptionText(context),
+              ),
             ));
+          } else {
+            for (var post in vm.thread.posts) {
+              children.add(PostWidget(
+                post: post,
+                threadId: vm.thread.id,
+                parentBangumiContentType: parentBangumiContentType,
+                showSpoiler: showSpoiler,
+              ));
+            }
           }
+
 
           return ScrollViewWithSliverAppBar(
             appBarMainTitle: Text('章节讨论'),

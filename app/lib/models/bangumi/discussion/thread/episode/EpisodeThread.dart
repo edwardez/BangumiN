@@ -5,9 +5,9 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/ThreadRelatedEpisode.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
+import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'EpisodeThread.g.dart';
@@ -29,7 +29,7 @@ abstract class EpisodeThread
   /// from parsing html and itself is considered less important, setting it to
   /// null helps handling some unknown changes in html.
   @nullable
-  ThreadParentSubject get parentSubject;
+  ParentSubject get parentSubject;
 
   /// A flattened list of all posts.
   @memoized

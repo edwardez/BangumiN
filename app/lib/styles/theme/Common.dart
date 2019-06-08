@@ -16,8 +16,8 @@ const bottomOffset = baseOffset * 10;
 final defaultContainerCircularRadius = BorderRadius.circular(8.0);
 
 const defaultPortraitHorizontalOffset = baseOffset * 6;
-const defaultPortraitHorizontalEdgeInsets = const EdgeInsets.symmetric(
-    horizontal: defaultPortraitHorizontalOffset);
+const defaultPortraitHorizontalEdgeInsets =
+const EdgeInsets.symmetric(horizontal: defaultPortraitHorizontalOffset);
 const defaultDensePortraitHorizontalOffset = baseOffset4x;
 const defaultLandScapeHorizontalOffset = baseOffset * 12;
 const defaultLandScapeDenseHorizontalOffset = baseOffset4x;
@@ -74,4 +74,15 @@ Color lightPrimaryDarkAccentColor(BuildContext context) {
   return Theme
       .of(context)
       .primaryColor;
+}
+
+TextStyle defaultDialogContentTextStyle(BuildContext context) {
+  return Theme
+      .of(context)
+      .dialogTheme
+      .contentTextStyle ??
+      Theme
+          .of(context)
+          .textTheme
+          .subhead;
 }

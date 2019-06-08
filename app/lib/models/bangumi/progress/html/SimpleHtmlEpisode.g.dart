@@ -1,37 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'EpisodeProgress.dart';
+part of 'SimpleHtmlEpisode.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<EpisodeProgress> _$episodeProgressSerializer =
-    new _$EpisodeProgressSerializer();
+Serializer<SimpleHtmlEpisode> _$simpleHtmlEpisodeSerializer =
+    new _$SimpleHtmlEpisodeSerializer();
 
-class _$EpisodeProgressSerializer
-    implements StructuredSerializer<EpisodeProgress> {
+class _$SimpleHtmlEpisodeSerializer
+    implements StructuredSerializer<SimpleHtmlEpisode> {
   @override
-  final Iterable<Type> types = const [EpisodeProgress, _$EpisodeProgress];
+  final Iterable<Type> types = const [SimpleHtmlEpisode, _$SimpleHtmlEpisode];
   @override
-  final String wireName = 'EpisodeProgress';
+  final String wireName = 'SimpleHtmlEpisode';
 
   @override
-  Iterable serialize(Serializers serializers, EpisodeProgress object,
+  Iterable serialize(Serializers serializers, SimpleHtmlEpisode object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'sort',
-      serializers.serialize(object.sequentialNumber,
-          specifiedType: const FullType(double)),
-      'duration',
-      serializers.serialize(object.duration,
+      'episodeInfo',
+      serializers.serialize(object.episodeInfo,
           specifiedType: const FullType(String)),
-      'airdate',
-      serializers.serialize(object.airDate,
-          specifiedType: const FullType(String)),
-      'comment',
-      serializers.serialize(object.totalCommentsCount,
-          specifiedType: const FullType(int)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'name',
@@ -49,20 +40,14 @@ class _$EpisodeProgressSerializer
       serializers.serialize(object.episodeType,
           specifiedType: const FullType(EpisodeType)),
     ];
-    if (object.summary != null) {
-      result
-        ..add('desc')
-        ..add(serializers.serialize(object.summary,
-            specifiedType: const FullType(String)));
-    }
 
     return result;
   }
 
   @override
-  EpisodeProgress deserialize(Serializers serializers, Iterable serialized,
+  SimpleHtmlEpisode deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EpisodeProgressBuilder();
+    final result = new SimpleHtmlEpisodeBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -70,24 +55,8 @@ class _$EpisodeProgressSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'sort':
-          result.sequentialNumber = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double;
-          break;
-        case 'duration':
-          result.duration = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'airdate':
-          result.airDate = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'comment':
-          result.totalCommentsCount = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
-        case 'desc':
-          result.summary = serializers.deserialize(value,
+        case 'episodeInfo':
+          result.episodeInfo = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'id':
@@ -121,17 +90,9 @@ class _$EpisodeProgressSerializer
   }
 }
 
-class _$EpisodeProgress extends EpisodeProgress {
+class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
   @override
-  final double sequentialNumber;
-  @override
-  final String duration;
-  @override
-  final String airDate;
-  @override
-  final int totalCommentsCount;
-  @override
-  final String summary;
+  final String episodeInfo;
   @override
   final int id;
   @override
@@ -145,15 +106,12 @@ class _$EpisodeProgress extends EpisodeProgress {
   @override
   final EpisodeType episodeType;
 
-  factory _$EpisodeProgress([void Function(EpisodeProgressBuilder) updates]) =>
-      (new EpisodeProgressBuilder()..update(updates)).build();
+  factory _$SimpleHtmlEpisode(
+          [void Function(SimpleHtmlEpisodeBuilder) updates]) =>
+      (new SimpleHtmlEpisodeBuilder()..update(updates)).build();
 
-  _$EpisodeProgress._(
-      {this.sequentialNumber,
-      this.duration,
-      this.airDate,
-      this.totalCommentsCount,
-      this.summary,
+  _$SimpleHtmlEpisode._(
+      {this.episodeInfo,
       this.id,
       this.name,
       this.nameCn,
@@ -161,57 +119,43 @@ class _$EpisodeProgress extends EpisodeProgress {
       this.userEpisodeStatus,
       this.episodeType})
       : super._() {
-    if (sequentialNumber == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'sequentialNumber');
-    }
-    if (duration == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'duration');
-    }
-    if (airDate == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'airDate');
-    }
-    if (totalCommentsCount == null) {
-      throw new BuiltValueNullFieldError(
-          'EpisodeProgress', 'totalCommentsCount');
+    if (episodeInfo == null) {
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'episodeInfo');
     }
     if (id == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'id');
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'id');
     }
     if (name == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'name');
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'name');
     }
     if (nameCn == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'nameCn');
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'nameCn');
     }
     if (airStatus == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'airStatus');
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'airStatus');
     }
     if (userEpisodeStatus == null) {
       throw new BuiltValueNullFieldError(
-          'EpisodeProgress', 'userEpisodeStatus');
+          'SimpleHtmlEpisode', 'userEpisodeStatus');
     }
     if (episodeType == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'episodeType');
+      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'episodeType');
     }
   }
 
   @override
-  EpisodeProgress rebuild(void Function(EpisodeProgressBuilder) updates) =>
+  SimpleHtmlEpisode rebuild(void Function(SimpleHtmlEpisodeBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EpisodeProgressBuilder toBuilder() =>
-      new EpisodeProgressBuilder()..replace(this);
+  SimpleHtmlEpisodeBuilder toBuilder() =>
+      new SimpleHtmlEpisodeBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EpisodeProgress &&
-        sequentialNumber == other.sequentialNumber &&
-        duration == other.duration &&
-        airDate == other.airDate &&
-        totalCommentsCount == other.totalCommentsCount &&
-        summary == other.summary &&
+    return other is SimpleHtmlEpisode &&
+        episodeInfo == other.episodeInfo &&
         id == other.id &&
         name == other.name &&
         nameCn == other.nameCn &&
@@ -226,17 +170,7 @@ class _$EpisodeProgress extends EpisodeProgress {
         $jc(
             $jc(
                 $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc($jc(0, sequentialNumber.hashCode),
-                                            duration.hashCode),
-                                        airDate.hashCode),
-                                    totalCommentsCount.hashCode),
-                                summary.hashCode),
-                            id.hashCode),
+                    $jc($jc($jc(0, episodeInfo.hashCode), id.hashCode),
                         name.hashCode),
                     nameCn.hashCode),
                 airStatus.hashCode),
@@ -246,12 +180,8 @@ class _$EpisodeProgress extends EpisodeProgress {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EpisodeProgress')
-          ..add('sequentialNumber', sequentialNumber)
-          ..add('duration', duration)
-          ..add('airDate', airDate)
-          ..add('totalCommentsCount', totalCommentsCount)
-          ..add('summary', summary)
+    return (newBuiltValueToStringHelper('SimpleHtmlEpisode')
+          ..add('episodeInfo', episodeInfo)
           ..add('id', id)
           ..add('name', name)
           ..add('nameCn', nameCn)
@@ -262,33 +192,15 @@ class _$EpisodeProgress extends EpisodeProgress {
   }
 }
 
-class EpisodeProgressBuilder
+class SimpleHtmlEpisodeBuilder
     implements
-        Builder<EpisodeProgress, EpisodeProgressBuilder>,
+        Builder<SimpleHtmlEpisode, SimpleHtmlEpisodeBuilder>,
         BaseEpisodeBuilder {
-  _$EpisodeProgress _$v;
+  _$SimpleHtmlEpisode _$v;
 
-  double _sequentialNumber;
-  double get sequentialNumber => _$this._sequentialNumber;
-  set sequentialNumber(double sequentialNumber) =>
-      _$this._sequentialNumber = sequentialNumber;
-
-  String _duration;
-  String get duration => _$this._duration;
-  set duration(String duration) => _$this._duration = duration;
-
-  String _airDate;
-  String get airDate => _$this._airDate;
-  set airDate(String airDate) => _$this._airDate = airDate;
-
-  int _totalCommentsCount;
-  int get totalCommentsCount => _$this._totalCommentsCount;
-  set totalCommentsCount(int totalCommentsCount) =>
-      _$this._totalCommentsCount = totalCommentsCount;
-
-  String _summary;
-  String get summary => _$this._summary;
-  set summary(String summary) => _$this._summary = summary;
+  String _episodeInfo;
+  String get episodeInfo => _$this._episodeInfo;
+  set episodeInfo(String episodeInfo) => _$this._episodeInfo = episodeInfo;
 
   int _id;
   int get id => _$this._id;
@@ -315,15 +227,11 @@ class EpisodeProgressBuilder
   EpisodeType get episodeType => _$this._episodeType;
   set episodeType(EpisodeType episodeType) => _$this._episodeType = episodeType;
 
-  EpisodeProgressBuilder();
+  SimpleHtmlEpisodeBuilder();
 
-  EpisodeProgressBuilder get _$this {
+  SimpleHtmlEpisodeBuilder get _$this {
     if (_$v != null) {
-      _sequentialNumber = _$v.sequentialNumber;
-      _duration = _$v.duration;
-      _airDate = _$v.airDate;
-      _totalCommentsCount = _$v.totalCommentsCount;
-      _summary = _$v.summary;
+      _episodeInfo = _$v.episodeInfo;
       _id = _$v.id;
       _name = _$v.name;
       _nameCn = _$v.nameCn;
@@ -336,27 +244,23 @@ class EpisodeProgressBuilder
   }
 
   @override
-  void replace(covariant EpisodeProgress other) {
+  void replace(covariant SimpleHtmlEpisode other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EpisodeProgress;
+    _$v = other as _$SimpleHtmlEpisode;
   }
 
   @override
-  void update(void Function(EpisodeProgressBuilder) updates) {
+  void update(void Function(SimpleHtmlEpisodeBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EpisodeProgress build() {
+  _$SimpleHtmlEpisode build() {
     final _$result = _$v ??
-        new _$EpisodeProgress._(
-            sequentialNumber: sequentialNumber,
-            duration: duration,
-            airDate: airDate,
-            totalCommentsCount: totalCommentsCount,
-            summary: summary,
+        new _$SimpleHtmlEpisode._(
+            episodeInfo: episodeInfo,
             id: id,
             name: name,
             nameCn: nameCn,

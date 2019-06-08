@@ -350,3 +350,12 @@ DateTime parseChineseRelativeTime(String rawRelativeTime) {
 
   return absoluteTime;
 }
+
+/// Returns the element if it's non-null, or an dummy empty div if it's null.
+Element elementOrEmptyDiv(Element element) {
+  if (element == null) {
+    return Element.tag('div');
+  }
+
+  return element;
+}

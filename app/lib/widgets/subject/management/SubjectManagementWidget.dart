@@ -15,21 +15,31 @@ class SubjectManagementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String collectionActionText = subject.userSubjectCollectionInfoPreview
-        .status == CollectionStatus.Untouched ? '加入' : '编辑';
+    String collectionActionText =
+    subject.userSubjectCollectionInfoPreview.status ==
+        CollectionStatus.Untouched
+        ? '加入'
+        : '编辑';
 
     return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
-            if(subject.type == SubjectType.Anime ||
+            if (subject.type == SubjectType.Anime ||
                 subject.type == SubjectType.Real)
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: MuninOutlineButton(
                     child: Text('查看章节'),
-                    onPressed: () {},
+                    onPressed: () {
+                      Application.router.navigateTo(
+                        context,
+                        Routes.subjectEpisodesRoute
+                            .replaceFirst(':subjectId', subject.id?.toString()),
+                        transition: TransitionType.native,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -44,10 +54,11 @@ class SubjectManagementWidget extends StatelessWidget {
                   child: Text('$collectionActionText收藏'),
                   onPressed: () {
                     Application.router.navigateTo(
-                        context,
-                        Routes.subjectCollectionManagementRoute
-                            .replaceFirst(':subjectId', subject.id?.toString()),
-                        transition: TransitionType.nativeModal);
+                      context,
+                      Routes.subjectCollectionManagementRoute
+                          .replaceFirst(':subjectId', subject.id?.toString()),
+                      transition: TransitionType.nativeModal,
+                    );
                   },
                 ),
               ),

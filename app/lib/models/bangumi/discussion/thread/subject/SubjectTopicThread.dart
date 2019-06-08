@@ -6,9 +6,9 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/utils.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
+import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'SubjectTopicThread.g.dart';
@@ -25,7 +25,7 @@ abstract class SubjectTopicThread
   OriginalPost get originalPost;
 
   ///  Parent subject that thread is related to.
-  ThreadParentSubject get parentSubject;
+  ParentSubject get parentSubject;
 
   /// A flattened list of all posts.
   @override

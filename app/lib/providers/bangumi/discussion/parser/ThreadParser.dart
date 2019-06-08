@@ -9,7 +9,6 @@ import 'package:munin/models/bangumi/discussion/thread/blog/BlogContent.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/ThreadRelatedEpisode.dart';
 import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
@@ -18,11 +17,12 @@ import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
 import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
+import 'package:munin/providers/bangumi/discussion/parser/common.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:quiver/core.dart';
 
 class ThreadParser {
   /// Matches format like
@@ -199,33 +199,6 @@ class ThreadParser {
     return episodes;
   }
 
-  Optional<ThreadParentSubject> parseThreadParentSubject(
-      DocumentFragment document) {
-    Element subjectElement =
-        document.querySelector('#subject_inner_info > a.avatar');
-
-    int id = tryParseInt(parseHrefId(subjectElement), defaultValue: null);
-
-    String name = subjectElement?.text ?? '??';
-    String nameCn =
-        (document.querySelector('.nameSingle>a')?.attributes ?? {})['title'] ??
-            null;
-
-    String coverImageUrl = imageSrcOrNull(subjectElement?.querySelector('img'));
-
-    if (id == null) {
-      return Optional.absent();
-    }
-
-    ThreadParentSubject subject = ThreadParentSubject((b) => b
-      ..id = id
-      ..name = name
-      ..nameCn = nameCn
-      ..cover.replace(BangumiImage.fromImageUrl(
-          coverImageUrl, ImageSize.Unknown, ImageType.SubjectCover)));
-
-    return Optional.of(subject);
-  }
 
   GroupThread processGroupThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
@@ -253,7 +226,7 @@ class ThreadParser {
 
     String title = document.querySelector('#header')?.text?.trim() ?? '??';
 
-    var maybeParentSubject = parseThreadParentSubject(document);
+    var maybeParentSubject = parseParentSubject(document);
 
     Post initialPost = parsePost(
         document.querySelector('.postTopic'), PostType.InitialSubjectPost);
@@ -292,7 +265,7 @@ class ThreadParser {
     List<ThreadRelatedEpisode> relatedEpisodes =
         parseThreadRelatedEpisodes(document.querySelector('.sideEpList'));
 
-    var maybeParentSubject = parseThreadParentSubject(document);
+    var maybeParentSubject = parseParentSubject(document);
 
     return EpisodeThread((b) => b
       ..id = threadId
@@ -329,7 +302,7 @@ class ThreadParser {
       ..username = username
       ..avatar.replace(avatar));
 
-    List<ThreadParentSubject> subjects = [];
+    List<ParentSubject> subjects = [];
 
     for (var subjectElement
         in document.querySelectorAll('#related_subject_list > li')) {
@@ -340,7 +313,8 @@ class ThreadParser {
           parseHrefId(subjectElement.querySelector('a'), digitOnly: true),
           defaultValue: null);
 
-      subjects.add(ThreadParentSubject((b) => b
+      subjects.add(ParentSubject((b) =>
+      b
         ..id = subjectId
         ..name = subjectElement.text.trim()
         ..cover.replace(BangumiImage.fromImageUrl(
@@ -348,7 +322,7 @@ class ThreadParser {
     }
 
     return BlogContent((b) => b
-      ..associatedSubjects.replace(BuiltList<ThreadParentSubject>.of(subjects))
+      ..associatedSubjects.replace(BuiltList<ParentSubject>.of(subjects))
       ..postTimeInMilliSeconds = postTime.millisecondsSinceEpoch
       ..author.replace(author)
       ..html = document.querySelector('#entry_content')?.outerHtml ?? '');

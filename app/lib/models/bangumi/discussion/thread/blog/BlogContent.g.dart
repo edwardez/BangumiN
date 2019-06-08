@@ -28,8 +28,8 @@ class _$BlogContentSerializer implements StructuredSerializer<BlogContent> {
           specifiedType: const FullType(int)),
       'associatedSubjects',
       serializers.serialize(object.associatedSubjects,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(ThreadParentSubject)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(ParentSubject)])),
     ];
 
     return result;
@@ -62,7 +62,7 @@ class _$BlogContentSerializer implements StructuredSerializer<BlogContent> {
         case 'associatedSubjects':
           result.associatedSubjects.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(ThreadParentSubject)]))
+                      BuiltList, const [const FullType(ParentSubject)]))
               as BuiltList);
           break;
       }
@@ -80,7 +80,7 @@ class _$BlogContent extends BlogContent {
   @override
   final int postTimeInMilliSeconds;
   @override
-  final BuiltList<ThreadParentSubject> associatedSubjects;
+  final BuiltList<ParentSubject> associatedSubjects;
 
   factory _$BlogContent([void Function(BlogContentBuilder) updates]) =>
       (new BlogContentBuilder()..update(updates)).build();
@@ -159,10 +159,10 @@ class BlogContentBuilder implements Builder<BlogContent, BlogContentBuilder> {
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
       _$this._postTimeInMilliSeconds = postTimeInMilliSeconds;
 
-  ListBuilder<ThreadParentSubject> _associatedSubjects;
-  ListBuilder<ThreadParentSubject> get associatedSubjects =>
-      _$this._associatedSubjects ??= new ListBuilder<ThreadParentSubject>();
-  set associatedSubjects(ListBuilder<ThreadParentSubject> associatedSubjects) =>
+  ListBuilder<ParentSubject> _associatedSubjects;
+  ListBuilder<ParentSubject> get associatedSubjects =>
+      _$this._associatedSubjects ??= new ListBuilder<ParentSubject>();
+  set associatedSubjects(ListBuilder<ParentSubject> associatedSubjects) =>
       _$this._associatedSubjects = associatedSubjects;
 
   BlogContentBuilder();

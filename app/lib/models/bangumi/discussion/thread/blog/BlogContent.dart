@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiUserBasic.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
+import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'BlogContent.g.dart';
@@ -20,7 +20,7 @@ abstract class BlogContent implements Built<BlogContent, BlogContentBuilder> {
 
   /// A blog can be associated with multiple subjects by user.
   /// [associatedSubjects] stores list of associated subjects.
-  BuiltList<ThreadParentSubject> get associatedSubjects;
+  BuiltList<ParentSubject> get associatedSubjects;
 
   BlogContent._();
 

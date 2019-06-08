@@ -19,6 +19,7 @@ import 'package:munin/widgets/setting/mute/ImportBlockedBangumiUsersWidget.dart'
 import 'package:munin/widgets/setting/mute/MuteSettingWidget.dart';
 import 'package:munin/widgets/setting/theme/ThemeSettingWidget.dart';
 import 'package:munin/widgets/subject/SubjectWidget.dart';
+import 'package:munin/widgets/subject/episodes/SubjectEpisodesWidget.dart';
 import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
 import 'package:munin/widgets/timeline/compose/ComposeTimelineMessage.dart';
@@ -68,6 +69,17 @@ var subjectCollectionManagementRouteHandler = Handler(
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
       return SubjectCollectionManagementWidget(
         subjectId: subjectId,
+      );
+    });
+
+var subjectEpisodesRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+      return Scaffold(
+        body: SubjectEpisodesWidget(
+          subjectId: subjectId,
+        ),
       );
     });
 

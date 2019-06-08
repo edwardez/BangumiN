@@ -1,7 +1,11 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:munin/shared/utils/serializers.dart';
+import 'package:munin/styles/theme/Colors.dart';
+import 'package:munin/styles/theme/Common.dart';
 
 part 'EpisodeStatus.g.dart';
 
@@ -41,6 +45,47 @@ class EpisodeStatus extends EnumClass {
       default:
         assert(false, '$this doesn\'t have a valid wired name');
         return '2';
+    }
+  }
+
+  @memoized
+  String get chineseName {
+    switch (this) {
+      case EpisodeStatus.Untouched:
+        return '未看';
+      case EpisodeStatus.Wish:
+        return '想看';
+      case EpisodeStatus.Collect:
+        return '看过';
+      case EpisodeStatus.Dropped:
+        return '抛弃';
+      default:
+        assert(this == EpisodeStatus.Unknown,
+        '$this doesn\'t have a valid wired name');
+        return '-';
+    }
+  }
+
+  static Color getColor(BuildContext context, EpisodeStatus status) {
+    switch (status) {
+      case EpisodeStatus.Wish:
+        return Theme
+            .of(context)
+            .brightness == Brightness.dark
+            ? bangumiPink.shade200
+            : Theme
+            .of(context)
+            .accentColor;
+      case EpisodeStatus.Dropped:
+        return Theme
+            .of(context)
+            .unselectedWidgetColor;
+      case EpisodeStatus.Collect:
+        return lightPrimaryDarkAccentColor(context);
+      default:
+        return Theme
+            .of(context)
+            .unselectedWidgetColor;
     }
   }
 

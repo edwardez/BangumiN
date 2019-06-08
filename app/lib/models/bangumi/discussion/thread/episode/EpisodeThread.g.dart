@@ -40,7 +40,7 @@ class _$EpisodeThreadSerializer implements StructuredSerializer<EpisodeThread> {
       result
         ..add('parentSubject')
         ..add(serializers.serialize(object.parentSubject,
-            specifiedType: const FullType(ThreadParentSubject)));
+            specifiedType: const FullType(ParentSubject)));
     }
 
     return result;
@@ -73,8 +73,7 @@ class _$EpisodeThreadSerializer implements StructuredSerializer<EpisodeThread> {
           break;
         case 'parentSubject':
           result.parentSubject.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ThreadParentSubject))
-              as ThreadParentSubject);
+              specifiedType: const FullType(ParentSubject)) as ParentSubject);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -101,7 +100,7 @@ class _$EpisodeThread extends EpisodeThread {
   @override
   final BuiltList<ThreadRelatedEpisode> relatedEpisodes;
   @override
-  final ThreadParentSubject parentSubject;
+  final ParentSubject parentSubject;
   @override
   final int id;
   @override
@@ -204,10 +203,10 @@ class EpisodeThreadBuilder
   set relatedEpisodes(ListBuilder<ThreadRelatedEpisode> relatedEpisodes) =>
       _$this._relatedEpisodes = relatedEpisodes;
 
-  ThreadParentSubjectBuilder _parentSubject;
-  ThreadParentSubjectBuilder get parentSubject =>
-      _$this._parentSubject ??= new ThreadParentSubjectBuilder();
-  set parentSubject(ThreadParentSubjectBuilder parentSubject) =>
+  ParentSubjectBuilder _parentSubject;
+  ParentSubjectBuilder get parentSubject =>
+      _$this._parentSubject ??= new ParentSubjectBuilder();
+  set parentSubject(ParentSubjectBuilder parentSubject) =>
       _$this._parentSubject = parentSubject;
 
   int _id;

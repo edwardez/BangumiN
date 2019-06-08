@@ -22,7 +22,6 @@ import 'package:munin/models/bangumi/discussion/thread/blog/BlogContent.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/ThreadParentSubject.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/ThreadRelatedEpisode.dart';
@@ -41,6 +40,8 @@ import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
+import 'package:munin/models/bangumi/progress/html/SimpleHtmlEpisode.dart';
+import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
@@ -67,6 +68,7 @@ import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
@@ -198,7 +200,7 @@ part 'serializers.g.dart';
   DiscussionState,
   EpisodeThread,
   ThreadRelatedEpisode,
-  ThreadParentSubject,
+  ParentSubject,
   SubjectTopicThread,
   BlogThread,
   BlogContent,
@@ -233,6 +235,8 @@ part 'serializers.g.dart';
   EpisodeType,
   AirStatus,
   GetProgressRequest,
+  SubjectEpisodes,
+  SimpleHtmlEpisode,
 
   /// Settings
   SettingState,

@@ -26,12 +26,6 @@ class _$InProgressSubjectInfoSerializer
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(SubjectType)),
-      'air_date',
-      serializers.serialize(object.airDate,
-          specifiedType: const FullType(String)),
-      'air_weekday',
-      serializers.serialize(object.airWeekday,
-          specifiedType: const FullType(int)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -40,6 +34,18 @@ class _$InProgressSubjectInfoSerializer
         ..add('images')
         ..add(serializers.serialize(object.cover,
             specifiedType: const FullType(BangumiImage)));
+    }
+    if (object.airDate != null) {
+      result
+        ..add('air_date')
+        ..add(serializers.serialize(object.airDate,
+            specifiedType: const FullType(String)));
+    }
+    if (object.airWeekday != null) {
+      result
+        ..add('air_weekday')
+        ..add(serializers.serialize(object.airWeekday,
+            specifiedType: const FullType(int)));
     }
     if (object.totalEpisodesCount != null) {
       result
@@ -174,12 +180,6 @@ class _$InProgressSubjectInfo extends InProgressSubjectInfo {
       : super._() {
     if (type == null) {
       throw new BuiltValueNullFieldError('InProgressSubjectInfo', 'type');
-    }
-    if (airDate == null) {
-      throw new BuiltValueNullFieldError('InProgressSubjectInfo', 'airDate');
-    }
-    if (airWeekday == null) {
-      throw new BuiltValueNullFieldError('InProgressSubjectInfo', 'airWeekday');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('InProgressSubjectInfo', 'name');

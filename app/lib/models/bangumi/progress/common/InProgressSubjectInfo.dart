@@ -19,9 +19,11 @@ abstract class InProgressSubjectInfo
   @BuiltValueField(wireName: 'images')
   BangumiImage get cover;
 
+  @nullable
   @BuiltValueField(wireName: 'air_date')
   String get airDate;
 
+  @nullable
   @BuiltValueField(wireName: 'air_weekday')
   int get airWeekday;
 

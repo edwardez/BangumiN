@@ -1,26 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ThreadParentSubject.dart';
+part of 'ParentSubject.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<ThreadParentSubject> _$threadParentSubjectSerializer =
-    new _$ThreadParentSubjectSerializer();
+Serializer<ParentSubject> _$parentSubjectSerializer =
+    new _$ParentSubjectSerializer();
 
-class _$ThreadParentSubjectSerializer
-    implements StructuredSerializer<ThreadParentSubject> {
+class _$ParentSubjectSerializer implements StructuredSerializer<ParentSubject> {
   @override
-  final Iterable<Type> types = const [
-    ThreadParentSubject,
-    _$ThreadParentSubject
-  ];
+  final Iterable<Type> types = const [ParentSubject, _$ParentSubject];
   @override
-  final String wireName = 'ThreadParentSubject';
+  final String wireName = 'ParentSubject';
 
   @override
-  Iterable serialize(Serializers serializers, ThreadParentSubject object,
+  Iterable serialize(Serializers serializers, ParentSubject object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'cover',
@@ -52,9 +48,9 @@ class _$ThreadParentSubjectSerializer
   }
 
   @override
-  ThreadParentSubject deserialize(Serializers serializers, Iterable serialized,
+  ParentSubject deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new ThreadParentSubjectBuilder();
+    final result = new ParentSubjectBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -89,7 +85,7 @@ class _$ThreadParentSubjectSerializer
   }
 }
 
-class _$ThreadParentSubject extends ThreadParentSubject {
+class _$ParentSubject extends ParentSubject {
   @override
   final BangumiImage cover;
   @override
@@ -101,34 +97,31 @@ class _$ThreadParentSubject extends ThreadParentSubject {
   @override
   final String nameCn;
 
-  factory _$ThreadParentSubject(
-          [void Function(ThreadParentSubjectBuilder) updates]) =>
-      (new ThreadParentSubjectBuilder()..update(updates)).build();
+  factory _$ParentSubject([void Function(ParentSubjectBuilder) updates]) =>
+      (new ParentSubjectBuilder()..update(updates)).build();
 
-  _$ThreadParentSubject._(
+  _$ParentSubject._(
       {this.cover, this.id, this.pageUrlFromApi, this.name, this.nameCn})
       : super._() {
     if (cover == null) {
-      throw new BuiltValueNullFieldError('ThreadParentSubject', 'cover');
+      throw new BuiltValueNullFieldError('ParentSubject', 'cover');
     }
     if (name == null) {
-      throw new BuiltValueNullFieldError('ThreadParentSubject', 'name');
+      throw new BuiltValueNullFieldError('ParentSubject', 'name');
     }
   }
 
   @override
-  ThreadParentSubject rebuild(
-          void Function(ThreadParentSubjectBuilder) updates) =>
+  ParentSubject rebuild(void Function(ParentSubjectBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  ThreadParentSubjectBuilder toBuilder() =>
-      new ThreadParentSubjectBuilder()..replace(this);
+  ParentSubjectBuilder toBuilder() => new ParentSubjectBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ThreadParentSubject &&
+    return other is ParentSubject &&
         cover == other.cover &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
@@ -148,7 +141,7 @@ class _$ThreadParentSubject extends ThreadParentSubject {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('ThreadParentSubject')
+    return (newBuiltValueToStringHelper('ParentSubject')
           ..add('cover', cover)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
@@ -158,11 +151,11 @@ class _$ThreadParentSubject extends ThreadParentSubject {
   }
 }
 
-class ThreadParentSubjectBuilder
+class ParentSubjectBuilder
     implements
-        Builder<ThreadParentSubject, ThreadParentSubjectBuilder>,
+        Builder<ParentSubject, ParentSubjectBuilder>,
         SubjectBaseBuilder {
-  _$ThreadParentSubject _$v;
+  _$ParentSubject _$v;
 
   BangumiImageBuilder _cover;
   BangumiImageBuilder get cover => _$this._cover ??= new BangumiImageBuilder();
@@ -185,9 +178,9 @@ class ThreadParentSubjectBuilder
   String get nameCn => _$this._nameCn;
   set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
-  ThreadParentSubjectBuilder();
+  ParentSubjectBuilder();
 
-  ThreadParentSubjectBuilder get _$this {
+  ParentSubjectBuilder get _$this {
     if (_$v != null) {
       _cover = _$v.cover?.toBuilder();
       _id = _$v.id;
@@ -200,24 +193,24 @@ class ThreadParentSubjectBuilder
   }
 
   @override
-  void replace(covariant ThreadParentSubject other) {
+  void replace(covariant ParentSubject other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$ThreadParentSubject;
+    _$v = other as _$ParentSubject;
   }
 
   @override
-  void update(void Function(ThreadParentSubjectBuilder) updates) {
+  void update(void Function(ParentSubjectBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$ThreadParentSubject build() {
-    _$ThreadParentSubject _$result;
+  _$ParentSubject build() {
+    _$ParentSubject _$result;
     try {
       _$result = _$v ??
-          new _$ThreadParentSubject._(
+          new _$ParentSubject._(
               cover: cover.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
@@ -230,7 +223,7 @@ class ThreadParentSubjectBuilder
         cover.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'ThreadParentSubject', _$failedField, e.toString());
+            'ParentSubject', _$failedField, e.toString());
       }
       rethrow;
     }

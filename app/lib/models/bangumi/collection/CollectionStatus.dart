@@ -60,6 +60,22 @@ class CollectionStatus extends EnumClass {
     }
   }
 
+  /// If subject is under one of these statuses, user is officially allowed to
+  /// modify child episode status.
+  /// Otherwise, munin may still try to submit the episode update request, but
+  /// the consequence is unknown.
+  static Set<CollectionStatus> allowedCanModifyEpisodeStatues = {
+    CollectionStatus.Collect,
+    CollectionStatus.Do
+  };
+
+  /// Checks whether user can safely modify episode status.
+  ///
+  /// By saying 'safely', here it means whether bangumi officially supports modifying
+  /// status of an episode under current [CollectionStatus].
+  bool get canSafelyModifyEpisodeStatus =>
+      allowedCanModifyEpisodeStatues.contains(this);
+
   static String chineseNameWithSubjectType(CollectionStatus status,
       SubjectType subjectType, {
         String fallbackChineseName,

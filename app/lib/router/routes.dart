@@ -30,6 +30,8 @@ class Routes {
       .subjectIdParam}/info";
   static const subjectCollectionManagementRoute =
       "/subject/${RoutesVariable.subjectIdParam}/collection";
+  static const subjectEpisodesRoute =
+      "/subject/${RoutesVariable.subjectIdParam}/episodes";
 
   // User
   static const userProfileRoute = "/user/${RoutesVariable.usernameParam}";
@@ -71,6 +73,8 @@ class Routes {
         handler: subjectDetailInfoRouteHandler);
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
+    router.define(subjectEpisodesRoute,
+        handler: subjectEpisodesRouteHandler);
     router.define(userProfileRoute, handler: userProfileRouteHandler);
 
     router.define(composeTimelineMessageRoute,

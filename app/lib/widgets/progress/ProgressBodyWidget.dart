@@ -164,7 +164,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           itemCount: widgets.length,
           appBar: widget.oneMuninBar,
           /// all progress subjects will be loaded in once, hence no more items
-          /// to load if progresses are laoded
+          /// to load if progresses are loaded
           noMoreItemsToLoad: progressesLoaded,
           emptyAfterRefreshWidget: _buildEmptyProgressPageWidget(),
         );
@@ -198,7 +198,7 @@ class _ViewModel {
       @required BuiltSet<SubjectType> subjectTypes,
       @required InProgressSubjectInfo subject,
     }) {
-      final action = UpdateAnimeOrRealSingleEpisodeAction(
+      final action = UpdateInProgressEpisodeAction(
         context: context,
         episodeId: episodeId,
         episodeUpdateType: episodeUpdateType,
@@ -214,7 +214,7 @@ class _ViewModel {
       @required BuiltSet<SubjectType> subjectTypes,
       @required InProgressSubjectInfo subject,
     }) {
-      final action = UpdateAnimeOrRealBatchEpisodesAction(
+      final action = UpdateInProgressBatchEpisodesAction(
         context: context,
         newEpisodeNumber: episodeSequentialNumber,
         subject: subject,

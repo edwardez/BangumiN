@@ -28,7 +28,7 @@ class _$SubjectTopicThreadSerializer
           specifiedType: const FullType(OriginalPost)),
       'parentSubject',
       serializers.serialize(object.parentSubject,
-          specifiedType: const FullType(ThreadParentSubject)),
+          specifiedType: const FullType(ParentSubject)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'mainPostReplies',
@@ -61,8 +61,7 @@ class _$SubjectTopicThreadSerializer
           break;
         case 'parentSubject':
           result.parentSubject.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ThreadParentSubject))
-              as ThreadParentSubject);
+              specifiedType: const FullType(ParentSubject)) as ParentSubject);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -87,7 +86,7 @@ class _$SubjectTopicThread extends SubjectTopicThread {
   @override
   final OriginalPost originalPost;
   @override
-  final ThreadParentSubject parentSubject;
+  final ParentSubject parentSubject;
   @override
   final int id;
   @override
@@ -184,10 +183,10 @@ class SubjectTopicThreadBuilder
   set originalPost(OriginalPostBuilder originalPost) =>
       _$this._originalPost = originalPost;
 
-  ThreadParentSubjectBuilder _parentSubject;
-  ThreadParentSubjectBuilder get parentSubject =>
-      _$this._parentSubject ??= new ThreadParentSubjectBuilder();
-  set parentSubject(ThreadParentSubjectBuilder parentSubject) =>
+  ParentSubjectBuilder _parentSubject;
+  ParentSubjectBuilder get parentSubject =>
+      _$this._parentSubject ??= new ParentSubjectBuilder();
+  set parentSubject(ParentSubjectBuilder parentSubject) =>
       _$this._parentSubject = parentSubject;
 
   int _id;

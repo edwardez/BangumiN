@@ -36,7 +36,8 @@ class SubjectManagementWidget extends StatelessWidget {
                       Application.router.navigateTo(
                         context,
                         Routes.subjectEpisodesRoute
-                            .replaceFirst(':subjectId', subject.id?.toString()),
+                            .replaceFirst(RoutesVariable.subjectIdParam,
+                            subject.id?.toString()),
                         transition: TransitionType.native,
                       );
                     },
@@ -56,7 +57,8 @@ class SubjectManagementWidget extends StatelessWidget {
                     Application.router.navigateTo(
                       context,
                       Routes.subjectCollectionManagementRoute
-                          .replaceFirst(':subjectId', subject.id?.toString()),
+                          .replaceFirst(RoutesVariable.subjectIdParam,
+                          subject.id?.toString()),
                       transition: TransitionType.nativeModal,
                     );
                   },

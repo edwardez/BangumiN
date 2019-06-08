@@ -35,7 +35,8 @@ class SubjectSummary extends StatelessWidget {
                   Application.router.navigateTo(
                       context,
                       Routes.subjectDetailInfoPageRoute
-                          .replaceFirst(':subjectId', subject.id?.toString()),
+                          .replaceFirst(RoutesVariable.subjectIdParam,
+                          subject.id?.toString()),
                       transition: TransitionType.native);
                 },
               ),

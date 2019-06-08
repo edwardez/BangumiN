@@ -149,7 +149,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                       Application.router.navigateTo(
                           context,
                           Routes.subjectCollectionManagementRoute.replaceFirst(
-                              ':subjectId',
+                              RoutesVariable.subjectIdParam,
                               widget.collection.subject.id.toString()),
                           transition: TransitionType.nativeModal);
                     },

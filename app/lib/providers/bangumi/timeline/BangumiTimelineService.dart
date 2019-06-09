@@ -50,7 +50,7 @@ class BangumiTimelineService {
     if (request.timelineSource == TimelineSource.UserProfile) {
       assert(request.username != null);
       requestPath = '/user/${request.username}/timeline';
-    } else if (request.timelineSource == TimelineSource.FriendsOnly) {
+    } else if (request.timelineSource == TimelineSource.OnlyFriends) {
       requestPath = '/timeline';
     } else {
       throw UnimplementedError('尚未支持读取这种时间线');

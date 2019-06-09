@@ -14,7 +14,7 @@ class TimelineSource extends EnumClass {
 
   /// Feeds for all users that current user has made friend of
   /// web: https://bgm.tv/timeline?type=say
-  static const TimelineSource FriendsOnly = _$FriendsOnly;
+  static const TimelineSource OnlyFriends = _$OnlyFriends;
 
   /// Feeds for a single user
   /// web: https://bgm.tv/user/example/timeline?
@@ -34,7 +34,7 @@ class TimelineSource extends EnumClass {
     switch (this) {
       case TimelineSource.AllUsers:
         return '全站';
-      case TimelineSource.FriendsOnly:
+      case TimelineSource.OnlyFriends:
         return '好友';
       default:
         return '-';

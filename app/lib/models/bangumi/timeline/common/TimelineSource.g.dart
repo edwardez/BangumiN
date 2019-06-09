@@ -7,15 +7,15 @@ part of 'TimelineSource.dart';
 // **************************************************************************
 
 const TimelineSource _$AllFeeds = const TimelineSource._('AllUsers');
-const TimelineSource _$FriendsOnly = const TimelineSource._('FriendsOnly');
+const TimelineSource _$OnlyFriends = const TimelineSource._('OnlyFriends');
 const TimelineSource _$UserProfile = const TimelineSource._('UserProfile');
 
 TimelineSource _$valueOf(String name) {
   switch (name) {
     case 'AllUsers':
       return _$AllFeeds;
-    case 'FriendsOnly':
-      return _$FriendsOnly;
+    case 'OnlyFriends':
+      return _$OnlyFriends;
     case 'UserProfile':
       return _$UserProfile;
     default:
@@ -26,7 +26,7 @@ TimelineSource _$valueOf(String name) {
 final BuiltSet<TimelineSource> _$values =
     new BuiltSet<TimelineSource>(const <TimelineSource>[
   _$AllFeeds,
-  _$FriendsOnly,
+  _$OnlyFriends,
   _$UserProfile,
 ]);
 

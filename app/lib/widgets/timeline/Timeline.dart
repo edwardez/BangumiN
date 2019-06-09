@@ -30,7 +30,7 @@ class MuninTimeline extends StatefulWidget {
   const MuninTimeline.onHomePage({
     Key key,
     @required this.preferredTimelineLaunchPage,
-    this.timelineSource = TimelineSource.FriendsOnly,
+    this.timelineSource = TimelineSource.OnlyFriends,
   })
       : this.username = null,
         super(key: key);

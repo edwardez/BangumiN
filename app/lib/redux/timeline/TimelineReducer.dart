@@ -170,7 +170,7 @@ TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
   // Removes feed from home page and profile timeline
   timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
   b
-    ..timelineSource = TimelineSource.FriendsOnly
+    ..timelineSource = TimelineSource.OnlyFriends
     ..username = null
   ));
 
@@ -193,7 +193,7 @@ TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
 
     timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
     b
-      ..timelineSource = TimelineSource.FriendsOnly
+      ..timelineSource = TimelineSource.OnlyFriends
       ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds
       ..username = null
     ));
@@ -208,7 +208,7 @@ TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
 
     timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
     b
-      ..timelineSource = TimelineSource.FriendsOnly
+      ..timelineSource = TimelineSource.OnlyFriends
       ..timelineCategoryFilter = action.feed.bangumiContent.applicableFeedFilter
       ..username = null
     ));

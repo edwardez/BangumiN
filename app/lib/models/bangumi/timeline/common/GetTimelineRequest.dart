@@ -9,7 +9,7 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'GetTimelineRequest.g.dart';
 
 /// Class to represent possible request to get timeline
-/// For source, currently munin only supports [TimelineSource.FriendsOnly]
+/// For source, currently munin only supports [TimelineSource.OnlyFriends]
 /// and [TimelineSource.UserProfile]
 /// Setting source to other values will request in unexpected behavior
 abstract class GetTimelineRequest
@@ -28,7 +28,7 @@ abstract class GetTimelineRequest
   String get chineseName {
     /// Most people will stick with checking status from their friends only,
     /// there is no need to explicitly add source prefix for this type
-    if (timelineSource == TimelineSource.FriendsOnly ||
+    if (timelineSource == TimelineSource.OnlyFriends ||
         timelineSource == TimelineSource.UserProfile) {
       return timelineCategoryFilter.chineseName;
     }

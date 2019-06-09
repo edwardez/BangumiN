@@ -76,7 +76,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
             .getUserBasicInfo(action.getTimelineRequest.username);
       }
     } else if (action.getTimelineRequest.timelineSource ==
-        TimelineSource.FriendsOnly) {
+        TimelineSource.OnlyFriends) {
       feedChunks =
           store.state.timelineState.timeline[action.getTimelineRequest] ??
               FeedChunks();

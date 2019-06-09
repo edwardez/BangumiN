@@ -129,7 +129,7 @@ ProgressState updateInProgressBatchEpisodesSuccessReducer(
               EpisodeUpdateType.watchedEpisodeCountChange(
                   episode.userEpisodeStatus, EpisodeUpdateType.Collect);
           episode = episode
-              .rebuild((b) => b..userEpisodeStatus = EpisodeStatus.Collect);
+              .rebuild((b) => b..userEpisodeStatus = EpisodeStatus.Completed);
           updatedEpisodes[episode.id] = episode;
         } else {
           updatedEpisodes[episode.id] = episode;

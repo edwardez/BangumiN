@@ -288,7 +288,7 @@ class ProgressParser {
         ..airStatus = airStatus
         ..episodeInfo = episodeInfo
         ..userEpisodeStatus = touchedEpisodes[episodeId] ??
-            EpisodeStatus.Untouched
+            EpisodeStatus.Pristine
         ..episodeType = episodeType);
 
       episodes = episodes.rebuild((b) => b..addAll({episode.id: episode}));

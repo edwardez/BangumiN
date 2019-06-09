@@ -105,7 +105,7 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
   String _getUserActionNameOnPoster(
       SubjectType subjectType, CollectionStatus status, double score) {
     bool isUndecidableStatus = status == null ||
-        status == CollectionStatus.Untouched ||
+        status == CollectionStatus.Pristine ||
         status == CollectionStatus.Unknown;
     bool isInvalidScore = score == null || score <= 0.0 || score > 10.0;
 

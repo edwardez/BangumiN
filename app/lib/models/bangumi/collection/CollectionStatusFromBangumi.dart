@@ -20,7 +20,7 @@ abstract class CollectionStatusFromBangumi
           [updates(CollectionStatusFromBangumiBuilder b)]) =>
       _$CollectionStatusFromBangumi((b) => {
             b
-              ..type = CollectionStatus.Untouched
+              ..type = CollectionStatus.Pristine
               ..update(updates)
           });
 

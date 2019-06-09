@@ -86,7 +86,8 @@ showEpisodeOptionSheet({
                   style: Theme.of(context)
                       .textTheme
                       .body2
-                      .copyWith(color: buttonTextColor(EpisodeStatus.Collect)),
+                      .copyWith(
+                      color: buttonTextColor(EpisodeStatus.Completed)),
                 ),
               ),
               onTap: () {
@@ -146,12 +147,12 @@ showEpisodeOptionSheet({
               ),
               onTap: () {
                 onUpdateEpisodeOptionTapped(
-                  EpisodeUpdateType.Dropped,
+                  EpisodeUpdateType.Drop,
                   episode,
                 );
               },
             ),
-            if (episode.userEpisodeStatus != EpisodeStatus.Untouched) ...[
+            if (episode.userEpisodeStatus != EpisodeStatus.Pristine) ...[
               onePixelHeightDivider(),
               ListTile(
                 title: Center(

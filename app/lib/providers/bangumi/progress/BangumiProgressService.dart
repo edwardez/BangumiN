@@ -218,11 +218,11 @@ class BangumiProgressService {
   }
 
   /// Safely accesses status of the episode in api response, discards invalid
-  /// value and sets default episode status to [EpisodeStatus.Untouched] in these
+  /// value and sets default episode status to [EpisodeStatus.Pristine] in these
   /// cases.
   /// Key of [episodes] is episode id, and value is a map which contains episode
   /// status.
-  EpisodeStatus _episodeStatusFromApiOrUntouched(Map rawEpisode) {
+  EpisodeStatus _episodeStatusFromApiWithPristineFallback(Map rawEpisode) {
     if (rawEpisode != null &&
         rawEpisode['status'] != null &&
         rawEpisode['status']['id'] != null) {
@@ -230,7 +230,7 @@ class BangumiProgressService {
       return EpisodeStatus.fromWiredName(wiredName);
     }
 
-    return EpisodeStatus.Untouched;
+    return EpisodeStatus.Pristine;
   }
 
   /// Gets all episodes as seen on bangumi progress web page, combines these
@@ -258,9 +258,9 @@ class BangumiProgressService {
           EpisodeStatus status;
           if (rawEpisodesUnderSubject != null) {
             final Map rawEpisode = rawEpisodesUnderSubject[episode.id];
-            status = _episodeStatusFromApiOrUntouched(rawEpisode);
+            status = _episodeStatusFromApiWithPristineFallback(rawEpisode);
           } else {
-            status = EpisodeStatus.Untouched;
+            status = EpisodeStatus.Pristine;
           }
 
           episodes[episode.id] =
@@ -403,7 +403,8 @@ class BangumiProgressService {
         continue;
       }
 
-      EpisodeStatus status = _episodeStatusFromApiOrUntouched(rawEpisode);
+      EpisodeStatus status = _episodeStatusFromApiWithPristineFallback(
+          rawEpisode);
       touchedEpisodes.addAll({episodeId: status});
     }
 

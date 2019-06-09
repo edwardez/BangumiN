@@ -29,7 +29,7 @@ abstract class SubjectCollectionInfo
   SubjectCollectionInfo._();
 
   bool isDirtySubjectCollectionInfo() {
-    return status.type != CollectionStatus.Untouched ||
+    return status.type != CollectionStatus.Pristine ||
         !isEmpty(comment) ||
         tags.length != 0;
   }

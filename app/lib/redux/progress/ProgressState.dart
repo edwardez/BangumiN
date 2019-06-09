@@ -15,7 +15,7 @@ part 'ProgressState.g.dart';
 abstract class ProgressState
     implements Built<ProgressState, ProgressStateBuilder> {
   /// Maps of subjects that user is currently watching.
-  /// Only subjects with [CollectionStatus.Do] is supposed to be stored
+  /// Only subjects with [CollectionStatus.InProgress] is supposed to be stored
   /// in [progresses].
   BuiltMap<SubjectType, BuiltList<InProgressCollection>> get progresses;
 

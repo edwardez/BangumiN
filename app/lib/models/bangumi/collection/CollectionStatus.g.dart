@@ -7,27 +7,27 @@ part of 'CollectionStatus.dart';
 // **************************************************************************
 
 const CollectionStatus _$Wish = const CollectionStatus._('Wish');
-const CollectionStatus _$Collect = const CollectionStatus._('Collect');
-const CollectionStatus _$Do = const CollectionStatus._('Do');
+const CollectionStatus _$Completed = const CollectionStatus._('Completed');
+const CollectionStatus _$InProgress = const CollectionStatus._('InProgress');
 const CollectionStatus _$OnHold = const CollectionStatus._('OnHold');
 const CollectionStatus _$Dropped = const CollectionStatus._('Dropped');
-const CollectionStatus _$Untouched = const CollectionStatus._('Untouched');
+const CollectionStatus _$Pristine = const CollectionStatus._('Pristine');
 const CollectionStatus _$Unknown = const CollectionStatus._('Unknown');
 
 CollectionStatus _$valueOf(String name) {
   switch (name) {
     case 'Wish':
       return _$Wish;
-    case 'Collect':
-      return _$Collect;
-    case 'Do':
-      return _$Do;
+    case 'Completed':
+      return _$Completed;
+    case 'InProgress':
+      return _$InProgress;
     case 'OnHold':
       return _$OnHold;
     case 'Dropped':
       return _$Dropped;
-    case 'Untouched':
-      return _$Untouched;
+    case 'Pristine':
+      return _$Pristine;
     case 'Unknown':
       return _$Unknown;
     default:
@@ -38,11 +38,11 @@ CollectionStatus _$valueOf(String name) {
 final BuiltSet<CollectionStatus> _$values =
     new BuiltSet<CollectionStatus>(const <CollectionStatus>[
   _$Wish,
-  _$Collect,
-  _$Do,
+  _$Completed,
+  _$InProgress,
   _$OnHold,
   _$Dropped,
-  _$Untouched,
+  _$Pristine,
   _$Unknown,
 ]);
 
@@ -53,20 +53,20 @@ class _$CollectionStatusSerializer
     implements PrimitiveSerializer<CollectionStatus> {
   static const Map<String, String> _toWire = const <String, String>{
     'Wish': 'wish',
-    'Collect': 'collect',
-    'Do': 'do',
+    'Completed': 'collect',
+    'InProgress': 'do',
     'OnHold': 'on_hold',
     'Dropped': 'dropped',
-    'Untouched': 'untouched',
+    'Pristine': 'untouched',
     'Unknown': 'unknown',
   };
   static const Map<String, String> _fromWire = const <String, String>{
     'wish': 'Wish',
-    'collect': 'Collect',
-    'do': 'Do',
+    'collect': 'Completed',
+    'do': 'InProgress',
     'on_hold': 'OnHold',
     'dropped': 'Dropped',
-    'untouched': 'Untouched',
+    'untouched': 'Pristine',
     'unknown': 'Unknown',
   };
 

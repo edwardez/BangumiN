@@ -16,7 +16,7 @@ class EpisodeStatus extends EnumClass {
 
   /// User has watched this episode
   @BuiltValueEnumConst(wireName: '2')
-  static const EpisodeStatus Collect = _$Collect;
+  static const EpisodeStatus Completed = _$Completed;
 
   /// User decides to drop this episode
   @BuiltValueEnumConst(wireName: '3')
@@ -25,7 +25,7 @@ class EpisodeStatus extends EnumClass {
   /// HACKHACK: '9999' doesn't exist in bangumi api, it's used as a magic munin
   /// internal value for convenience
   @BuiltValueEnumConst(wireName: '9999')
-  static const EpisodeStatus Untouched = _$Untouched;
+  static const EpisodeStatus Pristine = _$Pristine;
 
   /// Api won't return this value
   /// Status for this episode is unknown
@@ -34,11 +34,11 @@ class EpisodeStatus extends EnumClass {
   @memoized
   String get wiredName {
     switch (this) {
-      case EpisodeStatus.Untouched:
+      case EpisodeStatus.Pristine:
         return '9999';
       case EpisodeStatus.Wish:
         return '1';
-      case EpisodeStatus.Collect:
+      case EpisodeStatus.Completed:
         return '2';
       case EpisodeStatus.Dropped:
         return '3';
@@ -51,11 +51,11 @@ class EpisodeStatus extends EnumClass {
   @memoized
   String get chineseName {
     switch (this) {
-      case EpisodeStatus.Untouched:
+      case EpisodeStatus.Pristine:
         return '未看';
       case EpisodeStatus.Wish:
         return '想看';
-      case EpisodeStatus.Collect:
+      case EpisodeStatus.Completed:
         return '看过';
       case EpisodeStatus.Dropped:
         return '抛弃';
@@ -80,7 +80,7 @@ class EpisodeStatus extends EnumClass {
         return Theme
             .of(context)
             .unselectedWidgetColor;
-      case EpisodeStatus.Collect:
+      case EpisodeStatus.Completed:
         return lightPrimaryDarkAccentColor(context);
       default:
         return Theme

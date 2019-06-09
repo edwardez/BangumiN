@@ -7,21 +7,21 @@ part of 'EpisodeStatus.dart';
 // **************************************************************************
 
 const EpisodeStatus _$Wish = const EpisodeStatus._('Wish');
-const EpisodeStatus _$Collect = const EpisodeStatus._('Collect');
+const EpisodeStatus _$Completed = const EpisodeStatus._('Completed');
 const EpisodeStatus _$Dropped = const EpisodeStatus._('Dropped');
-const EpisodeStatus _$Untouched = const EpisodeStatus._('Untouched');
+const EpisodeStatus _$Pristine = const EpisodeStatus._('Pristine');
 const EpisodeStatus _$Unknown = const EpisodeStatus._('Unknown');
 
 EpisodeStatus _$valueOf(String name) {
   switch (name) {
     case 'Wish':
       return _$Wish;
-    case 'Collect':
-      return _$Collect;
+    case 'Completed':
+      return _$Completed;
     case 'Dropped':
       return _$Dropped;
-    case 'Untouched':
-      return _$Untouched;
+    case 'Pristine':
+      return _$Pristine;
     case 'Unknown':
       return _$Unknown;
     default:
@@ -32,9 +32,9 @@ EpisodeStatus _$valueOf(String name) {
 final BuiltSet<EpisodeStatus> _$values =
     new BuiltSet<EpisodeStatus>(const <EpisodeStatus>[
   _$Wish,
-  _$Collect,
+  _$Completed,
   _$Dropped,
-  _$Untouched,
+  _$Pristine,
   _$Unknown,
 ]);
 
@@ -44,15 +44,15 @@ Serializer<EpisodeStatus> _$episodeStatusSerializer =
 class _$EpisodeStatusSerializer implements PrimitiveSerializer<EpisodeStatus> {
   static const Map<String, String> _toWire = const <String, String>{
     'Wish': '1',
-    'Collect': '2',
+    'Completed': '2',
     'Dropped': '3',
-    'Untouched': '9999',
+    'Pristine': '9999',
   };
   static const Map<String, String> _fromWire = const <String, String>{
     '1': 'Wish',
-    '2': 'Collect',
+    '2': 'Completed',
     '3': 'Dropped',
-    '9999': 'Untouched',
+    '9999': 'Pristine',
   };
 
   @override

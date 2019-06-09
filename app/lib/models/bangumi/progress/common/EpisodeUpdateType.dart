@@ -18,10 +18,10 @@ class EpisodeUpdateType extends EnumClass {
   static const EpisodeUpdateType CollectUntil = _$CollectUntil;
 
   /// Set the episode to 'dropped'
-  static const EpisodeUpdateType Dropped = _$Dropped;
+  static const EpisodeUpdateType Drop = _$Drop;
 
   /// Remove episode status if there is any
-  static const EpisodeUpdateType Remove = _$Unknown;
+  static const EpisodeUpdateType Remove = _$Remove;
 
   /// wiredName here must match bangumi api
   @memoized
@@ -33,7 +33,7 @@ class EpisodeUpdateType extends EnumClass {
         return 'queue';
       case EpisodeUpdateType.Collect:
         return 'watched';
-      case EpisodeUpdateType.Dropped:
+      case EpisodeUpdateType.Drop:
         return 'drop';
       default:
 
@@ -53,7 +53,7 @@ class EpisodeUpdateType extends EnumClass {
         return '想看';
       case EpisodeUpdateType.Collect:
         return '看过';
-      case EpisodeUpdateType.Dropped:
+      case EpisodeUpdateType.Drop:
         return '抛弃';
       default:
 
@@ -68,18 +68,18 @@ class EpisodeUpdateType extends EnumClass {
   EpisodeStatus get destinationEpisodeStatus {
     switch (this) {
       case EpisodeUpdateType.Remove:
-        return EpisodeStatus.Untouched;
+        return EpisodeStatus.Pristine;
       case EpisodeUpdateType.Wish:
         return EpisodeStatus.Wish;
       case EpisodeUpdateType.Collect:
-        return EpisodeStatus.Collect;
-      case EpisodeUpdateType.Dropped:
+        return EpisodeStatus.Completed;
+      case EpisodeUpdateType.Drop:
         return EpisodeStatus.Dropped;
       default:
 
         /// Note: CollectUntil is a batch update operation(instead of a single update)
         assert(false, '$this doesn\'t have a valid destinationEpisodeStatus');
-        return EpisodeStatus.Untouched;
+        return EpisodeStatus.Pristine;
     }
   }
 
@@ -92,14 +92,14 @@ class EpisodeUpdateType extends EnumClass {
     switch (updateType) {
       case EpisodeUpdateType.Remove:
       case EpisodeUpdateType.Wish:
-        if (currentStatus == EpisodeStatus.Collect ||
+        if (currentStatus == EpisodeStatus.Completed ||
             currentStatus == EpisodeStatus.Dropped) {
           return -1;
         }
         return 0;
       case EpisodeUpdateType.Collect:
-      case EpisodeUpdateType.Dropped:
-        if (currentStatus == EpisodeStatus.Collect ||
+      case EpisodeUpdateType.Drop:
+        if (currentStatus == EpisodeStatus.Completed ||
             currentStatus == EpisodeStatus.Dropped) {
           return 0;
         }

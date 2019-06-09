@@ -13,13 +13,13 @@ class CollectionStatus extends EnumClass {
   @BuiltValueEnumConst(wireName: 'wish')
   static const CollectionStatus Wish = _$Wish;
 
-  /// Collected
+  /// Completed
   @BuiltValueEnumConst(wireName: 'collect')
-  static const CollectionStatus Collect = _$Collect;
+  static const CollectionStatus Completed = _$Completed;
 
   /// In progress
   @BuiltValueEnumConst(wireName: 'do')
-  static const CollectionStatus Do = _$Do;
+  static const CollectionStatus InProgress = _$InProgress;
 
   @BuiltValueEnumConst(wireName: 'on_hold')
   static const CollectionStatus OnHold = _$OnHold;
@@ -31,7 +31,7 @@ class CollectionStatus extends EnumClass {
 
   /// User has not touched this subject
   @BuiltValueEnumConst(wireName: 'untouched')
-  static const CollectionStatus Untouched = _$Untouched;
+  static const CollectionStatus Pristine = _$Pristine;
 
   /// User may or may not have touched this subject, we are not aware of the actual
   /// status
@@ -43,15 +43,15 @@ class CollectionStatus extends EnumClass {
     switch (this) {
       case CollectionStatus.Wish:
         return 'wish';
-      case CollectionStatus.Collect:
+      case CollectionStatus.Completed:
         return 'collect';
-      case CollectionStatus.Do:
+      case CollectionStatus.InProgress:
         return 'do';
       case CollectionStatus.OnHold:
         return 'on_hold';
       case CollectionStatus.Dropped:
         return 'dropped';
-      case CollectionStatus.Untouched:
+      case CollectionStatus.Pristine:
       case CollectionStatus.Unknown:
         return '';
       default:
@@ -65,8 +65,8 @@ class CollectionStatus extends EnumClass {
   /// Otherwise, munin may still try to submit the episode update request, but
   /// the consequence is unknown.
   static Set<CollectionStatus> allowedCanModifyEpisodeStatues = {
-    CollectionStatus.Collect,
-    CollectionStatus.Do
+    CollectionStatus.Completed,
+    CollectionStatus.InProgress
   };
 
   /// Checks whether user can safely modify episode status.
@@ -83,15 +83,15 @@ class CollectionStatus extends EnumClass {
     switch (status) {
       case CollectionStatus.Wish:
         return '想${subjectType.activityVerbChineseNameByType}';
-      case CollectionStatus.Collect:
+      case CollectionStatus.Completed:
         return '${subjectType.activityVerbChineseNameByType}过';
-      case CollectionStatus.Do:
+      case CollectionStatus.InProgress:
         return '在${subjectType.activityVerbChineseNameByType}';
       case CollectionStatus.OnHold:
         return '搁置';
       case CollectionStatus.Dropped:
         return '抛弃';
-      case CollectionStatus.Untouched:
+      case CollectionStatus.Pristine:
       case CollectionStatus.Unknown:
       default:
         if (fallbackChineseName != null) {
@@ -116,11 +116,11 @@ class CollectionStatus extends EnumClass {
     }
 
     if (chineseName.contains('在')) {
-      return CollectionStatus.Do;
+      return CollectionStatus.InProgress;
     }
 
     if (chineseName.contains('过')) {
-      return CollectionStatus.Collect;
+      return CollectionStatus.Completed;
     }
 
     if (chineseName.contains('抛弃')) {
@@ -136,7 +136,7 @@ class CollectionStatus extends EnumClass {
 
   static bool isInvalid(CollectionStatus status) {
     return status == null ||
-        status == CollectionStatus.Untouched ||
+        status == CollectionStatus.Pristine ||
         status == CollectionStatus.Unknown;
   }
 

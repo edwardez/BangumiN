@@ -17,7 +17,7 @@ class SubjectManagementWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String collectionActionText =
     subject.userSubjectCollectionInfoPreview.status ==
-        CollectionStatus.Untouched
+        CollectionStatus.Pristine
         ? '加入'
         : '编辑';
 

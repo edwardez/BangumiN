@@ -149,7 +149,7 @@ class SubjectParser {
         collectionStatusElement
             .querySelector('.interest_now')
             ?.text,
-        fallbackCollectionStatus: CollectionStatus.Untouched);
+        fallbackCollectionStatus: CollectionStatus.Pristine);
 
     return SubjectCollectionInfoPreview((b) =>
     b

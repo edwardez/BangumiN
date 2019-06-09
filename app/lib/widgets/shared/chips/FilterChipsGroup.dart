@@ -71,8 +71,8 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
 
     for (T filterChip in widget.filterChips) {
       bool isSelected = currentSelectedChipType == filterChip;
-      bool isFirstChip = chipWidgets.isEmpty;
       String chipName;
+
       if (widget.chipNameRetriever != null) {
         chipName = widget.chipNameRetriever(filterChip);
       } else {
@@ -80,9 +80,7 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
       }
 
       chipWidgets.add(Padding(
-        padding: isFirstChip
-            ? EdgeInsets.zero
-            : EdgeInsets.only(left: widget.paddingBetweenChips),
+        padding: EdgeInsets.only(right: widget.paddingBetweenChips),
         child: StrokeChoiceChip(
           label: Text(
             chipName,

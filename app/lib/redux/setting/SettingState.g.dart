@@ -38,7 +38,6 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
         ..add(serializers.serialize(object.privacySetting,
             specifiedType: const FullType(PrivacySetting)));
     }
-
     return result;
   }
 

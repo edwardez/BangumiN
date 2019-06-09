@@ -44,7 +44,6 @@ class _$BlogCreationSingleSerializer
         ..add(serializers.serialize(object.isFromMutedUser,
             specifiedType: const FullType(bool)));
     }
-
     return result;
   }
 

@@ -47,7 +47,6 @@ class _$SubjectPreviewSerializer
         ..add(serializers.serialize(object.nameCn,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

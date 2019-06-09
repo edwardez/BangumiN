@@ -37,7 +37,6 @@ class _$MuteSettingSerializer implements StructuredSerializer<MuteSetting> {
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(String), const FullType(MutedUser)])));
     }
-
     return result;
   }
 

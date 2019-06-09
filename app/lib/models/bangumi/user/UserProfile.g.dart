@@ -49,7 +49,6 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
         ..add(serializers.serialize(object.basicInfo,
             specifiedType: const FullType(BangumiUserSmall)));
     }
-
     return result;
   }
 

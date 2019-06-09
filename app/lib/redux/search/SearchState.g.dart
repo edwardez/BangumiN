@@ -34,7 +34,6 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
               const FullType(LoadingStatus)
             ])));
     }
-
     return result;
   }
 

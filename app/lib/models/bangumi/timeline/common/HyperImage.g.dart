@@ -33,7 +33,6 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
         ..add(serializers.serialize(object.pageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

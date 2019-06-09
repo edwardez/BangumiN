@@ -36,7 +36,6 @@ class _$InfoBoxItemSerializer implements StructuredSerializer<InfoBoxItem> {
         ..add(serializers.serialize(object.pageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

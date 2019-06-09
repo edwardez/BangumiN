@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/subject/common/SubjectReviewWidget.dart';

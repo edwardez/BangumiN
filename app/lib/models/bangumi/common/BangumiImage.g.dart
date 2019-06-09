@@ -41,7 +41,6 @@ class _$BangumiImageSerializer implements StructuredSerializer<BangumiImage> {
         ..add(serializers.serialize(object.grid,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

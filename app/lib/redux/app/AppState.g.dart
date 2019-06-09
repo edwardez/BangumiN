@@ -52,7 +52,6 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         ..add(serializers.serialize(object.currentAuthenticatedUserBasicInfo,
             specifiedType: const FullType(BangumiUserSmall)));
     }
-
     return result;
   }
 

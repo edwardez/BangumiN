@@ -52,7 +52,6 @@ class _$DiscussionStateSerializer
               const FullType(LoadingStatus)
             ])));
     }
-
     return result;
   }
 

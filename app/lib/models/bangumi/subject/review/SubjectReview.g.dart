@@ -29,7 +29,6 @@ class _$SubjectReviewSerializer implements StructuredSerializer<SubjectReview> {
         ..add(serializers.serialize(object.content,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

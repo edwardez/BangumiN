@@ -77,7 +77,6 @@ class _$InProgressSubjectInfoSerializer
         ..add(serializers.serialize(object.nameCn,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

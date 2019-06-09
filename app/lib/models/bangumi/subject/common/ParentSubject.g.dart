@@ -43,7 +43,6 @@ class _$ParentSubjectSerializer implements StructuredSerializer<ParentSubject> {
         ..add(serializers.serialize(object.nameCn,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

@@ -40,7 +40,6 @@ class _$MutedUserSerializer implements StructuredSerializer<MutedUser> {
         ..add(serializers.serialize(object.userAvatar,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewShare.dart';
 
 showMoreActionsForReview({

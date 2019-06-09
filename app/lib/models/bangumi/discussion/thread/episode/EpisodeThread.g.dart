@@ -42,7 +42,6 @@ class _$EpisodeThreadSerializer implements StructuredSerializer<EpisodeThread> {
         ..add(serializers.serialize(object.parentSubject,
             specifiedType: const FullType(ParentSubject)));
     }
-
     return result;
   }
 

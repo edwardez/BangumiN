@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'SubjectReview.g.dart';

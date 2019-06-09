@@ -42,7 +42,6 @@ class _$BangumiGeneralSearchResponseSerializer
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(int), const FullType(SearchResult)])));
     }
-
     return result;
   }
 

@@ -31,7 +31,6 @@ class _$MutedGroupSerializer implements StructuredSerializer<MutedGroup> {
         ..add(serializers.serialize(object.groupIcon,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 

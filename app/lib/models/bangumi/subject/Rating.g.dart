@@ -39,7 +39,6 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
         ..add(serializers.serialize(object.friendScore,
             specifiedType: const FullType(double)));
     }
-
     return result;
   }
 

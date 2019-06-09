@@ -42,7 +42,6 @@ class _$InProgressAnimeOrRealCollectionSerializer
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(int), const FullType(EpisodeProgress)])));
     }
-
     return result;
   }
 

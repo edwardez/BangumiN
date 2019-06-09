@@ -40,7 +40,6 @@ class _$HyperBangumiItemSerializer
         ..add(serializers.serialize(object.imageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

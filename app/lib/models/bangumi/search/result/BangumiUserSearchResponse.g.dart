@@ -52,7 +52,6 @@ class _$BangumiUserSearchResponseSerializer
         ..add(serializers.serialize(object.hasReachedFuzzyMatchEnd,
             specifiedType: const FullType(bool)));
     }
-
     return result;
   }
 

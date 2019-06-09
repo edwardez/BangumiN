@@ -51,7 +51,6 @@ class _$ReviewMetaInfoSerializer
         ..add(serializers.serialize(object.actionName,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

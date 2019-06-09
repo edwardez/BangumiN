@@ -41,7 +41,6 @@ class _$MonoSearchResultSerializer
         ..add(serializers.serialize(object.image,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 

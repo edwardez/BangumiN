@@ -55,7 +55,6 @@ class _$EpisodeProgressSerializer
         ..add(serializers.serialize(object.summary,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

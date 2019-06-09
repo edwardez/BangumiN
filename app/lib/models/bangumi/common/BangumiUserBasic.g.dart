@@ -39,7 +39,6 @@ class _$BangumiUserBasicSerializer
         ..add(serializers.serialize(object.avatar,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 

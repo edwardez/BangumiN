@@ -31,7 +31,6 @@ class _$SubjectEpisodesSerializer
         ..add(serializers.serialize(object.subject,
             specifiedType: const FullType(ParentSubject)));
     }
-
     return result;
   }
 

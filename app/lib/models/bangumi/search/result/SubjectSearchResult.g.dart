@@ -49,7 +49,6 @@ class _$SubjectSearchResultSerializer
         ..add(serializers.serialize(object.image,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 

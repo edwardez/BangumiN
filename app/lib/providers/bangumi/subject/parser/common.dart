@@ -1,8 +1,8 @@
 import 'package:html/dom.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
-import 'package:munin/models/bangumi/subject/comment/ReviewMetaInfo.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
 

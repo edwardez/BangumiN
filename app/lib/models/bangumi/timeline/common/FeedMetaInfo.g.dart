@@ -40,7 +40,6 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
         ..add(serializers.serialize(object.actionName,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

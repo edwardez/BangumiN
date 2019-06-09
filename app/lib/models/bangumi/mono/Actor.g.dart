@@ -29,7 +29,6 @@ class _$ActorSerializer implements StructuredSerializer<Actor> {
         ..add(serializers.serialize(object.pageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

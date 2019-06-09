@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/shared/workarounds/munin_permission_handler/lib/permission_handler.dart';

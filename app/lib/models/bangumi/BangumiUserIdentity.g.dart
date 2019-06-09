@@ -40,7 +40,6 @@ class _$BangumiUserIdentitySerializer
         ..add(serializers.serialize(object.scope,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

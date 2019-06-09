@@ -45,7 +45,6 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(int), const FullType(BangumiSubject)])));
     }
-
     return result;
   }
 

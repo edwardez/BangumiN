@@ -72,23 +72,22 @@ SubjectState getCollectionInfoLoadingReducer(SubjectState subjectState,
 
 SubjectState getCollectionInfoSuccessReducer(SubjectState subjectState,
     GetCollectionInfoSuccessAction action) {
-  SubjectCollectionInfo collectionInfo =
-      action.collectionInfo;
+  SubjectCollectionInfo collectionInfo = action.collectionInfo;
 
-  BangumiSubject subject =
-      action.bangumiSubject;
+  BangumiSubject subject = action.bangumiSubject;
 
   subjectState = subjectState.rebuild((b) =>
   b
-    ..collections
-        .addAll({action.subjectId: collectionInfo})
+    ..collections.addAll(
+      {action.subjectId: collectionInfo},
+    )
     ..collectionsLoadingStatus.addAll(
-        {action.subjectId: LoadingStatus.Success}));
+      {action.subjectId: LoadingStatus.Success},
+    ));
 
   if (subject != null) {
-    subjectState = subjectState.rebuild((b) =>
-    b
-      ..subjects.addAll({action.subjectId: subject}));
+    subjectState = subjectState
+        .rebuild((b) => b..subjects.addAll({action.subjectId: subject}));
   }
 
   return subjectState;
@@ -115,12 +114,35 @@ SubjectState collectionInfoCleanUpReducer(SubjectState subjectState,
 /// Update Collection Actions
 
 SubjectState updateCollectionInfoSuccessReducer(SubjectState subjectState,
-    UpdateCollectionRequestSuccessAction collectionUpdateRequestSuccessAction) {
-  return subjectState.rebuild((b) => b
-    ..collections.remove(collectionUpdateRequestSuccessAction.subjectId)
-    ..collectionsSubmissionStatus.addAll({
-      collectionUpdateRequestSuccessAction.subjectId: LoadingStatus.Success
-    }));
+    UpdateCollectionRequestSuccessAction action) {
+  /// Update collection info.
+  subjectState = subjectState.rebuild((b) =>
+  b
+    ..collections.remove(action.subjectId)
+    ..collectionsSubmissionStatus.addAll(
+      {action.subjectId: LoadingStatus.Success},
+    ));
+
+  if (subjectState.subjects[action.subjectId] != null) {
+    var subjectToUpdate = subjectState.subjects[action.subjectId];
+    subjectToUpdate = subjectToUpdate
+        .rebuild((b) =>
+        b.userSubjectCollectionInfoPreview.replace(
+          subjectToUpdate.userSubjectCollectionInfoPreview.rebuild(
+                (b) =>
+            b
+              ..score = action.collectionUpdateResponse.rating
+              ..status = action.collectionUpdateResponse.status.type,
+          ),
+        ));
+    subjectState = subjectState.rebuild((b) =>
+    b
+      ..subjects.addAll(
+        {action.subjectId: subjectToUpdate},
+      ));
+  }
+
+  return subjectState;
 }
 
 SubjectState updateCollectionRequestLoadingReducer(SubjectState subjectState,

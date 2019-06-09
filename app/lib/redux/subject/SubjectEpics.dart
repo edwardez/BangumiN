@@ -41,7 +41,8 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
     print(stack);
     yield GetSubjectFailureAction.fromUnknownException(
         subjectId: action.subjectId);
-    var result = await generalExceptionHandler(error,
+    var result = await generalExceptionHandler(
+      error,
       context: action.context,
     );
     if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
@@ -107,7 +108,8 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
         subjectId: action.subjectId);
     action.completer.completeError(error, stack);
 
-    var result = await generalExceptionHandler(error,
+    var result = await generalExceptionHandler(
+      error,
       context: action.context,
     );
     if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
@@ -118,7 +120,6 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
 
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text(error.toString())));
-
   }
 }
 
@@ -140,9 +141,14 @@ Stream<dynamic> _collectionUpdateRequest(
   try {
     yield UpdateCollectionRequestLoadingAction(subjectId: action.subjectId);
 
+    final updatedCollectionInfo =
     await bangumiSubjectService.updateCollectionInfoRequest(
         action.subjectId, action.collectionUpdateRequest);
-    yield UpdateCollectionRequestSuccessAction(subjectId: action.subjectId);
+
+    yield UpdateCollectionRequestSuccessAction(
+      subjectId: action.subjectId,
+      collectionUpdateResponse: updatedCollectionInfo,
+    );
 
     ///TODO: Add a snackbar notification upon success
     Navigator.of(action.context).pop();
@@ -153,7 +159,8 @@ Stream<dynamic> _collectionUpdateRequest(
     yield UpdateCollectionRequestFailureAction.fromUnknownException(
         subjectId: action.subjectId);
 
-    var result = await generalExceptionHandler(error,
+    var result = await generalExceptionHandler(
+      error,
       context: action.context,
     );
     if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
@@ -164,7 +171,6 @@ Stream<dynamic> _collectionUpdateRequest(
 
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text(error.toString())));
-
   }
 }
 

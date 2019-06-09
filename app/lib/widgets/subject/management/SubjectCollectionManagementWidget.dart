@@ -49,6 +49,17 @@ class SubjectCollectionManagementWidget extends StatefulWidget {
 
 class _SubjectCollectionManagementWidgetState
     extends State<SubjectCollectionManagementWidget> {
+  /// Length limitation as set by Bangumi, it cannot be modified by Munin.
+  static const int maxCommentLength = 200;
+
+  /// Length limitation as set by Bangumi it cannot be modified by Munin.
+  static const int maxTags = 10;
+
+  /// Max lines of the comment field, this value is controlled and set by Munin.
+  static const commendFieldMaxLines = 10;
+  static const commendFieldMinLines = 3;
+
+
   final _formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
   final tagsController = TextEditingController();
@@ -66,12 +77,6 @@ class _SubjectCollectionManagementWidgetState
   ///Looks like flutter doesn't expose list of current form errors so we maintain
   ///errors ourselves here
   final Map<SubjectCollectionError, String> formErrors = {};
-
-  /// This is the length limitation set by Bangumi and cannot be modified by us
-  final int maxCommentLength = 200;
-
-  /// This is the length limitation set by Bangumi and cannot be modified by us
-  final int maxTags = 10;
 
   /// Maintains current comment validation status to avoid rebuilding the whole
   /// widget every time user types a comment character
@@ -155,8 +160,7 @@ class _SubjectCollectionManagementWidgetState
     }
   }
 
-  String _buildErrorMessages(
-      final Map<SubjectCollectionError, String> formErrors) {
+  String _buildErrorMessages(final Map<SubjectCollectionError, String> formErrors) {
     assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
@@ -285,7 +289,8 @@ class _SubjectCollectionManagementWidgetState
           formErrors.remove(SubjectCollectionError.LengthyComment);
         }
       },
-      maxLines: 3,
+      maxLines: commendFieldMaxLines,
+      minLines: commendFieldMinLines,
       onSaved: (String comment) {
         localSubjectCollectionInfo =
             localSubjectCollectionInfo.rebuild((b) => b..comment = comment);
@@ -375,8 +380,8 @@ class _SubjectCollectionManagementWidgetState
       onTap: _canSubmitForm
           ? null
           : () {
-              _showDialog(context, formErrors);
-            },
+        _showDialog(context, formErrors);
+      },
     );
   }
 
@@ -396,7 +401,7 @@ class _SubjectCollectionManagementWidgetState
         int subjectId = widget.subjectId;
         if (vm.subjectCollectionInfo == null) {
           final action =
-              GetCollectionInfoAction(context: context, subjectId: subjectId);
+          GetCollectionInfoAction(context: context, subjectId: subjectId);
 
           return RequestInProgressIndicatorWidget(
               loadingStatus: vm.collectionLoadingStatus, refreshAction: action);

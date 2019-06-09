@@ -6,8 +6,11 @@ part of 'RakuenFilter.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-const RakuenTopicFilter _$Rakuen = const RakuenTopicFilter._('Unrestricted');
-const RakuenTopicFilter _$All = const RakuenTopicFilter._('AllGroups');
+const RakuenTopicFilter _$Unrestricted =
+    const RakuenTopicFilter._('Unrestricted');
+const RakuenTopicFilter _$AllGroups = const RakuenTopicFilter._('AllGroups');
+const RakuenTopicFilter _$JoinedGroups =
+    const RakuenTopicFilter._('JoinedGroups');
 const RakuenTopicFilter _$Subject = const RakuenTopicFilter._('Subject');
 const RakuenTopicFilter _$Episode = const RakuenTopicFilter._('Episode');
 const RakuenTopicFilter _$Mono = const RakuenTopicFilter._('Mono');
@@ -15,9 +18,11 @@ const RakuenTopicFilter _$Mono = const RakuenTopicFilter._('Mono');
 RakuenTopicFilter _$valueOf(String name) {
   switch (name) {
     case 'Unrestricted':
-      return _$Rakuen;
+      return _$Unrestricted;
     case 'AllGroups':
-      return _$All;
+      return _$AllGroups;
+    case 'JoinedGroups':
+      return _$JoinedGroups;
     case 'Subject':
       return _$Subject;
     case 'Episode':
@@ -31,8 +36,9 @@ RakuenTopicFilter _$valueOf(String name) {
 
 final BuiltSet<RakuenTopicFilter> _$values =
     new BuiltSet<RakuenTopicFilter>(const <RakuenTopicFilter>[
-  _$Rakuen,
-  _$All,
+  _$Unrestricted,
+  _$AllGroups,
+  _$JoinedGroups,
   _$Subject,
   _$Episode,
   _$Mono,

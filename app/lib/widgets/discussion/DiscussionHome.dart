@@ -24,9 +24,9 @@ class DiscussionHome extends StatefulWidget {
 
 class _DiscussionHomeState extends State<DiscussionHome> {
   final List<DiscussionBody> discussionBodyPages =
-  List(GetDiscussionRequest.totalGetProgressRequestTypes);
+  List(GetDiscussionRequest.validGetDiscussionRequests.length);
   final List<DiscussionBodyWidget> pages =
-  List(GetDiscussionRequest.totalGetProgressRequestTypes);
+  List(GetDiscussionRequest.validGetDiscussionRequests.length);
 
   PageController pageController;
 

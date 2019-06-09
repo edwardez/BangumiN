@@ -7,10 +7,13 @@ part 'RakuenFilter.g.dart';
 
 class RakuenTopicFilter extends EnumClass implements DiscussionFilter {
   /// web: https://bgm.tv/rakuen/topiclist
-  static const RakuenTopicFilter Unrestricted = _$Rakuen;
+  static const RakuenTopicFilter Unrestricted = _$Unrestricted;
 
   /// web: https://bgm.tv/rakuen/topiclist?type=group
-  static const RakuenTopicFilter AllGroups = _$All;
+  static const RakuenTopicFilter AllGroups = _$AllGroups;
+
+  /// web: https://bgm.tv/rakuen/topiclist?type=my_group
+  static const RakuenTopicFilter JoinedGroups = _$JoinedGroups;
 
   /// web: https://bgm.tv/rakuen/topiclist?type=subject
   static const RakuenTopicFilter Subject = _$Subject;
@@ -35,6 +38,8 @@ class RakuenTopicFilter extends EnumClass implements DiscussionFilter {
     switch (this) {
       case RakuenTopicFilter.AllGroups:
         return 'group';
+      case RakuenTopicFilter.JoinedGroups:
+        return 'my_group';
       case RakuenTopicFilter.Subject:
         return 'subject';
       case RakuenTopicFilter.Episode:
@@ -55,9 +60,11 @@ class RakuenTopicFilter extends EnumClass implements DiscussionFilter {
   String get chineseName {
     switch (this) {
       case RakuenTopicFilter.Unrestricted:
-        return '全部';
+        return '全站讨论';
       case RakuenTopicFilter.AllGroups:
-        return '小组';
+        return '全部小组';
+      case RakuenTopicFilter.JoinedGroups:
+        return '加入的小组';
       case RakuenTopicFilter.Subject:
         return '作品';
       case RakuenTopicFilter.Episode:

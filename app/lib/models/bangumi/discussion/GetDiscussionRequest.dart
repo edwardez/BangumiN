@@ -11,7 +11,6 @@ part 'GetDiscussionRequest.g.dart';
 
 abstract class GetDiscussionRequest
     implements Built<GetDiscussionRequest, GetDiscussionRequestBuilder> {
-  static const totalGetProgressRequestTypes = 5;
   static final defaultDiscussionLaunchPageType = GetDiscussionRequest((b) =>
   b
     ..discussionType = DiscussionType.Rakuen
@@ -21,6 +20,10 @@ abstract class GetDiscussionRequest
     defaultDiscussionLaunchPageType,
     defaultDiscussionLaunchPageType.rebuild((
         b) => b..discussionFilter = RakuenTopicFilter.AllGroups),
+    defaultDiscussionLaunchPageType.rebuild((b) =>
+    b
+      ..discussionFilter = RakuenTopicFilter.JoinedGroups
+    ),
     defaultDiscussionLaunchPageType.rebuild((
         b) => b..discussionFilter = RakuenTopicFilter.Subject),
     defaultDiscussionLaunchPageType.rebuild((
@@ -48,16 +51,20 @@ abstract class GetDiscussionRequest
         return 1;
       }
 
-      if (discussionFilter == RakuenTopicFilter.Subject) {
+      if (discussionFilter == RakuenTopicFilter.JoinedGroups) {
         return 2;
       }
 
-      if (discussionFilter == RakuenTopicFilter.Episode) {
+      if (discussionFilter == RakuenTopicFilter.Subject) {
         return 3;
       }
 
-      if (discussionFilter == RakuenTopicFilter.Mono) {
+      if (discussionFilter == RakuenTopicFilter.Episode) {
         return 4;
+      }
+
+      if (discussionFilter == RakuenTopicFilter.Mono) {
+        return 5;
       }
     }
 

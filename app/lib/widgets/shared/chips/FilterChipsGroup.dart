@@ -17,7 +17,7 @@ class FilterChipsGroup<T> extends StatefulWidget {
 
   /// A callback function that can find the name of the chip
   /// If unset, [T.toString()] will be used
-  final ToChipStringName<T> getChipName;
+  final ToChipStringName<T> chipNameRetriever;
 
   final OnChipSelected<T> onChipSelected;
 
@@ -36,7 +36,7 @@ class FilterChipsGroup<T> extends StatefulWidget {
     @required this.filterChips,
     @required this.selectedChip,
     this.onChipSelected,
-    this.getChipName,
+    this.chipNameRetriever,
     this.paddingBetweenChips = 4.0,
     this.initialLeftOffset = 0.0,
   }) : super(key: key);
@@ -73,8 +73,8 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
       bool isSelected = currentSelectedChipType == filterChip;
       bool isFirstChip = chipWidgets.isEmpty;
       String chipName;
-      if (widget.getChipName != null) {
-        chipName = widget.getChipName(filterChip);
+      if (widget.chipNameRetriever != null) {
+        chipName = widget.chipNameRetriever(filterChip);
       } else {
         chipName = filterChip.toString();
       }

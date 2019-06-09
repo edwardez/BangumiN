@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
+import 'package:package_info/package_info.dart';
+import 'package:quiver/time.dart';
 
-void showMuninAboutDialog(BuildContext context) {
+void showMuninAboutDialog(BuildContext context) async {
   final ThemeData themeData = Theme.of(context);
   final TextStyle aboutTextStyle = themeData.textTheme.body2;
   final TextStyle linkStyle =
@@ -10,12 +12,23 @@ void showMuninAboutDialog(BuildContext context) {
   final Widget bangumiNLogo = SvgPicture.asset('assets/logo/bangumin_logo.svg',
       width: 48.0, height: 48.0, semanticsLabel: 'BangumiN Logo');
 
+  String applicationVersion;
+
+  /// Gets package info, waits for up to one second.
+  PackageInfo packageInfo = await PackageInfo.fromPlatform().timeout(
+    aSecond,
+    onTimeout: () {
+      applicationVersion = '-';
+    },
+  );
+  applicationVersion = packageInfo.version;
+
   showAboutDialog(
     context: context,
     applicationName: 'BangumiN',
-    applicationVersion: '0.1.0 / May 2019',
+    applicationVersion: applicationVersion,
     applicationIcon: bangumiNLogo,
-    applicationLegalese: 'The BangumiN Project Authors',
+    applicationLegalese: 'BangumiN Project Authors',
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.only(top: 24.0),

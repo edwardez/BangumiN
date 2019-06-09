@@ -51,6 +51,7 @@ dependencies:
   timeago: ^2.0.14
   oauth2: ^1.2.3
   outline_material_icons: ^0.1.0
+  package_info: ^0.4.0+4
   redux_epics: ^0.10.6
   redux_logging: ^0.3.0
   rxdart: ^0.20.0

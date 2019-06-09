@@ -26,15 +26,20 @@ class FilterChipsGroup<T> extends StatefulWidget {
   /// If [selectedChip] is not null, it must be in [filterChips]
   final T selectedChip;
 
-  FilterChipsGroup({
+  /// Initial padding offset on the left side of the chip groups in pixel.
+  ///
+  /// It's a trailing white space on the left side.
+  final double initialLeftOffset;
+
+  const FilterChipsGroup({
     Key key,
     @required this.filterChips,
     @required this.selectedChip,
     this.onChipSelected,
     this.getChipName,
     this.paddingBetweenChips = 4.0,
-  })  : assert(selectedChip == null || filterChips.contains(selectedChip)),
-        super(key: key);
+    this.initialLeftOffset = 0.0,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -48,12 +53,21 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
   @override
   void initState() {
     super.initState();
+    assert(widget.selectedChip == null ||
+        widget.filterChips.contains(widget.selectedChip));
+
     currentSelectedChipType = widget.selectedChip;
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> chipWidgets = [];
+
+    chipWidgets.add(Padding(
+      padding: EdgeInsets.only(
+        left: widget.initialLeftOffset,
+      ),
+    ));
 
     for (T filterChip in widget.filterChips) {
       bool isSelected = currentSelectedChipType == filterChip;

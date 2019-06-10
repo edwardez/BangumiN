@@ -289,8 +289,8 @@ class ThreadParser {
 
     String userNickName = userElement.text?.trim();
     String username = parseHrefId(userElement);
-    String avatarImageUrl = imageSrcOrNull(userElement.querySelector('img'),
-        defaultImageSrc: bangumiAnonymousUserMediumAvatar);
+    String avatarImageUrl = imageSrcOrFallback(userElement.querySelector('img'),
+        fallbackImageSrc: bangumiAnonymousUserMediumAvatar);
     BangumiImage avatar;
     if (avatarImageUrl != null) {
       avatar = BangumiImage.fromImageUrl(
@@ -307,7 +307,7 @@ class ThreadParser {
     for (var subjectElement
         in document.querySelectorAll('#related_subject_list > li')) {
       String coverImageUrl =
-          imageSrcOrNull(subjectElement.querySelector('img'));
+      imageSrcOrFallback(subjectElement.querySelector('img'));
 
       int subjectId = tryParseInt(
           parseHrefId(subjectElement.querySelector('a'), digitOnly: true),

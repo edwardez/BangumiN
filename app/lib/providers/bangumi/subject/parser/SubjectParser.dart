@@ -507,7 +507,7 @@ class SubjectParser {
 
     Element commonImageElement = document.querySelector('.infobox img.cover');
     BangumiImage cover = BangumiImage.fromImageUrl(
-        imageSrcOrNull(commonImageElement),
+        imageSrcOrFallback(commonImageElement),
         ImageSize.Common, ImageType.SubjectCover);
 
     BuiltList<Character> characters = parseCharacters(document);

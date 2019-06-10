@@ -16,7 +16,8 @@ Optional<ParentSubject> parseParentSubject(DocumentFragment document) {
       (document.querySelector('.nameSingle>a')?.attributes ?? {})['title'] ??
           null;
 
-  String coverImageUrl = imageSrcOrNull(subjectElement?.querySelector('img'));
+  String coverImageUrl = imageSrcOrFallback(
+      subjectElement?.querySelector('img'));
 
   if (id == null) {
     return Optional.absent();

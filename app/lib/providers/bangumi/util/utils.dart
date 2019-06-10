@@ -110,15 +110,15 @@ int extractFirstIntGroup(String rawString, {defaultValue = 0}) {
   return defaultValue;
 }
 
-String imageSrcOrNull(Element imageElement,
-    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
+String imageSrcOrFallback(Element imageElement,
+    {fallbackImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
   if (imageElement == null) return null;
   String imageUrl = imageElement.attributes['src'];
 
   ///maybe because of https://blog.cloudflare.com/mirage2-solving-mobile-speed/ ?
   imageUrl ??= imageElement.attributes['data-cfsrc'];
 
-  return normalizeImageUrl(imageUrl, defaultImageSrc: defaultImageSrc);
+  return normalizeImageUrl(imageUrl, defaultImageSrc: fallbackImageSrc);
 }
 
 Optional<String> getFirstTextNodeContent(NodeList nodeList,

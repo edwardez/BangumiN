@@ -415,7 +415,7 @@ class TimelineParser {
     return MonoFavoriteSingle((b) => b
       ..id = id
       ..avatar.replace(BangumiImage.fromImageUrl(
-          imageSrcOrNull(monoImageElement),
+          imageSrcOrFallback(monoImageElement),
           ImageSize.Unknown,
           ImageType.MonoAvatar))
       ..monoName = monoName
@@ -440,7 +440,7 @@ class TimelineParser {
       }
 
       String pageUrl = imageElement.parent?.attributes['href'];
-      String imageUrl = imageSrcOrNull(imageElement);
+      String imageUrl = imageSrcOrFallback(imageElement);
 
       HyperImage hyperImage = HyperImage((b) => b
         ..id = id
@@ -563,7 +563,7 @@ class TimelineParser {
       ..friendNickName = friendNickName
       ..friendId = friendId
       ..friendAvatar.replace(BangumiImage.fromImageUrl(
-          imageSrcOrNull(hyperImageElement),
+          imageSrcOrFallback(hyperImageElement),
           ImageSize.Unknown,
           ImageType.UserAvatar))
       ..bangumiContent = BangumiContent.User);

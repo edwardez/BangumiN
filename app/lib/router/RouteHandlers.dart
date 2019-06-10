@@ -25,24 +25,24 @@ import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
 import 'package:munin/widgets/timeline/compose/ComposeTimelineMessage.dart';
 
-var loginRouteHandler = Handler(
+final loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return MuninLoginPage();
 });
 
-var homeRouteHandler = Handler(
+final homeRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MuninHomePage(
         generalSetting: GeneralSetting(),
       );
     });
 
-var bangumiOauthRouteHandler = Handler(
+final bangumiOauthRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return BangumiOauthWebview();
 });
 
-var subjectMainPageRouteHandler = Handler(
+final subjectMainPageRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String subjectIdStr = params[RoutesVariable.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
@@ -53,7 +53,7 @@ var subjectMainPageRouteHandler = Handler(
   );
 });
 
-var subjectDetailInfoRouteHandler = Handler(
+final subjectDetailInfoRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String subjectIdStr = params[RoutesVariable.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
@@ -64,7 +64,7 @@ var subjectDetailInfoRouteHandler = Handler(
       );
     });
 
-var subjectCollectionManagementRouteHandler = Handler(
+final subjectCollectionManagementRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String subjectIdStr = params[RoutesVariable.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
@@ -73,7 +73,7 @@ var subjectCollectionManagementRouteHandler = Handler(
       );
     });
 
-var subjectEpisodesRouteHandler = Handler(
+final subjectEpisodesRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String subjectIdStr = params[RoutesVariable.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
@@ -85,7 +85,7 @@ var subjectEpisodesRouteHandler = Handler(
     });
 
 /// User
-var userProfileRouteHandler = Handler(
+final userProfileRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String username = params[RoutesVariable.username]?.first;
 
@@ -96,13 +96,13 @@ var userProfileRouteHandler = Handler(
       );
     });
 
-var composeTimelineMessageRouteHandler = Handler(
+final composeTimelineMessageRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return ComposeTimelineMessage();
     });
 
 /// Discussion
-var groupThreadRouteHandler = Handler(
+final groupThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
@@ -118,7 +118,7 @@ var groupThreadRouteHandler = Handler(
       );
     });
 
-var episodeThreadRouteHandler = Handler(
+final episodeThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
@@ -134,7 +134,7 @@ var episodeThreadRouteHandler = Handler(
       );
     });
 
-var subjectTopicThreadRouteHandler = Handler(
+final subjectTopicThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
@@ -150,7 +150,7 @@ var subjectTopicThreadRouteHandler = Handler(
       );
     });
 
-var blogThreadRouteHandler = Handler(
+final blogThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       String threadIdStr = params[RoutesVariable.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
@@ -167,42 +167,42 @@ var blogThreadRouteHandler = Handler(
     });
 
 /// Setting
-var settingRouteHandler = Handler(
+final settingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: SettingHome(),
       );
     });
 
-var generalSettingRouteHandler = Handler(
+final generalSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: GeneralSettingWidget(),
       );
     });
 
-var themeSettingRouteHandler = Handler(
+final themeSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: ThemeSettingWidget(),
       );
     });
 
-var privacySettingRouteHandler = Handler(
+final privacySettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: PrivacySettingWidget(),
       );
     });
 
-var muteSettingRouteHandler = Handler(
+final muteSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return Scaffold(
         body: MuteSettingWidget(),
       );
     });
 
-var muteSettingBatchImportUsersRouteHandler = Handler(
+final muteSettingBatchImportUsersRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return ImportBlockedBangumiUsersWidget();
     });

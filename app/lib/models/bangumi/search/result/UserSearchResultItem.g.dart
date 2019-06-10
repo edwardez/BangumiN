@@ -1,23 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'UserSearchResult.dart';
+part of 'UserSearchResultItem.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<UserSearchResult> _$userSearchResultSerializer =
-    new _$UserSearchResultSerializer();
+Serializer<UserSearchResultItem> _$userSearchResultItemSerializer =
+    new _$UserSearchResultItemSerializer();
 
-class _$UserSearchResultSerializer
-    implements StructuredSerializer<UserSearchResult> {
+class _$UserSearchResultItemSerializer
+    implements StructuredSerializer<UserSearchResultItem> {
   @override
-  final Iterable<Type> types = const [UserSearchResult, _$UserSearchResult];
+  final Iterable<Type> types = const [
+    UserSearchResultItem,
+    _$UserSearchResultItem
+  ];
   @override
-  final String wireName = 'UserSearchResult';
+  final String wireName = 'UserSearchResultItem';
 
   @override
-  Iterable serialize(Serializers serializers, UserSearchResult object,
+  Iterable serialize(Serializers serializers, UserSearchResultItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'nickname',
@@ -41,9 +44,9 @@ class _$UserSearchResultSerializer
   }
 
   @override
-  UserSearchResult deserialize(Serializers serializers, Iterable serialized,
+  UserSearchResultItem deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new UserSearchResultBuilder();
+    final result = new UserSearchResultItemBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -78,7 +81,7 @@ class _$UserSearchResultSerializer
   }
 }
 
-class _$UserSearchResult extends UserSearchResult {
+class _$UserSearchResultItem extends UserSearchResultItem {
   @override
   final BangumiImage image;
   @override
@@ -90,39 +93,40 @@ class _$UserSearchResult extends UserSearchResult {
   @override
   final SearchType type;
 
-  factory _$UserSearchResult(
-          [void Function(UserSearchResultBuilder) updates]) =>
-      (new UserSearchResultBuilder()..update(updates)).build();
+  factory _$UserSearchResultItem(
+          [void Function(UserSearchResultItemBuilder) updates]) =>
+      (new UserSearchResultItemBuilder()..update(updates)).build();
 
-  _$UserSearchResult._(
+  _$UserSearchResultItem._(
       {this.image, this.name, this.id, this.username, this.type})
       : super._() {
     if (name == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'name');
+      throw new BuiltValueNullFieldError('UserSearchResultItem', 'name');
     }
     if (id == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'id');
+      throw new BuiltValueNullFieldError('UserSearchResultItem', 'id');
     }
     if (username == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'username');
+      throw new BuiltValueNullFieldError('UserSearchResultItem', 'username');
     }
     if (type == null) {
-      throw new BuiltValueNullFieldError('UserSearchResult', 'type');
+      throw new BuiltValueNullFieldError('UserSearchResultItem', 'type');
     }
   }
 
   @override
-  UserSearchResult rebuild(void Function(UserSearchResultBuilder) updates) =>
+  UserSearchResultItem rebuild(
+          void Function(UserSearchResultItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  UserSearchResultBuilder toBuilder() =>
-      new UserSearchResultBuilder()..replace(this);
+  UserSearchResultItemBuilder toBuilder() =>
+      new UserSearchResultItemBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UserSearchResult &&
+    return other is UserSearchResultItem &&
         image == other.image &&
         name == other.name &&
         id == other.id &&
@@ -140,7 +144,7 @@ class _$UserSearchResult extends UserSearchResult {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('UserSearchResult')
+    return (newBuiltValueToStringHelper('UserSearchResultItem')
           ..add('image', image)
           ..add('name', name)
           ..add('id', id)
@@ -150,11 +154,11 @@ class _$UserSearchResult extends UserSearchResult {
   }
 }
 
-class UserSearchResultBuilder
+class UserSearchResultItemBuilder
     implements
-        Builder<UserSearchResult, UserSearchResultBuilder>,
-        SearchResultBuilder {
-  _$UserSearchResult _$v;
+        Builder<UserSearchResultItem, UserSearchResultItemBuilder>,
+        SearchResultItemBuilder {
+  _$UserSearchResultItem _$v;
 
   BangumiImageBuilder _image;
   BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
@@ -176,9 +180,9 @@ class UserSearchResultBuilder
   SearchType get type => _$this._type;
   set type(SearchType type) => _$this._type = type;
 
-  UserSearchResultBuilder();
+  UserSearchResultItemBuilder();
 
-  UserSearchResultBuilder get _$this {
+  UserSearchResultItemBuilder get _$this {
     if (_$v != null) {
       _image = _$v.image?.toBuilder();
       _name = _$v.name;
@@ -191,24 +195,24 @@ class UserSearchResultBuilder
   }
 
   @override
-  void replace(covariant UserSearchResult other) {
+  void replace(covariant UserSearchResultItem other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$UserSearchResult;
+    _$v = other as _$UserSearchResultItem;
   }
 
   @override
-  void update(void Function(UserSearchResultBuilder) updates) {
+  void update(void Function(UserSearchResultItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$UserSearchResult build() {
-    _$UserSearchResult _$result;
+  _$UserSearchResultItem build() {
+    _$UserSearchResultItem _$result;
     try {
       _$result = _$v ??
-          new _$UserSearchResult._(
+          new _$UserSearchResultItem._(
               image: _image?.build(),
               name: name,
               id: id,
@@ -221,7 +225,7 @@ class UserSearchResultBuilder
         _image?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'UserSearchResult', _$failedField, e.toString());
+            'UserSearchResultItem', _$failedField, e.toString());
       }
       rethrow;
     }

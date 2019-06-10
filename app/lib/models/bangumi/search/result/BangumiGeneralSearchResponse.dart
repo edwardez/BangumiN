@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'BangumiGeneralSearchResponse.g.dart';
@@ -34,10 +34,10 @@ abstract class BangumiGeneralSearchResponse
   /// BuiltMap guarantees the order so we can iterate it as a [List] by accessing
   /// [resultsAsList]
   @nullable
-  BuiltMap<int, SearchResult> get results;
+  BuiltMap<int, SearchResultItem> get results;
 
   @memoized
-  List<SearchResult> get resultsAsList {
+  List<SearchResultItem> get resultsAsList {
     return results.values.toList();
   }
 
@@ -59,7 +59,7 @@ abstract class BangumiGeneralSearchResponse
       _$BangumiGeneralSearchResponse((b) => b
         ..totalCount = 0
         ..requestedResults = 0
-        ..results.replace(BuiltMap<int, SearchResult>())
+        ..results.replace(BuiltMap<int, SearchResultItem>())
         ..update(updates));
 
   String toJson() {

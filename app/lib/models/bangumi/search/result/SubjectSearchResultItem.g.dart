@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SubjectSearchResult.dart';
+part of 'SubjectSearchResultItem.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SubjectSearchResult> _$subjectSearchResultSerializer =
-    new _$SubjectSearchResultSerializer();
+Serializer<SubjectSearchResultItem> _$subjectSearchResultItemSerializer =
+    new _$SubjectSearchResultItemSerializer();
 
-class _$SubjectSearchResultSerializer
-    implements StructuredSerializer<SubjectSearchResult> {
+class _$SubjectSearchResultItemSerializer
+    implements StructuredSerializer<SubjectSearchResultItem> {
   @override
   final Iterable<Type> types = const [
-    SubjectSearchResult,
-    _$SubjectSearchResult
+    SubjectSearchResultItem,
+    _$SubjectSearchResultItem
   ];
   @override
-  final String wireName = 'SubjectSearchResult';
+  final String wireName = 'SubjectSearchResultItem';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectSearchResult object,
+  Iterable serialize(Serializers serializers, SubjectSearchResultItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'air_date',
@@ -53,9 +53,10 @@ class _$SubjectSearchResultSerializer
   }
 
   @override
-  SubjectSearchResult deserialize(Serializers serializers, Iterable serialized,
+  SubjectSearchResultItem deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SubjectSearchResultBuilder();
+    final result = new SubjectSearchResultItemBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -98,7 +99,7 @@ class _$SubjectSearchResultSerializer
   }
 }
 
-class _$SubjectSearchResult extends SubjectSearchResult {
+class _$SubjectSearchResultItem extends SubjectSearchResultItem {
   @override
   final String startDate;
   @override
@@ -115,11 +116,11 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   final SearchType type;
   bool __isStartDateValid;
 
-  factory _$SubjectSearchResult(
-          [void Function(SubjectSearchResultBuilder) updates]) =>
-      (new SubjectSearchResultBuilder()..update(updates)).build();
+  factory _$SubjectSearchResultItem(
+          [void Function(SubjectSearchResultItemBuilder) updates]) =>
+      (new SubjectSearchResultItemBuilder()..update(updates)).build();
 
-  _$SubjectSearchResult._(
+  _$SubjectSearchResultItem._(
       {this.startDate,
       this.nameCn,
       this.rating,
@@ -129,19 +130,20 @@ class _$SubjectSearchResult extends SubjectSearchResult {
       this.type})
       : super._() {
     if (startDate == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'startDate');
+      throw new BuiltValueNullFieldError(
+          'SubjectSearchResultItem', 'startDate');
     }
     if (nameCn == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'nameCn');
+      throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'nameCn');
     }
     if (name == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'name');
+      throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'name');
     }
     if (id == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'id');
+      throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'id');
     }
     if (type == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResult', 'type');
+      throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'type');
     }
   }
 
@@ -149,18 +151,18 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   bool get isStartDateValid => __isStartDateValid ??= super.isStartDateValid;
 
   @override
-  SubjectSearchResult rebuild(
-          void Function(SubjectSearchResultBuilder) updates) =>
+  SubjectSearchResultItem rebuild(
+          void Function(SubjectSearchResultItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SubjectSearchResultBuilder toBuilder() =>
-      new SubjectSearchResultBuilder()..replace(this);
+  SubjectSearchResultItemBuilder toBuilder() =>
+      new SubjectSearchResultItemBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SubjectSearchResult &&
+    return other is SubjectSearchResultItem &&
         startDate == other.startDate &&
         nameCn == other.nameCn &&
         rating == other.rating &&
@@ -186,7 +188,7 @@ class _$SubjectSearchResult extends SubjectSearchResult {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SubjectSearchResult')
+    return (newBuiltValueToStringHelper('SubjectSearchResultItem')
           ..add('startDate', startDate)
           ..add('nameCn', nameCn)
           ..add('rating', rating)
@@ -198,11 +200,11 @@ class _$SubjectSearchResult extends SubjectSearchResult {
   }
 }
 
-class SubjectSearchResultBuilder
+class SubjectSearchResultItemBuilder
     implements
-        Builder<SubjectSearchResult, SubjectSearchResultBuilder>,
-        SearchResultBuilder {
-  _$SubjectSearchResult _$v;
+        Builder<SubjectSearchResultItem, SubjectSearchResultItemBuilder>,
+        SearchResultItemBuilder {
+  _$SubjectSearchResultItem _$v;
 
   String _startDate;
   String get startDate => _$this._startDate;
@@ -232,9 +234,9 @@ class SubjectSearchResultBuilder
   SearchType get type => _$this._type;
   set type(SearchType type) => _$this._type = type;
 
-  SubjectSearchResultBuilder();
+  SubjectSearchResultItemBuilder();
 
-  SubjectSearchResultBuilder get _$this {
+  SubjectSearchResultItemBuilder get _$this {
     if (_$v != null) {
       _startDate = _$v.startDate;
       _nameCn = _$v.nameCn;
@@ -249,24 +251,24 @@ class SubjectSearchResultBuilder
   }
 
   @override
-  void replace(covariant SubjectSearchResult other) {
+  void replace(covariant SubjectSearchResultItem other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$SubjectSearchResult;
+    _$v = other as _$SubjectSearchResultItem;
   }
 
   @override
-  void update(void Function(SubjectSearchResultBuilder) updates) {
+  void update(void Function(SubjectSearchResultItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SubjectSearchResult build() {
-    _$SubjectSearchResult _$result;
+  _$SubjectSearchResultItem build() {
+    _$SubjectSearchResultItem _$result;
     try {
       _$result = _$v ??
-          new _$SubjectSearchResult._(
+          new _$SubjectSearchResultItem._(
               startDate: startDate,
               nameCn: nameCn,
               rating: _rating?.build(),
@@ -283,7 +285,7 @@ class SubjectSearchResultBuilder
         _image?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'SubjectSearchResult', _$failedField, e.toString());
+            'SubjectSearchResultItem', _$failedField, e.toString());
       }
       rethrow;
     }

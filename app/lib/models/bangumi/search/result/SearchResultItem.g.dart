@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SearchResult.dart';
+part of 'SearchResultItem.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-abstract class SearchResultBuilder {
-  void replace(SearchResult other);
-  void update(void Function(SearchResultBuilder) updates);
+abstract class SearchResultItemBuilder {
+  void replace(SearchResultItem other);
+  void update(void Function(SearchResultItemBuilder) updates);
   BangumiImageBuilder get image;
   set image(BangumiImageBuilder image);
 

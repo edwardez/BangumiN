@@ -37,8 +37,10 @@ class _$BangumiUserSearchResponseSerializer
       result
         ..add('results')
         ..add(serializers.serialize(object.results,
-            specifiedType: const FullType(BuiltMap,
-                const [const FullType(int), const FullType(SearchResult)])));
+            specifiedType: const FullType(BuiltMap, const [
+              const FullType(int),
+              const FullType(SearchResultItem)
+            ])));
     }
     if (object.hasReachedFullMatchEnd != null) {
       result
@@ -79,7 +81,7 @@ class _$BangumiUserSearchResponseSerializer
           result.results.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
-                const FullType(SearchResult)
+                const FullType(SearchResultItem)
               ])) as BuiltMap);
           break;
         case 'hasReachedFullMatchEnd':
@@ -103,12 +105,12 @@ class _$BangumiUserSearchResponse extends BangumiUserSearchResponse {
   @override
   final int requestedResults;
   @override
-  final BuiltMap<int, SearchResult> results;
+  final BuiltMap<int, SearchResultItem> results;
   @override
   final bool hasReachedFullMatchEnd;
   @override
   final bool hasReachedFuzzyMatchEnd;
-  List<SearchResult> __resultsAsList;
+  List<SearchResultItem> __resultsAsList;
   bool __hasReachedEnd;
 
   factory _$BangumiUserSearchResponse(
@@ -129,7 +131,7 @@ class _$BangumiUserSearchResponse extends BangumiUserSearchResponse {
   }
 
   @override
-  List<SearchResult> get resultsAsList =>
+  List<SearchResultItem> get resultsAsList =>
       __resultsAsList ??= super.resultsAsList;
 
   @override
@@ -192,10 +194,10 @@ class BangumiUserSearchResponseBuilder
   set requestedResults(int requestedResults) =>
       _$this._requestedResults = requestedResults;
 
-  MapBuilder<int, SearchResult> _results;
-  MapBuilder<int, SearchResult> get results =>
-      _$this._results ??= new MapBuilder<int, SearchResult>();
-  set results(MapBuilder<int, SearchResult> results) =>
+  MapBuilder<int, SearchResultItem> _results;
+  MapBuilder<int, SearchResultItem> get results =>
+      _$this._results ??= new MapBuilder<int, SearchResultItem>();
+  set results(MapBuilder<int, SearchResultItem> results) =>
       _$this._results = results;
 
   bool _hasReachedFullMatchEnd;

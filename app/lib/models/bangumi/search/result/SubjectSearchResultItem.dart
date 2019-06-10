@@ -4,17 +4,17 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/strings.dart';
 
-part 'SubjectSearchResult.g.dart';
+part 'SubjectSearchResultItem.g.dart';
 
-abstract class SubjectSearchResult
+abstract class SubjectSearchResultItem
     implements
-        SearchResult,
-        Built<SubjectSearchResult, SubjectSearchResultBuilder> {
+        SearchResultItem,
+        Built<SubjectSearchResultItem, SubjectSearchResultItemBuilder> {
   @BuiltValueField(wireName: 'air_date')
   String get startDate;
 
@@ -32,21 +32,21 @@ abstract class SubjectSearchResult
   @nullable
   Rating get rating;
 
-  factory SubjectSearchResult([updates(SubjectSearchResultBuilder b)]) =
-      _$SubjectSearchResult;
+  factory SubjectSearchResultItem([updates(SubjectSearchResultItemBuilder b)]) =
+  _$SubjectSearchResultItem;
 
-  SubjectSearchResult._();
+  SubjectSearchResultItem._();
 
   String toJson() {
     return json.encode(
-        serializers.serializeWith(SubjectSearchResult.serializer, this));
+        serializers.serializeWith(SubjectSearchResultItem.serializer, this));
   }
 
-  static SubjectSearchResult fromJson(String jsonString) {
+  static SubjectSearchResultItem fromJson(String jsonString) {
     return serializers.deserializeWith(
-        SubjectSearchResult.serializer, json.decode(jsonString));
+        SubjectSearchResultItem.serializer, json.decode(jsonString));
   }
 
-  static Serializer<SubjectSearchResult> get serializer =>
-      _$subjectSearchResultSerializer;
+  static Serializer<SubjectSearchResultItem> get serializer =>
+      _$subjectSearchResultItemSerializer;
 }

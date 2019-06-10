@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
-import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
-import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
+import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart';
+import 'package:munin/models/bangumi/search/result/UserSearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
 import 'package:munin/widgets/search/SubjectSearchResultWidget.dart';
 
 class SearchResultDelegate extends StatelessWidget {
-  final SearchResult searchResult;
+  final SearchResultItem searchResult;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   static const double portraitHorizontalPadding =
@@ -19,8 +19,8 @@ class SearchResultDelegate extends StatelessWidget {
       {Key key, @required this.searchResult, @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
-  Widget getDelegatedWidget(SearchResult searchResult) {
-    if (searchResult is SubjectSearchResult) {
+  Widget getDelegatedWidget(SearchResultItem searchResult) {
+    if (searchResult is SubjectSearchResultItem) {
       return SubjectSearchResultWidget(
         subjectSearchResult: searchResult,
         preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,);
@@ -35,8 +35,8 @@ class SearchResultDelegate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(searchResult is SubjectSearchResult ||
-        searchResult is UserSearchResult ||
+    assert(searchResult is SubjectSearchResultItem ||
+        searchResult is UserSearchResultItem ||
         searchResult is MonoSearchResult);
 
     return getDelegatedWidget(searchResult);

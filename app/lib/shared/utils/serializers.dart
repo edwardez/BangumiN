@@ -47,9 +47,9 @@ import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
-import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
-import 'package:munin/models/bangumi/search/result/UserSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
+import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart';
+import 'package:munin/models/bangumi/search/result/UserSearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
@@ -182,10 +182,10 @@ part 'serializers.g.dart';
   /// Search
   BangumiSearchResponse,
   BangumiGeneralSearchResponse,
-  SearchResult,
+  SearchResultItem,
   MonoSearchResult,
-  SubjectSearchResult,
-  UserSearchResult,
+  SubjectSearchResultItem,
+  UserSearchResultItem,
   SearchRequest,
   SearchType,
   SearchState,

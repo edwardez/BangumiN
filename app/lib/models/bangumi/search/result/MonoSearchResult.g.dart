@@ -174,7 +174,7 @@ class _$MonoSearchResult extends MonoSearchResult {
 class MonoSearchResultBuilder
     implements
         Builder<MonoSearchResult, MonoSearchResultBuilder>,
-        SearchResultBuilder {
+        SearchResultItemBuilder {
   _$MonoSearchResult _$v;
 
   ListBuilder<String> _miscInfo;

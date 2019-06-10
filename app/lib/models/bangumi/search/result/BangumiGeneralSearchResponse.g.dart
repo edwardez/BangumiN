@@ -39,8 +39,10 @@ class _$BangumiGeneralSearchResponseSerializer
       result
         ..add('results')
         ..add(serializers.serialize(object.results,
-            specifiedType: const FullType(BuiltMap,
-                const [const FullType(int), const FullType(SearchResult)])));
+            specifiedType: const FullType(BuiltMap, const [
+              const FullType(int),
+              const FullType(SearchResultItem)
+            ])));
     }
     return result;
   }
@@ -69,7 +71,7 @@ class _$BangumiGeneralSearchResponseSerializer
           result.results.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
-                const FullType(SearchResult)
+                const FullType(SearchResultItem)
               ])) as BuiltMap);
           break;
       }
@@ -85,8 +87,8 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
   @override
   final int requestedResults;
   @override
-  final BuiltMap<int, SearchResult> results;
-  List<SearchResult> __resultsAsList;
+  final BuiltMap<int, SearchResultItem> results;
+  List<SearchResultItem> __resultsAsList;
   bool __hasReachedEnd;
 
   factory _$BangumiGeneralSearchResponse(
@@ -103,7 +105,7 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
   }
 
   @override
-  List<SearchResult> get resultsAsList =>
+  List<SearchResultItem> get resultsAsList =>
       __resultsAsList ??= super.resultsAsList;
 
   @override
@@ -159,10 +161,10 @@ class BangumiGeneralSearchResponseBuilder
   set requestedResults(int requestedResults) =>
       _$this._requestedResults = requestedResults;
 
-  MapBuilder<int, SearchResult> _results;
-  MapBuilder<int, SearchResult> get results =>
-      _$this._results ??= new MapBuilder<int, SearchResult>();
-  set results(MapBuilder<int, SearchResult> results) =>
+  MapBuilder<int, SearchResultItem> _results;
+  MapBuilder<int, SearchResultItem> get results =>
+      _$this._results ??= new MapBuilder<int, SearchResultItem>();
+  set results(MapBuilder<int, SearchResultItem> results) =>
       _$this._results = results;
 
   BangumiGeneralSearchResponseBuilder();

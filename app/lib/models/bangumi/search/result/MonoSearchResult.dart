@@ -5,13 +5,15 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'MonoSearchResult.g.dart';
 
 abstract class MonoSearchResult
-    implements SearchResult, Built<MonoSearchResult, MonoSearchResultBuilder> {
+    implements
+        SearchResultItem,
+        Built<MonoSearchResult, MonoSearchResultBuilder> {
   BuiltList<String> get miscInfo;
 
   @BuiltValueField(wireName: 'name_cn')

@@ -5,13 +5,15 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'UserSearchResult.g.dart';
+part 'UserSearchResultItem.g.dart';
 
-abstract class UserSearchResult
-    implements SearchResult, Built<UserSearchResult, UserSearchResultBuilder> {
+abstract class UserSearchResultItem
+    implements
+        SearchResultItem,
+        Built<UserSearchResultItem, UserSearchResultItemBuilder> {
   @nullable
   @override
   @BuiltValueField(wireName: 'avatar')
@@ -31,24 +33,25 @@ abstract class UserSearchResult
   /// in Bangumi, [username] may contain letters or digit
   String get username;
 
-  factory UserSearchResult([updates(UserSearchResultBuilder b)]) =
-  _$UserSearchResult;
+  factory UserSearchResultItem([updates(UserSearchResultItemBuilder b)]) =
+  _$UserSearchResultItem;
 
-  UserSearchResult._();
+  UserSearchResultItem._();
 
   String toJson() {
     return json
-        .encode(serializers.serializeWith(UserSearchResult.serializer, this));
+        .encode(
+        serializers.serializeWith(UserSearchResultItem.serializer, this));
   }
 
-  static UserSearchResult fromJson(String jsonString) {
+  static UserSearchResultItem fromJson(String jsonString) {
     return serializers.deserializeWith(
-        UserSearchResult.serializer, json.decode(jsonString));
+        UserSearchResultItem.serializer, json.decode(jsonString));
   }
 
-  static UserSearchResult fromBangumiUserSmall(
+  static UserSearchResultItem fromBangumiUserSmall(
       BangumiUserSmall bangumiUserSmall) {
-    return UserSearchResult((b) =>
+    return UserSearchResultItem((b) =>
     b
       ..id = bangumiUserSmall.id
       ..name = bangumiUserSmall.nickname
@@ -58,6 +61,6 @@ abstract class UserSearchResult
       ..type = SearchType.User);
   }
 
-  static Serializer<UserSearchResult> get serializer =>
-      _$userSearchResultSerializer;
+  static Serializer<UserSearchResultItem> get serializer =>
+      _$userSearchResultItemSerializer;
 }

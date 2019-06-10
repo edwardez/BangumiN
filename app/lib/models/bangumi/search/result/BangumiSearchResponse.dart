@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 
 part 'BangumiSearchResponse.g.dart';
 
@@ -12,7 +12,7 @@ abstract class BangumiSearchResponse {
   int get requestedResults;
 
   @nullable
-  BuiltMap<int, SearchResult> get results;
+  BuiltMap<int, SearchResultItem> get results;
 
   /// seems like there is no better way in built_value to specify a getter
   /// in interface

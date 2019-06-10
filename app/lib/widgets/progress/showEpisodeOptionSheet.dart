@@ -7,7 +7,7 @@ import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguag
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/shared/common/Divider.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 
 typedef OnUpdateEpisodeOptionTapped = Function(
@@ -29,7 +29,7 @@ showEpisodeOptionSheet({
   @required PreferredSubjectInfoLanguage preferredSubjectInfoLanguage,
   @required OnUpdateEpisodeOptionTapped onUpdateEpisodeOptionTapped,
 }) {
-  Color buttonTextColor(EpisodeStatus status) {
+  Color episodeActionTextColor(EpisodeStatus status) {
     bool isCurrentUserEpisodeStatus = status == episode.userEpisodeStatus;
 
     if (isCurrentUserEpisodeStatus) {
@@ -42,135 +42,145 @@ showEpisodeOptionSheet({
   showModalBottomSheet(
     context: context,
     builder: (BuildContext bc) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          top: defaultPortraitHorizontalOffset,
-          left: defaultPortraitHorizontalOffset,
-          right: defaultPortraitHorizontalOffset,
+      return ListView(
+        padding: EdgeInsets.only(
+          top: largeOffset,
         ),
-        child: ListView(
-          children: <Widget>[
-            Text(
+        children: <Widget>[
+          MuninPadding.vertical1xOffset(
+            denseHorizontal: true,
+            child: Text(
               preferredName(
                   episode.name, episode.nameCn, preferredSubjectInfoLanguage),
               style: Theme.of(context).textTheme.title,
             ),
-            Text(
+          ),
+          MuninPadding.vertical1xOffset(
+            denseHorizontal: true,
+            child: Text(
               episodeSubTitle,
               style: Theme.of(context).textTheme.caption,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.0),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 2.0),
+          ),
+          ListTile(
+            title: Center(
+              child: Text('查看讨论', style: Theme
+                  .of(context)
+                  .textTheme
+                  .body2),
             ),
-            onePixelHeightDivider(),
-            ListTile(
-              title: Center(
-                child: Text('查看讨论', style: Theme.of(context).textTheme.body2),
-              ),
-              onTap: () {
-                var callback = generateOnTapCallbackForBangumiContent(
-                  contentType: BangumiContent.Episode,
-                  context: context,
-                  id: episode.id.toString(),
-                );
+            onTap: () {
+              var callback = generateOnTapCallbackForBangumiContent(
+                contentType: BangumiContent.Episode,
+                context: context,
+                id: episode.id.toString(),
+              );
 
-                Navigator.of(context).pop();
-                return callback();
-              },
-            ),
-            onePixelHeightDivider(),
-            ListTile(
-              title: Center(
-                child: Text(
-                  '看过',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(
-                      color: buttonTextColor(EpisodeStatus.Completed)),
-                ),
+              Navigator.of(context).pop();
+              return callback();
+            },
+          ),
+          ListTile(
+            title: Center(
+              child: Text(
+                '看过',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2
+                    .copyWith(
+                    color: episodeActionTextColor(EpisodeStatus.Completed)),
               ),
-              onTap: () {
-                onUpdateEpisodeOptionTapped(
-                  EpisodeUpdateType.Collect,
-                  episode,
-                );
-              },
             ),
+            onTap: () {
+              onUpdateEpisodeOptionTapped(
+                EpisodeUpdateType.Collect,
+                episode,
+              );
+            },
+          ),
 
-            /// Only regular episode can be used for 'watch until'
-            /// this is undocumented but it matches bangumi website behavior
-            /// and use non-regular episode for `watch until` simply doesn't work
-            /// https://github.com/bangumi/api/issues/32
-            if (episode.episodeType == EpisodeType.Regular) ...[
-              onePixelHeightDivider(),
-              ListTile(
-                title: Center(
-                  child: Text('看到', style: Theme.of(context).textTheme.body2),
-                ),
-                onTap: () {
-                  onUpdateEpisodeOptionTapped(
-                    EpisodeUpdateType.CollectUntil,
-                    episode,
-                  );
-                },
-              ),
-            ],
-            onePixelHeightDivider(),
+          /// Only regular episode can be used for 'watch until'
+          /// this is undocumented but it matches bangumi website behavior
+          /// and use non-regular episode for `watch until` simply doesn't work
+          /// https://github.com/bangumi/api/issues/32
+          if (episode.episodeType == EpisodeType.Regular) ...[
             ListTile(
               title: Center(
-                child: Text(
-                  '想看',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: buttonTextColor(EpisodeStatus.Wish)),
-                ),
+                child: Text('看到', style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2),
               ),
               onTap: () {
                 onUpdateEpisodeOptionTapped(
-                  EpisodeUpdateType.Wish,
+                  EpisodeUpdateType.CollectUntil,
                   episode,
                 );
               },
             ),
-            onePixelHeightDivider(),
-            ListTile(
-              title: Center(
-                child: Text(
-                  '抛弃',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: buttonTextColor(EpisodeStatus.Dropped)),
-                ),
-              ),
-              onTap: () {
-                onUpdateEpisodeOptionTapped(
-                  EpisodeUpdateType.Drop,
-                  episode,
-                );
-              },
-            ),
-            if (episode.userEpisodeStatus != EpisodeStatus.Pristine) ...[
-              onePixelHeightDivider(),
-              ListTile(
-                title: Center(
-                  child: Text(
-                    '撤销',
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-                onTap: () {
-                  onUpdateEpisodeOptionTapped(
-                    EpisodeUpdateType.Remove,
-                    episode,
-                  );
-                },
-              ),
-            ],
           ],
-        ),
+          ListTile(
+            title: Center(
+              child: Text(
+                '想看',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2
+                    .copyWith(
+                    color: episodeActionTextColor(EpisodeStatus.Wish)),
+              ),
+            ),
+            onTap: () {
+              onUpdateEpisodeOptionTapped(
+                EpisodeUpdateType.Wish,
+                episode,
+              );
+            },
+          ),
+          ListTile(
+            title: Center(
+              child: Text(
+                '抛弃',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2
+                    .copyWith(
+                    color: episodeActionTextColor(EpisodeStatus.Dropped)),
+              ),
+            ),
+            onTap: () {
+              onUpdateEpisodeOptionTapped(
+                EpisodeUpdateType.Drop,
+                episode,
+              );
+            },
+          ),
+          if (episode.userEpisodeStatus != EpisodeStatus.Pristine) ...[
+            ListTile(
+              title: Center(
+                child: Text(
+                  '撤销',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2,
+                ),
+              ),
+              onTap: () {
+                onUpdateEpisodeOptionTapped(
+                  EpisodeUpdateType.Remove,
+                  episode,
+                );
+              },
+            ),
+          ],
+        ],
       );
     },
   );

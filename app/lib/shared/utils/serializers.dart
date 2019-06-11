@@ -69,8 +69,11 @@ import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReviewResponse.dart';
+import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
 import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
@@ -178,6 +181,10 @@ part 'serializers.g.dart';
   CollectionStatusFromBangumi,
   CollectionStatus,
   SubjectState,
+  // reviews
+  GetSubjectReviewRequest,
+  SubjectReviewResponse,
+  SubjectReviewMainFilter,
 
   /// Search
   BangumiSearchResponse,

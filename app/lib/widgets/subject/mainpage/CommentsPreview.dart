@@ -1,6 +1,9 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/subject/common/SubjectReviewWidget.dart';
@@ -18,7 +21,15 @@ class CommentsPreview extends StatelessWidget {
     commentPreviewWidgets.add(
       SubjectMoreItemsEntry(
         moreItemsText: '最近收藏',
-        onTap: () {},
+        onTap: () {
+          final route = Routes.subjectReviewsRoute.replaceAll(
+            RoutesVariable.subjectIdParam,
+            subject.id.toString(),
+          );
+          Application.router.navigateTo(context,
+              route,
+              transition: TransitionType.native);
+        },
       ),
     );
 

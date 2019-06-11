@@ -93,6 +93,10 @@ class MuninRefresh extends StatefulWidget {
   /// An optional AppBar that will be placed at the top of widget list
   final Widget appBar;
 
+  /// An optional list of widgets that will be put at the top of item lists,
+  /// but below [appBar].
+  final List<Widget> topWidgets;
+
   /// Displacement value for [RefreshWidgetStyle.Material]
   /// see [displacement] in [RefreshIndicator]
   final double materialRefreshIndicatorDisplacement;
@@ -120,13 +124,13 @@ class MuninRefresh extends StatefulWidget {
     @required this.itemBuilder,
     @required this.itemCount,
     this.appBar,
+    this.topWidgets = const [],
     this.emptyAfterRefreshWidget,
     this.noMoreItemsWidget,
     this.noMoreItemsToLoad = false,
     this.refreshWidgetStyle = RefreshWidgetStyle.Adaptive,
     this.separatorBuilder = _defaultDividerBuilder,
-    this.appBarUnderneathPadding = const EdgeInsets.only(
-        bottom: largeOffset),
+    this.appBarUnderneathPadding = const EdgeInsets.only(bottom: largeOffset),
     this.materialRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
@@ -399,10 +403,12 @@ class MuninRefreshState extends State<MuninRefresh> {
         computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
   }
 
-  /// Build a plain [CustomScrollView] that just contains an AppBar(if present)
-  /// and items
-  /// [includeCupertinoRefreshWidget] is set to `false` by default
-  CustomScrollView _buildCustomScrollViewBody({
+  /// Builds a plain [CustomScrollView] that just contains an AppBar(if present)
+  /// and items.
+  ///
+  /// [includeCupertinoRefreshWidget] and [includeCupertinoRefreshWidget] are
+  /// set to `false` by default.
+  CustomScrollView _buildItemsScrollBody({
     bool includeCupertinoRefreshWidget = false,
     bool includeLoadMoreStatusWidget = false,
   }) {
@@ -435,16 +441,26 @@ class MuninRefreshState extends State<MuninRefresh> {
         slivers.add(MuninCupertinoSliverRefreshControl(
           onRefresh: _generateOnRefreshCallBack(),
           refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
-          refreshTriggerPullDistance: widget
-              .cupertinoRefreshTriggerPullDistance,
+          refreshTriggerPullDistance:
+          widget.cupertinoRefreshTriggerPullDistance,
         ));
       }
     }
 
-
     if (widget.appBarUnderneathPadding != null) {
       slivers.add(SliverPadding(
         padding: widget.appBarUnderneathPadding,
+      ));
+    }
+
+    if (widget.topWidgets.isNotEmpty) {
+      slivers.add(SliverList(
+        delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+            return widget.topWidgets[index];
+          },
+          childCount: widget.topWidgets.length,
+        ),
       ));
     }
 
@@ -462,21 +478,28 @@ class MuninRefreshState extends State<MuninRefresh> {
 
     slivers.add(_buildItemsSliverList());
 
-    /// It doesn't make sense(and it's theoretically not possible) to show a
-    /// load more status widget if there is currently no item. So we assume
-    /// itemCount must >0 here
-    if (includeLoadMoreStatusWidget && widget.itemCount > 0) {
-      SliverFixedExtentList loadMoreStatusWidget = SliverFixedExtentList(
-        itemExtent: sliverGeneralExtent,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return _buildLoadMoreStatusIndicatorWidget();
-          },
-          childCount: 1,
-        ),
-      );
+    // Attaches load more widget if
+    // 1. List is non empty, and there is an [widget.onRefresh] callback
+    // 2. There is no [widget.onRefresh] callback.
+    if (includeLoadMoreStatusWidget && widget.itemCount >= 0) {
+      bool hasOnRefreshCallbackAndNonEmptyItems =
+          widget.onRefresh != null && widget.itemCount > 0;
 
-      slivers.add(loadMoreStatusWidget);
+      bool noOnRefreshCallback = widget.onRefresh == null;
+
+      if (hasOnRefreshCallbackAndNonEmptyItems || noOnRefreshCallback) {
+        SliverFixedExtentList loadMoreStatusWidget = SliverFixedExtentList(
+          itemExtent: sliverGeneralExtent,
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              return _buildLoadMoreStatusIndicatorWidget();
+            },
+            childCount: 1,
+          ),
+        );
+
+        slivers.add(loadMoreStatusWidget);
+      }
     }
 
     return CustomScrollView(
@@ -492,14 +515,14 @@ class MuninRefreshState extends State<MuninRefresh> {
     includeLoadMoreStatusWidget = true,
   }) {
     if (computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino) {
-      return _buildCustomScrollViewBody(
+      return _buildItemsScrollBody(
           includeCupertinoRefreshWidget: true,
           includeLoadMoreStatusWidget: includeLoadMoreStatusWidget);
     } else {
       return MuninRefreshIndicator(
         key: _materialRefreshKey,
         displacement: widget.materialRefreshIndicatorDisplacement,
-        child: _buildCustomScrollViewBody(
+        child: _buildItemsScrollBody(
             includeLoadMoreStatusWidget: includeLoadMoreStatusWidget),
         onRefresh: _generateOnRefreshCallBack(),
       );
@@ -527,26 +550,30 @@ class MuninRefreshState extends State<MuninRefresh> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.onRefresh == null && widget.onRefresh == null) {
-      return _buildCustomScrollViewBody();
+    if (widget.onRefresh == null && widget.onLoadMore == null) {
+      return _buildItemsScrollBody();
     }
 
-    if (widget.onLoadMore == null) {
+    if (widget.onRefresh != null && widget.onLoadMore == null) {
       return _buildScrollBodyWithAdaptiveRefreshWidget(
-          includeLoadMoreStatusWidget: false);
+        includeLoadMoreStatusWidget: false,
+      );
     }
 
-    if (widget.onRefresh == null) {
+    if (widget.onRefresh == null && widget.onLoadMore != null) {
       return NotificationListener<ScrollNotification>(
         onNotification: _onScrollNotification,
-        child: _buildCustomScrollViewBody(),
+        child: _buildItemsScrollBody(
+          includeLoadMoreStatusWidget: true,
+        ),
       );
     }
 
     return NotificationListener<ScrollNotification>(
       onNotification: _onScrollNotification,
       child: _buildScrollBodyWithAdaptiveRefreshWidget(
-          includeLoadMoreStatusWidget: true),
+        includeLoadMoreStatusWidget: true,
+      ),
     );
   }
 }

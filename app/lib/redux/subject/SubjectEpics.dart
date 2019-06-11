@@ -14,12 +14,15 @@ List<Epic<AppState>> createSubjectEpics(
   final getCollectionInfo = _createGetCollectionInfoEpic(bangumiSubjectService);
   final collectionUpdateRequest =
   _createCollectionUpdateRequestEpic(bangumiSubjectService);
-
   final getSubjectEpic = _createGetSubjectEpic(bangumiSubjectService);
+  final getSubjectReviewsEpic =
+  _createGetSubjectReviewsEpic(bangumiSubjectService);
+
   return [
     getSubjectEpic,
     getCollectionInfo,
     collectionUpdateRequest,
+    getSubjectReviewsEpic,
   ];
 }
 
@@ -183,5 +186,85 @@ Epic<AppState> _createCollectionUpdateRequestEpic(
     // Cancel the previous search and start a new one with switchMap
         .switchMap((action) =>
         _collectionUpdateRequest(bangumiSubjectService, action));
+  };
+}
+
+/// Reviews
+Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
+    BangumiSubjectService bangumiSubjectService,
+    GetSubjectReviewAction action) async* {
+  try {
+    BangumiSubject subject = store
+        .state.subjectState.subjects[action.getSubjectReviewRequest.subjectId];
+
+    // Subject should always be non-null as user must access subject widget first
+    // then review widget, if this is not true, throws an exception in dev
+    // environment.
+    assert(subject != null);
+    if (subject == null) {
+      yield GetSubjectAction(
+          context: action.context,
+          subjectId: action.getSubjectReviewRequest.subjectId);
+    }
+
+
+    final reviewResponse = store
+        .state
+        .subjectState
+        .subjectsReviews[action.getSubjectReviewRequest];
+
+    if (reviewResponse != null && !reviewResponse.canLoadMoreItems) {
+      action.completer.complete();
+      return;
+    }
+
+    int requestedUntilPageNumber = reviewResponse
+        ?.requestedUntilPageNumber ??
+        0;
+
+    final parsedSubjectReviews = await bangumiSubjectService.getsSubjectReviews(
+      pageNumber: requestedUntilPageNumber + 1,
+      request: action.getSubjectReviewRequest,
+      mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+    );
+
+    yield GetSubjectReviewSuccessAction(
+      parsedSubjectReviews: parsedSubjectReviews,
+      getSubjectReviewRequest: action.getSubjectReviewRequest,
+    );
+    action.completer.complete();
+  } catch (error, stack) {
+    // If the search call fails, dispatch an error so we can show it
+    print(error.toString());
+    print(stack);
+    action.completer.completeError(error);
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+  } finally {
+    if (!action.completer.isCompleted) {
+      action.completer.complete();
+    }
+  }
+}
+
+Epic<AppState> _createGetSubjectReviewsEpic(
+    BangumiSubjectService bangumiSubjectService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+    // Narrow down to SearchAction actions
+        .ofType(TypeToken<GetSubjectReviewAction>())
+    // Cancel the previous search and start a new one with switchMap
+        .switchMap((action) =>
+        _getSubjectReviewsEpic(store, bangumiSubjectService, action));
   };
 }

@@ -203,7 +203,8 @@ class SubjectParser {
     /// Elements that are in the comment box
     for (Element commentElement in commentBoxElements) {
       SubjectReview review =
-      parseSubjectReview(commentElement, ReviewElement.CommentBox);
+      parseSubjectReviewOnNonCollectionPage(
+          commentElement, ReviewElement.CommentBox);
       if (!mutedUsers.containsKey(review.metaInfo.username)) {
         reviews.add(review);
       }
@@ -212,7 +213,7 @@ class SubjectParser {
     List<Element> recentCollectionElements = subjectElement
         .querySelectorAll('#subjectPanelCollect > .groupsLine > li');
     for (Element recentCollectionElement in recentCollectionElements) {
-      SubjectReview review = parseSubjectReview(
+      SubjectReview review = parseSubjectReviewOnNonCollectionPage(
           recentCollectionElement, ReviewElement.CollectionPreview);
       if (!mutedUsers.containsKey(review.metaInfo.username)) {
         reviews.add(review);
@@ -436,8 +437,7 @@ class SubjectParser {
   BangumiSubject process(String rawHtml,
       {@required BuiltMap<String, MutedUser> mutedUsers}) {
     DocumentFragment document = parseFragment(rawHtml);
-    final SubjectType subjectType = SubjectType.getTypeByChineseName(
-        document.querySelector('#navMenuNeue .focus')?.text);
+    final SubjectType subjectType = parseSubjectType(document);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;

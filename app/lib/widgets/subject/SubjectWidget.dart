@@ -30,6 +30,10 @@ class SubjectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    return SubjectReviewsWidget(
+//      subjectId: subjectId,
+//
+//    );
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, subjectId),
       distinct: true,

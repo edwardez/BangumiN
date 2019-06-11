@@ -9,10 +9,14 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
+import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
+import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
+import 'package:munin/shared/utils/http/common.dart';
 import 'package:quiver/strings.dart';
 
 // A Bangumi subject service that handles subject-related http requests
@@ -33,8 +37,8 @@ class BangumiSubjectService {
     Dio.Response<String> response =
     await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject = SubjectParser().process(
-        response.data, mutedUsers: mutedUsers);
+    BangumiSubject subject =
+    SubjectParser().process(response.data, mutedUsers: mutedUsers);
 
     return subject;
   }
@@ -75,7 +79,7 @@ class BangumiSubjectService {
     return subjectCollectionInfo;
   }
 
-  // update collection info info through api
+  /// Updates collection info info through api
   Future<SubjectCollectionInfo> updateCollectionInfoRequest(int subjectId,
       SubjectCollectionInfo collectionUpdateRequest) async {
     Map<String, String> formData = {};
@@ -113,5 +117,48 @@ class BangumiSubjectService {
     }
 
     return subjectCollectionInfo;
+  }
+
+  /// Gets subject reviews from web page.
+  ///
+  /// [pageNumber] is the page number [getsSubjectReviews] should look for.
+  Future<ParsedSubjectReviews> getsSubjectReviews({
+    @required int pageNumber,
+    @required GetSubjectReviewRequest request,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+  }) async {
+    String path = '/subject/${request.subjectId}';
+    Map<String, String> queryParameters = {};
+
+    if (request.mainFilter ==
+        SubjectReviewMainFilter.WithNonEmptyComments) {
+      path += '/comments';
+    } else {
+      path += '/${request.mainFilter.wiredNameOnWebPage}';
+
+      if (request.showOnlyFriends) {
+        queryParameters['filter'] = 'friends';
+      }
+    }
+
+    if (pageNumber >= 2) {
+      queryParameters['page'] = pageNumber.toString();
+    }
+
+    Dio.Response response = await cookieClient.dio.get(
+      path,
+      queryParameters: queryParameters,
+    );
+
+    if (!is2xxCode(response.statusCode)) {
+      throw BangumiResponseIncomprehensibleException();
+    }
+
+    ParsedSubjectReviews reviews = SubjectReviewParser(mutedUsers: mutedUsers)
+        .processSubjectReviews(response.data,
+        mainFilter: request.mainFilter,
+        requestedPageNumber: pageNumber);
+
+    return reviews;
   }
 }

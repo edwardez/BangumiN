@@ -37,6 +37,23 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
   return int.tryParse(intStr) ?? defaultValue;
 }
 
+/// Parses bool in string format, returns  [defaultValue] if input is invalid.
+bool tryParseBool(String inputStr, {
+  bool defaultValue,
+}) {
+  if (inputStr == null) return null;
+
+  if (inputStr.toLowerCase() == false.toString()) {
+    return false;
+  }
+
+  if (inputStr.toLowerCase() == true.toString()) {
+    return true;
+  }
+
+  return defaultValue;
+}
+
 /// safely parse an double string, or returns null if doubleStr is null
 /// if doubleStr is not double string, [defaultValue] will be returned
 double tryParseDouble(String doubleStr, {defaultValue = 0}) {

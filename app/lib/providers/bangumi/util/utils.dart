@@ -16,10 +16,9 @@ String aHrefContains(String keyword) {
 ///  element is used
 String imageUrlFromBackgroundImage(Element imageElement,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true
-    }) {
-  Match imageMatchers = cssBackgroundImageGroupRegex
-      .firstMatch(imageElement?.outerHtml ?? '');
+      checkImageExtensionType = true}) {
+  Match imageMatchers =
+  cssBackgroundImageGroupRegex.firstMatch(imageElement?.outerHtml ?? '');
   String imageUrl;
 
   if (imageMatchers != null && imageMatchers.groupCount >= 1) {
@@ -38,24 +37,19 @@ String imageUrlFromBackgroundImage(Element imageElement,
 /// for performance reason we only check these types)
 ///[defaultImageSrc] will be returned
 String normalizeImageUrl(String imageUrl,
-    {
-      defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true
-    }) {
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
+      checkImageExtensionType = true}) {
   if (checkImageExtensionType) {
     if (!validBangumiImageTypeRegex.hasMatch(imageUrl)) {
       return defaultImageSrc;
     }
   }
 
-
   if (imageUrl != null &&
       imageUrl.length >= 2 &&
-      imageUrl.substring(0, 2) == '//'
-  ) {
+      imageUrl.substring(0, 2) == '//') {
     return 'https:' + imageUrl;
   }
-
 
   return defaultImageSrc;
 }
@@ -163,14 +157,14 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
 }
 
 double parseSubjectScore(Element element) {
-  final Element starsInfoElement = element.querySelector('.starsinfo');
+  final Element starsInfoElement =
+  element.querySelector('.starsinfo,.starstop');
 
   if (starsInfoElement == null) {
     return null;
   }
 
-  Match scoreMatcher =
-  scoreRegex.firstMatch(starsInfoElement.className);
+  Match scoreMatcher = scoreRegex.firstMatch(starsInfoElement.className);
 
   if (scoreMatcher?.groupCount == 1) {
     int parsedScore = int.parse(scoreMatcher.group(1));
@@ -193,9 +187,7 @@ FeedMetaInfo updateUserAction(Element singleTimelineContent,
   getMergedTextNodeContent(singleTimelineContent.nodes);
 
   userInfo = userInfo.rebuild((b) =>
-  b
-    ..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value
-  );
+  b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
 
   return userInfo;
 }
@@ -245,7 +237,6 @@ DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
 
     return '0${m.group(1)}';
   });
-
 
   rawTime += timeZoneShift;
 
@@ -358,4 +349,16 @@ Element elementOrEmptyDiv(Element element) {
   }
 
   return element;
+}
+
+/// Returns the next node sibling of current element, or null if there is no such
+/// node.
+Node nextNodeSibling(Element element) {
+  if (element == null || element.parentNode == null) return null;
+  var siblings = element.parentNode.nodes;
+  for (int i = siblings.indexOf(element) + 1; i < siblings.length; i++) {
+    var s = siblings[i];
+    if (s is Node) return s;
+  }
+  return null;
 }

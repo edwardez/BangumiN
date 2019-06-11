@@ -10,21 +10,27 @@ part 'CollectionStatus.g.dart';
 /// enum names are a little bit strange and confusing but this is in sync with bangumi API
 @BuiltValueEnum(wireName: 'type')
 class CollectionStatus extends EnumClass {
-  @BuiltValueEnumConst(wireName: 'wish')
+  static const _wishWiredName = 'wish';
+  static const _completedWiredName = 'collect';
+  static const _inProgressWiredName = 'do';
+  static const _onHoldWiredName = 'on_hold';
+  static const _droppedWiredName = 'dropped';
+
+  @BuiltValueEnumConst(wireName: _wishWiredName)
   static const CollectionStatus Wish = _$Wish;
 
   /// Completed
-  @BuiltValueEnumConst(wireName: 'collect')
+  @BuiltValueEnumConst(wireName: _completedWiredName)
   static const CollectionStatus Completed = _$Completed;
 
   /// In progress
-  @BuiltValueEnumConst(wireName: 'do')
+  @BuiltValueEnumConst(wireName: _inProgressWiredName)
   static const CollectionStatus InProgress = _$InProgress;
 
-  @BuiltValueEnumConst(wireName: 'on_hold')
+  @BuiltValueEnumConst(wireName: _onHoldWiredName)
   static const CollectionStatus OnHold = _$OnHold;
 
-  @BuiltValueEnumConst(wireName: 'dropped')
+  @BuiltValueEnumConst(wireName: _droppedWiredName)
   static const CollectionStatus Dropped = _$Dropped;
 
   /// Following types don't exist in bangumi json response
@@ -42,15 +48,15 @@ class CollectionStatus extends EnumClass {
   String get wiredName {
     switch (this) {
       case CollectionStatus.Wish:
-        return 'wish';
+        return _wishWiredName;
       case CollectionStatus.Completed:
-        return 'collect';
+        return _completedWiredName;
       case CollectionStatus.InProgress:
-        return 'do';
+        return _inProgressWiredName;
       case CollectionStatus.OnHold:
-        return 'on_hold';
+        return _onHoldWiredName;
       case CollectionStatus.Dropped:
-        return 'dropped';
+        return _droppedWiredName;
       case CollectionStatus.Pristine:
       case CollectionStatus.Unknown:
         return '';

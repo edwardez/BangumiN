@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
+import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
@@ -23,6 +24,7 @@ import 'package:munin/widgets/subject/SubjectWidget.dart';
 import 'package:munin/widgets/subject/episodes/SubjectEpisodesWidget.dart';
 import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
+import 'package:munin/widgets/subject/reviews/SubjectReviewsWidget.dart';
 import 'package:munin/widgets/timeline/compose/ComposeTimelineMessage.dart';
 
 final loginRouteHandler = Handler(
@@ -80,6 +82,31 @@ final subjectEpisodesRouteHandler = Handler(
       return Scaffold(
         body: SubjectEpisodesWidget(
           subjectId: subjectId,
+        ),
+      );
+    });
+
+final subjectReviewsRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      bool showOnlyFriends = tryParseBool(
+          params[RoutesQueryParameter.subjectReviewsFriendOnly]?.first);
+
+      SubjectReviewMainFilter mainFilter;
+      String mainFilterStr =
+          params[RoutesQueryParameter.subjectReviewsMainFilter]?.first;
+      if (mainFilterStr != null) {
+        mainFilter = SubjectReviewMainFilter.fromWiredName(mainFilterStr);
+      }
+
+      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+
+
+      return Scaffold(
+        body: SubjectReviewsWidget(
+          subjectId: subjectId,
+          showOnlyFriends: showOnlyFriends,
+          mainFilter: mainFilter,
         ),
       );
     });

@@ -5,6 +5,8 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReviewResponse.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -29,9 +31,10 @@ abstract class SubjectState
   /// loading state. Key is subject id
   BuiltMap<int, LoadingStatus> get collectionsSubmissionStatus;
 
+  BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse> get subjectsReviews;
+
   SubjectState._();
 
-  /// TODO: check whether it'll be a performance issue to initialize map every time
   factory SubjectState([updates(SubjectStateBuilder b)]) =>
       _$SubjectState((b) => b
         ..subjects.replace(BuiltMap<int, BangumiSubject>())
@@ -39,6 +42,8 @@ abstract class SubjectState
         ..collections.replace(BuiltMap<int, SubjectCollectionInfo>())
         ..collectionsLoadingStatus.replace(BuiltMap<int, LoadingStatus>())
         ..collectionsSubmissionStatus.replace(BuiltMap<int, LoadingStatus>())
+        ..subjectsReviews.replace(
+            BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse>())
         ..update(updates));
 
   String toJson() {

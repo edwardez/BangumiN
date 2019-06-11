@@ -19,11 +19,18 @@ class RoutesVariable {
   static const threadIdParam = '$paramIdentifier$threadId';
 }
 
+class RoutesQueryParameter {
+  static const subjectReviewsFriendOnly = 'friendOnly';
+  static const subjectReviewsMainFilter = 'subjectMainFilter';
+}
+
 class Routes {
   static const root = "/";
   static const loginRoute = "/login";
   static const homeRoute = "/home";
   static const bangumiOauthRoute = "/bangumiOauth";
+
+  // subject
   static const subjectMainPageRoute = "/subject/${RoutesVariable
       .subjectIdParam}";
   static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
@@ -32,6 +39,8 @@ class Routes {
       "/subject/${RoutesVariable.subjectIdParam}/collection";
   static const subjectEpisodesRoute =
       "/subject/${RoutesVariable.subjectIdParam}/episodes";
+  static const subjectReviewsRoute =
+      "/subject/${RoutesVariable.subjectIdParam}/reviews";
 
   // User
   static const userProfileRoute = "/user/${RoutesVariable.usernameParam}";
@@ -76,6 +85,9 @@ class Routes {
         handler: subjectCollectionManagementRouteHandler);
     router.define(subjectEpisodesRoute,
         handler: subjectEpisodesRouteHandler);
+    router.define(subjectReviewsRoute,
+        handler: subjectReviewsRouteHandler);
+
     router.define(userProfileRoute, handler: userProfileRouteHandler);
 
     router.define(composeTimelineMessageRoute,

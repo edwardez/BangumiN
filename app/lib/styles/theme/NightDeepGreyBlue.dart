@@ -18,4 +18,5 @@ final ThemeData nightDeepGreyBlueThemeData = ThemeData(
     primaryColorLight: Colors.lightBlueAccent.shade100,
   ),
   accentColor: Colors.lightBlueAccent,
+  toggleableActiveColor: Colors.lightBlueAccent,
 );

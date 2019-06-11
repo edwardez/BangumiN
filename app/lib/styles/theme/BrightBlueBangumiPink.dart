@@ -24,4 +24,5 @@ final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
   // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: bangumiPink,
+  toggleableActiveColor: bangumiPink,
 );

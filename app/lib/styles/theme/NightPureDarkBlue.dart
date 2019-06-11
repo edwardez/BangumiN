@@ -25,4 +25,5 @@ final ThemeData nightPureDarkBlueThemeData = ThemeData(
   ),
   dividerColor: Colors.grey,
   accentColor: Colors.lightBlueAccent,
+  toggleableActiveColor: Colors.lightBlueAccent,
 );

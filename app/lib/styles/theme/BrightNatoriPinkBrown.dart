@@ -24,4 +24,5 @@ final ThemeData brightNatoriPinkBrownThemeData = ThemeData(
   // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: natoriBrown,
+  toggleableActiveColor: natoriBrown,
 );

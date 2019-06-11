@@ -24,4 +24,5 @@ final ThemeData brightIonBrownBlueThemeData = ThemeData(
   // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: ionBlue,
+  toggleableActiveColor: ionBlue,
 );

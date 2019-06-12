@@ -12,7 +12,7 @@ part 'SubjectReviewMainFilter.g.dart';
 /// As opposite, a sub-filter is the source of the review(only from friends, or
 /// from all bangumi users).
 class SubjectReviewMainFilter extends EnumClass {
-  static const withNonEmptyCommentsChineseName = '吐槽';
+  static const withNonEmptyCommentsChineseName = '短评';
 
   /// Filters with only reviews that have a comment.
   ///

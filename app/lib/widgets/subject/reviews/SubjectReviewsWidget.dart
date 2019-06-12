@@ -100,7 +100,8 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
             builder: (_) {
               return AlertDialog(
                 content: Text('由于bangumi的限制，'
-                    '"${SubjectReviewMainFilter.withNonEmptyCommentsChineseName}"'
+                    '"只看${SubjectReviewMainFilter
+                    .withNonEmptyCommentsChineseName}"'
                     '和"$showOnlyFriendsText"不能同时使用'),
                 actions: <Widget>[
                   FlatButton(
@@ -185,6 +186,7 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
               ),
             );
           },
+          separatorBuilder: null,
         );
       },
     );

@@ -61,14 +61,15 @@ import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/CollectionStatusDistribution.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
@@ -171,6 +172,7 @@ part 'serializers.g.dart';
   Character,
   Mono,
   RelatedSubject,
+  CollectionStatusDistribution,
   SubjectReview,
   ReviewMetaInfo,
   Actor,

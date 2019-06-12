@@ -5,7 +5,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/mono/MonoBase.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'JobsPerStaff.g.dart';

@@ -26,6 +26,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Character.serializer)
       ..add(CollectionPreview.serializer)
       ..add(CollectionStatus.serializer)
+      ..add(CollectionStatusDistribution.serializer)
       ..add(CollectionStatusFromBangumi.serializer)
       ..add(CollectionUpdateSingle.serializer)
       ..add(Count.serializer)
@@ -144,10 +145,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(String), const FullType(InfoBoxItem)]),
           () => new ListMultimapBuilder<String, InfoBoxItem>())
       ..addBuilderFactory(
-          const FullType(BuiltListMultimap,
-              const [const FullType(String), const FullType(InfoBoxItem)]),
-          () => new ListMultimapBuilder<String, InfoBoxItem>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(HyperImage)]),
           () => new ListBuilder<HyperImage>())
       ..addBuilderFactory(
@@ -169,10 +166,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(NetworkServiceTag)]),
           () => new ListBuilder<NetworkServiceTag>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SubjectType),
-            const FullType(CollectionPreview)
-          ]),
+          const FullType(BuiltMap,
+              const [const FullType(SubjectType), const FullType(CollectionPreview)]),
           () => new MapBuilder<SubjectType, CollectionPreview>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelinePreview)]),
@@ -253,7 +248,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
             const FullType(BangumiSearchResponse)
           ]),
           () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
-      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(SearchRequest), const FullType(LoadingStatus)]), () => new MapBuilder<SearchRequest, LoadingStatus>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [const FullType(SearchRequest), const FullType(LoadingStatus)]),
+          () => new MapBuilder<SearchRequest, LoadingStatus>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())

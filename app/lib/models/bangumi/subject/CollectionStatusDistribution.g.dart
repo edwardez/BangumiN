@@ -1,31 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SubjectCollection.dart';
+part of 'CollectionStatusDistribution.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SubjectCollection> _$subjectCollectionSerializer =
-    new _$SubjectCollectionSerializer();
+Serializer<CollectionStatusDistribution>
+    _$collectionStatusDistributionSerializer =
+    new _$CollectionStatusDistributionSerializer();
 
-class _$SubjectCollectionSerializer
-    implements StructuredSerializer<SubjectCollection> {
+class _$CollectionStatusDistributionSerializer
+    implements StructuredSerializer<CollectionStatusDistribution> {
   @override
-  final Iterable<Type> types = const [SubjectCollection, _$SubjectCollection];
+  final Iterable<Type> types = const [
+    CollectionStatusDistribution,
+    _$CollectionStatusDistribution
+  ];
   @override
   final String wireName = 'Collection';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectCollection object,
+  Iterable serialize(
+      Serializers serializers, CollectionStatusDistribution object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'wish',
       serializers.serialize(object.wish, specifiedType: const FullType(int)),
       'collect',
-      serializers.serialize(object.collect, specifiedType: const FullType(int)),
+      serializers.serialize(object.completed,
+          specifiedType: const FullType(int)),
       'doing',
-      serializers.serialize(object.doing, specifiedType: const FullType(int)),
+      serializers.serialize(object.inProgress,
+          specifiedType: const FullType(int)),
       'on_hold',
       serializers.serialize(object.onHold, specifiedType: const FullType(int)),
       'dropped',
@@ -36,9 +43,10 @@ class _$SubjectCollectionSerializer
   }
 
   @override
-  SubjectCollection deserialize(Serializers serializers, Iterable serialized,
+  CollectionStatusDistribution deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SubjectCollectionBuilder();
+    final result = new CollectionStatusDistributionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -51,11 +59,11 @@ class _$SubjectCollectionSerializer
               specifiedType: const FullType(int)) as int;
           break;
         case 'collect':
-          result.collect = serializers.deserialize(value,
+          result.completed = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'doing':
-          result.doing = serializers.deserialize(value,
+          result.inProgress = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'on_hold':
@@ -73,57 +81,63 @@ class _$SubjectCollectionSerializer
   }
 }
 
-class _$SubjectCollection extends SubjectCollection {
+class _$CollectionStatusDistribution extends CollectionStatusDistribution {
   @override
   final int wish;
   @override
-  final int collect;
+  final int completed;
   @override
-  final int doing;
+  final int inProgress;
   @override
   final int onHold;
   @override
   final int dropped;
 
-  factory _$SubjectCollection(
-          [void Function(SubjectCollectionBuilder) updates]) =>
-      (new SubjectCollectionBuilder()..update(updates)).build();
+  factory _$CollectionStatusDistribution(
+          [void Function(CollectionStatusDistributionBuilder) updates]) =>
+      (new CollectionStatusDistributionBuilder()..update(updates)).build();
 
-  _$SubjectCollection._(
-      {this.wish, this.collect, this.doing, this.onHold, this.dropped})
+  _$CollectionStatusDistribution._(
+      {this.wish, this.completed, this.inProgress, this.onHold, this.dropped})
       : super._() {
     if (wish == null) {
-      throw new BuiltValueNullFieldError('SubjectCollection', 'wish');
+      throw new BuiltValueNullFieldError(
+          'CollectionStatusDistribution', 'wish');
     }
-    if (collect == null) {
-      throw new BuiltValueNullFieldError('SubjectCollection', 'collect');
+    if (completed == null) {
+      throw new BuiltValueNullFieldError(
+          'CollectionStatusDistribution', 'completed');
     }
-    if (doing == null) {
-      throw new BuiltValueNullFieldError('SubjectCollection', 'doing');
+    if (inProgress == null) {
+      throw new BuiltValueNullFieldError(
+          'CollectionStatusDistribution', 'inProgress');
     }
     if (onHold == null) {
-      throw new BuiltValueNullFieldError('SubjectCollection', 'onHold');
+      throw new BuiltValueNullFieldError(
+          'CollectionStatusDistribution', 'onHold');
     }
     if (dropped == null) {
-      throw new BuiltValueNullFieldError('SubjectCollection', 'dropped');
+      throw new BuiltValueNullFieldError(
+          'CollectionStatusDistribution', 'dropped');
     }
   }
 
   @override
-  SubjectCollection rebuild(void Function(SubjectCollectionBuilder) updates) =>
+  CollectionStatusDistribution rebuild(
+          void Function(CollectionStatusDistributionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SubjectCollectionBuilder toBuilder() =>
-      new SubjectCollectionBuilder()..replace(this);
+  CollectionStatusDistributionBuilder toBuilder() =>
+      new CollectionStatusDistributionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SubjectCollection &&
+    return other is CollectionStatusDistribution &&
         wish == other.wish &&
-        collect == other.collect &&
-        doing == other.doing &&
+        completed == other.completed &&
+        inProgress == other.inProgress &&
         onHold == other.onHold &&
         dropped == other.dropped;
   }
@@ -131,38 +145,42 @@ class _$SubjectCollection extends SubjectCollection {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, wish.hashCode), collect.hashCode), doing.hashCode),
+        $jc(
+            $jc($jc($jc(0, wish.hashCode), completed.hashCode),
+                inProgress.hashCode),
             onHold.hashCode),
         dropped.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SubjectCollection')
+    return (newBuiltValueToStringHelper('CollectionStatusDistribution')
           ..add('wish', wish)
-          ..add('collect', collect)
-          ..add('doing', doing)
+          ..add('completed', completed)
+          ..add('inProgress', inProgress)
           ..add('onHold', onHold)
           ..add('dropped', dropped))
         .toString();
   }
 }
 
-class SubjectCollectionBuilder
-    implements Builder<SubjectCollection, SubjectCollectionBuilder> {
-  _$SubjectCollection _$v;
+class CollectionStatusDistributionBuilder
+    implements
+        Builder<CollectionStatusDistribution,
+            CollectionStatusDistributionBuilder> {
+  _$CollectionStatusDistribution _$v;
 
   int _wish;
   int get wish => _$this._wish;
   set wish(int wish) => _$this._wish = wish;
 
-  int _collect;
-  int get collect => _$this._collect;
-  set collect(int collect) => _$this._collect = collect;
+  int _completed;
+  int get completed => _$this._completed;
+  set completed(int completed) => _$this._completed = completed;
 
-  int _doing;
-  int get doing => _$this._doing;
-  set doing(int doing) => _$this._doing = doing;
+  int _inProgress;
+  int get inProgress => _$this._inProgress;
+  set inProgress(int inProgress) => _$this._inProgress = inProgress;
 
   int _onHold;
   int get onHold => _$this._onHold;
@@ -172,13 +190,13 @@ class SubjectCollectionBuilder
   int get dropped => _$this._dropped;
   set dropped(int dropped) => _$this._dropped = dropped;
 
-  SubjectCollectionBuilder();
+  CollectionStatusDistributionBuilder();
 
-  SubjectCollectionBuilder get _$this {
+  CollectionStatusDistributionBuilder get _$this {
     if (_$v != null) {
       _wish = _$v.wish;
-      _collect = _$v.collect;
-      _doing = _$v.doing;
+      _completed = _$v.completed;
+      _inProgress = _$v.inProgress;
       _onHold = _$v.onHold;
       _dropped = _$v.dropped;
       _$v = null;
@@ -187,25 +205,25 @@ class SubjectCollectionBuilder
   }
 
   @override
-  void replace(SubjectCollection other) {
+  void replace(CollectionStatusDistribution other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$SubjectCollection;
+    _$v = other as _$CollectionStatusDistribution;
   }
 
   @override
-  void update(void Function(SubjectCollectionBuilder) updates) {
+  void update(void Function(CollectionStatusDistributionBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SubjectCollection build() {
+  _$CollectionStatusDistribution build() {
     final _$result = _$v ??
-        new _$SubjectCollection._(
+        new _$CollectionStatusDistribution._(
             wish: wish,
-            collect: collect,
-            doing: doing,
+            completed: completed,
+            inProgress: inProgress,
             onHold: onHold,
             dropped: dropped);
     replace(_$result);

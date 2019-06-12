@@ -6,13 +6,14 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/CollectionStatusDistribution.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -85,8 +86,8 @@ abstract class BangumiSubject
   /// A list of tags that have been selected by user for this subject
   BuiltList<String> get userSelectedTags;
 
-  @nullable
-  BuiltListMultimap<String, InfoBoxItem> get user;
+  @BuiltValueField(wireName: 'collection')
+  CollectionStatusDistribution get collectionStatusDistribution;
 
   @memoized
   String get infoBoxRowsPlainText {
@@ -155,6 +156,4 @@ abstract class BangumiSubject
   ///  @BuiltValueField(wireName: 'eps_count')
   ///  int get episodesCount;
   ///
-  ///   @BuiltValueField(wireName: 'collection')
-  ///  SubjectCollection get collection;
 }

@@ -35,6 +35,14 @@ class SubjectReviewMainFilter extends EnumClass {
 
   static const SubjectReviewMainFilter FromDroppedUsers = _$FromDroppedUsers;
 
+  static const collectionStatusBasedFilters = [
+    SubjectReviewMainFilter.FromWishedUsers,
+    SubjectReviewMainFilter.FromCompletedUsers,
+    SubjectReviewMainFilter.FromInProgressUsers,
+    SubjectReviewMainFilter.FromOnHoldUsers,
+    SubjectReviewMainFilter.FromDroppedUsers,
+  ];
+
   String chineseName(SubjectType subjectType) {
     switch (this) {
       case SubjectReviewMainFilter.WithNonEmptyComments:

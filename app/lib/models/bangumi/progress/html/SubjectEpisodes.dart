@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/progress/html/SimpleHtmlEpisode.dart';
+import 'package:munin/models/bangumi/progress/html/SimpleHtmlBasedEpisode.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -15,7 +15,7 @@ abstract class SubjectEpisodes
   @nullable
   ParentSubject get subject;
 
-  BuiltMap<int, SimpleHtmlEpisode> get episodes;
+  BuiltMap<int, SimpleHtmlBasedEpisode> get episodes;
 
   SubjectEpisodes._();
 

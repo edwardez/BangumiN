@@ -40,7 +40,7 @@ import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
-import 'package:munin/models/bangumi/progress/html/SimpleHtmlEpisode.dart';
+import 'package:munin/models/bangumi/progress/html/SimpleHtmlBasedEpisode.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
@@ -246,7 +246,7 @@ part 'serializers.g.dart';
   AirStatus,
   GetProgressRequest,
   SubjectEpisodes,
-  SimpleHtmlEpisode,
+  SimpleHtmlBasedEpisode,
 
   /// Settings
   SettingState,

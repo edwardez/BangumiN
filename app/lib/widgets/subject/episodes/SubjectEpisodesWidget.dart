@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
-import 'package:munin/models/bangumi/progress/html/SimpleHtmlEpisode.dart';
+import 'package:munin/models/bangumi/progress/html/SimpleHtmlBasedEpisode.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
@@ -167,7 +167,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
   _showEpisodeOptionSheet(
     BuildContext context,
     _ViewModel vm,
-    SimpleHtmlEpisode episode,
+      SimpleHtmlBasedEpisode episode,
     String secondaryTitleWithEpisodeInfo,
   ) {
     final language = vm.preferredSubjectInfoLanguage;

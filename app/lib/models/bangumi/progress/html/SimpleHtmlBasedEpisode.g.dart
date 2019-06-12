@@ -1,23 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'SimpleHtmlEpisode.dart';
+part of 'SimpleHtmlBasedEpisode.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SimpleHtmlEpisode> _$simpleHtmlEpisodeSerializer =
-    new _$SimpleHtmlEpisodeSerializer();
+Serializer<SimpleHtmlBasedEpisode> _$simpleHtmlBasedEpisodeSerializer =
+    new _$SimpleHtmlBasedEpisodeSerializer();
 
-class _$SimpleHtmlEpisodeSerializer
-    implements StructuredSerializer<SimpleHtmlEpisode> {
+class _$SimpleHtmlBasedEpisodeSerializer
+    implements StructuredSerializer<SimpleHtmlBasedEpisode> {
   @override
-  final Iterable<Type> types = const [SimpleHtmlEpisode, _$SimpleHtmlEpisode];
+  final Iterable<Type> types = const [
+    SimpleHtmlBasedEpisode,
+    _$SimpleHtmlBasedEpisode
+  ];
   @override
-  final String wireName = 'SimpleHtmlEpisode';
+  final String wireName = 'SimpleHtmlBasedEpisode';
 
   @override
-  Iterable serialize(Serializers serializers, SimpleHtmlEpisode object,
+  Iterable serialize(Serializers serializers, SimpleHtmlBasedEpisode object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'episodeInfo',
@@ -45,9 +48,10 @@ class _$SimpleHtmlEpisodeSerializer
   }
 
   @override
-  SimpleHtmlEpisode deserialize(Serializers serializers, Iterable serialized,
+  SimpleHtmlBasedEpisode deserialize(
+      Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SimpleHtmlEpisodeBuilder();
+    final result = new SimpleHtmlBasedEpisodeBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -90,7 +94,7 @@ class _$SimpleHtmlEpisodeSerializer
   }
 }
 
-class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
+class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
   @override
   final String episodeInfo;
   @override
@@ -106,11 +110,11 @@ class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
   @override
   final EpisodeType episodeType;
 
-  factory _$SimpleHtmlEpisode(
-          [void Function(SimpleHtmlEpisodeBuilder) updates]) =>
-      (new SimpleHtmlEpisodeBuilder()..update(updates)).build();
+  factory _$SimpleHtmlBasedEpisode(
+          [void Function(SimpleHtmlBasedEpisodeBuilder) updates]) =>
+      (new SimpleHtmlBasedEpisodeBuilder()..update(updates)).build();
 
-  _$SimpleHtmlEpisode._(
+  _$SimpleHtmlBasedEpisode._(
       {this.episodeInfo,
       this.id,
       this.name,
@@ -120,41 +124,44 @@ class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
       this.episodeType})
       : super._() {
     if (episodeInfo == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'episodeInfo');
+      throw new BuiltValueNullFieldError(
+          'SimpleHtmlBasedEpisode', 'episodeInfo');
     }
     if (id == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'id');
+      throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'id');
     }
     if (name == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'name');
+      throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'name');
     }
     if (nameCn == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'nameCn');
+      throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'nameCn');
     }
     if (airStatus == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'airStatus');
+      throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'airStatus');
     }
     if (userEpisodeStatus == null) {
       throw new BuiltValueNullFieldError(
-          'SimpleHtmlEpisode', 'userEpisodeStatus');
+          'SimpleHtmlBasedEpisode', 'userEpisodeStatus');
     }
     if (episodeType == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlEpisode', 'episodeType');
+      throw new BuiltValueNullFieldError(
+          'SimpleHtmlBasedEpisode', 'episodeType');
     }
   }
 
   @override
-  SimpleHtmlEpisode rebuild(void Function(SimpleHtmlEpisodeBuilder) updates) =>
+  SimpleHtmlBasedEpisode rebuild(
+          void Function(SimpleHtmlBasedEpisodeBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  SimpleHtmlEpisodeBuilder toBuilder() =>
-      new SimpleHtmlEpisodeBuilder()..replace(this);
+  SimpleHtmlBasedEpisodeBuilder toBuilder() =>
+      new SimpleHtmlBasedEpisodeBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SimpleHtmlEpisode &&
+    return other is SimpleHtmlBasedEpisode &&
         episodeInfo == other.episodeInfo &&
         id == other.id &&
         name == other.name &&
@@ -180,7 +187,7 @@ class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SimpleHtmlEpisode')
+    return (newBuiltValueToStringHelper('SimpleHtmlBasedEpisode')
           ..add('episodeInfo', episodeInfo)
           ..add('id', id)
           ..add('name', name)
@@ -192,11 +199,11 @@ class _$SimpleHtmlEpisode extends SimpleHtmlEpisode {
   }
 }
 
-class SimpleHtmlEpisodeBuilder
+class SimpleHtmlBasedEpisodeBuilder
     implements
-        Builder<SimpleHtmlEpisode, SimpleHtmlEpisodeBuilder>,
+        Builder<SimpleHtmlBasedEpisode, SimpleHtmlBasedEpisodeBuilder>,
         BaseEpisodeBuilder {
-  _$SimpleHtmlEpisode _$v;
+  _$SimpleHtmlBasedEpisode _$v;
 
   String _episodeInfo;
   String get episodeInfo => _$this._episodeInfo;
@@ -227,9 +234,9 @@ class SimpleHtmlEpisodeBuilder
   EpisodeType get episodeType => _$this._episodeType;
   set episodeType(EpisodeType episodeType) => _$this._episodeType = episodeType;
 
-  SimpleHtmlEpisodeBuilder();
+  SimpleHtmlBasedEpisodeBuilder();
 
-  SimpleHtmlEpisodeBuilder get _$this {
+  SimpleHtmlBasedEpisodeBuilder get _$this {
     if (_$v != null) {
       _episodeInfo = _$v.episodeInfo;
       _id = _$v.id;
@@ -244,22 +251,22 @@ class SimpleHtmlEpisodeBuilder
   }
 
   @override
-  void replace(covariant SimpleHtmlEpisode other) {
+  void replace(covariant SimpleHtmlBasedEpisode other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$SimpleHtmlEpisode;
+    _$v = other as _$SimpleHtmlBasedEpisode;
   }
 
   @override
-  void update(void Function(SimpleHtmlEpisodeBuilder) updates) {
+  void update(void Function(SimpleHtmlBasedEpisodeBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$SimpleHtmlEpisode build() {
+  _$SimpleHtmlBasedEpisode build() {
     final _$result = _$v ??
-        new _$SimpleHtmlEpisode._(
+        new _$SimpleHtmlBasedEpisode._(
             episodeInfo: episodeInfo,
             id: id,
             name: name,

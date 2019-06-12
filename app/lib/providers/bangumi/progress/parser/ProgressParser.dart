@@ -9,7 +9,7 @@ import 'package:munin/models/bangumi/progress/api/EpisodeProgress.dart';
 import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
-import 'package:munin/models/bangumi/progress/html/SimpleHtmlEpisode.dart';
+import 'package:munin/models/bangumi/progress/html/SimpleHtmlBasedEpisode.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/providers/bangumi/discussion/parser/common.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
@@ -208,13 +208,13 @@ class ProgressParser {
     return episodesPerSubject;
   }
 
-  BuiltMap<int, SimpleHtmlEpisode> parseSubjectEpisodes(
+  BuiltMap<int, SimpleHtmlBasedEpisode> parseSubjectEpisodes(
       List<Element> episodeElements,
       Map<int, EpisodeStatus> touchedEpisodes,) {
     EpisodeType episodeType = EpisodeType.Unknown;
 
-    BuiltMap<int, SimpleHtmlEpisode> episodes =
-    BuiltMap<int, SimpleHtmlEpisode>();
+    BuiltMap<int, SimpleHtmlBasedEpisode> episodes =
+    BuiltMap<int, SimpleHtmlBasedEpisode>();
     for (var episodeElement in episodeElements) {
       if (episodeElement.classes.contains('cat')) {
         episodeType = guessEpisodeTypeByChineseName(episodeElement.text.trim());
@@ -280,7 +280,7 @@ class ProgressParser {
       // Episode must have a valid type.
       assert(episodeType != EpisodeType.Unknown);
 
-      SimpleHtmlEpisode episode = SimpleHtmlEpisode((b) =>
+      SimpleHtmlBasedEpisode episode = SimpleHtmlBasedEpisode((b) =>
       b
         ..id = episodeId
         ..name = name

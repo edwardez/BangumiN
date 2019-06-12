@@ -22,8 +22,10 @@ class _$SubjectEpisodesSerializer
     final result = <Object>[
       'episodes',
       serializers.serialize(object.episodes,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(SimpleHtmlEpisode)])),
+          specifiedType: const FullType(BuiltMap, const [
+            const FullType(int),
+            const FullType(SimpleHtmlBasedEpisode)
+          ])),
     ];
     if (object.subject != null) {
       result
@@ -53,7 +55,7 @@ class _$SubjectEpisodesSerializer
           result.episodes.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
-                const FullType(SimpleHtmlEpisode)
+                const FullType(SimpleHtmlBasedEpisode)
               ])) as BuiltMap);
           break;
       }
@@ -67,7 +69,7 @@ class _$SubjectEpisodes extends SubjectEpisodes {
   @override
   final ParentSubject subject;
   @override
-  final BuiltMap<int, SimpleHtmlEpisode> episodes;
+  final BuiltMap<int, SimpleHtmlBasedEpisode> episodes;
 
   factory _$SubjectEpisodes([void Function(SubjectEpisodesBuilder) updates]) =>
       (new SubjectEpisodesBuilder()..update(updates)).build();
@@ -117,10 +119,10 @@ class SubjectEpisodesBuilder
       _$this._subject ??= new ParentSubjectBuilder();
   set subject(ParentSubjectBuilder subject) => _$this._subject = subject;
 
-  MapBuilder<int, SimpleHtmlEpisode> _episodes;
-  MapBuilder<int, SimpleHtmlEpisode> get episodes =>
-      _$this._episodes ??= new MapBuilder<int, SimpleHtmlEpisode>();
-  set episodes(MapBuilder<int, SimpleHtmlEpisode> episodes) =>
+  MapBuilder<int, SimpleHtmlBasedEpisode> _episodes;
+  MapBuilder<int, SimpleHtmlBasedEpisode> get episodes =>
+      _$this._episodes ??= new MapBuilder<int, SimpleHtmlBasedEpisode>();
+  set episodes(MapBuilder<int, SimpleHtmlBasedEpisode> episodes) =>
       _$this._episodes = episodes;
 
   SubjectEpisodesBuilder();

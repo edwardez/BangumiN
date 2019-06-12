@@ -8,34 +8,38 @@ import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeType.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
-part 'SimpleHtmlEpisode.g.dart';
+part 'SimpleHtmlBasedEpisode.g.dart';
 
 /// An episode entity as seen on html(like https://bgm.tv/subject/1836/ep).
-/// [SimpleHtmlEpisode] provides rough info of an episode. Different from [EpisodeProgress],
+/// [SimpleHtmlBasedEpisode] provides rough info of an episode. Different from [EpisodeProgress],
 /// which obtains in-progress episode info from API and is more fine-grained.
-/// However, [SimpleHtmlEpisode] is still needed because currently API doesn't
+/// However, [SimpleHtmlBasedEpisode] is still needed because currently API doesn't
 /// return all episodes of an subject.
-abstract class SimpleHtmlEpisode
-    implements BaseEpisode, Built<SimpleHtmlEpisode, SimpleHtmlEpisodeBuilder> {
+abstract class SimpleHtmlBasedEpisode
+    implements
+        BaseEpisode,
+        Built<SimpleHtmlBasedEpisode, SimpleHtmlBasedEpisodeBuilder> {
   /// Episode info in a string. It's typically something like
   /// "时长:122min / 首播:2008-08-02 / 讨论:+0"
   String get episodeInfo;
 
-  SimpleHtmlEpisode._();
+  SimpleHtmlBasedEpisode._();
 
-  factory SimpleHtmlEpisode([void Function(SimpleHtmlEpisodeBuilder) updates]) =
-      _$SimpleHtmlEpisode;
+  factory SimpleHtmlBasedEpisode(
+      [void Function(SimpleHtmlBasedEpisodeBuilder) updates]) =
+  _$SimpleHtmlBasedEpisode;
 
   String toJson() {
     return json
-        .encode(serializers.serializeWith(SimpleHtmlEpisode.serializer, this));
+        .encode(
+        serializers.serializeWith(SimpleHtmlBasedEpisode.serializer, this));
   }
 
-  static SimpleHtmlEpisode fromJson(String jsonString) {
+  static SimpleHtmlBasedEpisode fromJson(String jsonString) {
     return serializers.deserializeWith(
-        SimpleHtmlEpisode.serializer, json.decode(jsonString));
+        SimpleHtmlBasedEpisode.serializer, json.decode(jsonString));
   }
 
-  static Serializer<SimpleHtmlEpisode> get serializer =>
-      _$simpleHtmlEpisodeSerializer;
+  static Serializer<SimpleHtmlBasedEpisode> get serializer =>
+      _$simpleHtmlBasedEpisodeSerializer;
 }

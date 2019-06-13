@@ -29,30 +29,26 @@ class SubjectRatingOverview extends StatelessWidget {
       ],
     );
 
-    if (friendScoreVotesCount != 0) {
-      return InkWell(
-        child: friendScoreWidget,
-        onTap: () {
-          final route = Routes.subjectReviewsRoute.replaceAll(
-            RoutesVariable.subjectIdParam,
-            subject.id.toString(),
-          );
+    return InkWell(
+      child: friendScoreWidget,
+      onTap: () {
+        final route = Routes.subjectReviewsRoute.replaceAll(
+          RoutesVariable.subjectIdParam,
+          subject.id.toString(),
+        );
 
-          Map<String, String> queryParameters = {};
+        Map<String, String> queryParameters = {};
 
-          queryParameters[RoutesQueryParameter.subjectReviewsFriendOnly] =
-          'true';
-          queryParameters[RoutesQueryParameter.subjectReviewsMainFilter] =
-              SubjectReviewMainFilter.FromCompletedUsers.name;
+        queryParameters[RoutesQueryParameter.subjectReviewsFriendOnly] =
+        'true';
+        queryParameters[RoutesQueryParameter.subjectReviewsMainFilter] =
+            SubjectReviewMainFilter.FromCompletedUsers.name;
 
-          Application.router.navigateTo(context,
-              '$route${Uri(queryParameters: queryParameters)}',
-              transition: TransitionType.native);
-        },
-      );
-    }
-
-    return friendScoreWidget;
+        Application.router.navigateTo(context,
+            '$route${Uri(queryParameters: queryParameters)}',
+            transition: TransitionType.native);
+      },
+    );
   }
 
   @override

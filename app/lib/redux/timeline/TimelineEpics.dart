@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
@@ -13,6 +13,8 @@ import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
@@ -20,7 +22,8 @@ import 'package:munin/shared/utils/common.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createTimelineEpics(BangumiTimelineService bangumiTimelineService,
+List<Epic<AppState>> createTimelineEpics(
+    BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   final loadTimelineFeedEpic =
   _createLoadTimelineEpics(bangumiTimelineService, bangumiUserService);
@@ -55,7 +58,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
     int nextPageNum;
 
     FeedChunks feedChunks;
-    BangumiUserBasic userInfo;
+    BangumiUserSmall userInfo;
 
     if (action.getTimelineRequest.timelineSource ==
         TimelineSource.UserProfile) {
@@ -73,7 +76,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
             .getUserBasicInfo(action.getTimelineRequest.username);
       }
     } else if (action.getTimelineRequest.timelineSource ==
-        TimelineSource.FriendsOnly) {
+        TimelineSource.OnlyFriends) {
       feedChunks =
           store.state.timelineState.timeline[action.getTimelineRequest] ??
               FeedChunks();
@@ -87,7 +90,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// so feedId cannot be filled in we just load all new feeds
       /// TODO: clean up all older feeds in this case?
       upperFeedId =
-          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFeeds)
+          firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
               ?.user
               ?.feedId ??
               IntegerHelper.MIN_VALUE;
@@ -99,7 +102,7 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       /// we just load all new feeds
       /// TODO: clean up all newer feeds in this case?
       lowerFeedId =
-          firstOrNullInBuiltList<TimelineFeed>(feedChunks.unfilteredFeeds)
+          firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
               ?.user
               ?.feedId ??
               IntegerHelper.MAX_VALUE;
@@ -183,7 +186,18 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
         parsedResponse: fetchFeedsResult);
     action.completer.complete();
   } catch (error, stack) {
+    print(error.toString());
+    print(stack);
     action.completer.completeError(error, stack);
+
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
 
     /// For loading older feeds, error messages are directly shown on item list
     if (action.feedLoadType == FeedLoadType.Initial ||
@@ -191,9 +205,6 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
       Scaffold.of(action.context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
     }
-
-    print(error.toString());
-    print(stack);
   } finally {
     assert(action.completer.isCompleted);
     if (!action.completer.isCompleted) {
@@ -202,7 +213,8 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
   }
 }
 
-Epic<AppState> _createLoadTimelineEpics(BangumiTimelineService bangumiTimelineService,
+Epic<AppState> _createLoadTimelineEpics(
+    BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
@@ -217,7 +229,6 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
     DeleteTimelineAction action, EpicStore<AppState> store) async* {
   try {
     await bangumiTimelineService.deleteTimeline(action.feed.user.feedId);
-
     yield DeleteTimelineSuccessAction(
         feed: action.feed,
         getTimelineRequest: action.getTimelineRequest,
@@ -226,12 +237,22 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text('删除时间线出错')));
   }
 }
 
-Epic<AppState> _createDeleteTimelineEpic(BangumiTimelineService bangumiTimelineService) {
+Epic<AppState> _createDeleteTimelineEpic(
+    BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<DeleteTimelineAction>())
@@ -278,6 +299,15 @@ Stream<dynamic> _submitTimelineMessage(
   } catch (error, stack) {
     print(error.toString());
     print(stack);
+    var result = await generalExceptionHandler(error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text('发表消息时出错')));
   }

@@ -5,6 +5,7 @@ import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 
 /// Updates general settings.
@@ -71,4 +72,11 @@ class ImportBlockedBangumiUsersConfirmAction {
 }
 
 class ImportBlockedBangumiUsersCleanupAction {
+}
+
+/// Update privacy settings.
+class UpdatePrivacySettingAction {
+  final PrivacySetting privacySetting;
+
+  UpdatePrivacySettingAction({@required this.privacySetting});
 }

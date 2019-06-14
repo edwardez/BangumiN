@@ -20,12 +20,13 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 class InProgressBookWidget extends StatefulWidget {
   final InProgressBookCollection collection;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
+  final bool expandAllProgressTiles;
 
   final Future<void> Function(int newEpisodeNumber, int newVolumeNumber)
       onUpdateBookProgress;
 
   const InProgressBookWidget(
-      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage})
+      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage, @required this.expandAllProgressTiles})
       : super(key: key);
 
   @override
@@ -115,18 +116,19 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
 
   @override
   Widget build(BuildContext context) {
-    assert(defaultPortraitHorizontalPadding -
-            defaultDensePortraitHorizontalPadding ==
+    assert(defaultPortraitHorizontalOffset -
+        defaultDensePortraitHorizontalOffset ==
         8.0);
 
     return ExpansionTile(
       key: PageStorageKey<String>('progress-${widget.collection.subject.id}'),
+      initiallyExpanded: widget.expandAllProgressTiles,
       title: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: math.max(
                 0,
-                defaultPortraitHorizontalPadding -
-                    defaultDensePortraitHorizontalPadding)),
+                defaultPortraitHorizontalOffset -
+                    defaultDensePortraitHorizontalOffset)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -147,7 +149,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                       Application.router.navigateTo(
                           context,
                           Routes.subjectCollectionManagementRoute.replaceFirst(
-                              ':subjectId',
+                              RoutesVariable.subjectIdParam,
                               widget.collection.subject.id.toString()),
                           transition: TransitionType.nativeModal);
                     },
@@ -165,7 +167,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(preferredSubjectTitleFromSubjectBase(
+                      Flexible(child: Text(preferredNameFromSubjectBase(
                           widget.collection.subject,
                           widget.preferredSubjectInfoLanguage))),
                     ],
@@ -195,7 +197,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: defaultPortraitHorizontalPadding),
+              horizontal: defaultPortraitHorizontalOffset),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

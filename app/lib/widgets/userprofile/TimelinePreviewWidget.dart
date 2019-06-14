@@ -45,7 +45,7 @@ class TimelinePreviewWidget extends StatelessWidget {
         Application.router.navigateTo(
             context,
             Routes.composeTimelineMessageRoute.replaceAll(
-                ':username', username),
+                RoutesVariable.usernameParam, username),
             transition: TransitionType.nativeModal);
       },
     );

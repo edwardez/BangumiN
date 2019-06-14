@@ -3,6 +3,8 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,12 +14,15 @@ List<Epic<AppState>> createSubjectEpics(
   final getCollectionInfo = _createGetCollectionInfoEpic(bangumiSubjectService);
   final collectionUpdateRequest =
   _createCollectionUpdateRequestEpic(bangumiSubjectService);
-
   final getSubjectEpic = _createGetSubjectEpic(bangumiSubjectService);
+  final getSubjectReviewsEpic =
+  _createGetSubjectReviewsEpic(bangumiSubjectService);
+
   return [
     getSubjectEpic,
     getCollectionInfo,
     collectionUpdateRequest,
+    getSubjectReviewsEpic,
   ];
 }
 
@@ -37,10 +42,20 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield GetSubjectFailureAction.fromUnknownException(
         subjectId: action.subjectId);
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 
@@ -92,11 +107,22 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield GetCollectionInfoFailureAction.fromUnknownException(
         subjectId: action.subjectId);
     action.completer.completeError(error, stack);
+
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 
@@ -118,9 +144,14 @@ Stream<dynamic> _collectionUpdateRequest(
   try {
     yield UpdateCollectionRequestLoadingAction(subjectId: action.subjectId);
 
+    final updatedCollectionInfo =
     await bangumiSubjectService.updateCollectionInfoRequest(
         action.subjectId, action.collectionUpdateRequest);
-    yield UpdateCollectionRequestSuccessAction(subjectId: action.subjectId);
+
+    yield UpdateCollectionRequestSuccessAction(
+      subjectId: action.subjectId,
+      collectionUpdateResponse: updatedCollectionInfo,
+    );
 
     ///TODO: Add a snackbar notification upon success
     Navigator.of(action.context).pop();
@@ -128,10 +159,21 @@ Stream<dynamic> _collectionUpdateRequest(
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
     yield UpdateCollectionRequestFailureAction.fromUnknownException(
         subjectId: action.subjectId);
+
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 
@@ -144,5 +186,85 @@ Epic<AppState> _createCollectionUpdateRequestEpic(
     // Cancel the previous search and start a new one with switchMap
         .switchMap((action) =>
         _collectionUpdateRequest(bangumiSubjectService, action));
+  };
+}
+
+/// Reviews
+Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
+    BangumiSubjectService bangumiSubjectService,
+    GetSubjectReviewAction action) async* {
+  try {
+    BangumiSubject subject = store
+        .state.subjectState.subjects[action.getSubjectReviewRequest.subjectId];
+
+    // Subject should always be non-null as user must access subject widget first
+    // then review widget, if this is not true, throws an exception in dev
+    // environment.
+    assert(subject != null);
+    if (subject == null) {
+      yield GetSubjectAction(
+          context: action.context,
+          subjectId: action.getSubjectReviewRequest.subjectId);
+    }
+
+
+    final reviewResponse = store
+        .state
+        .subjectState
+        .subjectsReviews[action.getSubjectReviewRequest];
+
+    if (reviewResponse != null && !reviewResponse.canLoadMoreItems) {
+      action.completer.complete();
+      return;
+    }
+
+    int requestedUntilPageNumber = reviewResponse
+        ?.requestedUntilPageNumber ??
+        0;
+
+    final parsedSubjectReviews = await bangumiSubjectService.getsSubjectReviews(
+      pageNumber: requestedUntilPageNumber + 1,
+      request: action.getSubjectReviewRequest,
+      mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+    );
+
+    yield GetSubjectReviewSuccessAction(
+      parsedSubjectReviews: parsedSubjectReviews,
+      getSubjectReviewRequest: action.getSubjectReviewRequest,
+    );
+    action.completer.complete();
+  } catch (error, stack) {
+    // If the search call fails, dispatch an error so we can show it
+    print(error.toString());
+    print(stack);
+    action.completer.completeError(error);
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+  } finally {
+    if (!action.completer.isCompleted) {
+      action.completer.complete();
+    }
+  }
+}
+
+Epic<AppState> _createGetSubjectReviewsEpic(
+    BangumiSubjectService bangumiSubjectService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+    // Narrow down to SearchAction actions
+        .ofType(TypeToken<GetSubjectReviewAction>())
+    // Cancel the previous search and start a new one with switchMap
+        .switchMap((action) =>
+        _getSubjectReviewsEpic(store, bangumiSubjectService, action));
   };
 }

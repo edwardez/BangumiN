@@ -39,7 +39,6 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
         ..add(serializers.serialize(object.lastFetchedTime,
             specifiedType: const FullType(DateTime)));
     }
-
     return result;
   }
 

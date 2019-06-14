@@ -8,29 +8,54 @@ import 'package:munin/models/bangumi/progress/common/EpisodeStatus.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/redux/progress/Common.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
+import 'package:munin/redux/progress/common.dart';
+import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:redux/redux.dart';
 
 final progressReducers = combineReducers<ProgressState>([
-  TypedReducer<ProgressState, GetProgressLoadingAction>(
-      getProgressLoadingReducer),
+  TypedReducer<ProgressState, GetSubjectEpisodesLoadingAction>(
+      getSubjectEpisodesLoadingReducer),
+  TypedReducer<ProgressState, GetSubjectEpisodesFailureAction>(
+      getSubjectEpisodesFailureReducer),
+  TypedReducer<ProgressState, GetSubjectEpisodesSuccessAction>(
+      getSubjectEpisodesSuccessReducer),
   TypedReducer<ProgressState, GetProgressSuccessAction>(
       getProgressSuccessReducer),
-  TypedReducer<ProgressState, GetProgressFailureAction>(
-      getProgressFailureReducer),
-  TypedReducer<ProgressState, UpdateAnimeOrRealSingleEpisodeSuccessAction>(
-      updateAnimeOrRealSingleEpisodeSuccessReducer),
-  TypedReducer<ProgressState, UpdateAnimeOrRealBatchEpisodesSuccessAction>(
-      updateAnimeOrRealBatchEpisodesSuccessReducer),
+  TypedReducer<ProgressState, UpdateInProgressEpisodeSuccessAction>(
+      updateInProgressEpisodeSuccessReducer),
+  TypedReducer<ProgressState, UpdateInProgressBatchEpisodesSuccessAction>(
+      updateInProgressBatchEpisodesSuccessReducer),
   TypedReducer<ProgressState, UpdateBookProgressSuccessAction>(
       updateBookProgressSuccessReducer),
 ]);
 
-ProgressState getProgressLoadingReducer(
-    ProgressState progressState, GetProgressLoadingAction action) {
-  return progressState;
+ProgressState getSubjectEpisodesLoadingReducer(ProgressState progressState,
+    GetSubjectEpisodesLoadingAction action) {
+  return progressState.rebuild((b) =>
+  b
+    ..subjectsLoadingStatus.addAll({
+      action.subjectId: LoadingStatus.Loading,
+    }));
+}
+
+ProgressState getSubjectEpisodesFailureReducer(ProgressState progressState,
+    GetSubjectEpisodesFailureAction action) {
+  return progressState.rebuild((b) =>
+  b
+    ..subjectsLoadingStatus.addAll({
+      action.subjectId: action.loadingStatus,
+    }));
+}
+
+ProgressState getSubjectEpisodesSuccessReducer(ProgressState progressState,
+    GetSubjectEpisodesSuccessAction action) {
+  return progressState.rebuild((b) =>
+  b
+    ..watchableSubjects.addAll(
+      {action.subjectId: action.subjectEpisodes},
+    ));
 }
 
 ProgressState getProgressSuccessReducer(ProgressState progressState,
@@ -52,14 +77,9 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
   return progressState;
 }
 
-ProgressState getProgressFailureReducer(
-    ProgressState progressState, GetProgressFailureAction action) {
-  return progressState;
-}
-
-ProgressState updateAnimeOrRealSingleEpisodeSuccessReducer(
+ProgressState updateInProgressEpisodeSuccessReducer(
     ProgressState progressState,
-    UpdateAnimeOrRealSingleEpisodeSuccessAction action) {
+    UpdateInProgressEpisodeSuccessAction action) {
   Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
       .map<InProgressCollection>((InProgressCollection progress) {
@@ -90,9 +110,9 @@ ProgressState updateAnimeOrRealSingleEpisodeSuccessReducer(
         {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
 }
 
-ProgressState updateAnimeOrRealBatchEpisodesSuccessReducer(
+ProgressState updateInProgressBatchEpisodesSuccessReducer(
     ProgressState progressState,
-    UpdateAnimeOrRealBatchEpisodesSuccessAction action) {
+    UpdateInProgressBatchEpisodesSuccessAction action) {
   Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
       .map<InProgressCollection>((InProgressCollection progress) {
@@ -103,13 +123,13 @@ ProgressState updateAnimeOrRealBatchEpisodesSuccessReducer(
       /// total number of changed episodes to add to completedEpisodesCount
       int totalChangedEpisodesCountToAdd = 0;
       for (var episode in progress.episodes.values) {
-        if (isAffectedByCollectUntilOperation(
+        if (isEpisodeProgressAffectedByCollectUntilOperation(
             episode, action.newEpisodeNumber)) {
           totalChangedEpisodesCountToAdd +=
               EpisodeUpdateType.watchedEpisodeCountChange(
                   episode.userEpisodeStatus, EpisodeUpdateType.Collect);
           episode = episode
-              .rebuild((b) => b..userEpisodeStatus = EpisodeStatus.Collect);
+              .rebuild((b) => b..userEpisodeStatus = EpisodeStatus.Completed);
           updatedEpisodes[episode.id] = episode;
         } else {
           updatedEpisodes[episode.id] = episode;

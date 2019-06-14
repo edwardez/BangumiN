@@ -11,7 +11,7 @@ class SubjectTagsFormField extends FormField<Set<String>> {
     FormFieldValidator<Set<String>> validator,
     @required LinkedHashMap<String, bool> headerTags,
     @required LinkedHashMap<String, bool> candidateTags,
-    double horizontalPadding = defaultPortraitHorizontalPadding,
+    double horizontalPadding = defaultPortraitHorizontalOffset,
     bool autovalidate = false,
     int maxTags = 10,
   }) : super(

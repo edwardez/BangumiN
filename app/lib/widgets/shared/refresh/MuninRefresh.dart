@@ -6,7 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/async.dart';
+import 'package:munin/shared/workarounds/refresh_indicator/refresh_indicator.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
 
@@ -38,7 +40,11 @@ enum RefreshWidgetStyle {
 /// For more details, please see api doc for these widgets
 class MuninRefresh extends StatefulWidget {
   static Widget _defaultDividerBuilder(BuildContext context, int index) {
-    return Divider();
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: defaultPortraitHorizontalOffset),
+      child: onePixelHeightDivider(),
+    );
   }
 
   /// Called to build a individual child in a list.
@@ -48,7 +54,9 @@ class MuninRefresh extends StatefulWidget {
   /// exists.
   final IndexedWidgetBuilder itemBuilder;
 
-  /// A separator that will be built between each items, default to `Divider()`.
+  /// A separator that will be built between each items, default to a [Divider]
+  /// with 1 pixel height and `defaultPortraitHorizontalPadding` padding on each
+  /// horizontal side.
   /// If [separatorBuilder] is set to null, no separator will be built between child items.
   final IndexedWidgetBuilder separatorBuilder;
 
@@ -85,6 +93,10 @@ class MuninRefresh extends StatefulWidget {
   /// An optional AppBar that will be placed at the top of widget list
   final Widget appBar;
 
+  /// An optional list of widgets that will be put at the top of item lists,
+  /// but below [appBar].
+  final List<Widget> topWidgets;
+
   /// Displacement value for [RefreshWidgetStyle.Material]
   /// see [displacement] in [RefreshIndicator]
   final double materialRefreshIndicatorDisplacement;
@@ -96,9 +108,6 @@ class MuninRefresh extends StatefulWidget {
   /// refreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
   /// see [refreshIndicatorExtent] in [CupertinoSliverRefreshControl]
   final double cupertinoRefreshIndicatorExtent;
-
-  /// Outer padding for all items, appBar is not included
-  final EdgeInsetsGeometry itemPadding;
 
   /// Padding between appBar and underneath items
   /// Won't take effect if appBar is not set
@@ -115,16 +124,14 @@ class MuninRefresh extends StatefulWidget {
     @required this.itemBuilder,
     @required this.itemCount,
     this.appBar,
+    this.topWidgets = const [],
     this.emptyAfterRefreshWidget,
     this.noMoreItemsWidget,
     this.noMoreItemsToLoad = false,
     this.refreshWidgetStyle = RefreshWidgetStyle.Adaptive,
     this.separatorBuilder = _defaultDividerBuilder,
-    this.itemPadding = const EdgeInsets.symmetric(
-        horizontal: defaultPortraitHorizontalPadding),
-    this.appBarUnderneathPadding = const EdgeInsets.only(
-        bottom: largeVerticalPadding),
-    this.materialRefreshIndicatorDisplacement = 50,
+    this.appBarUnderneathPadding = const EdgeInsets.only(bottom: largeOffset),
+    this.materialRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
     this.loadMoreTriggerDistance = 200,
@@ -158,8 +165,8 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// is still empty after first refresh
   int itemCountBeforeNextRefresh;
 
-  GlobalKey<RefreshIndicatorState> _materialRefreshKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<MuninRefreshIndicatorState> _materialRefreshKey =
+  GlobalKey<MuninRefreshIndicatorState>();
 
   @override
   void initState() {
@@ -396,10 +403,12 @@ class MuninRefreshState extends State<MuninRefresh> {
         computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
   }
 
-  /// Build a plain [CustomScrollView] that just contains an AppBar(if present)
-  /// and items
-  /// [includeCupertinoRefreshWidget] is set to `false` by default
-  CustomScrollView _buildCustomScrollViewBody({
+  /// Builds a plain [CustomScrollView] that just contains an AppBar(if present)
+  /// and items.
+  ///
+  /// [includeCupertinoRefreshWidget] and [includeCupertinoRefreshWidget] are
+  /// set to `false` by default.
+  CustomScrollView _buildItemsScrollBody({
     bool includeCupertinoRefreshWidget = false,
     bool includeLoadMoreStatusWidget = false,
   }) {
@@ -409,35 +418,49 @@ class MuninRefreshState extends State<MuninRefresh> {
       slivers.add(widget.appBar);
     }
 
-    /// TODO: Waiting for https://github.com/flutter/flutter/issues/31376 to be fixed
-    /// then this code bock can be removed
-    /// Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
-    /// [RefreshWidgetStyle.Cupertino]
-    if (showPlaceholderCupertinoRefreshIndicator()) {
-      SliverFixedExtentList progressIndicator = SliverFixedExtentList(
-        itemExtent: sliverGeneralExtent,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return AdaptiveProgressIndicator();
-          },
-          childCount: 1,
-        ),
-      );
+    if (includeCupertinoRefreshWidget) {
+      // TODO: Waiting for https://github.com/flutter/flutter/issues/31376 to be fixed
+      // then this code bock can be removed
+      // Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
+      // [RefreshWidgetStyle.Cupertino]
+      if (showPlaceholderCupertinoRefreshIndicator()) {
+        SliverFixedExtentList progressIndicator = SliverFixedExtentList(
+          itemExtent: sliverGeneralExtent,
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              return AdaptiveProgressIndicator();
+            },
+            childCount: 1,
+          ),
+        );
 
-      slivers.add(progressIndicator);
-    } else {
-      /// TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
-      /// resolved to switch back to the official widget
-      slivers.add(MuninCupertinoSliverRefreshControl(
-        onRefresh: _generateOnRefreshCallBack(),
-        refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
-        refreshTriggerPullDistance: widget.cupertinoRefreshTriggerPullDistance,
-      ));
+        slivers.add(progressIndicator);
+      } else {
+        // TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
+        // resolved to switch back to the official widget
+        slivers.add(MuninCupertinoSliverRefreshControl(
+          onRefresh: _generateOnRefreshCallBack(),
+          refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
+          refreshTriggerPullDistance:
+          widget.cupertinoRefreshTriggerPullDistance,
+        ));
+      }
     }
 
     if (widget.appBarUnderneathPadding != null) {
       slivers.add(SliverPadding(
         padding: widget.appBarUnderneathPadding,
+      ));
+    }
+
+    if (widget.topWidgets.isNotEmpty) {
+      slivers.add(SliverList(
+        delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+            return widget.topWidgets[index];
+          },
+          childCount: widget.topWidgets.length,
+        ),
       ));
     }
 
@@ -450,41 +473,33 @@ class MuninRefreshState extends State<MuninRefresh> {
           childCount: 1,
         ),
       );
-      if (widget.itemPadding != null) {
-        slivers.add(SliverPadding(
-          padding: widget.itemPadding,
-          sliver: emptyAfterRefreshWidget,
-        ));
-      } else {
-        slivers.add(emptyAfterRefreshWidget);
+      slivers.add(emptyAfterRefreshWidget);
+    }
+
+    slivers.add(_buildItemsSliverList());
+
+    // Attaches load more widget if
+    // 1. List is non empty, and there is an [widget.onRefresh] callback
+    // 2. There is no [widget.onRefresh] callback.
+    if (includeLoadMoreStatusWidget && widget.itemCount >= 0) {
+      bool hasOnRefreshCallbackAndNonEmptyItems =
+          widget.onRefresh != null && widget.itemCount > 0;
+
+      bool noOnRefreshCallback = widget.onRefresh == null;
+
+      if (hasOnRefreshCallbackAndNonEmptyItems || noOnRefreshCallback) {
+        SliverFixedExtentList loadMoreStatusWidget = SliverFixedExtentList(
+          itemExtent: sliverGeneralExtent,
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              return _buildLoadMoreStatusIndicatorWidget();
+            },
+            childCount: 1,
+          ),
+        );
+
+        slivers.add(loadMoreStatusWidget);
       }
-    }
-
-    SliverList sliverItemsList = _buildItemsSliverList();
-    if (widget.itemPadding != null) {
-      slivers.add(SliverPadding(
-        padding: widget.itemPadding,
-        sliver: sliverItemsList,
-      ));
-    } else {
-      slivers.add(sliverItemsList);
-    }
-
-    /// It doesn't make sense(and it's theoretically not possible) to show a
-    /// load more status widget if there is currently no item. So we assume
-    /// itemCount must >0 here
-    if (includeLoadMoreStatusWidget && widget.itemCount > 0) {
-      SliverFixedExtentList loadMoreStatusWidget = SliverFixedExtentList(
-        itemExtent: sliverGeneralExtent,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return _buildLoadMoreStatusIndicatorWidget();
-          },
-          childCount: 1,
-        ),
-      );
-
-      slivers.add(loadMoreStatusWidget);
     }
 
     return CustomScrollView(
@@ -500,14 +515,14 @@ class MuninRefreshState extends State<MuninRefresh> {
     includeLoadMoreStatusWidget = true,
   }) {
     if (computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino) {
-      return _buildCustomScrollViewBody(
+      return _buildItemsScrollBody(
           includeCupertinoRefreshWidget: true,
           includeLoadMoreStatusWidget: includeLoadMoreStatusWidget);
     } else {
-      return RefreshIndicator(
+      return MuninRefreshIndicator(
         key: _materialRefreshKey,
         displacement: widget.materialRefreshIndicatorDisplacement,
-        child: _buildCustomScrollViewBody(
+        child: _buildItemsScrollBody(
             includeLoadMoreStatusWidget: includeLoadMoreStatusWidget),
         onRefresh: _generateOnRefreshCallBack(),
       );
@@ -535,26 +550,30 @@ class MuninRefreshState extends State<MuninRefresh> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.onRefresh == null && widget.onRefresh == null) {
-      return _buildCustomScrollViewBody();
+    if (widget.onRefresh == null && widget.onLoadMore == null) {
+      return _buildItemsScrollBody();
     }
 
-    if (widget.onLoadMore == null) {
+    if (widget.onRefresh != null && widget.onLoadMore == null) {
       return _buildScrollBodyWithAdaptiveRefreshWidget(
-          includeLoadMoreStatusWidget: false);
+        includeLoadMoreStatusWidget: false,
+      );
     }
 
-    if (widget.onRefresh == null) {
+    if (widget.onRefresh == null && widget.onLoadMore != null) {
       return NotificationListener<ScrollNotification>(
         onNotification: _onScrollNotification,
-        child: _buildCustomScrollViewBody(),
+        child: _buildItemsScrollBody(
+          includeLoadMoreStatusWidget: true,
+        ),
       );
     }
 
     return NotificationListener<ScrollNotification>(
       onNotification: _onScrollNotification,
       child: _buildScrollBodyWithAdaptiveRefreshWidget(
-          includeLoadMoreStatusWidget: true),
+        includeLoadMoreStatusWidget: true,
+      ),
     );
   }
 }

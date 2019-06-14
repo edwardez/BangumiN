@@ -43,6 +43,9 @@ class _$BangumiSubjectSerializer
       serializers.serialize(object.userSelectedTags,
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
+      'collection',
+      serializers.serialize(object.collectionStatusDistribution,
+          specifiedType: const FullType(CollectionStatusDistribution)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -88,13 +91,6 @@ class _$BangumiSubjectSerializer
             specifiedType: const FullType(BuiltListMultimap,
                 const [const FullType(String), const FullType(InfoBoxItem)])));
     }
-    if (object.user != null) {
-      result
-        ..add('user')
-        ..add(serializers.serialize(object.user,
-            specifiedType: const FullType(BuiltListMultimap,
-                const [const FullType(String), const FullType(InfoBoxItem)])));
-    }
     if (object.curatedInfoBoxRows != null) {
       result
         ..add('curatedInfoBoxRows')
@@ -120,7 +116,6 @@ class _$BangumiSubjectSerializer
         ..add(serializers.serialize(object.nameCn,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 
@@ -203,12 +198,11 @@ class _$BangumiSubjectSerializer
                       const FullType(BuiltList, const [const FullType(String)]))
               as BuiltList);
           break;
-        case 'user':
-          result.user.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltListMultimap, const [
-                const FullType(String),
-                const FullType(InfoBoxItem)
-              ])) as BuiltListMultimap);
+        case 'collection':
+          result.collectionStatusDistribution.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(CollectionStatusDistribution))
+              as CollectionStatusDistribution);
           break;
         case 'curatedInfoBoxRows':
           result.curatedInfoBoxRows.replace(serializers.deserialize(value,
@@ -268,7 +262,7 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final BuiltList<String> userSelectedTags;
   @override
-  final BuiltListMultimap<String, InfoBoxItem> user;
+  final CollectionStatusDistribution collectionStatusDistribution;
   @override
   final BuiltListMultimap<String, InfoBoxItem> curatedInfoBoxRows;
   @override
@@ -299,7 +293,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.infoBoxRows,
       this.bangumiSuggestedTags,
       this.userSelectedTags,
-      this.user,
+      this.collectionStatusDistribution,
       this.curatedInfoBoxRows,
       this.id,
       this.pageUrlFromApi,
@@ -328,6 +322,10 @@ class _$BangumiSubject extends BangumiSubject {
     }
     if (userSelectedTags == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'userSelectedTags');
+    }
+    if (collectionStatusDistribution == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiSubject', 'collectionStatusDistribution');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'name');
@@ -368,7 +366,7 @@ class _$BangumiSubject extends BangumiSubject {
         infoBoxRows == other.infoBoxRows &&
         bangumiSuggestedTags == other.bangumiSuggestedTags &&
         userSelectedTags == other.userSelectedTags &&
-        user == other.user &&
+        collectionStatusDistribution == other.collectionStatusDistribution &&
         curatedInfoBoxRows == other.curatedInfoBoxRows &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
@@ -416,7 +414,7 @@ class _$BangumiSubject extends BangumiSubject {
                                         infoBoxRows.hashCode),
                                     bangumiSuggestedTags.hashCode),
                                 userSelectedTags.hashCode),
-                            user.hashCode),
+                            collectionStatusDistribution.hashCode),
                         curatedInfoBoxRows.hashCode),
                     id.hashCode),
                 pageUrlFromApi.hashCode),
@@ -441,7 +439,7 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('infoBoxRows', infoBoxRows)
           ..add('bangumiSuggestedTags', bangumiSuggestedTags)
           ..add('userSelectedTags', userSelectedTags)
-          ..add('user', user)
+          ..add('collectionStatusDistribution', collectionStatusDistribution)
           ..add('curatedInfoBoxRows', curatedInfoBoxRows)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
@@ -529,11 +527,13 @@ class BangumiSubjectBuilder
   set userSelectedTags(ListBuilder<String> userSelectedTags) =>
       _$this._userSelectedTags = userSelectedTags;
 
-  ListMultimapBuilder<String, InfoBoxItem> _user;
-  ListMultimapBuilder<String, InfoBoxItem> get user =>
-      _$this._user ??= new ListMultimapBuilder<String, InfoBoxItem>();
-  set user(ListMultimapBuilder<String, InfoBoxItem> user) =>
-      _$this._user = user;
+  CollectionStatusDistributionBuilder _collectionStatusDistribution;
+  CollectionStatusDistributionBuilder get collectionStatusDistribution =>
+      _$this._collectionStatusDistribution ??=
+          new CollectionStatusDistributionBuilder();
+  set collectionStatusDistribution(
+          CollectionStatusDistributionBuilder collectionStatusDistribution) =>
+      _$this._collectionStatusDistribution = collectionStatusDistribution;
 
   ListMultimapBuilder<String, InfoBoxItem> _curatedInfoBoxRows;
   ListMultimapBuilder<String, InfoBoxItem> get curatedInfoBoxRows =>
@@ -578,7 +578,8 @@ class BangumiSubjectBuilder
       _infoBoxRows = _$v.infoBoxRows?.toBuilder();
       _bangumiSuggestedTags = _$v.bangumiSuggestedTags?.toBuilder();
       _userSelectedTags = _$v.userSelectedTags?.toBuilder();
-      _user = _$v.user?.toBuilder();
+      _collectionStatusDistribution =
+          _$v.collectionStatusDistribution?.toBuilder();
       _curatedInfoBoxRows = _$v.curatedInfoBoxRows?.toBuilder();
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
@@ -622,7 +623,8 @@ class BangumiSubjectBuilder
               infoBoxRows: _infoBoxRows?.build(),
               bangumiSuggestedTags: bangumiSuggestedTags.build(),
               userSelectedTags: userSelectedTags.build(),
-              user: _user?.build(),
+              collectionStatusDistribution:
+                  collectionStatusDistribution.build(),
               curatedInfoBoxRows: _curatedInfoBoxRows?.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
@@ -650,8 +652,8 @@ class BangumiSubjectBuilder
         bangumiSuggestedTags.build();
         _$failedField = 'userSelectedTags';
         userSelectedTags.build();
-        _$failedField = 'user';
-        _user?.build();
+        _$failedField = 'collectionStatusDistribution';
+        collectionStatusDistribution.build();
         _$failedField = 'curatedInfoBoxRows';
         _curatedInfoBoxRows?.build();
       } catch (e) {

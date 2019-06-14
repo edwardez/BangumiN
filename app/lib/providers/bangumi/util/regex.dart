@@ -32,10 +32,11 @@ final RegExp userIdInAvatarGroupRegex = RegExp(r'(\d+)\.jpg');
 final RegExp atLeastOneSpaceRegex = RegExp(r'\s+');
 final RegExp endsOrStartsWithSpaceRegex = RegExp(r'^\s+|\s+$');
 
-final RegExp scoreRegex = RegExp(r'sstars(\d+)');
+final RegExp scoreRegex = RegExp(r's?stars(\d+)');
 
 final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');
 
-
 final RegExp blockedUserIdGroupRegex = RegExp(
     r'privacy\?ignore_reset=(\d+)&gh=');
+
+final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');

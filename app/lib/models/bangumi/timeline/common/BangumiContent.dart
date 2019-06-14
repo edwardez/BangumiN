@@ -25,27 +25,46 @@ class BangumiContent extends EnumClass {
   /// Note: topic id is independent of group id
   /// [GroupTopic] currently won't show up on user timeline
   static const BangumiContent GroupTopic = _$GroupTopic;
-  static const BangumiContent Wiki = _$Wiki;
+  static const BangumiContent SubjectCreation = _$SubjectCreation;
   static const BangumiContent Catalog = _$Catalog;
   static const BangumiContent Doujin = _$Doujin;
   static const BangumiContent CharacterOrPerson = _$CharacterOrPerson;
 
-  static const Map<BangumiContent, String> enumToWebPageRouteName = {
-    BangumiContent.Subject: 'subject',
-    BangumiContent.SubjectTopic: 'subject/topic',
-    BangumiContent.Episode: 'ep',
-    BangumiContent.User: 'user',
-    BangumiContent.Group: 'group',
-    BangumiContent.GroupTopic: 'group/topic',
-    BangumiContent.Blog: 'blog',
-    BangumiContent.Catalog: 'index',
-    BangumiContent.Doujin: 'doujin',
-    BangumiContent.Character: 'character',
-    BangumiContent.Person: 'person',
-
-    /// all timeline wiki activity means user creates a new subject
-    BangumiContent.Wiki: 'subject',
-  };
+  /// A sub route name as seen on bangumi.
+  String get webPageRouteName {
+    switch (this) {
+      case BangumiContent.Subject:
+        return 'subject';
+      case BangumiContent.SubjectTopic:
+        return 'subject/topic';
+      case BangumiContent.Episode:
+        return 'ep';
+      case BangumiContent.User:
+        return 'user';
+      case BangumiContent.Group:
+        return 'group';
+      case BangumiContent.GroupTopic:
+        return 'group/topic';
+      case BangumiContent.Blog:
+        return 'blog';
+      case BangumiContent.Catalog:
+        return 'index';
+      case BangumiContent.Doujin:
+        return 'doujin';
+      case BangumiContent.Character:
+        return 'character';
+      case BangumiContent.Person:
+        return 'person';
+    // All timeline wiki activity is a [BangumiContent.SubjectCreation] activity,
+    // which means user creates a new subject.
+      case BangumiContent.SubjectCreation:
+        return 'subject';
+      default:
+      // Default shouldn't be used directly
+        assert(false, '$this doesn\'t have a valid webPageRouteName.');
+        return '';
+    }
+  }
 
   static const Set<BangumiContent> monoTypes = {
   BangumiContent.CharacterOrPerson,
@@ -85,7 +104,7 @@ class BangumiContent extends EnumClass {
         return TimelineCategoryFilter.PublicMessage;
       default:
 
-      /// we should never use default directly
+      /// Default shouldn't be used directly
         assert(false, 'Cannot find applicableFeedFilter for $this');
         return TimelineCategoryFilter.AllFeeds;
     }

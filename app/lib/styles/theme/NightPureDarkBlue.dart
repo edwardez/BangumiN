@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData nightPureDarkBlueThemeData = ThemeData(
@@ -11,7 +12,7 @@ final ThemeData nightPureDarkBlueThemeData = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),
   dialogTheme: DialogTheme(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: RoundedRectangleBorder(borderRadius: defaultContainerCircularRadius),
   ),
   appBarTheme: AppBarTheme(
     brightness: Brightness.dark,
@@ -24,4 +25,5 @@ final ThemeData nightPureDarkBlueThemeData = ThemeData(
   ),
   dividerColor: Colors.grey,
   accentColor: Colors.lightBlueAccent,
+  toggleableActiveColor: Colors.lightBlueAccent,
 );

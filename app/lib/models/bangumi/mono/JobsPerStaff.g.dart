@@ -58,7 +58,6 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
         ..add(serializers.serialize(object.pageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
+import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
 import 'package:munin/redux/shared/CommonActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 
@@ -11,7 +13,7 @@ class GetSubjectAction {
   final BuildContext context;
   final int subjectId;
 
-  GetSubjectAction({
+  const GetSubjectAction({
     @required this.context,
     @required this.subjectId,
   });
@@ -20,7 +22,7 @@ class GetSubjectAction {
 class GetSubjectLoadingAction {
   final int subjectId;
 
-  GetSubjectLoadingAction({
+  const GetSubjectLoadingAction({
     @required this.subjectId,
   });
 }
@@ -28,13 +30,14 @@ class GetSubjectLoadingAction {
 class GetSubjectSuccessAction {
   final BangumiSubject subject;
 
-  GetSubjectSuccessAction(this.subject);
+  const GetSubjectSuccessAction(this.subject);
 }
 
 class GetSubjectFailureAction extends FailureAction {
   int subjectId;
 
-  GetSubjectFailureAction({@required this.subjectId, @required LoadingStatus loadingStatus})
+  GetSubjectFailureAction(
+      {@required this.subjectId, @required LoadingStatus loadingStatus})
       : super(loadingStatus: loadingStatus);
 
   GetSubjectFailureAction.fromUnknownException({@required this.subjectId})
@@ -44,7 +47,7 @@ class GetSubjectFailureAction extends FailureAction {
 class CleanUpLoadingStatusAction {
   final int subjectId;
 
-  CleanUpLoadingStatusAction({
+  const CleanUpLoadingStatusAction({
     @required this.subjectId,
   });
 }
@@ -64,7 +67,7 @@ class GetCollectionInfoAction {
 class GetCollectionInfoLoadingAction {
   final int subjectId;
 
-  GetCollectionInfoLoadingAction({
+  const GetCollectionInfoLoadingAction({
     @required this.subjectId,
   });
 }
@@ -74,7 +77,7 @@ class GetCollectionInfoSuccessAction {
   final SubjectCollectionInfo collectionInfo;
   final BangumiSubject bangumiSubject;
 
-  GetCollectionInfoSuccessAction({
+  const GetCollectionInfoSuccessAction({
     @required this.subjectId,
     @required this.collectionInfo,
     this.bangumiSubject,
@@ -84,17 +87,19 @@ class GetCollectionInfoSuccessAction {
 class GetCollectionInfoFailureAction extends FailureAction {
   final int subjectId;
 
-  GetCollectionInfoFailureAction({@required this.subjectId, @required LoadingStatus loadingStatus})
+  const GetCollectionInfoFailureAction(
+      {@required this.subjectId, @required LoadingStatus loadingStatus})
       : super(loadingStatus: loadingStatus);
 
-  GetCollectionInfoFailureAction.fromUnknownException({@required this.subjectId})
+  const GetCollectionInfoFailureAction.fromUnknownException(
+      {@required this.subjectId})
       : super.fromUnknownException();
 }
 
 class CleanUpCollectionInfoAction {
   final int subjectId;
 
-  CleanUpCollectionInfoAction({
+  const CleanUpCollectionInfoAction({
     @required this.subjectId,
   });
 }
@@ -104,7 +109,7 @@ class UpdateCollectionRequestAction {
   final int subjectId;
   final SubjectCollectionInfo collectionUpdateRequest;
 
-  UpdateCollectionRequestAction({@required this.context,
+  const UpdateCollectionRequestAction({@required this.context,
     @required this.subjectId,
     @required this.collectionUpdateRequest});
 }
@@ -112,18 +117,19 @@ class UpdateCollectionRequestAction {
 class UpdateCollectionRequestLoadingAction {
   final int subjectId;
 
-  UpdateCollectionRequestLoadingAction({ @required this.subjectId});
+  const UpdateCollectionRequestLoadingAction({@required this.subjectId});
 }
 
 class UpdateCollectionRequestFailureAction extends FailureAction {
   final int subjectId;
 
-  UpdateCollectionRequestFailureAction({
+  const UpdateCollectionRequestFailureAction({
     @required this.subjectId,
     @required LoadingStatus loadingStatus,
   }) : super(loadingStatus: loadingStatus);
 
-  UpdateCollectionRequestFailureAction.fromUnknownException({@required this.subjectId})
+  const UpdateCollectionRequestFailureAction.fromUnknownException(
+      {@required this.subjectId})
       : super.fromUnknownException();
 }
 
@@ -131,5 +137,29 @@ class UpdateCollectionRequestSuccessAction {
   final int subjectId;
   final SubjectCollectionInfo collectionUpdateResponse;
 
-  UpdateCollectionRequestSuccessAction({@required this.subjectId, this.collectionUpdateResponse});
+  const UpdateCollectionRequestSuccessAction(
+      {@required this.subjectId, this.collectionUpdateResponse});
+}
+
+/// Reviews
+class GetSubjectReviewAction {
+  final GetSubjectReviewRequest getSubjectReviewRequest;
+  final BuildContext context;
+  final Completer completer;
+
+  GetSubjectReviewAction({
+    @required this.getSubjectReviewRequest,
+    @required this.context,
+    Completer completer,
+  }) : this.completer = completer ?? new Completer();
+}
+
+class GetSubjectReviewSuccessAction {
+  final GetSubjectReviewRequest getSubjectReviewRequest;
+  final ParsedSubjectReviews parsedSubjectReviews;
+
+  const GetSubjectReviewSuccessAction({
+    @required this.getSubjectReviewRequest,
+    @required this.parsedSubjectReviews,
+  });
 }

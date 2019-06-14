@@ -10,16 +10,19 @@ import 'package:munin/models/bangumi/mono/Actor.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/CollectionStatusDistribution.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxItem.dart';
-import 'package:munin/models/bangumi/subject/InfoBox/InfoBoxRow.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
+import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/subject/parser/common.dart';
+import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/collection.dart';
@@ -38,8 +41,17 @@ class SubjectParser {
       '发售日期',
       '上映年度'
     },
-    SubjectType.Game: {'开发', '平台', '发行日期'},
-    SubjectType.Music: {'艺术家', '厂牌', '发售日期'},
+    SubjectType.Game: {
+      '开发',
+      '制作',
+      '平台',
+      '发行日期',
+    },
+    SubjectType.Music: {
+      '艺术家',
+      '厂牌',
+      '发售日期',
+    },
     SubjectType.Book: {
       '作者',
       '插图',
@@ -51,9 +63,14 @@ class SubjectParser {
       '话数',
       '册数',
       '连载杂志',
-      '文库'
+      '文库',
     },
-    SubjectType.Real: {'国家/地区', '类型', '开始', '结束'},
+    SubjectType.Real: {
+      '国家/地区',
+      '类型',
+      '开始',
+      '结束',
+    },
   };
 
   /// parse a InfoBoxItem, returns null if node is unexpected or invalid
@@ -149,7 +166,7 @@ class SubjectParser {
         collectionStatusElement
             .querySelector('.interest_now')
             ?.text,
-        fallbackCollectionStatus: CollectionStatus.Untouched);
+        fallbackCollectionStatus: CollectionStatus.Pristine);
 
     return SubjectCollectionInfoPreview((b) =>
     b
@@ -202,8 +219,8 @@ class SubjectParser {
 
     /// Elements that are in the comment box
     for (Element commentElement in commentBoxElements) {
-      SubjectReview review =
-      parseSubjectReview(commentElement, ReviewElement.CommentBox);
+      SubjectReview review = parseSubjectReviewOnNonCollectionPage(
+          commentElement, ReviewElement.CommentBox);
       if (!mutedUsers.containsKey(review.metaInfo.username)) {
         reviews.add(review);
       }
@@ -212,7 +229,7 @@ class SubjectParser {
     List<Element> recentCollectionElements = subjectElement
         .querySelectorAll('#subjectPanelCollect > .groupsLine > li');
     for (Element recentCollectionElement in recentCollectionElements) {
-      SubjectReview review = parseSubjectReview(
+      SubjectReview review = parseSubjectReviewOnNonCollectionPage(
           recentCollectionElement, ReviewElement.CollectionPreview);
       if (!mutedUsers.containsKey(review.metaInfo.username)) {
         reviews.add(review);
@@ -421,6 +438,36 @@ class SubjectParser {
     return BuiltList<String>(userTags);
   }
 
+  CollectionStatusDistribution parserCollectionStatusDistribution(
+      Element infoElement) {
+    int parseCount(SubjectReviewMainFilter collectionType) {
+      final element = infoElement?.querySelector(
+          'a[href^="/subject"][href\$="${collectionType.wiredNameOnWebPage}"]');
+
+      int count = 0;
+
+      if (element == null || infoElement == null) {
+        return count;
+      }
+
+      count = tryParseInt(
+          firstCapturedStringOrNull(atLeastOneDigitGroupRegex, element.text),
+          defaultValue: 0);
+
+      return count;
+    }
+
+    return CollectionStatusDistribution(
+          (b) =>
+      b
+        ..wish = parseCount(SubjectReviewMainFilter.FromWishedUsers)
+        ..completed = parseCount(SubjectReviewMainFilter.FromCompletedUsers)
+        ..inProgress = parseCount(SubjectReviewMainFilter.FromInProgressUsers)
+        ..onHold = parseCount(SubjectReviewMainFilter.FromOnHoldUsers)
+        ..dropped = parseCount(SubjectReviewMainFilter.FromDroppedUsers),
+    );
+  }
+
   /// in-place update [infoBoxRows] with [infoBoxItems]
   /// add a separator to value of infoBoxRows if it's not empty
   _addSeparatorIfNotFirstInfoBoxItem(
@@ -436,8 +483,7 @@ class SubjectParser {
   BangumiSubject process(String rawHtml,
       {@required BuiltMap<String, MutedUser> mutedUsers}) {
     DocumentFragment document = parseFragment(rawHtml);
-    final SubjectType subjectType = SubjectType.getTypeByChineseName(
-        document.querySelector('#navMenuNeue .focus')?.text);
+    final SubjectType subjectType = parseSubjectType(document);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
@@ -507,8 +553,9 @@ class SubjectParser {
 
     Element commonImageElement = document.querySelector('.infobox img.cover');
     BangumiImage cover = BangumiImage.fromImageUrl(
-        imageSrcOrNull(commonImageElement),
-        ImageSize.Common, ImageType.SubjectCover);
+        imageSrcOrFallback(commonImageElement),
+        ImageSize.Common,
+        ImageType.SubjectCover);
 
     BuiltList<Character> characters = parseCharacters(document);
 
@@ -524,6 +571,9 @@ class SubjectParser {
     BuiltList<String> bangumiSuggestedTags =
     parseBangumiSuggestedTags(document);
     BuiltList<String> userSelectedTags = parseUserSelectedTags(document);
+
+    final collectionStatusDistribution = parserCollectionStatusDistribution(
+        document.querySelector('#columnSubjectHomeA'));
 
     return BangumiSubject((b) =>
     b
@@ -542,6 +592,7 @@ class SubjectParser {
       ..relatedSubjects.replace(relatedSubjects)
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
       ..userSelectedTags.replace(userSelectedTags)
-      ..userSubjectCollectionInfoPreview.replace(preview));
+      ..userSubjectCollectionInfoPreview.replace(preview)
+      ..collectionStatusDistribution.replace(collectionStatusDistribution));
   }
 }

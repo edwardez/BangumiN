@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
+import 'package:munin/shared/workarounds/munin_permission_handler/lib/permission_handler.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewPoster.dart';
@@ -69,6 +71,22 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
         ..avatar.replace(
             BangumiImage.useSameImageUrlForAll(
                 bangumiAnonymousUserMediumAvatar))));
+  }
+
+  /// Checks and requests permission on Android
+  Future<PermissionStatus> checkAndRequestPermissionOnAndroid() async {
+    if (!Platform.isAndroid) {
+      return PermissionStatus.unknown;
+    }
+
+    var status = await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.storage);
+    if (status != PermissionStatus.granted) {
+      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    }
+
+    return await PermissionHandler().checkPermissionStatus(
+        PermissionGroup.storage);
   }
 
   /// Currently this calculation might block ui thread
@@ -155,8 +173,16 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
               '保存到相册',
             ),
             onPressed: () async {
+              var status = await checkAndRequestPermissionOnAndroid();
+              if (status == PermissionStatus.denied) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text('保存失败：没有写入图片的权限。'),
+                ));
+                return;
+              }
+
               Uint8List uint8List =
-                  await _shareWidgetKey.currentState.capturePng();
+              await _shareWidgetKey.currentState.capturePng();
               final result = await ImageGallerySaver.save(uint8List);
               if (result) {
                 Scaffold.of(context).showSnackBar(SnackBar(

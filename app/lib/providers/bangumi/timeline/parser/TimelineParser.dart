@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
@@ -85,9 +85,6 @@ class TimelineParser {
     '搁置了'
   };
 
-  static const Map<BangumiContent, String> contentTypeToSelectorName =
-      BangumiContent.enumToWebPageRouteName;
-
   /// verify whether user is authenticated
   /// tricky part is: bangumi WILL returns site global timeline instead of returning
   /// an error code or rendering an error page
@@ -117,7 +114,7 @@ class TimelineParser {
       int feedId, {
         @required TimelineSource timelineSource,
         Map<String, String> userAvatarImageCache,
-        BangumiUserBasic userBasicInfo,
+        BangumiUserSmall userBasicInfo,
       }) {
     Optional<FeedMetaInfo> maybeUserInfo;
 
@@ -234,7 +231,7 @@ class TimelineParser {
 
   Optional<FeedMetaInfo> parseProfilePageFeedMetaInfo(Element timelineItem,
       int feedId,
-      BangumiUserBasic userBasicInfo,) {
+      BangumiUserSmall userBasicInfo,) {
     Optional<int> maybeUpdateTime =
     parseUpdateTime(timelineItem.querySelector('.date'));
 
@@ -418,7 +415,7 @@ class TimelineParser {
     return MonoFavoriteSingle((b) => b
       ..id = id
       ..avatar.replace(BangumiImage.fromImageUrl(
-          imageSrcOrNull(monoImageElement),
+          imageSrcOrFallback(monoImageElement),
           ImageSize.Unknown,
           ImageType.MonoAvatar))
       ..monoName = monoName
@@ -443,7 +440,7 @@ class TimelineParser {
       }
 
       String pageUrl = imageElement.parent?.attributes['href'];
-      String imageUrl = imageSrcOrNull(imageElement);
+      String imageUrl = imageSrcOrFallback(imageElement);
 
       HyperImage hyperImage = HyperImage((b) => b
         ..id = id
@@ -497,19 +494,19 @@ class TimelineParser {
     List<HyperBangumiItem> characterTextList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Character,
-        contentTypeToSelectorName[BangumiContent.Character]);
+        BangumiContent.Character.webPageRouteName);
     List<HyperImage> characterImageList = parseAllHyperImages(
         singleTimelineContent,
         BangumiContent.Character,
-        contentTypeToSelectorName[BangumiContent.Character]);
+        BangumiContent.Character.webPageRouteName);
     List<HyperBangumiItem> personTextList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Person,
-        contentTypeToSelectorName[BangumiContent.Person]);
+        BangumiContent.Person.webPageRouteName);
     List<HyperImage> personImageList = parseAllHyperImages(
         singleTimelineContent,
         BangumiContent.Person,
-        contentTypeToSelectorName[BangumiContent.Person]);
+        BangumiContent.Person.webPageRouteName);
 
     characterImageList.addAll(personImageList);
     characterTextList.addAll(personTextList);
@@ -547,7 +544,7 @@ class TimelineParser {
     List<HyperBangumiItem> friendTextList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.User,
-        contentTypeToSelectorName[BangumiContent.User],
+        BangumiContent.User.webPageRouteName,
         filterIds: {userInfo.username});
 
     Element hyperImageElement = singleTimelineContent.querySelector('a>img.rr');
@@ -566,7 +563,7 @@ class TimelineParser {
       ..friendNickName = friendNickName
       ..friendId = friendId
       ..friendAvatar.replace(BangumiImage.fromImageUrl(
-          imageSrcOrNull(hyperImageElement),
+          imageSrcOrFallback(hyperImageElement),
           ImageSize.Unknown,
           ImageType.UserAvatar))
       ..bangumiContent = BangumiContent.User);
@@ -609,11 +606,11 @@ class TimelineParser {
         List<HyperBangumiItem> hyperLinkList,
         parseActionName = false}) {
     hyperLinkList ??= parseAllHyperLinks(singleTimelineContent, contentType,
-        contentTypeToSelectorName[contentType],
+        contentType.webPageRouteName,
         filterIds: {userInfo.username});
 
     imageList ??= parseAllHyperImages(singleTimelineContent, contentType,
-        contentTypeToSelectorName[contentType],
+        contentType.webPageRouteName,
         filterIds: {userInfo.username});
 
     if (parseActionName) {
@@ -648,7 +645,7 @@ class TimelineParser {
     List<HyperBangumiItem> subjectTextList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.User,
-        contentTypeToSelectorName[BangumiContent.Subject]);
+        BangumiContent.Subject.webPageRouteName);
 
     if (subjectTextList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
@@ -691,10 +688,10 @@ class TimelineParser {
     List<HyperBangumiItem> hyperLinkList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Group,
-        contentTypeToSelectorName[BangumiContent.Group],
+        BangumiContent.Group.webPageRouteName,
         filterIds: {userInfo.username});
     List<HyperImage> imageList = parseAllHyperImages(singleTimelineContent,
-        BangumiContent.Group, contentTypeToSelectorName[BangumiContent.Group],
+        BangumiContent.Group, BangumiContent.Group.webPageRouteName,
         filterIds: {userInfo.username});
 
     /// group may not have an icon, and there must be exactly one text group link
@@ -730,10 +727,10 @@ class TimelineParser {
     List<HyperBangumiItem> episodeLinks = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Episode,
-        contentTypeToSelectorName[BangumiContent.Episode]);
+        BangumiContent.Episode.webPageRouteName);
 
     Element subjectLinkElement = singleTimelineContent.querySelector(
-        '${aHrefContains(contentTypeToSelectorName[BangumiContent.Subject])}.tip');
+        '${aHrefContains(BangumiContent.Subject.webPageRouteName)}.tip');
 
     if (episodeLinks.length != 1 || subjectLinkElement == null) {
       return parseUnknownTimelineActivity(singleTimelineContent);
@@ -799,12 +796,12 @@ class TimelineParser {
     List<HyperBangumiItem> hyperLinkList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Subject,
-        contentTypeToSelectorName[BangumiContent.Subject],
+        BangumiContent.Subject.webPageRouteName,
         filterIds: {userInfo.username});
     List<HyperImage> imageList = parseAllHyperImages(
         singleTimelineContent,
         BangumiContent.Subject,
-        contentTypeToSelectorName[BangumiContent.Subject],
+        BangumiContent.Subject.webPageRouteName,
         filterIds: {userInfo.username});
 
     /// subject may not have an icon, and there must be exactly one text subject link
@@ -845,7 +842,7 @@ class TimelineParser {
     List<HyperBangumiItem> hyperLinkList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Blog,
-        contentTypeToSelectorName[BangumiContent.Blog]);
+        BangumiContent.Blog.webPageRouteName);
 
     if (hyperLinkList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
@@ -869,7 +866,7 @@ class TimelineParser {
     List<HyperBangumiItem> hyperLinkList = parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Catalog,
-        contentTypeToSelectorName[BangumiContent.Catalog]);
+        BangumiContent.Catalog.webPageRouteName);
 
     if (hyperLinkList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
@@ -892,8 +889,8 @@ class TimelineParser {
 
     List<HyperBangumiItem> hyperLinkList = parseAllHyperLinks(
         singleTimelineContent,
-        BangumiContent.Wiki,
-        contentTypeToSelectorName[BangumiContent.Wiki]);
+        BangumiContent.SubjectCreation,
+        BangumiContent.SubjectCreation.webPageRouteName);
 
     if (hyperLinkList.length != 1) {
       return parseUnknownTimelineActivity(singleTimelineContent);
@@ -930,7 +927,7 @@ class TimelineParser {
   GetTimelineParsedResponse process(String rawHtml, {
     @required BuiltMap<String, MutedUser> mutedUsers,
     @required TimelineSource timelineSource,
-    @required BangumiUserBasic userInfo,
+    @required BangumiUserSmall userInfo,
     feedLoadType = FeedLoadType.Initial,
     upperFeedId = IntegerHelper.MAX_VALUE,
     lowerFeedId = IntegerHelper.MIN_VALUE,

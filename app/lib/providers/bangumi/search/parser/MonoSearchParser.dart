@@ -46,7 +46,8 @@ class MonoSearchParser {
       }
     }
 
-    String imageUrl = imageSrcOrNull(monoElement.querySelector('.avatar.ll'));
+    String imageUrl = imageSrcOrFallback(
+        monoElement.querySelector('.avatar.ll'));
     BangumiImage image =
     BangumiImage.fromImageUrl(imageUrl, ImageSize.Grid, ImageType.MonoAvatar);
 

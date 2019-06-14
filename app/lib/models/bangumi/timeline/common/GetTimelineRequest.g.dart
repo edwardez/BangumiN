@@ -33,7 +33,6 @@ class _$GetTimelineRequestSerializer
         ..add(serializers.serialize(object.username,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

@@ -9,10 +9,14 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
+import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
+import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
+import 'package:munin/shared/utils/http/common.dart';
 import 'package:quiver/strings.dart';
 
 // A Bangumi subject service that handles subject-related http requests
@@ -25,7 +29,7 @@ class BangumiSubjectService {
       : assert(cookieClient != null),
         assert(oauthClient != null);
 
-  // get bangumi subject info through parsing html response
+  /// Gets bangumi subject info through parsing html response
   Future<BangumiSubject> getSubjectFromHttp({
     @required int subjectId,
     @required BuiltMap<String, MutedUser> mutedUsers,
@@ -33,13 +37,13 @@ class BangumiSubjectService {
     Dio.Response<String> response =
     await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject = SubjectParser().process(
-        response.data, mutedUsers: mutedUsers);
+    BangumiSubject subject =
+    SubjectParser().process(response.data, mutedUsers: mutedUsers);
 
     return subject;
   }
 
-  // get a bangumi user collection info through api
+  /// Gets a bangumi user collection info through api
   Future<SubjectCollectionInfo> getCollectionInfo(int subjectId) async {
     Http.Response response = await oauthClient.client.get(''
         'https://${Application.environmentValue
@@ -49,22 +53,22 @@ class BangumiSubjectService {
     if (response.statusCode == 200) {
       var decodedBody = json.decode(response.body);
       if (decodedBody['code'] == 400) {
-        /// code = 400 means user has not collected this subject
-        /// we initialize a dummy new collection here
+        // code = 400 means user has not collected this subject
+        // we initialize a dummy new collection here
         subjectCollectionInfo = SubjectCollectionInfo();
       } else if (decodedBody['code'] == null) {
         subjectCollectionInfo = SubjectCollectionInfo.fromJson(response.body);
         BuiltList<String> tags = subjectCollectionInfo.tags;
 
-        /// if tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
-        /// a empty list or null. Thus this extra trick is needed to clean
-        /// up the data
+        // If tags is null, Bangumi will returns a list with a empty string(i.e. [""]) instead of
+        // a empty list or null. Thus this extra trick is needed to clean
+        // up the data
         if (tags.length == 1 && isEmpty(tags[0])) {
           subjectCollectionInfo =
               subjectCollectionInfo.rebuild((b) => b..tags.replace([]));
         }
       } else {
-        /// otherwise, Munin cannot understand this response
+        // Otherwise, Munin cannot understand this response
         throw BangumiResponseIncomprehensibleException(
             '出现了未知错误: 从Bangumi返回了无法处理的数据');
       }
@@ -75,7 +79,7 @@ class BangumiSubjectService {
     return subjectCollectionInfo;
   }
 
-  // update collection info info through api
+  /// Updates collection info info through api
   Future<SubjectCollectionInfo> updateCollectionInfoRequest(int subjectId,
       SubjectCollectionInfo collectionUpdateRequest) async {
     Map<String, String> formData = {};
@@ -85,12 +89,12 @@ class BangumiSubjectService {
     formData['tags'] = collectionUpdateRequest.tags.join(tagSeparator);
     formData['rating'] = collectionUpdateRequest.rating.toString();
 
-    /// For some reason, bangumi uses `private` in Response and `privacy` in Request
-    /// It sounds like an undocumented mistake that might be corrected in the
-    /// future at any time without advanced inform
-    /// sending both values just as an extra guard
-    /// This trick might result in error if Bangumi guards their server to reject
-    /// a request if it contains unknown parameter
+    // For some reason, bangumi uses `private` in Response and `privacy` in Request
+    // It sounds like an undocumented mistake that might be corrected in the
+    // future at any time without advanced inform
+    // sending both values just as an extra guard
+    // This trick might result in error if Bangumi guards their server to reject
+    // a request if it contains unknown parameter
     formData['private'] = collectionUpdateRequest.private.toString();
     formData['privacy'] = formData['private'];
 
@@ -113,5 +117,48 @@ class BangumiSubjectService {
     }
 
     return subjectCollectionInfo;
+  }
+
+  /// Gets subject reviews from web page.
+  ///
+  /// [pageNumber] is the page number [getsSubjectReviews] should look for.
+  Future<ParsedSubjectReviews> getsSubjectReviews({
+    @required int pageNumber,
+    @required GetSubjectReviewRequest request,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+  }) async {
+    String path = '/subject/${request.subjectId}';
+    Map<String, String> queryParameters = {};
+
+    if (request.mainFilter ==
+        SubjectReviewMainFilter.WithNonEmptyComments) {
+      path += '/comments';
+    } else {
+      path += '/${request.mainFilter.wiredNameOnWebPage}';
+
+      if (request.showOnlyFriends) {
+        queryParameters['filter'] = 'friends';
+      }
+    }
+
+    if (pageNumber >= 2) {
+      queryParameters['page'] = pageNumber.toString();
+    }
+
+    Dio.Response response = await cookieClient.dio.get(
+      path,
+      queryParameters: queryParameters,
+    );
+
+    if (!is2xxCode(response.statusCode)) {
+      throw BangumiResponseIncomprehensibleException();
+    }
+
+    ParsedSubjectReviews reviews = SubjectReviewParser(mutedUsers: mutedUsers)
+        .processSubjectReviews(response.data,
+        mainFilter: request.mainFilter,
+        requestedPageNumber: pageNumber);
+
+    return reviews;
   }
 }

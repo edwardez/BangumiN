@@ -1,17 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
+import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/discussion/rakuen/AdaptiveReplyCountIndicator.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
-import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class DiscussionItemWidget extends StatelessWidget {
-  static const titleMaxLines = 2;
-  static const subTitleMaxLines = 2;
-  static const double smallPadding = 8.0;
+  static const titleMaxLines = 3;
 
   final DiscussionItem discussionItem;
 
@@ -61,7 +62,8 @@ class DiscussionItemWidget extends StatelessWidget {
         onTap: () {
           onUnmute(discussionItem);
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效"),));
+            content: Text("${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -72,7 +74,8 @@ class DiscussionItemWidget extends StatelessWidget {
         onTap: () {
           onMute(discussionItem);
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效"),));
+            content: Text("${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -89,56 +92,62 @@ class DiscussionItemWidget extends StatelessWidget {
     };
   }
 
+  String get discussionUpdateTime =>
+      TimeUtils.formatMilliSecondsEpochTime(
+          discussionItem.updatedAt,
+          displayTimeIn: DisplayTimeIn.AlwaysRelative,
+          fallbackTimeStr: '');
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: smallPadding),
+      child: MuninPadding(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CachedRoundedCover.asGridSize(
               imageUrl: imageUrl,
             ),
+            Padding(
+              padding: EdgeInsets.only(left: largeOffset),
+            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: smallPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    RichText(
-                      maxLines: titleMaxLines,
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: discussionItem.title,
-                            style: Theme.of(context).textTheme.body1),
-                        TextSpan(
-                          text: ' (+${discussionItem.replyCount})',
-                          style: Theme.of(context).textTheme.caption,
-                        )
-                      ]),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        WrappableText(
-                          '${discussionItem.subTitle}',
-                          textStyle: Theme.of(context).textTheme.caption,
-                          fit: FlexFit.tight,
-                          maxLines: subTitleMaxLines,
-                        ),
-                        Text(
-                          TimeUtils.formatMilliSecondsEpochTime(
-                              discussionItem.updatedAt,
-                              displayTimeIn: DisplayTimeIn.AlwaysRelative,
-                              fallbackTimeStr: ''),
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${discussionItem.subTitle}',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .caption,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    discussionItem.title,
+                    maxLines: titleMaxLines,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text('$discussionUpdateTime',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .caption,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(left: largeOffset),
+            ),
+            AdaptiveReplyCountIndicator(
+              replyCount: discussionItem.replyCount,
+            )
+
           ],
         ),
       ),

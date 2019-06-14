@@ -10,7 +10,7 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
-import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/search/parser/MonoSearchParser.dart';
@@ -65,8 +65,8 @@ class BangumiSearchService {
     BangumiGeneralSearchResponse bangumiSearchResponse =
     BangumiGeneralSearchResponse.fromJson(response.body);
 
-    LinkedHashMap<int, SubjectSearchResult> results =
-        LinkedHashMap<int, SubjectSearchResult>();
+    LinkedHashMap<int, SubjectSearchResultItem> results =
+    LinkedHashMap<int, SubjectSearchResultItem>();
 
     /// theoretically, this should be done in the serializer
     /// However custom serializer for [built_value] is not flexible enough and
@@ -76,8 +76,8 @@ class BangumiSearchService {
       for (var rawSubject in decodedBody['list']) {
         /// BuiltValueEnumConst requires wireName to be string
         rawSubject['type'] = rawSubject['type']?.toString();
-        SubjectSearchResult subject =
-            SubjectSearchResult.fromJson(json.encode(rawSubject));
+        SubjectSearchResultItem subject =
+        SubjectSearchResultItem.fromJson(json.encode(rawSubject));
         results[subject.id] = subject;
       }
     }

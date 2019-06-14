@@ -57,7 +57,6 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
         ..add(serializers.serialize(object.pageUrl,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -52,6 +53,9 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       vm.showErrorSnackBar(
           _scaffoldKey, vm.appState?.oauthState?.oauthFailureMessage ?? '未知错误');
     }
+    final Widget bangumiNLogo = SvgPicture.asset(
+        'assets/logo/bangumin_logo.svg',
+        semanticsLabel: 'BangumiN Logo');
 
     return Scaffold(
       key: _scaffoldKey,
@@ -61,7 +65,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           children: <Widget>[
             Expanded(
               child: Center(
-                child: Text("(Welcome Animation here)"),
+                child: bangumiNLogo,
               ),
               flex: 4,
             ),
@@ -73,8 +77,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                       onPressed: vm.onLoginPressed,
                       color: lightPrimaryDarkAccentColor(context),
                       child: Text(
-                        '开始授权',
-                        // TODO: set a theme-awareness text color(bypass ButtonTextTheme)
+                        'Bangumi账号登录',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

@@ -6,7 +6,7 @@ import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
 
-/// this currently applies to both book and tv shows(shares same route, layout, etc)
+/// This currently applies to both book and tv shows(shares same route, layout, etc)
 class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
   final ProgressUpdateEpisodeUntil progressUpdateEpisodeUntil;
   final int subjectNameMaxLines;

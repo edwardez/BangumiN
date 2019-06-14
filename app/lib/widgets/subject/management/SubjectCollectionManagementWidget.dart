@@ -49,6 +49,17 @@ class SubjectCollectionManagementWidget extends StatefulWidget {
 
 class _SubjectCollectionManagementWidgetState
     extends State<SubjectCollectionManagementWidget> {
+  /// Length limitation as set by Bangumi, it cannot be modified by Munin.
+  static const int maxCommentLength = 200;
+
+  /// Length limitation as set by Bangumi it cannot be modified by Munin.
+  static const int maxTags = 10;
+
+  /// Max lines of the comment field, this value is controlled and set by Munin.
+  static const commendFieldMaxLines = 10;
+  static const commendFieldMinLines = 3;
+
+
   final _formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
   final tagsController = TextEditingController();
@@ -67,13 +78,7 @@ class _SubjectCollectionManagementWidgetState
   ///errors ourselves here
   final Map<SubjectCollectionError, String> formErrors = {};
 
-  /// This is the length limitation set by Bangumi and cannot be modified by us
-  final int maxCommentLength = 200;
-
-  /// This is the length limitation set by Bangumi and cannot be modified by us
-  final int maxTags = 10;
-
-  /// maintains current comment validation status to avoid rebuilding the whole
+  /// Maintains current comment validation status to avoid rebuilding the whole
   /// widget every time user types a comment character
   /// see [_listenToCommentController]
   bool _isCommentFieldValid = true;
@@ -84,7 +89,7 @@ class _SubjectCollectionManagementWidgetState
 
   LinkedHashMap<String, bool> headerTags = LinkedHashMap.of({});
 
-  final safeAreaChildHorizontalPadding = defaultPortraitHorizontalPadding;
+  final safeAreaChildHorizontalPadding = defaultPortraitHorizontalOffset;
 
   /// Looks like flutter doesn't have handy validate attribute like what we have in Angular
   /// so every time an extra call to .validate() function is needed
@@ -136,7 +141,7 @@ class _SubjectCollectionManagementWidgetState
         false;
   }
 
-  /// listen to comment controller, set [_isCommentFieldValid] if form is currently invalid
+  /// Listens to comment controller, set [_isCommentFieldValid] if form is currently invalid
   /// triggers a rebuild only if comment validation status has changed
   _listenToCommentController() {
     if (!commentHasError(comment: commentController.text)) {
@@ -155,8 +160,7 @@ class _SubjectCollectionManagementWidgetState
     }
   }
 
-  String _buildErrorMessages(
-      final Map<SubjectCollectionError, String> formErrors) {
+  String _buildErrorMessages(final Map<SubjectCollectionError, String> formErrors) {
     assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
@@ -176,8 +180,8 @@ class _SubjectCollectionManagementWidgetState
           .add('收藏状态无效: 请选择一个收藏状态（如：想$activityVerb, $activityVerb过...）');
     }
 
-    /// errorMessages shouldn't be empty at this time
-    /// in case it happens, show use something
+    // errorMessages shouldn't be empty at this time
+    // in case it happens, show use something
     if (errorMessages.isEmpty) {
       errorMessages.add('神秘错误: app出了点小问题(请考虑向我们汇报此bug)');
     }
@@ -285,7 +289,8 @@ class _SubjectCollectionManagementWidgetState
           formErrors.remove(SubjectCollectionError.LengthyComment);
         }
       },
-      maxLines: 3,
+      maxLines: commendFieldMaxLines,
+      minLines: commendFieldMinLines,
       onSaved: (String comment) {
         localSubjectCollectionInfo =
             localSubjectCollectionInfo.rebuild((b) => b..comment = comment);
@@ -326,15 +331,15 @@ class _SubjectCollectionManagementWidgetState
   }
 
   _initFormData(BangumiSubject loadedSubject) {
-    /// subject should never be null: user must enters this page BEFORE
-    /// they enters the subject page, or this data will be fetched before this method
-    /// is called
+    // subject should never be null: user must enters this page BEFORE
+    // they enters the subject page, or this data will be fetched before this method
+    // is called
     assert(loadedSubject != null, 'Subject must not be null');
 
     subject = loadedSubject;
     if (loadedSubject == null) {
-      /// in case it's null(exception!), assign a default type
-      /// note: [subjectType] only affects action name user sees on the ui
+      // in case it's null(exception!), assign a default type
+      // note: [subjectType] only affects action name user sees on the ui
       subjectType = SubjectType.Anime;
     } else {
       subjectType = loadedSubject.type;
@@ -343,10 +348,10 @@ class _SubjectCollectionManagementWidgetState
         headerTags[userSelectedTag] = true;
       }
 
-      /// suggestedTag might be in current user subject tags, or it might not
+      // suggestedTag might be in current user subject tags, or it might not
       for (String suggestedTag in loadedSubject.bangumiSuggestedTags) {
-        /// Only if [headerTags] doesn't contain this tag, we need to add it to
-        /// [candidateTags]
+        // Only if [headerTags] doesn't contain this tag, we need to add it to
+        // [candidateTags]
         if (!headerTags.containsKey(suggestedTag)) {
           candidateTags[suggestedTag] = false;
         }
@@ -364,18 +369,19 @@ class _SubjectCollectionManagementWidgetState
     return GestureDetector(
       child: SimpleFormSubmitWidget(
         loadingStatus: vm.collectionsSubmissionStatus,
-        onSubmitPressed: (BuildContext context) {
+        onSubmitPressed: (innerContext) {
           _formKey?.currentState?.save();
           vm.collectionInfoUpdateRequest(
               context, subjectId, localSubjectCollectionInfo);
         },
         canSubmit: _canSubmitForm,
+        submitButtonText: '更新',
       ),
       onTap: _canSubmitForm
           ? null
           : () {
-              _showDialog(context, formErrors);
-            },
+        _showDialog(context, formErrors);
+      },
     );
   }
 
@@ -395,29 +401,29 @@ class _SubjectCollectionManagementWidgetState
         int subjectId = widget.subjectId;
         if (vm.subjectCollectionInfo == null) {
           final action =
-              GetCollectionInfoAction(context: context, subjectId: subjectId);
+          GetCollectionInfoAction(context: context, subjectId: subjectId);
 
           return RequestInProgressIndicatorWidget(
               loadingStatus: vm.collectionLoadingStatus, refreshAction: action);
         }
 
-        /// If it's the first time widget tries to build the form
-        /// subjectCollectionInfo will be null, assigning collection info from
-        /// vm state
+        // If it's the first time widget tries to build the form
+        // subjectCollectionInfo will be null, assigning collection info from
+        // vm state
         if (localSubjectCollectionInfo == null) {
           localSubjectCollectionInfo = vm.subjectCollectionInfo;
           unmodifiedSubjectCollectionInfo = localSubjectCollectionInfo;
 
-          /// [commentController] and [initialValue] cannot be both non-null
-          /// Since we'are using commentController, initial value should be set
-          /// through commentController
+          // [commentController] and [initialValue] cannot be both non-null
+          // Since we'are using commentController, initial value should be set
+          // through commentController
           commentController.text = localSubjectCollectionInfo.comment;
         }
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
             title: subject != null
-                ? Text(preferredSubjectTitleFromSubjectBase(
+                ? Text(preferredNameFromSubjectBase(
                 subject, vm.preferredSubjectInfoLanguage))
                 : Text('-'),
             actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],

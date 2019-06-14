@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
-import 'package:munin/models/bangumi/search/result/SearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/search/SearchActions.dart';
@@ -57,7 +57,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     return FilterChipsGroup<SearchType>(
         filterChips: filterTags,
         selectedChip: searchType,
-        getChipName: (SearchType searchType) => searchType.chineseName,
+        chipNameRetriever: (SearchType searchType) => searchType.chineseName,
         onChipSelected: (SearchType selectedSearchType) {
           currentSearchRequest = currentSearchRequest
               .rebuild((b) => b..searchType = selectedSearchType);
@@ -73,7 +73,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
           refreshAction: null);
     }
 
-    List<SearchResult> results = vm.bangumiSearchResponse.resultsAsList;
+    List<SearchResultItem> results = vm.bangumiSearchResponse.resultsAsList;
 
     if (results.isEmpty) {
       return Center(

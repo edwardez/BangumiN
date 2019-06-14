@@ -20,23 +20,38 @@ class _$DiscussionStateSerializer
   Iterable serialize(Serializers serializers, DiscussionState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'results',
-      serializers.serialize(object.results,
+      'discussions',
+      serializers.serialize(object.discussions,
           specifiedType: const FullType(BuiltMap, const [
             const FullType(GetDiscussionRequest),
             const FullType(GetDiscussionResponse)
           ])),
+      'groupThreads',
+      serializers.serialize(object.groupThreads,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(GroupThread)])),
+      'episodeThreads',
+      serializers.serialize(object.episodeThreads,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(EpisodeThread)])),
+      'subjectTopicThreads',
+      serializers.serialize(object.subjectTopicThreads,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(SubjectTopicThread)])),
+      'blogThreads',
+      serializers.serialize(object.blogThreads,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(BlogThread)])),
     ];
-    if (object.getDiscussionRequestStatus != null) {
+    if (object.getThreadLoadingStatus != null) {
       result
-        ..add('getDiscussionRequestStatus')
-        ..add(serializers.serialize(object.getDiscussionRequestStatus,
+        ..add('getThreadLoadingStatus')
+        ..add(serializers.serialize(object.getThreadLoadingStatus,
             specifiedType: const FullType(BuiltMap, const [
-              const FullType(GetDiscussionRequest),
+              const FullType(GetThreadRequest),
               const FullType(LoadingStatus)
             ])));
     }
-
     return result;
   }
 
@@ -51,18 +66,45 @@ class _$DiscussionStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'results':
-          result.results.replace(serializers.deserialize(value,
+        case 'discussions':
+          result.discussions.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(GetDiscussionRequest),
                 const FullType(GetDiscussionResponse)
               ])) as BuiltMap);
           break;
-        case 'getDiscussionRequestStatus':
-          result.getDiscussionRequestStatus.replace(serializers.deserialize(
-              value,
+        case 'groupThreads':
+          result.groupThreads.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(GetDiscussionRequest),
+                const FullType(int),
+                const FullType(GroupThread)
+              ])) as BuiltMap);
+          break;
+        case 'episodeThreads':
+          result.episodeThreads.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(EpisodeThread)
+              ])) as BuiltMap);
+          break;
+        case 'subjectTopicThreads':
+          result.subjectTopicThreads.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(SubjectTopicThread)
+              ])) as BuiltMap);
+          break;
+        case 'blogThreads':
+          result.blogThreads.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(BlogThread)
+              ])) as BuiltMap);
+          break;
+        case 'getThreadLoadingStatus':
+          result.getThreadLoadingStatus.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(GetThreadRequest),
                 const FullType(LoadingStatus)
               ])) as BuiltMap);
           break;
@@ -75,18 +117,44 @@ class _$DiscussionStateSerializer
 
 class _$DiscussionState extends DiscussionState {
   @override
-  final BuiltMap<GetDiscussionRequest, GetDiscussionResponse> results;
+  final BuiltMap<GetDiscussionRequest, GetDiscussionResponse> discussions;
   @override
-  final BuiltMap<GetDiscussionRequest, LoadingStatus>
-      getDiscussionRequestStatus;
+  final BuiltMap<int, GroupThread> groupThreads;
+  @override
+  final BuiltMap<int, EpisodeThread> episodeThreads;
+  @override
+  final BuiltMap<int, SubjectTopicThread> subjectTopicThreads;
+  @override
+  final BuiltMap<int, BlogThread> blogThreads;
+  @override
+  final BuiltMap<GetThreadRequest, LoadingStatus> getThreadLoadingStatus;
 
   factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
       (new DiscussionStateBuilder()..update(updates)).build();
 
-  _$DiscussionState._({this.results, this.getDiscussionRequestStatus})
+  _$DiscussionState._(
+      {this.discussions,
+      this.groupThreads,
+      this.episodeThreads,
+      this.subjectTopicThreads,
+      this.blogThreads,
+      this.getThreadLoadingStatus})
       : super._() {
-    if (results == null) {
-      throw new BuiltValueNullFieldError('DiscussionState', 'results');
+    if (discussions == null) {
+      throw new BuiltValueNullFieldError('DiscussionState', 'discussions');
+    }
+    if (groupThreads == null) {
+      throw new BuiltValueNullFieldError('DiscussionState', 'groupThreads');
+    }
+    if (episodeThreads == null) {
+      throw new BuiltValueNullFieldError('DiscussionState', 'episodeThreads');
+    }
+    if (subjectTopicThreads == null) {
+      throw new BuiltValueNullFieldError(
+          'DiscussionState', 'subjectTopicThreads');
+    }
+    if (blogThreads == null) {
+      throw new BuiltValueNullFieldError('DiscussionState', 'blogThreads');
     }
   }
 
@@ -102,21 +170,35 @@ class _$DiscussionState extends DiscussionState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is DiscussionState &&
-        results == other.results &&
-        getDiscussionRequestStatus == other.getDiscussionRequestStatus;
+        discussions == other.discussions &&
+        groupThreads == other.groupThreads &&
+        episodeThreads == other.episodeThreads &&
+        subjectTopicThreads == other.subjectTopicThreads &&
+        blogThreads == other.blogThreads &&
+        getThreadLoadingStatus == other.getThreadLoadingStatus;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc(0, results.hashCode), getDiscussionRequestStatus.hashCode));
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc($jc($jc(0, discussions.hashCode), groupThreads.hashCode),
+                    episodeThreads.hashCode),
+                subjectTopicThreads.hashCode),
+            blogThreads.hashCode),
+        getThreadLoadingStatus.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('DiscussionState')
-          ..add('results', results)
-          ..add('getDiscussionRequestStatus', getDiscussionRequestStatus))
+          ..add('discussions', discussions)
+          ..add('groupThreads', groupThreads)
+          ..add('episodeThreads', episodeThreads)
+          ..add('subjectTopicThreads', subjectTopicThreads)
+          ..add('blogThreads', blogThreads)
+          ..add('getThreadLoadingStatus', getThreadLoadingStatus))
         .toString();
   }
 }
@@ -125,29 +207,58 @@ class DiscussionStateBuilder
     implements Builder<DiscussionState, DiscussionStateBuilder> {
   _$DiscussionState _$v;
 
-  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> _results;
-  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> get results =>
-      _$this._results ??=
+  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> _discussions;
+  MapBuilder<GetDiscussionRequest, GetDiscussionResponse> get discussions =>
+      _$this._discussions ??=
           new MapBuilder<GetDiscussionRequest, GetDiscussionResponse>();
-  set results(
-          MapBuilder<GetDiscussionRequest, GetDiscussionResponse> results) =>
-      _$this._results = results;
+  set discussions(
+          MapBuilder<GetDiscussionRequest, GetDiscussionResponse>
+              discussions) =>
+      _$this._discussions = discussions;
 
-  MapBuilder<GetDiscussionRequest, LoadingStatus> _getDiscussionRequestStatus;
-  MapBuilder<GetDiscussionRequest, LoadingStatus>
-      get getDiscussionRequestStatus => _$this._getDiscussionRequestStatus ??=
-          new MapBuilder<GetDiscussionRequest, LoadingStatus>();
-  set getDiscussionRequestStatus(
-          MapBuilder<GetDiscussionRequest, LoadingStatus>
-              getDiscussionRequestStatus) =>
-      _$this._getDiscussionRequestStatus = getDiscussionRequestStatus;
+  MapBuilder<int, GroupThread> _groupThreads;
+  MapBuilder<int, GroupThread> get groupThreads =>
+      _$this._groupThreads ??= new MapBuilder<int, GroupThread>();
+  set groupThreads(MapBuilder<int, GroupThread> groupThreads) =>
+      _$this._groupThreads = groupThreads;
+
+  MapBuilder<int, EpisodeThread> _episodeThreads;
+  MapBuilder<int, EpisodeThread> get episodeThreads =>
+      _$this._episodeThreads ??= new MapBuilder<int, EpisodeThread>();
+  set episodeThreads(MapBuilder<int, EpisodeThread> episodeThreads) =>
+      _$this._episodeThreads = episodeThreads;
+
+  MapBuilder<int, SubjectTopicThread> _subjectTopicThreads;
+  MapBuilder<int, SubjectTopicThread> get subjectTopicThreads =>
+      _$this._subjectTopicThreads ??= new MapBuilder<int, SubjectTopicThread>();
+  set subjectTopicThreads(
+          MapBuilder<int, SubjectTopicThread> subjectTopicThreads) =>
+      _$this._subjectTopicThreads = subjectTopicThreads;
+
+  MapBuilder<int, BlogThread> _blogThreads;
+  MapBuilder<int, BlogThread> get blogThreads =>
+      _$this._blogThreads ??= new MapBuilder<int, BlogThread>();
+  set blogThreads(MapBuilder<int, BlogThread> blogThreads) =>
+      _$this._blogThreads = blogThreads;
+
+  MapBuilder<GetThreadRequest, LoadingStatus> _getThreadLoadingStatus;
+  MapBuilder<GetThreadRequest, LoadingStatus> get getThreadLoadingStatus =>
+      _$this._getThreadLoadingStatus ??=
+          new MapBuilder<GetThreadRequest, LoadingStatus>();
+  set getThreadLoadingStatus(
+          MapBuilder<GetThreadRequest, LoadingStatus> getThreadLoadingStatus) =>
+      _$this._getThreadLoadingStatus = getThreadLoadingStatus;
 
   DiscussionStateBuilder();
 
   DiscussionStateBuilder get _$this {
     if (_$v != null) {
-      _results = _$v.results?.toBuilder();
-      _getDiscussionRequestStatus = _$v.getDiscussionRequestStatus?.toBuilder();
+      _discussions = _$v.discussions?.toBuilder();
+      _groupThreads = _$v.groupThreads?.toBuilder();
+      _episodeThreads = _$v.episodeThreads?.toBuilder();
+      _subjectTopicThreads = _$v.subjectTopicThreads?.toBuilder();
+      _blogThreads = _$v.blogThreads?.toBuilder();
+      _getThreadLoadingStatus = _$v.getThreadLoadingStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -172,15 +283,27 @@ class DiscussionStateBuilder
     try {
       _$result = _$v ??
           new _$DiscussionState._(
-              results: results.build(),
-              getDiscussionRequestStatus: _getDiscussionRequestStatus?.build());
+              discussions: discussions.build(),
+              groupThreads: groupThreads.build(),
+              episodeThreads: episodeThreads.build(),
+              subjectTopicThreads: subjectTopicThreads.build(),
+              blogThreads: blogThreads.build(),
+              getThreadLoadingStatus: _getThreadLoadingStatus?.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'results';
-        results.build();
-        _$failedField = 'getDiscussionRequestStatus';
-        _getDiscussionRequestStatus?.build();
+        _$failedField = 'discussions';
+        discussions.build();
+        _$failedField = 'groupThreads';
+        groupThreads.build();
+        _$failedField = 'episodeThreads';
+        episodeThreads.build();
+        _$failedField = 'subjectTopicThreads';
+        subjectTopicThreads.build();
+        _$failedField = 'blogThreads';
+        blogThreads.build();
+        _$failedField = 'getThreadLoadingStatus';
+        _getThreadLoadingStatus?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'DiscussionState', _$failedField, e.toString());

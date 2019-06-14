@@ -15,7 +15,7 @@ import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/mute/HowToAdd.dart';
 import 'package:munin/widgets/setting/mute/MutedGroupListTile.dart';
 import 'package:munin/widgets/setting/mute/MutedUserListTile.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:redux/redux.dart';
 
@@ -30,11 +30,11 @@ class MuteSettingWidget extends StatelessWidget {
         store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
       },
       builder: (BuildContext context, _ViewModel vm) {
-        return ScaffoldWithSliverAppBar(
+        return ScrollViewWithSliverAppBar(
             enableTopSafeArea: false,
             enableBottomSafeArea: false,
             safeAreaChildPadding: const EdgeInsets.only(
-                left: 0, right: 0, top: largeVerticalPadding),
+                left: 0, right: 0, top: largeOffset),
             appBarMainTitle: Text(
               '屏蔽',
             ),
@@ -67,7 +67,7 @@ class MuteSettingWidget extends StatelessWidget {
                   ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: defaultDensePortraitHorizontalPadding),
+                      horizontal: defaultDensePortraitHorizontalOffset),
                   child: Row(
                     children: <Widget>[
                       Expanded(

@@ -9,7 +9,7 @@ class ScaffoldWithRegularAppBar extends StatelessWidget {
   final double safeAreaChildHorizontalPadding;
 
   const ScaffoldWithRegularAppBar(
-      {Key key, @required this.safeAreaChild, @required this.appBar, this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalPadding})
+      {Key key, @required this.safeAreaChild, @required this.appBar, this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalOffset})
       : super(key: key);
 
   @override

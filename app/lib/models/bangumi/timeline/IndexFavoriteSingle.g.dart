@@ -47,7 +47,6 @@ class _$IndexFavoriteSingleSerializer
         ..add(serializers.serialize(object.isFromMutedUser,
             specifiedType: const FullType(bool)));
     }
-
     return result;
   }
 

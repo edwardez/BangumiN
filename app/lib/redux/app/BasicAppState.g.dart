@@ -21,7 +21,7 @@ class _$BasicAppStateSerializer implements StructuredSerializer<BasicAppState> {
     final result = <Object>[
       'currentAuthenticatedUserBasicInfo',
       serializers.serialize(object.currentAuthenticatedUserBasicInfo,
-          specifiedType: const FullType(BangumiUserBasic)),
+          specifiedType: const FullType(BangumiUserSmall)),
       'isAuthenticated',
       serializers.serialize(object.isAuthenticated,
           specifiedType: const FullType(bool)),
@@ -47,8 +47,8 @@ class _$BasicAppStateSerializer implements StructuredSerializer<BasicAppState> {
         case 'currentAuthenticatedUserBasicInfo':
           result.currentAuthenticatedUserBasicInfo.replace(
               serializers.deserialize(value,
-                      specifiedType: const FullType(BangumiUserBasic))
-                  as BangumiUserBasic);
+                      specifiedType: const FullType(BangumiUserSmall))
+                  as BangumiUserSmall);
           break;
         case 'isAuthenticated':
           result.isAuthenticated = serializers.deserialize(value,
@@ -67,7 +67,7 @@ class _$BasicAppStateSerializer implements StructuredSerializer<BasicAppState> {
 
 class _$BasicAppState extends BasicAppState {
   @override
-  final BangumiUserBasic currentAuthenticatedUserBasicInfo;
+  final BangumiUserSmall currentAuthenticatedUserBasicInfo;
   @override
   final bool isAuthenticated;
   @override
@@ -133,12 +133,12 @@ class BasicAppStateBuilder
     implements Builder<BasicAppState, BasicAppStateBuilder> {
   _$BasicAppState _$v;
 
-  BangumiUserBasicBuilder _currentAuthenticatedUserBasicInfo;
-  BangumiUserBasicBuilder get currentAuthenticatedUserBasicInfo =>
+  BangumiUserSmallBuilder _currentAuthenticatedUserBasicInfo;
+  BangumiUserSmallBuilder get currentAuthenticatedUserBasicInfo =>
       _$this._currentAuthenticatedUserBasicInfo ??=
-          new BangumiUserBasicBuilder();
+          new BangumiUserSmallBuilder();
   set currentAuthenticatedUserBasicInfo(
-          BangumiUserBasicBuilder currentAuthenticatedUserBasicInfo) =>
+          BangumiUserSmallBuilder currentAuthenticatedUserBasicInfo) =>
       _$this._currentAuthenticatedUserBasicInfo =
           currentAuthenticatedUserBasicInfo;
 

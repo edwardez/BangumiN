@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
@@ -45,8 +45,7 @@ class UserProfileWidget extends StatelessWidget {
       @required this.username,
         Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
-          vertical: largeVerticalPadding,
-          horizontal: defaultPortraitHorizontalPadding)})
+          vertical: largeOffset, horizontal: defaultPortraitHorizontalOffset)})
       : this.providedAppBar = appBar,
         this.userProfileMainUrl =
             'https://${Application.environmentValue.bangumiMainHost}/user/$username',
@@ -65,8 +64,9 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.unMuteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),));
+            content:
+            Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -77,8 +77,9 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.muteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),));
+            content:
+            Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),
+          ));
           Navigator.of(context).pop();
         },
       );
@@ -195,9 +196,7 @@ class UserProfileWidget extends StatelessWidget {
 
     widgets.addAll([
       TimelinePreviewWidget(
-        profile: profile,
-          isCurrentAppUser: vm.isCurrentAppUser
-      ),
+          profile: profile, isCurrentAppUser: vm.isCurrentAppUser),
       Divider(),
       InkWell(
         child: Row(
@@ -406,7 +405,7 @@ class _ViewModel {
       }
 
       final action = MuteUserAction(
-          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+          mutedUser: MutedUser.fromBangumiUserSmall(userProfile.basicInfo));
       store.dispatch(action);
       store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
@@ -418,7 +417,7 @@ class _ViewModel {
       }
 
       final action = UnmuteUserAction(
-          mutedUser: MutedUser.fromBangumiUserBasic(userProfile.basicInfo));
+          mutedUser: MutedUser.fromBangumiUserSmall(userProfile.basicInfo));
       store.dispatch(action);
       store.dispatch(PersistAppStateAction(basicAppStateOnly: true));
     }
@@ -432,7 +431,7 @@ class _ViewModel {
 
     bool _isCurrentAppUser() {
       bool isCurrentAppUser;
-      BangumiUserBasic currentUser =
+      BangumiUserSmall currentUser =
           store.state.currentAuthenticatedUserBasicInfo;
 
       /// If [username] is the same as current app user username
@@ -456,7 +455,6 @@ class _ViewModel {
       getUserProfile: (BuildContext context) => _fetchUserProfile(context),
       isCurrentAppUser: _isCurrentAppUser(),
       loadingStatus: store.state.userState.profilesLoadingStatus[username],
-
       muteUser: _muteUser,
       unMuteUser: _unMuteUser,
       isMuted: _isMuted(),
@@ -487,11 +485,6 @@ class _ViewModel {
 
   @override
   int get hashCode =>
-      hashObjects([
-        isCurrentAppUser,
-        isMuted,
-        username,
-        userProfile,
-        loadingStatus
-      ]);
+      hashObjects(
+          [isCurrentAppUser, isMuted, username, userProfile, loadingStatus]);
 }

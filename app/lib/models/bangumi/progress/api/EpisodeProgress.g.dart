@@ -20,16 +20,9 @@ class _$EpisodeProgressSerializer
   Iterable serialize(Serializers serializers, EpisodeProgress object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(int)),
       'sort',
       serializers.serialize(object.sequentialNumber,
           specifiedType: const FullType(double)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'name_cn',
-      serializers.serialize(object.nameCn,
-          specifiedType: const FullType(String)),
       'duration',
       serializers.serialize(object.duration,
           specifiedType: const FullType(String)),
@@ -39,6 +32,13 @@ class _$EpisodeProgressSerializer
       'comment',
       serializers.serialize(object.totalCommentsCount,
           specifiedType: const FullType(int)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(int)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'name_cn',
+      serializers.serialize(object.nameCn,
+          specifiedType: const FullType(String)),
       'status',
       serializers.serialize(object.airStatus,
           specifiedType: const FullType(AirStatus)),
@@ -55,7 +55,6 @@ class _$EpisodeProgressSerializer
         ..add(serializers.serialize(object.summary,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 
@@ -70,21 +69,9 @@ class _$EpisodeProgressSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'sort':
           result.sequentialNumber = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
-          break;
-        case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
           break;
         case 'duration':
           result.duration = serializers.deserialize(value,
@@ -100,6 +87,18 @@ class _$EpisodeProgressSerializer
           break;
         case 'desc':
           result.summary = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'name':
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'name_cn':
+          result.nameCn = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'status':
@@ -123,13 +122,7 @@ class _$EpisodeProgressSerializer
 
 class _$EpisodeProgress extends EpisodeProgress {
   @override
-  final int id;
-  @override
   final double sequentialNumber;
-  @override
-  final String name;
-  @override
-  final String nameCn;
   @override
   final String duration;
   @override
@@ -138,6 +131,12 @@ class _$EpisodeProgress extends EpisodeProgress {
   final int totalCommentsCount;
   @override
   final String summary;
+  @override
+  final int id;
+  @override
+  final String name;
+  @override
+  final String nameCn;
   @override
   final AirStatus airStatus;
   @override
@@ -149,29 +148,20 @@ class _$EpisodeProgress extends EpisodeProgress {
       (new EpisodeProgressBuilder()..update(updates)).build();
 
   _$EpisodeProgress._(
-      {this.id,
-      this.sequentialNumber,
-      this.name,
-      this.nameCn,
+      {this.sequentialNumber,
       this.duration,
       this.airDate,
       this.totalCommentsCount,
       this.summary,
+      this.id,
+      this.name,
+      this.nameCn,
       this.airStatus,
       this.userEpisodeStatus,
       this.episodeType})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'id');
-    }
     if (sequentialNumber == null) {
       throw new BuiltValueNullFieldError('EpisodeProgress', 'sequentialNumber');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'name');
-    }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'nameCn');
     }
     if (duration == null) {
       throw new BuiltValueNullFieldError('EpisodeProgress', 'duration');
@@ -182,6 +172,15 @@ class _$EpisodeProgress extends EpisodeProgress {
     if (totalCommentsCount == null) {
       throw new BuiltValueNullFieldError(
           'EpisodeProgress', 'totalCommentsCount');
+    }
+    if (id == null) {
+      throw new BuiltValueNullFieldError('EpisodeProgress', 'id');
+    }
+    if (name == null) {
+      throw new BuiltValueNullFieldError('EpisodeProgress', 'name');
+    }
+    if (nameCn == null) {
+      throw new BuiltValueNullFieldError('EpisodeProgress', 'nameCn');
     }
     if (airStatus == null) {
       throw new BuiltValueNullFieldError('EpisodeProgress', 'airStatus');
@@ -207,14 +206,14 @@ class _$EpisodeProgress extends EpisodeProgress {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is EpisodeProgress &&
-        id == other.id &&
         sequentialNumber == other.sequentialNumber &&
-        name == other.name &&
-        nameCn == other.nameCn &&
         duration == other.duration &&
         airDate == other.airDate &&
         totalCommentsCount == other.totalCommentsCount &&
         summary == other.summary &&
+        id == other.id &&
+        name == other.name &&
+        nameCn == other.nameCn &&
         airStatus == other.airStatus &&
         userEpisodeStatus == other.userEpisodeStatus &&
         episodeType == other.episodeType;
@@ -231,14 +230,14 @@ class _$EpisodeProgress extends EpisodeProgress {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, id.hashCode),
-                                            sequentialNumber.hashCode),
-                                        name.hashCode),
-                                    nameCn.hashCode),
-                                duration.hashCode),
-                            airDate.hashCode),
-                        totalCommentsCount.hashCode),
-                    summary.hashCode),
+                                        $jc($jc(0, sequentialNumber.hashCode),
+                                            duration.hashCode),
+                                        airDate.hashCode),
+                                    totalCommentsCount.hashCode),
+                                summary.hashCode),
+                            id.hashCode),
+                        name.hashCode),
+                    nameCn.hashCode),
                 airStatus.hashCode),
             userEpisodeStatus.hashCode),
         episodeType.hashCode));
@@ -247,14 +246,14 @@ class _$EpisodeProgress extends EpisodeProgress {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('EpisodeProgress')
-          ..add('id', id)
           ..add('sequentialNumber', sequentialNumber)
-          ..add('name', name)
-          ..add('nameCn', nameCn)
           ..add('duration', duration)
           ..add('airDate', airDate)
           ..add('totalCommentsCount', totalCommentsCount)
           ..add('summary', summary)
+          ..add('id', id)
+          ..add('name', name)
+          ..add('nameCn', nameCn)
           ..add('airStatus', airStatus)
           ..add('userEpisodeStatus', userEpisodeStatus)
           ..add('episodeType', episodeType))
@@ -263,25 +262,15 @@ class _$EpisodeProgress extends EpisodeProgress {
 }
 
 class EpisodeProgressBuilder
-    implements Builder<EpisodeProgress, EpisodeProgressBuilder> {
+    implements
+        Builder<EpisodeProgress, EpisodeProgressBuilder>,
+        BaseEpisodeBuilder {
   _$EpisodeProgress _$v;
-
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
 
   double _sequentialNumber;
   double get sequentialNumber => _$this._sequentialNumber;
   set sequentialNumber(double sequentialNumber) =>
       _$this._sequentialNumber = sequentialNumber;
-
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
-
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
 
   String _duration;
   String get duration => _$this._duration;
@@ -300,6 +289,18 @@ class EpisodeProgressBuilder
   String get summary => _$this._summary;
   set summary(String summary) => _$this._summary = summary;
 
+  int _id;
+  int get id => _$this._id;
+  set id(int id) => _$this._id = id;
+
+  String _name;
+  String get name => _$this._name;
+  set name(String name) => _$this._name = name;
+
+  String _nameCn;
+  String get nameCn => _$this._nameCn;
+  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+
   AirStatus _airStatus;
   AirStatus get airStatus => _$this._airStatus;
   set airStatus(AirStatus airStatus) => _$this._airStatus = airStatus;
@@ -317,14 +318,14 @@ class EpisodeProgressBuilder
 
   EpisodeProgressBuilder get _$this {
     if (_$v != null) {
-      _id = _$v.id;
       _sequentialNumber = _$v.sequentialNumber;
-      _name = _$v.name;
-      _nameCn = _$v.nameCn;
       _duration = _$v.duration;
       _airDate = _$v.airDate;
       _totalCommentsCount = _$v.totalCommentsCount;
       _summary = _$v.summary;
+      _id = _$v.id;
+      _name = _$v.name;
+      _nameCn = _$v.nameCn;
       _airStatus = _$v.airStatus;
       _userEpisodeStatus = _$v.userEpisodeStatus;
       _episodeType = _$v.episodeType;
@@ -334,7 +335,7 @@ class EpisodeProgressBuilder
   }
 
   @override
-  void replace(EpisodeProgress other) {
+  void replace(covariant EpisodeProgress other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
@@ -350,14 +351,14 @@ class EpisodeProgressBuilder
   _$EpisodeProgress build() {
     final _$result = _$v ??
         new _$EpisodeProgress._(
-            id: id,
             sequentialNumber: sequentialNumber,
-            name: name,
-            nameCn: nameCn,
             duration: duration,
             airDate: airDate,
             totalCommentsCount: totalCommentsCount,
             summary: summary,
+            id: id,
+            name: name,
+            nameCn: nameCn,
             airStatus: airStatus,
             userEpisodeStatus: userEpisodeStatus,
             episodeType: episodeType);

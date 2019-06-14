@@ -7,8 +7,7 @@ import 'package:munin/shared/utils/serializers.dart';
 
 part 'SubjectCollectionInfoPreview.g.dart';
 
-/// a subject that's listed as related subject('关联条目') on subject main page
-
+/// A subject that's listed as related subject('关联条目') on subject main page.
 abstract class SubjectCollectionInfoPreview
     implements
         Built<SubjectCollectionInfoPreview,

@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWithSliverAppBar(
+    return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text("设置"),
       enableBottomSafeArea: false,
       safeAreaChildPadding:
-      const EdgeInsets.only(left: 0, right: 0, top: largeVerticalPadding),
+      const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
       nestedScrollViewBody: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -62,10 +64,32 @@ class SettingHome extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              title: Text('帮助'),
+              title: Text('隐私'),
+              trailing: Icon(
+                AdaptiveIcons.forwardIconData,
+                size: smallerIconSize,
+              ),
+              onTap: () {
+                Application.router.navigateTo(
+                    context,
+                    Routes.privacySettingRoute,
+                    transition: TransitionType.native);
+              },
             ),
+            Divider(),
             ListTile(
               title: Text('反馈'),
+              onTap: () {
+                launch('https://bgm.tv/group/bangumin', forceSafariVC: false,
+                    forceWebView: false);
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text('关于'),
+              onTap: () {
+                showMuninAboutDialog(context);
+              },
             ),
             Divider(),
             Logout(),

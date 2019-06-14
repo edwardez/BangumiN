@@ -35,6 +35,9 @@ class _$GeneralSettingSerializer
       'preferredDiscussionLaunchPage',
       serializers.serialize(object.preferredDiscussionLaunchPage,
           specifiedType: const FullType(GetDiscussionRequest)),
+      'expandAllProgressTiles',
+      serializers.serialize(object.expandAllProgressTiles,
+          specifiedType: const FullType(bool)),
     ];
 
     return result;
@@ -78,6 +81,10 @@ class _$GeneralSettingSerializer
                   specifiedType: const FullType(GetDiscussionRequest))
               as GetDiscussionRequest);
           break;
+        case 'expandAllProgressTiles':
+          result.expandAllProgressTiles = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -96,6 +103,8 @@ class _$GeneralSetting extends GeneralSetting {
   final GetProgressRequest preferredProgressLaunchPage;
   @override
   final GetDiscussionRequest preferredDiscussionLaunchPage;
+  @override
+  final bool expandAllProgressTiles;
 
   factory _$GeneralSetting([void Function(GeneralSettingBuilder) updates]) =>
       (new GeneralSettingBuilder()..update(updates)).build();
@@ -105,7 +114,8 @@ class _$GeneralSetting extends GeneralSetting {
       this.preferredLaunchNavTab,
       this.preferredTimelineLaunchPage,
       this.preferredProgressLaunchPage,
-      this.preferredDiscussionLaunchPage})
+      this.preferredDiscussionLaunchPage,
+      this.expandAllProgressTiles})
       : super._() {
     if (preferredSubjectInfoLanguage == null) {
       throw new BuiltValueNullFieldError(
@@ -127,6 +137,10 @@ class _$GeneralSetting extends GeneralSetting {
       throw new BuiltValueNullFieldError(
           'GeneralSetting', 'preferredDiscussionLaunchPage');
     }
+    if (expandAllProgressTiles == null) {
+      throw new BuiltValueNullFieldError(
+          'GeneralSetting', 'expandAllProgressTiles');
+    }
   }
 
   @override
@@ -145,7 +159,8 @@ class _$GeneralSetting extends GeneralSetting {
         preferredLaunchNavTab == other.preferredLaunchNavTab &&
         preferredTimelineLaunchPage == other.preferredTimelineLaunchPage &&
         preferredProgressLaunchPage == other.preferredProgressLaunchPage &&
-        preferredDiscussionLaunchPage == other.preferredDiscussionLaunchPage;
+        preferredDiscussionLaunchPage == other.preferredDiscussionLaunchPage &&
+        expandAllProgressTiles == other.expandAllProgressTiles;
   }
 
   @override
@@ -153,11 +168,13 @@ class _$GeneralSetting extends GeneralSetting {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc(0, preferredSubjectInfoLanguage.hashCode),
-                    preferredLaunchNavTab.hashCode),
-                preferredTimelineLaunchPage.hashCode),
-            preferredProgressLaunchPage.hashCode),
-        preferredDiscussionLaunchPage.hashCode));
+                $jc(
+                    $jc($jc(0, preferredSubjectInfoLanguage.hashCode),
+                        preferredLaunchNavTab.hashCode),
+                    preferredTimelineLaunchPage.hashCode),
+                preferredProgressLaunchPage.hashCode),
+            preferredDiscussionLaunchPage.hashCode),
+        expandAllProgressTiles.hashCode));
   }
 
   @override
@@ -167,7 +184,8 @@ class _$GeneralSetting extends GeneralSetting {
           ..add('preferredLaunchNavTab', preferredLaunchNavTab)
           ..add('preferredTimelineLaunchPage', preferredTimelineLaunchPage)
           ..add('preferredProgressLaunchPage', preferredProgressLaunchPage)
-          ..add('preferredDiscussionLaunchPage', preferredDiscussionLaunchPage))
+          ..add('preferredDiscussionLaunchPage', preferredDiscussionLaunchPage)
+          ..add('expandAllProgressTiles', expandAllProgressTiles))
         .toString();
   }
 }
@@ -211,6 +229,11 @@ class GeneralSettingBuilder
           GetDiscussionRequestBuilder preferredDiscussionLaunchPage) =>
       _$this._preferredDiscussionLaunchPage = preferredDiscussionLaunchPage;
 
+  bool _expandAllProgressTiles;
+  bool get expandAllProgressTiles => _$this._expandAllProgressTiles;
+  set expandAllProgressTiles(bool expandAllProgressTiles) =>
+      _$this._expandAllProgressTiles = expandAllProgressTiles;
+
   GeneralSettingBuilder();
 
   GeneralSettingBuilder get _$this {
@@ -222,6 +245,7 @@ class GeneralSettingBuilder
           _$v.preferredProgressLaunchPage?.toBuilder();
       _preferredDiscussionLaunchPage =
           _$v.preferredDiscussionLaunchPage?.toBuilder();
+      _expandAllProgressTiles = _$v.expandAllProgressTiles;
       _$v = null;
     }
     return this;
@@ -251,7 +275,8 @@ class GeneralSettingBuilder
               preferredTimelineLaunchPage: preferredTimelineLaunchPage,
               preferredProgressLaunchPage: preferredProgressLaunchPage.build(),
               preferredDiscussionLaunchPage:
-                  preferredDiscussionLaunchPage.build());
+                  preferredDiscussionLaunchPage.build(),
+              expandAllProgressTiles: expandAllProgressTiles);
     } catch (_) {
       String _$failedField;
       try {

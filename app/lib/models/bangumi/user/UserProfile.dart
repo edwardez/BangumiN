@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
@@ -23,7 +23,7 @@ abstract class UserProfile implements Built<UserProfile, UserProfileBuilder> {
   String get introductionInPlainText;
 
   @nullable
-  BangumiUserBasic get basicInfo;
+  BangumiUserSmall get basicInfo;
 
   BuiltList<NetworkServiceTag> get networkServiceTags;
 

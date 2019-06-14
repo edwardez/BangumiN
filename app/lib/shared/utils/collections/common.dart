@@ -21,12 +21,12 @@ isBuiltListMultimapNullOrEmpty(BuiltListMultimap map) {
 }
 
 /// exception safe first element accessor, inspired by firstOrNull in kotlin
-firstOrNullInBuiltList<T>(BuiltList<T> builtList) {
-  if (builtList == null || builtList.isEmpty) {
+firstOrNullInIterable<T>(Iterable<T> iterable) {
+  if (iterable == null || iterable.isEmpty) {
     return null;
   }
 
-  return builtList.first;
+  return iterable.first;
 }
 
 /// Safely access first element without throwing exception, inspired by firstOrNull in kotlin

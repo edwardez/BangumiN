@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingState.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -16,7 +16,7 @@ abstract class BasicAppState
     implements Built<BasicAppState, BasicAppStateBuilder> {
   /// If [currentAuthenticatedUserBasicInfo] can be restores we assume user
   /// exists, thus `currentAuthenticatedUserBasicInfo` is not nullable here
-  BangumiUserBasic get currentAuthenticatedUserBasicInfo;
+  BangumiUserSmall get currentAuthenticatedUserBasicInfo;
 
   bool get isAuthenticated;
 

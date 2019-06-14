@@ -8,11 +8,15 @@ class SimpleFormSubmitWidget extends StatelessWidget {
   final LoadingStatus loadingStatus;
   final Future Function(BuildContext context) onSubmitPressed;
 
+  final String submitButtonText;
+
   const SimpleFormSubmitWidget(
       {Key key,
       @required this.canSubmit,
       @required this.loadingStatus,
-      @required this.onSubmitPressed})
+        @required this.onSubmitPressed,
+        this.submitButtonText = '发表',
+      })
       : super(key: key);
 
   @override
@@ -30,6 +34,6 @@ class SimpleFormSubmitWidget extends StatelessWidget {
               }
             : null,
         textColor: lightPrimaryDarkAccentColor(context),
-        child: Text('发表'));
+        child: Text(submitButtonText));
   }
 }

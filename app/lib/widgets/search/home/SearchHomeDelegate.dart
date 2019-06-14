@@ -16,7 +16,7 @@ class SearchHomeDelegate extends SearchDelegate {
   SearchRequest selectedSearchRequest;
 
   static const double portraitHorizontalPadding =
-      defaultPortraitHorizontalPadding;
+      defaultPortraitHorizontalOffset;
 
   @override
   Widget buildLeading(BuildContext context) {

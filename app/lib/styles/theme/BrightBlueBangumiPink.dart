@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Colors.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
@@ -10,7 +11,7 @@ final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),
   dialogTheme: DialogTheme(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: RoundedRectangleBorder(borderRadius: defaultContainerCircularRadius),
   ),
   appBarTheme: AppBarTheme(
     elevation: 0,
@@ -19,9 +20,9 @@ final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
     iconTheme: IconThemeData(color: Colors.black54),
   ),
   primaryColor: Colors.blue,
-
-  /// TODO: flutter by default calculates abd set it to [Brightness.dark]
-  /// verify whether [Brightness.light] meets color contrast requirement
+  // TODO: flutter by default calculates abd set it to [Brightness.dark], need to
+  // verify whether [Brightness.light] meets color contrast requirement
   primaryColorBrightness: Brightness.light,
   accentColor: bangumiPink,
+  toggleableActiveColor: bangumiPink,
 );

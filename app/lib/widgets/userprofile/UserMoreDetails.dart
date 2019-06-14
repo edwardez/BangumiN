@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/widgets/UserProfile/NetworkServiceTagWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/text/BangumiHtml.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/strings.dart';
 
@@ -14,7 +14,7 @@ class UserMoreDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWithSliverAppBar(
+    return ScrollViewWithSliverAppBar(
         enableBottomSafeArea: false,
         nestedScrollViewBody: Builder(
           builder: (BuildContext builderContext) {
@@ -33,6 +33,7 @@ class UserMoreDetails extends StatelessWidget {
                 )
                     : BangumiHtml(
                   html: profile.introductionInHtml,
+                  showSpoiler: false,
                 ),
                 Wrap(
                   children: <Widget>[

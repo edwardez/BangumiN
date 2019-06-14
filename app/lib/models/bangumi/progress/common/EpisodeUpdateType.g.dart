@@ -10,8 +10,8 @@ const EpisodeUpdateType _$Wish = const EpisodeUpdateType._('Wish');
 const EpisodeUpdateType _$Collect = const EpisodeUpdateType._('Collect');
 const EpisodeUpdateType _$CollectUntil =
     const EpisodeUpdateType._('CollectUntil');
-const EpisodeUpdateType _$Dropped = const EpisodeUpdateType._('Dropped');
-const EpisodeUpdateType _$Unknown = const EpisodeUpdateType._('Remove');
+const EpisodeUpdateType _$Drop = const EpisodeUpdateType._('Drop');
+const EpisodeUpdateType _$Remove = const EpisodeUpdateType._('Remove');
 
 EpisodeUpdateType _$valueOf(String name) {
   switch (name) {
@@ -21,10 +21,10 @@ EpisodeUpdateType _$valueOf(String name) {
       return _$Collect;
     case 'CollectUntil':
       return _$CollectUntil;
-    case 'Dropped':
-      return _$Dropped;
+    case 'Drop':
+      return _$Drop;
     case 'Remove':
-      return _$Unknown;
+      return _$Remove;
     default:
       throw new ArgumentError(name);
   }
@@ -35,8 +35,8 @@ final BuiltSet<EpisodeUpdateType> _$values =
   _$Wish,
   _$Collect,
   _$CollectUntil,
-  _$Dropped,
-  _$Unknown,
+  _$Drop,
+  _$Remove,
 ]);
 
 Serializer<EpisodeUpdateType> _$episodeUpdateTypeSerializer =

@@ -24,18 +24,16 @@ class DiscussionHome extends StatefulWidget {
 
 class _DiscussionHomeState extends State<DiscussionHome> {
   final List<DiscussionBody> discussionBodyPages =
-  List(GetDiscussionRequest.totalGetProgressRequestTypes);
+  List(GetDiscussionRequest.validGetDiscussionRequests.length);
   final List<DiscussionBodyWidget> pages =
-  List(GetDiscussionRequest.totalGetProgressRequestTypes);
+  List(GetDiscussionRequest.validGetDiscussionRequests.length);
 
   PageController pageController;
 
   /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
   /// we should be fine
   int get currentIndex {
-    assert(pageController.page.toInt() - pageController.page == 0);
-
-    return pageController?.page?.toInt();
+    return pageController?.page?.round();
   }
 
   DiscussionBodyWidget _buildDiscussionBodyWidget(GetDiscussionRequest request,

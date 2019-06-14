@@ -41,7 +41,6 @@ class _$MonoSearchResultSerializer
         ..add(serializers.serialize(object.image,
             specifiedType: const FullType(BangumiImage)));
     }
-
     return result;
   }
 
@@ -175,7 +174,7 @@ class _$MonoSearchResult extends MonoSearchResult {
 class MonoSearchResultBuilder
     implements
         Builder<MonoSearchResult, MonoSearchResultBuilder>,
-        SearchResultBuilder {
+        SearchResultItemBuilder {
   _$MonoSearchResult _$v;
 
   ListBuilder<String> _miscInfo;

@@ -25,6 +25,8 @@ abstract class GeneralSetting
 
   GetDiscussionRequest get preferredDiscussionLaunchPage;
 
+  bool get expandAllProgressTiles;
+
   factory GeneralSetting([updates(GeneralSettingBuilder b)]) =>
       _$GeneralSetting((b) => b
         ..preferredSubjectInfoLanguage = defaultSubjectInfoLanguage
@@ -34,6 +36,7 @@ abstract class GeneralSetting
             .replace(GetProgressRequest.defaultProgressLaunchPageType)
         ..preferredDiscussionLaunchPage
             .replace(GetDiscussionRequest.defaultDiscussionLaunchPageType)
+        ..expandAllProgressTiles = false
         ..update(updates));
 
   String toJson() {

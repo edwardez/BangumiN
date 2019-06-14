@@ -10,28 +10,34 @@ part 'CollectionStatus.g.dart';
 /// enum names are a little bit strange and confusing but this is in sync with bangumi API
 @BuiltValueEnum(wireName: 'type')
 class CollectionStatus extends EnumClass {
-  @BuiltValueEnumConst(wireName: 'wish')
+  static const _wishWiredName = 'wish';
+  static const _completedWiredName = 'collect';
+  static const _inProgressWiredName = 'do';
+  static const _onHoldWiredName = 'on_hold';
+  static const _droppedWiredName = 'dropped';
+
+  @BuiltValueEnumConst(wireName: _wishWiredName)
   static const CollectionStatus Wish = _$Wish;
 
-  /// Collected
-  @BuiltValueEnumConst(wireName: 'collect')
-  static const CollectionStatus Collect = _$Collect;
+  /// Completed
+  @BuiltValueEnumConst(wireName: _completedWiredName)
+  static const CollectionStatus Completed = _$Completed;
 
   /// In progress
-  @BuiltValueEnumConst(wireName: 'do')
-  static const CollectionStatus Do = _$Do;
+  @BuiltValueEnumConst(wireName: _inProgressWiredName)
+  static const CollectionStatus InProgress = _$InProgress;
 
-  @BuiltValueEnumConst(wireName: 'on_hold')
+  @BuiltValueEnumConst(wireName: _onHoldWiredName)
   static const CollectionStatus OnHold = _$OnHold;
 
-  @BuiltValueEnumConst(wireName: 'dropped')
+  @BuiltValueEnumConst(wireName: _droppedWiredName)
   static const CollectionStatus Dropped = _$Dropped;
 
   /// Following types don't exist in bangumi json response
 
   /// User has not touched this subject
   @BuiltValueEnumConst(wireName: 'untouched')
-  static const CollectionStatus Untouched = _$Untouched;
+  static const CollectionStatus Pristine = _$Pristine;
 
   /// User may or may not have touched this subject, we are not aware of the actual
   /// status
@@ -42,16 +48,16 @@ class CollectionStatus extends EnumClass {
   String get wiredName {
     switch (this) {
       case CollectionStatus.Wish:
-        return 'wish';
-      case CollectionStatus.Collect:
-        return 'collect';
-      case CollectionStatus.Do:
-        return 'do';
+        return _wishWiredName;
+      case CollectionStatus.Completed:
+        return _completedWiredName;
+      case CollectionStatus.InProgress:
+        return _inProgressWiredName;
       case CollectionStatus.OnHold:
-        return 'on_hold';
+        return _onHoldWiredName;
       case CollectionStatus.Dropped:
-        return 'dropped';
-      case CollectionStatus.Untouched:
+        return _droppedWiredName;
+      case CollectionStatus.Pristine:
       case CollectionStatus.Unknown:
         return '';
       default:
@@ -60,6 +66,22 @@ class CollectionStatus extends EnumClass {
     }
   }
 
+  /// If subject is under one of these statuses, user is officially allowed to
+  /// modify child episode status.
+  /// Otherwise, munin may still try to submit the episode update request, but
+  /// the consequence is unknown.
+  static Set<CollectionStatus> allowedCanModifyEpisodeStatues = {
+    CollectionStatus.Completed,
+    CollectionStatus.InProgress
+  };
+
+  /// Checks whether user can safely modify episode status.
+  ///
+  /// By saying 'safely', here it means whether bangumi officially supports modifying
+  /// status of an episode under current [CollectionStatus].
+  bool get canSafelyModifyEpisodeStatus =>
+      allowedCanModifyEpisodeStatues.contains(this);
+
   static String chineseNameWithSubjectType(CollectionStatus status,
       SubjectType subjectType, {
         String fallbackChineseName,
@@ -67,15 +89,15 @@ class CollectionStatus extends EnumClass {
     switch (status) {
       case CollectionStatus.Wish:
         return '想${subjectType.activityVerbChineseNameByType}';
-      case CollectionStatus.Collect:
+      case CollectionStatus.Completed:
         return '${subjectType.activityVerbChineseNameByType}过';
-      case CollectionStatus.Do:
+      case CollectionStatus.InProgress:
         return '在${subjectType.activityVerbChineseNameByType}';
       case CollectionStatus.OnHold:
         return '搁置';
       case CollectionStatus.Dropped:
         return '抛弃';
-      case CollectionStatus.Untouched:
+      case CollectionStatus.Pristine:
       case CollectionStatus.Unknown:
       default:
         if (fallbackChineseName != null) {
@@ -100,11 +122,11 @@ class CollectionStatus extends EnumClass {
     }
 
     if (chineseName.contains('在')) {
-      return CollectionStatus.Do;
+      return CollectionStatus.InProgress;
     }
 
     if (chineseName.contains('过')) {
-      return CollectionStatus.Collect;
+      return CollectionStatus.Completed;
     }
 
     if (chineseName.contains('抛弃')) {
@@ -120,7 +142,7 @@ class CollectionStatus extends EnumClass {
 
   static bool isInvalid(CollectionStatus status) {
     return status == null ||
-        status == CollectionStatus.Untouched ||
+        status == CollectionStatus.Pristine ||
         status == CollectionStatus.Unknown;
   }
 

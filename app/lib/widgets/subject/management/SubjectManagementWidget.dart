@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 
@@ -14,22 +15,35 @@ class SubjectManagementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String collectionActionText = subject.userSubjectCollectionInfoPreview
-        .status == CollectionStatus.Untouched ? '加入' : '编辑';
+    String collectionActionText =
+    subject.userSubjectCollectionInfoPreview.status ==
+        CollectionStatus.Pristine
+        ? '加入'
+        : '编辑';
 
     return Column(
       children: <Widget>[
         Row(
           children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: MuninOutlineButton(
-                  child: Text('观看进度管理'),
-                  onPressed: () {},
+            if (subject.type == SubjectType.Anime ||
+                subject.type == SubjectType.Real)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                  child: MuninOutlineButton(
+                    child: Text('查看章节'),
+                    onPressed: () {
+                      Application.router.navigateTo(
+                        context,
+                        Routes.subjectEpisodesRoute
+                            .replaceFirst(RoutesVariable.subjectIdParam,
+                            subject.id?.toString()),
+                        transition: TransitionType.native,
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
           ],
         ),
         Row(
@@ -41,10 +55,12 @@ class SubjectManagementWidget extends StatelessWidget {
                   child: Text('$collectionActionText收藏'),
                   onPressed: () {
                     Application.router.navigateTo(
-                        context,
-                        Routes.subjectCollectionManagementRoute
-                            .replaceFirst(':subjectId', subject.id?.toString()),
-                        transition: TransitionType.nativeModal);
+                      context,
+                      Routes.subjectCollectionManagementRoute
+                          .replaceFirst(RoutesVariable.subjectIdParam,
+                          subject.id?.toString()),
+                      transition: TransitionType.nativeModal,
+                    );
                   },
                 ),
               ),

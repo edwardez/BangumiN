@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/progress/common/EpisodeUpdateType.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
+import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/shared/CommonActions.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
@@ -27,8 +28,41 @@ class GetProgressAction {
       : this.completer = completer ?? new Completer();
 }
 
-class GetProgressLoadingAction {
-  GetProgressLoadingAction();
+class GetSubjectEpisodesRequestAction {
+  final BuildContext context;
+  final int subjectId;
+
+  GetSubjectEpisodesRequestAction({
+    @required this.context,
+    @required this.subjectId,
+  });
+}
+
+class GetSubjectEpisodesLoadingAction {
+  final int subjectId;
+
+  GetSubjectEpisodesLoadingAction({
+    @required this.subjectId,
+  });
+}
+
+class GetSubjectEpisodesSuccessAction {
+  final SubjectEpisodes subjectEpisodes;
+  final int subjectId;
+
+  GetSubjectEpisodesSuccessAction({
+    @required this.subjectEpisodes,
+    @required this.subjectId,
+  });
+}
+
+class GetSubjectEpisodesFailureAction extends FailureAction {
+  final int subjectId;
+
+  GetSubjectEpisodesFailureAction({
+    @required this.subjectId,
+    @required LoadingStatus loadingStatus,
+  });
 }
 
 class GetProgressSuccessAction {
@@ -40,22 +74,13 @@ class GetProgressSuccessAction {
       {@required this.progresses, @required this.subjectTypes});
 }
 
-class GetProgressFailureAction extends FailureAction {
-  final String username;
-
-  GetProgressFailureAction(
-      {@required this.username, @required LoadingStatus loadingStatus})
-      : super(loadingStatus: loadingStatus);
-
-  GetProgressFailureAction.fromUnknownException({@required this.username})
-      : super.fromUnknownException();
-}
-
-/// Update progress related actions
+/// Action that updates progress of  in-progress episode/episodes.
+/// This action updates episode progress as seen on progress widget. To update
+/// episode status of episode as seen on subject episode widget,
+/// use
 abstract class UpdateProgressAction {
   final BuildContext context;
 
-  /// The relevant subject instance
   final InProgressSubjectInfo subject;
 
   final Completer completer;
@@ -63,9 +88,16 @@ abstract class UpdateProgressAction {
   UpdateProgressAction._(this.context, this.completer, this.subject);
 }
 
-class UpdateAnimeOrRealSingleEpisodeAction implements UpdateProgressAction {
-  final int episodeId;
+class UpdateInProgressEpisodeAction implements UpdateProgressAction {
   final BuildContext context;
+
+  /// The relevant subject instance
+  final InProgressSubjectInfo subject;
+
+  final Completer completer;
+
+  final int episodeId;
+
   final EpisodeUpdateType episodeUpdateType;
 
   /// It's intended that here `newEpisodeNumber` is double,
@@ -73,73 +105,82 @@ class UpdateAnimeOrRealSingleEpisodeAction implements UpdateProgressAction {
   /// other progress update actions `newEpisodeNumber` must be int
   final double newEpisodeNumber;
 
-  final InProgressSubjectInfo subject;
-
-  final Completer completer;
-
-  UpdateAnimeOrRealSingleEpisodeAction(
-      {@required this.context,
-      @required this.episodeId,
-      @required this.episodeUpdateType,
-      @required this.newEpisodeNumber,
-      @required this.subject,
-      Completer completer})
+  UpdateInProgressEpisodeAction({
+    @required this.context,
+    @required this.episodeId,
+    @required this.episodeUpdateType,
+    @required this.newEpisodeNumber,
+    @required this.subject,
+    Completer completer,
+  })
       : this.completer = completer ?? new Completer(),
         assert(episodeUpdateType != EpisodeUpdateType.CollectUntil);
 }
 
-class UpdateAnimeOrRealSingleEpisodeSuccessAction {
+class UpdateInProgressEpisodeSuccessAction {
+  /// The relevant subject instance
   final InProgressSubjectInfo subject;
   final int episodeId;
   final EpisodeUpdateType episodeUpdateType;
 
-  UpdateAnimeOrRealSingleEpisodeSuccessAction(
-      {@required this.subject,
-      @required this.episodeId,
-      @required this.episodeUpdateType});
+  UpdateInProgressEpisodeSuccessAction({
+    @required this.subject,
+    @required this.episodeId,
+    @required this.episodeUpdateType,
+  });
 }
 
-class UpdateAnimeOrRealBatchEpisodesAction implements UpdateProgressAction {
+class UpdateInProgressBatchEpisodesAction implements UpdateProgressAction {
   final BuildContext context;
-  final EpisodeUpdateType episodeUpdateType;
 
-  final int newEpisodeNumber;
+  /// The relevant subject instance
   final InProgressSubjectInfo subject;
 
   final Completer completer;
 
-  UpdateAnimeOrRealBatchEpisodesAction(
-      {@required this.context,
-      @required this.newEpisodeNumber,
-      @required this.subject,
-      Completer completer})
+  final EpisodeUpdateType episodeUpdateType;
+
+  final int newEpisodeNumber;
+
+  UpdateInProgressBatchEpisodesAction({
+    @required this.context,
+    @required this.newEpisodeNumber,
+    @required this.subject,
+    Completer completer,
+  })
       : this.completer = completer ?? new Completer(),
         this.episodeUpdateType = EpisodeUpdateType.CollectUntil;
 }
 
-class UpdateAnimeOrRealBatchEpisodesSuccessAction {
+class UpdateInProgressBatchEpisodesSuccessAction {
+  /// The relevant subject instance
   final InProgressSubjectInfo subject;
   final int newEpisodeNumber;
 
-  UpdateAnimeOrRealBatchEpisodesSuccessAction(
-      {@required this.subject, @required this.newEpisodeNumber});
+  UpdateInProgressBatchEpisodesSuccessAction({
+    @required this.subject,
+    @required this.newEpisodeNumber,
+  });
 }
 
 class UpdateBookProgressAction implements UpdateProgressAction {
   final BuildContext context;
-  final int newEpisodeNumber;
-  final int newVolumeNumber;
+
+  /// The relevant subject instance
   final InProgressSubjectInfo subject;
 
   final Completer completer;
 
-  UpdateBookProgressAction(
-      {@required this.context,
-      @required this.newEpisodeNumber,
-      @required this.newVolumeNumber,
-      @required this.subject,
-      Completer completer})
-      : this.completer = completer ?? new Completer();
+  final int newEpisodeNumber;
+  final int newVolumeNumber;
+
+  UpdateBookProgressAction({
+    @required this.context,
+    @required this.newEpisodeNumber,
+    @required this.newVolumeNumber,
+    @required this.subject,
+    Completer completer,
+  }) : this.completer = completer ?? new Completer();
 
   String toActionSuccessString() {
     return '已读到${subject.name}的第$newEpisodeNumber话，第$newVolumeNumber卷';
@@ -147,12 +188,57 @@ class UpdateBookProgressAction implements UpdateProgressAction {
 }
 
 class UpdateBookProgressSuccessAction {
+  /// The relevant subject instance
   final InProgressSubjectInfo subject;
   final int newEpisodeNumber;
   final int newVolumeNumber;
 
-  UpdateBookProgressSuccessAction(
-      {@required this.subject,
-      @required this.newEpisodeNumber,
-      @required this.newVolumeNumber});
+  UpdateBookProgressSuccessAction({
+    @required this.subject,
+    @required this.newEpisodeNumber,
+    @required this.newVolumeNumber,
+  });
+}
+
+/// Action that updates progress of any episode/episodes of a subject.
+/// This action updates episode progress as seen on subject episode widget. To
+/// update episode status of episode as seen on progress episode widget,
+/// use [UpdateProgressAction].
+class UpdateSubjectEpisodeAction {
+  final BuildContext context;
+
+  final int subjectId;
+  final int episodeId;
+
+  UpdateSubjectEpisodeAction({
+    @required this.context,
+    @required this.subjectId,
+    @required this.episodeId,
+  });
+}
+
+class UpdateSingleSubjectEpisodeAction extends UpdateSubjectEpisodeAction {
+  final BuildContext context;
+  final int subjectId;
+  final int episodeId;
+  final EpisodeUpdateType episodeUpdateType;
+
+  UpdateSingleSubjectEpisodeAction({
+    @required this.context,
+    @required this.subjectId,
+    @required this.episodeId,
+    @required this.episodeUpdateType,
+  });
+}
+
+class UpdateBatchSubjectEpisodesAction extends UpdateSubjectEpisodeAction {
+  final BuildContext context;
+  final int subjectId;
+  final int episodeId;
+
+  UpdateBatchSubjectEpisodesAction({
+    @required this.context,
+    @required this.subjectId,
+    @required this.episodeId,
+  });
 }

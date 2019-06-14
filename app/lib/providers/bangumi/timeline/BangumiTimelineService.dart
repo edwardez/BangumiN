@@ -5,7 +5,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
@@ -35,7 +35,7 @@ class BangumiTimelineService {
     @required int upperFeedId,
     @required int lowerFeedId,
     @required BuiltMap<String, MutedUser> mutedUsers,
-    @required BangumiUserBasic userInfo,
+    @required BangumiUserSmall userInfo,
   }) async {
     Map<String, dynamic> queryParameters = {'ajax': '1'};
 
@@ -50,7 +50,7 @@ class BangumiTimelineService {
     if (request.timelineSource == TimelineSource.UserProfile) {
       assert(request.username != null);
       requestPath = '/user/${request.username}/timeline';
-    } else if (request.timelineSource == TimelineSource.FriendsOnly) {
+    } else if (request.timelineSource == TimelineSource.OnlyFriends) {
       requestPath = '/timeline';
     } else {
       throw UnimplementedError('尚未支持读取这种时间线');

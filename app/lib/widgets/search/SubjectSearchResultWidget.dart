@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/models/bangumi/search/result/SubjectSearchResult.dart';
+import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
@@ -11,7 +11,7 @@ import 'package:quiver/core.dart';
 
 /// TODO: we should reuse code in this class and [MonoSearchResultWidget]
 class SubjectSearchResultWidget extends StatelessWidget {
-  final SubjectSearchResult subjectSearchResult;
+  final SubjectSearchResultItem subjectSearchResult;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   static const double paddingBetweenSubject = 8.0;
@@ -32,14 +32,14 @@ class SubjectSearchResultWidget extends StatelessWidget {
     TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
     subInfoRows.add(Text(
-      preferredSubjectTitle(subjectSearchResult.name,
+      preferredName(subjectSearchResult.name,
           subjectSearchResult.nameCn,
           preferredSubjectInfoLanguage),
       maxLines: titleMaxLines,
       overflow: TextOverflow.ellipsis,
     ));
 
-    Optional<String> maybeSecondaryTitle = secondarySubjectTitle(
+    Optional<String> maybeSecondaryTitle = secondaryName(
         subjectSearchResult.name,
         subjectSearchResult.nameCn,
         preferredSubjectInfoLanguage);

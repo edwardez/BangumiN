@@ -3,11 +3,14 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
+import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/progress/Common.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
+import 'package:munin/redux/progress/common.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,16 +18,23 @@ List<Epic<AppState>> createProgressEpics(
     BangumiProgressService bangumiProgressService) {
   final getProgressEpic = _createGetProgressEpic(bangumiProgressService);
   final updateProgressEpic = _createUpdateProgressEpic(bangumiProgressService);
+  final getSubjectEpisodesEpic =
+  _createGetSubjectEpisodesEpic(bangumiProgressService);
 
-  return [getProgressEpic, updateProgressEpic];
+  final updateSubjectEpisodeEpic =
+  _createUpdateSubjectEpisodeEpic(bangumiProgressService);
+  return [
+    getProgressEpic,
+    updateProgressEpic,
+    getSubjectEpisodesEpic,
+    updateSubjectEpisodeEpic,
+  ];
 }
 
 Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
     GetProgressAction action, String username) async* {
   try {
     assert(action.subjectTypes.isNotEmpty);
-
-    yield GetProgressLoadingAction();
 
     List<
         Future<
@@ -45,7 +55,8 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
 
     LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
         mergedSubjects = subjectsPerType.fold(
-        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>(),
+        LinkedHashMap<SubjectType,
+            LinkedHashMap<int, InProgressCollection>>(),
             (mapSoFar, subjects) {
       mapSoFar.addAll(subjects);
       return mapSoFar;
@@ -55,10 +66,20 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
         progresses: mergedSubjects, subjectTypes: action.subjectTypes);
     action.completer.complete();
   } catch (error, stack) {
-    action.completer.completeError(error, stack);
     print(error.toString());
     print(stack);
-    yield GetProgressFailureAction.fromUnknownException(username: username);
+    action.completer.completeError(error, stack);
+
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
     if (action.showSnackBar) {
       Scaffold.of(action.context)
           .showSnackBar(SnackBar(content: Text(error.toString())));
@@ -69,25 +90,79 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
 Epic<AppState> _createGetProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions).ofType(TypeToken<GetProgressAction>()).switchMap(
-        (action) => _getProgress(bangumiProgressService, action,
-            store.state.currentAuthenticatedUserBasicInfo.username));
+    return Observable(actions)
+        .ofType(TypeToken<GetProgressAction>())
+        .switchMap((action) =>
+        _getProgress(
+          bangumiProgressService,
+          action,
+          store.state.currentAuthenticatedUserBasicInfo.username,
+        ));
   };
 }
 
+Stream<dynamic> _getSubjectEpisodesEpic(
+    BangumiProgressService bangumiProgressService,
+    GetSubjectEpisodesRequestAction action,
+    String username,) async* {
+  try {
+    yield GetSubjectEpisodesLoadingAction(subjectId: action.subjectId);
+
+    SubjectEpisodes subjectEpisodes = await bangumiProgressService
+        .getSubjectEpisodes(username: username, subjectId: action.subjectId);
+
+    yield GetSubjectEpisodesSuccessAction(
+      subjectEpisodes: subjectEpisodes,
+      subjectId: action.subjectId,
+    );
+  } catch (error, stack) {
+    print(error.toString());
+    print(stack);
+    final result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context).showSnackBar(SnackBar(
+      content: Text(error.toString()),
+    ));
+  }
+}
+
+Epic<AppState> _createGetSubjectEpisodesEpic(
+    BangumiProgressService bangumiProgressService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<GetSubjectEpisodesRequestAction>())
+        .switchMap((action) =>
+        _getSubjectEpisodesEpic(
+          bangumiProgressService,
+          action,
+          store.state.currentAuthenticatedUserBasicInfo.username,
+        ));
+  };
+}
+
+/// Updates relevant subject progress as seen on progress widget.
 Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
     UpdateProgressAction action, EpicStore<AppState> store) async* {
   try {
-    if (action is UpdateAnimeOrRealSingleEpisodeAction) {
+    if (action is UpdateInProgressEpisodeAction) {
       await bangumiProgressService.updateSingleAnimeOrRealSingleEpisode(
           episodeId: action.episodeId,
           episodeUpdateType: action.episodeUpdateType);
-      yield UpdateAnimeOrRealSingleEpisodeSuccessAction(
+
+      yield UpdateInProgressEpisodeSuccessAction(
         episodeId: action.episodeId,
         subject: action.subject,
         episodeUpdateType: action.episodeUpdateType,
       );
-    } else if (action is UpdateAnimeOrRealBatchEpisodesAction) {
+    } else if (action is UpdateInProgressBatchEpisodesAction) {
       InProgressCollection progress = store
           .state.progressState.progresses[action.subject.type]
           .firstWhere((subject) => subject.subject.id == action.subject.id);
@@ -97,22 +172,16 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
           .episodes
           .values
           .fold<List<int>>([], (episodeIdsSoFar, episode) {
-        if (isAffectedByCollectUntilOperation(
+        if (isEpisodeProgressAffectedByCollectUntilOperation(
             episode, action.newEpisodeNumber)) {
           episodeIdsSoFar.add(episode.id);
         }
 
         return episodeIdsSoFar;
       });
-
-      /// Sends the request twice to ensure it's reflected on bangumi website and api
-      /// After first request bangumi updates data in internal database but not api/website
-      /// After second request bangumi updates api/website
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
           episodeIds: episodeIds);
-      await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
-          episodeIds: episodeIds);
-      yield UpdateAnimeOrRealBatchEpisodesSuccessAction(
+      yield UpdateInProgressBatchEpisodesSuccessAction(
           subject: action.subject, newEpisodeNumber: action.newEpisodeNumber);
     } else if (action is UpdateBookProgressAction) {
       await bangumiProgressService.updateBookProgress(
@@ -130,6 +199,15 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
 
     Scaffold.of(action.context)
         .showSnackBar(SnackBar(content: Text(error.toString())));
@@ -146,5 +224,98 @@ Epic<AppState> _createUpdateProgressEpic(
         .ofType(TypeToken<UpdateProgressAction>())
         .concatMap(
             (action) => _updateProgress(bangumiProgressService, action, store));
+  };
+}
+
+/// Updates relevant subject episode as seen on subject episode widget.
+Stream<dynamic> _updateSubjectEpisodeEpic(
+    BangumiProgressService bangumiProgressService,
+    UpdateSubjectEpisodeAction action,
+    EpicStore<AppState> store) async* {
+
+  /// Gets all episode ids that might be affected by [EpisodeUpdateType.CollectUntil].
+  /// Different from [EpisodeProgress], [SimpleHtmlEpisode] which is inside [SubjectEpisodes]
+  /// are only available on web page and don't have a valid [sequentialNumber].
+  /// Thus we have to guess which episodes are affected by scanning through all
+  /// available episodes. Fortunately, Bangumi web page lists all episodes in
+  /// a sequential order so this logic should work most times.
+  List<int> calculateCollectionUntilSubjectEpisodeIds({
+    @required SubjectEpisodes subjectEpisodes,
+    @required int collectedUntilEpisodeId,
+  }) {
+    List<int> episodeIds = [];
+
+    for (var episode in subjectEpisodes.episodes.values) {
+      if (isEpisodeAffectedByCollectUntilOperation(episode)
+      ) {
+        episodeIds.add(episode.id);
+        assert(episode.id <= collectedUntilEpisodeId,
+        'Munin tried to guess which episode to update for a [EpisodeUpdateType.CollectUntil]'
+            ' but it seems like data is malformed. Id ${episode.id} is higher '
+            'than current collectedUntilEpisodeId($collectedUntilEpisodeId) '
+            'whike it should always be smaller.'
+        );
+
+        // Bangumi web page lists all episodes in sequential, breaks loop after
+        // reaching the target episode id.
+        if (episode.id == collectedUntilEpisodeId) {
+          break;
+        }
+      }
+    }
+    return episodeIds;
+  }
+
+  try {
+    if (action is UpdateSingleSubjectEpisodeAction) {
+      await bangumiProgressService.updateSingleAnimeOrRealSingleEpisode(
+          episodeId: action.episodeId,
+          episodeUpdateType: action.episodeUpdateType);
+    } else if (action is UpdateBatchSubjectEpisodesAction) {
+      var subjectEpisodes = store.state.progressState.watchableSubjects[action
+          .subjectId];
+
+      List<int> episodeIdsToUpdate = calculateCollectionUntilSubjectEpisodeIds(
+        subjectEpisodes: subjectEpisodes,
+        collectedUntilEpisodeId: action.episodeId,
+      );
+
+      await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
+          episodeIds: episodeIdsToUpdate);
+    } else {
+      throw UnsupportedError('不支持的更新操作');
+    }
+
+    /// Re-retrieves data from bangumi server to reflect change on widget.
+    yield GetSubjectEpisodesRequestAction(
+      context: action.context,
+      subjectId: action.subjectId,
+    );
+  } catch (error, stack) {
+    print(error.toString());
+    print(stack);
+    var result = await generalExceptionHandler(
+      error,
+      context: action.context,
+    );
+    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+      yield OAuthLoginRequest(action.context);
+    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+      return;
+    }
+
+    Scaffold.of(action.context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+  }
+}
+
+Epic<AppState> _createUpdateSubjectEpisodeEpic(
+    BangumiProgressService bangumiProgressService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    /// concatMap should be used: user might update another subject while the first one is not finished yet
+    return Observable(actions)
+        .ofType(TypeToken<UpdateSubjectEpisodeAction>())
+        .concatMap((action) =>
+        _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
   };
 }

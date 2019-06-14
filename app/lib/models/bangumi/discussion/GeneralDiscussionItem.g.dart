@@ -47,7 +47,6 @@ class _$GeneralDiscussionItemSerializer
         ..add(serializers.serialize(object.updatedAt,
             specifiedType: const FullType(int)));
     }
-
     return result;
   }
 

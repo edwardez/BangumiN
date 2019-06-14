@@ -9,7 +9,7 @@ import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
 import 'package:munin/widgets/subject/mainpage/CharactersPreview.dart';
 import 'package:munin/widgets/subject/mainpage/CommentsPreview.dart';
@@ -59,51 +59,42 @@ class SubjectWidget extends StatelessWidget {
 
   Widget _buildSubjectMainPage(BuildContext context, BangumiSubject subject,
       PreferredSubjectInfoLanguage preferredSubjectInfoLanguage) {
-    List<Widget> widgets = [];
-    widgets.add(SubjectCoverAndBasicInfo(
+    List<Widget> widgets = [
+      SubjectCoverAndBasicInfo(
+          subject: subject,
+          preferredSubjectInfoLanguage: preferredSubjectInfoLanguage),
+      SubjectRatingOverview(
         subject: subject,
-        preferredSubjectInfoLanguage: preferredSubjectInfoLanguage));
+      ),
+      SubjectManagementWidget(subject: subject),
+      SubjectSummary(subject: subject),
+      if (!isIterableNullOrEmpty(subject.characters))
+        CharactersPreview(subject: subject),
+      if (!isBuiltListMultimapNullOrEmpty(subject.relatedSubjects))
+        RelatedSubjectsPreview(
+            subject: subject,
+            preferredSubjectInfoLanguage: preferredSubjectInfoLanguage),
+      CommentsPreview(subject: subject)
+    ];
 
-    widgets.add(SubjectRatingOverview(
-      subject: subject,
-    ));
-
-    widgets.add(SubjectManagementWidget(subject: subject));
-
-    widgets.add(SubjectSummary(subject: subject));
-
-    if (!isIterableNullOrEmpty(subject.characters)) {
-      widgets.add(CharactersPreview(subject: subject));
-    }
-
-    if (!isBuiltListMultimapNullOrEmpty(subject.relatedSubjects)) {
-      widgets.add(RelatedSubjectsPreview(subject: subject,
-          preferredSubjectInfoLanguage: preferredSubjectInfoLanguage));
-    }
-
-    /// Add a padding in the bottom so bottom comments are easier to read
-    widgets.add(Padding(
-      padding: const EdgeInsets.only(bottom: 30.0),
-      child: CommentsPreview(subject: subject),
-    ));
-
-    return ScaffoldWithSliverAppBar(
+    return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text('关于这${subject.type.quantifiedChineseNameByType}'),
-      appBarSecondaryTitle:
-      Text(preferredSubjectTitleFromSubjectBase(
-          subject, preferredSubjectInfoLanguage)),
+      appBarSecondaryTitle: Text(
+          preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage)),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.only(
+          left: defaultDensePortraitHorizontalOffset,
+          right: defaultDensePortraitHorizontalOffset,
+          top: smallOffset,
+          bottom: bottomOffset,
+        ),
         itemBuilder: (BuildContext context, int index) => widgets[index],
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemCount: widgets.length,
       ),
-      safeAreaChildPadding: const EdgeInsets.only(
-          left: defaultDensePortraitHorizontalPadding,
-          right: defaultDensePortraitHorizontalPadding,
-          top: largeVerticalPadding),
+      safeAreaChildPadding: EdgeInsets.zero,
       enableBottomSafeArea: false,
       appBarActions: subjectCommonActions(context, subject),
     );
@@ -154,6 +145,5 @@ class _ViewModel {
 
   @override
   int get hashCode =>
-      hash3(subject,
-          preferredSubjectInfoLanguage, subjectLoadingStatus);
+      hash3(subject, preferredSubjectInfoLanguage, subjectLoadingStatus);
 }

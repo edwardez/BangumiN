@@ -25,6 +25,22 @@ class AirStatus extends EnumClass {
   /// and air status will be hidden in this case
   static const AirStatus Unknown = _$Unknown;
 
+  String get chineseName {
+    switch (this) {
+      case AirStatus.Aired:
+        return '已放送';
+      case AirStatus.OnAir:
+        return '放送中';
+      case AirStatus.NotAired:
+        return '未放送';
+      case AirStatus.Unknown:
+      default:
+        assert(this == AirStatus.Unknown,
+        '$this doesn\'t have a valid chinese name.');
+        return '未知';
+    }
+  }
+
   const AirStatus._(String name) : super(name);
 
   static BuiltSet<AirStatus> get values => _$values;

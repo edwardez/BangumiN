@@ -15,14 +15,13 @@ abstract class BangumiCookieCredentials
           [updates(BangumiCookieCredentialsBuilder b)]) =
       _$BangumiCookieCredentials;
 
-  @BuiltValueField(wireName: 'authCookie')
   String get authCookie;
 
-  @BuiltValueField(wireName: 'sessionCookie')
   String get sessionCookie;
 
-  @BuiltValueField(wireName: 'userAgent')
   String get userAgent;
+
+  DateTime get expiresOn;
 
   String toJson() {
     return json.encode(

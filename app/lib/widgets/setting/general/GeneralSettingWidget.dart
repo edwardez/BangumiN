@@ -12,7 +12,7 @@ import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/general/PreferredLanguageWidget.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
-import 'package:munin/widgets/shared/common/ScaffoldWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/common/TransparentDividerThemeContext.dart';
 import 'package:redux/redux.dart';
 
@@ -23,11 +23,11 @@ class GeneralSettingWidget extends StatelessWidget {
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
-        return ScaffoldWithSliverAppBar(
+        return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding: const EdgeInsets.only(
-              left: 0, right: 0, top: largeVerticalPadding),
+              left: 0, right: 0, top: largeOffset),
           appBarMainTitle: Text('通用设置'),
           nestedScrollViewBody: ListView(
             padding: EdgeInsets.zero,
@@ -43,13 +43,35 @@ class GeneralSettingWidget extends StatelessWidget {
                 ),
               ),
               PreferredLanguageWidget(
-                currentSubjectLanguage: vm.generalSetting
-                    .preferredSubjectInfoLanguage,
-                onSubjectLanguageUpdate: (
-                    PreferredSubjectInfoLanguage language) {
+                currentSubjectLanguage:
+                vm.generalSetting.preferredSubjectInfoLanguage,
+                onSubjectLanguageUpdate:
+                    (PreferredSubjectInfoLanguage language) {
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
                           (b) => b..preferredSubjectInfoLanguage = language));
                 },
+              ),
+              Divider(),
+              ListTile(
+                title: Text(
+                  '进度',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2
+                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
+                ),
+              ),
+              SwitchListTile.adaptive(
+                value: vm.generalSetting.expandAllProgressTiles,
+                title: Text('展开所有在看作品的话数面板'),
+                onChanged: (bool value) {
+                  final currentValue =
+                      vm.generalSetting.expandAllProgressTiles;
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild(
+                          (b) => b..expandAllProgressTiles = !currentValue));
+                },
+                activeColor: lightPrimaryDarkAccentColor(context),
               ),
               Divider(),
               ListTile(

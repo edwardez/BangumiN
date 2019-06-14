@@ -16,10 +16,9 @@ String aHrefContains(String keyword) {
 ///  element is used
 String imageUrlFromBackgroundImage(Element imageElement,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true
-    }) {
-  Match imageMatchers = cssBackgroundImageGroupRegex
-      .firstMatch(imageElement?.outerHtml ?? '');
+      checkImageExtensionType = true}) {
+  Match imageMatchers =
+  cssBackgroundImageGroupRegex.firstMatch(imageElement?.outerHtml ?? '');
   String imageUrl;
 
   if (imageMatchers != null && imageMatchers.groupCount >= 1) {
@@ -38,24 +37,19 @@ String imageUrlFromBackgroundImage(Element imageElement,
 /// for performance reason we only check these types)
 ///[defaultImageSrc] will be returned
 String normalizeImageUrl(String imageUrl,
-    {
-      defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true
-    }) {
+    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
+      checkImageExtensionType = true}) {
   if (checkImageExtensionType) {
     if (!validBangumiImageTypeRegex.hasMatch(imageUrl)) {
       return defaultImageSrc;
     }
   }
 
-
   if (imageUrl != null &&
       imageUrl.length >= 2 &&
-      imageUrl.substring(0, 2) == '//'
-  ) {
+      imageUrl.substring(0, 2) == '//') {
     return 'https:' + imageUrl;
   }
-
 
   return defaultImageSrc;
 }
@@ -110,15 +104,15 @@ int extractFirstIntGroup(String rawString, {defaultValue = 0}) {
   return defaultValue;
 }
 
-String imageSrcOrNull(Element imageElement,
-    {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
+String imageSrcOrFallback(Element imageElement,
+    {fallbackImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
   if (imageElement == null) return null;
   String imageUrl = imageElement.attributes['src'];
 
   ///maybe because of https://blog.cloudflare.com/mirage2-solving-mobile-speed/ ?
   imageUrl ??= imageElement.attributes['data-cfsrc'];
 
-  return normalizeImageUrl(imageUrl, defaultImageSrc: defaultImageSrc);
+  return normalizeImageUrl(imageUrl, defaultImageSrc: fallbackImageSrc);
 }
 
 Optional<String> getFirstTextNodeContent(NodeList nodeList,
@@ -163,14 +157,14 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
 }
 
 double parseSubjectScore(Element element) {
-  final Element starsInfoElement = element.querySelector('.starsinfo');
+  final Element starsInfoElement =
+  element.querySelector('.starsinfo,.starstop');
 
   if (starsInfoElement == null) {
     return null;
   }
 
-  Match scoreMatcher =
-  scoreRegex.firstMatch(starsInfoElement.className);
+  Match scoreMatcher = scoreRegex.firstMatch(starsInfoElement.className);
 
   if (scoreMatcher?.groupCount == 1) {
     int parsedScore = int.parse(scoreMatcher.group(1));
@@ -193,15 +187,14 @@ FeedMetaInfo updateUserAction(Element singleTimelineContent,
   getMergedTextNodeContent(singleTimelineContent.nodes);
 
   userInfo = userInfo.rebuild((b) =>
-  b
-    ..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value
-  );
+  b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
 
   return userInfo;
 }
 
 final RegExp dummyTimeInfoRegex = RegExp(r'@|\.');
-/// Parse a bangumi time string into an absolute [DateTime] object
+
+/// Parses a bangumi time string into an absolute [DateTime] object
 /// bangumi might represents time in three format
 /// 1. English relative time, 1s ago
 /// 2. Chinese relative time, 1小时前
@@ -229,7 +222,7 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
   return parseDateTime(rawTime);
 }
 
-/// Parse time that's in format ` 2019-4-8 02:12` and returns [DateTime]
+/// Parses time in format like `2019-4-8 02:12` and returns [DateTime]
 /// Bangumi always displays timestamp in GMT+8(Beijing time)
 /// Hence +0800 is default time
 DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
@@ -245,13 +238,12 @@ DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
     return '0${m.group(1)}';
   });
 
-
   rawTime += timeZoneShift;
 
   return DateTime.tryParse(rawTime);
 }
 
-/// Parse english relative time that's in format `1h 1m ago` and returns
+/// Parses english relative time that's in format `1h 1m ago` and returns
 ///// absoluteTime in [DateTime]
 /// Note: some time unit might not be displayed, i.e. bangumi displays
 /// `1d 1h ago` where minutes are not displayed
@@ -294,7 +286,7 @@ DateTime parseEnglishRelativeTime(String rawRelativeTime,) {
   return absoluteTime;
 }
 
-/// Parse Chinese relative time that's in format `1小时30分钟前` and returns
+/// Parses Chinese relative time that's in format `1小时30分钟前` and returns
 /// absoluteTime in [DateTime]
 /// Note: some time unit might not be displayed, i.e. bangumi displays
 /// `1小时30分钟前` where `天` are not displayed
@@ -348,4 +340,25 @@ DateTime parseChineseRelativeTime(String rawRelativeTime) {
   DateTime absoluteTime = DateTime.now().subtract(duration);
 
   return absoluteTime;
+}
+
+/// Returns the element if it's non-null, or an dummy empty div if it's null.
+Element elementOrEmptyDiv(Element element) {
+  if (element == null) {
+    return Element.tag('div');
+  }
+
+  return element;
+}
+
+/// Returns the next node sibling of current element, or null if there is no such
+/// node.
+Node nextNodeSibling(Element element) {
+  if (element == null || element.parentNode == null) return null;
+  var siblings = element.parentNode.nodes;
+  for (int i = siblings.indexOf(element) + 1; i < siblings.length; i++) {
+    var s = siblings[i];
+    if (s is Node) return s;
+  }
+  return null;
 }

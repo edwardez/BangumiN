@@ -7,8 +7,8 @@ typedef void ChipSelectedCallBack(CollectionStatus status);
 class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
   static const selectableCollectionStatus = [
     CollectionStatus.Wish,
-    CollectionStatus.Collect,
-    CollectionStatus.Do,
+    CollectionStatus.Completed,
+    CollectionStatus.InProgress,
     CollectionStatus.OnHold,
     CollectionStatus.Dropped,
   ];
@@ -61,7 +61,7 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
     FormFieldSetter<CollectionStatus> onSaved,
     FormFieldValidator<CollectionStatus> validator,
     ChipSelectedCallBack onChipSelected,
-    CollectionStatus initialStatus = CollectionStatus.Untouched,
+    CollectionStatus initialStatus = CollectionStatus.Pristine,
     bool autovalidate = false,
   })
       : assert(subjectType != null),

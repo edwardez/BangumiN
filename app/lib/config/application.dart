@@ -5,6 +5,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:munin/main.dart';
+import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
@@ -68,10 +69,10 @@ abstract class Application {
   _initialize() async {
     environmentValue = this;
 
-    /// misc utils initialization
+    // misc utils initialization
     TimeUtils.initializeTimeago();
 
-    /// service locator initialization
+    // service locator initialization
     await injector(getIt);
 
     final BangumiCookieService bangumiCookieService =
@@ -93,13 +94,12 @@ abstract class Application {
     final SharedPreferenceService sharedPreferenceService =
     getIt.get<SharedPreferenceService>();
 
-
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
     bangumiOauthService?.client?.currentUser =
         appState?.currentAuthenticatedUserBasicInfo;
 
-    /// redux initialization
+    // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
       ...createAppEpics(sharedPreferenceService),
       ...createSubjectEpics(bangumiSubjectService),
@@ -110,7 +110,8 @@ abstract class Application {
       ...createProgressEpics(bangumiProgressService),
       ...createSettingEpics(bangumiUserService),
     ]);
-    final store = Store<AppState>(appReducer, initialState: appState,
+    final store = Store<AppState>(appReducer,
+        initialState: appState,
         middleware: [
 //          LoggingMiddleware.printer(),
           EpicMiddleware<AppState>(epics),
@@ -127,16 +128,18 @@ abstract class Application {
           themeSetting: store.state.settingState.themeSetting));
     }
 
-    _initializrCrashlytics();
+    _initializrCrashlytics(
+        store.state.settingState.privacySetting ?? PrivacySetting());
 
     await _checkAuthenticationInfo(bangumiOauthService);
 
-    /// flutter initialization
+    // flutter initialization
     runApp(MuninApp(this, store));
   }
 
-  _initializrCrashlytics() {
-    if (environmentType != EnvironmentType.Development) {
+  _initializrCrashlytics(PrivacySetting privacySetting) {
+    if (environmentType != EnvironmentType.Development &&
+        privacySetting.optInAutoSendCrashReport) {
       FlutterError.onError = (FlutterErrorDetails details) {
         Crashlytics.instance.onError(details);
       };
@@ -144,8 +147,8 @@ abstract class Application {
   }
 
   _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {
-    if (bangumiOauthService.client != null && bangumiOauthService.client
-        .shouldRefreshAccessToken()) {
+    if (bangumiOauthService.client != null &&
+        bangumiOauthService.client.shouldRefreshAccessToken()) {
       await bangumiOauthService.client.refreshCredentials();
     }
   }
@@ -154,8 +157,8 @@ abstract class Application {
       BangumiCookieService bangumiCookieService,
       BangumiOauthService bangumiOauthService,
       SharedPreferenceService sharedPreferenceService) async {
-    bool isAuthenticated =
-        bangumiCookieService.readyToUse() && bangumiOauthService.readyToUse();
+    bool isAuthenticated = bangumiCookieService.hasCookieCredential &&
+        bangumiOauthService.hasOauthClient;
     Optional<AppState> maybePersistedAppState =
     await sharedPreferenceService.readAppState();
     AppState persistedAppState;

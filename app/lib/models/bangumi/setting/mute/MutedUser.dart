@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:munin/models/bangumi/BangumiUserBaic.dart';
+import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -27,15 +27,15 @@ abstract class MutedUser implements Built<MutedUser, MutedUserBuilder> {
   factory MutedUser([updates(MutedUserBuilder b)]) =>
       _$MutedUser((b) => b..update(updates));
 
-  factory MutedUser.fromBangumiUserBasic(BangumiUserBasic bangumiUserBasic) {
+  factory MutedUser.fromBangumiUserSmall(BangumiUserSmall bangumiUserSmall) {
     return MutedUser((b) => b
-      ..username = bangumiUserBasic.username
-      ..userId = bangumiUserBasic.id
-      ..nickname = bangumiUserBasic.nickname
+      ..username = bangumiUserSmall.username
+      ..userId = bangumiUserSmall.id
+      ..nickname = bangumiUserSmall.nickname
       ..isImportedFromBangumi = false
       ..userAvatar
           .replace(
-          BangumiImage.fromBangumiUserAvatar(bangumiUserBasic.avatar)));
+          BangumiImage.fromBangumiUserAvatar(bangumiUserSmall.avatar)));
   }
 
   String toJson() {

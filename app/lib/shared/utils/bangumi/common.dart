@@ -19,12 +19,12 @@ bool isValidIntScore(int score) {
   return isValidDoubleScore(score?.toDouble());
 }
 
-String preferredSubjectTitleFromSubjectBase(SubjectBase subject,
+String preferredNameFromSubjectBase(SubjectBase subject,
     PreferredSubjectInfoLanguage language) {
-  return preferredSubjectTitle(subject.name, subject.nameCn, language);
+  return preferredName(subject.name, subject.nameCn, language);
 }
 
-String preferredSubjectTitle(String name, String nameCn,
+String preferredName(String name, String nameCn,
     PreferredSubjectInfoLanguage language) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Chinese:
@@ -38,13 +38,13 @@ String preferredSubjectTitle(String name, String nameCn,
 }
 
 ///Secondary title might be absent so `Optional` is returned
-Optional<String> secondarySubjectTitleFromSubjectBase(SubjectBase subject,
+Optional<String> secondaryNameFromSubjectBase(SubjectBase subject,
     PreferredSubjectInfoLanguage language) {
-  return secondarySubjectTitle(subject.name, subject.nameCn, language);
+  return secondaryName(subject.name, subject.nameCn, language);
 }
 
 ///Secondary title might be absent so `Optional` is returned
-Optional<String> secondarySubjectTitle(String name, String nameCn,
+Optional<String> secondaryName(String name, String nameCn,
     PreferredSubjectInfoLanguage language) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Original:

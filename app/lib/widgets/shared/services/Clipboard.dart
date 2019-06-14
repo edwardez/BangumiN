@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 
 class ClipboardService {
-  /// copy input text to clipboard and show a snackbar message upon success or failure
+  /// Copies input text to clipboard and show a snackbar message upon success or failure
   /// note1: the passed in context must be in a scaffold to show snackbar
   /// note2: popContext by default is false, setting it to true is useful if
   /// this method is invoked from a bottom sheet and you want to hide the bottom sheet
@@ -26,7 +26,7 @@ class ClipboardService {
     }
   }
 
-  /// Show a confirmation before copying something
+  /// Shows a confirmation before copying something
   static copyConfirmationDialog(BuildContext context, String textToCopy,
       {Widget dialogContent,
         dialogTitle = '复制此内容？',

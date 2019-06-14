@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
-import 'package:munin/models/bangumi/subject/comment/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/BrightBlueBangumiPink.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -31,7 +31,7 @@ class SubjectReviewPoster extends StatefulWidget {
   /// Padding between color background and inner content
   static const double posterOuterVerticalPadding = 24;
   static const double posterOuterHorizontalPadding =
-      defaultDensePortraitHorizontalPadding;
+      defaultDensePortraitHorizontalOffset;
 
   /// Specifies a display theme to avoid conflicting with custom themes
   static final displayTheme = brightBangumiPinkBlueThemeData;
@@ -105,7 +105,7 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
   String _getUserActionNameOnPoster(
       SubjectType subjectType, CollectionStatus status, double score) {
     bool isUndecidableStatus = status == null ||
-        status == CollectionStatus.Untouched ||
+        status == CollectionStatus.Pristine ||
         status == CollectionStatus.Unknown;
     bool isInvalidScore = score == null || score <= 0.0 || score > 10.0;
 

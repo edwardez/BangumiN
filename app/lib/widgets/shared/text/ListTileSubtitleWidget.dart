@@ -40,7 +40,7 @@ class ListTileSubtitleWidget extends StatelessWidget {
               child: Text(
                 actionName,
 
-                /// action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
+                // Action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: captionStyle,
@@ -56,8 +56,8 @@ class ListTileSubtitleWidget extends StatelessWidget {
         ],
       );
     } else {
-      /// if text overflows there will be an error
-      /// however length of this text is predictable so it should be fine
+      // If text overflows there will be an error
+      // however length of this text is predictable so it should be fine
       return Row(
         children: [
           Text(

@@ -26,6 +26,7 @@ import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/timeline/item/BlogCreationSingleWidget.dart';
 import 'package:munin/widgets/timeline/item/CollectionUpdateSingle.dart';
@@ -171,42 +172,46 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
 
     FeedChunks feedChunks = vm.feedChunks;
     return (BuildContext context, int index) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (feedChunks
-              .getFeedAt(index)
-              ?.user
-              ?.username != null)
-            CachedCircleAvatar(
-              imageUrl: feedChunks
-                  .getFeedAt(index)
-                  ?.user
-                  ?.avatar
-                  ?.medium,
-              navigateToUserRouteOnTap: true,
-              username: feedChunks
-                  .getFeedAt(index)
-                  .user
-                  .username,
-            ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 8),
-              child: getWidgetByType(
-                  feedChunks.getFeedAt(index), vm.appUsername, vm.deleteFeed),
-            ),
-          )
-        ],
+      return MuninPadding.vertical3xOffset(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (feedChunks
+                .getFeedAt(index)
+                ?.user
+                ?.username != null)
+              CachedCircleAvatar(
+                imageUrl: feedChunks
+                    .getFeedAt(index)
+                    ?.user
+                    ?.avatar
+                    ?.medium,
+                navigateToUserRouteOnTap: true,
+                username: feedChunks
+                    .getFeedAt(index)
+                    .user
+                    .username,
+              ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 8),
+                child: getWidgetByType(
+                    feedChunks.getFeedAt(index), vm.appUsername, vm.deleteFeed),
+              ),
+            )
+          ],
+        ),
       );
     };
   }
 
   /// A widget that will show up if the timeline is empty
   _buildEmptyTimelineWidget() {
+    Widget emptyTimelineWidget;
+
     if (widget.getTimelineRequest.timelineSource ==
         TimelineSource.UserProfile) {
-      return Column(
+      emptyTimelineWidget = Column(
         children: <Widget>[
           Text('时间线为空，可能因为：'),
           Text('1. $appOrBangumiHasAnError，下拉可重试'),
@@ -228,20 +233,24 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
           )
         ],
       );
+    } else {
+      emptyTimelineWidget = Column(
+        children: <Widget>[
+          Text('时间线为空，可能因为：'),
+          Text('1. $appOrBangumiHasAnError，下拉可重试'),
+          Text('2. 您尚未关注任何已发表动态的用户'),
+          FlatButton(
+            child: Text(checkWebVersionPrompt),
+            onPressed: () {
+              return launch(bangumiTimelineUrl, forceSafariVC: false);
+            },
+          )
+        ],
+      );
     }
 
-    return Column(
-      children: <Widget>[
-        Text('时间线为空，可能因为：'),
-        Text('1. $appOrBangumiHasAnError，下拉可重试'),
-        Text('2. 您尚未关注任何已发表动态的用户'),
-        FlatButton(
-          child: Text(checkWebVersionPrompt),
-          onPressed: () {
-            return launch(bangumiTimelineUrl, forceSafariVC: false);
-          },
-        )
-      ],
+    return MuninPadding(
+      child: emptyTimelineWidget,
     );
   }
 

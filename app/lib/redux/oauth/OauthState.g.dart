@@ -36,7 +36,6 @@ class _$OauthStateSerializer implements StructuredSerializer<OauthState> {
         ..add(serializers.serialize(object.error,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 

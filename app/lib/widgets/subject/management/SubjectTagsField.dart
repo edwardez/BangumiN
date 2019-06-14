@@ -11,10 +11,10 @@ import 'package:munin/widgets/subject/management/MuninExpandablePanel.dart';
 import 'package:quiver/strings.dart';
 
 enum TagsType {
-  /// List of tags that will show up after user click 'See more/选择标签'
+  /// List of tags that shows up after user click 'See more/选择标签'
   ExpandedCandidateTags,
 
-  /// List of tags that will show up before user click 'See more/选择标签'
+  /// List of tags that shows up before user click 'See more/选择标签'
   HeaderSelectedTags
 }
 
@@ -53,7 +53,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     return selectedTags.length >= widget.maxTags;
   }
 
-  /// Build existing tags callback according to [tagsType], relevant bool in value
+  /// Builds existing tags callback according to [tagsType], relevant bool in value
   /// of [tags] will be set accordingly
   /// If [tagsType] is [TagsType.ExpandedCandidateTags], relevant key/value pair
   /// in [widget.headerTags] won't be removed, instead it will be marked as [false]
@@ -134,7 +134,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
                     }
                   }
 
-                  /// Navigator.of(context).pop() implicitly calls setState?
+                  // Navigator.of(context).pop() implicitly calls setState?
                   _newTagController.clear();
                   Navigator.of(context).pop();
                 },
@@ -169,7 +169,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     );
   }
 
-  /// Wrap a [GestureDetector] which will show a alert dialog to warn users that they've reached
+  /// Wraps a [GestureDetector] which will show a alert dialog to warn users that they've reached
   /// maximum number of tags, or the [choiceChip] itself without any wrapper
   /// if [wrapAlertDialog] is set to false
   Widget _maxTagsAlertWrapper(
@@ -186,7 +186,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     return choiceChip;
   }
 
-  /// Build tags according to [tagsType]
+  /// Builds tags according to [tagsType]
   /// If [tagsType] is [TagsType.ExpandedCandidateTags], an extra 'new tag' chip will
   /// be added to the tail
   List<Widget> _buildTags(BuildContext context,
@@ -196,9 +196,9 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
 
     List<Widget> chips = [];
     tags.forEach((String tagName, bool isSelected) {
-      /// if user has selected maximum number of tags and this tag is currently
-      /// not selected, it will be disabled and wrapped with an alert dialog
-      /// if user tries to tap it, it's determined by [wrapAlertDialog]
+      // If user has selected maximum number of tags and this tag is currently
+      // not selected, it will be disabled and wrapped with an alert dialog
+      // if user tries to tap it, it's determined by [wrapAlertDialog]
       bool wrapAlertDialog = _hasReachedMaxTags() && !tags[tagName];
 
       StrokeChoiceChip choiceChip = StrokeChoiceChip(
@@ -212,7 +212,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
       chips.add(_maxTagsAlertWrapper(context, choiceChip, wrapAlertDialog));
     });
 
-    /// Add a 'Add new tag' chip if current tags are displayed in the expanded panel
+    // Adds a 'Add new tag' chip if current tags are displayed in the expanded panel
     if (tagsType == TagsType.ExpandedCandidateTags) {
       bool wrapAlertDialog = _hasReachedMaxTags();
       StrokeChoiceChip choiceChip = StrokeChoiceChip(
@@ -241,7 +241,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     });
   }
 
-  /// Listen to whether panels have been expanded or not, set [expanded]
+  /// Listens to whether panels have been expanded or not, set [expanded]
   /// And remove unselected tags from [widget.headerTags] if user has deselected
   /// them
   _listenToExpandable() {
@@ -272,8 +272,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
       initialExpanded: expanded,
       expandableController: expandableController,
       hasIcon: false,
-
-      /// Icon is right after text label(we add it manually)
+      // Icon is right after text label(we add it manually)
       header: Center(
         child: Row(
           mainAxisSize: MainAxisSize.min,

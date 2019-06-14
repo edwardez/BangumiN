@@ -30,7 +30,7 @@ class SubjectType extends EnumClass {
     SubjectType.Book
   };
 
-  static getTypeByChineseName(String chineseName) {
+  static guessTypeByChineseName(String chineseName) {
     switch (chineseName) {
       case '书籍':
         return SubjectType.Book;

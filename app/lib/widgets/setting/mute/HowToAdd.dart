@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 
 showHowToAddUserDialog(BuildContext context) {
   showDialog(
@@ -12,7 +13,7 @@ showHowToAddUserDialog(BuildContext context) {
               '由于Bangumi的限制，目前暂时无法以搜索用户名的方式进行添加。'),
           actions: <Widget>[
             FlatButton(
-              child: Text('好的'),
+              child: Text(dialogConfirmation),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -32,7 +33,7 @@ showHowToAddGroupDialog(BuildContext context) {
               '由于Bangumi的限制，目前暂时无法以搜索小组名的方式进行添加。'),
           actions: <Widget>[
             FlatButton(
-              child: Text('好的'),
+              child: Text(dialogConfirmation),
               onPressed: () {
                 Navigator.pop(context);
               },

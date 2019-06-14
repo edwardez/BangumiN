@@ -91,7 +91,11 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
 
   /// Currently this calculation might block ui thread
   /// However it looks like there is no easy way to use compute here
-  /// TODO: move this to an isolate
+  /// TODO: move this to an isolate, the challenge is that we need to re-download
+  /// and re-calculate the same image every time even visiting the same image
+  /// every time if isolate is used, which might be an issue
+  /// (putting palette generator in main thread means color can be cached, and
+  /// we can also reuse cached image provider if there is any).
   Future<void> _updatePaletteGenerator(String imageUrl) async {
     try {
       paletteGenerator = await PaletteGenerator.fromImageProvider(
@@ -124,7 +128,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
         );
       }
 
-      _updatePaletteGenerator(widget.subject.cover.large);
+      _updatePaletteGenerator(widget.subject.cover.small);
       return Center(
         child: Text('正在生成海报...'),
       );

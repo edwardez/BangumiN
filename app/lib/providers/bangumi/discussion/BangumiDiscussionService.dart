@@ -14,8 +14,7 @@ import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThrea
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
-import 'package:munin/providers/bangumi/discussion/parser/DiscussionParser.dart';
-import 'package:munin/providers/bangumi/discussion/parser/ThreadParser.dart';
+import 'package:munin/providers/bangumi/discussion/parser/isoldate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 
@@ -48,8 +47,13 @@ class BangumiDiscussionService {
     Dio.Response response = await cookieClient.dio
         .get(requestUrl, queryParameters: queryParameters);
 
-    List<DiscussionItem> discussionItems =
-    DiscussionParser().process(response.data, muteSetting: muteSetting);
+    List<DiscussionItem> discussionItems = await compute(
+      processDiscussion,
+      ParseDiscussionMessage(
+        response.data,
+        muteSetting,
+      ),
+    );
 
     GetDiscussionResponse getDiscussionResponse = GetDiscussionResponse((b) =>
     b
@@ -66,8 +70,8 @@ class BangumiDiscussionService {
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      GroupThread thread = ThreadParser(mutedUsers: mutedUsers)
-          .processGroupThread(response.data, threadId);
+      GroupThread thread = await compute(processGroupThread,
+          ParseThreadMessage(response.data, mutedUsers, threadId));
       return thread;
     }
 
@@ -81,8 +85,8 @@ class BangumiDiscussionService {
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      EpisodeThread thread = ThreadParser(mutedUsers: mutedUsers)
-          .processEpisodeThread(response.data, threadId);
+      EpisodeThread thread = await compute(processEpisodeThread,
+          ParseThreadMessage(response.data, mutedUsers, threadId));
       return thread;
     }
 
@@ -96,8 +100,8 @@ class BangumiDiscussionService {
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      SubjectTopicThread thread = ThreadParser(mutedUsers: mutedUsers)
-          .processSubjectTopicThread(response.data, threadId);
+      SubjectTopicThread thread = await compute(processSubjectTopicThread,
+          ParseThreadMessage(response.data, mutedUsers, threadId));
       return thread;
     }
 
@@ -111,8 +115,8 @@ class BangumiDiscussionService {
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      BlogThread thread = ThreadParser(mutedUsers: mutedUsers)
-          .processBlogThread(response.data, threadId);
+      BlogThread thread = await compute(processBlogThread,
+          ParseThreadMessage(response.data, mutedUsers, threadId));
       return thread;
     }
 

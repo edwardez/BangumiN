@@ -12,6 +12,7 @@ import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
+import 'package:munin/providers/bangumi/timeline/parser/isolate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 
@@ -59,18 +60,17 @@ class BangumiTimelineService {
     Response feedsHtml = await cookieClient.dio
         .get(requestPath, queryParameters: queryParameters);
 
-    TimelineParser timelineParser = TimelineParser();
-
-    GetTimelineParsedResponse fetchFeedsResult = timelineParser.process(
-        feedsHtml.data,
-        feedLoadType: feedLoadType,
-        upperFeedId: upperFeedId,
-        lowerFeedId: lowerFeedId,
-        mutedUsers: mutedUsers,
-        timelineSource: request.timelineSource,
-        userInfo: userInfo);
-
-    return fetchFeedsResult;
+    return await compute(
+        processTimelineFeeds,
+        ParseTimelineFeedsMessage(
+          feedsHtml.data,
+          feedLoadType: feedLoadType,
+          upperFeedId: upperFeedId,
+          lowerFeedId: lowerFeedId,
+          timelineSource: request.timelineSource,
+          userInfo: userInfo,
+          mutedUsers: mutedUsers,
+        ));
   }
 
   Future<void> deleteTimeline(int feedId) async {

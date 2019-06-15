@@ -29,7 +29,7 @@ import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
 class SubjectParser {
-  final curatedRowMappings = {
+  static const curatedRowMappings = {
     SubjectType.Anime: {
       '话数',
       '动画制作',
@@ -72,6 +72,10 @@ class SubjectParser {
       '结束',
     },
   };
+
+  final BuiltMap<String, MutedUser> mutedUsers;
+
+  const SubjectParser({@required this.mutedUsers});
 
   /// parse a InfoBoxItem, returns null if node is unexpected or invalid
   /// if a element has a link, we assume it's a link to a person
@@ -192,7 +196,6 @@ class SubjectParser {
   }
 
   BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement,
-      BuiltMap<String, MutedUser> mutedUsers,
       {String defaultActionName = '评价道'}) {
     /// a [SplayTreeSet] that contains a sorted set of reviews where
     /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
@@ -480,10 +483,9 @@ class SubjectParser {
     infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
   }
 
-  BangumiSubject process(String rawHtml,
-      {@required BuiltMap<String, MutedUser> mutedUsers}) {
+  BangumiSubject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
-    final SubjectType subjectType = parseSubjectType(document);
+    final subjectType = parseSubjectType(document);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
@@ -559,7 +561,7 @@ class SubjectParser {
 
     BuiltList<Character> characters = parseCharacters(document);
 
-    BuiltList<SubjectReview> comments = parseReviews(document, mutedUsers);
+    BuiltList<SubjectReview> comments = parseReviews(document);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
     parseRelatedSubjects(document, subjectType);
@@ -596,3 +598,4 @@ class SubjectParser {
       ..collectionStatusDistribution.replace(collectionStatusDistribution));
   }
 }
+

@@ -6,7 +6,6 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
-import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/subject/parser/common.dart';
@@ -33,7 +32,7 @@ class SubjectReviewParser {
   /// Returning [Optional.absent()] indicates that max page number cannot be
   /// found. Most likely it's because there is only one page and pagination
   /// element doesn't exist.
-  Optional<int> parseMaxPageNumber(
+  Optional<int> _parseMaxPageNumber(
       DocumentFragment document, int currentPageNumber) {
     currentPageNumber ??= defaultPageNumber;
 
@@ -63,11 +62,10 @@ class SubjectReviewParser {
     return Optional.of(maxPageNumber);
   }
 
-  ParsedSubjectReviews processSubjectReviews(
+  ParsedSubjectReviews parseSubjectReviews(
     String rawHtml, {
     @required SubjectReviewMainFilter mainFilter,
     @required int requestedPageNumber,
-    SubjectType subjectType,
   }) {
     DocumentFragment document = parseFragment(rawHtml);
 
@@ -83,7 +81,7 @@ class SubjectReviewParser {
     );
 
     Optional<int> maybeMaxPageNumber =
-        parseMaxPageNumber(document, currentPageNumber);
+    _parseMaxPageNumber(document, currentPageNumber);
 
     LinkedHashMap<String, SubjectReview> reviews =
         new LinkedHashMap<String, SubjectReview>();
@@ -103,7 +101,7 @@ class SubjectReviewParser {
     int maxPageNumber =
         hasMultiplePages ? maybeMaxPageNumber.value : currentPageNumber;
 
-    subjectType ??= parseSubjectType(document);
+    final subjectType = parseSubjectType(document);
 
     String commentsSelector;
     if (mainFilter == SubjectReviewMainFilter.WithNonEmptyComments) {

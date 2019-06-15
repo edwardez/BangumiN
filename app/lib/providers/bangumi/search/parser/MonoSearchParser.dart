@@ -11,7 +11,7 @@ import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 
 class MonoSearchParser {
-  Optional<MonoSearchResult> parseMonoSearchResult(
+  Optional<MonoSearchResult> _parseMonoSearchResult(
       Element monoElement, SearchType searchType) {
     Element nameElement = monoElement.querySelector('h2 a');
 
@@ -62,7 +62,7 @@ class MonoSearchParser {
     return Optional.of(monoSearchResult);
   }
 
-  LinkedHashMap<int, MonoSearchResult> process(String rawHtml,
+  LinkedHashMap<int, MonoSearchResult> processMonoSearch(String rawHtml,
       {@required SearchType searchType}) {
     assert(searchType != null && searchType.isMonoSearchType);
 
@@ -75,7 +75,7 @@ class MonoSearchParser {
 
     for (Element monoElement in monoElements) {
       Optional<MonoSearchResult> maybeMonoSearchResult =
-          parseMonoSearchResult(monoElement, searchType);
+      _parseMonoSearchResult(monoElement, searchType);
       if (maybeMonoSearchResult.isPresent) {
         MonoSearchResult monoSearchResult = maybeMonoSearchResult.value;
         monoSearchResults[monoSearchResult.id] = monoSearchResult;

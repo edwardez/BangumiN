@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
@@ -7,7 +8,7 @@ import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/parser/ImportBlockedUserParser.dart';
-import 'package:munin/providers/bangumi/user/parser/UserParser.dart';
+import 'package:munin/providers/bangumi/user/parser/isolate.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 
 // A Bangumi user service that handles user-related http requests and persist relevant info
@@ -46,8 +47,7 @@ class BangumiUserService {
     await cookieClient.dio.get<String>('https://${Application.environmentValue
         .bangumiNonCdnHost}/user/$username');
 
-    UserProfile profile = UserParser().process(response.data);
-    return profile;
+    return await compute(processUserProfile, response.data);
   }
 
   // Imports blocked users

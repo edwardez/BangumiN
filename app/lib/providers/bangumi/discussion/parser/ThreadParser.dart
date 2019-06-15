@@ -42,7 +42,7 @@ class ThreadParser {
 
   ThreadParser({@required this.mutedUsers});
 
-  PostTimeAndSeqNum parsePostTimeAndSeqNum(String raw) {
+  PostTimeAndSeqNum _parsePostTimeAndSeqNum(String raw) {
     Match match = postTimeAndSequentialNumRegex.firstMatch(raw?.trim());
     int mainSequentialNumber = tryParseInt(match.group(1), defaultValue: null);
     int subSequentialNumber = tryParseInt(match.group(2), defaultValue: null);
@@ -55,10 +55,12 @@ class ThreadParser {
     );
   }
 
-  Post parsePost(Element element, PostType postType) {
+  Post _parsePost(Element element, PostType postType) {
     int id = extractFirstIntGroup(element.attributes['id'], defaultValue: null);
     PostTimeAndSeqNum postInfo =
-        parsePostTimeAndSeqNum(element.querySelector('.re_info').text);
+    _parsePostTimeAndSeqNum(element
+        .querySelector('.re_info')
+        .text);
 
     String userNickName = element.querySelector('.inner a.l').text;
     String username = parseHrefId(element.querySelector('.inner a.l'));
@@ -124,16 +126,16 @@ class ThreadParser {
           ..id = id
           ..mainSequentialNumber = postInfo.mainSequentialNumber
           ..postTimeInMilliSeconds = postInfo.postTimeInMilliSeconds
-          ..subReplies.replace(BuiltList<Post>.of(parseSubReplies(element))));
+          ..subReplies.replace(BuiltList<Post>.of(_parseSubReplies(element))));
     }
   }
 
-  List<Post> parseSubReplies(Element replyElement) {
+  List<Post> _parseSubReplies(Element replyElement) {
     List<Post> replies = [];
 
     List<Element> elements = replyElement.querySelectorAll('.sub_reply_bg');
     for (var element in elements) {
-      Post post = parsePost(element, PostType.SubPostReply);
+      Post post = _parsePost(element, PostType.SubPostReply);
       if (!mutedUsers.containsKey(post.author.username)) {
         replies.add(post);
       }
@@ -142,12 +144,12 @@ class ThreadParser {
     return replies;
   }
 
-  List<Post> parseReplies(DocumentFragment document) {
+  List<Post> _parseReplies(DocumentFragment document) {
     List<Post> replies = [];
 
     List<Element> elements = document.querySelectorAll('.row_reply');
     for (var element in elements) {
-      Post post = parsePost(element, PostType.MainPostReply);
+      Post post = _parsePost(element, PostType.MainPostReply);
       if (!mutedUsers.containsKey(post.author.username)) {
         replies.add(post);
       }
@@ -156,7 +158,7 @@ class ThreadParser {
     return replies;
   }
 
-  List<ThreadRelatedEpisode> parseThreadRelatedEpisodes(Element element) {
+  List<ThreadRelatedEpisode> _parseThreadRelatedEpisodes(Element element) {
     AirStatus parseAirStatus(String rawAirStatusName) {
       switch (rawAirStatusName) {
         case 'Air':
@@ -199,6 +201,61 @@ class ThreadParser {
     return episodes;
   }
 
+  BlogContent _parseBlogContent(DocumentFragment document) {
+    String rawTime = postTimeRegex
+        .firstMatch(document
+        .querySelector('.re_info')
+        ?.text)
+        .group(0);
+
+    DateTime postTime = parseDateTime(rawTime);
+
+    Element userElement = document.querySelector('#pageHeader .avatar.l');
+
+    String userNickName = userElement.text?.trim();
+    String username = parseHrefId(userElement);
+    String avatarImageUrl = imageSrcOrFallback(userElement.querySelector('img'),
+        fallbackImageSrc: bangumiAnonymousUserMediumAvatar);
+    BangumiImage avatar;
+    if (avatarImageUrl != null) {
+      avatar = BangumiImage.fromImageUrl(
+          avatarImageUrl, ImageSize.Unknown, ImageType.UserAvatar);
+    }
+
+    BangumiUserBasic author = BangumiUserBasic((b) =>
+    b
+      ..nickname = userNickName
+      ..username = username
+      ..avatar.replace(avatar));
+
+    List<ParentSubject> subjects = [];
+
+    for (var subjectElement
+    in document.querySelectorAll('#related_subject_list > li')) {
+      String coverImageUrl =
+      imageSrcOrFallback(subjectElement.querySelector('img'));
+
+      int subjectId = tryParseInt(
+          parseHrefId(subjectElement.querySelector('a'), digitOnly: true),
+          defaultValue: null);
+
+      subjects.add(ParentSubject((b) =>
+      b
+        ..id = subjectId
+        ..name = subjectElement.text.trim()
+        ..cover.replace(BangumiImage.fromImageUrl(
+            coverImageUrl, ImageSize.Unknown, ImageType.SubjectCover))));
+    }
+
+    return BlogContent((b) =>
+    b
+      ..associatedSubjects.replace(BuiltList<ParentSubject>.of(subjects))
+      ..postTimeInMilliSeconds = postTime.millisecondsSinceEpoch
+      ..author.replace(author)
+      ..html = document
+          .querySelector('#entry_content')
+          ?.outerHtml ?? '');
+  }
 
   GroupThread processGroupThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
@@ -208,10 +265,10 @@ class ThreadParser {
     String groupName =
         document.querySelector('#pageHeader a.avatar')?.text ?? '小组讨论';
 
-    Post initialPost = parsePost(
+    Post initialPost = _parsePost(
         document.querySelector('.postTopic'), PostType.InitialGroupPost);
 
-    List<Post> replies = parseReplies(document);
+    List<Post> replies = _parseReplies(document);
 
     return GroupThread((b) => b
       ..id = threadId
@@ -228,10 +285,10 @@ class ThreadParser {
 
     var maybeParentSubject = parseParentSubject(document);
 
-    Post initialPost = parsePost(
+    Post initialPost = _parsePost(
         document.querySelector('.postTopic'), PostType.InitialSubjectPost);
 
-    List<Post> replies = parseReplies(document);
+    List<Post> replies = _parseReplies(document);
 
     return SubjectTopicThread((b) => b
       ..id = threadId
@@ -260,10 +317,10 @@ class ThreadParser {
 
     String descriptionHtml = document.querySelector('.epDesc')?.outerHtml ?? '';
 
-    List<Post> replies = parseReplies(document);
+    List<Post> replies = _parseReplies(document);
 
     List<ThreadRelatedEpisode> relatedEpisodes =
-        parseThreadRelatedEpisodes(document.querySelector('.sideEpList'));
+    _parseThreadRelatedEpisodes(document.querySelector('.sideEpList'));
 
     var maybeParentSubject = parseParentSubject(document);
 
@@ -278,64 +335,14 @@ class ThreadParser {
       ..mainPostReplies.replace(BuiltList<Post>.of(replies)));
   }
 
-  BlogContent parseBlogContent(DocumentFragment document) {
-    String rawTime = postTimeRegex
-        .firstMatch(document.querySelector('.re_info')?.text)
-        .group(0);
-
-    DateTime postTime = parseDateTime(rawTime);
-
-    Element userElement = document.querySelector('#pageHeader .avatar.l');
-
-    String userNickName = userElement.text?.trim();
-    String username = parseHrefId(userElement);
-    String avatarImageUrl = imageSrcOrFallback(userElement.querySelector('img'),
-        fallbackImageSrc: bangumiAnonymousUserMediumAvatar);
-    BangumiImage avatar;
-    if (avatarImageUrl != null) {
-      avatar = BangumiImage.fromImageUrl(
-          avatarImageUrl, ImageSize.Unknown, ImageType.UserAvatar);
-    }
-
-    BangumiUserBasic author = BangumiUserBasic((b) => b
-      ..nickname = userNickName
-      ..username = username
-      ..avatar.replace(avatar));
-
-    List<ParentSubject> subjects = [];
-
-    for (var subjectElement
-        in document.querySelectorAll('#related_subject_list > li')) {
-      String coverImageUrl =
-      imageSrcOrFallback(subjectElement.querySelector('img'));
-
-      int subjectId = tryParseInt(
-          parseHrefId(subjectElement.querySelector('a'), digitOnly: true),
-          defaultValue: null);
-
-      subjects.add(ParentSubject((b) =>
-      b
-        ..id = subjectId
-        ..name = subjectElement.text.trim()
-        ..cover.replace(BangumiImage.fromImageUrl(
-            coverImageUrl, ImageSize.Unknown, ImageType.SubjectCover))));
-    }
-
-    return BlogContent((b) => b
-      ..associatedSubjects.replace(BuiltList<ParentSubject>.of(subjects))
-      ..postTimeInMilliSeconds = postTime.millisecondsSinceEpoch
-      ..author.replace(author)
-      ..html = document.querySelector('#entry_content')?.outerHtml ?? '');
-  }
-
   BlogThread processBlogThread(String rawHtml, int blogId) {
     DocumentFragment document = parseFragment(rawHtml);
 
     String title = document.querySelector('title')?.text?.trim();
 
-    BlogContent blogContent = parseBlogContent(document);
+    BlogContent blogContent = _parseBlogContent(document);
 
-    List<Post> replies = parseReplies(document);
+    List<Post> replies = _parseReplies(document);
 
     return BlogThread((b) => b
       ..id = blogId

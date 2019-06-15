@@ -18,7 +18,7 @@ import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
-import 'package:munin/providers/bangumi/progress/parser/ProgressParser.dart';
+import 'package:munin/providers/bangumi/progress/parser/isolate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 
@@ -248,7 +248,7 @@ class BangumiProgressService {
         await cookieClient.dio.get<String>('/m/prg');
 
     LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject =
-        ProgressParser().processProgressPreview(response.data);
+    await compute(processProgressPreview, response.data);
     if (touchedEpisodesPerSubjectId != null) {
       episodesPerSubject.forEach((subjectId, episodes) {
         for (EpisodeProgress episode in episodes.values) {
@@ -403,14 +403,12 @@ class BangumiProgressService {
         continue;
       }
 
-      EpisodeStatus status = _episodeStatusFromApiWithPristineFallback(
-          rawEpisode);
+      EpisodeStatus status =
+      _episodeStatusFromApiWithPristineFallback(rawEpisode);
       touchedEpisodes.addAll({episodeId: status});
     }
 
-    SubjectEpisodes subjectEpisodes = ProgressParser()
-        .progressSubjectEpisodes(allEpisodesResponse.data, touchedEpisodes);
-
-    return subjectEpisodes;
+    return await compute(processSubjectEpisodes,
+        ParseSubjectEpisodesMessage(allEpisodesResponse.data, touchedEpisodes));
   }
 }

@@ -85,7 +85,7 @@ class ProgressParser {
     return EpisodeType.Unknown;
   }
 
-  LinkedHashMap<int, EpisodeProgress> parseEpisodes(
+  LinkedHashMap<int, EpisodeProgress> _parseEpisodes(
       Element subjectElement, Map<int, Element> episodeDetailElements) {
     LinkedHashMap<int, EpisodeProgress> episodes =
         LinkedHashMap<int, EpisodeProgress>();
@@ -168,47 +168,7 @@ class ProgressParser {
     return episodes;
   }
 
-  /// parse https://bgm.tv/m/prg
-  LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>
-      processProgressPreview(String rawHtml) {
-    DocumentFragment document = parseFragment(rawHtml);
-
-    LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject =
-        LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>();
-
-    List<Element> subjects =
-        document.querySelectorAll('.infoWrapper_tv > .subjectItem');
-
-    Map<int, Element> episodeDetailElements = {};
-
-    for (Element detailElement in document.querySelectorAll('.prg_popup')) {
-      int episodeId =
-          extractFirstIntGroup(detailElement.id, defaultValue: null);
-      Element tipElement = detailElement.querySelector('.tip');
-      if (episodeId == null || tipElement == null) {
-        debugPrint('Recevied unknown subject ${detailElement.outerHtml}');
-        continue;
-      }
-
-      episodeDetailElements[episodeId] = tipElement;
-    }
-
-    for (Element subjectElement in subjects) {
-      int subjectId =
-          extractFirstIntGroup(subjectElement.id, defaultValue: null);
-      if (subjectId == null) {
-        debugPrint('Recevied unknown subject ${subjectElement.outerHtml}');
-        continue;
-      }
-
-      episodesPerSubject[subjectId] =
-          parseEpisodes(subjectElement, episodeDetailElements);
-    }
-
-    return episodesPerSubject;
-  }
-
-  BuiltMap<int, SimpleHtmlBasedEpisode> parseSubjectEpisodes(
+  BuiltMap<int, SimpleHtmlBasedEpisode> _parseSubjectEpisodes(
       List<Element> episodeElements,
       Map<int, EpisodeStatus> touchedEpisodes,) {
     EpisodeType episodeType = EpisodeType.Unknown;
@@ -297,13 +257,54 @@ class ProgressParser {
     return episodes;
   }
 
-  SubjectEpisodes progressSubjectEpisodes(String rawHtml,
+  /// parse https://bgm.tv/m/prg
+  LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>
+  processProgressPreview(String rawHtml) {
+    DocumentFragment document = parseFragment(rawHtml);
+
+    LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject =
+    LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>();
+
+    List<Element> subjects =
+    document.querySelectorAll('.infoWrapper_tv > .subjectItem');
+
+    Map<int, Element> episodeDetailElements = {};
+
+    for (Element detailElement in document.querySelectorAll('.prg_popup')) {
+      int episodeId =
+      extractFirstIntGroup(detailElement.id, defaultValue: null);
+      Element tipElement = detailElement.querySelector('.tip');
+      if (episodeId == null || tipElement == null) {
+        debugPrint('Recevied unknown subject ${detailElement.outerHtml}');
+        continue;
+      }
+
+      episodeDetailElements[episodeId] = tipElement;
+    }
+
+    for (Element subjectElement in subjects) {
+      int subjectId =
+      extractFirstIntGroup(subjectElement.id, defaultValue: null);
+      if (subjectId == null) {
+        debugPrint('Recevied unknown subject ${subjectElement.outerHtml}');
+        continue;
+      }
+
+      episodesPerSubject[subjectId] =
+          _parseEpisodes(subjectElement, episodeDetailElements);
+    }
+
+    return episodesPerSubject;
+  }
+
+
+  SubjectEpisodes processSubjectEpisodes(String rawHtml,
       Map<int, EpisodeStatus> touchedEpisodes) {
     DocumentFragment document = parseFragment(rawHtml);
     List<Element> episodeElements =
     document.querySelectorAll('.line_list > li');
 
-    final episodes = parseSubjectEpisodes(episodeElements, touchedEpisodes);
+    final episodes = _parseSubjectEpisodes(episodeElements, touchedEpisodes);
 
     return SubjectEpisodes((b) =>
     b

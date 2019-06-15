@@ -2,6 +2,7 @@ import 'dart:convert' show json;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
@@ -13,8 +14,8 @@ import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
-import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
+import 'package:munin/providers/bangumi/subject/parser/isolate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 import 'package:quiver/strings.dart';
@@ -37,8 +38,8 @@ class BangumiSubjectService {
     Dio.Response<String> response =
     await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject =
-    SubjectParser().process(response.data, mutedUsers: mutedUsers);
+    BangumiSubject subject = await compute(processBangumiSubject,
+        ParseBangumiSubjectMessage(response.data, mutedUsers));
 
     return subject;
   }
@@ -130,8 +131,7 @@ class BangumiSubjectService {
     String path = '/subject/${request.subjectId}';
     Map<String, String> queryParameters = {};
 
-    if (request.mainFilter ==
-        SubjectReviewMainFilter.WithNonEmptyComments) {
+    if (request.mainFilter == SubjectReviewMainFilter.WithNonEmptyComments) {
       path += '/comments';
     } else {
       path += '/${request.mainFilter.wiredNameOnWebPage}';
@@ -154,11 +154,15 @@ class BangumiSubjectService {
       throw BangumiResponseIncomprehensibleException();
     }
 
-    ParsedSubjectReviews reviews = SubjectReviewParser(mutedUsers: mutedUsers)
-        .processSubjectReviews(response.data,
-        mainFilter: request.mainFilter,
-        requestedPageNumber: pageNumber);
+    ParsedSubjectReviews parsedSubjectReviews = await compute(
+        processBangumiSubjectReview,
+        ParseBangumiSubjectReviewsMessage(
+          response.data,
+          mutedUsers: mutedUsers,
+          requestedPageNumber: pageNumber,
+          mainFilter: request.mainFilter,
+        ));
 
-    return reviews;
+    return parsedSubjectReviews;
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:redux/redux.dart';
 
 /// A general-purpose widget to show a [CircularProgressIndicator] if the request
@@ -78,7 +79,7 @@ class RequestInProgressIndicatorWidget extends StatelessWidget {
           )
               : null,
           safeAreaChild: Center(
-            child: CircularProgressIndicator(),
+            child: AdaptiveProgressIndicator(),
           ),
         );
       },

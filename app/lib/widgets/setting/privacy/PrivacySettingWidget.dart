@@ -5,7 +5,9 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 import 'package:redux/redux.dart';
 
 class PrivacySettingWidget extends StatelessWidget {
@@ -50,6 +52,20 @@ class PrivacySettingWidget extends StatelessWidget {
                   activeColor: lightPrimaryDarkAccentColor(context),
                   title: Text('崩溃后自动发送匿名崩溃报告'),
                 ),
+                MuninPadding.vertical1xOffset(
+                  child: RichText(
+                    text: TextSpan(
+                      style: defaultCaptionText(context),
+                      children: <TextSpan>[
+                        TextSpan(text: '隐私设置变更在重启应用后生效。\n'),
+                        TextSpan(text: '欲了解更多详情，请参阅BangumiN的'),
+                        ...tosAndPrivacyLinks(context),
+                        TextSpan(text: '。'),
+                      ],
+                    ),
+                  ),
+                  denseHorizontal: true,
+                )
               ],
             ));
       },
@@ -95,4 +111,17 @@ class _ViewModel {
 
   @override
   int get hashCode => privacySetting.hashCode;
+}
+
+List<TextSpan> tosAndPrivacyLinks(BuildContext context) {
+  final linkStyle = TextStyle(color: lightPrimaryDarkAccentColor(context));
+  return [
+    LinkTextSpan(
+        text: '服务条款', style: linkStyle, url: "https://bangumin.app/tos"),
+    TextSpan(text: '和'),
+    LinkTextSpan(
+        text: '隐私政策',
+        style: linkStyle,
+        url: "https://bangumin.app/privacy"),
+  ];
 }

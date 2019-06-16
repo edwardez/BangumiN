@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
+import 'package:munin/widgets/setting/privacy/PrivacySettingWidget.dart';
 
 class MuninLoginPage extends StatefulWidget {
   const MuninLoginPage({Key key}) : super(key: key);
@@ -27,7 +27,6 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   }
 
   _buildTosAndPrivacy(BuildContext context) {
-    final linkStyle = TextStyle(color: lightPrimaryDarkAccentColor(context));
     return RichText(
       text: TextSpan(
         style: Theme
@@ -36,13 +35,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
             .body1,
         children: <TextSpan>[
           TextSpan(text: '点击授权即代表您同意我们的'),
-          LinkTextSpan(
-              text: '服务条款', style: linkStyle, url: "https://bangumin.app/tos"),
-          TextSpan(text: '和'),
-          LinkTextSpan(
-              text: '隐私政策',
-              style: linkStyle,
-              url: "https://bangumin.app/privacy"),
+          ...tosAndPrivacyLinks(context),
         ],
       ),
     );

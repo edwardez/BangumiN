@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'LoadingStatus.dart';
+part of 'RequestStatus.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-const LoadingStatus _$Initial = const LoadingStatus._('Initial');
-const LoadingStatus _$Loading = const LoadingStatus._('Loading');
-const LoadingStatus _$Success = const LoadingStatus._('Success');
-const LoadingStatus _$Timeout = const LoadingStatus._('TimeoutException');
-const LoadingStatus _$UnknownError = const LoadingStatus._('UnknownException');
+const RequestStatus _$Initial = const RequestStatus._('Initial');
+const RequestStatus _$Loading = const RequestStatus._('Loading');
+const RequestStatus _$Success = const RequestStatus._('Success');
+const RequestStatus _$Timeout = const RequestStatus._('TimeoutException');
+const RequestStatus _$UnknownError = const RequestStatus._('UnknownException');
 
-LoadingStatus _$valueOf(String name) {
+RequestStatus _$valueOf(String name) {
   switch (name) {
     case 'Initial':
       return _$Initial;
@@ -29,8 +29,8 @@ LoadingStatus _$valueOf(String name) {
   }
 }
 
-final BuiltSet<LoadingStatus> _$values =
-    new BuiltSet<LoadingStatus>(const <LoadingStatus>[
+final BuiltSet<RequestStatus> _$values =
+    new BuiltSet<RequestStatus>(const <RequestStatus>[
   _$Initial,
   _$Loading,
   _$Success,
@@ -38,24 +38,24 @@ final BuiltSet<LoadingStatus> _$values =
   _$UnknownError,
 ]);
 
-Serializer<LoadingStatus> _$loadingStatusSerializer =
-    new _$LoadingStatusSerializer();
+Serializer<RequestStatus> _$requestStatusSerializer =
+    new _$RequestStatusSerializer();
 
-class _$LoadingStatusSerializer implements PrimitiveSerializer<LoadingStatus> {
+class _$RequestStatusSerializer implements PrimitiveSerializer<RequestStatus> {
   @override
-  final Iterable<Type> types = const <Type>[LoadingStatus];
+  final Iterable<Type> types = const <Type>[RequestStatus];
   @override
-  final String wireName = 'LoadingStatus';
+  final String wireName = 'RequestStatus';
 
   @override
-  Object serialize(Serializers serializers, LoadingStatus object,
+  Object serialize(Serializers serializers, RequestStatus object,
           {FullType specifiedType = FullType.unspecified}) =>
       object.name;
 
   @override
-  LoadingStatus deserialize(Serializers serializers, Object serialized,
+  RequestStatus deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
-      LoadingStatus.valueOf(serialized as String);
+      RequestStatus.valueOf(serialized as String);
 }
 
 // ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -6,7 +6,6 @@ import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
@@ -15,7 +14,6 @@ import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
-import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
 /// A single discussion thread.
@@ -32,20 +30,23 @@ class BlogThreadWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(request.threadType == ThreadType.Blog);
 
+    Future<void> requestStatusFuture;
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, request),
       distinct: true,
       onInit: (store) {
         final action =
-            GetThreadRequestAction(context: context, request: request);
+        GetThreadRequestAction(request: request);
+
+        requestStatusFuture = action.completer.future;
         store.dispatch(action);
       },
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.thread == null) {
           return RequestInProgressIndicatorWidget(
-              loadingStatus: vm.loadingStatus,
-              refreshAction:
-                  GetThreadRequestAction(context: context, request: request));
+            retryCallback: vm.getThread,
+            requestStatusFuture: requestStatusFuture,
+          );
         } else {
           List<Widget> children = [];
           var parentBangumiContentType = BangumiContent.Blog;
@@ -103,29 +104,27 @@ class BlogThreadWidget extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(BuildContext context) getThread;
+  final Future<void> Function() getThread;
   final BlogThread thread;
-  final LoadingStatus loadingStatus;
 
   factory _ViewModel.fromStore(
       Store<AppState> store, GetThreadRequest request) {
-    _getThread(BuildContext context) {
-      final action = GetThreadRequestAction(context: context, request: request);
+    Future<void> _getThread() {
+      final action = GetThreadRequestAction(request: request);
       store.dispatch(action);
+
+      return action.completer.future;
     }
 
     return _ViewModel(
       getThread: _getThread,
       thread: store.state.discussionState.blogThreads[request.id],
-      loadingStatus:
-          store.state.discussionState.getThreadLoadingStatus[request],
     );
   }
 
   const _ViewModel({
     @required this.getThread,
     @required this.thread,
-    @required this.loadingStatus,
   });
 
   @override
@@ -133,9 +132,8 @@ class _ViewModel {
       identical(this, other) ||
           other is _ViewModel &&
               runtimeType == other.runtimeType &&
-              thread == other.thread &&
-              loadingStatus == other.loadingStatus;
+              thread == other.thread;
 
   @override
-  int get hashCode => hash2(thread, loadingStatus);
+  int get hashCode => thread.hashCode;
 }

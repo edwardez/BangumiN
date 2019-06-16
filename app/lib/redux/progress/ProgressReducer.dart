@@ -11,14 +11,9 @@ import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/progress/common.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:redux/redux.dart';
 
 final progressReducers = combineReducers<ProgressState>([
-  TypedReducer<ProgressState, GetSubjectEpisodesLoadingAction>(
-      getSubjectEpisodesLoadingReducer),
-  TypedReducer<ProgressState, GetSubjectEpisodesFailureAction>(
-      getSubjectEpisodesFailureReducer),
   TypedReducer<ProgressState, GetSubjectEpisodesSuccessAction>(
       getSubjectEpisodesSuccessReducer),
   TypedReducer<ProgressState, GetProgressSuccessAction>(
@@ -30,24 +25,6 @@ final progressReducers = combineReducers<ProgressState>([
   TypedReducer<ProgressState, UpdateBookProgressSuccessAction>(
       updateBookProgressSuccessReducer),
 ]);
-
-ProgressState getSubjectEpisodesLoadingReducer(ProgressState progressState,
-    GetSubjectEpisodesLoadingAction action) {
-  return progressState.rebuild((b) =>
-  b
-    ..subjectsLoadingStatus.addAll({
-      action.subjectId: LoadingStatus.Loading,
-    }));
-}
-
-ProgressState getSubjectEpisodesFailureReducer(ProgressState progressState,
-    GetSubjectEpisodesFailureAction action) {
-  return progressState.rebuild((b) =>
-  b
-    ..subjectsLoadingStatus.addAll({
-      action.subjectId: action.loadingStatus,
-    }));
-}
 
 ProgressState getSubjectEpisodesSuccessReducer(ProgressState progressState,
     GetSubjectEpisodesSuccessAction action) {

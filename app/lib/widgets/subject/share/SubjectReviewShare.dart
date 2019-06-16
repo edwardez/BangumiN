@@ -9,7 +9,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/shared/workarounds/munin_permission_handler/lib/permission_handler.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -43,7 +43,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
   bool hideReviewerInfo;
   SubjectReview review;
   PaletteGenerator paletteGenerator;
-  LoadingStatus imageProcessingStatus = LoadingStatus.Initial;
+  RequestStatus imageProcessingStatus = RequestStatus.Initial;
 
   final GlobalKey<SubjectReviewPosterState> _shareWidgetKey =
       GlobalKey<SubjectReviewPosterState>();
@@ -106,9 +106,9 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
       print(exception);
       print(stack);
       if (exception is TimeoutException) {
-        imageProcessingStatus = LoadingStatus.TimeoutException;
+        imageProcessingStatus = RequestStatus.TimeoutException;
       } else {
-        imageProcessingStatus = LoadingStatus.UnknownException;
+        imageProcessingStatus = RequestStatus.UnknownException;
       }
     }
 
@@ -119,7 +119,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
     if (paletteGenerator == null) {
       if (imageProcessingStatus.isException) {
         String errorText = '生成海报失败';
-        if (imageProcessingStatus == LoadingStatus.TimeoutException) {
+        if (imageProcessingStatus == RequestStatus.TimeoutException) {
           errorText += '，加载图片超时。';
         }
 

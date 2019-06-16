@@ -6,11 +6,11 @@ import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/common.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -32,7 +32,7 @@ List<Epic<AppState>> createProgressEpics(
 }
 
 Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
-    GetProgressAction action, String username) async* {
+    GetProgressRequestAction action, String username) async* {
   try {
     assert(action.subjectTypes.isNotEmpty);
 
@@ -70,20 +70,11 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
     print(stack);
     action.completer.completeError(error, stack);
 
-    var result = await generalExceptionHandler(
-      error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: action.showSnackBar,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    if (action.showSnackBar) {
-      Scaffold.of(action.context)
-          .showSnackBar(SnackBar(content: Text(error.toString())));
-    }
   }
 }
 
@@ -91,7 +82,7 @@ Epic<AppState> _createGetProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-        .ofType(TypeToken<GetProgressAction>())
+        .ofType(TypeToken<GetProgressRequestAction>())
         .switchMap((action) =>
         _getProgress(
           bangumiProgressService,
@@ -106,8 +97,6 @@ Stream<dynamic> _getSubjectEpisodesEpic(
     GetSubjectEpisodesRequestAction action,
     String username,) async* {
   try {
-    yield GetSubjectEpisodesLoadingAction(subjectId: action.subjectId);
-
     SubjectEpisodes subjectEpisodes = await bangumiProgressService
         .getSubjectEpisodes(username: username, subjectId: action.subjectId);
 
@@ -115,22 +104,13 @@ Stream<dynamic> _getSubjectEpisodesEpic(
       subjectEpisodes: subjectEpisodes,
       subjectId: action.subjectId,
     );
+    action.completer.complete();
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    final result = await generalExceptionHandler(
-      error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context).showSnackBar(SnackBar(
-      content: Text(error.toString()),
-    ));
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -199,18 +179,11 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    var result = await generalExceptionHandler(
-      error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: false,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
   } finally {
     action.completer.complete();
   }
@@ -288,24 +261,16 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
 
     /// Re-retrieves data from bangumi server to reflect change on widget.
     yield GetSubjectEpisodesRequestAction(
-      context: action.context,
       subjectId: action.subjectId,
     );
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    var result = await generalExceptionHandler(
-      error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: false,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 

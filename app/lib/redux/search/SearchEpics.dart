@@ -1,104 +1,73 @@
-import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/result/BangumiGeneralSearchResponse.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/search/SearchActions.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
 List<Epic<AppState>> createSearchEpics(
     BangumiSearchService bangumiSearchService) {
-  final searchSubjectEpic = _createSearchSubjectEpic(bangumiSearchService);
-  final searchMonoEpic = _createSearchMonoEpic(bangumiSearchService);
+  final searchSubjectOrMonoEpic = _createSearchSubjectOrMonoEpic(
+      bangumiSearchService);
 
-  return [searchSubjectEpic, searchMonoEpic,];
+  return [
+    searchSubjectOrMonoEpic,
+  ];
 }
 
-Stream<dynamic> _searchSubject(BangumiSearchService bangumiSearchService,
-    SearchSubjectAction action,
+Stream<dynamic> _searchSubjectOrMonoEpic(
+    BangumiSearchService bangumiSearchService,
+    SearchAction action,
     BangumiGeneralSearchResponse responseInStore) async* {
   try {
-    yield SearchLoadingAction(searchRequest: action.searchRequest);
-
-    /// currently [maxResults] is hard-coded to 25
-    int maxResults = 25;
-
-    BangumiGeneralSearchResponse bangumiSearchResponse =
-        await bangumiSearchService.searchSubject(
-            query: action.searchRequest.query,
-            searchType: action.searchRequest.searchType,
-            maxResults: maxResults,
-            start: responseInStore?.requestedResults);
-
-    yield SearchSuccessAction(
-        searchRequest: action.searchRequest,
-        searchResponse: bangumiSearchResponse);
-  } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    yield SearchFailureAction.fromUnknownException(
-        searchRequest: action.searchRequest);
-    var result = await generalExceptionHandler(error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
+    if (responseInStore?.hasReachedEnd ?? false) {
+      action.completer.complete();
       return;
     }
 
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
-
-  } finally {
-    action.completer.complete();
-  }
-}
-
-Epic<AppState> _createSearchSubjectEpic(
-    BangumiSearchService bangumiSearchService) {
-  return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<SearchSubjectAction>())
-        .switchMap((action) => _searchSubject(bangumiSearchService, action,
-            store.state.searchState.results[action.searchRequest]));
-  };
-}
-
-Stream<dynamic> _searchMono(BangumiSearchService bangumiSearchService,
-    SearchMonoAction action,
-    BangumiGeneralSearchResponse responseInStore) async* {
-  try {
-    yield SearchLoadingAction(searchRequest: action.searchRequest);
-
-    BangumiGeneralSearchResponse bangumiSearchResponse =
-    await bangumiSearchService.searchMono(
-        query: action.searchRequest.query,
-        searchType: action.searchRequest.searchType);
+    BangumiGeneralSearchResponse bangumiSearchResponse;
+    if (action is SearchSubjectAction) {
+      bangumiSearchResponse = await bangumiSearchService.searchSubject(
+          query: action.searchRequest.query,
+          searchType: action.searchRequest.searchType,
+          // currently [maxResults] is hard-coded to 25
+          maxResults: 25,
+          start: responseInStore?.requestedResults);
+    } else if (action is SearchMonoAction) {
+      bangumiSearchResponse = await bangumiSearchService.searchMono(
+          query: action.searchRequest.query,
+          searchType: action.searchRequest.searchType);
+    } else {
+      throw UnsupportedError('$action is not supported');
+    }
 
     yield SearchSuccessAction(
         searchRequest: action.searchRequest,
         searchResponse: bangumiSearchResponse);
+
+    action.completer.complete();
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
-    yield SearchFailureAction.fromUnknownException(
-        searchRequest: action.searchRequest);
+    yield HandleErrorAction(error: error, context: action.context,);
+    action.completer.completeError(error);
   } finally {
-    action.completer.complete();
+    completeDanglingCompleter(action.completer);
   }
 }
 
-Epic<AppState> _createSearchMonoEpic(
+Epic<AppState> _createSearchSubjectOrMonoEpic(
     BangumiSearchService bangumiSearchService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions).ofType(TypeToken<SearchMonoAction>()).switchMap(
-            (action) =>
-            _searchMono(bangumiSearchService, action,
-                store.state.searchState.results[action.searchRequest]));
+    return Observable(actions)
+        .ofType(TypeToken<SearchAction>())
+        .switchMap((action) =>
+        _searchSubjectOrMonoEpic(
+          bangumiSearchService,
+          action,
+          store.state.searchState.results[action.searchRequest],
+        ));
   };
 }

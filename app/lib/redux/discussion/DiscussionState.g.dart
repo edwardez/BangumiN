@@ -43,15 +43,7 @@ class _$DiscussionStateSerializer
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(BlogThread)])),
     ];
-    if (object.getThreadLoadingStatus != null) {
-      result
-        ..add('getThreadLoadingStatus')
-        ..add(serializers.serialize(object.getThreadLoadingStatus,
-            specifiedType: const FullType(BuiltMap, const [
-              const FullType(GetThreadRequest),
-              const FullType(LoadingStatus)
-            ])));
-    }
+
     return result;
   }
 
@@ -101,13 +93,6 @@ class _$DiscussionStateSerializer
                 const FullType(BlogThread)
               ])) as BuiltMap);
           break;
-        case 'getThreadLoadingStatus':
-          result.getThreadLoadingStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(GetThreadRequest),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
       }
     }
 
@@ -126,8 +111,6 @@ class _$DiscussionState extends DiscussionState {
   final BuiltMap<int, SubjectTopicThread> subjectTopicThreads;
   @override
   final BuiltMap<int, BlogThread> blogThreads;
-  @override
-  final BuiltMap<GetThreadRequest, LoadingStatus> getThreadLoadingStatus;
 
   factory _$DiscussionState([void Function(DiscussionStateBuilder) updates]) =>
       (new DiscussionStateBuilder()..update(updates)).build();
@@ -137,8 +120,7 @@ class _$DiscussionState extends DiscussionState {
       this.groupThreads,
       this.episodeThreads,
       this.subjectTopicThreads,
-      this.blogThreads,
-      this.getThreadLoadingStatus})
+      this.blogThreads})
       : super._() {
     if (discussions == null) {
       throw new BuiltValueNullFieldError('DiscussionState', 'discussions');
@@ -174,20 +156,17 @@ class _$DiscussionState extends DiscussionState {
         groupThreads == other.groupThreads &&
         episodeThreads == other.episodeThreads &&
         subjectTopicThreads == other.subjectTopicThreads &&
-        blogThreads == other.blogThreads &&
-        getThreadLoadingStatus == other.getThreadLoadingStatus;
+        blogThreads == other.blogThreads;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc(
-                $jc($jc($jc(0, discussions.hashCode), groupThreads.hashCode),
-                    episodeThreads.hashCode),
-                subjectTopicThreads.hashCode),
-            blogThreads.hashCode),
-        getThreadLoadingStatus.hashCode));
+            $jc($jc($jc(0, discussions.hashCode), groupThreads.hashCode),
+                episodeThreads.hashCode),
+            subjectTopicThreads.hashCode),
+        blogThreads.hashCode));
   }
 
   @override
@@ -197,8 +176,7 @@ class _$DiscussionState extends DiscussionState {
           ..add('groupThreads', groupThreads)
           ..add('episodeThreads', episodeThreads)
           ..add('subjectTopicThreads', subjectTopicThreads)
-          ..add('blogThreads', blogThreads)
-          ..add('getThreadLoadingStatus', getThreadLoadingStatus))
+          ..add('blogThreads', blogThreads))
         .toString();
   }
 }
@@ -241,14 +219,6 @@ class DiscussionStateBuilder
   set blogThreads(MapBuilder<int, BlogThread> blogThreads) =>
       _$this._blogThreads = blogThreads;
 
-  MapBuilder<GetThreadRequest, LoadingStatus> _getThreadLoadingStatus;
-  MapBuilder<GetThreadRequest, LoadingStatus> get getThreadLoadingStatus =>
-      _$this._getThreadLoadingStatus ??=
-          new MapBuilder<GetThreadRequest, LoadingStatus>();
-  set getThreadLoadingStatus(
-          MapBuilder<GetThreadRequest, LoadingStatus> getThreadLoadingStatus) =>
-      _$this._getThreadLoadingStatus = getThreadLoadingStatus;
-
   DiscussionStateBuilder();
 
   DiscussionStateBuilder get _$this {
@@ -258,7 +228,6 @@ class DiscussionStateBuilder
       _episodeThreads = _$v.episodeThreads?.toBuilder();
       _subjectTopicThreads = _$v.subjectTopicThreads?.toBuilder();
       _blogThreads = _$v.blogThreads?.toBuilder();
-      _getThreadLoadingStatus = _$v.getThreadLoadingStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -287,8 +256,7 @@ class DiscussionStateBuilder
               groupThreads: groupThreads.build(),
               episodeThreads: episodeThreads.build(),
               subjectTopicThreads: subjectTopicThreads.build(),
-              blogThreads: blogThreads.build(),
-              getThreadLoadingStatus: _getThreadLoadingStatus?.build());
+              blogThreads: blogThreads.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -302,8 +270,6 @@ class DiscussionStateBuilder
         subjectTopicThreads.build();
         _$failedField = 'blogThreads';
         blogThreads.build();
-        _$failedField = 'getThreadLoadingStatus';
-        _getThreadLoadingStatus?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'DiscussionState', _$failedField, e.toString());

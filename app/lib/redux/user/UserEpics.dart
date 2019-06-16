@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,10 +16,8 @@ List<Epic<AppState>> createUserEpics(BangumiUserService bangumiUserService) {
 }
 
 Stream<dynamic> _getDiscussion(BangumiUserService bangumiUserService,
-    FetchUserPreviewRequestAction action) async* {
+    GetUserPreviewRequestAction action) async* {
   try {
-    yield FetchUserPreviewLoadingAction(username: action.username);
-
     List results = await Future.wait([
       bangumiUserService.getUserBasicInfo(action.username),
       bangumiUserService.getUserPreview(action.username)
@@ -32,24 +28,14 @@ Stream<dynamic> _getDiscussion(BangumiUserService bangumiUserService,
 
     profile = profile.rebuild((b) => b..basicInfo.replace(basicInfo));
 
-    yield FetchUserPreviewSuccessAction(profile: profile);
+    yield GetUserPreviewSuccessAction(profile: profile);
+    action.completer.complete();
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    yield FetchUserPreviewFailureAction.fromUnknownException(
-        username: action.username);
-
-    var result = await generalExceptionHandler(error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -57,7 +43,7 @@ Epic<AppState> _createFetchUserPreviewEpic(
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-        .ofType(TypeToken<FetchUserPreviewRequestAction>())
+        .ofType(TypeToken<GetUserPreviewRequestAction>())
         .switchMap((action) => _getDiscussion(bangumiUserService, action));
   };
 }

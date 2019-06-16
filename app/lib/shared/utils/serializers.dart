@@ -113,7 +113,7 @@ import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/setting/SettingState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
@@ -163,7 +163,7 @@ part 'serializers.g.dart';
   FeedChunks,
 
   /// Subject
-  LoadingStatus,
+  RequestStatus,
   BangumiSubject,
   SubjectType,
   Count,

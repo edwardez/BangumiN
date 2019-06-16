@@ -59,18 +59,9 @@ class SubmitTimelineMessageAction {
   final BuildContext context;
   final String message;
 
+  final Completer completer;
+
   SubmitTimelineMessageAction(
-      {@required this.context, @required this.message, Completer completer});
+      {@required this.context, @required this.message, Completer completer})
+      : this.completer = completer ?? Completer();
 }
-
-class SubmitTimelineMessageSuccessAction {
-  final String message;
-
-  SubmitTimelineMessageSuccessAction({@required this.message});
-}
-
-class SubmitTimelineMessageLoadingAction {}
-
-class SubmitTimelineMessageFailureAction {}
-
-class CleanUpSubmitTimelineMessageAction {}

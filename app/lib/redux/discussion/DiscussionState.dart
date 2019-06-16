@@ -6,11 +6,9 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
-import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'DiscussionState.g.dart';
@@ -35,10 +33,6 @@ abstract class DiscussionState
   /// Key is thread id.
   BuiltMap<int, BlogThread> get blogThreads;
 
-
-  @nullable
-  BuiltMap<GetThreadRequest, LoadingStatus> get getThreadLoadingStatus;
-
   bool shouldFetchResponse(GetDiscussionRequest request) {
     return discussions[request] == null || discussions[request].isStale;
   }
@@ -51,8 +45,6 @@ abstract class DiscussionState
         ..episodeThreads.replace(BuiltMap<int, EpisodeThread>())
         ..subjectTopicThreads.replace(BuiltMap<int, SubjectTopicThread>())
         ..blogThreads.replace(BuiltMap<int, BlogThread>())
-        ..getThreadLoadingStatus
-            .replace(BuiltMap<GetThreadRequest, LoadingStatus>())
         ..update(updates));
 
   DiscussionState._();

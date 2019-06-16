@@ -4,7 +4,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'UserState.g.dart';
@@ -13,11 +12,8 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
   /// A [BuiltMap] of user profiles with username as key
   BuiltMap<String, UserProfile> get profiles;
 
-  BuiltMap<String, LoadingStatus> get profilesLoadingStatus;
-
   factory UserState([updates(UserStateBuilder b)]) => _$UserState((b) => b
     ..profiles.replace(BuiltMap<String, UserProfile>())
-    ..profilesLoadingStatus.replace(BuiltMap<String, LoadingStatus>())
     ..update(updates));
 
   UserState._();

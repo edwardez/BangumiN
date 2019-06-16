@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 
 class SimpleFormSubmitWidget extends StatelessWidget {
   final bool canSubmit;
-  final LoadingStatus loadingStatus;
+  final RequestStatus loadingStatus;
   final Future Function(BuildContext context) onSubmitPressed;
 
   final String submitButtonText;
@@ -21,7 +21,7 @@ class SimpleFormSubmitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (loadingStatus == LoadingStatus.Loading) {
+    if (loadingStatus == RequestStatus.Loading) {
       return AdaptiveProgressIndicator(
         indicatorStyle: IndicatorStyle.Material,
       );

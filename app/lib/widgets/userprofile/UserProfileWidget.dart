@@ -11,13 +11,12 @@ import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/user/UserActions.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
+import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
-import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/userprofile/CollectionPreviewWidget.dart';
@@ -25,31 +24,29 @@ import 'package:munin/widgets/userprofile/TimelinePreviewWidget.dart';
 import 'package:munin/widgets/userprofile/UserIntroductionPreview.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
-import 'package:quiver/strings.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserProfileWidget extends StatelessWidget {
-  ///  An appBar that's on top of the profile
+  ///  An [SliverAppBar] or its container that's on top of the profile
   final Widget providedAppBar;
 
   final String username;
 
-  final String userProfileMainUrl;
-
   /// Outer padding for all profile widgets, appBar is not included
   final EdgeInsetsGeometry profileWidgetsPadding;
 
-  UserProfileWidget(
+  String get userProfileMainUrl =>
+      'https://${Application.environmentValue.bangumiMainHost}/user/$username';
+
+  const UserProfileWidget(
       {Key key,
       @required this.username,
         Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
           vertical: largeOffset, horizontal: defaultPortraitHorizontalOffset)})
       : this.providedAppBar = appBar,
-        this.userProfileMainUrl =
-            'https://${Application.environmentValue.bangumiMainHost}/user/$username',
-        assert(isNotEmpty(username)),
+        assert(username != null && username != ''),
         super(key: key);
 
   _buildMuteAction(BuildContext context, _ViewModel vm) {
@@ -292,81 +289,58 @@ class UserProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> requestStatusFuture;
+
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) =>
           _ViewModel.fromStore(store, username),
       distinct: true,
-      onInitialBuild: (_ViewModel vm) {
-        vm.getUserProfile(context);
+      onInit: (store) {
+        final action = GetUserPreviewRequestAction(username: username);
+        store.dispatch(action);
+        requestStatusFuture = action.completer.future;
       },
       builder: (BuildContext context, _ViewModel vm) {
-        LoadingStatus loadingStatus = vm.loadingStatus;
+        if (vm.userProfile == null) {
+          if (providedAppBar == null) {
+            return RequestInProgressIndicatorWidget(
+              retryCallback: vm.getUserProfile,
+              requestStatusFuture: requestStatusFuture,
+            );
+          } else {
+            return NestedScrollView(
+              body: RequestInProgressIndicatorWidget(
+                showAppBar: false,
+                retryCallback: vm.getUserProfile,
+                requestStatusFuture: requestStatusFuture,
+              ),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return [
+                  providedAppBar,
+                ];
+              },
+            );
+          }
+        }
 
         Widget appBar;
 
         if (providedAppBar == null) {
-          if (vm.userProfile != null) {
-            appBar = SliverAppBar(
-              pinned: true,
-              title: Text('${vm.userProfile.basicInfo.nickname}的主页'),
-            );
-          } else {
-            String appBarText =
-                loadingStatus?.isException ?? false ? '加载失败' : '加载中';
-            appBar = SliverAppBar(
-              pinned: true,
-              title: Text(appBarText),
-            );
-          }
+          appBar = SliverAppBar(
+            pinned: true,
+            title: Text('${vm.userProfile.basicInfo.nickname}的主页'),
+          );
         } else {
           appBar = providedAppBar;
         }
 
         Widget scrollSliver;
 
-        if (vm.userProfile == null) {
-          if (loadingStatus?.isException ?? false) {
-            scrollSliver = SliverList(
-              delegate: SliverChildListDelegate([
-                Column(
-                  children: <Widget>[
-                    Text('目前无法加载此用户资料, 可能因为$appOrBangumiHasAnError'),
-                    FlatButton(
-                      child: Text('点击重试'),
-                      onPressed: () {
-                        vm.getUserProfile(context);
-                      },
-                    ),
-                    FlatButton(
-                      child: Text(checkWebVersionPrompt),
-                      onPressed: () {
-                        launch(
-                            'https://${Application.environmentValue.bangumiMainHost}/user/$username',
-                            forceSafariVC: false);
-                      },
-                    ),
-                  ],
-                ),
-              ]),
-            );
-          } else {
-            scrollSliver = SliverPadding(
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  Center(
-                    child: AdaptiveProgressIndicator(),
-                  ),
-                ]),
-              ),
-              padding: profileWidgetsPadding,
-            );
-          }
-        } else {
-          scrollSliver = SliverPadding(
-            padding: profileWidgetsPadding,
-            sliver: _buildProfile(context, vm),
-          );
-        }
+        scrollSliver = SliverPadding(
+          padding: profileWidgetsPadding,
+          sliver: _buildProfile(context, vm),
+        );
 
         return CustomScrollView(
           slivers: <Widget>[appBar, scrollSliver],
@@ -385,15 +359,13 @@ class _ViewModel {
 
   final String username;
   final UserProfile userProfile;
-  final LoadingStatus loadingStatus;
-  final Function(BuildContext context) getUserProfile;
+  final Future<void> Function() getUserProfile;
   final Function() muteUser;
   final Function() unMuteUser;
 
   factory _ViewModel.fromStore(Store<AppState> store, String username) {
-    Future _fetchUserProfile(BuildContext context) {
-      final action =
-          FetchUserPreviewRequestAction(context: context, username: username);
+    Future<void> _getUserProfile() {
+      final action = GetUserPreviewRequestAction(username: username);
       store.dispatch(action);
       return action.completer.future;
     }
@@ -452,9 +424,8 @@ class _ViewModel {
     return _ViewModel(
       username: username,
       userProfile: store.state.userState.profiles[username],
-      getUserProfile: (BuildContext context) => _fetchUserProfile(context),
+      getUserProfile: _getUserProfile,
       isCurrentAppUser: _isCurrentAppUser(),
-      loadingStatus: store.state.userState.profilesLoadingStatus[username],
       muteUser: _muteUser,
       unMuteUser: _unMuteUser,
       isMuted: _isMuted(),
@@ -466,7 +437,6 @@ class _ViewModel {
     @required this.userProfile,
     @required this.getUserProfile,
     @required this.isCurrentAppUser,
-    @required this.loadingStatus,
     @required this.isMuted,
     @required this.muteUser,
     @required this.unMuteUser,
@@ -480,11 +450,9 @@ class _ViewModel {
           isCurrentAppUser == other.isCurrentAppUser &&
           isMuted == other.isMuted &&
           username == other.username &&
-          userProfile == other.userProfile &&
-          loadingStatus == other.loadingStatus;
+          userProfile == other.userProfile;
 
   @override
   int get hashCode =>
-      hashObjects(
-          [isCurrentAppUser, isMuted, username, userProfile, loadingStatus]);
+      hashObjects([isCurrentAppUser, isMuted, username, userProfile]);
 }

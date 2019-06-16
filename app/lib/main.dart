@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -7,7 +8,6 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/initial/MainMaterialApp.dart';
 import 'package:redux/redux.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
 void main() {
   Development();

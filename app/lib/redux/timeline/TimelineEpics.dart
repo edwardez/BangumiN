@@ -12,21 +12,21 @@ import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
 List<Epic<AppState>> createTimelineEpics(
     BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
-  final loadTimelineFeedEpic =
-  _createLoadTimelineEpics(bangumiTimelineService, bangumiUserService);
+  final getTimelineEpic =
+  _createGetTimelineEpics(bangumiTimelineService, bangumiUserService);
 
   final createDeleteTimelineEpic =
   _createDeleteTimelineEpic(bangumiTimelineService);
@@ -35,13 +35,13 @@ List<Epic<AppState>> createTimelineEpics(
   _createSubmitTimelineMessageEpic(bangumiTimelineService);
 
   return [
-    loadTimelineFeedEpic,
+    getTimelineEpic,
     createDeleteTimelineEpic,
     createSubmitTimelineMessageEpic
   ];
 }
 
-Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
+Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService,
     GetTimelineRequestAction action,
     EpicStore<AppState> store) async* {
@@ -190,14 +190,11 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
     print(stack);
     action.completer.completeError(error, stack);
 
-    var result = await generalExceptionHandler(error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: false,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
 
     /// For loading older feeds, error messages are directly shown on item list
     if (action.feedLoadType == FeedLoadType.Initial ||
@@ -206,21 +203,18 @@ Stream<dynamic> _loadTimeline(BangumiTimelineService bangumiTimelineService,
           .showSnackBar(SnackBar(content: Text(error.toString())));
     }
   } finally {
-    assert(action.completer.isCompleted);
-    if (!action.completer.isCompleted) {
-      action.completer.complete();
-    }
+    completeDanglingCompleter(action.completer);
   }
 }
 
-Epic<AppState> _createLoadTimelineEpics(
+Epic<AppState> _createGetTimelineEpics(
     BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetTimelineRequestAction>())
         .switchMap((action) =>
-        _loadTimeline(
+        _getTimelineEpic(
             bangumiTimelineService, bangumiUserService, action, store));
   };
 }
@@ -237,17 +231,7 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    var result = await generalExceptionHandler(error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text('删除时间线出错')));
+    yield HandleErrorAction(context: action.context, error: error);
   }
 }
 
@@ -266,8 +250,6 @@ Stream<dynamic> _submitTimelineMessage(
     SubmitTimelineMessageAction action,
     EpicStore<AppState> store) async* {
   try {
-    yield SubmitTimelineMessageLoadingAction();
-
     await bangumiTimelineService.submitTimelineMessage(action.message);
 
     Navigator.of(action.context).pop();
@@ -288,6 +270,8 @@ Stream<dynamic> _submitTimelineMessage(
 
     await completer.future;
 
+    action.completer.complete();
+
     // Once refreshing main profile timeline complete, refreshes PublicMessage timeline, too
     request = request.rebuild((b) =>
     b..timelineCategoryFilter = TimelineCategoryFilter.PublicMessage);
@@ -299,17 +283,11 @@ Stream<dynamic> _submitTimelineMessage(
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    var result = await generalExceptionHandler(error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
+    action.completer.completeError(error);
 
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text('发表消息时出错')));
+    yield HandleErrorAction(context: action.context, error: error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 

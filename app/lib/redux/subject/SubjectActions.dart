@@ -6,25 +6,15 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
-import 'package:munin/redux/shared/CommonActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 
 class GetSubjectAction {
-  final BuildContext context;
   final int subjectId;
+  final Completer<void> completer;
 
-  const GetSubjectAction({
-    @required this.context,
+  GetSubjectAction({
     @required this.subjectId,
-  });
-}
-
-class GetSubjectLoadingAction {
-  final int subjectId;
-
-  const GetSubjectLoadingAction({
-    @required this.subjectId,
-  });
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
 }
 
 class GetSubjectSuccessAction {
@@ -33,43 +23,14 @@ class GetSubjectSuccessAction {
   const GetSubjectSuccessAction(this.subject);
 }
 
-class GetSubjectFailureAction extends FailureAction {
-  int subjectId;
-
-  GetSubjectFailureAction(
-      {@required this.subjectId, @required LoadingStatus loadingStatus})
-      : super(loadingStatus: loadingStatus);
-
-  GetSubjectFailureAction.fromUnknownException({@required this.subjectId})
-      : super.fromUnknownException();
-}
-
-class CleanUpLoadingStatusAction {
-  final int subjectId;
-
-  const CleanUpLoadingStatusAction({
-    @required this.subjectId,
-  });
-}
-
 class GetCollectionInfoAction {
-  final BuildContext context;
   final int subjectId;
   final Completer completer;
 
   GetCollectionInfoAction({
-    @required this.context,
     @required this.subjectId,
     Completer completer,
-  }) : this.completer = completer ?? new Completer();
-}
-
-class GetCollectionInfoLoadingAction {
-  final int subjectId;
-
-  const GetCollectionInfoLoadingAction({
-    @required this.subjectId,
-  });
+  }) : this.completer = completer ?? Completer();
 }
 
 class GetCollectionInfoSuccessAction {
@@ -84,18 +45,6 @@ class GetCollectionInfoSuccessAction {
   });
 }
 
-class GetCollectionInfoFailureAction extends FailureAction {
-  final int subjectId;
-
-  const GetCollectionInfoFailureAction(
-      {@required this.subjectId, @required LoadingStatus loadingStatus})
-      : super(loadingStatus: loadingStatus);
-
-  const GetCollectionInfoFailureAction.fromUnknownException(
-      {@required this.subjectId})
-      : super.fromUnknownException();
-}
-
 class CleanUpCollectionInfoAction {
   final int subjectId;
 
@@ -105,32 +54,15 @@ class CleanUpCollectionInfoAction {
 }
 
 class UpdateCollectionRequestAction {
-  final BuildContext context;
   final int subjectId;
   final SubjectCollectionInfo collectionUpdateRequest;
+  final Completer completer;
 
-  const UpdateCollectionRequestAction({@required this.context,
+  UpdateCollectionRequestAction({
     @required this.subjectId,
-    @required this.collectionUpdateRequest});
-}
-
-class UpdateCollectionRequestLoadingAction {
-  final int subjectId;
-
-  const UpdateCollectionRequestLoadingAction({@required this.subjectId});
-}
-
-class UpdateCollectionRequestFailureAction extends FailureAction {
-  final int subjectId;
-
-  const UpdateCollectionRequestFailureAction({
-    @required this.subjectId,
-    @required LoadingStatus loadingStatus,
-  }) : super(loadingStatus: loadingStatus);
-
-  const UpdateCollectionRequestFailureAction.fromUnknownException(
-      {@required this.subjectId})
-      : super.fromUnknownException();
+    @required this.collectionUpdateRequest,
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
 }
 
 class UpdateCollectionRequestSuccessAction {

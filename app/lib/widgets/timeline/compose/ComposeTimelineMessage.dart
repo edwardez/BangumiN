@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
@@ -27,6 +27,8 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
 
   /// This is the length limitation set by Bangumi and cannot be modified by us
   static const int maxMessageLength = 123;
+
+  RequestStatus messageSubmissionStatus = RequestStatus.Initial;
 
   @override
   void initState() {
@@ -83,21 +85,30 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
     return StoreConnector<AppState, _ViewModel>(
         converter: (Store store) => _ViewModel.fromStore(store),
         distinct: true,
-        onInit: (store) {
-          store.dispatch(CleanUpSubmitTimelineMessageAction());
-        },
-        onDispose: (store) {
-          store.dispatch(CleanUpSubmitTimelineMessageAction());
-        },
         builder: (BuildContext context, _ViewModel vm) {
           return ScaffoldWithRegularAppBar(
             appBar: AppBar(
               actions: <Widget>[
                 SimpleFormSubmitWidget(
-                  loadingStatus: vm.messageSubmissionStatus,
+                  loadingStatus: messageSubmissionStatus,
                   canSubmit: _canSubmitForm,
-                  onSubmitPressed: (BuildContext context) {
-                    vm.submitTimelineMessage(context, messageController.text);
+                  onSubmitPressed: (BuildContext context) async {
+                    try {
+                      if (mounted) {
+                        setState(() {
+                          messageSubmissionStatus = RequestStatus.Loading;
+                        });
+                      }
+                      await vm.submitTimelineMessage(
+                          context, messageController.text);
+                    } catch (error) {
+                      if (mounted) {
+                        setState(() {
+                          messageSubmissionStatus = RequestStatus
+                              .UnknownException;
+                        });
+                      }
+                    }
                   },
                 )
               ],
@@ -131,33 +142,30 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
 }
 
 class _ViewModel {
-  final Future Function(BuildContext context, String message)
+  final Future<void> Function(BuildContext context, String message)
       submitTimelineMessage;
-  final LoadingStatus messageSubmissionStatus;
 
   factory _ViewModel.fromStore(Store<AppState> store) {
-    _submitTimelineMessage(BuildContext context, String message) {
-      store.dispatch(
-          SubmitTimelineMessageAction(context: context, message: message));
+    Future<void> _submitTimelineMessage(BuildContext context, String message) {
+      final action =
+      SubmitTimelineMessageAction(context: context, message: message);
+      store.dispatch(action);
+
+      return action.completer.future;
     }
 
-    return _ViewModel(
-        messageSubmissionStatus:
-            store.state.timelineState.messageSubmissionStatus,
-        submitTimelineMessage: _submitTimelineMessage);
+    return _ViewModel(submitTimelineMessage: _submitTimelineMessage);
   }
 
-  _ViewModel(
-      {@required this.submitTimelineMessage,
-      @required this.messageSubmissionStatus});
+  _ViewModel({
+    @required this.submitTimelineMessage,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          messageSubmissionStatus == other.messageSubmissionStatus;
+          other is _ViewModel && runtimeType == other.runtimeType;
 
   @override
-  int get hashCode => messageSubmissionStatus.hashCode;
+  int get hashCode => 0;
 }

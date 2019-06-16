@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -30,32 +29,22 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
     BangumiSubjectService bangumiSubjectService,
     GetSubjectAction action) async* {
   try {
-    yield GetSubjectLoadingAction(subjectId: action.subjectId);
-
     BangumiSubject subject = await bangumiSubjectService.getSubjectFromHttp(
         subjectId: action.subjectId,
         mutedUsers: store.state.settingState.muteSetting.mutedUsers);
 
     // If the api call is successful, dispatch the results for display
     yield GetSubjectSuccessAction(subject);
+
+    action.completer.complete();
   } catch (error, stack) {
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    yield GetSubjectFailureAction.fromUnknownException(
-        subjectId: action.subjectId);
-    var result = await generalExceptionHandler(
-      error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
 
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -63,9 +52,7 @@ Epic<AppState> _createGetSubjectEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-    // Narrow down to SearchAction actions
         .ofType(TypeToken<GetSubjectAction>())
-    // Cancel the previous search and start a new one with switchMap
         .switchMap(
             (action) => _getSubject(store, bangumiSubjectService, action));
   };
@@ -74,8 +61,6 @@ Epic<AppState> _createGetSubjectEpic(
 Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
     GetCollectionInfoAction action, EpicStore<AppState> store) async* {
   try {
-    yield GetCollectionInfoLoadingAction(subjectId: action.subjectId);
-
     List<Future> futures = [];
 
     futures.add(bangumiSubjectService.getCollectionInfo(action.subjectId));
@@ -102,27 +87,13 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
       subjectId: action.subjectId,
       collectionInfo: subjectCollectionInfo,
     );
+
     action.completer.complete();
   } catch (error, stack) {
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    yield GetCollectionInfoFailureAction.fromUnknownException(
-        subjectId: action.subjectId);
     action.completer.completeError(error, stack);
-
-    var result = await generalExceptionHandler(
-      error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
   }
 }
 
@@ -130,9 +101,7 @@ Epic<AppState> _createGetCollectionInfoEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-    // Narrow down to SearchAction actions
         .ofType(TypeToken<GetCollectionInfoAction>())
-    // Cancel the previous search and start a new one with switchMap
         .switchMap((action) =>
             _getCollectionInfo(bangumiSubjectService, action, store));
   };
@@ -142,8 +111,6 @@ Stream<dynamic> _collectionUpdateRequest(
     BangumiSubjectService bangumiSubjectService,
     UpdateCollectionRequestAction action) async* {
   try {
-    yield UpdateCollectionRequestLoadingAction(subjectId: action.subjectId);
-
     final updatedCollectionInfo =
     await bangumiSubjectService.updateCollectionInfoRequest(
         action.subjectId, action.collectionUpdateRequest);
@@ -153,27 +120,13 @@ Stream<dynamic> _collectionUpdateRequest(
       collectionUpdateResponse: updatedCollectionInfo,
     );
 
-    ///TODO: Add a snackbar notification upon success
-    Navigator.of(action.context).pop();
+    action.completer.complete();
   } catch (error, stack) {
     // If the search call fails, dispatch an error so we can show it
     print(error.toString());
     print(stack);
-    yield UpdateCollectionRequestFailureAction.fromUnknownException(
-        subjectId: action.subjectId);
 
-    var result = await generalExceptionHandler(
-      error,
-      context: action.context,
-    );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
+    action.completer.completeError(error);
   }
 }
 
@@ -181,9 +134,7 @@ Epic<AppState> _createCollectionUpdateRequestEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-    // Narrow down to SearchAction actions
         .ofType(TypeToken<UpdateCollectionRequestAction>())
-    // Cancel the previous search and start a new one with switchMap
         .switchMap((action) =>
         _collectionUpdateRequest(bangumiSubjectService, action));
   };
@@ -203,7 +154,6 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
     assert(subject != null);
     if (subject == null) {
       yield GetSubjectAction(
-          context: action.context,
           subjectId: action.getSubjectReviewRequest.subjectId);
     }
 
@@ -238,22 +188,13 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
     print(error.toString());
     print(stack);
     action.completer.completeError(error);
-    var result = await generalExceptionHandler(
-      error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: false,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
   } finally {
-    if (!action.completer.isCompleted) {
-      action.completer.complete();
-    }
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -261,9 +202,7 @@ Epic<AppState> _createGetSubjectReviewsEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-    // Narrow down to SearchAction actions
         .ofType(TypeToken<GetSubjectReviewAction>())
-    // Cancel the previous search and start a new one with switchMap
         .switchMap((action) =>
         _getSubjectReviewsEpic(store, bangumiSubjectService, action));
   };

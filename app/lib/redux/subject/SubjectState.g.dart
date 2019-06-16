@@ -19,24 +19,12 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
   Iterable serialize(Serializers serializers, SubjectState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'subjectsLoadingStatus',
-      serializers.serialize(object.subjectsLoadingStatus,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LoadingStatus)])),
       'collections',
       serializers.serialize(object.collections,
           specifiedType: const FullType(BuiltMap, const [
             const FullType(int),
             const FullType(SubjectCollectionInfo)
           ])),
-      'collectionsLoadingStatus',
-      serializers.serialize(object.collectionsLoadingStatus,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LoadingStatus)])),
-      'collectionsSubmissionStatus',
-      serializers.serialize(object.collectionsSubmissionStatus,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LoadingStatus)])),
       'subjectsReviews',
       serializers.serialize(object.subjectsReviews,
           specifiedType: const FullType(BuiltMap, const [
@@ -72,33 +60,11 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
                 const FullType(BangumiSubject)
               ])) as BuiltMap);
           break;
-        case 'subjectsLoadingStatus':
-          result.subjectsLoadingStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
         case 'collections':
           result.collections.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SubjectCollectionInfo)
-              ])) as BuiltMap);
-          break;
-        case 'collectionsLoadingStatus':
-          result.collectionsLoadingStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
-        case 'collectionsSubmissionStatus':
-          result.collectionsSubmissionStatus.replace(serializers.deserialize(
-              value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
-                const FullType(LoadingStatus)
               ])) as BuiltMap);
           break;
         case 'subjectsReviews':
@@ -119,13 +85,7 @@ class _$SubjectState extends SubjectState {
   @override
   final BuiltMap<int, BangumiSubject> subjects;
   @override
-  final BuiltMap<int, LoadingStatus> subjectsLoadingStatus;
-  @override
   final BuiltMap<int, SubjectCollectionInfo> collections;
-  @override
-  final BuiltMap<int, LoadingStatus> collectionsLoadingStatus;
-  @override
-  final BuiltMap<int, LoadingStatus> collectionsSubmissionStatus;
   @override
   final BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse>
       subjectsReviews;
@@ -133,28 +93,10 @@ class _$SubjectState extends SubjectState {
   factory _$SubjectState([void Function(SubjectStateBuilder) updates]) =>
       (new SubjectStateBuilder()..update(updates)).build();
 
-  _$SubjectState._(
-      {this.subjects,
-      this.subjectsLoadingStatus,
-      this.collections,
-      this.collectionsLoadingStatus,
-      this.collectionsSubmissionStatus,
-      this.subjectsReviews})
+  _$SubjectState._({this.subjects, this.collections, this.subjectsReviews})
       : super._() {
-    if (subjectsLoadingStatus == null) {
-      throw new BuiltValueNullFieldError(
-          'SubjectState', 'subjectsLoadingStatus');
-    }
     if (collections == null) {
       throw new BuiltValueNullFieldError('SubjectState', 'collections');
-    }
-    if (collectionsLoadingStatus == null) {
-      throw new BuiltValueNullFieldError(
-          'SubjectState', 'collectionsLoadingStatus');
-    }
-    if (collectionsSubmissionStatus == null) {
-      throw new BuiltValueNullFieldError(
-          'SubjectState', 'collectionsSubmissionStatus');
     }
     if (subjectsReviews == null) {
       throw new BuiltValueNullFieldError('SubjectState', 'subjectsReviews');
@@ -173,24 +115,13 @@ class _$SubjectState extends SubjectState {
     if (identical(other, this)) return true;
     return other is SubjectState &&
         subjects == other.subjects &&
-        subjectsLoadingStatus == other.subjectsLoadingStatus &&
         collections == other.collections &&
-        collectionsLoadingStatus == other.collectionsLoadingStatus &&
-        collectionsSubmissionStatus == other.collectionsSubmissionStatus &&
         subjectsReviews == other.subjectsReviews;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc($jc(0, subjects.hashCode),
-                        subjectsLoadingStatus.hashCode),
-                    collections.hashCode),
-                collectionsLoadingStatus.hashCode),
-            collectionsSubmissionStatus.hashCode),
+    return $jf($jc($jc($jc(0, subjects.hashCode), collections.hashCode),
         subjectsReviews.hashCode));
   }
 
@@ -198,10 +129,7 @@ class _$SubjectState extends SubjectState {
   String toString() {
     return (newBuiltValueToStringHelper('SubjectState')
           ..add('subjects', subjects)
-          ..add('subjectsLoadingStatus', subjectsLoadingStatus)
           ..add('collections', collections)
-          ..add('collectionsLoadingStatus', collectionsLoadingStatus)
-          ..add('collectionsSubmissionStatus', collectionsSubmissionStatus)
           ..add('subjectsReviews', subjectsReviews))
         .toString();
   }
@@ -217,33 +145,11 @@ class SubjectStateBuilder
   set subjects(MapBuilder<int, BangumiSubject> subjects) =>
       _$this._subjects = subjects;
 
-  MapBuilder<int, LoadingStatus> _subjectsLoadingStatus;
-  MapBuilder<int, LoadingStatus> get subjectsLoadingStatus =>
-      _$this._subjectsLoadingStatus ??= new MapBuilder<int, LoadingStatus>();
-  set subjectsLoadingStatus(
-          MapBuilder<int, LoadingStatus> subjectsLoadingStatus) =>
-      _$this._subjectsLoadingStatus = subjectsLoadingStatus;
-
   MapBuilder<int, SubjectCollectionInfo> _collections;
   MapBuilder<int, SubjectCollectionInfo> get collections =>
       _$this._collections ??= new MapBuilder<int, SubjectCollectionInfo>();
   set collections(MapBuilder<int, SubjectCollectionInfo> collections) =>
       _$this._collections = collections;
-
-  MapBuilder<int, LoadingStatus> _collectionsLoadingStatus;
-  MapBuilder<int, LoadingStatus> get collectionsLoadingStatus =>
-      _$this._collectionsLoadingStatus ??= new MapBuilder<int, LoadingStatus>();
-  set collectionsLoadingStatus(
-          MapBuilder<int, LoadingStatus> collectionsLoadingStatus) =>
-      _$this._collectionsLoadingStatus = collectionsLoadingStatus;
-
-  MapBuilder<int, LoadingStatus> _collectionsSubmissionStatus;
-  MapBuilder<int, LoadingStatus> get collectionsSubmissionStatus =>
-      _$this._collectionsSubmissionStatus ??=
-          new MapBuilder<int, LoadingStatus>();
-  set collectionsSubmissionStatus(
-          MapBuilder<int, LoadingStatus> collectionsSubmissionStatus) =>
-      _$this._collectionsSubmissionStatus = collectionsSubmissionStatus;
 
   MapBuilder<GetSubjectReviewRequest, SubjectReviewResponse> _subjectsReviews;
   MapBuilder<GetSubjectReviewRequest, SubjectReviewResponse>
@@ -259,11 +165,7 @@ class SubjectStateBuilder
   SubjectStateBuilder get _$this {
     if (_$v != null) {
       _subjects = _$v.subjects?.toBuilder();
-      _subjectsLoadingStatus = _$v.subjectsLoadingStatus?.toBuilder();
       _collections = _$v.collections?.toBuilder();
-      _collectionsLoadingStatus = _$v.collectionsLoadingStatus?.toBuilder();
-      _collectionsSubmissionStatus =
-          _$v.collectionsSubmissionStatus?.toBuilder();
       _subjectsReviews = _$v.subjectsReviews?.toBuilder();
       _$v = null;
     }
@@ -290,24 +192,15 @@ class SubjectStateBuilder
       _$result = _$v ??
           new _$SubjectState._(
               subjects: _subjects?.build(),
-              subjectsLoadingStatus: subjectsLoadingStatus.build(),
               collections: collections.build(),
-              collectionsLoadingStatus: collectionsLoadingStatus.build(),
-              collectionsSubmissionStatus: collectionsSubmissionStatus.build(),
               subjectsReviews: subjectsReviews.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'subjects';
         _subjects?.build();
-        _$failedField = 'subjectsLoadingStatus';
-        subjectsLoadingStatus.build();
         _$failedField = 'collections';
         collections.build();
-        _$failedField = 'collectionsLoadingStatus';
-        collectionsLoadingStatus.build();
-        _$failedField = 'collectionsSubmissionStatus';
-        collectionsSubmissionStatus.build();
         _$failedField = 'subjectsReviews';
         subjectsReviews.build();
       } catch (e) {

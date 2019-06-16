@@ -6,8 +6,6 @@ import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
-import 'package:munin/redux/shared/CommonActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 
 class GetDiscussionRequestAction {
   final BuildContext context;
@@ -17,8 +15,8 @@ class GetDiscussionRequestAction {
   GetDiscussionRequestAction(
       {@required this.context,
         @required this.getDiscussionRequest,
-      Completer completer})
-      : this.completer = completer ?? new Completer();
+        Completer completer,})
+      : this.completer = completer ?? Completer();
 }
 
 class GetDiscussionRequestSuccessAction {
@@ -32,27 +30,15 @@ class GetDiscussionRequestSuccessAction {
 }
 
 class GetThreadRequestAction {
-  final BuildContext context;
   final GetThreadRequest request;
+  final Completer completer;
 
-  const GetThreadRequestAction({
-    @required this.context,
+  GetThreadRequestAction({
     @required this.request,
-  });
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
 }
 
-class GetThreadRequestFailureAction extends FailureAction {
-  final GetThreadRequest request;
-
-  const GetThreadRequestFailureAction({
-    @required this.request,
-    @required LoadingStatus loadingStatus,
-  }) : super(loadingStatus: loadingStatus);
-
-  const GetThreadRequestFailureAction.fromUnknownException(
-      {@required this.request})
-      : super.fromUnknownException();
-}
 
 class GetThreadRequestSuccessAction {
   final GetThreadRequest request;

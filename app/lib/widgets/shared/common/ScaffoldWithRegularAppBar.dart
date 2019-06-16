@@ -8,19 +8,24 @@ class ScaffoldWithRegularAppBar extends StatelessWidget {
   final PreferredSizeWidget appBar;
   final double safeAreaChildHorizontalPadding;
 
-  const ScaffoldWithRegularAppBar(
-      {Key key, @required this.safeAreaChild, @required this.appBar, this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalOffset})
-      : super(key: key);
+  const ScaffoldWithRegularAppBar({
+    Key key,
+    @required this.safeAreaChild,
+    @required this.appBar,
+    this.safeAreaChildHorizontalPadding = defaultPortraitHorizontalOffset,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       appBar: appBar,
-      body: SafeArea(child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: safeAreaChildHorizontalPadding),
-        child: safeAreaChild,
-      )),
+      body: SafeArea(
+          child: Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: safeAreaChildHorizontalPadding),
+            child: safeAreaChild,
+          )),
     );
   }
 }

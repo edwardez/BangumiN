@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
-import 'package:munin/redux/shared/ExceptionHandler.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -38,18 +37,13 @@ Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
     print(error.toString());
     print(stack);
     action.completer.completeError(error, stack);
-    var result = await generalExceptionHandler(
-      error,
+    yield HandleErrorAction(
       context: action.context,
+      error: error,
+      showErrorMessageSnackBar: false,
     );
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -89,25 +83,13 @@ Stream<dynamic> _getGroupThread(EpicStore<AppState> store,
 
     yield GetThreadRequestSuccessAction(
         thread: thread, request: action.request);
+    action.completer.complete();
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    yield GetThreadRequestFailureAction.fromUnknownException(
-        request: action.request);
-
-    var result = await generalExceptionHandler(
-      error,
-      context: action.context,
-    );
-
-    if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(action.context);
-    } else if (result == GeneralExceptionHandlerResult.Skipped) {
-      return;
-    }
-
-    Scaffold.of(action.context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -117,6 +99,7 @@ Epic<AppState> _createGetGroupThreadEpic(
     return Observable(actions)
         .ofType(TypeToken<GetThreadRequestAction>())
         .switchMap((action) =>
-        _getGroupThread(store, bangumiDiscussionService, action));
+        _getGroupThread(store, bangumiDiscussionService, action))
+    ;
   };
 }

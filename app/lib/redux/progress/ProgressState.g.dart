@@ -30,10 +30,6 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
       serializers.serialize(object.watchableSubjects,
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(SubjectEpisodes)])),
-      'subjectsLoadingStatus',
-      serializers.serialize(object.subjectsLoadingStatus,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LoadingStatus)])),
     ];
 
     return result;
@@ -65,13 +61,6 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
                 const FullType(SubjectEpisodes)
               ])) as BuiltMap);
           break;
-        case 'subjectsLoadingStatus':
-          result.subjectsLoadingStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
       }
     }
 
@@ -84,24 +73,16 @@ class _$ProgressState extends ProgressState {
   final BuiltMap<SubjectType, BuiltList<InProgressCollection>> progresses;
   @override
   final BuiltMap<int, SubjectEpisodes> watchableSubjects;
-  @override
-  final BuiltMap<int, LoadingStatus> subjectsLoadingStatus;
 
   factory _$ProgressState([void Function(ProgressStateBuilder) updates]) =>
       (new ProgressStateBuilder()..update(updates)).build();
 
-  _$ProgressState._(
-      {this.progresses, this.watchableSubjects, this.subjectsLoadingStatus})
-      : super._() {
+  _$ProgressState._({this.progresses, this.watchableSubjects}) : super._() {
     if (progresses == null) {
       throw new BuiltValueNullFieldError('ProgressState', 'progresses');
     }
     if (watchableSubjects == null) {
       throw new BuiltValueNullFieldError('ProgressState', 'watchableSubjects');
-    }
-    if (subjectsLoadingStatus == null) {
-      throw new BuiltValueNullFieldError(
-          'ProgressState', 'subjectsLoadingStatus');
     }
   }
 
@@ -117,22 +98,19 @@ class _$ProgressState extends ProgressState {
     if (identical(other, this)) return true;
     return other is ProgressState &&
         progresses == other.progresses &&
-        watchableSubjects == other.watchableSubjects &&
-        subjectsLoadingStatus == other.subjectsLoadingStatus;
+        watchableSubjects == other.watchableSubjects;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, progresses.hashCode), watchableSubjects.hashCode),
-        subjectsLoadingStatus.hashCode));
+    return $jf($jc($jc(0, progresses.hashCode), watchableSubjects.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('ProgressState')
           ..add('progresses', progresses)
-          ..add('watchableSubjects', watchableSubjects)
-          ..add('subjectsLoadingStatus', subjectsLoadingStatus))
+          ..add('watchableSubjects', watchableSubjects))
         .toString();
   }
 }
@@ -156,20 +134,12 @@ class ProgressStateBuilder
   set watchableSubjects(MapBuilder<int, SubjectEpisodes> watchableSubjects) =>
       _$this._watchableSubjects = watchableSubjects;
 
-  MapBuilder<int, LoadingStatus> _subjectsLoadingStatus;
-  MapBuilder<int, LoadingStatus> get subjectsLoadingStatus =>
-      _$this._subjectsLoadingStatus ??= new MapBuilder<int, LoadingStatus>();
-  set subjectsLoadingStatus(
-          MapBuilder<int, LoadingStatus> subjectsLoadingStatus) =>
-      _$this._subjectsLoadingStatus = subjectsLoadingStatus;
-
   ProgressStateBuilder();
 
   ProgressStateBuilder get _$this {
     if (_$v != null) {
       _progresses = _$v.progresses?.toBuilder();
       _watchableSubjects = _$v.watchableSubjects?.toBuilder();
-      _subjectsLoadingStatus = _$v.subjectsLoadingStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -195,8 +165,7 @@ class ProgressStateBuilder
       _$result = _$v ??
           new _$ProgressState._(
               progresses: progresses.build(),
-              watchableSubjects: watchableSubjects.build(),
-              subjectsLoadingStatus: subjectsLoadingStatus.build());
+              watchableSubjects: watchableSubjects.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -204,8 +173,6 @@ class ProgressStateBuilder
         progresses.build();
         _$failedField = 'watchableSubjects';
         watchableSubjects.build();
-        _$failedField = 'subjectsLoadingStatus';
-        subjectsLoadingStatus.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ProgressState', _$failedField, e.toString());

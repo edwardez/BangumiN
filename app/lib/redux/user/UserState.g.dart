@@ -22,10 +22,6 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
       serializers.serialize(object.profiles,
           specifiedType: const FullType(BuiltMap,
               const [const FullType(String), const FullType(UserProfile)])),
-      'profilesLoadingStatus',
-      serializers.serialize(object.profilesLoadingStatus,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(String), const FullType(LoadingStatus)])),
     ];
 
     return result;
@@ -49,13 +45,6 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
                 const FullType(UserProfile)
               ])) as BuiltMap);
           break;
-        case 'profilesLoadingStatus':
-          result.profilesLoadingStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(String),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
       }
     }
 
@@ -66,18 +55,13 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
 class _$UserState extends UserState {
   @override
   final BuiltMap<String, UserProfile> profiles;
-  @override
-  final BuiltMap<String, LoadingStatus> profilesLoadingStatus;
 
   factory _$UserState([void Function(UserStateBuilder) updates]) =>
       (new UserStateBuilder()..update(updates)).build();
 
-  _$UserState._({this.profiles, this.profilesLoadingStatus}) : super._() {
+  _$UserState._({this.profiles}) : super._() {
     if (profiles == null) {
       throw new BuiltValueNullFieldError('UserState', 'profiles');
-    }
-    if (profilesLoadingStatus == null) {
-      throw new BuiltValueNullFieldError('UserState', 'profilesLoadingStatus');
     }
   }
 
@@ -91,21 +75,17 @@ class _$UserState extends UserState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UserState &&
-        profiles == other.profiles &&
-        profilesLoadingStatus == other.profilesLoadingStatus;
+    return other is UserState && profiles == other.profiles;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, profiles.hashCode), profilesLoadingStatus.hashCode));
+    return $jf($jc(0, profiles.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('UserState')
-          ..add('profiles', profiles)
-          ..add('profilesLoadingStatus', profilesLoadingStatus))
+    return (newBuiltValueToStringHelper('UserState')..add('profiles', profiles))
         .toString();
   }
 }
@@ -119,19 +99,11 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   set profiles(MapBuilder<String, UserProfile> profiles) =>
       _$this._profiles = profiles;
 
-  MapBuilder<String, LoadingStatus> _profilesLoadingStatus;
-  MapBuilder<String, LoadingStatus> get profilesLoadingStatus =>
-      _$this._profilesLoadingStatus ??= new MapBuilder<String, LoadingStatus>();
-  set profilesLoadingStatus(
-          MapBuilder<String, LoadingStatus> profilesLoadingStatus) =>
-      _$this._profilesLoadingStatus = profilesLoadingStatus;
-
   UserStateBuilder();
 
   UserStateBuilder get _$this {
     if (_$v != null) {
       _profiles = _$v.profiles?.toBuilder();
-      _profilesLoadingStatus = _$v.profilesLoadingStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -154,17 +126,12 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
   _$UserState build() {
     _$UserState _$result;
     try {
-      _$result = _$v ??
-          new _$UserState._(
-              profiles: profiles.build(),
-              profilesLoadingStatus: profilesLoadingStatus.build());
+      _$result = _$v ?? new _$UserState._(profiles: profiles.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'profiles';
         profiles.build();
-        _$failedField = 'profilesLoadingStatus';
-        profilesLoadingStatus.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserState', _$failedField, e.toString());

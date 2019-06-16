@@ -25,18 +25,15 @@ class MainMaterialApp extends StatelessWidget {
         isAuthenticated: store.state.isAuthenticated,
         generalSetting: store.state.settingState.generalSetting,
         privacySetting:
-        store.state.settingState.privacySetting ?? PrivacySetting(),
+        store.state.settingState.privacySetting,
       ),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
-        analytics
-            .setAnalyticsCollectionEnabled(vm.privacySetting.optInAnalytics);
-
         return MaterialApp(
           theme: vm.muninTheme.themeData,
           home: vm.isAuthenticated
               ? MuninHomePage(
-            generalSetting: vm.generalSetting ?? GeneralSetting(),
+            generalSetting: vm.generalSetting,
           )
               : MuninLoginPage(),
           navigatorObservers: [

@@ -47,6 +47,18 @@ class GetSubjectEpisodesSuccessAction {
   });
 }
 
+/// Deletes a in progress subject from store.
+class DeleteInProgressSubjectAction {
+  final SubjectType subjectType;
+  final int subjectId;
+
+  DeleteInProgressSubjectAction({
+    @required this.subjectType,
+    @required this.subjectId,
+  });
+}
+
+
 class GetProgressSuccessAction {
   final BuiltSet<SubjectType> subjectTypes;
   final LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>

@@ -73,6 +73,25 @@ class UpdateCollectionRequestSuccessAction {
       {@required this.subjectId, this.collectionUpdateResponse});
 }
 
+class DeleteCollectionRequestAction {
+  final BangumiSubject subject;
+  final Completer completer;
+
+  DeleteCollectionRequestAction({
+    @required this.subject,
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
+}
+
+class DeleteCollectionRequestSuccessAction {
+  final int subjectId;
+
+  DeleteCollectionRequestSuccessAction({
+    @required this.subjectId,
+    Completer completer,
+  });
+}
+
 /// Reviews
 class GetSubjectReviewAction {
   final GetSubjectReviewRequest getSubjectReviewRequest;

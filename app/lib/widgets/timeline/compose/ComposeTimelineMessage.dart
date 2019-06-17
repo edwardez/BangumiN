@@ -75,7 +75,7 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
       return true;
     }
 
-    return await showMuninConfirmDiscardEditDialog(context,
+    return await showMuninConfirmActionDialog(context,
             title: '确认放弃编辑这条消息？') ??
         false;
   }

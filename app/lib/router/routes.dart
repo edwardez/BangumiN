@@ -25,54 +25,57 @@ class RoutesQueryParameter {
 }
 
 class Routes {
-  static const root = "/";
-  static const loginRoute = "/login";
-  static const homeRoute = "/home";
-  static const bangumiOauthRoute = "/bangumiOauth";
+  static const root = '/';
+  static const loginRoute = '/login';
+  static const homeRoute = '/home';
+  static const bangumiOauthRoute = '/bangumiOauth';
 
   // subject
-  static const subjectMainPageRoute = "/subject/${RoutesVariable
-      .subjectIdParam}";
-  static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
-      .subjectIdParam}/info";
+
+  // subject root prefix, [subjectRoutePrefix] itself is not a route.
+  static const subjectRoutePrefix = '/subject/';
+  static const subjectMainPageRoute = '$subjectRoutePrefix${RoutesVariable
+      .subjectIdParam}';
+  static const subjectDetailInfoPageRoute = '$subjectRoutePrefix${RoutesVariable
+      .subjectIdParam}/info';
   static const subjectCollectionManagementRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/collection";
+      '$subjectRoutePrefix${RoutesVariable.subjectIdParam}/collection';
   static const subjectEpisodesRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/episodes";
+      '$subjectRoutePrefix${RoutesVariable.subjectIdParam}/episodes';
   static const subjectReviewsRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/reviews";
+      '$subjectRoutePrefix${RoutesVariable.subjectIdParam}/reviews';
 
   // User
-  static const userProfileRoute = "/user/${RoutesVariable.usernameParam}";
+  static const userProfileRoute = '/user/${RoutesVariable.usernameParam}';
   static const userProfileTimelineRoute =
-      "/user/${RoutesVariable.usernameParam}/timeline";
+      '/user/${RoutesVariable.usernameParam}/timeline';
   static String composeTimelineMessageRoute =
-      "/user/${RoutesVariable.usernameParam}/timeline/new";
+      '/user/${RoutesVariable.usernameParam}/timeline/new';
 
   // Setting
-  static const settingRoute = "/setting";
-  static const generalSettingRoute = "/setting/general";
-  static const themeSettingRoute = "/setting/theme";
-  static const muteSettingRoute = "/setting/mute";
-  static const privacySettingRoute = "/setting/privacy";
+  static const settingRoute = '/setting';
+  static const generalSettingRoute = '/setting/general';
+  static const themeSettingRoute = '/setting/theme';
+  static const muteSettingRoute = '/setting/mute';
+  static const privacySettingRoute = '/setting/privacy';
   static const muteSettingBatchImportUsersRoute =
-      "/setting/mute/users/import/bangumi";
+      '/setting/mute/users/import/bangumi';
 
 
   /// Discussion
-  static const groupThreadRoute = "/group/topic/${RoutesVariable
-      .threadIdParam}";
-  static const episodeThreadRoute = "/episode/${RoutesVariable.threadIdParam}";
-  static const subjectTopicThreadRoute = "/subject/topic/${RoutesVariable
-      .threadIdParam}";
+  static const groupThreadRoute = '/group/topic/${RoutesVariable
+      .threadIdParam}';
+  static const episodeThreadRoute = '/episode/${RoutesVariable.threadIdParam}';
+  static const subjectTopicThreadRoute = '/subject/topic/${RoutesVariable
+      .threadIdParam}';
 
   /// Blog
-  static const blogThreadRoute = "/blog/${RoutesVariable.threadIdParam}";
+  static const blogThreadRoute = '/blog/${RoutesVariable.threadIdParam}';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      print("Route is not found!");
+          print('Route is not found!');
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);

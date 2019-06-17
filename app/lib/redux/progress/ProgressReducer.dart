@@ -20,6 +20,8 @@ final progressReducers = combineReducers<ProgressState>([
       getProgressSuccessReducer),
   TypedReducer<ProgressState, UpdateInProgressEpisodeSuccessAction>(
       updateInProgressEpisodeSuccessReducer),
+  TypedReducer<ProgressState, DeleteInProgressSubjectAction>(
+      deleteInProgressSubjectReducer),
   TypedReducer<ProgressState, UpdateInProgressBatchEpisodesSuccessAction>(
       updateInProgressBatchEpisodesSuccessReducer),
   TypedReducer<ProgressState, UpdateBookProgressSuccessAction>(
@@ -54,8 +56,7 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
   return progressState;
 }
 
-ProgressState updateInProgressEpisodeSuccessReducer(
-    ProgressState progressState,
+ProgressState updateInProgressEpisodeSuccessReducer(ProgressState progressState,
     UpdateInProgressEpisodeSuccessAction action) {
   Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
@@ -85,6 +86,22 @@ ProgressState updateInProgressEpisodeSuccessReducer(
   return progressState.rebuild((b) => b
     ..progresses.addAll(
         {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
+}
+
+ProgressState deleteInProgressSubjectReducer(ProgressState progressState,
+    DeleteInProgressSubjectAction action) {
+  var progressesToUpdate = progressState.progresses[action.subjectType];
+  if (progressesToUpdate != null) {
+    progressesToUpdate = progressesToUpdate.rebuild((b) =>
+        b.removeWhere((progress) => progress.subject.id == action.subjectId));
+
+    progressState = progressState.rebuild((b) =>
+        b.progresses.addAll({
+          action.subjectType: progressesToUpdate
+        }));
+  }
+
+  return progressState;
 }
 
 ProgressState updateInProgressBatchEpisodesSuccessReducer(

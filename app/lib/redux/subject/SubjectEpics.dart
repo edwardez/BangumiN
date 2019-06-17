@@ -1,26 +1,31 @@
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createSubjectEpics(
-    BangumiSubjectService bangumiSubjectService) {
-  final getCollectionInfo = _createGetCollectionInfoEpic(bangumiSubjectService);
-  final collectionUpdateRequest =
+List<Epic<AppState>> createSubjectEpics(BangumiSubjectService bangumiSubjectService) {
+  final getCollectionInfoEpic =
+  _createGetCollectionInfoEpic(bangumiSubjectService);
+  final collectionUpdateEpic =
   _createCollectionUpdateRequestEpic(bangumiSubjectService);
   final getSubjectEpic = _createGetSubjectEpic(bangumiSubjectService);
+  final deleteCollectionRequestEpic =
+  _createDeleteCollectionRequestEpic(bangumiSubjectService);
   final getSubjectReviewsEpic =
   _createGetSubjectReviewsEpic(bangumiSubjectService);
 
   return [
     getSubjectEpic,
-    getCollectionInfo,
-    collectionUpdateRequest,
+    getCollectionInfoEpic,
+    collectionUpdateEpic,
+    deleteCollectionRequestEpic,
     getSubjectReviewsEpic,
   ];
 }
@@ -48,12 +53,9 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
   }
 }
 
-Epic<AppState> _createGetSubjectEpic(
-    BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetSubjectEpic(BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetSubjectAction>())
-        .switchMap(
+    return Observable(actions).ofType(TypeToken<GetSubjectAction>()).switchMap(
             (action) => _getSubject(store, bangumiSubjectService, action));
   };
 }
@@ -97,18 +99,16 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
   }
 }
 
-Epic<AppState> _createGetCollectionInfoEpic(
-    BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetCollectionInfoEpic(BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetCollectionInfoAction>())
         .switchMap((action) =>
-            _getCollectionInfo(bangumiSubjectService, action, store));
+        _getCollectionInfo(bangumiSubjectService, action, store));
   };
 }
 
-Stream<dynamic> _collectionUpdateRequest(
-    BangumiSubjectService bangumiSubjectService,
+Stream<dynamic> _collectionUpdateRequest(BangumiSubjectService bangumiSubjectService,
     UpdateCollectionRequestAction action) async* {
   try {
     final updatedCollectionInfo =
@@ -130,13 +130,61 @@ Stream<dynamic> _collectionUpdateRequest(
   }
 }
 
-Epic<AppState> _createCollectionUpdateRequestEpic(
-    BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createCollectionUpdateRequestEpic(BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<UpdateCollectionRequestAction>())
         .switchMap((action) =>
         _collectionUpdateRequest(bangumiSubjectService, action));
+  };
+}
+
+Stream<dynamic> _deleteCollectionRequestEpic(EpicStore<AppState> store,
+    BangumiSubjectService bangumiSubjectService,
+    DeleteCollectionRequestAction action) async* {
+  try {
+    await Future.delayed(Duration(seconds: 3));
+    return;
+
+    await bangumiSubjectService.deleteCollection(action.subject.id);
+
+    // If the api call is successful, dispatch the results to update store.
+    yield DeleteCollectionRequestSuccessAction(subjectId: action.subject.id);
+
+    // If it's also a in progress subject, also updates progress store.
+    if (action.subject?.userSubjectCollectionInfoPreview?.status ==
+        CollectionStatus.InProgress ??
+        false) {
+      yield DeleteInProgressSubjectAction(
+        subjectType: action.subject.type,
+        subjectId: action.subject.id,
+      );
+    }
+
+    action.completer.complete();
+  } catch (error, stack) {
+    // If the search call fails, dispatch an error so we can show it
+    print(error.toString());
+    print(stack);
+
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createDeleteCollectionRequestEpic(
+    BangumiSubjectService bangumiSubjectService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<DeleteCollectionRequestAction>())
+
+    /// All previous cancel request needs to be kept so concatMap is used.
+        .concatMap(
+          (action) =>
+          _deleteCollectionRequestEpic(
+              store, bangumiSubjectService, action),
+    );
   };
 }
 
@@ -157,20 +205,16 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
           subjectId: action.getSubjectReviewRequest.subjectId);
     }
 
-
     final reviewResponse = store
-        .state
-        .subjectState
-        .subjectsReviews[action.getSubjectReviewRequest];
+        .state.subjectState.subjectsReviews[action.getSubjectReviewRequest];
 
     if (reviewResponse != null && !reviewResponse.canLoadMoreItems) {
       action.completer.complete();
       return;
     }
 
-    int requestedUntilPageNumber = reviewResponse
-        ?.requestedUntilPageNumber ??
-        0;
+    int requestedUntilPageNumber =
+        reviewResponse?.requestedUntilPageNumber ?? 0;
 
     final parsedSubjectReviews = await bangumiSubjectService.getsSubjectReviews(
       pageNumber: requestedUntilPageNumber + 1,
@@ -198,8 +242,7 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
   }
 }
 
-Epic<AppState> _createGetSubjectReviewsEpic(
-    BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetSubjectReviewsEpic(BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetSubjectReviewAction>())

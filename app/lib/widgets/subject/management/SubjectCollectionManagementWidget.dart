@@ -23,6 +23,7 @@ import 'package:munin/widgets/shared/form/SimpleFormSubmitWidget.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionIsPrivateFormField.dart';
+import 'package:munin/widgets/subject/management/SubjectCollectionMoreActions.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionStatusFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectTagsFormField.dart';
 import 'package:quiver/core.dart';
@@ -52,7 +53,8 @@ class SubjectCollectionManagementWidget extends StatefulWidget {
   }
 }
 
-class _SubjectCollectionManagementWidgetState extends State<SubjectCollectionManagementWidget> {
+class _SubjectCollectionManagementWidgetState
+    extends State<SubjectCollectionManagementWidget> {
   /// Length limitation as set by Bangumi, it cannot be modified by Munin.
   static const int maxCommentLength = 200;
 
@@ -142,8 +144,7 @@ class _SubjectCollectionManagementWidgetState extends State<SubjectCollectionMan
       return true;
     }
 
-    return await showMuninConfirmDiscardEditDialog(context,
-        title: '确认放弃编辑这份收藏？') ??
+    return await showMuninConfirmActionDialog(context, title: '确认放弃编辑这份收藏？') ??
         false;
   }
 
@@ -402,6 +403,15 @@ class _SubjectCollectionManagementWidgetState extends State<SubjectCollectionMan
     );
   }
 
+  _buildSubjectCollectionMoreActions(_ViewModel vm) {
+    return SubjectCollectionMoreActions(
+      subject: vm.subject,
+      deleteCollectionCallback: (subject) {
+        return vm.deleteCollection(subject);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<void> requestStatusFuture;
@@ -462,9 +472,15 @@ class _SubjectCollectionManagementWidgetState extends State<SubjectCollectionMan
                 ? Text(preferredNameFromSubjectBase(
                 vm.subject, vm.preferredSubjectInfoLanguage))
                 : Text('-'),
-            actions: <Widget>[Builder(builder: (BuildContext innerContext) {
-              return _buildSubmitWidget(innerContext, vm, subjectId);
-            },),
+            actions: <Widget>[
+              Builder(
+                builder: (BuildContext innerContext) {
+                  return _buildSubmitWidget(innerContext, vm, subjectId);
+                },
+              ),
+              if (!CollectionStatus.isInvalid(
+                  unmodifiedSubjectCollectionInfo?.status?.type))
+                _buildSubjectCollectionMoreActions(vm)
             ],
           ),
           safeAreaChild: Form(
@@ -500,17 +516,24 @@ class _ViewModel {
 
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final GetCollectionInfo getCollectionInfo;
+  final Future<void> Function(BangumiSubject subject) deleteCollection;
   final Function(int subjectId, SubjectCollectionInfo collectionUpdateRequest)
   collectionInfoUpdateRequest;
 
   final void Function(BuildContext context, Object error) handleError;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
-    _collectionUpdateRequest(int subjectId,
+    Future<void> _collectionUpdateRequest(int subjectId,
         SubjectCollectionInfo collectionUpdateRequest) {
       final action = UpdateCollectionRequestAction(
           subjectId: subjectId,
           collectionUpdateRequest: collectionUpdateRequest);
+      store.dispatch(action);
+      return action.completer.future;
+    }
+
+    Future<void> _deleteCollection(BangumiSubject subject) {
+      final action = DeleteCollectionRequestAction(subject: subject);
       store.dispatch(action);
       return action.completer.future;
     }
@@ -524,6 +547,7 @@ class _ViewModel {
     return _ViewModel(
       collectionInfoUpdateRequest: _collectionUpdateRequest,
       getCollectionInfo: _getCollectionInfo,
+      deleteCollection: _deleteCollection,
       subjectCollectionInfo: store.state.subjectState.collections[subjectId],
       preferredSubjectInfoLanguage:
       store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
@@ -536,6 +560,7 @@ class _ViewModel {
 
   _ViewModel({
     @required this.getCollectionInfo,
+    @required this.deleteCollection,
     @required this.preferredSubjectInfoLanguage,
     @required this.collectionInfoUpdateRequest,
     @required this.subjectCollectionInfo,

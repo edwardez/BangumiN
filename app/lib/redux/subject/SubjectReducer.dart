@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
@@ -21,6 +22,8 @@ final subjectReducers = combineReducers<SubjectState>([
   /// Update collection
   TypedReducer<SubjectState, UpdateCollectionRequestSuccessAction>(
       updateCollectionInfoSuccessReducer),
+  TypedReducer<SubjectState, DeleteCollectionRequestSuccessAction>(
+      deleteCollectionRequestSuccessReducer),
 
   /// Reviews
   TypedReducer<SubjectState, GetSubjectReviewSuccessAction>(
@@ -85,6 +88,42 @@ SubjectState updateCollectionInfoSuccessReducer(SubjectState subjectState,
     b
       ..subjects.addAll(
         {action.subjectId: subjectToUpdate},
+      ));
+  }
+
+  return subjectState;
+}
+
+SubjectState deleteCollectionRequestSuccessReducer(SubjectState subjectState,
+    DeleteCollectionRequestSuccessAction action) {
+  final int subjectId = action.subjectId;
+
+  /// Update collection info.
+  var subjectToUpdate = subjectState.subjects[subjectId];
+  if (subjectToUpdate != null) {
+    subjectToUpdate = subjectToUpdate
+        .rebuild((b) =>
+        b.userSubjectCollectionInfoPreview.replace(
+          subjectToUpdate.userSubjectCollectionInfoPreview.rebuild(
+                (b) =>
+            b
+              ..score = 0
+              ..status = CollectionStatus.Pristine,
+          ),
+        ));
+    subjectState = subjectState.rebuild((b) =>
+    b
+      ..subjects.addAll(
+        {subjectId: subjectToUpdate},
+      ));
+  }
+
+  var collectionToUpdate = subjectState.collections[subjectId];
+  if (collectionToUpdate != null) {
+    subjectState = subjectState.rebuild((b) =>
+    b
+      ..collections.addAll(
+        {subjectId: SubjectCollectionInfo()},
       ));
   }
 

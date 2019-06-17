@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
@@ -118,6 +119,29 @@ class BangumiSubjectService {
     }
 
     return subjectCollectionInfo;
+  }
+
+  /// Deletes a collection on bangumi.
+  ///
+  /// Throws [GeneralUnknownException] if deletion failed.
+  /// Note that since this operation is completed by mocking web page, there is
+  /// no good way to verify whether a subject has been deleted other than calling
+  /// api and checking collection status.
+  Future<void> deleteCollection(int subjectId) async {
+    String xsrfToken = await cookieClient.getXsrfToken();
+    Map<String, dynamic> queryParameters = {'gh': xsrfToken};
+
+    await cookieClient.dio.get(
+      '/subject/$subjectId/remove',
+      queryParameters: queryParameters,
+    );
+
+    final subjectCollectionInfo = await getCollectionInfo(subjectId);
+    if (subjectCollectionInfo.status.type == CollectionStatus.Pristine) {
+      return;
+    }
+
+    throw GeneralUnknownException('删除收藏失败');
   }
 
   /// Gets subject reviews from web page.

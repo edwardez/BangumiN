@@ -75,10 +75,10 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path_android: "assets/logo/munin_logo_padding_full_2048x2048.png"
+  image_path_android: "assets/logo/munin_logo_padding_rounded_2048x2048.png"
   image_path_ios: "assets/logo/munin_logo_full_2048x2048.png"
   adaptive_icon_background: "#FFF09199"
-  adaptive_icon_foreground: "assets/logo/munin_logo_padding_full_2048x2048.png"
+  adaptive_icon_foreground: "assets/logo/munin_logo_padding_rounded_2048x2048.png"
 
 
 # For information on the generic Dart part of this file, see the

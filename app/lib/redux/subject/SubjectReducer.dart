@@ -9,7 +9,6 @@ import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:redux/redux.dart';
 
 final subjectReducers = combineReducers<SubjectState>([
-
   /// Subject
   TypedReducer<SubjectState, GetSubjectSuccessAction>(getSubjectSuccessReducer),
 
@@ -31,11 +30,10 @@ final subjectReducers = combineReducers<SubjectState>([
 ]);
 
 /// Subject Actions
-SubjectState getSubjectSuccessReducer(SubjectState subjectState, GetSubjectSuccessAction getSubjectSuccess) {
+SubjectState getSubjectSuccessReducer(SubjectState subjectState,
+    GetSubjectSuccessAction getSubjectSuccess) {
   BangumiSubject subject = getSubjectSuccess.subject;
-  return subjectState.rebuild((b) => b
-    ..subjects.addAll({subject.id: subject})
-  );
+  return subjectState.rebuild((b) => b..subjects.addAll({subject.id: subject}));
 }
 
 /// Get Collection Actions
@@ -45,16 +43,27 @@ SubjectState getCollectionInfoSuccessReducer(SubjectState subjectState,
 
   BangumiSubject subject = action.bangumiSubject;
 
+  collectionInfo = collectionInfo.rebuild(
+        (b) =>
+    b
+      ..completedEpisodesCount =
+          subject.subjectProgressPreview.completedEpisodesCount
+      ..completedVolumesCount =
+          subject.subjectProgressPreview.completedVolumesCount,
+  );
+
   subjectState = subjectState.rebuild((b) =>
   b
     ..collections.addAll(
       {action.subjectId: collectionInfo},
-    )
-  );
+    ));
 
   if (subject != null) {
-    subjectState = subjectState
-        .rebuild((b) => b..subjects.addAll({action.subjectId: subject}));
+    subjectState = subjectState.rebuild((b) =>
+    b
+      ..subjects.addAll(
+        {action.subjectId: subject},
+      ));
   }
 
   return subjectState;
@@ -63,8 +72,8 @@ SubjectState getCollectionInfoSuccessReducer(SubjectState subjectState,
 /// Removes all collection-related info for this subject from store
 SubjectState collectionInfoCleanUpReducer(SubjectState subjectState,
     CleanUpCollectionInfoAction cleanUpCollectionInfoAction) {
-  return subjectState.rebuild((b) => b
-    ..collections.remove(cleanUpCollectionInfoAction.subjectId));
+  return subjectState.rebuild(
+          (b) => b..collections.remove(cleanUpCollectionInfoAction.subjectId));
 }
 
 /// Update Collection Actions
@@ -153,8 +162,7 @@ SubjectState getSubjectReviewSuccessReducer(SubjectState subjectState,
             action.parsedSubjectReviews.reviewItems),
       )
       ..canLoadMoreItems = action.parsedSubjectReviews.canLoadMoreItems ?? true
-      ..requestedUntilPageNumber = 1
-    );
+      ..requestedUntilPageNumber = 1);
   }
 
   return subjectState.rebuild((b) =>

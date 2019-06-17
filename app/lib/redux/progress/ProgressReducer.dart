@@ -145,10 +145,16 @@ ProgressState updateInProgressBatchEpisodesSuccessReducer(
 
 ProgressState updateBookProgressSuccessReducer(
     ProgressState progressState, UpdateBookProgressSuccessAction action) {
-  Iterable<InProgressCollection> progresses = progressState
-      .progresses[action.subject.type]
+  BuiltList<InProgressCollection> bookProgresses = progressState
+      .progresses[SubjectType.Book];
+
+  if (bookProgresses == null) {
+    return progressState;
+  }
+
+  Iterable<InProgressCollection> progresses = bookProgresses
       .map<InProgressCollection>((InProgressCollection progress) {
-    if (progress.subject.id == action.subject.id &&
+    if (progress.subject.id == action.subjectId &&
         progress is InProgressBookCollection) {
       InProgressBookCollection newEpisodeProgress = progress.rebuild((b) => b
         ..completedEpisodesCount = action.newEpisodeNumber
@@ -161,5 +167,5 @@ ProgressState updateBookProgressSuccessReducer(
 
   return progressState.rebuild((b) => b
     ..progresses.addAll(
-        {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
+        {SubjectType.Book: BuiltList<InProgressCollection>(progresses)}));
 }

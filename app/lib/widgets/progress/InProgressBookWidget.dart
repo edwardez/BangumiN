@@ -203,7 +203,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
             children: <Widget>[
               BookProgressUpdateField(
                 fieldType: FieldType.Episode,
-                maxNumber: widget.collection.subject.totalEpisodesCount,
+                totalEpisodesOrVolumeCount: widget.collection.subject
+                    .totalEpisodesCount,
                 subjectId: widget.collection.subject.id,
                 textEditingController: episodeEditController,
               ),
@@ -212,7 +213,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
               ),
               BookProgressUpdateField(
                 fieldType: FieldType.Volume,
-                maxNumber: widget.collection.subject.totalVolumesCount,
+                totalEpisodesOrVolumeCount: widget.collection.subject
+                    .totalVolumesCount,
                 subjectId: widget.collection.subject.id,
                 textEditingController: volumeEditController,
               ),

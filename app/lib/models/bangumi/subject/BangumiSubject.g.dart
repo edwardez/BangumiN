@@ -46,6 +46,9 @@ class _$BangumiSubjectSerializer
       'collection',
       serializers.serialize(object.collectionStatusDistribution,
           specifiedType: const FullType(CollectionStatusDistribution)),
+      'subjectProgressPreview',
+      serializers.serialize(object.subjectProgressPreview,
+          specifiedType: const FullType(SubjectProgressPreview)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
@@ -204,6 +207,11 @@ class _$BangumiSubjectSerializer
                   specifiedType: const FullType(CollectionStatusDistribution))
               as CollectionStatusDistribution);
           break;
+        case 'subjectProgressPreview':
+          result.subjectProgressPreview.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(SubjectProgressPreview))
+              as SubjectProgressPreview);
+          break;
         case 'curatedInfoBoxRows':
           result.curatedInfoBoxRows.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
@@ -264,6 +272,8 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final CollectionStatusDistribution collectionStatusDistribution;
   @override
+  final SubjectProgressPreview subjectProgressPreview;
+  @override
   final BuiltListMultimap<String, InfoBoxItem> curatedInfoBoxRows;
   @override
   final int id;
@@ -294,6 +304,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.bangumiSuggestedTags,
       this.userSelectedTags,
       this.collectionStatusDistribution,
+      this.subjectProgressPreview,
       this.curatedInfoBoxRows,
       this.id,
       this.pageUrlFromApi,
@@ -326,6 +337,10 @@ class _$BangumiSubject extends BangumiSubject {
     if (collectionStatusDistribution == null) {
       throw new BuiltValueNullFieldError(
           'BangumiSubject', 'collectionStatusDistribution');
+    }
+    if (subjectProgressPreview == null) {
+      throw new BuiltValueNullFieldError(
+          'BangumiSubject', 'subjectProgressPreview');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'name');
@@ -367,6 +382,7 @@ class _$BangumiSubject extends BangumiSubject {
         bangumiSuggestedTags == other.bangumiSuggestedTags &&
         userSelectedTags == other.userSelectedTags &&
         collectionStatusDistribution == other.collectionStatusDistribution &&
+        subjectProgressPreview == other.subjectProgressPreview &&
         curatedInfoBoxRows == other.curatedInfoBoxRows &&
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
@@ -394,27 +410,21 @@ class _$BangumiSubject extends BangumiSubject {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc(
-                                                                                0,
-                                                                                type
-                                                                                    .hashCode),
-                                                                            subTypeName
-                                                                                .hashCode),
-                                                                        summary
-                                                                            .hashCode),
-                                                                    rating
-                                                                        .hashCode),
-                                                                rank.hashCode),
-                                                            cover.hashCode),
-                                                        characters.hashCode),
-                                                    relatedSubjects.hashCode),
-                                                commentsPreview.hashCode),
-                                            userSubjectCollectionInfoPreview
-                                                .hashCode),
-                                        infoBoxRows.hashCode),
-                                    bangumiSuggestedTags.hashCode),
-                                userSelectedTags.hashCode),
-                            collectionStatusDistribution.hashCode),
+                                                                            $jc($jc(0, type.hashCode),
+                                                                                subTypeName.hashCode),
+                                                                            summary.hashCode),
+                                                                        rating.hashCode),
+                                                                    rank.hashCode),
+                                                                cover.hashCode),
+                                                            characters.hashCode),
+                                                        relatedSubjects.hashCode),
+                                                    commentsPreview.hashCode),
+                                                userSubjectCollectionInfoPreview.hashCode),
+                                            infoBoxRows.hashCode),
+                                        bangumiSuggestedTags.hashCode),
+                                    userSelectedTags.hashCode),
+                                collectionStatusDistribution.hashCode),
+                            subjectProgressPreview.hashCode),
                         curatedInfoBoxRows.hashCode),
                     id.hashCode),
                 pageUrlFromApi.hashCode),
@@ -440,6 +450,7 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('bangumiSuggestedTags', bangumiSuggestedTags)
           ..add('userSelectedTags', userSelectedTags)
           ..add('collectionStatusDistribution', collectionStatusDistribution)
+          ..add('subjectProgressPreview', subjectProgressPreview)
           ..add('curatedInfoBoxRows', curatedInfoBoxRows)
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
@@ -535,6 +546,13 @@ class BangumiSubjectBuilder
           CollectionStatusDistributionBuilder collectionStatusDistribution) =>
       _$this._collectionStatusDistribution = collectionStatusDistribution;
 
+  SubjectProgressPreviewBuilder _subjectProgressPreview;
+  SubjectProgressPreviewBuilder get subjectProgressPreview =>
+      _$this._subjectProgressPreview ??= new SubjectProgressPreviewBuilder();
+  set subjectProgressPreview(
+          SubjectProgressPreviewBuilder subjectProgressPreview) =>
+      _$this._subjectProgressPreview = subjectProgressPreview;
+
   ListMultimapBuilder<String, InfoBoxItem> _curatedInfoBoxRows;
   ListMultimapBuilder<String, InfoBoxItem> get curatedInfoBoxRows =>
       _$this._curatedInfoBoxRows ??=
@@ -580,6 +598,7 @@ class BangumiSubjectBuilder
       _userSelectedTags = _$v.userSelectedTags?.toBuilder();
       _collectionStatusDistribution =
           _$v.collectionStatusDistribution?.toBuilder();
+      _subjectProgressPreview = _$v.subjectProgressPreview?.toBuilder();
       _curatedInfoBoxRows = _$v.curatedInfoBoxRows?.toBuilder();
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
@@ -625,6 +644,7 @@ class BangumiSubjectBuilder
               userSelectedTags: userSelectedTags.build(),
               collectionStatusDistribution:
                   collectionStatusDistribution.build(),
+              subjectProgressPreview: subjectProgressPreview.build(),
               curatedInfoBoxRows: _curatedInfoBoxRows?.build(),
               id: id,
               pageUrlFromApi: pageUrlFromApi,
@@ -654,6 +674,8 @@ class BangumiSubjectBuilder
         userSelectedTags.build();
         _$failedField = 'collectionStatusDistribution';
         collectionStatusDistribution.build();
+        _$failedField = 'subjectProgressPreview';
+        subjectProgressPreview.build();
         _$failedField = 'curatedInfoBoxRows';
         _curatedInfoBoxRows?.build();
       } catch (e) {

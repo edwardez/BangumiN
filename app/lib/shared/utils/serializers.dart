@@ -70,6 +70,7 @@ import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/progress/SubjectProgressPreview.dart';
 import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
@@ -182,6 +183,7 @@ part 'serializers.g.dart';
   SubjectCollectionInfo,
   CollectionStatusFromBangumi,
   CollectionStatus,
+  SubjectProgressPreview,
   SubjectState,
   // reviews
   GetSubjectReviewRequest,

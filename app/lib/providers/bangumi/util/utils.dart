@@ -362,3 +362,11 @@ Node nextNodeSibling(Element element) {
   }
   return null;
 }
+
+String attributesValueOrNull(Element element, String attributeName) {
+  if (element == null) {
+    return null;
+  }
+
+  return element.attributes[attributeName];
+}

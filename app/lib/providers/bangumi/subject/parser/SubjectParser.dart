@@ -18,6 +18,7 @@ import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/progress/SubjectProgressPreview.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
@@ -96,12 +97,14 @@ class SubjectParser {
       /// currently, if a infobox item has a link, it must be a person
       /// this behaviour seems to be stable in past years so for performance reason
       /// we don't check whether the link is
-      infoBoxItem = InfoBoxItem((b) => b
+      infoBoxItem = InfoBoxItem((b) =>
+      b
         ..type = BangumiContent.Person
         ..id = parseHrefId(element, digitOnly: true)
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
-      infoBoxItem = InfoBoxItem((b) => b
+      infoBoxItem = InfoBoxItem((b) =>
+      b
         ..type = BangumiContent.PlainText
         ..name = node.text);
     }
@@ -143,14 +146,19 @@ class SubjectParser {
 
     Element friendScoreElement = ratingElement.querySelector('.frdScore');
     int friendScoreVotesCount = extractFirstIntGroup(
-        friendScoreElement?.querySelector('a')?.text,
+        friendScoreElement
+            ?.querySelector('a')
+            ?.text,
         defaultValue: 0);
 
     double friendScore = tryParseDouble(
-        friendScoreElement?.querySelector('.num')?.text,
+        friendScoreElement
+            ?.querySelector('.num')
+            ?.text,
         defaultValue: null);
 
-    return Rating((b) => b
+    return Rating((b) =>
+    b
       ..score = score
       ..count.replace(count)
       ..totalScoreVotesCount = totalVotesCount
@@ -187,7 +195,8 @@ class SubjectParser {
       int actorId = tryParseInt(parseHrefId(actorElement, digitOnly: true),
           defaultValue: null);
       String actorName = actorElement.text ?? '';
-      actors.add(Actor((b) => b
+      actors.add(Actor((b) =>
+      b
         ..name = actorName
         ..id = actorId));
     }
@@ -254,18 +263,23 @@ class SubjectParser {
           defaultValue: null);
       String characterName = avatarElement?.text?.trim() ?? '';
       String roleName =
-          characterElement.querySelector('.badge_job_tip')?.text ?? '';
+          characterElement
+              .querySelector('.badge_job_tip')
+              ?.text ?? '';
 
       String characterImageSmall = imageUrlFromBackgroundImage(avatarElement);
       BangumiImage avatar = BangumiImage.fromImageUrl(
           characterImageSmall, ImageSize.Unknown, ImageType.MonoAvatar);
 
       String collectionCountsStr =
-          characterElement.querySelector('.fade.rr')?.text ?? '0';
+          characterElement
+              .querySelector('.fade.rr')
+              ?.text ?? '0';
       int collectionCounts = extractFirstIntGroup(collectionCountsStr);
       BuiltList<Actor> actors = parseActors(characterElement);
 
-      Character character = Character((b) => b
+      Character character = Character((b) =>
+      b
         ..id = characterId
         ..name = characterName
         ..roleName = roleName
@@ -325,7 +339,8 @@ class SubjectParser {
             coverImage, ImageSize.Unknown, ImageType.SubjectCover);
       }
 
-      RelatedSubject relatedSubject = RelatedSubject((b) => b
+      RelatedSubject relatedSubject = RelatedSubject((b) =>
+      b
         ..name = subjectName
         ..nameCn = subjectNameCn
         ..id = subjectId
@@ -373,7 +388,8 @@ class SubjectParser {
       BangumiImage cover = BangumiImage.fromImageUrl(
           coverImage, ImageSize.Unknown, ImageType.SubjectCover);
 
-      RelatedSubject relatedSubject = RelatedSubject((b) => b
+      RelatedSubject relatedSubject = RelatedSubject((b) =>
+      b
         ..name = subjectName
         ..id = subjectId
         ..cover.replace(cover)
@@ -397,10 +413,12 @@ class SubjectParser {
       return null;
     }
 
-    InfoBoxItem infoBoxItem = InfoBoxItem((b) => b
+    InfoBoxItem infoBoxItem = InfoBoxItem((b) =>
+    b
       ..name = subTypeName
       ..type = BangumiContent.PlainText);
-    InfoBoxRow infoBoxRow = InfoBoxRow((b) => b
+    InfoBoxRow infoBoxRow = InfoBoxRow((b) =>
+    b
       ..rowName = '类型'
       ..isCuratedRow = true
       ..rowItems.replace(BuiltList<InfoBoxItem>([infoBoxItem])));
@@ -471,7 +489,60 @@ class SubjectParser {
     );
   }
 
-  /// in-place update [infoBoxRows] with [infoBoxItems]
+  /// Parses BookProgress, or returns an empty [SubjectProgressPreview] if such
+  /// info is not available on html.
+  SubjectProgressPreview parseSubjectProgressPreview(DocumentFragment document,
+      SubjectType subjectType,) {
+    final progressElement = document.querySelector('.panelProgress');
+    if (progressElement == null) {
+      return SubjectProgressPreview();
+    }
+
+    final completedEpisodesElement =
+    progressElement.querySelector('#watchedeps');
+
+    final completedEpisodesCount = tryParseInt(
+        attributesValueOrNull(completedEpisodesElement, 'value'),
+        defaultValue: null);
+    final totalEpisodesCount = tryParseInt(
+        firstCapturedStringOrNull(atLeastOneDigitGroupRegex,
+            nextNodeSibling(completedEpisodesElement)?.text ?? ''),
+        defaultValue: null);
+
+    final completedVolumesElement =
+    progressElement.querySelector('#watched_vols');
+    final completedVolumesCount = tryParseInt(
+        attributesValueOrNull(completedVolumesElement, 'value'),
+        defaultValue: null);
+    final totalVolumesCount = tryParseInt(
+        firstCapturedStringOrNull(atLeastOneDigitGroupRegex,
+            nextNodeSibling(completedVolumesElement)?.text ?? ''),
+        defaultValue: null);
+
+    bool isTankobon;
+    if (subjectType == SubjectType.Book) {
+      String subjectSubTypeText = document
+          .querySelector('.nameSingle')
+          ?.text
+          ?.trim() ?? '';
+      if (subjectSubTypeText.endsWith('系列')) {
+        isTankobon = true;
+      } else {
+        isTankobon = false;
+      }
+    }
+
+    return SubjectProgressPreview((b) =>
+    b
+      ..completedEpisodesCount = completedEpisodesCount
+      ..completedVolumesCount = completedVolumesCount
+      ..totalEpisodesCount = totalEpisodesCount
+      ..totalVolumesCount = totalVolumesCount
+      ..isTankobon = isTankobon
+    );
+  }
+
+  /// In-place updates [infoBoxRows] with [infoBoxItems]
   /// add a separator to value of infoBoxRows if it's not empty
   _addSeparatorIfNotFirstInfoBoxItem(
       ListMultimap<String, InfoBoxItem> infoBoxRows,
@@ -577,6 +648,9 @@ class SubjectParser {
     final collectionStatusDistribution = parserCollectionStatusDistribution(
         document.querySelector('#columnSubjectHomeA'));
 
+    final subjectProgressPreview = parseSubjectProgressPreview(
+        document, subjectType);
+
     return BangumiSubject((b) =>
     b
       ..infoBoxRows.replace(infoBoxRows)
@@ -595,7 +669,8 @@ class SubjectParser {
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
       ..userSelectedTags.replace(userSelectedTags)
       ..userSubjectCollectionInfoPreview.replace(preview)
-      ..collectionStatusDistribution.replace(collectionStatusDistribution));
+      ..collectionStatusDistribution.replace(collectionStatusDistribution)
+      ..subjectProgressPreview.replace(subjectProgressPreview)
+    );
   }
 }
-

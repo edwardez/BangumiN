@@ -183,12 +183,12 @@ class UpdateBookProgressAction implements UpdateProgressAction {
 
 class UpdateBookProgressSuccessAction {
   /// The relevant subject instance
-  final InProgressSubjectInfo subject;
+  final int subjectId;
   final int newEpisodeNumber;
   final int newVolumeNumber;
 
   UpdateBookProgressSuccessAction({
-    @required this.subject,
+    @required this.subjectId,
     @required this.newEpisodeNumber,
     @required this.newVolumeNumber,
   });

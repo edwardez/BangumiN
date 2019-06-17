@@ -103,7 +103,10 @@ abstract class Application {
     // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
       ...createAppEpics(sharedPreferenceService),
-      ...createSubjectEpics(bangumiSubjectService),
+      ...createSubjectEpics(
+        bangumiSubjectService,
+        bangumiProgressService,
+      ),
       ...createSearchEpics(bangumiSearchService),
       ...createDiscussionEpics(bangumiDiscussionService),
       ...createTimelineEpics(bangumiTimelineService, bangumiUserService),

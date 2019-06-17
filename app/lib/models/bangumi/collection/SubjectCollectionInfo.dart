@@ -5,13 +5,15 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatusFromBangumi.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/strings.dart';
 
 part 'SubjectCollectionInfo.g.dart';
 
-/// a subject that's listed as related subject('关联条目') on subject main page
 
+/// Collection info of a subject. It's roughly the model of collection info
+/// on Bangumi, except progress-related info.
 abstract class SubjectCollectionInfo
     implements Built<SubjectCollectionInfo, SubjectCollectionInfoBuilder> {
   @BuiltValueField(wireName: 'status')
@@ -25,6 +27,16 @@ abstract class SubjectCollectionInfo
   int get rating;
 
   int get private;
+
+  /// Not available in api: number of episode user has completed for this subject.
+  /// If this info is unknown, it's set to null.
+  @nullable
+  int get completedEpisodesCount;
+
+  /// Not available in api: number of episode user has completed for this subject.
+  /// If this info is unknown or subject is not a [SubjectType.Book], it's set to null.
+  @nullable
+  int get completedVolumesCount;
 
   SubjectCollectionInfo._();
 

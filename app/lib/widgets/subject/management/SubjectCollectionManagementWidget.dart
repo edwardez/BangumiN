@@ -14,8 +14,10 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/progress/BookProgressUpdateField.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
@@ -68,15 +70,15 @@ class _SubjectCollectionManagementWidgetState
   final _formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
   final tagsController = TextEditingController();
+  final episodeEditController = TextEditingController();
+  final volumeEditController = TextEditingController();
 
   /// A [SubjectCollectionInfo] that records current form values if [_formKey.currentState.save()] is called
   SubjectCollectionInfo localSubjectCollectionInfo;
 
   /// A original [SubjectCollectionInfo], it's used to compare whether user has
-  /// modified something before exiting, see [_onWillPop]
+  /// modified something before exiting, see [_onDiscardCollectionEdit]
   SubjectCollectionInfo unmodifiedSubjectCollectionInfo;
-
-  SubjectType subjectType;
 
   /// Whether subject info has been populated to the form. It equals to whether
   /// [_populateSubjectInfoToForm] has been called.
@@ -129,10 +131,18 @@ class _SubjectCollectionManagementWidgetState
   void dispose() {
     commentController.dispose();
     tagsController.dispose();
+    episodeEditController.dispose();
+    volumeEditController.dispose();
     super.dispose();
   }
 
-  Future<bool> _onWillPop() async {
+  /// Checks whether user has modified some data and shows an confirmation
+  /// accordingly.
+  ///
+  /// Currently book progress is not checked: before refactoring this widget
+  /// to a smaller one, it might not worth adding another 100-ish lines of code
+  /// to check whether this simple value has been modified.
+  Future<bool> _onDiscardCollectionEdit() async {
     if (localSubjectCollectionInfo == null) {
       return true;
     }
@@ -168,7 +178,8 @@ class _SubjectCollectionManagementWidgetState
   }
 
   String _buildErrorMessages(
-      final Map<SubjectCollectionError, String> formErrors) {
+      final Map<SubjectCollectionError, String> formErrors,
+      subjectType,) {
     assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
@@ -198,7 +209,8 @@ class _SubjectCollectionManagementWidgetState
   }
 
   void _showDialog(BuildContext context,
-      final Map<SubjectCollectionError, String> formErrors) {
+      final Map<SubjectCollectionError, String> formErrors,
+      SubjectType subjectType,) {
     // flutter defined function
     showDialog(
       context: context,
@@ -206,7 +218,7 @@ class _SubjectCollectionManagementWidgetState
         // return object of type Dialog
         return AlertDialog(
           title: Text("请修正以下错误后再提交"),
-          content: Text(_buildErrorMessages(formErrors)),
+          content: Text(_buildErrorMessages(formErrors, subjectType)),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
@@ -221,7 +233,7 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  Widget _buildSubjectCollectionStatusFormField() {
+  Widget _buildSubjectCollectionStatusFormField(SubjectType subjectType) {
     return SubjectCollectionStatusFormField(
       subjectType: subjectType,
       autovalidate: true,
@@ -306,8 +318,6 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  bool prv = false;
-
   Widget _buildSubjectCollectionIsPrivateFormField() {
     return SubjectCollectionIsPrivateFormField(
       initialValue: localSubjectCollectionInfo.private == 1 ? true : false,
@@ -321,17 +331,85 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
+  List<Widget> _buildBookProgressFormFields(BangumiSubject subject) {
+    /// Hides this form field if current progress info on bangumi is unknown.
+    bool progressInfoUnknown =
+        subject.subjectProgressPreview.completedEpisodesCount == null;
+    if (subject.subjectProgressPreview.isTankobon ?? false) {
+      progressInfoUnknown = progressInfoUnknown &&
+          subject.subjectProgressPreview.completedVolumesCount == null;
+    }
+
+    if (subject.type != SubjectType.Book ||
+        progressInfoUnknown) {
+      return [];
+    }
+
+    const String pageStorageKeyPrefix = 'collection';
+
+    List<Widget> fields = [
+      BookProgressUpdateField(
+        fieldType: FieldType.Episode,
+        textEditingController: episodeEditController,
+        subjectId: subject.id,
+        totalEpisodesOrVolumeCount:
+        subject.subjectProgressPreview.totalEpisodesCount,
+        pageStorageKeyPrefix: pageStorageKeyPrefix,
+        onSaved: (episodesCount) {
+          if (localSubjectCollectionInfo.completedEpisodesCount != null) {
+            localSubjectCollectionInfo =
+                localSubjectCollectionInfo.rebuild((b) =>
+                b
+                  ..completedEpisodesCount = tryParseInt(
+                    episodesCount,
+                    defaultValue: 0,
+                  ));
+          }
+        },
+      ),
+      Padding(
+        padding: EdgeInsets.only(bottom: mediumOffset),
+      ),
+      if (subject.subjectProgressPreview.isTankobon ?? false) ...[
+        BookProgressUpdateField(
+          fieldType: FieldType.Volume,
+          textEditingController: volumeEditController,
+          subjectId: subject.id,
+          totalEpisodesOrVolumeCount:
+          subject.subjectProgressPreview.totalVolumesCount,
+          pageStorageKeyPrefix: pageStorageKeyPrefix,
+          onSaved: (volumesCount) {
+            if (localSubjectCollectionInfo.completedEpisodesCount != null) {
+              localSubjectCollectionInfo =
+                  localSubjectCollectionInfo.rebuild((b) =>
+                  b
+                    ..completedVolumesCount = tryParseInt(
+                      volumesCount,
+                      defaultValue: 0,
+                    ));
+            }
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: mediumOffset),
+        ),
+      ]
+    ];
+
+    return fields;
+  }
+
   /// Initializes required data.
   ///
   /// Returns a [Future] that indicates loading status of required data.
   Future<void> _initData(int subjectId,
       BangumiSubject subject,
       SubjectCollectionInfo collectionInfo,
-      GetCollectionInfo retryCallBack) async {
+      GetCollectionInfo getCollectionInfo) async {
     bool isSubjectAbsent = subject == null;
     bool isCollectionInfoAbsent = collectionInfo == null;
     if (isSubjectAbsent || isCollectionInfoAbsent) {
-      return retryCallBack(subjectId);
+      return getCollectionInfo(subjectId);
     } else {
       _populateSubjectInfoToForm(subject);
       return immediateFinishCompleter().future;
@@ -348,9 +426,9 @@ class _SubjectCollectionManagementWidgetState
     if (loadedSubject == null) {
       // in case it's null(exception!), assign a default type
       // note: [subjectType] only affects action name user sees on the ui
-      subjectType = SubjectType.Anime;
+      episodeEditController.text = '0';
+      volumeEditController.text = '0';
     } else {
-      subjectType = loadedSubject.type;
       for (String userSelectedTag in loadedSubject.userSelectedTags) {
         candidateTags[userSelectedTag] = true;
         headerTags[userSelectedTag] = true;
@@ -364,10 +442,19 @@ class _SubjectCollectionManagementWidgetState
           candidateTags[suggestedTag] = false;
         }
       }
+
+      episodeEditController.text = loadedSubject
+          .subjectProgressPreview.completedEpisodesCount
+          ?.toString() ??
+          '0';
+      volumeEditController.text = loadedSubject
+          .subjectProgressPreview.completedVolumesCount
+          ?.toString() ??
+          '0';
     }
   }
 
-  _buildSubmitWidget(BuildContext context, _ViewModel vm, int subjectId) {
+  _buildSubmitWidget(BuildContext context, _ViewModel vm) {
     if (collectionsSubmissionStatus == RequestStatus.Loading) {
       return AdaptiveProgressIndicator(
         indicatorStyle: IndicatorStyle.Material,
@@ -386,7 +473,7 @@ class _SubjectCollectionManagementWidgetState
 
           try {
             await vm.collectionInfoUpdateRequest(
-                subjectId, localSubjectCollectionInfo);
+                vm.subject.id, localSubjectCollectionInfo);
             Navigator.pop(context);
           } catch (error) {
             vm.handleError(context, error);
@@ -398,7 +485,7 @@ class _SubjectCollectionManagementWidgetState
       onTap: _canSubmitForm
           ? null
           : () {
-        _showDialog(context, formErrors);
+        _showDialog(context, formErrors, vm.subject.type);
       },
     );
   }
@@ -438,12 +525,11 @@ class _SubjectCollectionManagementWidgetState
             .dispatch(CleanUpCollectionInfoAction(subjectId: widget.subjectId));
       },
       builder: (BuildContext context, _ViewModel vm) {
-        int subjectId = widget.subjectId;
         if (vm.subjectCollectionInfo == null || vm.subject == null) {
           return RequestInProgressIndicatorWidget(
             retryCallback: () {
-              return _initData(subjectId, vm.subject, vm.subjectCollectionInfo,
-                  vm.getCollectionInfo);
+              return _initData(widget.subjectId, vm.subject,
+                  vm.subjectCollectionInfo, vm.getCollectionInfo);
             },
             requestStatusFuture: requestStatusFuture,
           );
@@ -475,7 +561,7 @@ class _SubjectCollectionManagementWidgetState
             actions: <Widget>[
               Builder(
                 builder: (BuildContext innerContext) {
-                  return _buildSubmitWidget(innerContext, vm, subjectId);
+                  return _buildSubmitWidget(innerContext, vm);
                 },
               ),
               if (!CollectionStatus.isInvalid(
@@ -486,11 +572,14 @@ class _SubjectCollectionManagementWidgetState
           safeAreaChild: Form(
             key: _formKey,
             autovalidate: true,
-            onWillPop: _onWillPop,
+            onWillPop: _onDiscardCollectionEdit,
             child: ListView(
               children: <Widget>[
-                _buildSubjectCollectionStatusFormField(),
+                _buildSubjectCollectionStatusFormField(vm.subject.type),
                 _buildStarRatingFormField(),
+                ..._buildBookProgressFormFields(
+                  vm.subject,
+                ),
                 _buildSubjectTagsFormField(),
                 _buildSubjectCommentFormField(context),
                 _buildSubjectCollectionIsPrivateFormField(),

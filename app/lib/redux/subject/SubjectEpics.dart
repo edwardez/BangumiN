@@ -1,6 +1,7 @@
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -10,11 +11,15 @@ import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createSubjectEpics(BangumiSubjectService bangumiSubjectService) {
+List<Epic<AppState>> createSubjectEpics(
+    BangumiSubjectService bangumiSubjectService,
+    BangumiProgressService bangumiProgressService,) {
   final getCollectionInfoEpic =
   _createGetCollectionInfoEpic(bangumiSubjectService);
-  final collectionUpdateEpic =
-  _createCollectionUpdateRequestEpic(bangumiSubjectService);
+  final collectionUpdateEpic = _createCollectionUpdateRequestEpic(
+    bangumiSubjectService,
+    bangumiProgressService,
+  );
   final getSubjectEpic = _createGetSubjectEpic(bangumiSubjectService);
   final deleteCollectionRequestEpic =
   _createDeleteCollectionRequestEpic(bangumiSubjectService);
@@ -53,7 +58,8 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
   }
 }
 
-Epic<AppState> _createGetSubjectEpic(BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetSubjectEpic(
+    BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions).ofType(TypeToken<GetSubjectAction>()).switchMap(
             (action) => _getSubject(store, bangumiSubjectService, action));
@@ -99,7 +105,8 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
   }
 }
 
-Epic<AppState> _createGetCollectionInfoEpic(BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetCollectionInfoEpic(
+    BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetCollectionInfoAction>())
@@ -108,17 +115,50 @@ Epic<AppState> _createGetCollectionInfoEpic(BangumiSubjectService bangumiSubject
   };
 }
 
-Stream<dynamic> _collectionUpdateRequest(BangumiSubjectService bangumiSubjectService,
-    UpdateCollectionRequestAction action) async* {
+Stream<dynamic> _collectionUpdateRequest(
+    BangumiSubjectService bangumiSubjectService,
+    BangumiProgressService bangumiProgressService,
+    UpdateCollectionRequestAction action,
+    EpicStore<AppState> store,) async* {
   try {
-    final updatedCollectionInfo =
-    await bangumiSubjectService.updateCollectionInfoRequest(
-        action.subjectId, action.collectionUpdateRequest);
+    List<Future> futures = [];
+
+    futures.add(bangumiSubjectService.updateCollectionInfoRequest(
+        action.subjectId, action.collectionUpdateRequest));
+
+    // Current collection info in store, might be null.
+    final collectionInStore =
+    store.state.subjectState.collections[action.subjectId];
+
+    final updatedCollection = action.collectionUpdateRequest;
+
+    bool hasUpdatedBookProgress = collectionInStore?.completedVolumesCount !=
+        updatedCollection.completedVolumesCount ||
+        collectionInStore?.completedEpisodesCount !=
+            updatedCollection.completedEpisodesCount;
+
+    if (hasUpdatedBookProgress) {
+      futures.add(bangumiProgressService.updateBookProgress(
+        subjectId: action.subjectId,
+        newEpisodeNumber: updatedCollection.completedEpisodesCount,
+        newVolumeNumber: updatedCollection.completedVolumesCount,
+      ));
+    }
+
+    List responses = await Future.wait(futures);
 
     yield UpdateCollectionRequestSuccessAction(
       subjectId: action.subjectId,
-      collectionUpdateResponse: updatedCollectionInfo,
+      collectionUpdateResponse: responses[0] as SubjectCollectionInfo,
     );
+
+    if (hasUpdatedBookProgress) {
+      yield UpdateBookProgressSuccessAction(
+        subjectId: action.subjectId,
+        newEpisodeNumber: updatedCollection.completedEpisodesCount ?? 0,
+        newVolumeNumber: updatedCollection.completedVolumesCount ?? 0,
+      );
+    }
 
     action.completer.complete();
   } catch (error, stack) {
@@ -130,12 +170,15 @@ Stream<dynamic> _collectionUpdateRequest(BangumiSubjectService bangumiSubjectSer
   }
 }
 
-Epic<AppState> _createCollectionUpdateRequestEpic(BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createCollectionUpdateRequestEpic(
+    BangumiSubjectService bangumiSubjectService,
+    BangumiProgressService bangumiProgressService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<UpdateCollectionRequestAction>())
         .switchMap((action) =>
-        _collectionUpdateRequest(bangumiSubjectService, action));
+        _collectionUpdateRequest(
+            bangumiSubjectService, bangumiProgressService, action, store));
   };
 }
 
@@ -239,7 +282,8 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
   }
 }
 
-Epic<AppState> _createGetSubjectReviewsEpic(BangumiSubjectService bangumiSubjectService) {
+Epic<AppState> _createGetSubjectReviewsEpic(
+    BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetSubjectReviewAction>())

@@ -55,7 +55,7 @@ class _$InProgressSubjectInfoSerializer
     }
     if (object.totalVolumesCount != null) {
       result
-        ..add('vol_count')
+        ..add('vols_count')
         ..add(serializers.serialize(object.totalVolumesCount,
             specifiedType: const FullType(int)));
     }
@@ -112,7 +112,7 @@ class _$InProgressSubjectInfoSerializer
           result.totalEpisodesCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'vol_count':
+        case 'vols_count':
           result.totalVolumesCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;

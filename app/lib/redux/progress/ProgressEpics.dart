@@ -169,7 +169,7 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
           newEpisodeNumber: action.newEpisodeNumber,
           newVolumeNumber: action.newVolumeNumber);
       yield UpdateBookProgressSuccessAction(
-        subject: action.subject,
+        subjectId: action.subject.id,
         newEpisodeNumber: action.newEpisodeNumber,
         newVolumeNumber: action.newVolumeNumber,
       );

@@ -143,9 +143,6 @@ Stream<dynamic> _deleteCollectionRequestEpic(EpicStore<AppState> store,
     BangumiSubjectService bangumiSubjectService,
     DeleteCollectionRequestAction action) async* {
   try {
-    await Future.delayed(Duration(seconds: 3));
-    return;
-
     await bangumiSubjectService.deleteCollection(action.subject.id);
 
     // If the api call is successful, dispatch the results to update store.

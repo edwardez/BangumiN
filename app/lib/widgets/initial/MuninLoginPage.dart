@@ -16,6 +16,9 @@ class MuninLoginPage extends StatefulWidget {
 class _MuninLoginPageState extends State<MuninLoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // Svg logo has 1/[screenSvgRatio] size of the shortest side of the screen.
+  static const screenSvgRatio = 3;
+
   @override
   void initState() {
     super.initState();
@@ -46,9 +49,17 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       vm.showErrorSnackBar(
           _scaffoldKey, vm.appState?.oauthState?.oauthFailureMessage ?? '未知错误');
     }
+
+    final svgSize = MediaQuery
+        .of(context)
+        .size
+        .shortestSide / screenSvgRatio;
     final Widget bangumiNLogo = SvgPicture.asset(
-        'assets/logo/bangumin_logo.svg',
-        semanticsLabel: 'BangumiN Logo');
+      'assets/logo/munin_logo_rounded.svg',
+      semanticsLabel: 'BangumiN Logo',
+      width: svgSize,
+      height: svgSize,
+    );
 
     return Scaffold(
       key: _scaffoldKey,

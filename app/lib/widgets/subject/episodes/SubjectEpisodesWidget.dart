@@ -335,7 +335,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.subjectEpisodes == null) {
           return RequestInProgressIndicatorWidget(
-            retryCallback: vm.getSubjectEpisodes,
+            retryCallback: (_) => vm.getSubjectEpisodes(),
             requestStatusFuture: requestStatusFuture,
           );
         }

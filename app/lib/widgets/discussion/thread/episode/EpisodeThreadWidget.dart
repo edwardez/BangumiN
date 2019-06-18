@@ -53,8 +53,10 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
       converter: (Store store) => _ViewModel.fromStore(store, widget.request),
       distinct: true,
       onInit: (store) {
-        final action =
-        GetThreadRequestAction(request: widget.request);
+        final action = GetThreadRequestAction(
+          request: widget.request,
+          captionTextColor: defaultCaptionText(context).color,
+        );
         store.dispatch(action);
         requestStatusFuture = action.completer.future;
       },
@@ -105,7 +107,6 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
             }
           }
 
-
           return ScrollViewWithSliverAppBar(
             appBarMainTitle: Text('章节讨论'),
             appBarSecondaryTitle: AppBarTitleForSubject(
@@ -142,13 +143,16 @@ class _EpisodeThreadWidgetState extends State<EpisodeThreadWidget> {
 }
 
 class _ViewModel {
-  final Future<void> Function() getThread;
+  final Future<void> Function(BuildContext context) getThread;
   final EpisodeThread thread;
 
   factory _ViewModel.fromStore(
       Store<AppState> store, GetThreadRequest request) {
-    Future<void> _getThread() {
-      final action = GetThreadRequestAction(request: request);
+    Future<void> _getThread(BuildContext context) {
+      final action = GetThreadRequestAction(
+        request: request,
+        captionTextColor: defaultCaptionText(context).color,
+      );
       store.dispatch(action);
       return action.completer.future;
     }

@@ -304,14 +304,14 @@ class UserProfileWidget extends StatelessWidget {
         if (vm.userProfile == null) {
           if (providedAppBar == null) {
             return RequestInProgressIndicatorWidget(
-              retryCallback: vm.getUserProfile,
+              retryCallback: (_) => vm.getUserProfile(),
               requestStatusFuture: requestStatusFuture,
             );
           } else {
             return NestedScrollView(
               body: RequestInProgressIndicatorWidget(
                 showAppBar: false,
-                retryCallback: vm.getUserProfile,
+                retryCallback: (_) => vm.getUserProfile(),
                 requestStatusFuture: requestStatusFuture,
               ),
               headerSliverBuilder:

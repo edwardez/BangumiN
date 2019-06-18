@@ -48,7 +48,7 @@ class SubjectWidget extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.subject == null) {
           return RequestInProgressIndicatorWidget(
-            retryCallback: () {
+            retryCallback: (_) {
               return vm.getSubject(context);
             },
             requestStatusFuture: requestStatusFuture,

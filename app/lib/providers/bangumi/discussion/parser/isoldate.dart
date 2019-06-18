@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
@@ -23,28 +24,40 @@ class ParseDiscussionMessage {
 }
 
 BlogThread processBlogThread(ParseThreadMessage message) {
-  return ThreadParser(mutedUsers: message.mutedUsers).processBlogThread(
+  return ThreadParser(
+    mutedUsers: message.mutedUsers,
+    captionTextColor: message.captionTextColor,
+  ).processBlogThread(
     message.html,
     message.threadId,
   );
 }
 
 EpisodeThread processEpisodeThread(ParseThreadMessage message) {
-  return ThreadParser(mutedUsers: message.mutedUsers).processEpisodeThread(
+  return ThreadParser(
+    mutedUsers: message.mutedUsers,
+    captionTextColor: message.captionTextColor,
+  ).processEpisodeThread(
     message.html,
     message.threadId,
   );
 }
 
 SubjectTopicThread processSubjectTopicThread(ParseThreadMessage message) {
-  return ThreadParser(mutedUsers: message.mutedUsers).processSubjectTopicThread(
+  return ThreadParser(
+    mutedUsers: message.mutedUsers,
+    captionTextColor: message.captionTextColor,
+  ).processSubjectTopicThread(
     message.html,
     message.threadId,
   );
 }
 
 GroupThread processGroupThread(ParseThreadMessage message) {
-  return ThreadParser(mutedUsers: message.mutedUsers).processGroupThread(
+  return ThreadParser(
+    mutedUsers: message.mutedUsers,
+    captionTextColor: message.captionTextColor,
+  ).processGroupThread(
     message.html,
     message.threadId,
   );
@@ -57,5 +70,8 @@ class ParseThreadMessage {
 
   final BuiltMap<String, MutedUser> mutedUsers;
 
-  const ParseThreadMessage(this.html, this.mutedUsers, this.threadId);
+  final Color captionTextColor;
+
+  const ParseThreadMessage(this.html, this.mutedUsers, this.threadId,
+      this.captionTextColor);
 }

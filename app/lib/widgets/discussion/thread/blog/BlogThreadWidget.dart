@@ -35,8 +35,8 @@ class BlogThreadWidget extends StatelessWidget {
       converter: (Store store) => _ViewModel.fromStore(store, request),
       distinct: true,
       onInit: (store) {
-        final action =
-        GetThreadRequestAction(request: request);
+        final action = GetThreadRequestAction(
+            request: request, captionTextColor: null);
 
         requestStatusFuture = action.completer.future;
         store.dispatch(action);
@@ -104,13 +104,16 @@ class BlogThreadWidget extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Future<void> Function() getThread;
+  final Future<void> Function(BuildContext context) getThread;
   final BlogThread thread;
 
   factory _ViewModel.fromStore(
       Store<AppState> store, GetThreadRequest request) {
-    Future<void> _getThread() {
-      final action = GetThreadRequestAction(request: request);
+    Future<void> _getThread(BuildContext context) {
+      final action = GetThreadRequestAction(
+        request: request,
+        captionTextColor: defaultCaptionText(context).color,
+      );
       store.dispatch(action);
 
       return action.completer.future;

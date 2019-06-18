@@ -64,22 +64,29 @@ Stream<dynamic> _getGroupThread(EpicStore<AppState> store,
     BangumiThread thread;
     if (action.request.threadType == ThreadType.Group) {
       thread = await bangumiDiscussionService.getGroupThread(
-          threadId: action.request.id,
-          mutedUsers: store.state.settingState.muteSetting.mutedUsers);
+        threadId: action.request.id,
+        mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+        captionTextColor: action.captionTextColor,
+      );
     } else if (action.request.threadType == ThreadType.Episode) {
       thread = await bangumiDiscussionService.getEpisodeThread(
-          threadId: action.request.id,
-          mutedUsers: store.state.settingState.muteSetting.mutedUsers);
+        threadId: action.request.id,
+        mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+        captionTextColor: action.captionTextColor,
+      );
     } else if (action.request.threadType == ThreadType.SubjectTopic) {
       thread = await bangumiDiscussionService.getSubjectTopicThread(
-          threadId: action.request.id,
-          mutedUsers: store.state.settingState.muteSetting.mutedUsers);
+        threadId: action.request.id,
+        mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+        captionTextColor: action.captionTextColor,
+      );
     } else if (action.request.threadType == ThreadType.Blog) {
       thread = await bangumiDiscussionService.getBlogThread(
-          threadId: action.request.id,
-          mutedUsers: store.state.settingState.muteSetting.mutedUsers);
+        threadId: action.request.id,
+        mutedUsers: store.state.settingState.muteSetting.mutedUsers,
+        captionTextColor: action.captionTextColor,
+      );
     }
-
 
     yield GetThreadRequestSuccessAction(
         thread: thread, request: action.request);
@@ -99,7 +106,6 @@ Epic<AppState> _createGetGroupThreadEpic(
     return Observable(actions)
         .ofType(TypeToken<GetThreadRequestAction>())
         .switchMap((action) =>
-        _getGroupThread(store, bangumiDiscussionService, action))
-    ;
+        _getGroupThread(store, bangumiDiscussionService, action));
   };
 }

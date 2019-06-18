@@ -32,9 +32,12 @@ class GetDiscussionRequestSuccessAction {
 class GetThreadRequestAction {
   final GetThreadRequest request;
   final Completer completer;
+  final Color captionTextColor;
+
 
   GetThreadRequestAction({
     @required this.request,
+    @required this.captionTextColor,
     Completer completer,
   }) : this.completer = completer ?? Completer();
 }

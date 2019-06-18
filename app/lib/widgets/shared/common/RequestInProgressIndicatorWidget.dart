@@ -19,7 +19,7 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
   /// If [retryCallback] is set to null, retry button will be hidden.
   /// If [retryCallback] is called, [requestStatusFuture] will be updated to
   /// the return value of this.
-  final Future<void> Function() retryCallback;
+  final Future<void> Function(BuildContext context) retryCallback;
 
   final dynamic refreshAction;
 
@@ -151,7 +151,7 @@ class _RequestInProgressIndicatorWidgetState
             errorWidgets.add(RaisedButton(
               child: Text(widget.retryButtonMessage),
               onPressed: () {
-                listenOnRequestFuture(widget.retryCallback());
+                listenOnRequestFuture(widget.retryCallback(context));
               },
             ));
           }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
@@ -36,11 +38,20 @@ class ThreadParser {
   /// #22-24 - 2019-6-1 18:36 / del / edit
   /// This regex is good through year 3000! :P
   static RegExp postTimeAndSequentialNumRegex =
-      RegExp(r'\#(\d+)-?(\d+)?.*-\s+(' + postTimeRegex.pattern + r')');
+  RegExp(r'\#(\d+)-?(\d+)?.*-\s+(' + postTimeRegex.pattern + r')');
 
   final BuiltMap<String, MutedUser> mutedUsers;
 
-  ThreadParser({@required this.mutedUsers});
+  /// An [captionTextColor] that'll be added to html.
+  ///
+  /// It can be used to decide caption text during parsing time instead of
+  /// rendering time(during widget build).
+  final Color captionTextColor;
+
+  const ThreadParser({
+    @required this.mutedUsers,
+    @required this.captionTextColor,
+  });
 
   PostTimeAndSeqNum _parsePostTimeAndSeqNum(String raw) {
     Match match = postTimeAndSequentialNumRegex.firstMatch(raw?.trim());
@@ -257,8 +268,29 @@ class ThreadParser {
           ?.outerHtml ?? '');
   }
 
+  _updateQuoteTextColor(DocumentFragment document) {
+    // mimic bangumi css style
+    List<Element> elements = document.querySelectorAll('div.quote');
+    for (final element in elements) {
+      final colorStyle = 'color: ${toCssRGBAString(captionTextColor)};';
+
+      if (element.attributes['style'] == null) {
+        element.attributes['style'] = colorStyle;
+      } else {
+        // normalizes inline-style by adding a possibly missing semicolon.
+        bool endsWithSemicolon = element.attributes['style'].trim().endsWith(
+            ';');
+        if (!endsWithSemicolon) {
+          element.attributes['style'] = ';';
+        }
+        element.attributes['style'] += colorStyle;
+      }
+    }
+  }
+
   GroupThread processGroupThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
+    _updateQuoteTextColor(document);
 
     String title = document.querySelector('title')?.text?.trim();
 
@@ -280,6 +312,7 @@ class ThreadParser {
 
   SubjectTopicThread processSubjectTopicThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
+    _updateQuoteTextColor(document);
 
     String title = document.querySelector('#header')?.text?.trim() ?? '??';
 
@@ -301,6 +334,7 @@ class ThreadParser {
 
   EpisodeThread processEpisodeThread(String rawHtml, int threadId) {
     DocumentFragment document = parseFragment(rawHtml);
+    _updateQuoteTextColor(document);
 
     // Uses title class on page if any.
     String title =
@@ -337,6 +371,7 @@ class ThreadParser {
 
   BlogThread processBlogThread(String rawHtml, int blogId) {
     DocumentFragment document = parseFragment(rawHtml);
+    _updateQuoteTextColor(document);
 
     String title = document.querySelector('title')?.text?.trim();
 

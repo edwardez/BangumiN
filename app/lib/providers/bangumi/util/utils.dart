@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:ui';
 
 import 'package:html/dom.dart' show Element, Node, NodeList;
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
@@ -369,4 +370,12 @@ String attributesValueOrNull(Element element, String attributeName) {
   }
 
   return element.attributes[attributeName];
+}
+
+String toCssRGBAString(Color color) {
+  // [Color] stores color in argb color, it needs to be converted to rgba(used
+  // by css).
+  final argb = color.value.toRadixString(16).padLeft(8, '0');
+  final rgba = '${argb.substring(2)}${argb.substring(0, 2)}';
+  return '#$rgba';
 }

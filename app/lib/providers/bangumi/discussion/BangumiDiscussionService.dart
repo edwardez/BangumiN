@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
@@ -25,9 +28,8 @@ class BangumiDiscussionService {
   BangumiDiscussionService({@required this.cookieClient})
       : assert(cookieClient != null);
 
-  Future<GetDiscussionResponse> getRakuenTopics(
-      {@required GetDiscussionRequest getDiscussionRequest,
-        @required MuteSetting muteSetting}) async {
+  Future<GetDiscussionResponse> getRakuenTopics({@required GetDiscussionRequest getDiscussionRequest,
+    @required MuteSetting muteSetting}) async {
     assert(getDiscussionRequest.discussionType == DiscussionType.Rakuen);
     assert(getDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
@@ -63,60 +65,80 @@ class BangumiDiscussionService {
     return getDiscussionResponse;
   }
 
-  Future<GroupThread> getGroupThread({@required int threadId,
-    @required BuiltMap<String, MutedUser> mutedUsers}) async {
+  Future<GroupThread> getGroupThread({
+    @required int threadId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+    Color captionTextColor = Colors.black54,
+  }) async {
     String requestUrl = '/group/topic/$threadId';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      GroupThread thread = await compute(processGroupThread,
-          ParseThreadMessage(response.data, mutedUsers, threadId));
+      GroupThread thread = await compute(
+          processGroupThread,
+          ParseThreadMessage(
+              response.data, mutedUsers, threadId, captionTextColor));
       return thread;
     }
 
     throw BangumiResponseIncomprehensibleException();
   }
 
-  Future<EpisodeThread> getEpisodeThread({@required int threadId,
-    @required BuiltMap<String, MutedUser> mutedUsers}) async {
+  Future<EpisodeThread> getEpisodeThread({
+    @required int threadId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+    Color captionTextColor = Colors.black54,
+  }) async {
     String requestUrl = '/ep/$threadId';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      EpisodeThread thread = await compute(processEpisodeThread,
-          ParseThreadMessage(response.data, mutedUsers, threadId));
+      EpisodeThread thread = await compute(
+          processEpisodeThread,
+          ParseThreadMessage(
+              response.data, mutedUsers, threadId, captionTextColor));
       return thread;
     }
 
     throw BangumiResponseIncomprehensibleException();
   }
 
-  Future<SubjectTopicThread> getSubjectTopicThread({@required int threadId,
-    @required BuiltMap<String, MutedUser> mutedUsers}) async {
+  Future<SubjectTopicThread> getSubjectTopicThread({
+    @required int threadId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+    Color captionTextColor = Colors.black54,
+  }) async {
     String requestUrl = '/subject/topic/$threadId';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      SubjectTopicThread thread = await compute(processSubjectTopicThread,
-          ParseThreadMessage(response.data, mutedUsers, threadId));
+      SubjectTopicThread thread = await compute(
+          processSubjectTopicThread,
+          ParseThreadMessage(
+              response.data, mutedUsers, threadId, captionTextColor));
       return thread;
     }
 
     throw BangumiResponseIncomprehensibleException();
   }
 
-  Future<BlogThread> getBlogThread({@required int threadId,
-    @required BuiltMap<String, MutedUser> mutedUsers}) async {
+  Future<BlogThread> getBlogThread({
+    @required int threadId,
+    @required BuiltMap<String, MutedUser> mutedUsers,
+    Color captionTextColor = Colors.black54,
+  }) async {
     String requestUrl = '/blog/$threadId';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
 
     if (is2xxCode(response.statusCode)) {
-      BlogThread thread = await compute(processBlogThread,
-          ParseThreadMessage(response.data, mutedUsers, threadId));
+      BlogThread thread = await compute(
+          processBlogThread,
+          ParseThreadMessage(
+              response.data, mutedUsers, threadId, captionTextColor));
       return thread;
     }
 

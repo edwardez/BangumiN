@@ -340,8 +340,7 @@ class _SubjectCollectionManagementWidgetState
           subject.subjectProgressPreview.completedVolumesCount == null;
     }
 
-    if (subject.type != SubjectType.Book ||
-        progressInfoUnknown) {
+    if (subject.type != SubjectType.Book || progressInfoUnknown) {
       return [];
     }
 
@@ -527,7 +526,7 @@ class _SubjectCollectionManagementWidgetState
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.subjectCollectionInfo == null || vm.subject == null) {
           return RequestInProgressIndicatorWidget(
-            retryCallback: () {
+            retryCallback: (_) {
               return _initData(widget.subjectId, vm.subject,
                   vm.subjectCollectionInfo, vm.getCollectionInfo);
             },

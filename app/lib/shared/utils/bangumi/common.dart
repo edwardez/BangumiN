@@ -21,16 +21,16 @@ bool isValidIntScore(int score) {
 
 String preferredNameFromSubjectBase(SubjectBase subject,
     PreferredSubjectInfoLanguage language) {
-  return preferredName(subject.name, subject.nameCn, language);
+  return preferredName(subject.name, subject.chineseName, language);
 }
 
-String preferredName(String name, String nameCn,
+String preferredName(String name, String chineseName,
     PreferredSubjectInfoLanguage language) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Chinese:
 
     /// Ensure there is at least one title
-      return isNotEmpty(nameCn) ? nameCn : name;
+      return isNotEmpty(chineseName) ? chineseName : name;
     case PreferredSubjectInfoLanguage.Original:
     default:
       return name;
@@ -40,20 +40,21 @@ String preferredName(String name, String nameCn,
 ///Secondary title might be absent so `Optional` is returned
 Optional<String> secondaryNameFromSubjectBase(SubjectBase subject,
     PreferredSubjectInfoLanguage language) {
-  return secondaryName(subject.name, subject.nameCn, language);
+  return secondaryName(subject.name, subject.chineseName, language);
 }
 
 ///Secondary title might be absent so `Optional` is returned
-Optional<String> secondaryName(String name, String nameCn,
+Optional<String> secondaryName(String name, String chineseName,
     PreferredSubjectInfoLanguage language) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Original:
-      return isNotEmpty(nameCn) ? Optional.of(nameCn) : Optional.absent();
+      return isNotEmpty(chineseName) ? Optional.of(chineseName) : Optional
+          .absent();
     case PreferredSubjectInfoLanguage.Chinese:
     default:
 
-    /// If nameCn is not null or empty, name can be used as the secondary language
-    /// Otherwise, name has been used a fallback for nameCn, so secondary language should return null
-      return isNotEmpty(nameCn) ? Optional.of(name) : Optional.absent();
+    /// If [chineseName] is not null or empty, name can be used as the secondary language
+    /// Otherwise, name has been used a fallback for [chineseName], so secondary language should return null
+      return isNotEmpty(chineseName) ? Optional.of(name) : Optional.absent();
   }
 }

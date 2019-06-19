@@ -37,7 +37,7 @@ class _$EpisodeProgressSerializer
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'name_cn',
-      serializers.serialize(object.nameCn,
+      serializers.serialize(object.chineseName,
           specifiedType: const FullType(String)),
       'status',
       serializers.serialize(object.airStatus,
@@ -98,7 +98,7 @@ class _$EpisodeProgressSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'status':
@@ -136,7 +136,7 @@ class _$EpisodeProgress extends EpisodeProgress {
   @override
   final String name;
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final AirStatus airStatus;
   @override
@@ -155,7 +155,7 @@ class _$EpisodeProgress extends EpisodeProgress {
       this.summary,
       this.id,
       this.name,
-      this.nameCn,
+      this.chineseName,
       this.airStatus,
       this.userEpisodeStatus,
       this.episodeType})
@@ -179,8 +179,8 @@ class _$EpisodeProgress extends EpisodeProgress {
     if (name == null) {
       throw new BuiltValueNullFieldError('EpisodeProgress', 'name');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('EpisodeProgress', 'nameCn');
+    if (chineseName == null) {
+      throw new BuiltValueNullFieldError('EpisodeProgress', 'chineseName');
     }
     if (airStatus == null) {
       throw new BuiltValueNullFieldError('EpisodeProgress', 'airStatus');
@@ -213,7 +213,7 @@ class _$EpisodeProgress extends EpisodeProgress {
         summary == other.summary &&
         id == other.id &&
         name == other.name &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         airStatus == other.airStatus &&
         userEpisodeStatus == other.userEpisodeStatus &&
         episodeType == other.episodeType;
@@ -237,7 +237,7 @@ class _$EpisodeProgress extends EpisodeProgress {
                                 summary.hashCode),
                             id.hashCode),
                         name.hashCode),
-                    nameCn.hashCode),
+                    chineseName.hashCode),
                 airStatus.hashCode),
             userEpisodeStatus.hashCode),
         episodeType.hashCode));
@@ -253,7 +253,7 @@ class _$EpisodeProgress extends EpisodeProgress {
           ..add('summary', summary)
           ..add('id', id)
           ..add('name', name)
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('airStatus', airStatus)
           ..add('userEpisodeStatus', userEpisodeStatus)
           ..add('episodeType', episodeType))
@@ -297,9 +297,9 @@ class EpisodeProgressBuilder
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   AirStatus _airStatus;
   AirStatus get airStatus => _$this._airStatus;
@@ -325,7 +325,7 @@ class EpisodeProgressBuilder
       _summary = _$v.summary;
       _id = _$v.id;
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _airStatus = _$v.airStatus;
       _userEpisodeStatus = _$v.userEpisodeStatus;
       _episodeType = _$v.episodeType;
@@ -358,7 +358,7 @@ class EpisodeProgressBuilder
             summary: summary,
             id: id,
             name: name,
-            nameCn: nameCn,
+            chineseName: chineseName,
             airStatus: airStatus,
             userEpisodeStatus: userEpisodeStatus,
             episodeType: episodeType);

@@ -32,7 +32,7 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
       serializers.serialize(object.collectionPreviews,
           specifiedType: const FullType(BuiltMap, const [
             const FullType(SubjectType),
-            const FullType(CollectionPreview)
+            const FullType(CollectionsOnProfilePage)
           ])),
       'timelinePreviews',
       serializers.serialize(object.timelinePreviews,
@@ -86,7 +86,7 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
           result.collectionPreviews.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(SubjectType),
-                const FullType(CollectionPreview)
+                const FullType(CollectionsOnProfilePage)
               ])) as BuiltMap);
           break;
         case 'timelinePreviews':
@@ -117,7 +117,7 @@ class _$UserProfile extends UserProfile {
   @override
   final BuiltList<NetworkServiceTag> networkServiceTags;
   @override
-  final BuiltMap<SubjectType, CollectionPreview> collectionPreviews;
+  final BuiltMap<SubjectType, CollectionsOnProfilePage> collectionPreviews;
   @override
   final BuiltList<TimelinePreview> timelinePreviews;
   @override
@@ -231,12 +231,13 @@ class UserProfileBuilder implements Builder<UserProfile, UserProfileBuilder> {
   set networkServiceTags(ListBuilder<NetworkServiceTag> networkServiceTags) =>
       _$this._networkServiceTags = networkServiceTags;
 
-  MapBuilder<SubjectType, CollectionPreview> _collectionPreviews;
-  MapBuilder<SubjectType, CollectionPreview> get collectionPreviews =>
+  MapBuilder<SubjectType, CollectionsOnProfilePage> _collectionPreviews;
+  MapBuilder<SubjectType, CollectionsOnProfilePage> get collectionPreviews =>
       _$this._collectionPreviews ??=
-          new MapBuilder<SubjectType, CollectionPreview>();
+          new MapBuilder<SubjectType, CollectionsOnProfilePage>();
   set collectionPreviews(
-          MapBuilder<SubjectType, CollectionPreview> collectionPreviews) =>
+          MapBuilder<SubjectType, CollectionsOnProfilePage>
+              collectionPreviews) =>
       _$this._collectionPreviews = collectionPreviews;
 
   ListBuilder<TimelinePreview> _timelinePreviews;

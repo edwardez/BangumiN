@@ -27,7 +27,7 @@ class _$SubjectSearchResultItemSerializer
       serializers.serialize(object.startDate,
           specifiedType: const FullType(String)),
       'name_cn',
-      serializers.serialize(object.nameCn,
+      serializers.serialize(object.chineseName,
           specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
@@ -69,7 +69,7 @@ class _$SubjectSearchResultItemSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'rating':
@@ -103,7 +103,7 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
   @override
   final String startDate;
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final Rating rating;
   @override
@@ -122,7 +122,7 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
 
   _$SubjectSearchResultItem._(
       {this.startDate,
-      this.nameCn,
+      this.chineseName,
       this.rating,
       this.image,
       this.name,
@@ -133,8 +133,9 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
       throw new BuiltValueNullFieldError(
           'SubjectSearchResultItem', 'startDate');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'nameCn');
+    if (chineseName == null) {
+      throw new BuiltValueNullFieldError(
+          'SubjectSearchResultItem', 'chineseName');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('SubjectSearchResultItem', 'name');
@@ -164,7 +165,7 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
     if (identical(other, this)) return true;
     return other is SubjectSearchResultItem &&
         startDate == other.startDate &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         rating == other.rating &&
         image == other.image &&
         name == other.name &&
@@ -178,7 +179,7 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, startDate.hashCode), nameCn.hashCode),
+                    $jc($jc($jc(0, startDate.hashCode), chineseName.hashCode),
                         rating.hashCode),
                     image.hashCode),
                 name.hashCode),
@@ -190,7 +191,7 @@ class _$SubjectSearchResultItem extends SubjectSearchResultItem {
   String toString() {
     return (newBuiltValueToStringHelper('SubjectSearchResultItem')
           ..add('startDate', startDate)
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('rating', rating)
           ..add('image', image)
           ..add('name', name)
@@ -210,9 +211,9 @@ class SubjectSearchResultItemBuilder
   String get startDate => _$this._startDate;
   set startDate(String startDate) => _$this._startDate = startDate;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   RatingBuilder _rating;
   RatingBuilder get rating => _$this._rating ??= new RatingBuilder();
@@ -239,7 +240,7 @@ class SubjectSearchResultItemBuilder
   SubjectSearchResultItemBuilder get _$this {
     if (_$v != null) {
       _startDate = _$v.startDate;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _rating = _$v.rating?.toBuilder();
       _image = _$v.image?.toBuilder();
       _name = _$v.name;
@@ -270,7 +271,7 @@ class SubjectSearchResultItemBuilder
       _$result = _$v ??
           new _$SubjectSearchResultItem._(
               startDate: startDate,
-              nameCn: nameCn,
+              chineseName: chineseName,
               rating: _rating?.build(),
               image: _image?.build(),
               name: name,

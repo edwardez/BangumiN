@@ -33,10 +33,10 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-    if (object.nameCn != null) {
+    if (object.chineseName != null) {
       result
         ..add('name_cn')
-        ..add(serializers.serialize(object.nameCn,
+        ..add(serializers.serialize(object.chineseName,
             specifiedType: const FullType(String)));
     }
     if (object.commentCount != null) {
@@ -72,7 +72,7 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
       final dynamic value = iterator.current;
       switch (key) {
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'role_name':
@@ -118,7 +118,7 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
 
 class _$Character extends Character {
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final String roleName;
   @override
@@ -140,7 +140,7 @@ class _$Character extends Character {
       (new CharacterBuilder()..update(updates)).build();
 
   _$Character._(
-      {this.nameCn,
+      {this.chineseName,
       this.roleName,
       this.avatar,
       this.commentCount,
@@ -178,7 +178,7 @@ class _$Character extends Character {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Character &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         roleName == other.roleName &&
         avatar == other.avatar &&
         commentCount == other.commentCount &&
@@ -197,7 +197,9 @@ class _$Character extends Character {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, nameCn.hashCode), roleName.hashCode),
+                            $jc(
+                                $jc($jc(0, chineseName.hashCode),
+                                    roleName.hashCode),
                                 avatar.hashCode),
                             commentCount.hashCode),
                         collectionCounts.hashCode),
@@ -210,7 +212,7 @@ class _$Character extends Character {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Character')
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('roleName', roleName)
           ..add('avatar', avatar)
           ..add('commentCount', commentCount)
@@ -227,9 +229,9 @@ class CharacterBuilder
     implements Builder<Character, CharacterBuilder>, MonoBaseBuilder {
   _$Character _$v;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   String _roleName;
   String get roleName => _$this._roleName;
@@ -269,7 +271,7 @@ class CharacterBuilder
 
   CharacterBuilder get _$this {
     if (_$v != null) {
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _roleName = _$v.roleName;
       _avatar = _$v.avatar?.toBuilder();
       _commentCount = _$v.commentCount;
@@ -302,7 +304,7 @@ class CharacterBuilder
     try {
       _$result = _$v ??
           new _$Character._(
-              nameCn: nameCn,
+              chineseName: chineseName,
               roleName: roleName,
               avatar: avatar.build(),
               commentCount: commentCount,

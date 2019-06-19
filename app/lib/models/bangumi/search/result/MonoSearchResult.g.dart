@@ -25,7 +25,7 @@ class _$MonoSearchResultSerializer
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
       'name_cn',
-      serializers.serialize(object.nameCn,
+      serializers.serialize(object.chineseName,
           specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
@@ -62,7 +62,7 @@ class _$MonoSearchResultSerializer
               as BuiltList);
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'images':
@@ -92,7 +92,7 @@ class _$MonoSearchResult extends MonoSearchResult {
   @override
   final BuiltList<String> miscInfo;
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final BangumiImage image;
   @override
@@ -107,13 +107,18 @@ class _$MonoSearchResult extends MonoSearchResult {
       (new MonoSearchResultBuilder()..update(updates)).build();
 
   _$MonoSearchResult._(
-      {this.miscInfo, this.nameCn, this.image, this.name, this.id, this.type})
+      {this.miscInfo,
+      this.chineseName,
+      this.image,
+      this.name,
+      this.id,
+      this.type})
       : super._() {
     if (miscInfo == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'miscInfo');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('MonoSearchResult', 'nameCn');
+    if (chineseName == null) {
+      throw new BuiltValueNullFieldError('MonoSearchResult', 'chineseName');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('MonoSearchResult', 'name');
@@ -139,7 +144,7 @@ class _$MonoSearchResult extends MonoSearchResult {
     if (identical(other, this)) return true;
     return other is MonoSearchResult &&
         miscInfo == other.miscInfo &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         image == other.image &&
         name == other.name &&
         id == other.id &&
@@ -151,7 +156,7 @@ class _$MonoSearchResult extends MonoSearchResult {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, miscInfo.hashCode), nameCn.hashCode),
+                $jc($jc($jc(0, miscInfo.hashCode), chineseName.hashCode),
                     image.hashCode),
                 name.hashCode),
             id.hashCode),
@@ -162,7 +167,7 @@ class _$MonoSearchResult extends MonoSearchResult {
   String toString() {
     return (newBuiltValueToStringHelper('MonoSearchResult')
           ..add('miscInfo', miscInfo)
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('image', image)
           ..add('name', name)
           ..add('id', id)
@@ -182,9 +187,9 @@ class MonoSearchResultBuilder
       _$this._miscInfo ??= new ListBuilder<String>();
   set miscInfo(ListBuilder<String> miscInfo) => _$this._miscInfo = miscInfo;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   BangumiImageBuilder _image;
   BangumiImageBuilder get image => _$this._image ??= new BangumiImageBuilder();
@@ -207,7 +212,7 @@ class MonoSearchResultBuilder
   MonoSearchResultBuilder get _$this {
     if (_$v != null) {
       _miscInfo = _$v.miscInfo?.toBuilder();
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _image = _$v.image?.toBuilder();
       _name = _$v.name;
       _id = _$v.id;
@@ -237,7 +242,7 @@ class MonoSearchResultBuilder
       _$result = _$v ??
           new _$MonoSearchResult._(
               miscInfo: miscInfo.build(),
-              nameCn: nameCn,
+              chineseName: chineseName,
               image: _image?.build(),
               name: name,
               id: id,

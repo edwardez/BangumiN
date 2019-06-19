@@ -29,7 +29,7 @@ class _$EpisodeSerializer implements StructuredSerializer<Episode> {
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'name_cn',
-      serializers.serialize(object.nameCn,
+      serializers.serialize(object.chineseName,
           specifiedType: const FullType(String)),
       'duration',
       serializers.serialize(object.duration,
@@ -82,7 +82,7 @@ class _$EpisodeSerializer implements StructuredSerializer<Episode> {
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'duration':
@@ -124,7 +124,7 @@ class _$Episode extends Episode {
   @override
   final String name;
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final String duration;
   @override
@@ -145,7 +145,7 @@ class _$Episode extends Episode {
       this.type,
       this.sort,
       this.name,
-      this.nameCn,
+      this.chineseName,
       this.duration,
       this.airDate,
       this.comment,
@@ -167,8 +167,8 @@ class _$Episode extends Episode {
     if (name == null) {
       throw new BuiltValueNullFieldError('Episode', 'name');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('Episode', 'nameCn');
+    if (chineseName == null) {
+      throw new BuiltValueNullFieldError('Episode', 'chineseName');
     }
     if (duration == null) {
       throw new BuiltValueNullFieldError('Episode', 'duration');
@@ -203,7 +203,7 @@ class _$Episode extends Episode {
         type == other.type &&
         sort == other.sort &&
         name == other.name &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         duration == other.duration &&
         airDate == other.airDate &&
         comment == other.comment &&
@@ -225,7 +225,7 @@ class _$Episode extends Episode {
                                         type.hashCode),
                                     sort.hashCode),
                                 name.hashCode),
-                            nameCn.hashCode),
+                            chineseName.hashCode),
                         duration.hashCode),
                     airDate.hashCode),
                 comment.hashCode),
@@ -241,7 +241,7 @@ class _$Episode extends Episode {
           ..add('type', type)
           ..add('sort', sort)
           ..add('name', name)
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('duration', duration)
           ..add('airDate', airDate)
           ..add('comment', comment)
@@ -274,9 +274,9 @@ class EpisodeBuilder implements Builder<Episode, EpisodeBuilder> {
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   String _duration;
   String get duration => _$this._duration;
@@ -307,7 +307,7 @@ class EpisodeBuilder implements Builder<Episode, EpisodeBuilder> {
       _type = _$v.type;
       _sort = _$v.sort;
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _duration = _$v.duration;
       _airDate = _$v.airDate;
       _comment = _$v.comment;
@@ -340,7 +340,7 @@ class EpisodeBuilder implements Builder<Episode, EpisodeBuilder> {
             type: type,
             sort: sort,
             name: name,
-            nameCn: nameCn,
+            chineseName: chineseName,
             duration: duration,
             airDate: airDate,
             comment: comment,

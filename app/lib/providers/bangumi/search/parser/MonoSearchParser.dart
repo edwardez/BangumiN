@@ -33,7 +33,9 @@ class MonoSearchParser {
     String name = nameElement.nodes[0].text;
     name = name.replaceAll(RegExp(r'\s+/\s*'), '');
 
-    String nameCn = nameElement.querySelector('.tip')?.text ?? '';
+    String chineseName = nameElement
+        .querySelector('.tip')
+        ?.text ?? '';
 
     List<String> miscInfo = [];
 
@@ -54,7 +56,7 @@ class MonoSearchParser {
     MonoSearchResult monoSearchResult = MonoSearchResult((b) => b
       ..id = id
       ..name = name
-      ..nameCn = nameCn
+      ..chineseName = chineseName
       ..type = searchType
       ..image.replace(image)
       ..miscInfo.replace(miscInfo));

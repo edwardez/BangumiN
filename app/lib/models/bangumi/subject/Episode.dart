@@ -27,7 +27,7 @@ abstract class Episode implements Built<Episode, EpisodeBuilder> {
   String get name;
 
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   @BuiltValueField(wireName: 'duration')
   String get duration;

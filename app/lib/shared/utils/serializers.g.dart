@@ -24,11 +24,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(BlogCreationSingle.serializer)
       ..add(BlogThread.serializer)
       ..add(Character.serializer)
-      ..add(CollectionPreview.serializer)
       ..add(CollectionStatus.serializer)
       ..add(CollectionStatusDistribution.serializer)
       ..add(CollectionStatusFromBangumi.serializer)
       ..add(CollectionUpdateSingle.serializer)
+      ..add(CollectionsOnProfilePage.serializer)
       ..add(Count.serializer)
       ..add(DiscussionState.serializer)
       ..add(DiscussionType.serializer)
@@ -93,10 +93,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SimpleHtmlBasedEpisode.serializer)
       ..add(StatusUpdateMultiple.serializer)
       ..add(SubPostReply.serializer)
+      ..add(SubjectBaseWithCover.serializer)
       ..add(SubjectCollectionInfo.serializer)
       ..add(SubjectCollectionInfoPreview.serializer)
       ..add(SubjectEpisodes.serializer)
-      ..add(SubjectPreview.serializer)
       ..add(SubjectProgressPreview.serializer)
       ..add(SubjectReview.serializer)
       ..add(SubjectReviewMainFilter.serializer)
@@ -167,11 +167,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(NetworkServiceTag)]),
           () => new ListBuilder<NetworkServiceTag>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SubjectType),
-            const FullType(CollectionPreview)
-          ]),
-          () => new MapBuilder<SubjectType, CollectionPreview>())
+          const FullType(BuiltMap,
+              const [const FullType(SubjectType), const FullType(CollectionsOnProfilePage)]),
+          () => new MapBuilder<SubjectType, CollectionsOnProfilePage>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimelinePreview)]),
           () => new ListBuilder<TimelinePreview>())
@@ -210,9 +208,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(CollectionStatus),
-            const FullType(BuiltList, const [const FullType(SubjectPreview)])
+            const FullType(
+                BuiltList, const [const FullType(SubjectBaseWithCover)])
           ]),
-          () => new MapBuilder<CollectionStatus, BuiltList<SubjectPreview>>())
+          () => new MapBuilder<CollectionStatus,
+              BuiltList<SubjectBaseWithCover>>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
             const FullType(GetDiscussionRequest),
@@ -220,7 +220,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () => new MapBuilder<GetDiscussionRequest, GetDiscussionResponse>())
       ..addBuilderFactory(
-          const FullType(BuiltMap,
+          const FullType(
+              BuiltMap,
               const [const FullType(int), const FullType(GroupThread)]),
           () => new MapBuilder<int, GroupThread>())
       ..addBuilderFactory(
@@ -240,18 +241,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(GetTimelineRequest), const FullType(FeedChunks)]),
           () => new MapBuilder<GetTimelineRequest, FeedChunks>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SearchRequest),
-            const FullType(BangumiSearchResponse)
-          ]),
+          const FullType(BuiltMap,
+              const [const FullType(SearchRequest), const FullType(BangumiSearchResponse)]),
           () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(String), const FullType(MutedUser)]),
           () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(
-          const FullType(
-              BuiltMap, const [const FullType(String), const FullType(MutedGroup)]),
+          const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]),
           () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(SubjectReview)]), () => new MapBuilder<String, SubjectReview>())

@@ -19,7 +19,7 @@ abstract class SubjectSearchResultItem
   String get startDate;
 
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   @memoized
 

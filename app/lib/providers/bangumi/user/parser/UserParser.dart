@@ -6,11 +6,11 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectBaseWithCover.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
-import 'package:munin/models/bangumi/user/collection/SubjectPreview.dart';
+import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
@@ -26,7 +26,7 @@ class UserParser {
   static final bangumiCollectionIdRegex = RegExp(r'anime|game|music|book|real');
   static const defaultSubjectName = '-';
 
-  BuiltMap<CollectionStatus, BuiltList<SubjectPreview>>
+  BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>
   _parseCollectionPanelWithCover(Element collectionElement,
           LinkedHashMap<CollectionStatus, int> count) {
     /// Bangumi uses a fallback strategy to display collected subjects
@@ -47,8 +47,8 @@ class UserParser {
       return null;
     }
 
-    BuiltList<SubjectPreview> subjectsUnderFirstNonEmptyStatus =
-        BuiltList<SubjectPreview>();
+    BuiltList<SubjectBaseWithCover> subjectsUnderFirstNonEmptyStatus =
+    BuiltList<SubjectBaseWithCover>();
     List<Element> subjectElements =
         firstNonEmptyStatusLabel.parent.querySelectorAll('li > a');
     for (Element subjectElement in subjectElements) {
@@ -69,7 +69,8 @@ class UserParser {
         continue;
       }
 
-      SubjectPreview subjectPreview = SubjectPreview((b) => b
+      SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) =>
+      b
         ..cover.replace(BangumiImage.fromImageUrl(
             subjectCover, ImageSize.Small, ImageType.SubjectCover))
         ..id = subjectId
@@ -79,16 +80,16 @@ class UserParser {
           .rebuild((b) => b.add(subjectPreview));
     }
 
-    return BuiltMap<CollectionStatus, BuiltList<SubjectPreview>>(
+    return BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>(
         {firstNonEmptyStatus: subjectsUnderFirstNonEmptyStatus});
   }
 
-  BuiltMap<CollectionStatus, BuiltList<SubjectPreview>>
+  BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>
   _parsePlainTextCollectionPanel(Element collectionElement,
           LinkedHashMap<CollectionStatus, int> count) {
     CollectionStatus firstNonEmptyStatus = count.keys.first;
-    BuiltList<SubjectPreview> subjectsUnderFirstNonEmptyStatus =
-        BuiltList<SubjectPreview>();
+    BuiltList<SubjectBaseWithCover> subjectsUnderFirstNonEmptyStatus =
+    BuiltList<SubjectBaseWithCover>();
 
     bool hasSeenSeparatorElement = false;
     for (Element possibleSubjectElement
@@ -117,7 +118,8 @@ class UserParser {
           continue;
         }
 
-        SubjectPreview subjectPreview = SubjectPreview((b) => b
+        SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) =>
+        b
           ..cover.replace(
               BangumiImage.useSameImageUrlForAll(bangumiTextOnlySubjectCover))
           ..id = subjectId
@@ -128,11 +130,11 @@ class UserParser {
       }
     }
 
-    return BuiltMap<CollectionStatus, BuiltList<SubjectPreview>>(
+    return BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>(
         {firstNonEmptyStatus: subjectsUnderFirstNonEmptyStatus});
   }
 
-  CollectionPreview _parseCollectionPreview(Element collectionElement,
+  CollectionsOnProfilePage _parseCollectionPreview(Element collectionElement,
       SubjectType subjectType, bool onPlainTextPanel) {
     LinkedHashMap<CollectionStatus, int> count =
         LinkedHashMap<CollectionStatus, int>();
@@ -150,7 +152,7 @@ class UserParser {
       }
     }
 
-    BuiltMap<CollectionStatus, BuiltList<SubjectPreview>> subjects;
+    BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>> subjects;
 
     if (onPlainTextPanel) {
       subjects = _parsePlainTextCollectionPanel(collectionElement, count);
@@ -158,7 +160,8 @@ class UserParser {
       subjects = _parseCollectionPanelWithCover(collectionElement, count);
     }
 
-    return CollectionPreview((b) => b
+    return CollectionsOnProfilePage((b) =>
+    b
       ..subjectType = subjectType
       ..onPlainTextPanel = onPlainTextPanel
       ..collectionDistribution.replace(count)
@@ -168,10 +171,10 @@ class UserParser {
   /// Parse bangumi html to get collection previews
   /// Collection is visited in the order set by the user
   /// If user has not collected any subjects, this method returns an empty [BuiltMap]
-  BuiltMap<SubjectType, CollectionPreview> _parseCollectionPreviews(
+  BuiltMap<SubjectType, CollectionsOnProfilePage> _parseCollectionPreviews(
       DocumentFragment document) {
-    BuiltMap<SubjectType, CollectionPreview> collectionPreviews =
-        BuiltMap<SubjectType, CollectionPreview>();
+    BuiltMap<SubjectType, CollectionsOnProfilePage> collectionPreviews =
+    BuiltMap<SubjectType, CollectionsOnProfilePage>();
 
     Element mainPanel = document.querySelector('#user_home');
     for (Element element in mainPanel.children) {
@@ -276,7 +279,7 @@ class UserParser {
       relationships.add(Relationship.None);
     }
 
-    BuiltMap<SubjectType, CollectionPreview> previews =
+    BuiltMap<SubjectType, CollectionsOnProfilePage> previews =
     _parseCollectionPreviews(document);
 
     BuiltList<NetworkServiceTag> networkServiceTags = _parseNetworkServiceTags(

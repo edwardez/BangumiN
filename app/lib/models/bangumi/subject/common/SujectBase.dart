@@ -18,7 +18,7 @@ abstract class SubjectBase {
 
   @nullable
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   SubjectBase rebuild(void updates(SubjectBaseBuilder b));
 

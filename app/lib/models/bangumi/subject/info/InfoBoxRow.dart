@@ -23,7 +23,7 @@ abstract class InfoBoxRow implements Built<InfoBoxRow, InfoBoxRowBuilder> {
     ..name = _rowItemSeparator
     ..type = BangumiContent.PlainText);
 
-  /// i.e. nameCn, director, airDate, Music, Title Studio
+  /// i.e. chinese name, director, airDate, Music, Title Studio
   String get rowName;
 
   /// is this row a curated(aka. important) row

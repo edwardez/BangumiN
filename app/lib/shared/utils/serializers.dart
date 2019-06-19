@@ -67,6 +67,7 @@ import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectBaseWithCover.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
@@ -100,8 +101,7 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
-import 'package:munin/models/bangumi/user/collection/SubjectPreview.dart';
+import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
@@ -229,8 +229,8 @@ part 'serializers.g.dart';
   NetworkServiceTagLink,
   NetworkServiceTagPlainText,
   NetworkServiceType,
-  SubjectPreview,
-  CollectionPreview,
+  SubjectBaseWithCover,
+  CollectionsOnProfilePage,
   TimelinePreview,
   Relationship,
   UserState,
@@ -264,8 +264,8 @@ part 'serializers.g.dart';
   PreferredSubjectInfoLanguage
 ])
 final Serializers serializers = (_$serializers.toBuilder()
-  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectPreview)]),
-          () => ListBuilder<SubjectPreview>())..addBuilderFactory(
+  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),
+          () => ListBuilder<SubjectBaseWithCover>())..addBuilderFactory(
       FullType(BuiltList, [FullType(InProgressCollection)]),
           () => ListBuilder<InProgressCollection>())
   ..addPlugin(StandardJsonPlugin()))

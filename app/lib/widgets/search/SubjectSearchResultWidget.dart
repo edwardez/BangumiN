@@ -33,7 +33,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
 
     subInfoRows.add(Text(
       preferredName(subjectSearchResult.name,
-          subjectSearchResult.nameCn,
+          subjectSearchResult.chineseName,
           preferredSubjectInfoLanguage),
       maxLines: titleMaxLines,
       overflow: TextOverflow.ellipsis,
@@ -41,7 +41,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
 
     Optional<String> maybeSecondaryTitle = secondaryName(
         subjectSearchResult.name,
-        subjectSearchResult.nameCn,
+        subjectSearchResult.chineseName,
         preferredSubjectInfoLanguage);
 
     if (maybeSecondaryTitle.isPresent) {

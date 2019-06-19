@@ -256,7 +256,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
       ).orNull;
 
       String secondaryTitle =
-          secondaryName(episode.name, episode.nameCn, language).orNull;
+          secondaryName(episode.name, episode.chineseName, language).orNull;
 
       String secondaryTitleWithEpisodeInfo = _secondaryTitleWithEpisodeInfo(
         secondaryTitle,
@@ -270,7 +270,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
             title: Row(
               children: <Widget>[
                 WrappableText(
-                  preferredName(episode.name, episode.nameCn, language),
+                  preferredName(episode.name, episode.chineseName, language),
                   maxLines: episodeTitleMaxLines,
                   fit: FlexFit.tight,
                   textStyle: Theme.of(context)

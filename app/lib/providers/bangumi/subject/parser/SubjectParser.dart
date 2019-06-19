@@ -342,7 +342,7 @@ class SubjectParser {
       RelatedSubject relatedSubject = RelatedSubject((b) =>
       b
         ..name = subjectName
-        ..nameCn = subjectNameCn
+        ..chineseName = subjectNameCn
         ..id = subjectId
         ..cover.replace(cover)
         ..subjectSubTypeName = subjectSubType);
@@ -560,16 +560,16 @@ class SubjectParser {
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
-    String nameCn;
+    String chineseName;
     int subjectId;
 
     if (nameElement != null) {
       name = nameElement.text;
-      nameCn = nameElement.attributes['title'];
+      chineseName = nameElement.attributes['title'];
       subjectId = tryParseInt(parseHrefId(nameElement, digitOnly: true));
     }
     name ??= '-';
-    nameCn ??= '-';
+    chineseName ??= '-';
 
     ListMultimap<String, InfoBoxItem> infoBoxRows =
     ListMultimap<String, InfoBoxItem>();
@@ -658,7 +658,7 @@ class SubjectParser {
       ..id = subjectId
       ..type = subjectType
       ..name = name
-      ..nameCn = nameCn
+      ..chineseName = chineseName
       ..summary = summary
       ..rating.replace(rating)
       ..rank = rank

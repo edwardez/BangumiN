@@ -113,10 +113,10 @@ class _$BangumiSubjectSerializer
         ..add(serializers.serialize(object.pageUrlFromApi,
             specifiedType: const FullType(String)));
     }
-    if (object.nameCn != null) {
+    if (object.chineseName != null) {
       result
         ..add('name_cn')
-        ..add(serializers.serialize(object.nameCn,
+        ..add(serializers.serialize(object.chineseName,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -232,7 +232,7 @@ class _$BangumiSubjectSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
       }
@@ -282,7 +282,7 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final String name;
   @override
-  final String nameCn;
+  final String chineseName;
   String __infoBoxRowsPlainText;
   String __pageUrlFromCalculation;
 
@@ -309,7 +309,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.id,
       this.pageUrlFromApi,
       this.name,
-      this.nameCn})
+      this.chineseName})
       : super._() {
     if (type == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'type');
@@ -387,7 +387,7 @@ class _$BangumiSubject extends BangumiSubject {
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
-        nameCn == other.nameCn;
+        chineseName == other.chineseName;
   }
 
   @override
@@ -429,7 +429,7 @@ class _$BangumiSubject extends BangumiSubject {
                     id.hashCode),
                 pageUrlFromApi.hashCode),
             name.hashCode),
-        nameCn.hashCode));
+        chineseName.hashCode));
   }
 
   @override
@@ -455,7 +455,7 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
-          ..add('nameCn', nameCn))
+          ..add('chineseName', chineseName))
         .toString();
   }
 }
@@ -574,9 +574,9 @@ class BangumiSubjectBuilder
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   BangumiSubjectBuilder();
 
@@ -603,7 +603,7 @@ class BangumiSubjectBuilder
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _$v = null;
     }
     return this;
@@ -649,7 +649,7 @@ class BangumiSubjectBuilder
               id: id,
               pageUrlFromApi: pageUrlFromApi,
               name: name,
-              nameCn: nameCn);
+              chineseName: chineseName);
     } catch (_) {
       String _$failedField;
       try {

@@ -34,10 +34,10 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-    if (object.nameCn != null) {
+    if (object.chineseName != null) {
       result
         ..add('name_cn')
-        ..add(serializers.serialize(object.nameCn,
+        ..add(serializers.serialize(object.chineseName,
             specifiedType: const FullType(String)));
     }
     if (object.commentCount != null) {
@@ -73,7 +73,7 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
       final dynamic value = iterator.current;
       switch (key) {
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'role_name':
@@ -119,7 +119,7 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
 
 class _$JobsPerStaff extends JobsPerStaff {
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final String roleName;
   @override
@@ -141,7 +141,7 @@ class _$JobsPerStaff extends JobsPerStaff {
       (new JobsPerStaffBuilder()..update(updates)).build();
 
   _$JobsPerStaff._(
-      {this.nameCn,
+      {this.chineseName,
       this.roleName,
       this.image,
       this.commentCount,
@@ -179,7 +179,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is JobsPerStaff &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         roleName == other.roleName &&
         image == other.image &&
         commentCount == other.commentCount &&
@@ -198,7 +198,9 @@ class _$JobsPerStaff extends JobsPerStaff {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, nameCn.hashCode), roleName.hashCode),
+                            $jc(
+                                $jc($jc(0, chineseName.hashCode),
+                                    roleName.hashCode),
                                 image.hashCode),
                             commentCount.hashCode),
                         collectionCounts.hashCode),
@@ -211,7 +213,7 @@ class _$JobsPerStaff extends JobsPerStaff {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('JobsPerStaff')
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('roleName', roleName)
           ..add('image', image)
           ..add('commentCount', commentCount)
@@ -228,9 +230,9 @@ class JobsPerStaffBuilder
     implements Builder<JobsPerStaff, JobsPerStaffBuilder>, MonoBaseBuilder {
   _$JobsPerStaff _$v;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   String _roleName;
   String get roleName => _$this._roleName;
@@ -269,7 +271,7 @@ class JobsPerStaffBuilder
 
   JobsPerStaffBuilder get _$this {
     if (_$v != null) {
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _roleName = _$v.roleName;
       _image = _$v.image?.toBuilder();
       _commentCount = _$v.commentCount;
@@ -302,7 +304,7 @@ class JobsPerStaffBuilder
     try {
       _$result = _$v ??
           new _$JobsPerStaff._(
-              nameCn: nameCn,
+              chineseName: chineseName,
               roleName: roleName,
               image: image.build(),
               commentCount: commentCount,

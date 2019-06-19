@@ -7,7 +7,7 @@ import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
+import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
@@ -117,9 +117,10 @@ class UserProfileWidget extends StatelessWidget {
   }
 
   _buildCollectionPreviews(BuildContext context, String username,
-      BuiltMap<SubjectType, CollectionPreview> previews) {
+      BuiltMap<SubjectType, CollectionsOnProfilePage> previews) {
     List<Widget> widgets = [];
-    previews.forEach((SubjectType subjectType, CollectionPreview preview) {
+    previews.forEach((SubjectType subjectType,
+        CollectionsOnProfilePage preview) {
       widgets.add(CollectionPreviewWidget(
         preview: preview,
         userName: username,

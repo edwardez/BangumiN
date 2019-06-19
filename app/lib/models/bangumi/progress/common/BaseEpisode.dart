@@ -14,7 +14,7 @@ abstract class BaseEpisode {
   String get name;
 
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   /// Current air status of this episode(has been aired or not)
   @BuiltValueField(wireName: 'status')

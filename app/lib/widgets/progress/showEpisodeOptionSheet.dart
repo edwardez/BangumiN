@@ -51,7 +51,8 @@ showEpisodeOptionSheet({
             denseHorizontal: true,
             child: Text(
               preferredName(
-                  episode.name, episode.nameCn, preferredSubjectInfoLanguage),
+                  episode.name, episode.chineseName,
+                  preferredSubjectInfoLanguage),
               style: Theme.of(context).textTheme.title,
             ),
           ),

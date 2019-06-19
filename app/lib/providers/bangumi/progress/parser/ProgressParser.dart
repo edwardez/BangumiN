@@ -120,7 +120,7 @@ class ProgressParser {
           tryParseDouble(element.text.trim(), defaultValue: 0);
       AirStatus airStatus = guessAirStatusByButtonClassName(element.className);
 
-      String nameCn;
+      String chineseName;
       String duration;
       String airDate;
       int totalCommentsCount;
@@ -130,7 +130,7 @@ class ProgressParser {
 
       for (Node detailNode in detailNodes) {
         if (detailNode.text.startsWith('中文标题')) {
-          nameCn = firstCapturedStringOrNull(
+          chineseName = firstCapturedStringOrNull(
               contentAfterFistColonGroupRegex, detailNode.text);
         } else if (detailNode.text.startsWith('首播')) {
           airDate = firstCapturedStringOrNull(
@@ -144,7 +144,7 @@ class ProgressParser {
         }
       }
 
-      nameCn ??= '';
+      chineseName ??= '';
       duration ??= '';
       airDate ??= '';
       totalCommentsCount ??= 0;
@@ -152,7 +152,7 @@ class ProgressParser {
       EpisodeProgress episodeProgress = EpisodeProgress((b) => b
         ..id = episodeId
         ..name = name
-        ..nameCn = nameCn
+        ..chineseName = chineseName
         ..airStatus = airStatus
         ..duration = duration
         ..sequentialNumber = sequentialNumber
@@ -205,12 +205,12 @@ class ProgressParser {
 
       String name = episodeLinkElement.text;
 
-      String nameCn = '';
+      String chineseName = '';
 
       Element maybeChineseNameElement = episodeLinkElement.nextElementSibling;
       if (maybeChineseNameElement != null &&
           maybeChineseNameElement.classes.contains('tip')) {
-        nameCn = maybeChineseNameElement.text
+        chineseName = maybeChineseNameElement.text
             .replaceFirst(dummyEpisodeNameSymbolRegex, '');
       }
 
@@ -244,7 +244,7 @@ class ProgressParser {
       b
         ..id = episodeId
         ..name = name
-        ..nameCn = nameCn
+        ..chineseName = chineseName
         ..airStatus = airStatus
         ..episodeInfo = episodeInfo
         ..userEpisodeStatus = touchedEpisodes[episodeId] ??

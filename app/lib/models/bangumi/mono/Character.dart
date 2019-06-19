@@ -18,7 +18,7 @@ abstract class Character
 
   @BuiltValueField(wireName: 'name_cn')
   @nullable
-  String get nameCn;
+  String get chineseName;
 
   @BuiltValueField(wireName: 'role_name')
   String get roleName;

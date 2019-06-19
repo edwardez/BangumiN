@@ -8,10 +8,8 @@ import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/subject/parser/common.dart';
-import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/providers/bangumi/util/parser/pagination.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
-import 'package:munin/shared/utils/common.dart';
-import 'package:quiver/core.dart';
 
 class SubjectReviewParser {
   static const defaultPageNumber = 1;
@@ -38,31 +36,32 @@ class SubjectReviewParser {
       throw BangumiResponseIncomprehensibleException();
     }
 
-    int currentPageNumber = tryParseInt(
-      document.querySelector('.p_cur')?.text?.trim(),
-      defaultValue: null,
+    final parsedPaginationElement = parsePaginationElement(
+      document,
+      requestedPageNumber,
     );
-
-    Optional<int> maybeMaxPageNumber =
-    parseMaxPageNumber(document, currentPageNumber);
 
     LinkedHashMap<String, SubjectReview> reviews =
         new LinkedHashMap<String, SubjectReview>();
 
-    // Requested page number must match current page number, other wise it's
-    // invalid.
-    bool hasMultiplePages = maybeMaxPageNumber.isNotEmpty;
-    if (currentPageNumber != requestedPageNumber && hasMultiplePages) {
+    final maybeMaxPageNumber = parsedPaginationElement.maybeMaxPageNumber;
+    final currentPageNumber =
+        parsedPaginationElement.maybeCurrentPageNumber.orNull ??
+            requestedPageNumber;
+    bool isRequestedPageNumberValid =
+        parsedPaginationElement.isRequestedPageNumberValid;
+    if (!isRequestedPageNumberValid) {
       return ParsedSubjectReviews(
         reviewItems: reviews,
         requestedPageNumber: requestedPageNumber,
         isRequestedPageNumberValid: false,
-        maxPageNumber: maybeMaxPageNumber.value,
+        maxPageNumber: maybeMaxPageNumber.orNull,
       );
     }
 
-    int maxPageNumber =
-        hasMultiplePages ? maybeMaxPageNumber.value : currentPageNumber;
+    int maxPageNumber = maybeMaxPageNumber.isPresent
+        ? maybeMaxPageNumber.value
+        : currentPageNumber;
 
     final subjectType = parseSubjectType(document);
 

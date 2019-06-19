@@ -1,7 +1,8 @@
 import 'dart:core';
+import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:html/dom.dart' show Element, Node, NodeList;
+import 'package:html/dom.dart' show DocumentFragment, Element, Node, NodeList;
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/shared/utils/common.dart';
@@ -378,4 +379,42 @@ String toCssRGBAString(Color color) {
   final argb = color.value.toRadixString(16).padLeft(8, '0');
   final rgba = '${argb.substring(2)}${argb.substring(0, 2)}';
   return '#$rgba';
+}
+
+final _pageNumberRegex = RegExp(r'\?page=(\d+)');
+
+/// Parses and returns an optional max page number by reading pagination elements.
+///
+/// Returning [Optional.absent()] indicates that max page number cannot be
+/// found. Most likely it's because there is only one page and pagination
+/// element doesn't exist.
+Optional<int> parseMaxPageNumber(DocumentFragment document,
+    int currentPageNumber) {
+  const defaultPageNumber = 1;
+  currentPageNumber ??= defaultPageNumber;
+
+  final paginationElements = document.querySelectorAll('a.p[href*="?page="]');
+  if (paginationElements.isEmpty) {
+    return Optional.absent();
+  }
+
+  // element with max pagination number must be one of the last two elements.
+  int startIndex = math.max(paginationElements.length - 2, 0);
+  final possibleMaxPaginationElements =
+  paginationElements.sublist(startIndex, paginationElements.length);
+
+  int maxPageNumber = defaultPageNumber;
+
+  for (var element in possibleMaxPaginationElements) {
+    int pageNumberInLink = tryParseInt(
+        firstCapturedStringOrNull(
+            _pageNumberRegex, element.attributes['href']),
+        defaultValue: defaultPageNumber);
+
+    maxPageNumber = math.max(maxPageNumber, pageNumberInLink);
+  }
+
+  maxPageNumber = math.max(maxPageNumber, currentPageNumber);
+
+  return Optional.of(maxPageNumber);
 }

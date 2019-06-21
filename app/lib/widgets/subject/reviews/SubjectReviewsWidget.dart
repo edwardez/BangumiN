@@ -149,9 +149,9 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
               initialLeftOffset: defaultDensePortraitHorizontalOffset,
               selectedChip: currentRequest.mainFilter,
               filterChips: SubjectReviewMainFilter.values.toList(),
-              chipNameRetriever: (filter) {
-                return filter
-                    .chineseName(vm.subject?.type ?? SubjectType.Anime);
+              chipLabelBuilder: (filter) {
+                return Text(filter
+                    .chineseName(vm.subject?.type ?? SubjectType.Anime));
               },
               onChipSelected: (filter) {
                 setState(() {

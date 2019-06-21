@@ -3,9 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/chips/StrokeChoiceChip.dart';
 
-typedef ToChipStringName<U> = String Function(U chip);
+typedef ToChipStringName<T> = String Function(T chip);
 
-typedef OnChipSelected<U> = void Function(U chip);
+typedef ChipLabelBuilder<T> = Widget Function(T chip);
+
+typedef OnChipSelected<T> = void Function(T chip);
 
 /// A list of filter chips group
 class FilterChipsGroup<T> extends StatefulWidget {
@@ -15,9 +17,10 @@ class FilterChipsGroup<T> extends StatefulWidget {
   /// List of filter chips
   final List<T> filterChips;
 
-  /// A callback function that can find the name of the chip
-  /// If unset, [T.toString()] will be used
-  final ToChipStringName<T> chipNameRetriever;
+  /// Builds the label of the chip.
+  ///
+  /// If not set, [toString] of the chip type will be displayed in a [Text] Widget.
+  final ChipLabelBuilder<T> chipLabelBuilder;
 
   final OnChipSelected<T> onChipSelected;
 
@@ -36,7 +39,7 @@ class FilterChipsGroup<T> extends StatefulWidget {
     @required this.filterChips,
     @required this.selectedChip,
     this.onChipSelected,
-    this.chipNameRetriever,
+    this.chipLabelBuilder,
     this.paddingBetweenChips = 4.0,
     this.initialLeftOffset = 0.0,
   }) : super(key: key);
@@ -71,20 +74,18 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
 
     for (T filterChip in widget.filterChips) {
       bool isSelected = currentSelectedChipType == filterChip;
-      String chipName;
+      Widget chipLabel;
 
-      if (widget.chipNameRetriever != null) {
-        chipName = widget.chipNameRetriever(filterChip);
+      if (widget.chipLabelBuilder != null) {
+        chipLabel = widget.chipLabelBuilder(filterChip);
       } else {
-        chipName = filterChip.toString();
+        chipLabel = Text(filterChip.toString());
       }
 
       chipWidgets.add(Padding(
         padding: EdgeInsets.only(right: widget.paddingBetweenChips),
         child: StrokeChoiceChip(
-          label: Text(
-            chipName,
-          ),
+          label: chipLabel,
           selected: isSelected,
           onSelected: (isSelected) {
             if (isSelected) {

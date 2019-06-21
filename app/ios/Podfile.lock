@@ -154,8 +154,8 @@ SPEC CHECKSUMS:
   Crashlytics: 1f5f752c7feac0add0cc1774756f96444fa3b1a7
   Fabric: 09de1e053eb7dc415593166ad3e53d4c88123405
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
-  firebase_analytics: e5181dde3c26c83748ab07aca073139a572ede7e
-  firebase_crashlytics: 4308eca795b89ab0fd28e0db58e9a3ec74fee332
+  firebase_analytics: b0d7c086f5a50042153fd0441dafef51bde36cd0
+  firebase_crashlytics: a5c8f2810635eed8490144ba1e5cde0ec2b2c9ee
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseCore: e38f025287b413255a53acc1945d048a112047f7
   FirebaseInstanceID: 0e0348a3c00a734fa376a070f5ad4533ad975cb5

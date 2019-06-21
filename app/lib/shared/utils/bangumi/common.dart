@@ -1,3 +1,4 @@
+import 'package:munin/models/bangumi/common/ChineseNameOwner.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:quiver/core.dart';
@@ -19,13 +20,20 @@ bool isValidIntScore(int score) {
   return isValidDoubleScore(score?.toDouble());
 }
 
+String preferredNameFromChineseNameOwner(ChineseNameOwner chineseNameOwner,
+    PreferredSubjectInfoLanguage language,) {
+  return preferredName(
+      chineseNameOwner.name, chineseNameOwner.chineseName, language);
+}
+
 String preferredNameFromSubjectBase(SubjectBase subject,
-    PreferredSubjectInfoLanguage language) {
+    PreferredSubjectInfoLanguage language,) {
   return preferredName(subject.name, subject.chineseName, language);
 }
 
-String preferredName(String name, String chineseName,
-    PreferredSubjectInfoLanguage language) {
+String preferredName(String name,
+    String chineseName,
+    PreferredSubjectInfoLanguage language,) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Chinese:
 
@@ -39,17 +47,26 @@ String preferredName(String name, String chineseName,
 
 ///Secondary title might be absent so `Optional` is returned
 Optional<String> secondaryNameFromSubjectBase(SubjectBase subject,
-    PreferredSubjectInfoLanguage language) {
+    PreferredSubjectInfoLanguage language,) {
   return secondaryName(subject.name, subject.chineseName, language);
 }
 
+Optional<String> secondaryNameFromChineseNameOwner(
+    ChineseNameOwner chineseNameOwner,
+    PreferredSubjectInfoLanguage language,) {
+  return secondaryName(
+      chineseNameOwner.name, chineseNameOwner.chineseName, language);
+}
+
 ///Secondary title might be absent so `Optional` is returned
-Optional<String> secondaryName(String name, String chineseName,
-    PreferredSubjectInfoLanguage language) {
+Optional<String> secondaryName(String name,
+    String chineseName,
+    PreferredSubjectInfoLanguage language,) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Original:
-      return isNotEmpty(chineseName) ? Optional.of(chineseName) : Optional
-          .absent();
+      return isNotEmpty(chineseName)
+          ? Optional.of(chineseName)
+          : Optional.absent();
     case PreferredSubjectInfoLanguage.Chinese:
     default:
 

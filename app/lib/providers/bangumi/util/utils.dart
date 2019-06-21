@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:html/dom.dart' show DocumentFragment, Element, Node, NodeList;
@@ -225,9 +224,13 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
 }
 
 /// Parses time in format like `2019-4-8 02:12` and returns [DateTime]
-/// Bangumi always displays timestamp in GMT+8(Beijing time)
+/// Bangumi typically displays timestamp in GMT+8(Beijing time)
 /// Hence +0800 is default time
-DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
+/// TODO: bangumi allows user to select timezone, find a easy way to read user
+/// timeline and parse time accordingly.
+DateTime parseDateTime(String rawTime, {
+  timeZoneShift = '+0800',
+}) {
   if (rawTime == null) {
     return null;
   }
@@ -237,7 +240,7 @@ DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
       return '';
     }
 
-    return '0${m.group(1)}';
+    return '-0${m.group(1)}';
   });
 
   rawTime += timeZoneShift;
@@ -379,42 +382,4 @@ String toCssRGBAString(Color color) {
   final argb = color.value.toRadixString(16).padLeft(8, '0');
   final rgba = '${argb.substring(2)}${argb.substring(0, 2)}';
   return '#$rgba';
-}
-
-final _pageNumberRegex = RegExp(r'\?page=(\d+)');
-
-/// Parses and returns an optional max page number by reading pagination elements.
-///
-/// Returning [Optional.absent()] indicates that max page number cannot be
-/// found. Most likely it's because there is only one page and pagination
-/// element doesn't exist.
-Optional<int> parseMaxPageNumber(DocumentFragment document,
-    int currentPageNumber) {
-  const defaultPageNumber = 1;
-  currentPageNumber ??= defaultPageNumber;
-
-  final paginationElements = document.querySelectorAll('a.p[href*="?page="]');
-  if (paginationElements.isEmpty) {
-    return Optional.absent();
-  }
-
-  // element with max pagination number must be one of the last two elements.
-  int startIndex = math.max(paginationElements.length - 2, 0);
-  final possibleMaxPaginationElements =
-  paginationElements.sublist(startIndex, paginationElements.length);
-
-  int maxPageNumber = defaultPageNumber;
-
-  for (var element in possibleMaxPaginationElements) {
-    int pageNumberInLink = tryParseInt(
-        firstCapturedStringOrNull(
-            _pageNumberRegex, element.attributes['href']),
-        defaultValue: defaultPageNumber);
-
-    maxPageNumber = math.max(maxPageNumber, pageNumberInLink);
-  }
-
-  maxPageNumber = math.max(maxPageNumber, currentPageNumber);
-
-  return Optional.of(maxPageNumber);
 }

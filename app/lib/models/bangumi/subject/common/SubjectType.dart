@@ -48,7 +48,9 @@ class SubjectType extends EnumClass {
   }
 
   static SubjectType getTypeByHttpWiredName(String wiredName) {
-    switch (wiredName) {
+    final lowerCaseName = wiredName.toLowerCase();
+
+    switch (lowerCaseName) {
       case 'book':
         return SubjectType.Book;
       case 'anime':

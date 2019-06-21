@@ -3,11 +3,9 @@ import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart'
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
-import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/widgets/search/MonoSearchResultWidget.dart';
-import 'package:munin/widgets/shared/images/RoundedElevatedImage.dart';
+import 'package:munin/widgets/shared/bangumi/SubjectSkeleton.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:quiver/core.dart';
 
 /// TODO: we should reuse code in this class and [MonoSearchResultWidget]
 class SubjectSearchResultWidget extends StatelessWidget {
@@ -26,32 +24,7 @@ class SubjectSearchResultWidget extends StatelessWidget {
 
   List<Widget> _buildSubInfoRows(BuildContext context) {
     List<Widget> subInfoRows = [];
-    const titleMaxLines = 2;
-    const subtitleMaxLines = 1;
     const miscMaxLines = 1;
-    TextStyle captionStyle = Theme.of(context).textTheme.caption;
-
-    subInfoRows.add(Text(
-      preferredName(subjectSearchResult.name,
-          subjectSearchResult.chineseName,
-          preferredSubjectInfoLanguage),
-      maxLines: titleMaxLines,
-      overflow: TextOverflow.ellipsis,
-    ));
-
-    Optional<String> maybeSecondaryTitle = secondaryName(
-        subjectSearchResult.name,
-        subjectSearchResult.chineseName,
-        preferredSubjectInfoLanguage);
-
-    if (maybeSecondaryTitle.isPresent) {
-      subInfoRows.add(Text(
-        maybeSecondaryTitle.value,
-        style: captionStyle,
-        maxLines: subtitleMaxLines,
-        overflow: TextOverflow.ellipsis,
-      ));
-    }
 
     List<String> miscellaneousInfo = [];
     miscellaneousInfo.add(subjectSearchResult.type.chineseName);
@@ -80,29 +53,11 @@ class SubjectSearchResultWidget extends StatelessWidget {
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: paddingBetweenSubject),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              child: RoundedElevatedImage(
-                imageUrl: subjectSearchResult.image?.large,
-              ),
-              flex: coverFlex,
-              fit: FlexFit.tight,
-            ),
-            Flexible(
-              flex: textFlex,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: coverTextPadding),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _buildSubInfoRows(context),
-                ),
-              ),
-            ),
-          ],
+        child: SubjectSkeleton(
+          widgetsUnderTitle: _buildSubInfoRows(context),
+          coverImageUrl: subjectSearchResult.image?.large,
+          preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
+          chineseNameOwner: subjectSearchResult,
         ),
       ),
       onTap: generateOnTapCallbackForBangumiContent(

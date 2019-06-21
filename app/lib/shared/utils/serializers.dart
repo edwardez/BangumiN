@@ -101,6 +101,12 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
+import 'package:munin/models/bangumi/user/collection/full/CollectionOnUserList.dart';
+import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsRequest.dart';
+import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsResponse.dart';
+import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart';
+import 'package:munin/models/bangumi/user/collection/full/SubjectOnUserCollectionList.dart';
+import 'package:munin/models/bangumi/user/collection/full/UserCollectionTag.dart';
 import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
@@ -234,6 +240,13 @@ part 'serializers.g.dart';
   TimelinePreview,
   Relationship,
   UserState,
+  // User collections
+  OrderCollectionBy,
+  ListUserCollectionsRequest,
+  ListUserCollectionsResponse,
+  CollectionOnUserList,
+  UserCollectionTag,
+  SubjectOnUserCollectionList,
 
   /// Progress
   ProgressState,

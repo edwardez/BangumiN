@@ -24,6 +24,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(BlogCreationSingle.serializer)
       ..add(BlogThread.serializer)
       ..add(Character.serializer)
+      ..add(CollectionOnUserList.serializer)
       ..add(CollectionStatus.serializer)
       ..add(CollectionStatusDistribution.serializer)
       ..add(CollectionStatusFromBangumi.serializer)
@@ -58,6 +59,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(IndexFavoriteSingle.serializer)
       ..add(InfoBoxItem.serializer)
       ..add(InfoBoxRow.serializer)
+      ..add(ListUserCollectionsRequest.serializer)
+      ..add(ListUserCollectionsResponse.serializer)
       ..add(MainPostReply.serializer)
       ..add(Mono.serializer)
       ..add(MonoFavoriteSingle.serializer)
@@ -70,6 +73,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NetworkServiceTagPlainText.serializer)
       ..add(NetworkServiceType.serializer)
       ..add(OauthState.serializer)
+      ..add(OrderCollectionBy.serializer)
       ..add(OriginalPost.serializer)
       ..add(ParentSubject.serializer)
       ..add(PreferredLaunchNavTab.serializer)
@@ -97,6 +101,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SubjectCollectionInfo.serializer)
       ..add(SubjectCollectionInfoPreview.serializer)
       ..add(SubjectEpisodes.serializer)
+      ..add(SubjectOnUserCollectionList.serializer)
       ..add(SubjectProgressPreview.serializer)
       ..add(SubjectReview.serializer)
       ..add(SubjectReviewMainFilter.serializer)
@@ -114,6 +119,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TimelineSource.serializer)
       ..add(TimelineState.serializer)
       ..add(UnknownTimelineActivity.serializer)
+      ..add(UserCollectionTag.serializer)
       ..add(UserProfile.serializer)
       ..add(UserSearchResultItem.serializer)
       ..add(UserState.serializer)
@@ -179,6 +185,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(ParentSubject)]),
           () => new ListBuilder<ParentSubject>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
@@ -256,6 +265,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(UserProfile)]), () => new MapBuilder<String, UserProfile>())
       ..addBuilderFactory(
           const FullType(BuiltMap, const [
+            const FullType(ListUserCollectionsRequest),
+            const FullType(ListUserCollectionsResponse)
+          ]),
+          () => new MapBuilder<ListUserCollectionsRequest, ListUserCollectionsResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap, const [
             const FullType(SubjectType),
             const FullType(
                 BuiltList, const [const FullType(InProgressCollection)])
@@ -265,6 +280,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(BangumiSubject)]), () => new MapBuilder<int, BangumiSubject>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SubjectCollectionInfo)]), () => new MapBuilder<int, SubjectCollectionInfo>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(GetSubjectReviewRequest), const FullType(SubjectReviewResponse)]), () => new MapBuilder<GetSubjectReviewRequest, SubjectReviewResponse>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(CollectionOnUserList)]), () => new MapBuilder<int, CollectionOnUserList>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(UserCollectionTag)]), () => new MapBuilder<String, UserCollectionTag>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(EpisodeProgress)]), () => new MapBuilder<int, EpisodeProgress>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SearchResultItem)]), () => new MapBuilder<int, SearchResultItem>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(SimpleHtmlBasedEpisode)]), () => new MapBuilder<int, SimpleHtmlBasedEpisode>())

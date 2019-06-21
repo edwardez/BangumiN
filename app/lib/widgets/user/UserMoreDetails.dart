@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
-import 'package:munin/widgets/UserProfile/NetworkServiceTagWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:munin/widgets/user/NetworkServiceTagWidget.dart';
 import 'package:quiver/strings.dart';
 
 class UserMoreDetails extends StatelessWidget {

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
 /// 4 dp is typically the smallest spacing of material
 /// https://material.io/design/layout/spacing-methods.html
 const baseOffset = 4.0;
@@ -42,6 +43,18 @@ TextStyle defaultCaptionText(BuildContext context) {
       .of(context)
       .textTheme
       .caption;
+}
+
+/// A caption text with a higher opacity.
+TextStyle captionTextWithHigherOpacity(BuildContext context,
+    [double scale = 1.25]) {
+  TextStyle defaultCaption = defaultCaptionText(context);
+
+  double higherOpacity = math.min(1.0, defaultCaption.color.opacity * scale);
+
+  return defaultCaption.copyWith(
+      color: defaultCaption.color.withOpacity(higherOpacity)
+  );
 }
 
 TextStyle captionTextWithBody1Size(BuildContext context) {

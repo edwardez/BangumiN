@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
@@ -5,29 +6,23 @@ import 'package:munin/models/bangumi/subject/common/SubjectBaseWithCover.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CollectionPreviewWidget extends StatelessWidget {
   static const double coverPadding = 8.0;
   static const double outerBottomPadding = 8.0;
 
-  final String userName;
+  final String username;
   final CollectionsOnProfilePage preview;
 
   const CollectionPreviewWidget(
-      {Key key, @required this.preview, @required this.userName})
+      {Key key, @required this.preview, @required this.username})
       : super(key: key);
 
   String _formatWithBulletPoint(String subjectName) => '•  $subjectName';
-
-  _navigateToCollectionPage(SubjectType subjectType) {
-    String url =
-        'https://${Application.environmentValue.bangumiMainHost}/${subjectType.toString().toLowerCase()}/list/$userName';
-    launch(url, forceSafariVC: false);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +60,8 @@ class CollectionPreviewWidget extends StatelessWidget {
       debugPrint('Unexpected collection empty preview subjetcs $preview');
       collectionWidget = Container();
     } else if (preview.onPlainTextPanel) {
-      List<Widget> subjects =
-      preview.subjects[firstNonEmptyStatus].map((SubjectBaseWithCover subject) {
+      List<Widget> subjects = preview.subjects[firstNonEmptyStatus]
+          .map((SubjectBaseWithCover subject) {
         return RichText(
           text: TextSpan(children: [
             TextSpan(
@@ -85,8 +80,8 @@ class CollectionPreviewWidget extends StatelessWidget {
         ],
       );
     } else {
-      List<Widget> subjects =
-      preview.subjects[firstNonEmptyStatus].map((SubjectBaseWithCover subject) {
+      List<Widget> subjects = preview.subjects[firstNonEmptyStatus]
+          .map((SubjectBaseWithCover subject) {
         return ClickableCachedRoundedCover.asGridSize(
           imageUrl: subject.cover.medium,
           contentType: BangumiContent.Subject,
@@ -117,7 +112,16 @@ class CollectionPreviewWidget extends StatelessWidget {
         child: collectionWidget,
       ),
       onTap: () {
-        _navigateToCollectionPage(subjectType);
+        Application.router.navigateTo(
+          context,
+          Routes.userCollectionsListRoute
+              .replaceAll(RoutesVariable.usernameParam, username)
+              .replaceAll(RoutesVariable.collectionStatusParam,
+              preview.collectionDistribution.keys.first.wiredName)
+              .replaceAll(
+              RoutesVariable.subjectTypeParam, preview.subjectType.name),
+          transition: TransitionType.native,
+        );
       },
     );
   }

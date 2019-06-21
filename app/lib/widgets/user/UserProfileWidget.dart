@@ -19,9 +19,9 @@ import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dar
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/userprofile/CollectionPreviewWidget.dart';
-import 'package:munin/widgets/userprofile/TimelinePreviewWidget.dart';
-import 'package:munin/widgets/userprofile/UserIntroductionPreview.dart';
+import 'package:munin/widgets/user/CollectionPreviewWidget.dart';
+import 'package:munin/widgets/user/TimelinePreviewWidget.dart';
+import 'package:munin/widgets/user/UserIntroductionPreview.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
@@ -123,7 +123,7 @@ class UserProfileWidget extends StatelessWidget {
         CollectionsOnProfilePage preview) {
       widgets.add(CollectionPreviewWidget(
         preview: preview,
-        userName: username,
+        username: username,
       ));
     });
     return widgets;

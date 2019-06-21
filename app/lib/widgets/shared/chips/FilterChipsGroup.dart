@@ -9,6 +9,15 @@ typedef ChipLabelBuilder<T> = Widget Function(T chip);
 
 typedef OnChipSelected<T> = void Function(T chip);
 
+/// Layout of [FilterChipsGroup]
+enum ChipsLayout {
+  /// Wraps chip to next line
+  Wrap,
+
+  /// Chips are listed on a horizontally scrollable row.
+  HorizontalList,
+}
+
 /// A list of filter chips group
 class FilterChipsGroup<T> extends StatefulWidget {
   /// Padding between chips, padding won't be inserted before the first chip
@@ -34,12 +43,15 @@ class FilterChipsGroup<T> extends StatefulWidget {
   /// It's a trailing white space on the left side.
   final double initialLeftOffset;
 
+  final ChipsLayout chipsLayout;
+
   const FilterChipsGroup({
     Key key,
     @required this.filterChips,
     @required this.selectedChip,
     this.onChipSelected,
     this.chipLabelBuilder,
+    this.chipsLayout = ChipsLayout.HorizontalList,
     this.paddingBetweenChips = 4.0,
     this.initialLeftOffset = 0.0,
   }) : super(key: key);
@@ -104,16 +116,30 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
       ));
     }
 
-    /// TODO: figure out a better way to constraint list size
-    return Container(
-      height: Theme.of(context).textTheme.body1.fontSize * 3.5,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, index) {
-          return chipWidgets[index];
-        },
-        itemCount: chipWidgets.length,
-      ),
-    );
+    if (widget.chipsLayout == ChipsLayout.HorizontalList) {
+      /// TODO: figure out a better way to constraint list size
+      return Container(
+        height: Theme
+            .of(context)
+            .textTheme
+            .body1
+            .fontSize * 3.5,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext context, index) {
+            return chipWidgets[index];
+          },
+          itemCount: chipWidgets.length,
+        ),
+      );
+    } else {
+      assert(widget.chipsLayout == ChipsLayout.Wrap);
+
+      /// TODO: figure out a better way to constraint list size
+      return Wrap(
+        children: chipWidgets,
+      );
+    }
+
   }
 }

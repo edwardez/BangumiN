@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/userprofile/UserMoreDetails.dart';
+import 'package:munin/widgets/user/UserMoreDetails.dart';
 import 'package:quiver/strings.dart';
 
 /// A few lines of introduction with a 'read more' button on the right

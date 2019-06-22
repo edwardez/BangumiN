@@ -5,7 +5,6 @@ import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
-import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -130,7 +129,8 @@ class DiscussionParser {
     }
   }
 
-  bool _isMutedItem(DiscussionItem item) {
+  /// Checks whether a [DiscussionItem] has been muted.
+  bool _isMutedDiscussionItem(DiscussionItem item) {
     if (item is! GroupDiscussionPost) {
       return false;
     }
@@ -156,20 +156,12 @@ class DiscussionParser {
       return true;
     }
 
-    /// 2. Checks whether user muted op
-    bool isMutedOp = false;
-    for (MutedUser mutedUser in muteSetting.mutedUsers.values) {
-      if (mutedUser.userId == post.originalPosterUserId) {
-        isMutedOp = true;
-        break;
-      }
-    }
+    /// 3. Checks whether user muted op
+    final foundedMutedUser = muteSetting.mutedUsers.values.firstWhere(
+            (u) => u.userId == post.originalPosterUserId,
+        orElse: () => null);
 
-    if (isMutedOp) {
-      return true;
-    }
-
-    return false;
+    return foundedMutedUser != null;
   }
 
   List<DiscussionItem> processDiscussionItems(String rawHtml) {
@@ -181,7 +173,7 @@ class DiscussionParser {
       Optional<DiscussionItem> maybeDiscussionItem =
       _parseDiscussionItem(element);
       if (maybeDiscussionItem.isPresent &&
-          !_isMutedItem(maybeDiscussionItem.value)) {
+          !_isMutedDiscussionItem(maybeDiscussionItem.value)) {
         discussionItems.add(maybeDiscussionItem.value);
       }
     }

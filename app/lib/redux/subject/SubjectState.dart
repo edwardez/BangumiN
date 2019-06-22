@@ -26,8 +26,8 @@ abstract class SubjectState
       _$SubjectState((b) => b
         ..subjects.replace(BuiltMap<int, BangumiSubject>())
         ..collections.replace(BuiltMap<int, SubjectCollectionInfo>())
-        ..subjectsReviews.replace(
-            BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse>())
+        ..subjectsReviews
+            .replace(BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse>())
         ..update(updates));
 
   String toJson() {

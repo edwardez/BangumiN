@@ -30,9 +30,8 @@ class SharedPreferenceService {
     if (serializedBasicAppState != null) {
       try {
         BasicAppState basicAppState =
-        BasicAppState.fromJson(serializedBasicAppState);
-        appState = AppState().rebuild((b) =>
-        b
+            BasicAppState.fromJson(serializedBasicAppState);
+        appState = AppState().rebuild((b) => b
           ..isAuthenticated = basicAppState.isAuthenticated
           ..settingState.replace(basicAppState.settingState)
           ..currentAuthenticatedUserBasicInfo
@@ -49,14 +48,11 @@ class SharedPreferenceService {
     if (serializedAppState != null) {
       try {
         AppState fullAppState = AppState.fromJson(serializedAppState);
-        fullAppState = fullAppState.rebuild(
-                (b) =>
-            b
-              ..currentAuthenticatedUserBasicInfo.replace(
-                  appState.currentAuthenticatedUserBasicInfo)
-              ..isAuthenticated = appState.isAuthenticated
-              ..settingState.replace(appState.settingState)
-        );
+        fullAppState = fullAppState.rebuild((b) => b
+          ..currentAuthenticatedUserBasicInfo
+              .replace(appState.currentAuthenticatedUserBasicInfo)
+          ..isAuthenticated = appState.isAuthenticated
+          ..settingState.replace(appState.settingState));
         return Optional.of(fullAppState);
       } catch (error, stack) {
         /// If data other than core data is corrupted, saves a serialized basic app
@@ -74,7 +70,6 @@ class SharedPreferenceService {
     } else {
       return Optional.of(appState);
     }
-
   }
 
   /// Saves [AppState] with key [appStateKey] and a basicAppState with key
@@ -85,8 +80,7 @@ class SharedPreferenceService {
     /// SubjectState currently cannot be serialized
     state = state.rebuild((b) => b..subjectState.replace(SubjectState()));
 
-    BasicAppState basicAppState = BasicAppState((b) =>
-    b
+    BasicAppState basicAppState = BasicAppState((b) => b
       ..currentAuthenticatedUserBasicInfo
           .replace(state.currentAuthenticatedUserBasicInfo)
       ..isAuthenticated = state.isAuthenticated
@@ -104,15 +98,15 @@ class SharedPreferenceService {
   Future<bool> persistBasicAppState(AppState state) async {
     assert(state != null);
 
-    BasicAppState basicAppState = BasicAppState((b) =>
-    b
+    BasicAppState basicAppState = BasicAppState((b) => b
       ..currentAuthenticatedUserBasicInfo
           .replace(state.currentAuthenticatedUserBasicInfo)
       ..isAuthenticated = state.isAuthenticated
       ..settingState.replace(state.settingState));
 
-    return await this.sharedPreferences.setString(
-        basicAppStateKey, basicAppState.toJson());
+    return await this
+        .sharedPreferences
+        .setString(basicAppStateKey, basicAppState.toJson());
   }
 
   Future<bool> deleteAppState() async {

@@ -117,9 +117,9 @@ class CollectionPreviewWidget extends StatelessWidget {
           Routes.userCollectionsListRoute
               .replaceAll(RoutesVariable.usernameParam, username)
               .replaceAll(RoutesVariable.collectionStatusParam,
-              preview.collectionDistribution.keys.first.wiredName)
+                  preview.collectionDistribution.keys.first.wiredName)
               .replaceAll(
-              RoutesVariable.subjectTypeParam, preview.subjectType.name),
+                  RoutesVariable.subjectTypeParam, preview.subjectType.name),
           transition: TransitionType.native,
         );
       },

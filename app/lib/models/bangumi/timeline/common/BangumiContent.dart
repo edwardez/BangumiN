@@ -69,12 +69,12 @@ class BangumiContent extends EnumClass {
         return _characterSubRoute;
       case BangumiContent.Person:
         return _personSubRoute;
-    // All timeline wiki activity is a [BangumiContent.SubjectCreation] activity,
-    // which means user creates a new subject.
+      // All timeline wiki activity is a [BangumiContent.SubjectCreation] activity,
+      // which means user creates a new subject.
       case BangumiContent.SubjectCreation:
         return _subjectCreationSubRoute;
       default:
-      // Default shouldn't be used directly
+        // Default shouldn't be used directly
         assert(false, '$this doesn\'t have a valid webPageRouteName.');
         return '';
     }
@@ -109,7 +109,7 @@ class BangumiContent extends EnumClass {
       case _subjectCreationSubRoute:
         return Optional.of(BangumiContent.SubjectCreation);
       default:
-      // Default shouldn't be used directly
+        // Default shouldn't be used directly
         assert(false, '$subRoute doesn\'t have a valid BangumiContent.');
         return Optional.absent();
     }
@@ -153,7 +153,7 @@ class BangumiContent extends EnumClass {
         return TimelineCategoryFilter.PublicMessage;
       default:
 
-      /// Default shouldn't be used directly
+        /// Default shouldn't be used directly
         assert(false, 'Cannot find applicableFeedFilter for $this');
         return TimelineCategoryFilter.AllFeeds;
     }
@@ -186,7 +186,7 @@ class BangumiContent extends EnumClass {
         return '现实人物';
       default:
 
-      /// we should never use default directly
+        /// we should never use default directly
         assert(false, 'Cannot find chineseName for $this');
         return '条目';
     }

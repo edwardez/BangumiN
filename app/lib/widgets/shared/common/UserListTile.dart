@@ -30,7 +30,8 @@ class UserListTile extends StatelessWidget {
     this.score,
     this.titleMaxLines = 1,
     this.timeDisplayFormat = DisplayTimeIn.AlwaysRelative,
-    this.formatAbsoluteTimeAs = AbsoluteTimeFormat.Full, this.trailing,
+    this.formatAbsoluteTimeAs = AbsoluteTimeFormat.Full,
+    this.trailing,
   });
 
   UserListTile.fromUser({
@@ -39,9 +40,9 @@ class UserListTile extends StatelessWidget {
     this.titleMaxLines = 1,
     this.timeDisplayFormat = DisplayTimeIn.AlwaysRelative,
     this.score,
-    this.formatAbsoluteTimeAs = AbsoluteTimeFormat.Full, this.trailing,
-  })
-      : actionName = user.actionName,
+    this.formatAbsoluteTimeAs = AbsoluteTimeFormat.Full,
+    this.trailing,
+  })  : actionName = user.actionName,
         updatedAt = user.updatedAt,
         nickName = user.nickName,
         super(key: key);
@@ -59,15 +60,11 @@ class UserListTile extends StatelessWidget {
                   nickName,
                   maxLines: titleMaxLines,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subhead,
+                  style: Theme.of(context).textTheme.subhead,
                 ),
                 fit: FlexFit.tight,
               ),
-            ]
-              ..addAll(trailing == null ? [] : [trailing]),
+            ]..addAll(trailing == null ? [] : [trailing]),
           ),
           ListTileSubtitleWidget(
             actionName: actionName,

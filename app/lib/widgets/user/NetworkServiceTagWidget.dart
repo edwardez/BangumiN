@@ -17,9 +17,8 @@ class NetworkServiceTagWidget extends StatelessWidget {
     TextStyle contentTextStyle = Theme.of(context).textTheme.body1;
 
     if (isLink) {
-      contentTextStyle =
-          contentTextStyle.copyWith(
-              color: lightPrimaryDarkAccentColor(context));
+      contentTextStyle = contentTextStyle.copyWith(
+          color: lightPrimaryDarkAccentColor(context));
     }
 
     return InkWell(

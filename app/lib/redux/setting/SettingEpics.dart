@@ -16,12 +16,12 @@ const Duration listenToBrightnessChangeInterval = const Duration(seconds: 2);
 
 List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService) {
   final changeThemeByScreenBrightnessEpic =
-  _createChangeThemeByScreenBrightnessEpic();
+      _createChangeThemeByScreenBrightnessEpic();
 
   final updateThemeSettingEpic = _createUpdateThemeSettingEpic();
 
   final createImportBlockedBangumiUsersEpic =
-  _createImportBlockedBangumiUsersEpic(bangumiUserService);
+      _createImportBlockedBangumiUsersEpic(bangumiUserService);
 
   return [
     changeThemeByScreenBrightnessEpic,
@@ -32,20 +32,21 @@ List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService) {
 
 /// Note: [Screen.brightness] returns value between 0 and 1 so we need to manually
 /// convert it to 0~100 scale
-Stream<dynamic> _changeThemeByScreenBrightness(UpdateThemeSettingAction action,
+Stream<dynamic> _changeThemeByScreenBrightness(
+  UpdateThemeSettingAction action,
 ) async* {
   ThemeSetting themeSetting = action.themeSetting;
 
   bool shouldChangeToDarkTheme(int roundedDeviceBrightness) {
     return roundedDeviceBrightness <=
-        themeSetting.preferredFollowBrightnessSwitchThreshold &&
+            themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessDarkTheme;
   }
 
   bool shouldChangeToLightTheme(int currentDeviceBrightness) {
     return currentDeviceBrightness >
-        themeSetting.preferredFollowBrightnessSwitchThreshold &&
+            themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessLightTheme;
   }
@@ -54,15 +55,15 @@ Stream<dynamic> _changeThemeByScreenBrightness(UpdateThemeSettingAction action,
     if (themeSetting.themeSwitchMode ==
         ThemeSwitchMode.FollowScreenBrightness) {
       int roundedDeviceBrightness =
-      roundDeviceBrightnessToPercentage(await Screen.brightness);
+          roundDeviceBrightnessToPercentage(await Screen.brightness);
       if (shouldChangeToDarkTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
             themeSetting: themeSetting.rebuild(
-                    (b) => b..currentTheme = b.preferredFollowBrightnessDarkTheme));
+                (b) => b..currentTheme = b.preferredFollowBrightnessDarkTheme));
       } else if (shouldChangeToLightTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
             themeSetting: themeSetting.rebuild((b) =>
-            b..currentTheme = b.preferredFollowBrightnessLightTheme));
+                b..currentTheme = b.preferredFollowBrightnessLightTheme));
       }
     }
   } catch (error, stack) {
@@ -100,7 +101,8 @@ Epic<AppState> _createChangeThemeByScreenBrightnessEpic() {
   };
 }
 
-Stream<dynamic> _updateThemeSetting(UpdateThemeSettingAction action,
+Stream<dynamic> _updateThemeSetting(
+  UpdateThemeSettingAction action,
 ) async* {
   try {
     /// New theme must be either light or dark theme
@@ -124,11 +126,12 @@ Epic<AppState> _createUpdateThemeSettingEpic() {
 }
 
 Stream<dynamic> _createImportBlockedBangumiUsers(
-    BangumiUserService bangumiUserService,
-    ImportBlockedBangumiUsersRequestAction action,) async* {
+  BangumiUserService bangumiUserService,
+  ImportBlockedBangumiUsersRequestAction action,
+) async* {
   try {
     BuiltMap<String, MutedUser> users =
-    await bangumiUserService.importBlockedUser();
+        await bangumiUserService.importBlockedUser();
     yield ImportBlockedBangumiUsersResponseSuccessAction(users: users);
   } catch (error, stack) {
     print(error.toString());
@@ -142,6 +145,6 @@ Epic<AppState> _createImportBlockedBangumiUsersEpic(
     return Observable(actions)
         .ofType(TypeToken<ImportBlockedBangumiUsersRequestAction>())
         .switchMap((action) =>
-        _createImportBlockedBangumiUsers(bangumiUserService, action));
+            _createImportBlockedBangumiUsers(bangumiUserService, action));
   };
 }

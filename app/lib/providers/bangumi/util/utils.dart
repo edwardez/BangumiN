@@ -17,9 +17,9 @@ String aHrefContains(String keyword) {
 ///  element is used
 String imageUrlFromBackgroundImage(Element imageElement,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true}) {
+    checkImageExtensionType = true}) {
   Match imageMatchers =
-  cssBackgroundImageGroupRegex.firstMatch(imageElement?.outerHtml ?? '');
+      cssBackgroundImageGroupRegex.firstMatch(imageElement?.outerHtml ?? '');
   String imageUrl;
 
   if (imageMatchers != null && imageMatchers.groupCount >= 1) {
@@ -39,7 +39,7 @@ String imageUrlFromBackgroundImage(Element imageElement,
 ///[defaultImageSrc] will be returned
 String normalizeImageUrl(String imageUrl,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
-      checkImageExtensionType = true}) {
+    checkImageExtensionType = true}) {
   if (checkImageExtensionType) {
     if (!validBangumiImageTypeRegex.hasMatch(imageUrl)) {
       return defaultImageSrc;
@@ -159,7 +159,7 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
 
 double parseSubjectScore(Element element) {
   final Element starsInfoElement =
-  element.querySelector('.starsinfo,.starstop');
+      element.querySelector('.starsinfo,.starstop');
 
   if (starsInfoElement == null) {
     return null;
@@ -179,16 +179,18 @@ double parseSubjectScore(Element element) {
   return null;
 }
 
-FeedMetaInfo updateUserAction(Element singleTimelineContent,
-    FeedMetaInfo userInfo,) {
+FeedMetaInfo updateUserAction(
+  Element singleTimelineContent,
+  FeedMetaInfo userInfo,
+) {
   assert(singleTimelineContent != null);
   assert(userInfo != null);
 
   Optional<String> maybeActionName =
-  getMergedTextNodeContent(singleTimelineContent.nodes);
+      getMergedTextNodeContent(singleTimelineContent.nodes);
 
   userInfo = userInfo.rebuild((b) =>
-  b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
+      b..actionName = maybeActionName.isEmpty ? '' : maybeActionName.value);
 
   return userInfo;
 }
@@ -228,7 +230,8 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
 /// Hence +0800 is default time
 /// TODO: bangumi allows user to select timezone, find a easy way to read user
 /// timeline and parse time accordingly.
-DateTime parseDateTime(String rawTime, {
+DateTime parseDateTime(
+  String rawTime, {
   timeZoneShift = '+0800',
 }) {
   if (rawTime == null) {
@@ -258,7 +261,9 @@ DateTime parseDateTime(String rawTime, {
 /// Different from [parseChineseRelativeTime],It SEEMS like bangumi only uses
 /// this format to display time up to x days ago,  so years are not parsed
 /// for performance reason
-DateTime parseEnglishRelativeTime(String rawRelativeTime,) {
+DateTime parseEnglishRelativeTime(
+  String rawRelativeTime,
+) {
   if (rawRelativeTime == null) {
     return null;
   }

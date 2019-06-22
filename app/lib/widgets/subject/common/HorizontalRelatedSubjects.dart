@@ -22,14 +22,14 @@ class HorizontalRelatedSubjects extends StatelessWidget {
   final double imageWidth;
   final double imageHeight;
 
-  const HorizontalRelatedSubjects({Key key,
+  const HorizontalRelatedSubjects({
+    Key key,
     @required this.relatedSubjects,
     @required this.preferredSubjectInfoLanguage,
     this.horizontalImagePadding = 8.0,
     this.imageWidth = 71,
     this.imageHeight = 100.0,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   List<RoundedElevatedImageWithBottomText> _buildCharacterLists(
       BuiltListMultimap<String, RelatedSubject> relatedSubjects) {
@@ -42,9 +42,9 @@ class HorizontalRelatedSubjects extends StatelessWidget {
         imageWidth: imageWidth,
         imageHeight: imageHeight,
         horizontalImagePadding:
-        imageWidgets.length == 0 ? 0 : horizontalImagePadding,
-        title: preferredNameFromSubjectBase(
-            subject, preferredSubjectInfoLanguage),
+            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+        title:
+            preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
         subtitle: subject.subjectSubTypeName,
         titleMaxLines: titleMaxLines,
         subTitleMaxLines: subTitleMaxLines,
@@ -58,13 +58,10 @@ class HorizontalRelatedSubjects extends StatelessWidget {
   Widget build(BuildContext context) {
     return HorizontalScrollableWidget(
       horizontalList: _buildCharacterLists(relatedSubjects),
-      listHeight:
-      imageHeight + Theme
-          .of(context)
-          .textTheme
-          .caption
-          .fontSize * (titleMaxLines + subTitleMaxLines) *
-          textSpaceScaleBaseFactor,
+      listHeight: imageHeight +
+          Theme.of(context).textTheme.caption.fontSize *
+              (titleMaxLines + subTitleMaxLines) *
+              textSpaceScaleBaseFactor,
     );
   }
 }

@@ -31,15 +31,15 @@ class BookProgressUpdateField extends StatelessWidget {
 
   final String pageStorageKeyPrefix;
 
-  const BookProgressUpdateField({
-    Key key,
-    @required this.fieldType,
-    @required this.totalEpisodesOrVolumeCount,
-    @required this.subjectId,
-    @required this.textEditingController,
-    this.onSaved,
-    this.pageStorageKeyPrefix = 'progress'
-  }) : super(key: key);
+  const BookProgressUpdateField(
+      {Key key,
+      @required this.fieldType,
+      @required this.totalEpisodesOrVolumeCount,
+      @required this.subjectId,
+      @required this.textEditingController,
+      this.onSaved,
+      this.pageStorageKeyPrefix = 'progress'})
+      : super(key: key);
 
   String fieldTypeToChinese(FieldType fieldType) {
     switch (fieldType) {
@@ -67,8 +67,7 @@ class BookProgressUpdateField extends StatelessWidget {
         border: const OutlineInputBorder(),
         filled: false,
         suffixText:
-        '/${totalEpisodesOrVolumeCount ?? '??'}${fieldTypeToChinese(
-            fieldType)}',
+            '/${totalEpisodesOrVolumeCount ?? '??'}${fieldTypeToChinese(fieldType)}',
       ),
       onSaved: onSaved,
     );

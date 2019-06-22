@@ -138,7 +138,7 @@ class BangumiProgressService {
   LinkedHashMap<int, Map<int, Map>> _groupTouchedEpisodesPerSubjectId(
       List decodedEpisodes) {
     LinkedHashMap<int, Map<int, Map>> touchedEpisodesPerSubjectId =
-    LinkedHashMap<int, Map<int, Map>>();
+        LinkedHashMap<int, Map<int, Map>>();
     for (var rawEpisodeProgress in decodedEpisodes) {
       var subjectId = rawEpisodeProgress['subject_id'];
 
@@ -149,9 +149,9 @@ class BangumiProgressService {
       }
       touchedEpisodesPerSubjectId[subjectId] =
           (rawEpisodeProgress['eps'] as List).fold({}, (mapSoFar, episode) {
-            mapSoFar[episode['id']] = episode;
-            return mapSoFar;
-          });
+        mapSoFar[episode['id']] = episode;
+        return mapSoFar;
+      });
     }
 
     return touchedEpisodesPerSubjectId;
@@ -200,7 +200,7 @@ class BangumiProgressService {
 
     // 3. Groups touched episodes by subject id
     LinkedHashMap<int, Map<int, Map>> touchedEpisodesPerSubjectId =
-    _groupTouchedEpisodesPerSubjectId(decodedEpisodes);
+        _groupTouchedEpisodesPerSubjectId(decodedEpisodes);
 
     // 4.1 If only book info is requested, parses collection info and returns
     if (subjectTypes.contains(SubjectType.Book) && subjectTypes.length == 1) {
@@ -248,12 +248,12 @@ class BangumiProgressService {
         await cookieClient.dio.get<String>('/m/prg');
 
     LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject =
-    await compute(processProgressPreview, response.data);
+        await compute(processProgressPreview, response.data);
     if (touchedEpisodesPerSubjectId != null) {
       episodesPerSubject.forEach((subjectId, episodes) {
         for (EpisodeProgress episode in episodes.values) {
           final Map rawEpisodesUnderSubject =
-          touchedEpisodesPerSubjectId[subjectId];
+              touchedEpisodesPerSubjectId[subjectId];
 
           EpisodeStatus status;
           if (rawEpisodesUnderSubject != null) {
@@ -275,8 +275,8 @@ class BangumiProgressService {
   LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
       _serializeWatchableBookCollection(dynamic decodedCollection) {
     LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
-    progress =
-    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
+        progress =
+        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
     progress[SubjectType.Book] = LinkedHashMap<int, InProgressCollection>();
 
     for (var rawCollection in decodedCollection) {
@@ -304,8 +304,8 @@ class BangumiProgressService {
     BuiltSet<SubjectType> requestedSubjectTypes,
   ) {
     LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
-    progress =
-    LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
+        progress =
+        LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>();
 
     requestedSubjectTypes.forEach((subjectType) {
       progress[subjectType] = LinkedHashMap<int, InProgressCollection>();
@@ -372,8 +372,7 @@ class BangumiProgressService {
     List responses = await Future.wait([
       cookieClient.dio.get('/subject/$subjectId/ep'),
       oauthClient.client.get(
-          'https://${Application.environmentValue
-              .bangumiApiHost}/user/$username/progress?subject_id=$subjectId')
+          'https://${Application.environmentValue.bangumiApiHost}/user/$username/progress?subject_id=$subjectId')
     ]);
 
     Dio.Response allEpisodesResponse = responses[0];
@@ -404,7 +403,7 @@ class BangumiProgressService {
       }
 
       EpisodeStatus status =
-      _episodeStatusFromApiWithPristineFallback(rawEpisode);
+          _episodeStatusFromApiWithPristineFallback(rawEpisode);
       touchedEpisodes.addAll({episodeId: status});
     }
 

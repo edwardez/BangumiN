@@ -81,8 +81,8 @@ class TimelineCategoryFilter extends EnumClass {
         return 'doujin';
       default:
 
-      /// we should never use default value, this error needs to be caught
-      /// in dev environment
+        /// we should never use default value, this error needs to be caught
+        /// in dev environment
         assert(false, 'Cannot find BangumiQueryParameterValue for $this');
         return '';
     }
@@ -115,8 +115,8 @@ class TimelineCategoryFilter extends EnumClass {
         return '天窗';
       default:
 
-      /// we should never use default value, this error needs to be caught
-      /// in dev environment
+        /// we should never use default value, this error needs to be caught
+        /// in dev environment
         assert(false, 'Cannot find chineseName for $this');
         return '-';
     }
@@ -150,8 +150,8 @@ class TimelineCategoryFilter extends EnumClass {
         return 10;
       default:
 
-      /// we should never use default value, this error needs to be caught
-      /// in dev environment
+        /// we should never use default value, this error needs to be caught
+        /// in dev environment
         assert(false, '$this doesn\'t have a valid page index');
         return 0;
     }

@@ -12,7 +12,9 @@ class FriendshipCreationSingleWidget extends StatelessWidget {
   final DeleteFeedCallback onDeleteFeed;
 
   const FriendshipCreationSingleWidget(
-      {Key key, @required this.friendshipCreationSingle, @required this.onDeleteFeed})
+      {Key key,
+      @required this.friendshipCreationSingle,
+      @required this.onDeleteFeed})
       : super(key: key);
 
   @override
@@ -24,17 +26,16 @@ class FriendshipCreationSingleWidget extends StatelessWidget {
           trailing: buildTrailingWidget(friendshipCreationSingle, onDeleteFeed),
         ),
         TimelineCommonListTile(
-          leadingWidget: CachedCircleAvatar(
-            imageUrl: friendshipCreationSingle.friendAvatar.medium,
-            navigateToUserRouteOnTap: true,
-            username: friendshipCreationSingle.friendId,
-          ),
-          title: friendshipCreationSingle.friendNickName,
+            leadingWidget: CachedCircleAvatar(
+              imageUrl: friendshipCreationSingle.friendAvatar.medium,
+              navigateToUserRouteOnTap: true,
+              username: friendshipCreationSingle.friendId,
+            ),
+            title: friendshipCreationSingle.friendNickName,
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: friendshipCreationSingle.bangumiContent,
                 id: friendshipCreationSingle.friendId,
-                context: context)
-        ),
+                context: context)),
       ],
     );
   }

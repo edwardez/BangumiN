@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 List<Epic<AppState>> createUserEpics(BangumiUserService bangumiUserService) {
   final getUserPreviewEpic = _createGetUserPreviewEpic(bangumiUserService);
   final listUserCollectionsEpic =
-  _createListUserCollectionsEpic(bangumiUserService);
+      _createListUserCollectionsEpic(bangumiUserService);
 
   return [
     getUserPreviewEpic,
@@ -52,9 +52,11 @@ Epic<AppState> _createGetUserPreviewEpic(
   };
 }
 
-Stream<dynamic> _listUserCollectionsEpic(BangumiUserService bangumiUserService,
-    EpicStore<AppState> store,
-    ListUserCollectionsRequestAction action,) async* {
+Stream<dynamic> _listUserCollectionsEpic(
+  BangumiUserService bangumiUserService,
+  EpicStore<AppState> store,
+  ListUserCollectionsRequestAction action,
+) async* {
   try {
     // Subject should always be non-null as user must access subject widget first
     // then review widget, if this is not true, throws an exception in dev
@@ -64,7 +66,7 @@ Stream<dynamic> _listUserCollectionsEpic(BangumiUserService bangumiUserService,
 
     if (user == null) {
       final getUserAction =
-      GetUserPreviewRequestAction(username: action.request.username);
+          GetUserPreviewRequestAction(username: action.request.username);
       yield getUserAction;
 
       futuresToWait.add(getUserAction.completer.future);
@@ -109,11 +111,10 @@ Epic<AppState> _createListUserCollectionsEpic(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<ListUserCollectionsRequestAction>())
-        .switchMap((action) =>
-        _listUserCollectionsEpic(
-          bangumiUserService,
-          store,
-          action,
-        ));
+        .switchMap((action) => _listUserCollectionsEpic(
+              bangumiUserService,
+              store,
+              action,
+            ));
   };
 }

@@ -37,10 +37,11 @@ class BangumiCookieService {
   }
 
   /// Updates in-memory bangumi auth credentials info
-  void updateBangumiAuthInfo({String authCookie,
-    String sessionCookie,
-    String userAgent,
-    int expiresOnInSeconds}) {
+  void updateBangumiAuthInfo(
+      {String authCookie,
+      String sessionCookie,
+      String userAgent,
+      int expiresOnInSeconds}) {
     assert(authCookie != null);
     assert(userAgent != null);
     assert(sessionCookie != null);
@@ -55,7 +56,7 @@ class BangumiCookieService {
         expiresOnInSeconds - expirationOffsetInSeconds > 0) {
       expiresOn = DateTime.now()
           .add(Duration(
-          seconds: (expiresOnInSeconds - expirationOffsetInSeconds)))
+              seconds: (expiresOnInSeconds - expirationOffsetInSeconds)))
           .toUtc();
     } else {
       // If bangumi returns 0 or null for expiresOnInSeconds(=chii_cookietime)
@@ -67,14 +68,13 @@ class BangumiCookieService {
     }
 
     // Writes to keystore/keychain
-    _bangumiCookieCredential = BangumiCookieCredentials((b) =>
-    {
-      b
-        ..authCookie = authCookie
-        ..sessionCookie = sessionCookie
-        ..userAgent = userAgent
-        ..expiresOn = expiresOn
-    });
+    _bangumiCookieCredential = BangumiCookieCredentials((b) => {
+          b
+            ..authCookie = authCookie
+            ..sessionCookie = sessionCookie
+            ..userAgent = userAgent
+            ..expiresOn = expiresOn
+        });
 
     updateDioHeaders(
         authCookie: authCookie,

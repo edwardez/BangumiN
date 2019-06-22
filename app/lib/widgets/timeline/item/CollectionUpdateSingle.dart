@@ -12,11 +12,11 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
   final CollectionUpdateSingle collectionUpdateSingle;
   final DeleteFeedCallback onDeleteFeed;
 
-  const CollectionUpdateSingleWidget({
-    Key key,
-    @required this.collectionUpdateSingle,
-    @required this.onDeleteFeed
-  }) : super(key: key);
+  const CollectionUpdateSingleWidget(
+      {Key key,
+      @required this.collectionUpdateSingle,
+      @required this.onDeleteFeed})
+      : super(key: key);
 
   /// https://github.com/dart-lang/sdk/issues/11155
   /// currently there is no better way to optionally build a widget other than returns a container()

@@ -32,10 +32,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   _buildTosAndPrivacy(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: Theme
-            .of(context)
-            .textTheme
-            .body1,
+        style: Theme.of(context).textTheme.body1,
         children: <TextSpan>[
           TextSpan(text: '点击授权即代表您同意我们的'),
           ...tosAndPrivacyLinks(context),
@@ -50,10 +47,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           _scaffoldKey, vm.appState?.oauthState?.oauthFailureMessage ?? '未知错误');
     }
 
-    final svgSize = MediaQuery
-        .of(context)
-        .size
-        .shortestSide / screenSvgRatio;
+    final svgSize = MediaQuery.of(context).size.shortestSide / screenSvgRatio;
     final Widget bangumiNLogo = SvgPicture.asset(
       'assets/logo/munin_logo_rounded.svg',
       semanticsLabel: 'BangumiN Logo',

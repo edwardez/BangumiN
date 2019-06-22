@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
 /// 4 dp is typically the smallest spacing of material
 /// https://material.io/design/layout/spacing-methods.html
 const baseOffset = 4.0;
@@ -18,15 +19,13 @@ final defaultContainerCircularRadius = BorderRadius.circular(8.0);
 
 const defaultPortraitHorizontalOffset = baseOffset * 6;
 const defaultPortraitHorizontalEdgeInsets =
-const EdgeInsets.symmetric(horizontal: defaultPortraitHorizontalOffset);
+    const EdgeInsets.symmetric(horizontal: defaultPortraitHorizontalOffset);
 const defaultDensePortraitHorizontalOffset = baseOffset4x;
 const defaultLandScapeHorizontalOffset = baseOffset * 12;
 const defaultLandScapeDenseHorizontalOffset = baseOffset4x;
 const defaultAppBarElevation = 4.0;
 const defaultImageCircularRadius = 4.0;
-final defaultIconSize = IconThemeData
-    .fallback()
-    .size;
+final defaultIconSize = IconThemeData.fallback().size;
 
 /// 87.5% of the default icon size
 final smallerIconSize = defaultIconSize * 0.875;
@@ -39,10 +38,7 @@ TextStyle body1TextWithLightPrimaryDarkAccentColor(BuildContext context) {
 }
 
 TextStyle defaultCaptionText(BuildContext context) {
-  return Theme
-      .of(context)
-      .textTheme
-      .caption;
+  return Theme.of(context).textTheme.caption;
 }
 
 /// A caption text with a higher opacity.
@@ -53,8 +49,7 @@ TextStyle captionTextWithHigherOpacity(BuildContext context,
   double higherOpacity = math.min(1.0, defaultCaption.color.opacity * scale);
 
   return defaultCaption.copyWith(
-      color: defaultCaption.color.withOpacity(higherOpacity)
-  );
+      color: defaultCaption.color.withOpacity(higherOpacity));
 }
 
 TextStyle captionTextWithBody1Size(BuildContext context) {
@@ -76,26 +71,14 @@ class MuninColor {
 }
 
 Color lightPrimaryDarkAccentColor(BuildContext context) {
-  if (Theme
-      .of(context)
-      .brightness == Brightness.dark) {
-    return Theme
-        .of(context)
-        .accentColor;
+  if (Theme.of(context).brightness == Brightness.dark) {
+    return Theme.of(context).accentColor;
   }
 
-  return Theme
-      .of(context)
-      .primaryColor;
+  return Theme.of(context).primaryColor;
 }
 
 TextStyle defaultDialogContentTextStyle(BuildContext context) {
-  return Theme
-      .of(context)
-      .dialogTheme
-      .contentTextStyle ??
-      Theme
-          .of(context)
-          .textTheme
-          .subhead;
+  return Theme.of(context).dialogTheme.contentTextStyle ??
+      Theme.of(context).textTheme.subhead;
 }

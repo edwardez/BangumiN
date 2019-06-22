@@ -40,11 +40,11 @@ class SearchType extends EnumClass {
   /// difference between [subjectSearchType]: [SearchType.AnySubject] is not a
   /// concrete subject type
   static const concreteSubjectType = {
-  SearchType.Book,
-  SearchType.Anime,
-  SearchType.Music,
-  SearchType.Game,
-  SearchType.Real,
+    SearchType.Book,
+    SearchType.Anime,
+    SearchType.Music,
+    SearchType.Game,
+    SearchType.Real,
   };
 
   @memoized
@@ -125,7 +125,6 @@ class SearchType extends EnumClass {
   bool get isMonoSearchType {
     return this == SearchType.Character || this == SearchType.Person;
   }
-
 
   /// Get relevant search type by subject type int
   /// Int is defined by(and can only be) bangumi subject type

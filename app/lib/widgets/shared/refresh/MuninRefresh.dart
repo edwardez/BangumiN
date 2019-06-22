@@ -162,7 +162,7 @@ class MuninRefreshState extends State<MuninRefresh> {
   RefreshWidgetStyle computedRefreshWidgetStyle;
 
   GlobalKey<MuninRefreshIndicatorState> _materialRefreshKey =
-  GlobalKey<MuninRefreshIndicatorState>();
+      GlobalKey<MuninRefreshIndicatorState>();
 
   /// A subscription to load more status change. It can be used to unsubscribe
   /// previous load more status change.
@@ -269,7 +269,7 @@ class MuninRefreshState extends State<MuninRefresh> {
     Future<void> future = widget.onLoadMore();
 
     loadMoreStatusChangeSubscription = future.asStream().listen(
-          (_) {
+      (_) {
         if (mounted) {
           setState(() {
             loadMoreStatus = RequestStatus.Success;
@@ -426,7 +426,7 @@ class MuninRefreshState extends State<MuninRefresh> {
         SliverFixedExtentList progressIndicator = SliverFixedExtentList(
           itemExtent: sliverGeneralExtent,
           delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+            (BuildContext context, int index) {
               return AdaptiveProgressIndicator();
             },
             childCount: 1,
@@ -441,7 +441,7 @@ class MuninRefreshState extends State<MuninRefresh> {
           onRefresh: _generateOnRefreshCallBack(),
           refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
           refreshTriggerPullDistance:
-          widget.cupertinoRefreshTriggerPullDistance,
+              widget.cupertinoRefreshTriggerPullDistance,
         ));
       }
     }
@@ -455,7 +455,7 @@ class MuninRefreshState extends State<MuninRefresh> {
     if (widget.topWidgets.isNotEmpty) {
       slivers.add(SliverList(
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return widget.topWidgets[index];
           },
           childCount: widget.topWidgets.length,
@@ -490,7 +490,7 @@ class MuninRefreshState extends State<MuninRefresh> {
         SliverFixedExtentList loadMoreStatusWidget = SliverFixedExtentList(
           itemExtent: sliverGeneralExtent,
           delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+            (BuildContext context, int index) {
               return _buildLoadMoreStatusIndicatorWidget();
             },
             childCount: 1,

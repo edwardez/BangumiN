@@ -27,9 +27,10 @@ class DiscussionBodyWidget extends StatefulWidget {
 
   final OneMuninBar oneMuninBar;
 
-  const DiscussionBodyWidget({Key key,
-    @required this.getDiscussionRequest,
-    @required this.oneMuninBar})
+  const DiscussionBodyWidget(
+      {Key key,
+      @required this.getDiscussionRequest,
+      @required this.oneMuninBar})
       : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class DiscussionBodyWidget extends StatefulWidget {
 
 class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
-  GlobalKey<MuninRefreshState>();
+      GlobalKey<MuninRefreshState>();
 
   /// A widget that will show up if the timeline is empty
   Widget _buildEmptyRakuenWidget() {
@@ -116,8 +117,8 @@ class _ViewModel {
 
   final Function(BuildContext context) getRakuenTopics;
 
-  factory _ViewModel.fromStore(Store<AppState> store,
-      GetDiscussionRequest getDiscussionRequest) {
+  factory _ViewModel.fromStore(
+      Store<AppState> store, GetDiscussionRequest getDiscussionRequest) {
     Future _getRakuenTopics(BuildContext context) {
       final action = GetDiscussionRequestAction(
           context: context, getDiscussionRequest: getDiscussionRequest);
@@ -138,23 +139,23 @@ class _ViewModel {
     }
 
     bool _isMuted(DiscussionItem item) {
-      assert(item is GroupDiscussionPost, 'Only GroupDiscussionPost has a valid mute status');
+      assert(item is GroupDiscussionPost,
+          'Only GroupDiscussionPost has a valid mute status');
       if (item is! GroupDiscussionPost) {
         return false;
       }
 
-
       String postedGroupId = (item as GroupDiscussionPost).postedGroupId;
 
       return postedGroupId != null &&
-          store.state.settingState.muteSetting.mutedGroups.containsKey(
-              postedGroupId);
+          store.state.settingState.muteSetting.mutedGroups
+              .containsKey(postedGroupId);
     }
 
     return _ViewModel(
       getDiscussionRequest: getDiscussionRequest,
-      rakuenTopics: store.state.discussionState
-          .discussions[getDiscussionRequest],
+      rakuenTopics:
+          store.state.discussionState.discussions[getDiscussionRequest],
       getRakuenTopics: _getRakuenTopics,
       muteSetting: store.state.settingState.muteSetting,
       muteGroup: _muteGroup,
@@ -176,17 +177,12 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              getDiscussionRequest == other.getDiscussionRequest &&
-              rakuenTopics == other.rakuenTopics &&
-              muteSetting == other.muteSetting;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          getDiscussionRequest == other.getDiscussionRequest &&
+          rakuenTopics == other.rakuenTopics &&
+          muteSetting == other.muteSetting;
 
   @override
-  int get hashCode =>
-      hash3(
-          getDiscussionRequest,
-          rakuenTopics,
-          muteSetting);
-
+  int get hashCode => hash3(getDiscussionRequest, rakuenTopics, muteSetting);
 }

@@ -21,9 +21,10 @@ class BangumiUserService {
   BangumiOauthService oauthClient;
   BangumiCookieService cookieClient;
 
-  BangumiUserService({@required this.oauthClient,
-    @required this.cookieClient,
-    @required this.sharedPreferenceService})
+  BangumiUserService(
+      {@required this.oauthClient,
+      @required this.cookieClient,
+      @required this.sharedPreferenceService})
       : assert(oauthClient != null),
         assert(cookieClient != null),
         assert(sharedPreferenceService != null);
@@ -37,8 +38,7 @@ class BangumiUserService {
   // get bangumi user basic info through api
   Future<BangumiUserSmall> getUserBasicInfo(String username) async {
     final response = await oauthClient.client.get(
-        'https://${Application.environmentValue
-            .bangumiApiHost}/user/$username');
+        'https://${Application.environmentValue.bangumiApiHost}/user/$username');
 
     BangumiUserSmall basicInfo = BangumiUserSmall.fromJson(response.body);
     return basicInfo;
@@ -56,13 +56,13 @@ class BangumiUserService {
     final response = await cookieClient.dio.get<String>('/settings/privacy');
 
     BuiltMap<String, MutedUser> users =
-    ImportBlockedUserParser().process(response.data);
+        ImportBlockedUserParser().process(response.data);
     return users;
   }
 
   Future<ParsedCollections> listUserCollections(
       {@required ListUserCollectionsRequest request,
-        @required int requestedPageNumber}) async {
+      @required int requestedPageNumber}) async {
     final username = request.username;
     final subjectTypeName = request.subjectType.name.toLowerCase();
     final collectionStatusName = request.collectionStatus.wiredName;
@@ -90,8 +90,11 @@ class BangumiUserService {
       throw BangumiResponseIncomprehensibleException();
     }
 
-    final message = ParseUserCollectionsListMessage(response.data,
-      requestedPageNumber: requestedPageNumber, request: request,);
+    final message = ParseUserCollectionsListMessage(
+      response.data,
+      requestedPageNumber: requestedPageNumber,
+      request: request,
+    );
 
     return compute(processUserCollectionsList, message);
   }

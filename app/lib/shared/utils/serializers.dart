@@ -277,9 +277,9 @@ part 'serializers.g.dart';
   PreferredSubjectInfoLanguage
 ])
 final Serializers serializers = (_$serializers.toBuilder()
-  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),
-          () => ListBuilder<SubjectBaseWithCover>())..addBuilderFactory(
-      FullType(BuiltList, [FullType(InProgressCollection)]),
+      ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),
+          () => ListBuilder<SubjectBaseWithCover>())
+      ..addBuilderFactory(FullType(BuiltList, [FullType(InProgressCollection)]),
           () => ListBuilder<InProgressCollection>())
-  ..addPlugin(StandardJsonPlugin()))
+      ..addPlugin(StandardJsonPlugin()))
     .build();

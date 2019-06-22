@@ -26,7 +26,7 @@ class TimelinePreviewWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.body1),
         TextSpan(
             text:
-            ' ${TimeUtils.formatMilliSecondsEpochTime(previewFeed.userUpdatedAt, displayTimeIn: DisplayTimeIn.AlwaysRelative)}',
+                ' ${TimeUtils.formatMilliSecondsEpochTime(previewFeed.userUpdatedAt, displayTimeIn: DisplayTimeIn.AlwaysRelative)}',
             style: Theme.of(context).textTheme.caption),
       ]),
     );
@@ -44,8 +44,8 @@ class TimelinePreviewWidget extends StatelessWidget {
       onPressed: () {
         Application.router.navigateTo(
             context,
-            Routes.composeTimelineMessageRoute.replaceAll(
-                RoutesVariable.usernameParam, username),
+            Routes.composeTimelineMessageRoute
+                .replaceAll(RoutesVariable.usernameParam, username),
             transition: TransitionType.nativeModal);
       },
     );
@@ -84,8 +84,7 @@ class TimelinePreviewWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                Scaffold(
+            builder: (context) => Scaffold(
                   body: MuninTimeline.onUserProfile(
                     username: profile.basicInfo.username,
                   ),
@@ -93,8 +92,8 @@ class TimelinePreviewWidget extends StatelessWidget {
                       context, profile.basicInfo.username),
                 ),
             settings: RouteSettings(
-                name: Routes.userProfileTimelineRoute.replaceAll(
-                    ':username', profile.basicInfo.username)),
+                name: Routes.userProfileTimelineRoute
+                    .replaceAll(':username', profile.basicInfo.username)),
           ),
         );
       },

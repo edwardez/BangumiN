@@ -19,7 +19,6 @@ class ClipboardService {
       }
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(successMessage), duration: duration));
-
     } catch (exception) {
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(failureMessage), duration: duration));
@@ -29,10 +28,10 @@ class ClipboardService {
   /// Shows a confirmation before copying something
   static copyConfirmationDialog(BuildContext context, String textToCopy,
       {Widget dialogContent,
-        dialogTitle = '复制此内容？',
-        successMessage = '复制成功',
-        failureMessage = '复制失败',
-        duration = const Duration(milliseconds: 1000)}) async {
+      dialogTitle = '复制此内容？',
+      successMessage = '复制成功',
+      failureMessage = '复制失败',
+      duration = const Duration(milliseconds: 1000)}) async {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {

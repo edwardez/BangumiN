@@ -19,7 +19,9 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
   final StatusUpdateMultiple statusUpdateMultiple;
 
   const StatusUpdateMultipleWidget(
-      {Key key, @required this.statusUpdateMultiple, @required this.onDeleteFeed})
+      {Key key,
+      @required this.statusUpdateMultiple,
+      @required this.onDeleteFeed})
       : super(key: key);
 
   List<Widget> _buildImageLists(BuiltList<HyperImage> hyperImages) {
@@ -50,7 +52,6 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
       }
     }
 
-
     return imageWidgets;
   }
 
@@ -66,11 +67,9 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
     ];
 
     if (statusUpdateMultiple.hyperImages.length != 0) {
-      statusUpdateMultipleWidgets.add(
-          Wrap(
-            children: _buildImageLists(statusUpdateMultiple.hyperImages),
-          )
-      );
+      statusUpdateMultipleWidgets.add(Wrap(
+        children: _buildImageLists(statusUpdateMultiple.hyperImages),
+      ));
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

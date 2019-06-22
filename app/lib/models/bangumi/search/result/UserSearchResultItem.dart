@@ -34,13 +34,12 @@ abstract class UserSearchResultItem
   String get username;
 
   factory UserSearchResultItem([updates(UserSearchResultItemBuilder b)]) =
-  _$UserSearchResultItem;
+      _$UserSearchResultItem;
 
   UserSearchResultItem._();
 
   String toJson() {
-    return json
-        .encode(
+    return json.encode(
         serializers.serializeWith(UserSearchResultItem.serializer, this));
   }
 
@@ -51,13 +50,12 @@ abstract class UserSearchResultItem
 
   static UserSearchResultItem fromBangumiUserSmall(
       BangumiUserSmall bangumiUserSmall) {
-    return UserSearchResultItem((b) =>
-    b
+    return UserSearchResultItem((b) => b
       ..id = bangumiUserSmall.id
       ..name = bangumiUserSmall.nickname
       ..username = bangumiUserSmall.username
-      ..image.replace(
-          BangumiImage.fromBangumiUserAvatar(bangumiUserSmall.avatar))
+      ..image
+          .replace(BangumiImage.fromBangumiUserAvatar(bangumiUserSmall.avatar))
       ..type = SearchType.User);
   }
 

@@ -16,7 +16,7 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
 
   /// A [BuiltMap] of user collections.
   BuiltMap<ListUserCollectionsRequest, ListUserCollectionsResponse>
-  get collections;
+      get collections;
 
   factory UserState([updates(UserStateBuilder b)]) => _$UserState((b) => b
     ..profiles.replace(BuiltMap<String, UserProfile>())

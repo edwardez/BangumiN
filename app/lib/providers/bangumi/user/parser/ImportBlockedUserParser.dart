@@ -67,9 +67,8 @@ class ImportBlockedUserParser {
         ..username = username
         ..userId = userId
         ..nickname = nickname
-        ..userAvatar.replace(
-            BangumiImage.useSameImageUrlForAll(
-                bangumiAnonymousUserMediumAvatar))
+        ..userAvatar.replace(BangumiImage.useSameImageUrlForAll(
+            bangumiAnonymousUserMediumAvatar))
         ..isImportedFromBangumi = true);
     }
 

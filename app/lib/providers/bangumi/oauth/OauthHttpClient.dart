@@ -83,8 +83,7 @@ class OauthHttpClient extends BaseClient {
         }
 
         debugPrint(
-            'Oauth Client received an error response with status code ${response
-                .statusCode} for endpoint ${response.request}');
+            'Oauth Client received an error response with status code ${response.statusCode} for endpoint ${response.request}');
         // Make sure the response stream is listened to so that we don't leave
         // dangling connections.
         unawaited(response.stream.listen((_) {}).cancel()?.catchError((_) {}));

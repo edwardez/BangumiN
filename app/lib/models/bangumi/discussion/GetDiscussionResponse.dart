@@ -32,7 +32,7 @@ abstract class GetDiscussionResponse
   }
 
   factory GetDiscussionResponse([updates(GetDiscussionResponseBuilder b)]) =
-  _$GetDiscussionResponse;
+      _$GetDiscussionResponse;
 
   String toJson() {
     return json.encode(

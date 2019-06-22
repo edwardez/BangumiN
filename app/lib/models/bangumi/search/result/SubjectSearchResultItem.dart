@@ -35,7 +35,7 @@ abstract class SubjectSearchResultItem
   Rating get rating;
 
   factory SubjectSearchResultItem([updates(SubjectSearchResultItemBuilder b)]) =
-  _$SubjectSearchResultItem;
+      _$SubjectSearchResultItem;
 
   SubjectSearchResultItem._();
 

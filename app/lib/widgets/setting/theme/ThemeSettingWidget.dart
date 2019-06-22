@@ -81,8 +81,8 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
         return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
-          safeAreaChildPadding: const EdgeInsets.only(
-              left: 0, right: 0, top: largeOffset),
+          safeAreaChildPadding:
+              const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
           appBarMainTitle: GestureDetector(
             child: Text(
               '主题',
@@ -211,7 +211,7 @@ class _ViewModel {
   factory _ViewModel.fromStore(Store<AppState> store) {
     _updateThemeSetting(
       ThemeSetting themeSetting, {
-          persisToDisk = true,
+      persisToDisk = true,
     }) {
       store.dispatch(UpdateThemeSettingAction(
           themeSetting: themeSetting, persistToDisk: persisToDisk));

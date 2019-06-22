@@ -12,11 +12,11 @@ class GetDiscussionRequestAction {
   final GetDiscussionRequest getDiscussionRequest;
   final Completer completer;
 
-  GetDiscussionRequestAction(
-      {@required this.context,
-        @required this.getDiscussionRequest,
-        Completer completer,})
-      : this.completer = completer ?? Completer();
+  GetDiscussionRequestAction({
+    @required this.context,
+    @required this.getDiscussionRequest,
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
 }
 
 class GetDiscussionRequestSuccessAction {
@@ -34,14 +34,12 @@ class GetThreadRequestAction {
   final Completer completer;
   final Color captionTextColor;
 
-
   GetThreadRequestAction({
     @required this.request,
     @required this.captionTextColor,
     Completer completer,
   }) : this.completer = completer ?? Completer();
 }
-
 
 class GetThreadRequestSuccessAction {
   final GetThreadRequest request;

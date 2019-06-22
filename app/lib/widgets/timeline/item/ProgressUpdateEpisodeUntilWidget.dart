@@ -16,10 +16,9 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
   const ProgressUpdateEpisodeUntilWidget(
       {Key key,
       @required this.progressUpdateEpisodeUntil,
-        @required this.onDeleteFeed,
-        this.subjectNameMaxLines = 2,
-        this.verticalPadding = 4.0
-      })
+      @required this.onDeleteFeed,
+      this.subjectNameMaxLines = 2,
+      this.verticalPadding = 4.0})
       : super(key: key);
 
   @override
@@ -28,8 +27,8 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
       children: <Widget>[
         UserListTile.fromUser(
           user: progressUpdateEpisodeUntil.user,
-          trailing: buildTrailingWidget(
-              progressUpdateEpisodeUntil, onDeleteFeed),
+          trailing:
+              buildTrailingWidget(progressUpdateEpisodeUntil, onDeleteFeed),
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: verticalPadding),
@@ -48,8 +47,7 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: BangumiContent.Subject,
                 id: progressUpdateEpisodeUntil.subjectId,
-                context: context
-            ),
+                context: context),
           ),
         )
       ],

@@ -22,8 +22,7 @@ abstract class OauthState implements Built<OauthState, OauthStateBuilder> {
       _$OauthState((b) => b..update(updates));
 
   String toJson() {
-    return json.encode(
-        serializers.serializeWith(OauthState.serializer, this));
+    return json.encode(serializers.serializeWith(OauthState.serializer, this));
   }
 
   static OauthState fromJson(String jsonString) {
@@ -31,6 +30,5 @@ abstract class OauthState implements Built<OauthState, OauthStateBuilder> {
         OauthState.serializer, json.decode(jsonString));
   }
 
-  static Serializer<OauthState> get serializer =>
-      _$oauthStateSerializer;
+  static Serializer<OauthState> get serializer => _$oauthStateSerializer;
 }

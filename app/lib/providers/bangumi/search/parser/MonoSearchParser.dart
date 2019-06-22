@@ -23,8 +23,8 @@ class MonoSearchParser {
       return Optional.absent();
     }
 
-    int id = tryParseInt(
-        parseHrefId(nameElement, digitOnly: true), defaultValue: null);
+    int id = tryParseInt(parseHrefId(nameElement, digitOnly: true),
+        defaultValue: null);
 
     if (id == null) {
       return Optional.absent();
@@ -33,9 +33,7 @@ class MonoSearchParser {
     String name = nameElement.nodes[0].text;
     name = name.replaceAll(RegExp(r'\s+/\s*'), '');
 
-    String chineseName = nameElement
-        .querySelector('.tip')
-        ?.text ?? '';
+    String chineseName = nameElement.querySelector('.tip')?.text ?? '';
 
     List<String> miscInfo = [];
 
@@ -48,10 +46,10 @@ class MonoSearchParser {
       }
     }
 
-    String imageUrl = imageSrcOrFallback(
-        monoElement.querySelector('.avatar.ll'));
-    BangumiImage image =
-    BangumiImage.fromImageUrl(imageUrl, ImageSize.Grid, ImageType.MonoAvatar);
+    String imageUrl =
+        imageSrcOrFallback(monoElement.querySelector('.avatar.ll'));
+    BangumiImage image = BangumiImage.fromImageUrl(
+        imageUrl, ImageSize.Grid, ImageType.MonoAvatar);
 
     MonoSearchResult monoSearchResult = MonoSearchResult((b) => b
       ..id = id
@@ -77,7 +75,7 @@ class MonoSearchParser {
 
     for (Element monoElement in monoElements) {
       Optional<MonoSearchResult> maybeMonoSearchResult =
-      _parseMonoSearchResult(monoElement, searchType);
+          _parseMonoSearchResult(monoElement, searchType);
       if (maybeMonoSearchResult.isPresent) {
         MonoSearchResult monoSearchResult = maybeMonoSearchResult.value;
         monoSearchResults[monoSearchResult.id] = monoSearchResult;

@@ -167,7 +167,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
   _showEpisodeOptionSheet(
     BuildContext context,
     _ViewModel vm,
-      SimpleHtmlBasedEpisode episode,
+    SimpleHtmlBasedEpisode episode,
     String secondaryTitleWithEpisodeInfo,
   ) {
     final language = vm.preferredSubjectInfoLanguage;
@@ -443,8 +443,7 @@ class _ViewModel {
           preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
 
   @override
-  int get hashCode =>
-      hash2(
+  int get hashCode => hash2(
         subjectEpisodes,
         preferredSubjectInfoLanguage,
       );

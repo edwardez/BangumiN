@@ -29,7 +29,6 @@ Stream<dynamic> _persistState(
     } else {
       await sharedPreferenceService.persistAppState(store.state);
     }
-
   } catch (error, stack) {
     debugPrint(
         'Error occured during persisting AppState: $error. Stack: $stack');
@@ -46,8 +45,8 @@ Epic<AppState> _createPersistStateEpic(
   };
 }
 
-Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
-    HandleErrorAction action) async* {
+Stream<dynamic> _handleErrorEpic(
+    EpicStore<AppState> store, HandleErrorAction action) async* {
   try {
     final error = action.error;
     final context = action.context;
@@ -61,7 +60,6 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
     } else if (result == GeneralExceptionHandlerResult.Skipped) {
       return;
     }
-
 
     if (action.showErrorMessageSnackBar) {
       Scaffold.of(context).showSnackBar(SnackBar(
@@ -78,7 +76,6 @@ Epic<AppState> _createHandleErrorEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<HandleErrorAction>())
-        .concatMap(
-            (action) => _handleErrorEpic(store, action));
+        .concatMap((action) => _handleErrorEpic(store, action));
   };
 }

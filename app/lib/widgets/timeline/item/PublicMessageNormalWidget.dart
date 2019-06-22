@@ -40,7 +40,7 @@ class PublicMessageNormalWidget extends StatelessWidget {
               Icon(AdaptiveIcons.conversationIconData),
               Padding(
                 padding:
-                EdgeInsets.only(left: paddingBetweenCommentIconAndCount),
+                    EdgeInsets.only(left: paddingBetweenCommentIconAndCount),
                 child: Text(publicMessageNormal.replyCount.toString()),
               )
             ],

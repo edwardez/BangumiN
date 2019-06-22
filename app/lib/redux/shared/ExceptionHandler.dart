@@ -77,6 +77,5 @@ Future<GeneralExceptionHandlerResult> generalExceptionHandler(
         });
   }
 
-
   return GeneralExceptionHandlerResult.Unknown;
 }

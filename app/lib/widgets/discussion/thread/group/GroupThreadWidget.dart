@@ -58,17 +58,11 @@ class GroupThreadWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     vm.thread.groupName,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .caption,
+                    style: Theme.of(context).textTheme.caption,
                   ),
                   Text(
                     vm.thread.title,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .title,
+                    style: Theme.of(context).textTheme.title,
                   )
                 ],
               ),
@@ -142,9 +136,9 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              thread == other.thread;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          thread == other.thread;
 
   @override
   int get hashCode => thread.hashCode;

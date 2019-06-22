@@ -42,7 +42,7 @@ class UserProfileWidget extends StatelessWidget {
   const UserProfileWidget(
       {Key key,
       @required this.username,
-        Widget appBar,
+      Widget appBar,
       this.profileWidgetsPadding = const EdgeInsets.symmetric(
           vertical: largeOffset, horizontal: defaultPortraitHorizontalOffset)})
       : this.providedAppBar = appBar,
@@ -62,7 +62,7 @@ class UserProfileWidget extends StatelessWidget {
           vm.unMuteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
             content:
-            Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),
+                Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),
           ));
           Navigator.of(context).pop();
         },
@@ -75,7 +75,7 @@ class UserProfileWidget extends StatelessWidget {
           vm.muteUser();
           Scaffold.of(context).showSnackBar(SnackBar(
             content:
-            Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),
+                Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),
           ));
           Navigator.of(context).pop();
         },
@@ -119,8 +119,8 @@ class UserProfileWidget extends StatelessWidget {
   _buildCollectionPreviews(BuildContext context, String username,
       BuiltMap<SubjectType, CollectionsOnProfilePage> previews) {
     List<Widget> widgets = [];
-    previews.forEach((SubjectType subjectType,
-        CollectionsOnProfilePage preview) {
+    previews
+        .forEach((SubjectType subjectType, CollectionsOnProfilePage preview) {
       widgets.add(CollectionPreviewWidget(
         preview: preview,
         username: username,

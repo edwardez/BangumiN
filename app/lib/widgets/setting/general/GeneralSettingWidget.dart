@@ -26,8 +26,8 @@ class GeneralSettingWidget extends StatelessWidget {
         return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
-          safeAreaChildPadding: const EdgeInsets.only(
-              left: 0, right: 0, top: largeOffset),
+          safeAreaChildPadding:
+              const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
           appBarMainTitle: Text('通用设置'),
           nestedScrollViewBody: ListView(
             padding: EdgeInsets.zero,
@@ -35,8 +35,7 @@ class GeneralSettingWidget extends StatelessWidget {
               ListTile(
                 title: Text(
                   '语言',
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .body2
                       .copyWith(color: lightPrimaryDarkAccentColor(context)),
@@ -44,19 +43,18 @@ class GeneralSettingWidget extends StatelessWidget {
               ),
               PreferredLanguageWidget(
                 currentSubjectLanguage:
-                vm.generalSetting.preferredSubjectInfoLanguage,
+                    vm.generalSetting.preferredSubjectInfoLanguage,
                 onSubjectLanguageUpdate:
                     (PreferredSubjectInfoLanguage language) {
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                          (b) => b..preferredSubjectInfoLanguage = language));
+                      (b) => b..preferredSubjectInfoLanguage = language));
                 },
               ),
               Divider(),
               ListTile(
                 title: Text(
                   '进度',
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .body2
                       .copyWith(color: lightPrimaryDarkAccentColor(context)),
@@ -66,10 +64,9 @@ class GeneralSettingWidget extends StatelessWidget {
                 value: vm.generalSetting.expandAllProgressTiles,
                 title: Text('展开所有在看作品的话数面板'),
                 onChanged: (bool value) {
-                  final currentValue =
-                      vm.generalSetting.expandAllProgressTiles;
+                  final currentValue = vm.generalSetting.expandAllProgressTiles;
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                          (b) => b..expandAllProgressTiles = !currentValue));
+                      (b) => b..expandAllProgressTiles = !currentValue));
                 },
                 activeColor: lightPrimaryDarkAccentColor(context),
               ),

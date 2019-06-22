@@ -6,18 +6,16 @@ import 'package:redux/redux.dart';
 
 final searchReducers = combineReducers<SearchState>([
   /// Search Subject
-  TypedReducer<SearchState, SearchSuccessAction>(
-      searchSubjectSuccessReducer),
+  TypedReducer<SearchState, SearchSuccessAction>(searchSubjectSuccessReducer),
 ]);
 
-
-SearchState searchSubjectSuccessReducer(SearchState searchState,
-    SearchSuccessAction searchSubjectSuccessAction) {
+SearchState searchSubjectSuccessReducer(
+    SearchState searchState, SearchSuccessAction searchSubjectSuccessAction) {
   SearchRequest searchRequest = searchSubjectSuccessAction.searchRequest;
-  BangumiGeneralSearchResponse responseToUpdate = searchState
-      .results[searchRequest];
-  BangumiGeneralSearchResponse newResponse = searchSubjectSuccessAction
-      .searchResponse;
+  BangumiGeneralSearchResponse responseToUpdate =
+      searchState.results[searchRequest];
+  BangumiGeneralSearchResponse newResponse =
+      searchSubjectSuccessAction.searchResponse;
   if (responseToUpdate == null) {
     responseToUpdate = newResponse;
   } else {
@@ -26,7 +24,7 @@ SearchState searchSubjectSuccessReducer(SearchState searchState,
       ..results.addAll(newResponse.results.asMap()));
   }
 
-  return searchState.rebuild((b) => b
-    ..results.addAll({searchRequest: responseToUpdate}),
+  return searchState.rebuild(
+    (b) => b..results.addAll({searchRequest: responseToUpdate}),
   );
 }

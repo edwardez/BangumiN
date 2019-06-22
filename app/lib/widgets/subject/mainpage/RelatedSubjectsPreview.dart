@@ -10,7 +10,9 @@ class RelatedSubjectsPreview extends StatelessWidget {
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   const RelatedSubjectsPreview(
-      {Key key, @required this.subject, @required this.preferredSubjectInfoLanguage})
+      {Key key,
+      @required this.subject,
+      @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   @override

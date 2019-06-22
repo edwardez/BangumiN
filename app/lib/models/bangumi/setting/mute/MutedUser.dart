@@ -33,8 +33,7 @@ abstract class MutedUser implements Built<MutedUser, MutedUserBuilder> {
       ..userId = bangumiUserSmall.id
       ..nickname = bangumiUserSmall.nickname
       ..isImportedFromBangumi = false
-      ..userAvatar
-          .replace(
+      ..userAvatar.replace(
           BangumiImage.fromBangumiUserAvatar(bangumiUserSmall.avatar)));
   }
 

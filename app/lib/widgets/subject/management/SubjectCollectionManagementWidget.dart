@@ -178,8 +178,9 @@ class _SubjectCollectionManagementWidgetState
   }
 
   String _buildErrorMessages(
-      final Map<SubjectCollectionError, String> formErrors,
-      subjectType,) {
+    final Map<SubjectCollectionError, String> formErrors,
+    subjectType,
+  ) {
     assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
@@ -208,9 +209,11 @@ class _SubjectCollectionManagementWidgetState
     return errorMessages.join('\n');
   }
 
-  void _showDialog(BuildContext context,
-      final Map<SubjectCollectionError, String> formErrors,
-      SubjectType subjectType,) {
+  void _showDialog(
+    BuildContext context,
+    final Map<SubjectCollectionError, String> formErrors,
+    SubjectType subjectType,
+  ) {
     // flutter defined function
     showDialog(
       context: context,
@@ -259,9 +262,7 @@ class _SubjectCollectionManagementWidgetState
               .rebuild((b) => b..status.update((b) => b..type = status));
         });
       },
-      isDarkTheme: Theme
-          .of(context)
-          .brightness == Brightness.dark,
+      isDarkTheme: Theme.of(context).brightness == Brightness.dark,
     );
   }
 
@@ -352,13 +353,12 @@ class _SubjectCollectionManagementWidgetState
         textEditingController: episodeEditController,
         subjectId: subject.id,
         totalEpisodesOrVolumeCount:
-        subject.subjectProgressPreview.totalEpisodesCount,
+            subject.subjectProgressPreview.totalEpisodesCount,
         pageStorageKeyPrefix: pageStorageKeyPrefix,
         onSaved: (episodesCount) {
           if (localSubjectCollectionInfo.completedEpisodesCount != null) {
             localSubjectCollectionInfo =
-                localSubjectCollectionInfo.rebuild((b) =>
-                b
+                localSubjectCollectionInfo.rebuild((b) => b
                   ..completedEpisodesCount = tryParseInt(
                     episodesCount,
                     defaultValue: 0,
@@ -375,13 +375,12 @@ class _SubjectCollectionManagementWidgetState
           textEditingController: volumeEditController,
           subjectId: subject.id,
           totalEpisodesOrVolumeCount:
-          subject.subjectProgressPreview.totalVolumesCount,
+              subject.subjectProgressPreview.totalVolumesCount,
           pageStorageKeyPrefix: pageStorageKeyPrefix,
           onSaved: (volumesCount) {
             if (localSubjectCollectionInfo.completedEpisodesCount != null) {
               localSubjectCollectionInfo =
-                  localSubjectCollectionInfo.rebuild((b) =>
-                  b
+                  localSubjectCollectionInfo.rebuild((b) => b
                     ..completedVolumesCount = tryParseInt(
                       volumesCount,
                       defaultValue: 0,
@@ -401,7 +400,8 @@ class _SubjectCollectionManagementWidgetState
   /// Initializes required data.
   ///
   /// Returns a [Future] that indicates loading status of required data.
-  Future<void> _initData(int subjectId,
+  Future<void> _initData(
+      int subjectId,
       BangumiSubject subject,
       SubjectCollectionInfo collectionInfo,
       GetCollectionInfo getCollectionInfo) async {
@@ -443,12 +443,12 @@ class _SubjectCollectionManagementWidgetState
       }
 
       episodeEditController.text = loadedSubject
-          .subjectProgressPreview.completedEpisodesCount
-          ?.toString() ??
+              .subjectProgressPreview.completedEpisodesCount
+              ?.toString() ??
           '0';
       volumeEditController.text = loadedSubject
-          .subjectProgressPreview.completedVolumesCount
-          ?.toString() ??
+              .subjectProgressPreview.completedVolumesCount
+              ?.toString() ??
           '0';
     }
   }
@@ -484,8 +484,8 @@ class _SubjectCollectionManagementWidgetState
       onTap: _canSubmitForm
           ? null
           : () {
-        _showDialog(context, formErrors, vm.subject.type);
-      },
+              _showDialog(context, formErrors, vm.subject.type);
+            },
     );
   }
 
@@ -555,7 +555,7 @@ class _SubjectCollectionManagementWidgetState
           appBar: AppBar(
             title: vm.subject != null
                 ? Text(preferredNameFromSubjectBase(
-                vm.subject, vm.preferredSubjectInfoLanguage))
+                    vm.subject, vm.preferredSubjectInfoLanguage))
                 : Text('-'),
             actions: <Widget>[
               Builder(
@@ -606,13 +606,13 @@ class _ViewModel {
   final GetCollectionInfo getCollectionInfo;
   final Future<void> Function(BangumiSubject subject) deleteCollection;
   final Function(int subjectId, SubjectCollectionInfo collectionUpdateRequest)
-  collectionInfoUpdateRequest;
+      collectionInfoUpdateRequest;
 
   final void Function(BuildContext context, Object error) handleError;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
-    Future<void> _collectionUpdateRequest(int subjectId,
-        SubjectCollectionInfo collectionUpdateRequest) {
+    Future<void> _collectionUpdateRequest(
+        int subjectId, SubjectCollectionInfo collectionUpdateRequest) {
       final action = UpdateCollectionRequestAction(
           subjectId: subjectId,
           collectionUpdateRequest: collectionUpdateRequest);
@@ -638,7 +638,7 @@ class _ViewModel {
       deleteCollection: _deleteCollection,
       subjectCollectionInfo: store.state.subjectState.collections[subjectId],
       preferredSubjectInfoLanguage:
-      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
+          store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
       subject: _retrieveSubjectInStore(store, subjectId),
       handleError: (BuildContext context, Object error) {
         store.dispatch(HandleErrorAction(error: error, context: context));
@@ -659,12 +659,11 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              subjectCollectionInfo == other.subjectCollectionInfo &&
-              preferredSubjectInfoLanguage ==
-                  other.preferredSubjectInfoLanguage &&
-              subject == other.subject;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          subjectCollectionInfo == other.subjectCollectionInfo &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage &&
+          subject == other.subject;
 
   @override
   int get hashCode =>

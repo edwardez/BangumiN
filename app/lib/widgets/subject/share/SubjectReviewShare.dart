@@ -68,9 +68,8 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
       ..metaInfo.update((metaInfoBuilder) => metaInfoBuilder
         ..nickName = 'Bangumi用户'
         ..username = ''
-        ..avatar.replace(
-            BangumiImage.useSameImageUrlForAll(
-                bangumiAnonymousUserMediumAvatar))));
+        ..avatar.replace(BangumiImage.useSameImageUrlForAll(
+            bangumiAnonymousUserMediumAvatar))));
   }
 
   /// Checks and requests permission on Android
@@ -79,14 +78,14 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
       return PermissionStatus.unknown;
     }
 
-    var status = await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.storage);
+    var status = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
     if (status != PermissionStatus.granted) {
       await PermissionHandler().requestPermissions([PermissionGroup.storage]);
     }
 
-    return await PermissionHandler().checkPermissionStatus(
-        PermissionGroup.storage);
+    return await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
   }
 
   /// Currently this calculation might block ui thread
@@ -186,7 +185,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
               }
 
               Uint8List uint8List =
-              await _shareWidgetKey.currentState.capturePng();
+                  await _shareWidgetKey.currentState.capturePng();
               final result = await ImageGallerySaver.save(uint8List);
               if (result) {
                 Scaffold.of(context).showSnackBar(SnackBar(

@@ -24,9 +24,9 @@ class DiscussionHome extends StatefulWidget {
 
 class _DiscussionHomeState extends State<DiscussionHome> {
   final List<DiscussionBody> discussionBodyPages =
-  List(GetDiscussionRequest.validGetDiscussionRequests.length);
+      List(GetDiscussionRequest.validGetDiscussionRequests.length);
   final List<DiscussionBodyWidget> pages =
-  List(GetDiscussionRequest.validGetDiscussionRequests.length);
+      List(GetDiscussionRequest.validGetDiscussionRequests.length);
 
   PageController pageController;
 
@@ -36,8 +36,8 @@ class _DiscussionHomeState extends State<DiscussionHome> {
     return pageController?.page?.round();
   }
 
-  DiscussionBodyWidget _buildDiscussionBodyWidget(GetDiscussionRequest request,
-      OneMuninBar oneMuninBar) {
+  DiscussionBodyWidget _buildDiscussionBodyWidget(
+      GetDiscussionRequest request, OneMuninBar oneMuninBar) {
     return DiscussionBodyWidget(
       key: PageStorageKey<GetDiscussionRequest>(request),
       oneMuninBar: oneMuninBar,
@@ -53,12 +53,12 @@ class _DiscussionHomeState extends State<DiscussionHome> {
 
           for (DiscussionBody page in discussionBodyPages) {
             options.add(ListTile(
-              title: Text(
-                  page.getDiscussionRequest.discussionFilter.chineseName),
+              title:
+                  Text(page.getDiscussionRequest.discussionFilter.chineseName),
               onTap: () {
                 if (currentIndex != page.getDiscussionRequest.pageIndex) {
-                  pageController.jumpToPage(
-                      page.getDiscussionRequest.pageIndex);
+                  pageController
+                      .jumpToPage(page.getDiscussionRequest.pageIndex);
                 }
                 Navigator.pop(context);
               },
@@ -81,7 +81,7 @@ class _DiscussionHomeState extends State<DiscussionHome> {
         initialPage: widget.preferredDiscussionLaunchPage.pageIndex);
 
     for (GetDiscussionRequest request
-    in GetDiscussionRequest.validGetDiscussionRequests) {
+        in GetDiscussionRequest.validGetDiscussionRequests) {
       /// Maybe we can initialize only one app bar
       OneMuninBar oneMuninBar = OneMuninBar(
         title: FlatButton(

@@ -20,13 +20,12 @@ List<Middleware<AppState>> createOauthMiddleware(
     SharedPreferenceService sharedPreferenceService) {
   final loginPage = _createLoginPage();
 
-  final oauthRequest =
-  _createOAuthRequest(
+  final oauthRequest = _createOAuthRequest(
       oauthClient, cookieClient, bangumiUserService, sharedPreferenceService);
   final oauthCancel = _createOAuthCancel(oauthClient, cookieClient);
 
   final logoutRequest =
-  _createLogoutRequest(oauthClient, cookieClient, sharedPreferenceService);
+      _createLogoutRequest(oauthClient, cookieClient, sharedPreferenceService);
 
   return [
     TypedMiddleware<AppState, LoginPage>(loginPage),
@@ -47,10 +46,12 @@ Middleware<AppState> _createLoginPage() {
 }
 
 // TODO: refactor this messy middleware
-Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
-    BangumiCookieService cookieService,
-    BangumiUserService bangumiUserService,
-    SharedPreferenceService sharedPreferenceService,) {
+Middleware<AppState> _createOAuthRequest(
+  BangumiOauthService oauthService,
+  BangumiCookieService cookieService,
+  BangumiUserService bangumiUserService,
+  SharedPreferenceService sharedPreferenceService,
+) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     assert(action.context != null);
 
@@ -68,12 +69,11 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
       await oauthService.initializeAuthentication();
       int userId = await oauthService.verifyUser();
       BangumiUserSmall userInfo =
-      await bangumiUserService.getUserBasicInfo(userId.toString());
+          await bangumiUserService.getUserBasicInfo(userId.toString());
 
       oauthService.client.currentUser = userInfo;
 
-      AppState updatedAppState = store.state.rebuild((b) =>
-      b
+      AppState updatedAppState = store.state.rebuild((b) => b
         ..isAuthenticated = true
         ..currentAuthenticatedUserBasicInfo.replace(userInfo));
       await Future.wait([
@@ -82,24 +82,16 @@ Middleware<AppState> _createOAuthRequest(BangumiOauthService oauthService,
         sharedPreferenceService.persistAppState(updatedAppState)
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
-      Application.router.navigateTo(
-          action.context,
-          Routes.homeRoute,
-          transition: TransitionType.native,
-          clearStack: true
-      );
+      Application.router.navigateTo(action.context, Routes.homeRoute,
+          transition: TransitionType.native, clearStack: true);
     } catch (error, stack) {
       final maxErrorMessageMaxLength = 200;
       final errorMessage = error.toString();
 
       print(errorMessage);
       print(stack);
-      Application.router.navigateTo(
-          action.context,
-          Routes.loginRoute,
-          transition: TransitionType.native,
-          clearStack: true
-      );
+      Application.router.navigateTo(action.context, Routes.loginRoute,
+          transition: TransitionType.native, clearStack: true);
       store.dispatch(OAuthLoginFailure(
           action.context,
           error.toString().substring(
@@ -119,7 +111,8 @@ Middleware<AppState> _createOAuthCancel(BangumiOauthService oauthClient,
   };
 }
 
-Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
+Middleware<AppState> _createLogoutRequest(
+    BangumiOauthService oauthClient,
     BangumiCookieService cookieService,
     SharedPreferenceService sharedPreferenceService) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
@@ -131,12 +124,8 @@ Middleware<AppState> _createLogoutRequest(BangumiOauthService oauthClient,
       sharedPreferenceService.deleteAppState(),
     ]);
     store.dispatch(LogoutSuccess(action.context));
-    Application.router.navigateTo(
-        action.context,
-        Routes.loginRoute,
-        transition: TransitionType.native,
-        clearStack: true
-    );
+    Application.router.navigateTo(action.context, Routes.loginRoute,
+        transition: TransitionType.native, clearStack: true);
     next(action);
   };
 }

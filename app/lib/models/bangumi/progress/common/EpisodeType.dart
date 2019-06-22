@@ -51,8 +51,8 @@ class EpisodeType extends EnumClass {
       case EpisodeType.Ending:
         return 'ED';
       case EpisodeType.Trailer:
-      // Note: [ProgressParser.guessEpisodeTypeByChineseName] depends on this
-      // name.
+        // Note: [ProgressParser.guessEpisodeTypeByChineseName] depends on this
+        // name.
         return '预告$trailerChineseNameSplitter宣传$trailerChineseNameSplitter广告';
       case EpisodeType.MAD:
         return 'MAD';
@@ -61,7 +61,7 @@ class EpisodeType extends EnumClass {
       case EpisodeType.Unknown:
       default:
         assert(this == EpisodeType.Unknown,
-        '$this dpesn\'t have a valid chinese name.');
+            '$this dpesn\'t have a valid chinese name.');
         return '未知';
     }
   }

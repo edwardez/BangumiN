@@ -13,8 +13,8 @@ final RegExp secondsRegexZhHans = RegExp(r'(\d+)秒');
 /// matches date like 2019-4-8
 final RegExp unnormalizedDateMatcher = RegExp(r'-(\d)(?=[-\s])');
 
-final RegExp cssBackgroundImageGroupRegex = RegExp(
-    r"""background-image:url\('([^']*)'\)""");
+final RegExp cssBackgroundImageGroupRegex =
+    RegExp(r"""background-image:url\('([^']*)'\)""");
 final RegExp validBangumiImageTypeRegex = RegExp(r'\.jpg|\.png');
 final RegExp endsWithWordsRegex = RegExp(r'\w+$');
 final RegExp endsWithAlphanumericGroupRegex = RegExp(r'([a-zA-Z0-9]+)$');
@@ -36,7 +36,7 @@ final RegExp scoreRegex = RegExp(r's?stars(\d+)');
 
 final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');
 
-final RegExp blockedUserIdGroupRegex = RegExp(
-    r'privacy\?ignore_reset=(\d+)&gh=');
+final RegExp blockedUserIdGroupRegex =
+    RegExp(r'privacy\?ignore_reset=(\d+)&gh=');
 
 final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');

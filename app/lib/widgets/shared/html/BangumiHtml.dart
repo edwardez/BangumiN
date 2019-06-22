@@ -29,13 +29,13 @@ class BangumiHtml extends StatelessWidget {
             e.attributes['style'].startsWith('background-color:#555')) {
           return lazySet(meta,
               buildOp: BuildOp(onWidgets: (NodeMetadata meta, _) {
-                return [
-                  SpoilerText(
-                    text: meta.domElement.text,
-                    showSpoiler: showSpoiler,
-                  )
-                ];
-              }));
+            return [
+              SpoilerText(
+                text: meta.domElement.text,
+                showSpoiler: showSpoiler,
+              )
+            ];
+          }));
         }
 
         return meta;

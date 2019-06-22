@@ -14,7 +14,8 @@ enum ImageType { UserAvatar, MonoAvatar, SubjectCover, GroupIcon }
 
 abstract class BangumiImage
     implements Built<BangumiImage, BangumiImageBuilder> {
-  static const String defaultCoverImage = 'https://bgm.tv/img/no_icon_subject.png';
+  static const String defaultCoverImage =
+      'https://bgm.tv/img/no_icon_subject.png';
 
   @BuiltValueField(wireName: 'large')
   String get large;
@@ -93,14 +94,12 @@ abstract class BangumiImage
       }
     }
 
-
     String largeImage = imageUrl.replaceFirst(replacePattern, '/l/');
 
     String commonImage;
     if (imageType == ImageType.UserAvatar ||
         imageType == ImageType.MonoAvatar ||
-        imageType == ImageType.GroupIcon
-    ) {
+        imageType == ImageType.GroupIcon) {
       commonImage = largeImage;
     } else {
       commonImage = imageUrl.replaceFirst(replacePattern, '/c/');
@@ -116,8 +115,7 @@ abstract class BangumiImage
       gridImage = imageUrl.replaceFirst(replacePattern, '/g/');
     }
 
-    return BangumiImage((b) =>
-    b
+    return BangumiImage((b) => b
       ..large = largeImage
       ..common = commonImage
       ..medium = mediumImage
@@ -125,9 +123,8 @@ abstract class BangumiImage
       ..grid = gridImage);
   }
 
-  factory BangumiImage.fromBangumiUserAvatar(BangumiUserAvatar avatar){
-    return BangumiImage((b) =>
-    b
+  factory BangumiImage.fromBangumiUserAvatar(BangumiUserAvatar avatar) {
+    return BangumiImage((b) => b
       ..large = avatar.large
       ..common = avatar.large
       ..medium = avatar.medium
@@ -140,8 +137,7 @@ abstract class BangumiImage
       imageUrl = defaultCoverImage;
     }
 
-    return BangumiImage((b) =>
-    b
+    return BangumiImage((b) => b
       ..large = imageUrl
       ..common = imageUrl
       ..medium = imageUrl
@@ -150,8 +146,8 @@ abstract class BangumiImage
   }
 
   String toJson() {
-    return json.encode(
-        serializers.serializeWith(BangumiImage.serializer, this));
+    return json
+        .encode(serializers.serializeWith(BangumiImage.serializer, this));
   }
 
   static BangumiImage fromJson(String jsonString) {

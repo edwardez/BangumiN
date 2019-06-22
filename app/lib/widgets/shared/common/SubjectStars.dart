@@ -22,8 +22,8 @@ class SubjectStars extends StatelessWidget {
   }) : super(key: key);
 
   /// score: min 0.0, max 10.0
-  List<Widget> _buildStarIconsWith5StarMax(double score,
-      double textScaleFactor) {
+  List<Widget> _buildStarIconsWith5StarMax(
+      double score, double textScaleFactor) {
     assert(score <= 10.0 && score >= 0.0);
 
     const maxStars = 5;
@@ -35,13 +35,11 @@ class SubjectStars extends StatelessWidget {
 
     return []
       ..addAll(List.generate(numOfFullStars,
-              (index) => Icon(
-              Icons.star, size: scaledStarSize, color: starColor)))..addAll(
-          List.generate(
-              numOfHalfStars,
-                  (index) =>
-                  Icon(
-                      Icons.star_half, size: scaledStarSize, color: starColor)))
+          (index) => Icon(Icons.star, size: scaledStarSize, color: starColor)))
+      ..addAll(List.generate(
+          numOfHalfStars,
+          (index) =>
+              Icon(Icons.star_half, size: scaledStarSize, color: starColor)))
       ..addAll(List.generate(
           restOfStars,
           (index) =>
@@ -54,10 +52,9 @@ class SubjectStars extends StatelessWidget {
       return Container();
     }
 
-    final textScaleFactor =
-    scaleStarByTextScaleFactor ? MediaQuery
-        .of(context)
-        .textScaleFactor : 1.0;
+    final textScaleFactor = scaleStarByTextScaleFactor
+        ? MediaQuery.of(context).textScaleFactor
+        : 1.0;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

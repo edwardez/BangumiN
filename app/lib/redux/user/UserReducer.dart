@@ -19,49 +19,44 @@ UserState fetchUserPreviewSuccessReducer(UserState userState,
   UserProfile profile = fetchUserPreviewSuccessAction.profile;
   String username = profile.basicInfo.username;
   return userState.rebuild(
-        (b) => b..profiles.addAll({username: profile}),
+    (b) => b..profiles.addAll({username: profile}),
   );
 }
 
-UserState listUserCollectionsSuccessReducer(UserState userState,
-    ListUserCollectionsSuccessAction action) {
+UserState listUserCollectionsSuccessReducer(
+    UserState userState, ListUserCollectionsSuccessAction action) {
   if (!action.parsedCollections.isRequestedPageNumberValid) {
     return userState;
   }
 
   ListUserCollectionsResponse responseInStore =
-  userState.collections[action.request];
+      userState.collections[action.request];
   if (responseInStore != null) {
     responseInStore = responseInStore.rebuild(
-          (b) =>
-      b
+      (b) => b
         ..listUserCollectionsRequest.replace(action.request)
         ..collections.addAll(action.parsedCollections.collections)
-        ..userCollectionTags.replace(
-            BuiltMap<String, UserCollectionTag>.of(
-                action.parsedCollections.tags))
+        ..userCollectionTags.replace(BuiltMap<String, UserCollectionTag>.of(
+            action.parsedCollections.tags))
         ..canLoadMoreItems = action.parsedCollections.canLoadMoreItems ?? true
         ..requestedUntilPageNumber += 1,
     );
   } else {
     responseInStore = ListUserCollectionsResponse(
-          (b) =>
-      b
+      (b) => b
         ..listUserCollectionsRequest.replace(action.request)
         ..collections.replace(
           BuiltMap<int, CollectionOnUserList>.of(
               action.parsedCollections.collections),
         )
-        ..userCollectionTags.replace(
-            BuiltMap<String, UserCollectionTag>.of(
-                action.parsedCollections.tags))
+        ..userCollectionTags.replace(BuiltMap<String, UserCollectionTag>.of(
+            action.parsedCollections.tags))
         ..canLoadMoreItems = action.parsedCollections.canLoadMoreItems ?? true
         ..requestedUntilPageNumber = 1,
     );
   }
 
-  return userState.rebuild((b) =>
-  b
+  return userState.rebuild((b) => b
     ..collections.addAll(
       {action.request: responseInStore},
     ));

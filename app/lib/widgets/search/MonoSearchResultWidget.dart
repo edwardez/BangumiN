@@ -21,10 +21,7 @@ class MonoSearchResultWidget extends StatelessWidget {
     const titleMaxLines = 2;
     const subtitleMaxLines = 1;
     const miscMaxLines = 1;
-    TextStyle captionStyle = Theme
-        .of(context)
-        .textTheme
-        .caption;
+    TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
     subInfoRows.add(Text(
       monoSearchResult.name ?? '',
@@ -42,10 +39,7 @@ class MonoSearchResultWidget extends StatelessWidget {
 
     subInfoRows.add(Text(
       monoSearchResult.miscInfo.join(' / '),
-      style: Theme
-          .of(context)
-          .textTheme
-          .caption,
+      style: Theme.of(context).textTheme.caption,
       maxLines: miscMaxLines,
       overflow: TextOverflow.ellipsis,
     ));

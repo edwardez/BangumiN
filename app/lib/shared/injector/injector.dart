@@ -26,7 +26,7 @@ Future<void> injector(GetIt getIt) async {
   Map<String, String> credentials = await secureStorage.readAll();
 
   String serializedBangumiCookieCredentials =
-  credentials['bangumiCookieCredentials'];
+      credentials['bangumiCookieCredentials'];
   BangumiCookieCredentials bangumiCookieCredential;
 
   if (serializedBangumiCookieCredentials != null) {
@@ -38,7 +38,7 @@ Future<void> injector(GetIt getIt) async {
   getIt.registerSingleton<CookieJar>(bangumiCookieJar);
 
   SecureStorageService secureStorageService =
-  SecureStorageService(secureStorage: secureStorage);
+      SecureStorageService(secureStorage: secureStorage);
   SharedPreferenceService sharedPreferenceService = SharedPreferenceService(
       sharedPreferences: await SharedPreferences.getInstance());
 
@@ -49,7 +49,7 @@ Future<void> injector(GetIt getIt) async {
           bangumiCookieCredential, bangumiCookieJar));
 
   final String serializedBangumiOauthCredentials =
-  credentials['bangumiOauthCredentials'];
+      credentials['bangumiOauthCredentials'];
 
   OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
   final BangumiOauthService _bangumiOauthService = BangumiOauthService(
@@ -71,7 +71,7 @@ Future<void> injector(GetIt getIt) async {
   getIt.registerSingleton<BangumiUserService>(bangumiUserService);
 
   final bangumiTimelineService =
-  BangumiTimelineService(cookieClient: _bangumiCookieService);
+      BangumiTimelineService(cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiTimelineService>(bangumiTimelineService);
 
   final bangumiSubjectService = BangumiSubjectService(
@@ -83,7 +83,7 @@ Future<void> injector(GetIt getIt) async {
   getIt.registerSingleton<BangumiSearchService>(bangumiSearchService);
 
   final bangumiDiscussionService =
-  BangumiDiscussionService(cookieClient: _bangumiCookieService);
+      BangumiDiscussionService(cookieClient: _bangumiCookieService);
   getIt.registerSingleton<BangumiDiscussionService>(bangumiDiscussionService);
 
   final bangumiProgressService = BangumiProgressService(
@@ -102,7 +102,7 @@ Dio _createDioForBangumiCookieService(
   Map<String, dynamic> headers = {
     HttpHeaders.hostHeader: Application.environmentValue.bangumiNonCdnHost,
     HttpHeaders.refererHeader:
-    'https://${Application.environmentValue.bangumiNonCdnHost}/',
+        'https://${Application.environmentValue.bangumiNonCdnHost}/',
   };
 
   // Attaches user agent and cookie to dio  if these are not null

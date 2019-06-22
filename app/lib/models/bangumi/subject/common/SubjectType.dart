@@ -6,7 +6,6 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'SubjectType.g.dart';
 
 class SubjectType extends EnumClass {
-
   static const SubjectType Unknown = _$All;
 
   @BuiltValueEnumConst(wireName: '1')
@@ -151,7 +150,6 @@ class SubjectType extends EnumClass {
     }
   }
 
-
   const SubjectType._(String name) : super(name);
 
   static BuiltSet<SubjectType> get values => _$values;
@@ -161,7 +159,6 @@ class SubjectType extends EnumClass {
   static Serializer<SubjectType> get serializer => _$subjectTypeSerializer;
 
   static SubjectType fromWiredName(String wiredName) {
-    return serializers.deserializeWith(
-        SubjectType.serializer, wiredName);
+    return serializers.deserializeWith(SubjectType.serializer, wiredName);
   }
 }

@@ -39,10 +39,10 @@ final loginRouteHandler = Handler(
 
 final homeRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MuninHomePage(
-        generalSetting: GeneralSetting(),
-      );
-    });
+  return MuninHomePage(
+    generalSetting: GeneralSetting(),
+  );
+});
 
 final bangumiOauthRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -51,8 +51,8 @@ final bangumiOauthRouteHandler = Handler(
 
 final subjectMainPageRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
-      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+  String subjectIdStr = params[RoutesComponents.subjectId]?.first;
+  int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
   return Scaffold(
     body: SubjectWidget(
       subjectId: subjectId,
@@ -62,202 +62,197 @@ final subjectMainPageRouteHandler = Handler(
 
 final subjectDetailInfoRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
-      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
-      return Scaffold(
-        body: SubjectDetailInfoWidget(
-          subjectId: subjectId,
-        ),
-      );
-    });
+  String subjectIdStr = params[RoutesComponents.subjectId]?.first;
+  int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+  return Scaffold(
+    body: SubjectDetailInfoWidget(
+      subjectId: subjectId,
+    ),
+  );
+});
 
 final subjectCollectionManagementRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
-      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
-      return SubjectCollectionManagementWidget(
-        subjectId: subjectId,
-      );
-    });
+  String subjectIdStr = params[RoutesComponents.subjectId]?.first;
+  int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+  return SubjectCollectionManagementWidget(
+    subjectId: subjectId,
+  );
+});
 
 final subjectEpisodesRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
-      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
-      return Scaffold(
-        body: SubjectEpisodesWidget(
-          subjectId: subjectId,
-        ),
-      );
-    });
+  String subjectIdStr = params[RoutesComponents.subjectId]?.first;
+  int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+  return Scaffold(
+    body: SubjectEpisodesWidget(
+      subjectId: subjectId,
+    ),
+  );
+});
 
 final subjectReviewsRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      bool showOnlyFriends = tryParseBool(
-          params[RoutesQueryParameter.subjectReviewsFriendOnly]?.first);
+  bool showOnlyFriends = tryParseBool(
+      params[RoutesQueryParameter.subjectReviewsFriendOnly]?.first);
 
-      SubjectReviewMainFilter mainFilter;
-      String mainFilterStr =
-          params[RoutesQueryParameter.subjectReviewsMainFilter]?.first;
-      if (mainFilterStr != null) {
-        mainFilter = SubjectReviewMainFilter.fromWiredName(mainFilterStr);
-      }
+  SubjectReviewMainFilter mainFilter;
+  String mainFilterStr =
+      params[RoutesQueryParameter.subjectReviewsMainFilter]?.first;
+  if (mainFilterStr != null) {
+    mainFilter = SubjectReviewMainFilter.fromWiredName(mainFilterStr);
+  }
 
-      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
-      int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
+  String subjectIdStr = params[RoutesComponents.subjectId]?.first;
+  int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
 
-      return Scaffold(
-        body: SubjectReviewsWidget(
-          subjectId: subjectId,
-          showOnlyFriends: showOnlyFriends,
-          mainFilter: mainFilter,
-        ),
-      );
-    });
+  return Scaffold(
+    body: SubjectReviewsWidget(
+      subjectId: subjectId,
+      showOnlyFriends: showOnlyFriends,
+      mainFilter: mainFilter,
+    ),
+  );
+});
 
 /// User
 final userProfileRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String username = params[RoutesComponents.username]?.first;
+  String username = params[RoutesComponents.username]?.first;
 
-      return Scaffold(
-        body: UserProfileWidget(
-          username: username,
-        ),
-      );
-    });
+  return Scaffold(
+    body: UserProfileWidget(
+      username: username,
+    ),
+  );
+});
 
 final composeTimelineMessageRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return ComposeTimelineMessage();
-    });
+  return ComposeTimelineMessage();
+});
 
 final userCollectionsListRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      final username = params[RoutesComponents.username].first;
+  final username = params[RoutesComponents.username].first;
 
-      final subjectType = SubjectType.getTypeByHttpWiredName(
-          params[RoutesComponents.subjectType].first);
+  final subjectType = SubjectType.getTypeByHttpWiredName(
+      params[RoutesComponents.subjectType].first);
 
-      final collectionStatus = CollectionStatus.fromWiredName(
-          params[RoutesComponents.collectionStatus].first);
+  final collectionStatus = CollectionStatus.fromWiredName(
+      params[RoutesComponents.collectionStatus].first);
 
-      return Scaffold(
-        body: UserCollectionsListWidget(
-          request: ListUserCollectionsRequest(
-                (b) =>
-            b
-              ..subjectType = subjectType
-              ..username = username
-              ..orderCollectionBy = OrderCollectionBy.CollectedTime
-              ..collectionStatus = collectionStatus,
-          ),
-        ),
-      );
-    });
+  return Scaffold(
+    body: UserCollectionsListWidget(
+      request: ListUserCollectionsRequest(
+        (b) => b
+          ..subjectType = subjectType
+          ..username = username
+          ..orderCollectionBy = OrderCollectionBy.CollectedTime
+          ..collectionStatus = collectionStatus,
+      ),
+    ),
+  );
+});
 
 /// Discussion
 final groupThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesComponents.threadId]?.first;
-      int threadId = tryParseInt(threadIdStr, defaultValue: null);
-      assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest((b) =>
-      b
-        ..threadType = ThreadType.Group
-        ..id = threadId);
-      return Scaffold(
-        body: GroupThreadWidget(
-          request: request,
-        ),
-      );
-    });
+  String threadIdStr = params[RoutesComponents.threadId]?.first;
+  int threadId = tryParseInt(threadIdStr, defaultValue: null);
+  assert(threadId != null);
+  GetThreadRequest request = GetThreadRequest((b) => b
+    ..threadType = ThreadType.Group
+    ..id = threadId);
+  return Scaffold(
+    body: GroupThreadWidget(
+      request: request,
+    ),
+  );
+});
 
 final episodeThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesComponents.threadId]?.first;
-      int threadId = tryParseInt(threadIdStr, defaultValue: null);
-      assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest((b) =>
-      b
-        ..threadType = ThreadType.Episode
-        ..id = threadId);
-      return Scaffold(
-        body: EpisodeThreadWidget(
-          request: request,
-        ),
-      );
-    });
+  String threadIdStr = params[RoutesComponents.threadId]?.first;
+  int threadId = tryParseInt(threadIdStr, defaultValue: null);
+  assert(threadId != null);
+  GetThreadRequest request = GetThreadRequest((b) => b
+    ..threadType = ThreadType.Episode
+    ..id = threadId);
+  return Scaffold(
+    body: EpisodeThreadWidget(
+      request: request,
+    ),
+  );
+});
 
 final subjectTopicThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesComponents.threadId]?.first;
-      int threadId = tryParseInt(threadIdStr, defaultValue: null);
-      assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest((b) =>
-      b
-        ..threadType = ThreadType.SubjectTopic
-        ..id = threadId);
-      return Scaffold(
-        body: SubjectTopicThreadWidget(
-          request: request,
-        ),
-      );
-    });
+  String threadIdStr = params[RoutesComponents.threadId]?.first;
+  int threadId = tryParseInt(threadIdStr, defaultValue: null);
+  assert(threadId != null);
+  GetThreadRequest request = GetThreadRequest((b) => b
+    ..threadType = ThreadType.SubjectTopic
+    ..id = threadId);
+  return Scaffold(
+    body: SubjectTopicThreadWidget(
+      request: request,
+    ),
+  );
+});
 
 final blogThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesComponents.threadId]?.first;
-      int threadId = tryParseInt(threadIdStr, defaultValue: null);
-      assert(threadId != null);
-      GetThreadRequest request = GetThreadRequest((b) =>
-      b
-        ..threadType = ThreadType.Blog
-        ..id = threadId);
-      return Scaffold(
-        body: BlogThreadWidget(
-          request: request,
-        ),
-      );
-    });
+  String threadIdStr = params[RoutesComponents.threadId]?.first;
+  int threadId = tryParseInt(threadIdStr, defaultValue: null);
+  assert(threadId != null);
+  GetThreadRequest request = GetThreadRequest((b) => b
+    ..threadType = ThreadType.Blog
+    ..id = threadId);
+  return Scaffold(
+    body: BlogThreadWidget(
+      request: request,
+    ),
+  );
+});
 
 /// Setting
 final settingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Scaffold(
-        body: SettingHome(),
-      );
-    });
+  return Scaffold(
+    body: SettingHome(),
+  );
+});
 
 final generalSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Scaffold(
-        body: GeneralSettingWidget(),
-      );
-    });
+  return Scaffold(
+    body: GeneralSettingWidget(),
+  );
+});
 
 final themeSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Scaffold(
-        body: ThemeSettingWidget(),
-      );
-    });
+  return Scaffold(
+    body: ThemeSettingWidget(),
+  );
+});
 
 final privacySettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Scaffold(
-        body: PrivacySettingWidget(),
-      );
-    });
+  return Scaffold(
+    body: PrivacySettingWidget(),
+  );
+});
 
 final muteSettingRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Scaffold(
-        body: MuteSettingWidget(),
-      );
-    });
+  return Scaffold(
+    body: MuteSettingWidget(),
+  );
+});
 
 final muteSettingBatchImportUsersRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return ImportBlockedBangumiUsersWidget();
-    });
+  return ImportBlockedBangumiUsersWidget();
+});

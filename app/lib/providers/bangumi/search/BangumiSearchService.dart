@@ -63,10 +63,10 @@ class BangumiSearchService {
     }
 
     BangumiGeneralSearchResponse bangumiSearchResponse =
-    BangumiGeneralSearchResponse.fromJson(response.body);
+        BangumiGeneralSearchResponse.fromJson(response.body);
 
     LinkedHashMap<int, SubjectSearchResultItem> results =
-    LinkedHashMap<int, SubjectSearchResultItem>();
+        LinkedHashMap<int, SubjectSearchResultItem>();
 
     /// theoretically, this should be done in the serializer
     /// However custom serializer for [built_value] is not flexible enough and
@@ -77,7 +77,7 @@ class BangumiSearchService {
         /// BuiltValueEnumConst requires wireName to be string
         rawSubject['type'] = rawSubject['type']?.toString();
         SubjectSearchResultItem subject =
-        SubjectSearchResultItem.fromJson(json.encode(rawSubject));
+            SubjectSearchResultItem.fromJson(json.encode(rawSubject));
         results[subject.id] = subject;
       }
     }
@@ -115,11 +115,10 @@ class BangumiSearchService {
         ));
 
     BangumiGeneralSearchResponse bangumiSearchResponse =
-    BangumiGeneralSearchResponse((b) =>
-    b
-      ..totalCount = monoSearchResults.length
-      ..requestedResults = monoSearchResults.length
-      ..results.addAll(monoSearchResults));
+        BangumiGeneralSearchResponse((b) => b
+          ..totalCount = monoSearchResults.length
+          ..requestedResults = monoSearchResults.length
+          ..results.addAll(monoSearchResults));
 
     return bangumiSearchResponse;
   }

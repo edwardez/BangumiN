@@ -39,13 +39,12 @@ class SubjectRatingOverview extends StatelessWidget {
 
         Map<String, String> queryParameters = {};
 
-        queryParameters[RoutesQueryParameter.subjectReviewsFriendOnly] =
-        'true';
+        queryParameters[RoutesQueryParameter.subjectReviewsFriendOnly] = 'true';
         queryParameters[RoutesQueryParameter.subjectReviewsMainFilter] =
             SubjectReviewMainFilter.FromCompletedUsers.name;
 
-        Application.router.navigateTo(context,
-            '$route${Uri(queryParameters: queryParameters)}',
+        Application.router.navigateTo(
+            context, '$route${Uri(queryParameters: queryParameters)}',
             transition: TransitionType.native);
       },
     );

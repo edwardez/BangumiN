@@ -77,23 +77,23 @@ abstract class Application {
     await injector(getIt);
 
     final BangumiCookieService bangumiCookieService =
-    getIt.get<BangumiCookieService>();
+        getIt.get<BangumiCookieService>();
     final BangumiOauthService bangumiOauthService =
-    getIt.get<BangumiOauthService>();
+        getIt.get<BangumiOauthService>();
     final BangumiUserService bangumiUserService =
-    getIt.get<BangumiUserService>();
+        getIt.get<BangumiUserService>();
     final BangumiTimelineService bangumiTimelineService =
-    getIt.get<BangumiTimelineService>();
+        getIt.get<BangumiTimelineService>();
     final BangumiSubjectService bangumiSubjectService =
-    getIt.get<BangumiSubjectService>();
+        getIt.get<BangumiSubjectService>();
     final BangumiSearchService bangumiSearchService =
-    getIt.get<BangumiSearchService>();
+        getIt.get<BangumiSearchService>();
     final BangumiDiscussionService bangumiDiscussionService =
-    getIt.get<BangumiDiscussionService>();
+        getIt.get<BangumiDiscussionService>();
     final BangumiProgressService bangumiProgressService =
-    getIt.get<BangumiProgressService>();
+        getIt.get<BangumiProgressService>();
     final SharedPreferenceService sharedPreferenceService =
-    getIt.get<SharedPreferenceService>();
+        getIt.get<SharedPreferenceService>();
 
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
@@ -119,12 +119,11 @@ abstract class Application {
         middleware: [
 //          LoggingMiddleware.printer(),
           EpicMiddleware<AppState>(epics),
-        ]
-          ..addAll(createOauthMiddleware(
-              bangumiOauthService,
-              bangumiCookieService,
-              bangumiUserService,
-              sharedPreferenceService)));
+        ]..addAll(createOauthMiddleware(
+            bangumiOauthService,
+            bangumiCookieService,
+            bangumiUserService,
+            sharedPreferenceService)));
 
     if (store.state.settingState.themeSetting.themeSwitchMode ==
         ThemeSwitchMode.FollowScreenBrightness) {
@@ -171,7 +170,7 @@ abstract class Application {
     bool isAuthenticated = bangumiCookieService.hasCookieCredential &&
         bangumiOauthService.hasOauthClient;
     Optional<AppState> maybePersistedAppState =
-    await sharedPreferenceService.readAppState();
+        await sharedPreferenceService.readAppState();
     AppState persistedAppState;
 
     if (maybePersistedAppState.isPresent) {

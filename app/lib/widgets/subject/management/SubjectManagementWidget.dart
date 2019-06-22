@@ -16,10 +16,10 @@ class SubjectManagementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String collectionActionText =
-    subject.userSubjectCollectionInfoPreview.status ==
-        CollectionStatus.Pristine
-        ? '加入'
-        : '编辑';
+        subject.userSubjectCollectionInfoPreview.status ==
+                CollectionStatus.Pristine
+            ? '加入'
+            : '编辑';
 
     return Column(
       children: <Widget>[
@@ -35,8 +35,8 @@ class SubjectManagementWidget extends StatelessWidget {
                     onPressed: () {
                       Application.router.navigateTo(
                         context,
-                        Routes.subjectEpisodesRoute
-                            .replaceFirst(RoutesVariable.subjectIdParam,
+                        Routes.subjectEpisodesRoute.replaceFirst(
+                            RoutesVariable.subjectIdParam,
                             subject.id?.toString()),
                         transition: TransitionType.native,
                       );
@@ -56,8 +56,8 @@ class SubjectManagementWidget extends StatelessWidget {
                   onPressed: () {
                     Application.router.navigateTo(
                       context,
-                      Routes.subjectCollectionManagementRoute
-                          .replaceFirst(RoutesVariable.subjectIdParam,
+                      Routes.subjectCollectionManagementRoute.replaceFirst(
+                          RoutesVariable.subjectIdParam,
                           subject.id?.toString()),
                       transition: TransitionType.nativeModal,
                     );

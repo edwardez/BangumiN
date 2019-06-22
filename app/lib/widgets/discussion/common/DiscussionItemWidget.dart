@@ -28,11 +28,12 @@ class DiscussionItemWidget extends StatelessWidget {
   /// Currently only group discussion triggers this function
   final Function(DiscussionItem item) onUnmute;
 
-  const DiscussionItemWidget({Key key,
-    @required this.discussionItem,
-    @required this.isMuted,
-    @required this.onMute,
-    @required this.onUnmute})
+  const DiscussionItemWidget(
+      {Key key,
+      @required this.discussionItem,
+      @required this.isMuted,
+      @required this.onMute,
+      @required this.onUnmute})
       : super(key: key);
 
   String get imageUrl {
@@ -93,10 +94,8 @@ class DiscussionItemWidget extends StatelessWidget {
   }
 
   String get discussionUpdateTime =>
-      TimeUtils.formatMilliSecondsEpochTime(
-          discussionItem.updatedAt,
-          displayTimeIn: DisplayTimeIn.AlwaysRelative,
-          fallbackTimeStr: '');
+      TimeUtils.formatMilliSecondsEpochTime(discussionItem.updatedAt,
+          displayTimeIn: DisplayTimeIn.AlwaysRelative, fallbackTimeStr: '');
 
   @override
   Widget build(BuildContext context) {
@@ -116,26 +115,18 @@ class DiscussionItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     '${discussionItem.subTitle}',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .caption,
+                    style: Theme.of(context).textTheme.caption,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     discussionItem.title,
                     maxLines: titleMaxLines,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body2,
+                    style: Theme.of(context).textTheme.body2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text('$discussionUpdateTime',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .caption,
+                  Text(
+                    '$discussionUpdateTime',
+                    style: Theme.of(context).textTheme.caption,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -147,7 +138,6 @@ class DiscussionItemWidget extends StatelessWidget {
             AdaptiveReplyCountIndicator(
               replyCount: discussionItem.replyCount,
             )
-
           ],
         ),
       ),

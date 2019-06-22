@@ -20,10 +20,10 @@ List<Epic<AppState>> createProgressEpics(
   final getProgressEpic = _createGetProgressEpic(bangumiProgressService);
   final updateProgressEpic = _createUpdateProgressEpic(bangumiProgressService);
   final getSubjectEpisodesEpic =
-  _createGetSubjectEpisodesEpic(bangumiProgressService);
+      _createGetSubjectEpisodesEpic(bangumiProgressService);
 
   final updateSubjectEpisodeEpic =
-  _createUpdateSubjectEpisodeEpic(bangumiProgressService);
+      _createUpdateSubjectEpisodeEpic(bangumiProgressService);
   return [
     getProgressEpic,
     updateProgressEpic,
@@ -56,8 +56,8 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
 
     LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
         mergedSubjects = subjectsPerType.fold(
-        LinkedHashMap<SubjectType,
-            LinkedHashMap<int, InProgressCollection>>(),
+            LinkedHashMap<SubjectType,
+                LinkedHashMap<int, InProgressCollection>>(),
             (mapSoFar, subjects) {
       mapSoFar.addAll(subjects);
       return mapSoFar;
@@ -84,19 +84,19 @@ Epic<AppState> _createGetProgressEpic(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetProgressRequestAction>())
-        .switchMap((action) =>
-        _getProgress(
-          bangumiProgressService,
-          action,
-          store.state.currentAuthenticatedUserBasicInfo.username,
-        ));
+        .switchMap((action) => _getProgress(
+              bangumiProgressService,
+              action,
+              store.state.currentAuthenticatedUserBasicInfo.username,
+            ));
   };
 }
 
 Stream<dynamic> _getSubjectEpisodesEpic(
-    BangumiProgressService bangumiProgressService,
-    GetSubjectEpisodesRequestAction action,
-    String username,) async* {
+  BangumiProgressService bangumiProgressService,
+  GetSubjectEpisodesRequestAction action,
+  String username,
+) async* {
   try {
     SubjectEpisodes subjectEpisodes = await bangumiProgressService
         .getSubjectEpisodes(username: username, subjectId: action.subjectId);
@@ -120,12 +120,11 @@ Epic<AppState> _createGetSubjectEpisodesEpic(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetSubjectEpisodesRequestAction>())
-        .switchMap((action) =>
-        _getSubjectEpisodesEpic(
-          bangumiProgressService,
-          action,
-          store.state.currentAuthenticatedUserBasicInfo.username,
-        ));
+        .switchMap((action) => _getSubjectEpisodesEpic(
+              bangumiProgressService,
+              action,
+              store.state.currentAuthenticatedUserBasicInfo.username,
+            ));
   };
 }
 
@@ -222,8 +221,8 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
       if (isEpisodeAffectedByCollectUntilOperation(episode)) {
         episodeIds.add(episode.id);
         assert(
-        episode.id <= collectedUntilEpisodeId,
-        'Munin tried to guess which episode to update for a [EpisodeUpdateType.CollectUntil]'
+            episode.id <= collectedUntilEpisodeId,
+            'Munin tried to guess which episode to update for a [EpisodeUpdateType.CollectUntil]'
             ' but it seems like data is malformed. Id ${episode.id} is higher '
             'than current collectedUntilEpisodeId($collectedUntilEpisodeId) '
             'whike it should always be smaller.');
@@ -247,7 +246,7 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
           episodeId: episodeId, episodeUpdateType: action.episodeUpdateType);
     } else if (action is UpdateBatchSubjectEpisodesAction) {
       var subjectEpisodes =
-      store.state.progressState.watchableSubjects[subjectId];
+          store.state.progressState.watchableSubjects[subjectId];
 
       List<int> episodeIdsToUpdate = calculateCollectionUntilSubjectEpisodeIds(
         subjectEpisodes: subjectEpisodes,
@@ -291,6 +290,6 @@ Epic<AppState> _createUpdateSubjectEpisodeEpic(
     return Observable(actions)
         .ofType(TypeToken<UpdateSubjectEpisodeAction>())
         .concatMap((action) =>
-        _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
+            _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
   };
 }

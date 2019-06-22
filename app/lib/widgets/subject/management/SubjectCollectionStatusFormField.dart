@@ -27,65 +27,61 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
   /// If `isDarkTheme` is set to true, FilterChip will be used
   /// If `isDarkTheme` is set to false, ChoiceChip will be used
   /// This is an workaround for a current bug in ChoiceChip under dark theme
-  static Widget workaroundChip(FormFieldState<CollectionStatus> state,
-      CollectionStatus collectionStatus, SubjectType subjectType,
-      bool isDarkTheme, ChipSelectedCallBack onChipSelected) {
+  static Widget workaroundChip(
+      FormFieldState<CollectionStatus> state,
+      CollectionStatus collectionStatus,
+      SubjectType subjectType,
+      bool isDarkTheme,
+      ChipSelectedCallBack onChipSelected) {
     if (isDarkTheme) {
       return FilterChip(
-        label:
-        Text(CollectionStatus.chineseNameWithSubjectType(
+        label: Text(CollectionStatus.chineseNameWithSubjectType(
             collectionStatus, subjectType)),
         selected: state.value == collectionStatus,
         onSelected: (bool selected) {
-          _onChipSelected(state, selected, collectionStatus,
-              onChipSelected);
+          _onChipSelected(state, selected, collectionStatus, onChipSelected);
         },
       );
     }
 
     return ChoiceChip(
-      label:
-      Text(CollectionStatus.chineseNameWithSubjectType(
+      label: Text(CollectionStatus.chineseNameWithSubjectType(
           collectionStatus, subjectType)),
       selected: state.value == collectionStatus,
       onSelected: (bool selected) {
-        _onChipSelected(state, selected, collectionStatus,
-            onChipSelected);
+        _onChipSelected(state, selected, collectionStatus, onChipSelected);
       },
     );
   }
 
-
-  SubjectCollectionStatusFormField({@required SubjectType subjectType,
+  SubjectCollectionStatusFormField({
+    @required SubjectType subjectType,
     @required bool isDarkTheme,
     FormFieldSetter<CollectionStatus> onSaved,
     FormFieldValidator<CollectionStatus> validator,
     ChipSelectedCallBack onChipSelected,
     CollectionStatus initialStatus = CollectionStatus.Pristine,
     bool autovalidate = false,
-  })
-      : assert(subjectType != null),
+  })  : assert(subjectType != null),
 
-  /// selectableCollectionStatus must not contain duplicates
-        assert(Set
-            .from(selectableCollectionStatus)
-            .length == selectableCollectionStatus.length),
+        /// selectableCollectionStatus must not contain duplicates
+        assert(Set.from(selectableCollectionStatus).length ==
+            selectableCollectionStatus.length),
         super(
-          onSaved: onSaved,
-          validator: validator,
-          initialValue: initialStatus,
-          autovalidate: autovalidate,
-          builder: (FormFieldState<CollectionStatus> state) {
-            return Wrap(
-              alignment: WrapAlignment.spaceAround,
-              children: [
-                for (var collectionStatus in selectableCollectionStatus)
-                  workaroundChip(
-                      state, collectionStatus, subjectType, isDarkTheme,
-                      onChipSelected)
-              ],
-            );
-          });
+            onSaved: onSaved,
+            validator: validator,
+            initialValue: initialStatus,
+            autovalidate: autovalidate,
+            builder: (FormFieldState<CollectionStatus> state) {
+              return Wrap(
+                alignment: WrapAlignment.spaceAround,
+                children: [
+                  for (var collectionStatus in selectableCollectionStatus)
+                    workaroundChip(state, collectionStatus, subjectType,
+                        isDarkTheme, onChipSelected)
+                ],
+              );
+            });
 
   @override
   _SubjectCollectionStatusFormFieldState createState() {

@@ -72,6 +72,6 @@ class ParseThreadMessage {
 
   final Color captionTextColor;
 
-  const ParseThreadMessage(this.html, this.mutedUsers, this.threadId,
-      this.captionTextColor);
+  const ParseThreadMessage(
+      this.html, this.mutedUsers, this.threadId, this.captionTextColor);
 }

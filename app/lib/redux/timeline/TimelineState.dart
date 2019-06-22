@@ -11,15 +11,13 @@ part 'TimelineState.g.dart';
 
 abstract class TimelineState
     implements Built<TimelineState, TimelineStateBuilder> {
-
   BuiltMap<GetTimelineRequest, FeedChunks> get timeline;
 
   TimelineState._();
 
   factory TimelineState([updates(TimelineStateBuilder b)]) =>
       _$TimelineState((b) => b
-        ..timeline.replace(
-            BuiltMap<GetTimelineRequest, FeedChunks>())
+        ..timeline.replace(BuiltMap<GetTimelineRequest, FeedChunks>())
         ..update(updates));
 
   String toJson() {

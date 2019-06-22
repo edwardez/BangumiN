@@ -35,8 +35,8 @@ class BlogThreadWidget extends StatelessWidget {
       converter: (Store store) => _ViewModel.fromStore(store, request),
       distinct: true,
       onInit: (store) {
-        final action = GetThreadRequestAction(
-            request: request, captionTextColor: null);
+        final action =
+            GetThreadRequestAction(request: request, captionTextColor: null);
 
         requestStatusFuture = action.completer.future;
         store.dispatch(action);
@@ -133,9 +133,9 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              thread == other.thread;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          thread == other.thread;
 
   @override
   int get hashCode => thread.hashCode;

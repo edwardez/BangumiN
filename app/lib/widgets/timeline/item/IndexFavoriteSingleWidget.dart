@@ -11,7 +11,9 @@ class IndexFavoriteSingleWidget extends StatelessWidget {
   final DeleteFeedCallback onDeleteFeed;
 
   const IndexFavoriteSingleWidget(
-      {Key key, @required this.indexFavoriteSingle, @required this.onDeleteFeed})
+      {Key key,
+      @required this.indexFavoriteSingle,
+      @required this.onDeleteFeed})
       : super(key: key);
 
   @override

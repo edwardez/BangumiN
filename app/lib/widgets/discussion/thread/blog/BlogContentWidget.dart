@@ -49,9 +49,7 @@ class BlogContentWidget extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  border: Border.all(color: Theme
-                      .of(context)
-                      .dividerColor),
+                  border: Border.all(color: Theme.of(context).dividerColor),
                   borderRadius: defaultContainerCircularRadius),
               child: Column(
                 children: <Widget>[
@@ -59,10 +57,7 @@ class BlogContentWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: mediumOffset),
                     child: Text(
                       '关联条目',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .title,
+                      style: Theme.of(context).textTheme.title,
                     ),
                   ),
                   for (var subject in blogContent.associatedSubjects) ...[

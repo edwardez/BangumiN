@@ -18,9 +18,10 @@ class SearchSubjectAction implements SearchAction {
   final SearchRequest searchRequest;
   final Completer completer;
 
-  SearchSubjectAction({@required this.context,
-    @required this.searchRequest,
-    Completer completer})
+  SearchSubjectAction(
+      {@required this.context,
+      @required this.searchRequest,
+      Completer completer})
       : this.completer = completer ?? Completer();
 }
 
@@ -29,9 +30,10 @@ class SearchMonoAction implements SearchAction {
   final SearchRequest searchRequest;
   final Completer completer;
 
-  SearchMonoAction({@required this.context,
-    @required this.searchRequest,
-    Completer completer})
+  SearchMonoAction(
+      {@required this.context,
+      @required this.searchRequest,
+      Completer completer})
       : this.completer = completer ?? Completer();
 }
 

@@ -61,7 +61,7 @@ class EpisodeStatus extends EnumClass {
         return '抛弃';
       default:
         assert(this == EpisodeStatus.Unknown,
-        '$this doesn\'t have a valid wired name');
+            '$this doesn\'t have a valid wired name');
         return '-';
     }
   }
@@ -69,23 +69,15 @@ class EpisodeStatus extends EnumClass {
   static Color getColor(BuildContext context, EpisodeStatus status) {
     switch (status) {
       case EpisodeStatus.Wish:
-        return Theme
-            .of(context)
-            .brightness == Brightness.dark
+        return Theme.of(context).brightness == Brightness.dark
             ? bangumiPink.shade200
-            : Theme
-            .of(context)
-            .accentColor;
+            : Theme.of(context).accentColor;
       case EpisodeStatus.Dropped:
-        return Theme
-            .of(context)
-            .unselectedWidgetColor;
+        return Theme.of(context).unselectedWidgetColor;
       case EpisodeStatus.Completed:
         return lightPrimaryDarkAccentColor(context);
       default:
-        return Theme
-            .of(context)
-            .unselectedWidgetColor;
+        return Theme.of(context).unselectedWidgetColor;
     }
   }
 

@@ -28,10 +28,9 @@ final progressReducers = combineReducers<ProgressState>([
       updateBookProgressSuccessReducer),
 ]);
 
-ProgressState getSubjectEpisodesSuccessReducer(ProgressState progressState,
-    GetSubjectEpisodesSuccessAction action) {
-  return progressState.rebuild((b) =>
-  b
+ProgressState getSubjectEpisodesSuccessReducer(
+    ProgressState progressState, GetSubjectEpisodesSuccessAction action) {
+  return progressState.rebuild((b) => b
     ..watchableSubjects.addAll(
       {action.subjectId: action.subjectEpisodes},
     ));
@@ -56,8 +55,8 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
   return progressState;
 }
 
-ProgressState updateInProgressEpisodeSuccessReducer(ProgressState progressState,
-    UpdateInProgressEpisodeSuccessAction action) {
+ProgressState updateInProgressEpisodeSuccessReducer(
+    ProgressState progressState, UpdateInProgressEpisodeSuccessAction action) {
   Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
       .map<InProgressCollection>((InProgressCollection progress) {
@@ -72,8 +71,7 @@ ProgressState updateInProgressEpisodeSuccessReducer(ProgressState progressState,
               action.episodeUpdateType.destinationEpisodeStatus;
       });
 
-      InProgressCollection newInProgressSubject = progress.rebuild((b) =>
-      b
+      InProgressCollection newInProgressSubject = progress.rebuild((b) => b
         ..episodes.addAll({action.episodeId: newEpisodeProgress})
         ..completedEpisodesCount += EpisodeUpdateType.watchedEpisodeCountChange(
             prevEpisodeStatus, action.episodeUpdateType));
@@ -88,17 +86,15 @@ ProgressState updateInProgressEpisodeSuccessReducer(ProgressState progressState,
         {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
 }
 
-ProgressState deleteInProgressSubjectReducer(ProgressState progressState,
-    DeleteInProgressSubjectAction action) {
+ProgressState deleteInProgressSubjectReducer(
+    ProgressState progressState, DeleteInProgressSubjectAction action) {
   var progressesToUpdate = progressState.progresses[action.subjectType];
   if (progressesToUpdate != null) {
     progressesToUpdate = progressesToUpdate.rebuild((b) =>
         b.removeWhere((progress) => progress.subject.id == action.subjectId));
 
-    progressState = progressState.rebuild((b) =>
-        b.progresses.addAll({
-          action.subjectType: progressesToUpdate
-        }));
+    progressState = progressState.rebuild(
+        (b) => b.progresses.addAll({action.subjectType: progressesToUpdate}));
   }
 
   return progressState;
@@ -145,15 +141,15 @@ ProgressState updateInProgressBatchEpisodesSuccessReducer(
 
 ProgressState updateBookProgressSuccessReducer(
     ProgressState progressState, UpdateBookProgressSuccessAction action) {
-  BuiltList<InProgressCollection> bookProgresses = progressState
-      .progresses[SubjectType.Book];
+  BuiltList<InProgressCollection> bookProgresses =
+      progressState.progresses[SubjectType.Book];
 
   if (bookProgresses == null) {
     return progressState;
   }
 
-  Iterable<InProgressCollection> progresses = bookProgresses
-      .map<InProgressCollection>((InProgressCollection progress) {
+  Iterable<InProgressCollection> progresses =
+      bookProgresses.map<InProgressCollection>((InProgressCollection progress) {
     if (progress.subject.id == action.subjectId &&
         progress is InProgressBookCollection) {
       InProgressBookCollection newEpisodeProgress = progress.rebuild((b) => b

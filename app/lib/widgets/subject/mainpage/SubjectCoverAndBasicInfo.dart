@@ -30,23 +30,19 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
   _buildInfoWidgets(BuildContext context, BangumiSubject subject) {
     List<Widget> widgets = [];
     widgets.add(WrappableText(
-      preferredNameFromSubjectBase(
-          subject, preferredSubjectInfoLanguage),
+      preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
       outerWrapper: OuterWrapper.Row,
       maxLines: 3,
     ));
 
-    Optional<String> maybeSecondaryTitle = secondaryNameFromSubjectBase(
-        subject, preferredSubjectInfoLanguage);
+    Optional<String> maybeSecondaryTitle =
+        secondaryNameFromSubjectBase(subject, preferredSubjectInfoLanguage);
     if (maybeSecondaryTitle.isPresent) {
       widgets.add(WrappableText(
         maybeSecondaryTitle.value,
-        textStyle: Theme
-            .of(context)
-            .textTheme
-            .caption,
+        textStyle: Theme.of(context).textTheme.caption,
         fit: FlexFit.tight,
         outerWrapper: OuterWrapper.Row,
         maxLines: 3,
@@ -74,16 +70,10 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
           TextSpan(
               text: subject.rating.score?.toString() ?? '-',
               style: scoreStyle(context)),
-          TextSpan(text: '分  ', style: Theme
-              .of(context)
-              .textTheme
-              .body1),
+          TextSpan(text: '分  ', style: Theme.of(context).textTheme.body1),
           TextSpan(
               text: '${subject.rating.totalScoreVotesCount}人',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .caption)
+              style: Theme.of(context).textTheme.caption)
         ]),
       );
 

@@ -12,19 +12,20 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
 List<Epic<AppState>> createSubjectEpics(
-    BangumiSubjectService bangumiSubjectService,
-    BangumiProgressService bangumiProgressService,) {
+  BangumiSubjectService bangumiSubjectService,
+  BangumiProgressService bangumiProgressService,
+) {
   final getCollectionInfoEpic =
-  _createGetCollectionInfoEpic(bangumiSubjectService);
+      _createGetCollectionInfoEpic(bangumiSubjectService);
   final collectionUpdateEpic = _createCollectionUpdateRequestEpic(
     bangumiSubjectService,
     bangumiProgressService,
   );
   final getSubjectEpic = _createGetSubjectEpic(bangumiSubjectService);
   final deleteCollectionRequestEpic =
-  _createDeleteCollectionRequestEpic(bangumiSubjectService);
+      _createDeleteCollectionRequestEpic(bangumiSubjectService);
   final getSubjectReviewsEpic =
-  _createGetSubjectReviewsEpic(bangumiSubjectService);
+      _createGetSubjectReviewsEpic(bangumiSubjectService);
 
   return [
     getSubjectEpic,
@@ -35,7 +36,8 @@ List<Epic<AppState>> createSubjectEpics(
   ];
 }
 
-Stream<dynamic> _getSubject(EpicStore<AppState> store,
+Stream<dynamic> _getSubject(
+    EpicStore<AppState> store,
     BangumiSubjectService bangumiSubjectService,
     GetSubjectAction action) async* {
   try {
@@ -62,7 +64,7 @@ Epic<AppState> _createGetSubjectEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions).ofType(TypeToken<GetSubjectAction>()).switchMap(
-            (action) => _getSubject(store, bangumiSubjectService, action));
+        (action) => _getSubject(store, bangumiSubjectService, action));
   };
 }
 
@@ -111,15 +113,16 @@ Epic<AppState> _createGetCollectionInfoEpic(
     return Observable(actions)
         .ofType(TypeToken<GetCollectionInfoAction>())
         .switchMap((action) =>
-        _getCollectionInfo(bangumiSubjectService, action, store));
+            _getCollectionInfo(bangumiSubjectService, action, store));
   };
 }
 
 Stream<dynamic> _collectionUpdateRequest(
-    BangumiSubjectService bangumiSubjectService,
-    BangumiProgressService bangumiProgressService,
-    UpdateCollectionRequestAction action,
-    EpicStore<AppState> store,) async* {
+  BangumiSubjectService bangumiSubjectService,
+  BangumiProgressService bangumiProgressService,
+  UpdateCollectionRequestAction action,
+  EpicStore<AppState> store,
+) async* {
   try {
     List<Future> futures = [];
 
@@ -128,12 +131,12 @@ Stream<dynamic> _collectionUpdateRequest(
 
     // Current collection info in store, might be null.
     final collectionInStore =
-    store.state.subjectState.collections[action.subjectId];
+        store.state.subjectState.collections[action.subjectId];
 
     final updatedCollection = action.collectionUpdateRequest;
 
     bool hasUpdatedBookProgress = collectionInStore?.completedVolumesCount !=
-        updatedCollection.completedVolumesCount ||
+            updatedCollection.completedVolumesCount ||
         collectionInStore?.completedEpisodesCount !=
             updatedCollection.completedEpisodesCount;
 
@@ -171,18 +174,19 @@ Stream<dynamic> _collectionUpdateRequest(
 }
 
 Epic<AppState> _createCollectionUpdateRequestEpic(
-    BangumiSubjectService bangumiSubjectService,
-    BangumiProgressService bangumiProgressService,) {
+  BangumiSubjectService bangumiSubjectService,
+  BangumiProgressService bangumiProgressService,
+) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<UpdateCollectionRequestAction>())
-        .switchMap((action) =>
-        _collectionUpdateRequest(
+        .switchMap((action) => _collectionUpdateRequest(
             bangumiSubjectService, bangumiProgressService, action, store));
   };
 }
 
-Stream<dynamic> _deleteCollectionRequestEpic(EpicStore<AppState> store,
+Stream<dynamic> _deleteCollectionRequestEpic(
+    EpicStore<AppState> store,
     BangumiSubjectService bangumiSubjectService,
     DeleteCollectionRequestAction action) async* {
   try {
@@ -193,7 +197,7 @@ Stream<dynamic> _deleteCollectionRequestEpic(EpicStore<AppState> store,
 
     // If it's also a in progress subject, also updates progress store.
     if (action.subject?.userSubjectCollectionInfoPreview?.status ==
-        CollectionStatus.InProgress ??
+            CollectionStatus.InProgress ??
         false) {
       yield DeleteInProgressSubjectAction(
         subjectType: action.subject.type,
@@ -219,17 +223,17 @@ Epic<AppState> _createDeleteCollectionRequestEpic(
     return Observable(actions)
         .ofType(TypeToken<DeleteCollectionRequestAction>())
 
-    /// All previous cancel request needs to be kept so concatMap is used.
+        /// All previous cancel request needs to be kept so concatMap is used.
         .concatMap(
-          (action) =>
-          _deleteCollectionRequestEpic(
+          (action) => _deleteCollectionRequestEpic(
               store, bangumiSubjectService, action),
-    );
+        );
   };
 }
 
 /// Reviews
-Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
+Stream<dynamic> _getSubjectReviewsEpic(
+    EpicStore<AppState> store,
     BangumiSubjectService bangumiSubjectService,
     GetSubjectReviewAction action) async* {
   try {
@@ -288,6 +292,6 @@ Epic<AppState> _createGetSubjectReviewsEpic(
     return Observable(actions)
         .ofType(TypeToken<GetSubjectReviewAction>())
         .switchMap((action) =>
-        _getSubjectReviewsEpic(store, bangumiSubjectService, action));
+            _getSubjectReviewsEpic(store, bangumiSubjectService, action));
   };
 }

@@ -38,7 +38,8 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
 }
 
 /// Parses bool in string format, returns  [defaultValue] if input is invalid.
-bool tryParseBool(String inputStr, {
+bool tryParseBool(
+  String inputStr, {
   bool defaultValue,
 }) {
   if (inputStr == null) return null;

@@ -10,14 +10,13 @@ import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingHome extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ScrollViewWithSliverAppBar(
       appBarMainTitle: Text("设置"),
       enableBottomSafeArea: false,
       safeAreaChildPadding:
-      const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
+          const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
       nestedScrollViewBody: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -29,8 +28,7 @@ class SettingHome extends StatelessWidget {
               ),
               onTap: () {
                 Application.router.navigateTo(
-                    context,
-                    Routes.generalSettingRoute,
+                    context, Routes.generalSettingRoute,
                     transition: TransitionType.native);
               },
             ),
@@ -42,9 +40,7 @@ class SettingHome extends StatelessWidget {
                 size: smallerIconSize,
               ),
               onTap: () {
-                Application.router.navigateTo(
-                    context,
-                    Routes.themeSettingRoute,
+                Application.router.navigateTo(context, Routes.themeSettingRoute,
                     transition: TransitionType.native);
               },
             ),
@@ -56,9 +52,7 @@ class SettingHome extends StatelessWidget {
                 size: smallerIconSize,
               ),
               onTap: () {
-                Application.router.navigateTo(
-                    context,
-                    Routes.muteSettingRoute,
+                Application.router.navigateTo(context, Routes.muteSettingRoute,
                     transition: TransitionType.native);
               },
             ),
@@ -71,8 +65,7 @@ class SettingHome extends StatelessWidget {
               ),
               onTap: () {
                 Application.router.navigateTo(
-                    context,
-                    Routes.privacySettingRoute,
+                    context, Routes.privacySettingRoute,
                     transition: TransitionType.native);
               },
             ),
@@ -80,8 +73,8 @@ class SettingHome extends StatelessWidget {
             ListTile(
               title: Text('反馈'),
               onTap: () {
-                launch('https://bgm.tv/group/bangumin', forceSafariVC: false,
-                    forceWebView: false);
+                launch('https://bgm.tv/group/bangumin',
+                    forceSafariVC: false, forceWebView: false);
               },
             ),
             Divider(),
@@ -98,5 +91,4 @@ class SettingHome extends StatelessWidget {
       ),
     );
   }
-
 }

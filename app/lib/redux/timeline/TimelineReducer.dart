@@ -18,8 +18,8 @@ final timelineReducers = combineReducers<TimelineState>([
       deleteTimelineFeedSuccessReducer),
 ]);
 
-TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
-    GetTimelineSuccessAction action) {
+TimelineState loadTimelineFeedSuccessReducer(
+    TimelineState timelineState, GetTimelineSuccessAction action) {
   GetTimelineRequest getTimelineRequest = action.getTimelineRequest;
   FeedChunks feedChunksInStore =
       timelineState.timeline[getTimelineRequest] ?? FeedChunks();
@@ -28,7 +28,6 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
   List<TimelineFeed> unfilteredFeedsResponse = result.feeds;
 
   List<TimelineFeed> filteredFeedsResponse;
-
 
   if (action.getTimelineRequest.timelineSource == TimelineSource.UserProfile) {
     // Copies unfilteredFeedsResponse to filteredFeedsResponse as-is if feeds
@@ -55,10 +54,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
     return timelineState.rebuild((b) => b
       ..timeline.addAll({
-        getTimelineRequest: feedChunksInStore.rebuild((b) =>
-        b
-          ..filteredFeeds.replace(
-              BuiltList<TimelineFeed>(filteredFeedsResponse))
+        getTimelineRequest: feedChunksInStore.rebuild((b) => b
+          ..filteredFeeds
+              .replace(BuiltList<TimelineFeed>(filteredFeedsResponse))
           ..unfilteredFeeds
               .replace(BuiltList<TimelineFeed>(unfilteredFeedsResponse))
           ..disableLoadingMore = disableLoadingMore
@@ -72,10 +70,9 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
       // clean up feeds
       return timelineState.rebuild((b) => b
         ..timeline.addAll({
-          getTimelineRequest: feedChunksInStore.rebuild((b) =>
-          b
-            ..filteredFeeds.replace(
-                BuiltList<TimelineFeed>(filteredFeedsResponse))
+          getTimelineRequest: feedChunksInStore.rebuild((b) => b
+            ..filteredFeeds
+                .replace(BuiltList<TimelineFeed>(filteredFeedsResponse))
             ..unfilteredFeeds
                 .replace(BuiltList<TimelineFeed>(unfilteredFeedsResponse))
             ..disableLoadingMore = false
@@ -93,8 +90,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
       return timelineState.rebuild((b) => b
         ..timeline.addAll({
-          getTimelineRequest: feedChunksInStore.rebuild((b) =>
-          b
+          getTimelineRequest: feedChunksInStore.rebuild((b) => b
             ..filteredFeeds.replace(updatedFilteredFeeds)
             ..unfilteredFeeds.replace(unfilteredUpdatedFeeds)
             ..disableLoadingMore = false
@@ -117,8 +113,7 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
 
     return timelineState.rebuild((b) => b
       ..timeline.addAll({
-        getTimelineRequest: feedChunksInStore.rebuild((b) =>
-        b
+        getTimelineRequest: feedChunksInStore.rebuild((b) => b
           ..filteredFeeds.replace(updatedFilteredFeeds)
           ..unfilteredFeeds.replace(unfilteredUpdatedFeeds)
           ..disableLoadingMore = disableLoadingMore
@@ -129,10 +124,10 @@ TimelineState loadTimelineFeedSuccessReducer(TimelineState timelineState,
   return timelineState;
 }
 
-TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
-    DeleteTimelineSuccessAction action) {
-  TimelineState removeFeed(TimelineState localTimelineState,
-      GetTimelineRequest request) {
+TimelineState deleteTimelineFeedSuccessReducer(
+    TimelineState timelineState, DeleteTimelineSuccessAction action) {
+  TimelineState removeFeed(
+      TimelineState localTimelineState, GetTimelineRequest request) {
     FeedChunks feedChunks = localTimelineState.timeline[request];
     if (feedChunks == null) {
       return localTimelineState;
@@ -140,69 +135,63 @@ TimelineState deleteTimelineFeedSuccessReducer(TimelineState timelineState,
 
     int feedId = action?.feed?.user?.feedId;
 
-    feedChunks = feedChunks.rebuild((b) =>
-    b
+    feedChunks = feedChunks.rebuild((b) => b
       ..filteredFeeds.removeWhere((feed) => feed?.user?.feedId == feedId)
-      ..unfilteredFeeds.removeWhere((feed) => feed?.user?.feedId == feedId)
-    );
+      ..unfilteredFeeds.removeWhere((feed) => feed?.user?.feedId == feedId));
 
-
-    return localTimelineState.rebuild((b) =>
-    b
-      ..timeline.addAll(
-          {
-            request: feedChunks
-          }
-      ));
+    return localTimelineState
+        .rebuild((b) => b..timeline.addAll({request: feedChunks}));
   }
 
   var getTimelineRequest = action.getTimelineRequest;
 
   // Removes feed from home page and profile timeline
-  timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-  b
-    ..timelineSource = TimelineSource.OnlyFriends
-    ..username = null
-  ));
+  timelineState = removeFeed(
+      timelineState,
+      getTimelineRequest.rebuild((b) => b
+        ..timelineSource = TimelineSource.OnlyFriends
+        ..username = null));
 
-  timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-  b
-    ..timelineSource = TimelineSource.UserProfile
-    ..username = action.appUsername
-  ));
+  timelineState = removeFeed(
+      timelineState,
+      getTimelineRequest.rebuild((b) => b
+        ..timelineSource = TimelineSource.UserProfile
+        ..username = action.appUsername));
 
   // Deletes feed from `all feeds` timeline if user deletes feed while under another
   // category.
   if (getTimelineRequest.timelineCategoryFilter !=
       TimelineCategoryFilter.AllFeeds) {
-    timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-    b
-      ..timelineSource = TimelineSource.UserProfile
-      ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds
-      ..username = action.appUsername
-    ));
+    timelineState = removeFeed(
+        timelineState,
+        getTimelineRequest.rebuild((b) => b
+          ..timelineSource = TimelineSource.UserProfile
+          ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds
+          ..username = action.appUsername));
 
-    timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-    b
-      ..timelineSource = TimelineSource.OnlyFriends
-      ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds
-      ..username = null
-    ));
+    timelineState = removeFeed(
+        timelineState,
+        getTimelineRequest.rebuild((b) => b
+          ..timelineSource = TimelineSource.OnlyFriends
+          ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds
+          ..username = null));
   } else {
     // Else deleting it from the sub timeline
-    timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-    b
-      ..timelineSource = TimelineSource.UserProfile
-      ..timelineCategoryFilter = action.feed.bangumiContent.applicableFeedFilter
-      ..username = action.appUsername
-    ));
+    timelineState = removeFeed(
+        timelineState,
+        getTimelineRequest.rebuild((b) => b
+          ..timelineSource = TimelineSource.UserProfile
+          ..timelineCategoryFilter =
+              action.feed.bangumiContent.applicableFeedFilter
+          ..username = action.appUsername));
 
-    timelineState = removeFeed(timelineState, getTimelineRequest.rebuild((b) =>
-    b
-      ..timelineSource = TimelineSource.OnlyFriends
-      ..timelineCategoryFilter = action.feed.bangumiContent.applicableFeedFilter
-      ..username = null
-    ));
+    timelineState = removeFeed(
+        timelineState,
+        getTimelineRequest.rebuild((b) => b
+          ..timelineSource = TimelineSource.OnlyFriends
+          ..timelineCategoryFilter =
+              action.feed.bangumiContent.applicableFeedFilter
+          ..username = null));
   }
 
   return timelineState;

@@ -45,7 +45,9 @@ class _MuninAppState extends State<MuninApp> {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: widget.store,
-      child: MainMaterialApp(analytics: analytics,),
+      child: MainMaterialApp(
+        analytics: analytics,
+      ),
     );
   }
 }

@@ -75,8 +75,7 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
       return true;
     }
 
-    return await showMuninConfirmActionDialog(context,
-            title: '确认放弃编辑这条消息？') ??
+    return await showMuninConfirmActionDialog(context, title: '确认放弃编辑这条消息？') ??
         false;
   }
 
@@ -104,8 +103,8 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
                     } catch (error) {
                       if (mounted) {
                         setState(() {
-                          messageSubmissionStatus = RequestStatus
-                              .UnknownException;
+                          messageSubmissionStatus =
+                              RequestStatus.UnknownException;
                         });
                       }
                     }
@@ -148,7 +147,7 @@ class _ViewModel {
   factory _ViewModel.fromStore(Store<AppState> store) {
     Future<void> _submitTimelineMessage(BuildContext context, String message) {
       final action =
-      SubmitTimelineMessageAction(context: context, message: message);
+          SubmitTimelineMessageAction(context: context, message: message);
       store.dispatch(action);
 
       return action.completer.future;
@@ -164,7 +163,7 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel && runtimeType == other.runtimeType;
+      other is _ViewModel && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;

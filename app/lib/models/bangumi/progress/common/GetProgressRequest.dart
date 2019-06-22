@@ -14,24 +14,20 @@ abstract class GetProgressRequest
   /// this value decides how many sub menus progress widget has
   static const totalGetProgressRequestTypes = 4;
 
-  static final defaultProgressLaunchPageType = GetProgressRequest((b) =>
-  b
-    ..requestedSubjectTypes.addAll(
-        [SubjectType.Anime, SubjectType.Real, SubjectType.Book]));
+  static final defaultProgressLaunchPageType = GetProgressRequest((b) => b
+    ..requestedSubjectTypes
+        .addAll([SubjectType.Anime, SubjectType.Real, SubjectType.Book]));
 
   static final allWatchable = defaultProgressLaunchPageType;
 
   static final List<GetProgressRequest> validGetProgressRequests = [
     defaultProgressLaunchPageType,
-    GetProgressRequest((b) =>
-    b
-      ..requestedSubjectTypes.addAll([SubjectType.Anime])),
-    GetProgressRequest((b) =>
-    b
-      ..requestedSubjectTypes.addAll([SubjectType.Real])),
-    GetProgressRequest((b) =>
-    b
-      ..requestedSubjectTypes.addAll([SubjectType.Book])),
+    GetProgressRequest(
+        (b) => b..requestedSubjectTypes.addAll([SubjectType.Anime])),
+    GetProgressRequest(
+        (b) => b..requestedSubjectTypes.addAll([SubjectType.Real])),
+    GetProgressRequest(
+        (b) => b..requestedSubjectTypes.addAll([SubjectType.Book])),
   ];
 
   BuiltSet<SubjectType> get requestedSubjectTypes;
@@ -81,11 +77,11 @@ abstract class GetProgressRequest
   GetProgressRequest._();
 
   factory GetProgressRequest([updates(GetProgressRequestBuilder b)]) =
-  _$GetProgressRequest;
+      _$GetProgressRequest;
 
   String toJson() {
-    return json.encode(
-        serializers.serializeWith(GetProgressRequest.serializer, this));
+    return json
+        .encode(serializers.serializeWith(GetProgressRequest.serializer, this));
   }
 
   static GetProgressRequest fromJson(String jsonString) {

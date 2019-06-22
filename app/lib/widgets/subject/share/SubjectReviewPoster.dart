@@ -143,10 +143,10 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                 horizontal: SubjectReviewPoster.posterOuterHorizontalPadding),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: _calculateGradientColors(),
-                )),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: _calculateGradientColors(),
+            )),
             child: Center(
               child: FractionallySizedBox(
                 child: Container(
@@ -178,7 +178,7 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                               children: <Widget>[
                                 CachedCircleAvatar(
                                   imageUrl:
-                                  widget.review.metaInfo.avatar.medium,
+                                      widget.review.metaInfo.avatar.medium,
                                   radius: 15,
                                   navigateToUserRouteOnTap: false,
                                 ),
@@ -193,9 +193,9 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                   TimeUtils.formatMilliSecondsEpochTime(
                                       widget.review.metaInfo.updatedAt,
                                       displayTimeIn:
-                                      DisplayTimeIn.AlwaysAbsolute,
+                                          DisplayTimeIn.AlwaysAbsolute,
                                       formatAbsoluteTimeAs:
-                                      AbsoluteTimeFormat.DateOnly),
+                                          AbsoluteTimeFormat.DateOnly),
                                   style: captionStyle,
                                 )
                               ],
@@ -209,13 +209,13 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                   WrappableText(
                                     widget.review.content,
                                     maxLines:
-                                    SubjectReviewPoster.commentMaxLines,
+                                        SubjectReviewPoster.commentMaxLines,
                                   )
                                 ],
                               ),
                             ],
-                            if (!isEmpty(userActionNameOnPoster) || widget
-                                .review.metaInfo.score != null) ...[
+                            if (!isEmpty(userActionNameOnPoster) ||
+                                widget.review.metaInfo.score != null) ...[
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 2.0),
                               ),
@@ -230,9 +230,8 @@ class SubjectReviewPosterState extends State<SubjectReviewPoster> {
                                   /// by accessing `Theme.of(context)`
                                   SubjectStars(
                                       subjectScore:
-                                      widget.review.metaInfo.score,
-                                      starSize: Theme
-                                          .of(context)
+                                          widget.review.metaInfo.score,
+                                      starSize: Theme.of(context)
                                           .textTheme
                                           .caption
                                           .fontSize)

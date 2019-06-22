@@ -16,14 +16,17 @@ class SearchResultDelegate extends StatelessWidget {
       defaultPortraitHorizontalOffset;
 
   const SearchResultDelegate(
-      {Key key, @required this.searchResult, @required this.preferredSubjectInfoLanguage})
+      {Key key,
+      @required this.searchResult,
+      @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   Widget getDelegatedWidget(SearchResultItem searchResult) {
     if (searchResult is SubjectSearchResultItem) {
       return SubjectSearchResultWidget(
         subjectSearchResult: searchResult,
-        preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,);
+        preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
+      );
     }
 
     if (searchResult is MonoSearchResult) {

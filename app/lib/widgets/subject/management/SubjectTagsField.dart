@@ -206,8 +206,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
         selected: isSelected,
         onSelected: _onSelectedCallBackForExistingTag(tags, tagsType, tagName),
         labelStyle: Theme.of(context).chipTheme.labelStyle.copyWith(
-            color:
-            isSelected ? lightPrimaryDarkAccentColor(context) : null),
+            color: isSelected ? lightPrimaryDarkAccentColor(context) : null),
       );
       chips.add(_maxTagsAlertWrapper(context, choiceChip, wrapAlertDialog));
     });

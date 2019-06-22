@@ -85,13 +85,12 @@ class UserCollectionsListParser {
 
     List<String> tags = [];
 
-    String rawTags =
-    collectionElement
+    String rawTags = collectionElement
         .querySelectorAll('.collectInfo .tip')
         .firstWhere(
           (element) => element.text.contains('标签'),
-      orElse: () => null,
-    )
+          orElse: () => null,
+        )
         ?.text
         ?.trim();
 

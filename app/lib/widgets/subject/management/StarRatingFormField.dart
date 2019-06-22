@@ -7,7 +7,7 @@ class StarRatingFormField extends FormField<int> {
       {FormFieldSetter<int> onSaved,
       FormFieldValidator<int> validator,
       int initialValue = 0,
-        double horizontalPadding = defaultPortraitHorizontalOffset,
+      double horizontalPadding = defaultPortraitHorizontalOffset,
       bool autovalidate = false})
       : super(
             onSaved: onSaved,

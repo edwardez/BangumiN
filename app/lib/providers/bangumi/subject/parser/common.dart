@@ -11,10 +11,7 @@ import 'package:munin/shared/utils/misc/constants.dart';
 
 SubjectType parseSubjectType(DocumentFragment document) {
   return SubjectType.guessTypeByChineseName(
-      document
-          .querySelector('#navMenuNeue .focus')
-          ?.text
-          ?.trim());
+      document.querySelector('#navMenuNeue .focus')?.text?.trim());
 }
 
 /// Different types of elements that bangumi uses to display a review.
@@ -46,10 +43,11 @@ enum ReviewElement {
 /// [ReviewElement.CommentBox].
 ///
 /// For [ReviewElement.CollectionFull], use [parseReviewOnCollectionPage].
-SubjectReview parseSubjectReviewOnNonCollectionPage(Element element,
-    ReviewElement elementType, {
-      String defaultActionName = '评价道',
-    }) {
+SubjectReview parseSubjectReviewOnNonCollectionPage(
+  Element element,
+  ReviewElement elementType, {
+  String defaultActionName = '评价道',
+}) {
   assert(elementType != ReviewElement.CollectionFull);
 
   Element avatarElement = element.querySelector('a.avatar');
@@ -105,7 +103,8 @@ SubjectReview parseSubjectReviewOnNonCollectionPage(Element element,
   return subjectReview;
 }
 
-SubjectReview parseReviewOnCollectionPage(Element element, {
+SubjectReview parseReviewOnCollectionPage(
+  Element element, {
   @required SubjectType subjectType,
   @required CollectionStatus collectionStatus,
 }) {
@@ -134,8 +133,7 @@ SubjectReview parseReviewOnCollectionPage(Element element, {
   final username = parseHrefId(usernameElement);
   final nickName = usernameElement.text.trim();
 
-  ReviewMetaInfo metaInfo = ReviewMetaInfo((b) =>
-  b
+  ReviewMetaInfo metaInfo = ReviewMetaInfo((b) => b
     ..updatedAt = absoluteTime?.millisecondsSinceEpoch
     ..nickName = nickName
     ..actionName = actionName
@@ -144,8 +142,7 @@ SubjectReview parseReviewOnCollectionPage(Element element, {
     ..username = username
     ..avatar.replace(avatar));
 
-  SubjectReview subjectReview = SubjectReview((b) =>
-  b
+  SubjectReview subjectReview = SubjectReview((b) => b
     ..content = commentContent
     ..metaInfo.replace(metaInfo));
 

@@ -37,19 +37,17 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   SettingState get settingState;
 
-  factory AppState([updates(AppStateBuilder b)]) =>
-      _$AppState((b) =>
-      b
-        ..isAuthenticated = false
-        ..oauthState.replace(OauthState())
-        ..timelineState.replace(TimelineState())
-        ..subjectState.replace(SubjectState())
-        ..searchState.replace(SearchState())
-        ..discussionState.replace(DiscussionState())
-        ..userState.replace(UserState())
-        ..progressState.replace(ProgressState())
-        ..settingState.replace(SettingState())
-        ..update(updates));
+  factory AppState([updates(AppStateBuilder b)]) => _$AppState((b) => b
+    ..isAuthenticated = false
+    ..oauthState.replace(OauthState())
+    ..timelineState.replace(TimelineState())
+    ..subjectState.replace(SubjectState())
+    ..searchState.replace(SearchState())
+    ..discussionState.replace(DiscussionState())
+    ..userState.replace(UserState())
+    ..progressState.replace(ProgressState())
+    ..settingState.replace(SettingState())
+    ..update(updates));
 
   AppState._();
 

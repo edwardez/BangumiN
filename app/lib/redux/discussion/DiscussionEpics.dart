@@ -13,14 +13,15 @@ List<Epic<AppState>> createDiscussionEpics(
     BangumiDiscussionService bangumiDiscussionService) {
   final getDiscussionEpic = _createGetDiscussionEpic(bangumiDiscussionService);
   final getGroupThreadEpic =
-  _createGetGroupThreadEpic(bangumiDiscussionService);
+      _createGetGroupThreadEpic(bangumiDiscussionService);
   return [
     getDiscussionEpic,
     getGroupThreadEpic,
   ];
 }
 
-Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
+Stream<dynamic> _getDiscussion(
+    EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetDiscussionRequestAction action) async* {
   try {
@@ -57,7 +58,8 @@ Epic<AppState> _createGetDiscussionEpic(
   };
 }
 
-Stream<dynamic> _getGroupThread(EpicStore<AppState> store,
+Stream<dynamic> _getGroupThread(
+    EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetThreadRequestAction action) async* {
   try {
@@ -106,6 +108,6 @@ Epic<AppState> _createGetGroupThreadEpic(
     return Observable(actions)
         .ofType(TypeToken<GetThreadRequestAction>())
         .switchMap((action) =>
-        _getGroupThread(store, bangumiDiscussionService, action));
+            _getGroupThread(store, bangumiDiscussionService, action));
   };
 }

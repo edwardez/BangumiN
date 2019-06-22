@@ -62,7 +62,6 @@ abstract class FeedChunks implements Built<FeedChunks, FeedChunksBuilder> {
       return null;
     }
 
-
     return filteredFeeds[index];
   }
 

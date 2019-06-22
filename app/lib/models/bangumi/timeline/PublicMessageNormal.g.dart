@@ -26,8 +26,8 @@ class _$PublicMessageNormalSerializer
       'user',
       serializers.serialize(object.user,
           specifiedType: const FullType(FeedMetaInfo)),
-      'content',
-      serializers.serialize(object.content,
+      'contentHtml',
+      serializers.serialize(object.contentHtml,
           specifiedType: const FullType(String)),
       'replyCount',
       serializers.serialize(object.replyCount,
@@ -66,8 +66,8 @@ class _$PublicMessageNormalSerializer
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(FeedMetaInfo)) as FeedMetaInfo);
           break;
-        case 'content':
-          result.content = serializers.deserialize(value,
+        case 'contentHtml':
+          result.contentHtml = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'replyCount':
@@ -97,7 +97,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   @override
   final FeedMetaInfo user;
   @override
-  final String content;
+  final String contentHtml;
   @override
   final int replyCount;
   @override
@@ -113,7 +113,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
 
   _$PublicMessageNormal._(
       {this.user,
-      this.content,
+      this.contentHtml,
       this.replyCount,
       this.id,
       this.bangumiContent,
@@ -122,8 +122,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     if (user == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'user');
     }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('PublicMessageNormal', 'content');
+    if (contentHtml == null) {
+      throw new BuiltValueNullFieldError('PublicMessageNormal', 'contentHtml');
     }
     if (replyCount == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'replyCount');
@@ -148,7 +148,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     if (identical(other, this)) return true;
     return other is PublicMessageNormal &&
         user == other.user &&
-        content == other.content &&
+        contentHtml == other.contentHtml &&
         replyCount == other.replyCount &&
         id == other.id &&
         bangumiContent == other.bangumiContent &&
@@ -160,7 +160,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, user.hashCode), content.hashCode),
+                $jc($jc($jc(0, user.hashCode), contentHtml.hashCode),
                     replyCount.hashCode),
                 id.hashCode),
             bangumiContent.hashCode),
@@ -171,7 +171,7 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   String toString() {
     return (newBuiltValueToStringHelper('PublicMessageNormal')
           ..add('user', user)
-          ..add('content', content)
+          ..add('contentHtml', contentHtml)
           ..add('replyCount', replyCount)
           ..add('id', id)
           ..add('bangumiContent', bangumiContent)
@@ -190,9 +190,9 @@ class PublicMessageNormalBuilder
   FeedMetaInfoBuilder get user => _$this._user ??= new FeedMetaInfoBuilder();
   set user(FeedMetaInfoBuilder user) => _$this._user = user;
 
-  String _content;
-  String get content => _$this._content;
-  set content(String content) => _$this._content = content;
+  String _contentHtml;
+  String get contentHtml => _$this._contentHtml;
+  set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
   int _replyCount;
   int get replyCount => _$this._replyCount;
@@ -217,7 +217,7 @@ class PublicMessageNormalBuilder
   PublicMessageNormalBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
-      _content = _$v.content;
+      _contentHtml = _$v.contentHtml;
       _replyCount = _$v.replyCount;
       _id = _$v.id;
       _bangumiContent = _$v.bangumiContent;
@@ -247,7 +247,7 @@ class PublicMessageNormalBuilder
       _$result = _$v ??
           new _$PublicMessageNormal._(
               user: user.build(),
-              content: content,
+              contentHtml: contentHtml,
               replyCount: replyCount,
               id: id,
               bangumiContent: bangumiContent,

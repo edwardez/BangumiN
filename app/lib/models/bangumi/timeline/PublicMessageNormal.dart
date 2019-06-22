@@ -13,7 +13,8 @@ abstract class PublicMessageNormal
   /// due to the limitation of bangumi, this has to be a string
   FeedMetaInfo get user;
 
-  String get content;
+  /// Content in raw html
+  String get contentHtml;
 
   int get replyCount;
 

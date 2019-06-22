@@ -338,7 +338,7 @@ class TimelineParser {
     String id = parseHrefId(replyElement);
 
     return PublicMessageNormal((b) => b
-      ..content = statusElement.text
+      ..contentHtml = statusElement.outerHtml
       ..user.replace(userInfo)
       ..replyCount = replyCount
       ..id = id

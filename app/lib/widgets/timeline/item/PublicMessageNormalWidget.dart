@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
@@ -23,17 +24,14 @@ class PublicMessageNormalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UserListTile.fromUser(
           user: publicMessageNormal.user,
           trailing: buildTrailingWidget(publicMessageNormal, onDeleteFeed),
         ),
-        Row(
-          children: <Widget>[
-            Flexible(
-              child: Text(publicMessageNormal.content),
-            )
-          ],
+        BangumiHtml(
+          html: publicMessageNormal.contentHtml,
         ),
         Padding(
           padding: EdgeInsets.only(top: paddingFromItemToTop),

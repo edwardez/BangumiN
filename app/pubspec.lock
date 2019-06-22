@@ -169,15 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  dart_config:
-    dependency: transitive
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: a7ed88a4793e094a4d5d5c2d88a89e55510accde
-      url: "https://github.com/MarkOSullivan94/dart_config.git"
-    source: git
-    version: "0.5.0"
   dart_style:
     dependency: transitive
     description:
@@ -205,14 +196,14 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.0.3"
   firebase_crashlytics:
     dependency: "direct main"
     description:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+5"
+    version: "0.0.4+8"
   fixnum:
     dependency: transitive
     description:
@@ -226,7 +217,7 @@ packages:
       name: fluro
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -252,7 +243,7 @@ packages:
       name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.7.2"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -359,12 +350,12 @@ packages:
     source: hosted
     version: "3.1.3"
   image:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.1.4"
   image_gallery_saver:
     dependency: "direct main"
     description:
@@ -677,7 +668,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.0+1"
   term_glyph:
     dependency: transitive
     description:
@@ -740,7 +731,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   vector_math:
     dependency: transitive
     description:
@@ -782,7 +773,7 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.15"
+    version: "2.1.16"
 sdks:
   dart: ">=2.3.0-dev.0.5.flutter-a1668566e5 <3.0.0"
   flutter: ">=1.5.0 <1.5.9"

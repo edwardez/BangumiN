@@ -38,7 +38,18 @@ class _$SubjectCollectionInfoSerializer
       'private',
       serializers.serialize(object.private, specifiedType: const FullType(int)),
     ];
-
+    if (object.completedEpisodesCount != null) {
+      result
+        ..add('completedEpisodesCount')
+        ..add(serializers.serialize(object.completedEpisodesCount,
+            specifiedType: const FullType(int)));
+    }
+    if (object.completedVolumesCount != null) {
+      result
+        ..add('completedVolumesCount')
+        ..add(serializers.serialize(object.completedVolumesCount,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -77,6 +88,14 @@ class _$SubjectCollectionInfoSerializer
           result.private = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'completedEpisodesCount':
+          result.completedEpisodesCount = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'completedVolumesCount':
+          result.completedVolumesCount = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
       }
     }
 
@@ -95,13 +114,23 @@ class _$SubjectCollectionInfo extends SubjectCollectionInfo {
   final int rating;
   @override
   final int private;
+  @override
+  final int completedEpisodesCount;
+  @override
+  final int completedVolumesCount;
 
   factory _$SubjectCollectionInfo(
           [void Function(SubjectCollectionInfoBuilder) updates]) =>
       (new SubjectCollectionInfoBuilder()..update(updates)).build();
 
   _$SubjectCollectionInfo._(
-      {this.status, this.comment, this.tags, this.rating, this.private})
+      {this.status,
+      this.comment,
+      this.tags,
+      this.rating,
+      this.private,
+      this.completedEpisodesCount,
+      this.completedVolumesCount})
       : super._() {
     if (status == null) {
       throw new BuiltValueNullFieldError('SubjectCollectionInfo', 'status');
@@ -137,15 +166,23 @@ class _$SubjectCollectionInfo extends SubjectCollectionInfo {
         comment == other.comment &&
         tags == other.tags &&
         rating == other.rating &&
-        private == other.private;
+        private == other.private &&
+        completedEpisodesCount == other.completedEpisodesCount &&
+        completedVolumesCount == other.completedVolumesCount;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, status.hashCode), comment.hashCode), tags.hashCode),
-            rating.hashCode),
-        private.hashCode));
+        $jc(
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, status.hashCode), comment.hashCode),
+                        tags.hashCode),
+                    rating.hashCode),
+                private.hashCode),
+            completedEpisodesCount.hashCode),
+        completedVolumesCount.hashCode));
   }
 
   @override
@@ -155,7 +192,9 @@ class _$SubjectCollectionInfo extends SubjectCollectionInfo {
           ..add('comment', comment)
           ..add('tags', tags)
           ..add('rating', rating)
-          ..add('private', private))
+          ..add('private', private)
+          ..add('completedEpisodesCount', completedEpisodesCount)
+          ..add('completedVolumesCount', completedVolumesCount))
         .toString();
   }
 }
@@ -186,6 +225,16 @@ class SubjectCollectionInfoBuilder
   int get private => _$this._private;
   set private(int private) => _$this._private = private;
 
+  int _completedEpisodesCount;
+  int get completedEpisodesCount => _$this._completedEpisodesCount;
+  set completedEpisodesCount(int completedEpisodesCount) =>
+      _$this._completedEpisodesCount = completedEpisodesCount;
+
+  int _completedVolumesCount;
+  int get completedVolumesCount => _$this._completedVolumesCount;
+  set completedVolumesCount(int completedVolumesCount) =>
+      _$this._completedVolumesCount = completedVolumesCount;
+
   SubjectCollectionInfoBuilder();
 
   SubjectCollectionInfoBuilder get _$this {
@@ -195,6 +244,8 @@ class SubjectCollectionInfoBuilder
       _tags = _$v.tags?.toBuilder();
       _rating = _$v.rating;
       _private = _$v.private;
+      _completedEpisodesCount = _$v.completedEpisodesCount;
+      _completedVolumesCount = _$v.completedVolumesCount;
       _$v = null;
     }
     return this;
@@ -223,7 +274,9 @@ class SubjectCollectionInfoBuilder
               comment: comment,
               tags: tags.build(),
               rating: rating,
-              private: private);
+              private: private,
+              completedEpisodesCount: completedEpisodesCount,
+              completedVolumesCount: completedVolumesCount);
     } catch (_) {
       String _$failedField;
       try {

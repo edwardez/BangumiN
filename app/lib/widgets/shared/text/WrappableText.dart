@@ -23,6 +23,9 @@ class WrappableText extends StatelessWidget {
   /// whether create a outer wrapper widget, (Flexible needs a wrapper flex to work)
   final OuterWrapper outerWrapper;
 
+  /// How visual overflow should be handled.
+  final TextOverflow overflow;
+
   const WrappableText(
     this.text, {
     Key key,
@@ -34,6 +37,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 0,
     this.outerWrapper = OuterWrapper.NoWrapper,
+        this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   const WrappableText.smallVerticalPadding(
@@ -47,6 +51,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 4.0,
     this.outerWrapper = OuterWrapper.NoWrapper,
+        this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   const WrappableText.mediumVerticalPadding(
@@ -60,6 +65,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 10.0,
     this.outerWrapper = OuterWrapper.NoWrapper,
+        this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   @override
@@ -76,7 +82,7 @@ class WrappableText extends StatelessWidget {
         child: Text(
           text,
           maxLines: maxLines,
-          overflow: TextOverflow.ellipsis,
+          overflow: overflow,
           style: textStyle ?? Theme
               .of(context)
               .textTheme

@@ -1,9 +1,10 @@
 import 'package:built_value/built_value.dart';
+import 'package:munin/models/bangumi/common/ChineseNameOwner.dart';
 
 part 'SujectBase.g.dart';
 
 @BuiltValue(instantiable: false)
-abstract class SubjectBase {
+abstract class SubjectBase with ChineseNameOwner {
   @nullable
   @BuiltValueField(wireName: 'id')
   int get id;
@@ -18,7 +19,7 @@ abstract class SubjectBase {
 
   @nullable
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   SubjectBase rebuild(void updates(SubjectBaseBuilder b));
 

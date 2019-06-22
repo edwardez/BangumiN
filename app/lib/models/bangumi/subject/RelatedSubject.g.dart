@@ -44,10 +44,10 @@ class _$RelatedSubjectSerializer
         ..add(serializers.serialize(object.pageUrlFromApi,
             specifiedType: const FullType(String)));
     }
-    if (object.nameCn != null) {
+    if (object.chineseName != null) {
       result
         ..add('name_cn')
-        ..add(serializers.serialize(object.nameCn,
+        ..add(serializers.serialize(object.chineseName,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -85,7 +85,7 @@ class _$RelatedSubjectSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
       }
@@ -107,7 +107,7 @@ class _$RelatedSubject extends RelatedSubject {
   @override
   final String name;
   @override
-  final String nameCn;
+  final String chineseName;
 
   factory _$RelatedSubject([void Function(RelatedSubjectBuilder) updates]) =>
       (new RelatedSubjectBuilder()..update(updates)).build();
@@ -118,7 +118,7 @@ class _$RelatedSubject extends RelatedSubject {
       this.id,
       this.pageUrlFromApi,
       this.name,
-      this.nameCn})
+      this.chineseName})
       : super._() {
     if (subjectSubTypeName == null) {
       throw new BuiltValueNullFieldError(
@@ -146,7 +146,7 @@ class _$RelatedSubject extends RelatedSubject {
         id == other.id &&
         pageUrlFromApi == other.pageUrlFromApi &&
         name == other.name &&
-        nameCn == other.nameCn;
+        chineseName == other.chineseName;
   }
 
   @override
@@ -158,7 +158,7 @@ class _$RelatedSubject extends RelatedSubject {
                     id.hashCode),
                 pageUrlFromApi.hashCode),
             name.hashCode),
-        nameCn.hashCode));
+        chineseName.hashCode));
   }
 
   @override
@@ -169,7 +169,7 @@ class _$RelatedSubject extends RelatedSubject {
           ..add('id', id)
           ..add('pageUrlFromApi', pageUrlFromApi)
           ..add('name', name)
-          ..add('nameCn', nameCn))
+          ..add('chineseName', chineseName))
         .toString();
   }
 }
@@ -202,9 +202,9 @@ class RelatedSubjectBuilder
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   RelatedSubjectBuilder();
 
@@ -215,7 +215,7 @@ class RelatedSubjectBuilder
       _id = _$v.id;
       _pageUrlFromApi = _$v.pageUrlFromApi;
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _$v = null;
     }
     return this;
@@ -245,7 +245,7 @@ class RelatedSubjectBuilder
               id: id,
               pageUrlFromApi: pageUrlFromApi,
               name: name,
-              nameCn: nameCn);
+              chineseName: chineseName);
     } catch (_) {
       String _$failedField;
       try {

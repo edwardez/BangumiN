@@ -13,7 +13,7 @@ import 'package:munin/models/bangumi/search/result/MonoSearchResult.dart';
 import 'package:munin/models/bangumi/search/result/SubjectSearchResultItem.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
-import 'package:munin/providers/bangumi/search/parser/MonoSearchParser.dart';
+import 'package:munin/providers/bangumi/search/parser/isolate.dart';
 
 /// A Bangumi search service that handles search-related http requests
 class BangumiSearchService {
@@ -104,12 +104,15 @@ class BangumiSearchService {
       searchWiredName = 'crt';
     }
 
-    String requestUrl =
-        '/mono_search/$query?cat=$searchWiredName';
+    String requestUrl = '/mono_search/$query?cat=$searchWiredName';
 
     Dio.Response response = await cookieClient.dio.get(requestUrl);
-    LinkedHashMap<int, MonoSearchResult> monoSearchResults =
-    MonoSearchParser().process(response.data, searchType: searchType);
+    LinkedHashMap<int, MonoSearchResult> monoSearchResults = await compute(
+        processMonoSearch,
+        ParseMonoSearchMessage(
+          response.data,
+          searchType: searchType,
+        ));
 
     BangumiGeneralSearchResponse bangumiSearchResponse =
     BangumiGeneralSearchResponse((b) =>
@@ -120,5 +123,4 @@ class BangumiSearchService {
 
     return bangumiSearchResponse;
   }
-
 }

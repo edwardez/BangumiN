@@ -58,7 +58,23 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+        }
+    }
 
+    flavorDimensions "flavors"
+    productFlavors {
+        development {
+            dimension "flavors"
+            applicationIdSuffix ".development"
+            versionNameSuffix "-development"
+        }
+        uat {
+            dimension "flavors"
+            applicationIdSuffix ".uat"
+            versionNameSuffix "-uat"
+        }
+        production {
+            dimension "flavors"
         }
     }
 }

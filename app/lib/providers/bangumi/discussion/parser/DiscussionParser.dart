@@ -1,12 +1,10 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
-import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
-import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -24,9 +22,11 @@ class DiscussionParser {
     'group': BangumiContent.GroupTopic,
   };
 
-
-
   static final elementTypeRegex = RegExp(r'_(\w+)_');
+
+  final MuteSetting muteSetting;
+
+  const DiscussionParser(this.muteSetting);
 
   /// bangumi uses id to identify each discussion element and we can thus use
   /// this info to guess [BangumiContent]
@@ -38,7 +38,7 @@ class DiscussionParser {
     return elementIdToContentType[capturedString];
   }
 
-  Optional<DiscussionItem> parseDiscussionItem(Element discussionItemElement,
+  Optional<DiscussionItem> _parseDiscussionItem(Element discussionItemElement,
       {BangumiContent contentType}) {
     final defaultTitle = '-';
 
@@ -129,7 +129,8 @@ class DiscussionParser {
     }
   }
 
-  bool isMutedItem(DiscussionItem item, MuteSetting muteSetting) {
+  /// Checks whether a [DiscussionItem] has been muted.
+  bool _isMutedDiscussionItem(DiscussionItem item) {
     if (item is! GroupDiscussionPost) {
       return false;
     }
@@ -155,33 +156,24 @@ class DiscussionParser {
       return true;
     }
 
-    /// 2. Checks whether user muted op
-    bool isMutedOp = false;
-    for (MutedUser mutedUser in muteSetting.mutedUsers.values) {
-      if (mutedUser.userId == post.originalPosterUserId) {
-        isMutedOp = true;
-        break;
-      }
-    }
+    /// 3. Checks whether user muted op
+    final foundedMutedUser = muteSetting.mutedUsers.values.firstWhere(
+            (u) => u.userId == post.originalPosterUserId,
+        orElse: () => null);
 
-    if (isMutedOp) {
-      return true;
-    }
-
-    return false;
+    return foundedMutedUser != null;
   }
 
-  List<DiscussionItem> process(String rawHtml,
-      {@required MuteSetting muteSetting, BangumiContent bangumiContent}) {
+  List<DiscussionItem> processDiscussionItems(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
     List<DiscussionItem> discussionItems = [];
     List<Element> discussionItemElements =
         document.querySelectorAll('#eden_tpc_list li');
     for (Element element in discussionItemElements) {
       Optional<DiscussionItem> maybeDiscussionItem =
-      parseDiscussionItem(element);
+      _parseDiscussionItem(element);
       if (maybeDiscussionItem.isPresent &&
-          !isMutedItem(maybeDiscussionItem.value, muteSetting)) {
+          !_isMutedDiscussionItem(maybeDiscussionItem.value)) {
         discussionItems.add(maybeDiscussionItem.value);
       }
     }

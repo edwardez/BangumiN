@@ -17,7 +17,7 @@ abstract class MonoSearchResult
   BuiltList<String> get miscInfo;
 
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   factory MonoSearchResult([updates(MonoSearchResultBuilder b)]) =
       _$MonoSearchResult;

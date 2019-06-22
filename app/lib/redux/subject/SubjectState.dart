@@ -7,7 +7,6 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReviewResponse.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'SubjectState.g.dart';
@@ -17,19 +16,7 @@ abstract class SubjectState
   @nullable
   BuiltMap<int, BangumiSubject> get subjects;
 
-  /// A map which contains loading status of each subject and its corresponding
-  /// loading state. Key is subject id
-  BuiltMap<int, LoadingStatus> get subjectsLoadingStatus;
-
   BuiltMap<int, SubjectCollectionInfo> get collections;
-
-  /// A map which contains loading status of each collection and its corresponding
-  /// loading state. Key is subject id
-  BuiltMap<int, LoadingStatus> get collectionsLoadingStatus;
-
-  /// A map which contains submission status of each collection and its corresponding
-  /// loading state. Key is subject id
-  BuiltMap<int, LoadingStatus> get collectionsSubmissionStatus;
 
   BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse> get subjectsReviews;
 
@@ -38,10 +25,7 @@ abstract class SubjectState
   factory SubjectState([updates(SubjectStateBuilder b)]) =>
       _$SubjectState((b) => b
         ..subjects.replace(BuiltMap<int, BangumiSubject>())
-        ..subjectsLoadingStatus.replace(BuiltMap<int, LoadingStatus>())
         ..collections.replace(BuiltMap<int, SubjectCollectionInfo>())
-        ..collectionsLoadingStatus.replace(BuiltMap<int, LoadingStatus>())
-        ..collectionsSubmissionStatus.replace(BuiltMap<int, LoadingStatus>())
         ..subjectsReviews.replace(
             BuiltMap<GetSubjectReviewRequest, SubjectReviewResponse>())
         ..update(updates));

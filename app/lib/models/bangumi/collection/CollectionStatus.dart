@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/strings.dart';
 
 part 'CollectionStatus.g.dart';
@@ -154,4 +155,8 @@ class CollectionStatus extends EnumClass {
 
   static Serializer<CollectionStatus> get serializer =>
       _$collectionStatusSerializer;
+
+  static CollectionStatus fromWiredName(String wiredName) {
+    return serializers.deserializeWith(CollectionStatus.serializer, wiredName);
+  }
 }

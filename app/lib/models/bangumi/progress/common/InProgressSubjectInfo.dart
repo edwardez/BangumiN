@@ -38,7 +38,7 @@ abstract class InProgressSubjectInfo
   /// Api doesn't return this field if it is not available
   /// This field is only valid for books
   @nullable
-  @BuiltValueField(wireName: 'vol_count')
+  @BuiltValueField(wireName: 'vols_count')
   int get totalVolumesCount;
 
   InProgressSubjectInfo._();

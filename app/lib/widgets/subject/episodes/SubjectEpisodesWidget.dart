@@ -10,7 +10,6 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/progress/showEpisodeOptionSheet.dart';
@@ -257,7 +256,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
       ).orNull;
 
       String secondaryTitle =
-          secondaryName(episode.name, episode.nameCn, language).orNull;
+          secondaryName(episode.name, episode.chineseName, language).orNull;
 
       String secondaryTitleWithEpisodeInfo = _secondaryTitleWithEpisodeInfo(
         secondaryTitle,
@@ -271,7 +270,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
             title: Row(
               children: <Widget>[
                 WrappableText(
-                  preferredName(episode.name, episode.nameCn, language),
+                  preferredName(episode.name, episode.chineseName, language),
                   maxLines: episodeTitleMaxLines,
                   fit: FlexFit.tight,
                   textStyle: Theme.of(context)
@@ -323,20 +322,21 @@ class SubjectEpisodesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> requestStatusFuture;
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, subjectId),
       distinct: true,
       onInit: (store) {
         final action = GetSubjectEpisodesRequestAction(
-            context: context, subjectId: subjectId);
+            subjectId: subjectId);
         store.dispatch(action);
+        requestStatusFuture = action.completer.future;
       },
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.subjectEpisodes == null) {
           return RequestInProgressIndicatorWidget(
-            loadingStatus: vm.loadingStatus,
-            refreshAction: GetSubjectEpisodesRequestAction(
-                context: context, subjectId: subjectId),
+            retryCallback: (_) => vm.getSubjectEpisodes(),
+            requestStatusFuture: requestStatusFuture,
           );
         }
 
@@ -368,17 +368,18 @@ class _ViewModel {
   final BangumiSubject bangumiSubject;
   final SubjectEpisodes subjectEpisodes;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
-  final LoadingStatus loadingStatus;
 
-  final Function(BuildContext context) getSubjectEpisodes;
+  final Future<void> Function() getSubjectEpisodes;
   final UpdateSingleSubjectEpisode updateSingleSubjectEpisode;
   final UpdateBatchSubjectEpisodes updateBatchSubjectEpisodes;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
-    _getSubjectEpisodes(BuildContext context) {
+    Future<void> _getSubjectEpisodes() {
       final action = GetSubjectEpisodesRequestAction(
-          context: context, subjectId: subjectId);
+          subjectId: subjectId);
       store.dispatch(action);
+
+      return action.completer.future;
     }
 
     _updateSingleSubjectEpisode({
@@ -411,7 +412,6 @@ class _ViewModel {
 
     return _ViewModel(
       subjectEpisodes: store.state.progressState.watchableSubjects[subjectId],
-      loadingStatus: store.state.progressState.subjectsLoadingStatus[subjectId],
       getSubjectEpisodes: _getSubjectEpisodes,
       preferredSubjectInfoLanguage:
           store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
@@ -423,7 +423,6 @@ class _ViewModel {
 
   const _ViewModel({
     @required this.subjectEpisodes,
-    @required this.loadingStatus,
     @required this.getSubjectEpisodes,
     @required this.preferredSubjectInfoLanguage,
     @required this.updateSingleSubjectEpisode,
@@ -437,13 +436,13 @@ class _ViewModel {
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
           subjectEpisodes == other.subjectEpisodes &&
-          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage &&
-          loadingStatus == other.loadingStatus;
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
 
   @override
-  int get hashCode => hash3(
+  int get hashCode =>
+      hash2(
         subjectEpisodes,
         preferredSubjectInfoLanguage,
-        loadingStatus,
+
       );
 }

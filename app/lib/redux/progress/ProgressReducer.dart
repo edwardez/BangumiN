@@ -11,43 +11,22 @@ import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/progress/common.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:redux/redux.dart';
 
 final progressReducers = combineReducers<ProgressState>([
-  TypedReducer<ProgressState, GetSubjectEpisodesLoadingAction>(
-      getSubjectEpisodesLoadingReducer),
-  TypedReducer<ProgressState, GetSubjectEpisodesFailureAction>(
-      getSubjectEpisodesFailureReducer),
   TypedReducer<ProgressState, GetSubjectEpisodesSuccessAction>(
       getSubjectEpisodesSuccessReducer),
   TypedReducer<ProgressState, GetProgressSuccessAction>(
       getProgressSuccessReducer),
   TypedReducer<ProgressState, UpdateInProgressEpisodeSuccessAction>(
       updateInProgressEpisodeSuccessReducer),
+  TypedReducer<ProgressState, DeleteInProgressSubjectAction>(
+      deleteInProgressSubjectReducer),
   TypedReducer<ProgressState, UpdateInProgressBatchEpisodesSuccessAction>(
       updateInProgressBatchEpisodesSuccessReducer),
   TypedReducer<ProgressState, UpdateBookProgressSuccessAction>(
       updateBookProgressSuccessReducer),
 ]);
-
-ProgressState getSubjectEpisodesLoadingReducer(ProgressState progressState,
-    GetSubjectEpisodesLoadingAction action) {
-  return progressState.rebuild((b) =>
-  b
-    ..subjectsLoadingStatus.addAll({
-      action.subjectId: LoadingStatus.Loading,
-    }));
-}
-
-ProgressState getSubjectEpisodesFailureReducer(ProgressState progressState,
-    GetSubjectEpisodesFailureAction action) {
-  return progressState.rebuild((b) =>
-  b
-    ..subjectsLoadingStatus.addAll({
-      action.subjectId: action.loadingStatus,
-    }));
-}
 
 ProgressState getSubjectEpisodesSuccessReducer(ProgressState progressState,
     GetSubjectEpisodesSuccessAction action) {
@@ -77,8 +56,7 @@ ProgressState getProgressSuccessReducer(ProgressState progressState,
   return progressState;
 }
 
-ProgressState updateInProgressEpisodeSuccessReducer(
-    ProgressState progressState,
+ProgressState updateInProgressEpisodeSuccessReducer(ProgressState progressState,
     UpdateInProgressEpisodeSuccessAction action) {
   Iterable<InProgressCollection> progresses = progressState
       .progresses[action.subject.type]
@@ -108,6 +86,22 @@ ProgressState updateInProgressEpisodeSuccessReducer(
   return progressState.rebuild((b) => b
     ..progresses.addAll(
         {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
+}
+
+ProgressState deleteInProgressSubjectReducer(ProgressState progressState,
+    DeleteInProgressSubjectAction action) {
+  var progressesToUpdate = progressState.progresses[action.subjectType];
+  if (progressesToUpdate != null) {
+    progressesToUpdate = progressesToUpdate.rebuild((b) =>
+        b.removeWhere((progress) => progress.subject.id == action.subjectId));
+
+    progressState = progressState.rebuild((b) =>
+        b.progresses.addAll({
+          action.subjectType: progressesToUpdate
+        }));
+  }
+
+  return progressState;
 }
 
 ProgressState updateInProgressBatchEpisodesSuccessReducer(
@@ -151,10 +145,16 @@ ProgressState updateInProgressBatchEpisodesSuccessReducer(
 
 ProgressState updateBookProgressSuccessReducer(
     ProgressState progressState, UpdateBookProgressSuccessAction action) {
-  Iterable<InProgressCollection> progresses = progressState
-      .progresses[action.subject.type]
+  BuiltList<InProgressCollection> bookProgresses = progressState
+      .progresses[SubjectType.Book];
+
+  if (bookProgresses == null) {
+    return progressState;
+  }
+
+  Iterable<InProgressCollection> progresses = bookProgresses
       .map<InProgressCollection>((InProgressCollection progress) {
-    if (progress.subject.id == action.subject.id &&
+    if (progress.subject.id == action.subjectId &&
         progress is InProgressBookCollection) {
       InProgressBookCollection newEpisodeProgress = progress.rebuild((b) => b
         ..completedEpisodesCount = action.newEpisodeNumber
@@ -167,5 +167,5 @@ ProgressState updateBookProgressSuccessReducer(
 
   return progressState.rebuild((b) => b
     ..progresses.addAll(
-        {action.subject.type: BuiltList<InProgressCollection>(progresses)}));
+        {SubjectType.Book: BuiltList<InProgressCollection>(progresses)}));
 }

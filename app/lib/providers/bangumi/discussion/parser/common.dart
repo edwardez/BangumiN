@@ -12,7 +12,7 @@ Optional<ParentSubject> parseParentSubject(DocumentFragment document) {
   int id = tryParseInt(parseHrefId(subjectElement), defaultValue: null);
 
   String name = subjectElement?.text ?? '??';
-  String nameCn =
+  String chineseName =
       (document.querySelector('.nameSingle>a')?.attributes ?? {})['title'] ??
           null;
 
@@ -26,7 +26,7 @@ Optional<ParentSubject> parseParentSubject(DocumentFragment document) {
   ParentSubject subject = ParentSubject((b) => b
     ..id = id
     ..name = name
-    ..nameCn = nameCn
+    ..chineseName = chineseName
     ..cover.replace(BangumiImage.fromImageUrl(
         coverImageUrl, ImageSize.Unknown, ImageType.SubjectCover)));
 

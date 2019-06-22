@@ -15,7 +15,6 @@ class UpdateGeneralSettingAction {
   UpdateGeneralSettingAction({@required this.generalSetting});
 }
 
-
 /// Updates theme settings.
 class UpdateThemeSettingAction {
   final ThemeSetting themeSetting;

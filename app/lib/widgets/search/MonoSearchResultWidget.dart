@@ -31,9 +31,9 @@ class MonoSearchResultWidget extends StatelessWidget {
       maxLines: titleMaxLines,
       overflow: TextOverflow.ellipsis,
     ));
-    if (!isEmpty(monoSearchResult.nameCn)) {
+    if (!isEmpty(monoSearchResult.chineseName)) {
       subInfoRows.add(Text(
-        monoSearchResult.nameCn,
+        monoSearchResult.chineseName,
         style: captionStyle,
         maxLines: subtitleMaxLines,
         overflow: TextOverflow.ellipsis,

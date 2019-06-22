@@ -14,6 +14,7 @@ import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/progress/SubjectProgressPreview.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -88,6 +89,9 @@ abstract class BangumiSubject
 
   @BuiltValueField(wireName: 'collection')
   CollectionStatusDistribution get collectionStatusDistribution;
+
+  /// Progress information of a subject.
+  SubjectProgressPreview get subjectProgressPreview;
 
   @memoized
   String get infoBoxRowsPlainText {

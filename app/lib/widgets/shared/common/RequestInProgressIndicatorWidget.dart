@@ -1,17 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/redux/shared/ExceptionHandler.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:redux/redux.dart';
 
 /// A general-purpose widget to show a [CircularProgressIndicator] if the request
 /// is in Progress, and a button/text to let user retries their requests
-class RequestInProgressIndicatorWidget extends StatelessWidget {
-  /// An action that can be dispatched by the store
-  /// Note: it's the caller's responsibility to ensure [refreshAction] is an action
-  /// that can be dispatched by the store.
-  /// If [refreshAction] is set to null, retry button will be hidden
+class RequestInProgressIndicatorWidget extends StatefulWidget {
+  /// An action that can be used to retry current request.
+  /// If [retryCallback] is set to null, retry button will be hidden.
+  /// If [retryCallback] is called, [requestStatusFuture] will be updated to
+  /// the return value of this.
+  final Future<void> Function(BuildContext context) retryCallback;
+
   final dynamic refreshAction;
 
   /// A message to show if the request is in progress
@@ -26,62 +35,185 @@ class RequestInProgressIndicatorWidget extends StatelessWidget {
   final String retryButtonMessage;
 
   /// a [loadingStatus] that can be used to build widget accordingly
-  final LoadingStatus loadingStatus;
+  final RequestStatus loadingStatus;
 
   /// If set to false, appbar inside this widget will be hide
   final bool showAppBar;
 
-  const RequestInProgressIndicatorWidget(
-      {Key key,
-      @required this.loadingStatus,
-      this.refreshAction,
-        this.showAppBar = true,
-      this.requestInProgressMessage = '加载中',
-      this.requestGeneralErrorMessage = '加载出错',
-      this.retryButtonMessage = '重试'})
-      : super(key: key);
+  final Future<void> requestStatusFuture;
+
+  const RequestInProgressIndicatorWidget({
+    Key key,
+    this.loadingStatus,
+    @required this.requestStatusFuture,
+    this.refreshAction,
+    this.showAppBar = true,
+    this.requestInProgressMessage = '加载中',
+    this.requestGeneralErrorMessage = '加载出错',
+    this.retryButtonMessage = '重试',
+    this.retryCallback,
+  }) : super(key: key);
+
+  @override
+  _RequestInProgressIndicatorWidgetState createState() =>
+      _RequestInProgressIndicatorWidgetState();
+}
+
+class _RequestInProgressIndicatorWidgetState
+    extends State<RequestInProgressIndicatorWidget> {
+  RequestStatus requestStatus = RequestStatus.Initial;
+
+  StreamSubscription<void> requestStatusChangeSubscription;
+
+  _ViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    requestStatus = RequestStatus.Loading;
+
+    listenOnRequestFuture(widget.requestStatusFuture);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    requestStatusChangeSubscription?.cancel();
+  }
+
+  listenOnRequestFuture(Future requestStatusFuture) {
+    assert(requestStatusFuture != null);
+    if (requestStatusFuture == null) {
+      return;
+    }
+
+    if (mounted && requestStatus != RequestStatus.Loading) {
+      rebuildWithRequestStatus(RequestStatus.Loading);
+    }
+
+    // Cancels any previous subscription to avoid racing condition.
+    requestStatusChangeSubscription?.cancel();
+
+    requestStatusChangeSubscription = requestStatusFuture.asStream().listen(
+          (_) {
+        rebuildWithRequestStatus(RequestStatus.Success);
+      },
+      onError: (error) async {
+        rebuildWithRequestStatus(RequestStatus.UnknownException);
+
+        final result = await generalExceptionHandler(
+          error,
+          context: context,
+        );
+        if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
+          viewModel?.dispatchAction(OAuthLoginRequest(context));
+        } else if (result == GeneralExceptionHandlerResult.Skipped) {
+          return;
+        }
+
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(formatErrorMessage(error)),
+        ));
+      },
+    );
+  }
+
+  /// Rebuilds [requestStatus] with a checker for current [requestStatus] and
+  /// whether the widget is mounted. Since typically this widget needs to rebuild
+  /// with new [requestStatus] inside a async closure, it's necessary to check
+  /// whether widget has been mounted.
+  rebuildWithRequestStatus(RequestStatus newStatus) {
+    if (mounted && requestStatus != newStatus) {
+      setState(() {
+        requestStatus = newStatus;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, Store>(
+    return StoreConnector<AppState, _ViewModel>(
+      converter: (Store store) =>
+          _ViewModel.fromStore(
+            store,
+          ),
       distinct: true,
-      converter: (Store store) => store,
-      builder: (BuildContext context, Store store) {
-        if (loadingStatus?.isException ?? false) {
-          List<Widget> errorWidgets = [];
-          errorWidgets.add(Text(requestGeneralErrorMessage));
+      builder: (BuildContext context, _ViewModel vm) {
+        viewModel = vm;
+        Widget body;
+        AppBar appBar;
 
-          if (refreshAction != null) {
+        if (requestStatus.isException) {
+          List<Widget> errorWidgets = [];
+          errorWidgets.add(Text(widget.requestGeneralErrorMessage));
+
+          if (widget.retryCallback != null) {
             errorWidgets.add(RaisedButton(
-              child: Text(retryButtonMessage),
+              child: Text(widget.retryButtonMessage),
               onPressed: () {
-                store.dispatch(refreshAction);
+                listenOnRequestFuture(widget.retryCallback(context));
               },
             ));
           }
 
-          return ScaffoldWithRegularAppBar(
-            appBar: showAppBar ? AppBar() : null,
-            safeAreaChild: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: errorWidgets,
-              ),
+          body = Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: errorWidgets,
             ),
           );
+
+          if (widget.showAppBar) {
+            appBar = AppBar();
+          }
+        } else {
+          body = Center(
+            child: AdaptiveProgressIndicator(),
+          );
+
+          if (widget.showAppBar) {
+            appBar = AppBar(
+              title: Text(widget.requestInProgressMessage),
+            );
+          }
         }
 
         return ScaffoldWithRegularAppBar(
-          appBar: showAppBar
-              ? AppBar(
-            title: Text(requestInProgressMessage),
-          )
-              : null,
-          safeAreaChild: Center(
-            child: CircularProgressIndicator(),
-          ),
+          appBar: appBar,
+          safeAreaChild: body,
         );
       },
     );
   }
+}
+
+class _ViewModel {
+  final Function(dynamic refreshAction) dispatchAction;
+  final void Function(BuildContext context, Object error) handleError;
+
+  factory _ViewModel.fromStore(Store<AppState> store) {
+    _dispatchAction(dynamic action) {
+      store.dispatch(action);
+    }
+
+    return _ViewModel(
+      dispatchAction: _dispatchAction,
+      handleError: (BuildContext context, Object error) {
+        store.dispatch(HandleErrorAction(error: error, context: context));
+      },
+    );
+  }
+
+  _ViewModel({
+    @required this.dispatchAction,
+    @required this.handleError,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }

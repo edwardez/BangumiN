@@ -4,13 +4,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/shared/utils/misc/async.dart';
-import 'package:munin/shared/workarounds/refresh_indicator/refresh_indicator.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
+import 'package:munin/widgets/shared/refresh/workaround/refresh_indicator.dart';
 
 /// The signature for a function that's called when a refresh should be performed
 /// The returned [Future] must complete when the refresh operation is
@@ -152,33 +152,34 @@ class MuninRefreshState extends State<MuninRefresh> {
   static const retryableLoadErrorText = '加载出错，点击重试';
   static const loadMoreText = '继续加载';
 
-  /// [LoadingStatus] of the top `pull to refresh`
-  LoadingStatus refreshLoadingStatus;
+  /// [RequestStatus] of the top `pull to refresh`
+  RequestStatus refreshLoadingStatus;
 
-  /// [LoadingStatus] of the bottom `load more`
-  LoadingStatus loadMoreStatus;
+  /// [RequestStatus] of the bottom `load more`
+  RequestStatus loadMoreStatus;
   double currentMaxScrollExtent;
 
   RefreshWidgetStyle computedRefreshWidgetStyle;
 
-  /// Number of items before next refresh, it's useful to judge whether item list
-  /// is still empty after first refresh
-  int itemCountBeforeNextRefresh;
-
   GlobalKey<MuninRefreshIndicatorState> _materialRefreshKey =
   GlobalKey<MuninRefreshIndicatorState>();
+
+  /// A subscription to load more status change. It can be used to unsubscribe
+  /// previous load more status change.
+  StreamSubscription<void> loadMoreStatusChangeSubscription;
 
   @override
   void initState() {
     super.initState();
     computedRefreshWidgetStyle =
         _getPlatformRefreshWidgetStyle(widget.refreshWidgetStyle);
-    refreshLoadingStatus = LoadingStatus.Success;
-    loadMoreStatus = LoadingStatus.Success;
+    refreshLoadingStatus = RequestStatus.Success;
+    loadMoreStatus = RequestStatus.Success;
   }
 
   @override
   void dispose() {
+    loadMoreStatusChangeSubscription?.cancel();
     super.dispose();
   }
 
@@ -195,13 +196,13 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// [CupertinoSliverRefreshControl], however `widget.onRefresh()` will still
   /// be called
   Future<void> callOnRefresh() {
-    if (refreshLoadingStatus == LoadingStatus.Loading ||
+    if (refreshLoadingStatus == RequestStatus.Loading ||
         widget.onRefresh == null) {
       return immediateFinishCompleter().future;
     }
 
     setState(() {
-      refreshLoadingStatus = LoadingStatus.Loading;
+      refreshLoadingStatus = RequestStatus.Loading;
     });
 
     Future<void> completer;
@@ -218,13 +219,13 @@ class MuninRefreshState extends State<MuninRefresh> {
     completer.then((v) {
       if (mounted) {
         setState(() {
-          refreshLoadingStatus = LoadingStatus.Success;
+          refreshLoadingStatus = RequestStatus.Success;
         });
       }
     }, onError: (error, stack) {
       if (mounted) {
         setState(() {
-          refreshLoadingStatus = LoadingStatus.UnknownException;
+          refreshLoadingStatus = RequestStatus.UnknownException;
         });
       }
     });
@@ -236,20 +237,20 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// this method is called internally and passed to refresh widget
   RefreshCallback _generateOnRefreshCallBack() {
     return () {
-      refreshLoadingStatus = LoadingStatus.Loading;
+      refreshLoadingStatus = RequestStatus.Loading;
       Future<void> completer;
       completer = widget.onRefresh();
 
       completer.then((v) {
         if (mounted) {
           setState(() {
-            refreshLoadingStatus = LoadingStatus.Success;
+            refreshLoadingStatus = RequestStatus.Success;
           });
         }
       }, onError: (error, stack) {
         if (mounted) {
           setState(() {
-            refreshLoadingStatus = LoadingStatus.UnknownException;
+            refreshLoadingStatus = RequestStatus.UnknownException;
           });
         }
       });
@@ -259,33 +260,32 @@ class MuninRefreshState extends State<MuninRefresh> {
   }
 
   Future<void> callOnLoadMore() {
-    if (loadMoreStatus == LoadingStatus.Loading) {
-      return immediateFinishCompleter().future;
-    }
+    loadMoreStatusChangeSubscription?.cancel();
 
     setState(() {
-      loadMoreStatus = LoadingStatus.Loading;
+      loadMoreStatus = RequestStatus.Loading;
     });
 
-    Future<void> completer = widget.onLoadMore();
+    Future<void> future = widget.onLoadMore();
 
-    completer.then((v) {
-      if (mounted) {
-        setState(() {
-          loadMoreStatus = LoadingStatus.Success;
-        });
-      }
-    }, onError: (error, stack) {
-      setState(() {
+    loadMoreStatusChangeSubscription = future.asStream().listen(
+          (_) {
         if (mounted) {
           setState(() {
-            loadMoreStatus = LoadingStatus.UnknownException;
+            loadMoreStatus = RequestStatus.Success;
           });
         }
-      });
-    });
+      },
+      onError: (error) {
+        if (mounted) {
+          setState(() {
+            loadMoreStatus = RequestStatus.UnknownException;
+          });
+        }
+      },
+    );
 
-    return completer;
+    return future;
   }
 
   /// Translates passed in [refreshWidgetStyle] to either [RefreshWidgetStyle.Cupertino]
@@ -307,19 +307,18 @@ class MuninRefreshState extends State<MuninRefresh> {
 
   _buildLoadMoreStatusIndicatorWidget() {
     Widget coreWidget;
-
-    if (loadMoreStatus == LoadingStatus.Initial) {
+    if (loadMoreStatus == RequestStatus.Initial) {
       coreWidget = Container();
-    } else if (loadMoreStatus == LoadingStatus.Loading) {
+    } else if (loadMoreStatus == RequestStatus.Loading) {
       coreWidget = AdaptiveProgressIndicator();
-    } else if (loadMoreStatus == LoadingStatus.Success) {
+    } else if (loadMoreStatus == RequestStatus.Success) {
       if (widget.noMoreItemsToLoad) {
         assert(widget.noMoreItemsWidget != null,
             'noMoreItemWidget must not be null if noMoreItems is set to true');
         if (widget.noMoreItemsWidget != null) {
           coreWidget = widget.noMoreItemsWidget;
         } else {
-          coreWidget = Container();
+          ExcludeSemantics(child: coreWidget = Container());
         }
       } else {
         /// Show a load more button to let user load more contents
@@ -398,7 +397,7 @@ class MuninRefreshState extends State<MuninRefresh> {
   /// HACKHACK: block Cupertino Refresh since we are manually trigger refresh
   /// under this condition
   bool showPlaceholderCupertinoRefreshIndicator() {
-    return refreshLoadingStatus == LoadingStatus.Loading &&
+    return refreshLoadingStatus == RequestStatus.Loading &&
         widget.itemCount == 0 &&
         computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
   }
@@ -468,7 +467,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       SliverList emptyAfterRefreshWidget = SliverList(
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-            return widget.emptyAfterRefreshWidget;
+            return Center(child: widget.emptyAfterRefreshWidget);
           },
           childCount: 1,
         ),
@@ -535,7 +534,7 @@ class MuninRefreshState extends State<MuninRefresh> {
             widget.loadMoreTriggerDistance &&
         notification.metrics.maxScrollExtent - notification.metrics.pixels >
             0 &&
-        loadMoreStatus.canInitializeNextLoad &&
+        loadMoreStatus.canInitializeNextRequest &&
         notification.metrics.maxScrollExtent != 0.0 &&
         currentMaxScrollExtent != notification.metrics.maxScrollExtent) {
       currentMaxScrollExtent = notification.metrics.maxScrollExtent;

@@ -15,8 +15,8 @@ abstract class BaseEpisodeBuilder {
   String get name;
   set name(String name);
 
-  String get nameCn;
-  set nameCn(String nameCn);
+  String get chineseName;
+  set chineseName(String chineseName);
 
   AirStatus get airStatus;
   set airStatus(AirStatus airStatus);

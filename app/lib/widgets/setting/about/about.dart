@@ -9,7 +9,8 @@ void showMuninAboutDialog(BuildContext context) async {
   final TextStyle aboutTextStyle = themeData.textTheme.body2;
   final TextStyle linkStyle =
       themeData.textTheme.body2.copyWith(color: themeData.accentColor);
-  final Widget bangumiNLogo = SvgPicture.asset('assets/logo/bangumin_logo.svg',
+  final Widget bangumiNLogo = SvgPicture.asset(
+      'assets/logo/munin_logo_rounded.svg',
       width: 48.0, height: 48.0, semanticsLabel: 'BangumiN Logo');
 
   String applicationVersion;

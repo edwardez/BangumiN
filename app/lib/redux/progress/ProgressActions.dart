@@ -9,41 +9,32 @@ import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressSubjectInfo.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/redux/shared/CommonActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 
 /// Get progress related actions
-class GetProgressAction {
+class GetProgressRequestAction {
   final BuildContext context;
   final BuiltSet<SubjectType> subjectTypes;
   final bool showSnackBar;
 
   final Completer completer;
 
-  GetProgressAction(
+  GetProgressRequestAction(
       {@required this.context,
       @required this.subjectTypes,
       Completer completer,
       this.showSnackBar = true})
-      : this.completer = completer ?? new Completer();
+      : this.completer = completer ?? Completer();
 }
 
 class GetSubjectEpisodesRequestAction {
-  final BuildContext context;
   final int subjectId;
+
+  final Completer completer;
 
   GetSubjectEpisodesRequestAction({
-    @required this.context,
     @required this.subjectId,
-  });
-}
-
-class GetSubjectEpisodesLoadingAction {
-  final int subjectId;
-
-  GetSubjectEpisodesLoadingAction({
-    @required this.subjectId,
-  });
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
 }
 
 class GetSubjectEpisodesSuccessAction {
@@ -56,14 +47,17 @@ class GetSubjectEpisodesSuccessAction {
   });
 }
 
-class GetSubjectEpisodesFailureAction extends FailureAction {
+/// Deletes a in progress subject from store.
+class DeleteInProgressSubjectAction {
+  final SubjectType subjectType;
   final int subjectId;
 
-  GetSubjectEpisodesFailureAction({
+  DeleteInProgressSubjectAction({
+    @required this.subjectType,
     @required this.subjectId,
-    @required LoadingStatus loadingStatus,
   });
 }
+
 
 class GetProgressSuccessAction {
   final BuiltSet<SubjectType> subjectTypes;
@@ -189,12 +183,12 @@ class UpdateBookProgressAction implements UpdateProgressAction {
 
 class UpdateBookProgressSuccessAction {
   /// The relevant subject instance
-  final InProgressSubjectInfo subject;
+  final int subjectId;
   final int newEpisodeNumber;
   final int newVolumeNumber;
 
   UpdateBookProgressSuccessAction({
-    @required this.subject,
+    @required this.subjectId,
     @required this.newEpisodeNumber,
     @required this.newVolumeNumber,
   });

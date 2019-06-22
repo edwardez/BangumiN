@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/collections/common.dart';
@@ -30,27 +31,30 @@ class SubjectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> requestStatusFuture;
+
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, subjectId),
       distinct: true,
       onInit: (store) {
         if (store.state.subjectState.subjects[subjectId] == null) {
           final action =
-          GetSubjectAction(context: context, subjectId: subjectId);
+          GetSubjectAction(subjectId: subjectId);
           store.dispatch(action);
+
+          requestStatusFuture = action.completer.future;
         }
-      },
-      onDispose: (store) {
-        final action = CleanUpLoadingStatusAction(subjectId: subjectId);
-        store.dispatch(action);
       },
       builder: (BuildContext context, _ViewModel vm) {
         if (vm.subject == null) {
           return RequestInProgressIndicatorWidget(
-              loadingStatus: vm.subjectLoadingStatus,
-              refreshAction:
-              GetSubjectAction(context: context, subjectId: subjectId));
+            retryCallback: (_) {
+              return vm.getSubject(context);
+            },
+            requestStatusFuture: requestStatusFuture,
+          );
         }
+
         return _buildSubjectMainPage(
             context, vm.subject, vm.preferredSubjectInfoLanguage);
       },
@@ -104,23 +108,21 @@ class SubjectWidget extends StatelessWidget {
 class _ViewModel {
   final BangumiSubject subject;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
-  final LoadingStatus subjectLoadingStatus;
-  final Function(BuildContext context) getSubject;
+  final Future<void> Function(BuildContext context) getSubject;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
-    _getSubject(BuildContext context) {
+    Future<void> _getSubject(BuildContext context) {
       if (store.state.subjectState.subjects.containsKey(subjectId)) {
         return null;
       }
 
-      final action = GetSubjectAction(context: context, subjectId: subjectId);
+      final action = GetSubjectAction(subjectId: subjectId);
       store.dispatch(action);
+      return action.completer.future;
     }
 
     return _ViewModel(
         subject: store.state.subjectState.subjects[subjectId],
-        subjectLoadingStatus:
-        store.state.subjectState.subjectsLoadingStatus[subjectId],
         getSubject: (BuildContext context) => _getSubject(context),
         preferredSubjectInfoLanguage: store
             .state.settingState.generalSetting.preferredSubjectInfoLanguage);
@@ -128,7 +130,6 @@ class _ViewModel {
 
   const _ViewModel({
     @required this.subject,
-    @required this.subjectLoadingStatus,
     @required this.getSubject,
     @required this.preferredSubjectInfoLanguage,
   });
@@ -140,10 +141,9 @@ class _ViewModel {
               runtimeType == other.runtimeType &&
               subject == other.subject &&
               preferredSubjectInfoLanguage ==
-                  other.preferredSubjectInfoLanguage &&
-              subjectLoadingStatus == other.subjectLoadingStatus;
+                  other.preferredSubjectInfoLanguage;
 
   @override
   int get hashCode =>
-      hash3(subject, preferredSubjectInfoLanguage, subjectLoadingStatus);
+      hash2(subject, preferredSubjectInfoLanguage);
 }

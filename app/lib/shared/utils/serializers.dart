@@ -67,9 +67,11 @@ import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectBaseWithCover.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
+import 'package:munin/models/bangumi/subject/progress/SubjectProgressPreview.dart';
 import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart';
 import 'package:munin/models/bangumi/subject/review/ReviewMetaInfo.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
@@ -99,8 +101,13 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
-import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
-import 'package:munin/models/bangumi/user/collection/SubjectPreview.dart';
+import 'package:munin/models/bangumi/user/collection/full/CollectionOnUserList.dart';
+import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsRequest.dart';
+import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsResponse.dart';
+import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart';
+import 'package:munin/models/bangumi/user/collection/full/SubjectOnUserCollectionList.dart';
+import 'package:munin/models/bangumi/user/collection/full/UserCollectionTag.dart';
+import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
@@ -113,7 +120,7 @@ import 'package:munin/redux/oauth/OauthState.dart';
 import 'package:munin/redux/progress/ProgressState.dart';
 import 'package:munin/redux/search/SearchState.dart';
 import 'package:munin/redux/setting/SettingState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/subject/SubjectState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineState.dart';
@@ -163,7 +170,7 @@ part 'serializers.g.dart';
   FeedChunks,
 
   /// Subject
-  LoadingStatus,
+  RequestStatus,
   BangumiSubject,
   SubjectType,
   Count,
@@ -182,6 +189,7 @@ part 'serializers.g.dart';
   SubjectCollectionInfo,
   CollectionStatusFromBangumi,
   CollectionStatus,
+  SubjectProgressPreview,
   SubjectState,
   // reviews
   GetSubjectReviewRequest,
@@ -227,11 +235,18 @@ part 'serializers.g.dart';
   NetworkServiceTagLink,
   NetworkServiceTagPlainText,
   NetworkServiceType,
-  SubjectPreview,
-  CollectionPreview,
+  SubjectBaseWithCover,
+  CollectionsOnProfilePage,
   TimelinePreview,
   Relationship,
   UserState,
+  // User collections
+  OrderCollectionBy,
+  ListUserCollectionsRequest,
+  ListUserCollectionsResponse,
+  CollectionOnUserList,
+  UserCollectionTag,
+  SubjectOnUserCollectionList,
 
   /// Progress
   ProgressState,
@@ -262,8 +277,8 @@ part 'serializers.g.dart';
   PreferredSubjectInfoLanguage
 ])
 final Serializers serializers = (_$serializers.toBuilder()
-  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectPreview)]),
-          () => ListBuilder<SubjectPreview>())..addBuilderFactory(
+  ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),
+          () => ListBuilder<SubjectBaseWithCover>())..addBuilderFactory(
       FullType(BuiltList, [FullType(InProgressCollection)]),
           () => ListBuilder<InProgressCollection>())
   ..addPlugin(StandardJsonPlugin()))

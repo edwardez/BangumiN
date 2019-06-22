@@ -2,10 +2,12 @@ import 'dart:convert' show json;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as Http;
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
@@ -13,8 +15,8 @@ import 'package:munin/models/bangumi/subject/review/GetSubjectReviewRequest.dart
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
-import 'package:munin/providers/bangumi/subject/parser/SubjectParser.dart';
 import 'package:munin/providers/bangumi/subject/parser/SubjectReviewParser.dart';
+import 'package:munin/providers/bangumi/subject/parser/isolate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/http/common.dart';
 import 'package:quiver/strings.dart';
@@ -37,8 +39,8 @@ class BangumiSubjectService {
     Dio.Response<String> response =
     await cookieClient.dio.get<String>('/subject/$subjectId');
 
-    BangumiSubject subject =
-    SubjectParser().process(response.data, mutedUsers: mutedUsers);
+    BangumiSubject subject = await compute(processBangumiSubject,
+        ParseBangumiSubjectMessage(response.data, mutedUsers));
 
     return subject;
   }
@@ -119,6 +121,29 @@ class BangumiSubjectService {
     return subjectCollectionInfo;
   }
 
+  /// Deletes a collection on bangumi.
+  ///
+  /// Throws [GeneralUnknownException] if deletion failed.
+  /// Note that since this operation is completed by mocking web page, there is
+  /// no good way to verify whether a subject has been deleted other than calling
+  /// api and checking collection status.
+  Future<void> deleteCollection(int subjectId) async {
+    String xsrfToken = await cookieClient.getXsrfToken();
+    Map<String, dynamic> queryParameters = {'gh': xsrfToken};
+
+    await cookieClient.dio.get(
+      '/subject/$subjectId/remove',
+      queryParameters: queryParameters,
+    );
+
+    final subjectCollectionInfo = await getCollectionInfo(subjectId);
+    if (subjectCollectionInfo.status.type == CollectionStatus.Pristine) {
+      return;
+    }
+
+    throw GeneralUnknownException('删除收藏失败');
+  }
+
   /// Gets subject reviews from web page.
   ///
   /// [pageNumber] is the page number [getsSubjectReviews] should look for.
@@ -130,8 +155,7 @@ class BangumiSubjectService {
     String path = '/subject/${request.subjectId}';
     Map<String, String> queryParameters = {};
 
-    if (request.mainFilter ==
-        SubjectReviewMainFilter.WithNonEmptyComments) {
+    if (request.mainFilter == SubjectReviewMainFilter.WithNonEmptyComments) {
       path += '/comments';
     } else {
       path += '/${request.mainFilter.wiredNameOnWebPage}';
@@ -154,11 +178,15 @@ class BangumiSubjectService {
       throw BangumiResponseIncomprehensibleException();
     }
 
-    ParsedSubjectReviews reviews = SubjectReviewParser(mutedUsers: mutedUsers)
-        .processSubjectReviews(response.data,
-        mainFilter: request.mainFilter,
-        requestedPageNumber: pageNumber);
+    ParsedSubjectReviews parsedSubjectReviews = await compute(
+        processBangumiSubjectReview,
+        ParseBangumiSubjectReviewsMessage(
+          response.data,
+          mutedUsers: mutedUsers,
+          requestedPageNumber: pageNumber,
+          mainFilter: request.mainFilter,
+        ));
 
-    return reviews;
+    return parsedSubjectReviews;
   }
 }

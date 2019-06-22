@@ -6,7 +6,7 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
-import 'package:munin/models/bangumi/user/collection/CollectionPreview.dart';
+import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
 import 'package:munin/shared/utils/serializers.dart';
@@ -29,7 +29,7 @@ abstract class UserProfile implements Built<UserProfile, UserProfileBuilder> {
 
   /// Note: Collection preview panel order can be customized by bangumi user.
   /// This value observes that order
-  BuiltMap<SubjectType, CollectionPreview> get collectionPreviews;
+  BuiltMap<SubjectType, CollectionsOnProfilePage> get collectionPreviews;
 
   /// For now all preview timeline activities will be parsed as plain text
   BuiltList<TimelinePreview> get timelinePreviews;

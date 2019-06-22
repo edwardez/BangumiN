@@ -25,15 +25,7 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
             const FullType(BangumiSearchResponse)
           ])),
     ];
-    if (object.searchRequestsStatus != null) {
-      result
-        ..add('searchRequestsStatus')
-        ..add(serializers.serialize(object.searchRequestsStatus,
-            specifiedType: const FullType(BuiltMap, const [
-              const FullType(SearchRequest),
-              const FullType(LoadingStatus)
-            ])));
-    }
+
     return result;
   }
 
@@ -55,13 +47,6 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
                 const FullType(BangumiSearchResponse)
               ])) as BuiltMap);
           break;
-        case 'searchRequestsStatus':
-          result.searchRequestsStatus.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(SearchRequest),
-                const FullType(LoadingStatus)
-              ])) as BuiltMap);
-          break;
       }
     }
 
@@ -72,13 +57,11 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
 class _$SearchState extends SearchState {
   @override
   final BuiltMap<SearchRequest, BangumiSearchResponse> results;
-  @override
-  final BuiltMap<SearchRequest, LoadingStatus> searchRequestsStatus;
 
   factory _$SearchState([void Function(SearchStateBuilder) updates]) =>
       (new SearchStateBuilder()..update(updates)).build();
 
-  _$SearchState._({this.results, this.searchRequestsStatus}) : super._() {
+  _$SearchState._({this.results}) : super._() {
     if (results == null) {
       throw new BuiltValueNullFieldError('SearchState', 'results');
     }
@@ -94,21 +77,17 @@ class _$SearchState extends SearchState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is SearchState &&
-        results == other.results &&
-        searchRequestsStatus == other.searchRequestsStatus;
+    return other is SearchState && results == other.results;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, results.hashCode), searchRequestsStatus.hashCode));
+    return $jf($jc(0, results.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SearchState')
-          ..add('results', results)
-          ..add('searchRequestsStatus', searchRequestsStatus))
+    return (newBuiltValueToStringHelper('SearchState')..add('results', results))
         .toString();
   }
 }
@@ -123,20 +102,11 @@ class SearchStateBuilder implements Builder<SearchState, SearchStateBuilder> {
   set results(MapBuilder<SearchRequest, BangumiSearchResponse> results) =>
       _$this._results = results;
 
-  MapBuilder<SearchRequest, LoadingStatus> _searchRequestsStatus;
-  MapBuilder<SearchRequest, LoadingStatus> get searchRequestsStatus =>
-      _$this._searchRequestsStatus ??=
-          new MapBuilder<SearchRequest, LoadingStatus>();
-  set searchRequestsStatus(
-          MapBuilder<SearchRequest, LoadingStatus> searchRequestsStatus) =>
-      _$this._searchRequestsStatus = searchRequestsStatus;
-
   SearchStateBuilder();
 
   SearchStateBuilder get _$this {
     if (_$v != null) {
       _results = _$v.results?.toBuilder();
-      _searchRequestsStatus = _$v.searchRequestsStatus?.toBuilder();
       _$v = null;
     }
     return this;
@@ -159,17 +129,12 @@ class SearchStateBuilder implements Builder<SearchState, SearchStateBuilder> {
   _$SearchState build() {
     _$SearchState _$result;
     try {
-      _$result = _$v ??
-          new _$SearchState._(
-              results: results.build(),
-              searchRequestsStatus: _searchRequestsStatus?.build());
+      _$result = _$v ?? new _$SearchState._(results: results.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'results';
         results.build();
-        _$failedField = 'searchRequestsStatus';
-        _searchRequestsStatus?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SearchState', _$failedField, e.toString());

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
@@ -8,11 +9,15 @@ import 'package:munin/models/bangumi/collection/SubjectCollectionInfo.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
+import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
+import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
+import 'package:munin/shared/utils/common.dart';
+import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/progress/BookProgressUpdateField.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
@@ -20,6 +25,7 @@ import 'package:munin/widgets/shared/form/SimpleFormSubmitWidget.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/subject/management/StarRatingFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionIsPrivateFormField.dart';
+import 'package:munin/widgets/subject/management/SubjectCollectionMoreActions.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionStatusFormField.dart';
 import 'package:munin/widgets/subject/management/SubjectTagsFormField.dart';
 import 'package:quiver/core.dart';
@@ -30,6 +36,8 @@ enum SubjectCollectionError {
   LengthyComment,
   TooManyTags
 }
+
+typedef GetCollectionInfo = Future<void> Function(int subjectId);
 
 /// Subject collection management form
 /// Note: there is currently a bug in Flutter which will result in unnecessary
@@ -59,24 +67,28 @@ class _SubjectCollectionManagementWidgetState
   static const commendFieldMaxLines = 10;
   static const commendFieldMinLines = 3;
 
-
   final _formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
   final tagsController = TextEditingController();
+  final episodeEditController = TextEditingController();
+  final volumeEditController = TextEditingController();
 
   /// A [SubjectCollectionInfo] that records current form values if [_formKey.currentState.save()] is called
   SubjectCollectionInfo localSubjectCollectionInfo;
 
   /// A original [SubjectCollectionInfo], it's used to compare whether user has
-  /// modified something before exiting, see [_onWillPop]
+  /// modified something before exiting, see [_onDiscardCollectionEdit]
   SubjectCollectionInfo unmodifiedSubjectCollectionInfo;
 
-  SubjectType subjectType;
-  BangumiSubject subject;
+  /// Whether subject info has been populated to the form. It equals to whether
+  /// [_populateSubjectInfoToForm] has been called.
+  bool _hasPopulatedSubjectInfo = false;
 
   ///Looks like flutter doesn't expose list of current form errors so we maintain
   ///errors ourselves here
   final Map<SubjectCollectionError, String> formErrors = {};
+
+  RequestStatus collectionsSubmissionStatus = RequestStatus.Initial;
 
   /// Maintains current comment validation status to avoid rebuilding the whole
   /// widget every time user types a comment character
@@ -119,10 +131,18 @@ class _SubjectCollectionManagementWidgetState
   void dispose() {
     commentController.dispose();
     tagsController.dispose();
+    episodeEditController.dispose();
+    volumeEditController.dispose();
     super.dispose();
   }
 
-  Future<bool> _onWillPop() async {
+  /// Checks whether user has modified some data and shows an confirmation
+  /// accordingly.
+  ///
+  /// Currently book progress is not checked: before refactoring this widget
+  /// to a smaller one, it might not worth adding another 100-ish lines of code
+  /// to check whether this simple value has been modified.
+  Future<bool> _onDiscardCollectionEdit() async {
     if (localSubjectCollectionInfo == null) {
       return true;
     }
@@ -134,10 +154,7 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showMuninConfirmDiscardEditDialog(
-        context,
-        title: '确认放弃编辑这份收藏？'
-    ) ??
+    return await showMuninConfirmActionDialog(context, title: '确认放弃编辑这份收藏？') ??
         false;
   }
 
@@ -160,7 +177,9 @@ class _SubjectCollectionManagementWidgetState
     }
   }
 
-  String _buildErrorMessages(final Map<SubjectCollectionError, String> formErrors) {
+  String _buildErrorMessages(
+      final Map<SubjectCollectionError, String> formErrors,
+      subjectType,) {
     assert(formErrors.keys.isNotEmpty);
     List<String> errorMessages = [];
     if (formErrors.containsKey(SubjectCollectionError.LengthyComment)) {
@@ -190,7 +209,8 @@ class _SubjectCollectionManagementWidgetState
   }
 
   void _showDialog(BuildContext context,
-      final Map<SubjectCollectionError, String> formErrors) {
+      final Map<SubjectCollectionError, String> formErrors,
+      SubjectType subjectType,) {
     // flutter defined function
     showDialog(
       context: context,
@@ -198,7 +218,7 @@ class _SubjectCollectionManagementWidgetState
         // return object of type Dialog
         return AlertDialog(
           title: Text("请修正以下错误后再提交"),
-          content: Text(_buildErrorMessages(formErrors)),
+          content: Text(_buildErrorMessages(formErrors, subjectType)),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             FlatButton(
@@ -213,7 +233,7 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  Widget _buildSubjectCollectionStatusFormField() {
+  Widget _buildSubjectCollectionStatusFormField(SubjectType subjectType) {
     return SubjectCollectionStatusFormField(
       subjectType: subjectType,
       autovalidate: true,
@@ -298,8 +318,6 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  bool prv = false;
-
   Widget _buildSubjectCollectionIsPrivateFormField() {
     return SubjectCollectionIsPrivateFormField(
       initialValue: localSubjectCollectionInfo.private == 1 ? true : false,
@@ -313,36 +331,103 @@ class _SubjectCollectionManagementWidgetState
     );
   }
 
-  _onInitialBuild(Store<AppState> store) {
-    bool isSubjectAbsent =
-        store.state.subjectState.subjects[widget.subjectId] == null;
-    bool isCollectionInfoAbsent =
-        store.state.subjectState.collections[widget.subjectId] == null;
+  List<Widget> _buildBookProgressFormFields(BangumiSubject subject) {
+    /// Hides this form field if current progress info on bangumi is unknown.
+    bool progressInfoUnknown =
+        subject.subjectProgressPreview.completedEpisodesCount == null;
+    if (subject.subjectProgressPreview.isTankobon ?? false) {
+      progressInfoUnknown = progressInfoUnknown &&
+          subject.subjectProgressPreview.completedVolumesCount == null;
+    }
+
+    if (subject.type != SubjectType.Book || progressInfoUnknown) {
+      return [];
+    }
+
+    const String pageStorageKeyPrefix = 'collection';
+
+    List<Widget> fields = [
+      BookProgressUpdateField(
+        fieldType: FieldType.Episode,
+        textEditingController: episodeEditController,
+        subjectId: subject.id,
+        totalEpisodesOrVolumeCount:
+        subject.subjectProgressPreview.totalEpisodesCount,
+        pageStorageKeyPrefix: pageStorageKeyPrefix,
+        onSaved: (episodesCount) {
+          if (localSubjectCollectionInfo.completedEpisodesCount != null) {
+            localSubjectCollectionInfo =
+                localSubjectCollectionInfo.rebuild((b) =>
+                b
+                  ..completedEpisodesCount = tryParseInt(
+                    episodesCount,
+                    defaultValue: 0,
+                  ));
+          }
+        },
+      ),
+      Padding(
+        padding: EdgeInsets.only(bottom: mediumOffset),
+      ),
+      if (subject.subjectProgressPreview.isTankobon ?? false) ...[
+        BookProgressUpdateField(
+          fieldType: FieldType.Volume,
+          textEditingController: volumeEditController,
+          subjectId: subject.id,
+          totalEpisodesOrVolumeCount:
+          subject.subjectProgressPreview.totalVolumesCount,
+          pageStorageKeyPrefix: pageStorageKeyPrefix,
+          onSaved: (volumesCount) {
+            if (localSubjectCollectionInfo.completedEpisodesCount != null) {
+              localSubjectCollectionInfo =
+                  localSubjectCollectionInfo.rebuild((b) =>
+                  b
+                    ..completedVolumesCount = tryParseInt(
+                      volumesCount,
+                      defaultValue: 0,
+                    ));
+            }
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: mediumOffset),
+        ),
+      ]
+    ];
+
+    return fields;
+  }
+
+  /// Initializes required data.
+  ///
+  /// Returns a [Future] that indicates loading status of required data.
+  Future<void> _initData(int subjectId,
+      BangumiSubject subject,
+      SubjectCollectionInfo collectionInfo,
+      GetCollectionInfo getCollectionInfo) async {
+    bool isSubjectAbsent = subject == null;
+    bool isCollectionInfoAbsent = collectionInfo == null;
     if (isSubjectAbsent || isCollectionInfoAbsent) {
-      final action = GetCollectionInfoAction(
-          context: context, subjectId: widget.subjectId);
-      store.dispatch(action);
-      action.completer.future.then((_) {
-        _initFormData(store.state.subjectState.subjects[widget.subjectId]);
-      });
+      return getCollectionInfo(subjectId);
     } else {
-      _initFormData(store.state.subjectState.subjects[widget.subjectId]);
+      _populateSubjectInfoToForm(subject);
+      return immediateFinishCompleter().future;
     }
   }
 
-  _initFormData(BangumiSubject loadedSubject) {
+  _populateSubjectInfoToForm(BangumiSubject loadedSubject) {
+    _hasPopulatedSubjectInfo = true;
     // subject should never be null: user must enters this page BEFORE
     // they enters the subject page, or this data will be fetched before this method
     // is called
     assert(loadedSubject != null, 'Subject must not be null');
 
-    subject = loadedSubject;
     if (loadedSubject == null) {
       // in case it's null(exception!), assign a default type
       // note: [subjectType] only affects action name user sees on the ui
-      subjectType = SubjectType.Anime;
+      episodeEditController.text = '0';
+      volumeEditController.text = '0';
     } else {
-      subjectType = loadedSubject.type;
       for (String userSelectedTag in loadedSubject.userSelectedTags) {
         candidateTags[userSelectedTag] = true;
         headerTags[userSelectedTag] = true;
@@ -356,11 +441,20 @@ class _SubjectCollectionManagementWidgetState
           candidateTags[suggestedTag] = false;
         }
       }
+
+      episodeEditController.text = loadedSubject
+          .subjectProgressPreview.completedEpisodesCount
+          ?.toString() ??
+          '0';
+      volumeEditController.text = loadedSubject
+          .subjectProgressPreview.completedVolumesCount
+          ?.toString() ??
+          '0';
     }
   }
 
-  _buildSubmitWidget(BuildContext context, _ViewModel vm, int subjectId) {
-    if (vm.collectionsSubmissionStatus == LoadingStatus.Loading) {
+  _buildSubmitWidget(BuildContext context, _ViewModel vm) {
+    if (collectionsSubmissionStatus == RequestStatus.Loading) {
       return AdaptiveProgressIndicator(
         indicatorStyle: IndicatorStyle.Material,
       );
@@ -368,11 +462,21 @@ class _SubjectCollectionManagementWidgetState
 
     return GestureDetector(
       child: SimpleFormSubmitWidget(
-        loadingStatus: vm.collectionsSubmissionStatus,
-        onSubmitPressed: (innerContext) {
+        loadingStatus: collectionsSubmissionStatus,
+        onSubmitPressed: (innerContext) async {
           _formKey?.currentState?.save();
-          vm.collectionInfoUpdateRequest(
-              context, subjectId, localSubjectCollectionInfo);
+
+          setState(() {
+            collectionsSubmissionStatus = RequestStatus.Loading;
+          });
+
+          try {
+            await vm.collectionInfoUpdateRequest(
+                vm.subject.id, localSubjectCollectionInfo);
+            Navigator.pop(context);
+          } catch (error) {
+            vm.handleError(context, error);
+          }
         },
         canSubmit: _canSubmitForm,
         submitButtonText: '更新',
@@ -380,31 +484,58 @@ class _SubjectCollectionManagementWidgetState
       onTap: _canSubmitForm
           ? null
           : () {
-        _showDialog(context, formErrors);
+        _showDialog(context, formErrors, vm.subject.type);
+      },
+    );
+  }
+
+  _buildSubjectCollectionMoreActions(_ViewModel vm) {
+    return SubjectCollectionMoreActions(
+      subject: vm.subject,
+      deleteCollectionCallback: (subject) {
+        return vm.deleteCollection(subject);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<void> requestStatusFuture;
+
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, widget.subjectId),
       distinct: true,
       onInit: (store) {
-        _onInitialBuild(store);
+        int id = widget.subjectId;
+
+        GetCollectionInfo callback = (int subjectId) {
+          final action = GetCollectionInfoAction(subjectId: subjectId);
+          store.dispatch(action);
+          return action.completer.future;
+        };
+        requestStatusFuture = _initData(
+            id,
+            store.state.subjectState.subjects[id],
+            store.state.subjectState.collections[id],
+            callback);
       },
       onDispose: (store) {
         store
             .dispatch(CleanUpCollectionInfoAction(subjectId: widget.subjectId));
       },
       builder: (BuildContext context, _ViewModel vm) {
-        int subjectId = widget.subjectId;
-        if (vm.subjectCollectionInfo == null) {
-          final action =
-          GetCollectionInfoAction(context: context, subjectId: subjectId);
-
+        if (vm.subjectCollectionInfo == null || vm.subject == null) {
           return RequestInProgressIndicatorWidget(
-              loadingStatus: vm.collectionLoadingStatus, refreshAction: action);
+            retryCallback: (_) {
+              return _initData(widget.subjectId, vm.subject,
+                  vm.subjectCollectionInfo, vm.getCollectionInfo);
+            },
+            requestStatusFuture: requestStatusFuture,
+          );
+        }
+
+        if (!_hasPopulatedSubjectInfo) {
+          _populateSubjectInfoToForm(vm.subject);
         }
 
         // If it's the first time widget tries to build the form
@@ -422,20 +553,32 @@ class _SubjectCollectionManagementWidgetState
 
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
-            title: subject != null
+            title: vm.subject != null
                 ? Text(preferredNameFromSubjectBase(
-                subject, vm.preferredSubjectInfoLanguage))
+                vm.subject, vm.preferredSubjectInfoLanguage))
                 : Text('-'),
-            actions: <Widget>[_buildSubmitWidget(context, vm, subjectId)],
+            actions: <Widget>[
+              Builder(
+                builder: (BuildContext innerContext) {
+                  return _buildSubmitWidget(innerContext, vm);
+                },
+              ),
+              if (!CollectionStatus.isInvalid(
+                  unmodifiedSubjectCollectionInfo?.status?.type))
+                _buildSubjectCollectionMoreActions(vm)
+            ],
           ),
           safeAreaChild: Form(
             key: _formKey,
             autovalidate: true,
-            onWillPop: _onWillPop,
+            onWillPop: _onDiscardCollectionEdit,
             child: ListView(
               children: <Widget>[
-                _buildSubjectCollectionStatusFormField(),
+                _buildSubjectCollectionStatusFormField(vm.subject.type),
                 _buildStarRatingFormField(),
+                ..._buildBookProgressFormFields(
+                  vm.subject,
+                ),
                 _buildSubjectTagsFormField(),
                 _buildSubjectCommentFormField(context),
                 _buildSubjectCollectionIsPrivateFormField(),
@@ -449,29 +592,42 @@ class _SubjectCollectionManagementWidgetState
   }
 }
 
+_retrieveSubjectInStore(Store<AppState> store, int subjectId) {
+  return store.state.subjectState.subjects[subjectId];
+}
+
 class _ViewModel {
   final SubjectCollectionInfo subjectCollectionInfo;
+
+  /// subject info in store, might be null.
+  final BangumiSubject subject;
+
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
-  final LoadingStatus collectionLoadingStatus;
-  final LoadingStatus collectionsSubmissionStatus;
-  final Future Function(BuildContext context, int subjectId) getCollectionInfo;
-  final Function(BuildContext context, int subjectId,
-          SubjectCollectionInfo collectionUpdateRequest)
-      collectionInfoUpdateRequest;
+  final GetCollectionInfo getCollectionInfo;
+  final Future<void> Function(BangumiSubject subject) deleteCollection;
+  final Function(int subjectId, SubjectCollectionInfo collectionUpdateRequest)
+  collectionInfoUpdateRequest;
+
+  final void Function(BuildContext context, Object error) handleError;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
-    _collectionUpdateRequest(BuildContext context, int subjectId,
+    Future<void> _collectionUpdateRequest(int subjectId,
         SubjectCollectionInfo collectionUpdateRequest) {
       final action = UpdateCollectionRequestAction(
-          context: context,
           subjectId: subjectId,
           collectionUpdateRequest: collectionUpdateRequest);
       store.dispatch(action);
+      return action.completer.future;
     }
 
-    Future _getCollectionInfo(BuildContext context, int subjectId) {
-      final action =
-          GetCollectionInfoAction(context: context, subjectId: subjectId);
+    Future<void> _deleteCollection(BangumiSubject subject) {
+      final action = DeleteCollectionRequestAction(subject: subject);
+      store.dispatch(action);
+      return action.completer.future;
+    }
+
+    Future _getCollectionInfo(int subjectId) {
+      final action = GetCollectionInfoAction(subjectId: subjectId);
       store.dispatch(action);
       return action.completer.future;
     }
@@ -479,40 +635,38 @@ class _ViewModel {
     return _ViewModel(
       collectionInfoUpdateRequest: _collectionUpdateRequest,
       getCollectionInfo: _getCollectionInfo,
+      deleteCollection: _deleteCollection,
       subjectCollectionInfo: store.state.subjectState.collections[subjectId],
       preferredSubjectInfoLanguage:
       store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
-      collectionLoadingStatus:
-          store.state.subjectState.collectionsLoadingStatus[subjectId],
-      collectionsSubmissionStatus:
-          store.state.subjectState.collectionsSubmissionStatus[subjectId],
+      subject: _retrieveSubjectInStore(store, subjectId),
+      handleError: (BuildContext context, Object error) {
+        store.dispatch(HandleErrorAction(error: error, context: context));
+      },
     );
   }
 
   _ViewModel({
     @required this.getCollectionInfo,
+    @required this.deleteCollection,
     @required this.preferredSubjectInfoLanguage,
     @required this.collectionInfoUpdateRequest,
     @required this.subjectCollectionInfo,
-    @required this.collectionLoadingStatus,
-    @required this.collectionsSubmissionStatus,
+    @required this.subject,
+    @required this.handleError,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          collectionLoadingStatus == other.collectionLoadingStatus &&
-          collectionsSubmissionStatus == other.collectionsSubmissionStatus &&
-          subjectCollectionInfo == other.subjectCollectionInfo &&
-          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              subjectCollectionInfo == other.subjectCollectionInfo &&
+              preferredSubjectInfoLanguage ==
+                  other.preferredSubjectInfoLanguage &&
+              subject == other.subject;
 
   @override
   int get hashCode =>
-      hash4(
-          collectionLoadingStatus,
-          collectionsSubmissionStatus,
-          subjectCollectionInfo,
-          preferredSubjectInfoLanguage);
+      hash3(subject, subjectCollectionInfo, preferredSubjectInfoLanguage);
 }

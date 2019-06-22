@@ -185,7 +185,8 @@ class _ViewModel {
   factory _ViewModel.fromStore(
       Store<AppState> store, BuiltSet<SubjectType> types) {
     Future _getProgress(BuildContext context) {
-      final action = GetProgressAction(context: context, subjectTypes: types);
+      final action = GetProgressRequestAction(
+          context: context, subjectTypes: types);
       store.dispatch(action);
       return action.completer.future;
     }

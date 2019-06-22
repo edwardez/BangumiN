@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
+import 'package:munin/models/bangumi/common/ChineseNameOwner.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
 import 'package:munin/models/bangumi/search/result/SearchResultItem.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
@@ -12,6 +13,7 @@ import 'package:quiver/strings.dart';
 part 'SubjectSearchResultItem.g.dart';
 
 abstract class SubjectSearchResultItem
+    with ChineseNameOwner
     implements
         SearchResultItem,
         Built<SubjectSearchResultItem, SubjectSearchResultItemBuilder> {
@@ -19,7 +21,7 @@ abstract class SubjectSearchResultItem
   String get startDate;
 
   @BuiltValueField(wireName: 'name_cn')
-  String get nameCn;
+  String get chineseName;
 
   @memoized
 

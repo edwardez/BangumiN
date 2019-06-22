@@ -4,22 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/result/BangumiSearchResponse.dart';
-import 'package:munin/redux/shared/CommonActions.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 
-class SearchSubjectAction {
+abstract class SearchAction {
   final BuildContext context;
   final SearchRequest searchRequest;
   final Completer completer;
 
-  SearchSubjectAction(
-      {@required this.context,
-      @required this.searchRequest,
-      Completer completer})
-      : this.completer = completer ?? new Completer();
+  SearchAction._(this.context, this.searchRequest, this.completer);
 }
 
-class SearchMonoAction {
+class SearchSubjectAction implements SearchAction {
+  final BuildContext context;
+  final SearchRequest searchRequest;
+  final Completer completer;
+
+  SearchSubjectAction({@required this.context,
+    @required this.searchRequest,
+    Completer completer})
+      : this.completer = completer ?? Completer();
+}
+
+class SearchMonoAction implements SearchAction {
   final BuildContext context;
   final SearchRequest searchRequest;
   final Completer completer;
@@ -27,24 +32,7 @@ class SearchMonoAction {
   SearchMonoAction({@required this.context,
     @required this.searchRequest,
     Completer completer})
-      : this.completer = completer ?? new Completer();
-}
-
-class SearchUserAction {
-  final BuildContext context;
-  final SearchRequest searchRequest;
-  final Completer completer;
-
-  SearchUserAction({@required this.context,
-    @required this.searchRequest,
-    Completer completer})
-      : this.completer = completer ?? new Completer();
-}
-
-class SearchLoadingAction {
-  final SearchRequest searchRequest;
-
-  SearchLoadingAction({@required this.searchRequest});
+      : this.completer = completer ?? Completer();
 }
 
 class SearchSuccessAction {
@@ -53,21 +41,4 @@ class SearchSuccessAction {
 
   SearchSuccessAction(
       {@required this.searchRequest, @required this.searchResponse});
-}
-
-class SearchFailureAction extends FailureAction {
-  final SearchRequest searchRequest;
-
-  SearchFailureAction(
-      {@required LoadingStatus loadingStatus, @required this.searchRequest})
-      : super(loadingStatus: loadingStatus);
-
-  SearchFailureAction.fromUnknownException({@required this.searchRequest})
-      : super.fromUnknownException();
-}
-
-class SearchCleanUpAction {
-  final SearchRequest searchRequest;
-
-  SearchCleanUpAction({@required this.searchRequest});
 }

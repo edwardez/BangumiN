@@ -44,7 +44,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
   String buildEpisodeSubtitle(EpisodeProgress episode) {
     List<String> subtitles = [];
     Optional<String> maybeSecondaryTitle = secondaryName(
-        episode.name, episode.nameCn, preferredSubjectInfoLanguage);
+        episode.name, episode.chineseName, preferredSubjectInfoLanguage);
     if (maybeSecondaryTitle.isPresent) {
       subtitles.add(maybeSecondaryTitle.value);
     }

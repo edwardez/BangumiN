@@ -1,12 +1,15 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
+import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsRequest.dart';
+import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
-import 'package:munin/widgets/UserProfile/UserProfileWidget.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogThreadWidget.dart';
 import 'package:munin/widgets/discussion/thread/episode/EpisodeThreadWidget.dart';
 import 'package:munin/widgets/discussion/thread/group/GroupThreadWidget.dart';
@@ -26,6 +29,8 @@ import 'package:munin/widgets/subject/info/SubjectDetailInfoWidget.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionManagementWidget.dart';
 import 'package:munin/widgets/subject/reviews/SubjectReviewsWidget.dart';
 import 'package:munin/widgets/timeline/compose/ComposeTimelineMessage.dart';
+import 'package:munin/widgets/user/UserProfileWidget.dart';
+import 'package:munin/widgets/user/collections/UserCollectionsListWidget.dart';
 
 final loginRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -46,7 +51,7 @@ final bangumiOauthRouteHandler = Handler(
 
 final subjectMainPageRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
   return Scaffold(
     body: SubjectWidget(
@@ -57,7 +62,7 @@ final subjectMainPageRouteHandler = Handler(
 
 final subjectDetailInfoRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
       return Scaffold(
         body: SubjectDetailInfoWidget(
@@ -68,7 +73,7 @@ final subjectDetailInfoRouteHandler = Handler(
 
 final subjectCollectionManagementRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
       return SubjectCollectionManagementWidget(
         subjectId: subjectId,
@@ -77,7 +82,7 @@ final subjectCollectionManagementRouteHandler = Handler(
 
 final subjectEpisodesRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
       return Scaffold(
         body: SubjectEpisodesWidget(
@@ -98,9 +103,8 @@ final subjectReviewsRouteHandler = Handler(
         mainFilter = SubjectReviewMainFilter.fromWiredName(mainFilterStr);
       }
 
-      String subjectIdStr = params[RoutesVariable.subjectId]?.first;
+      String subjectIdStr = params[RoutesComponents.subjectId]?.first;
       int subjectId = tryParseInt(subjectIdStr, defaultValue: null);
-
 
       return Scaffold(
         body: SubjectReviewsWidget(
@@ -114,7 +118,7 @@ final subjectReviewsRouteHandler = Handler(
 /// User
 final userProfileRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String username = params[RoutesVariable.username]?.first;
+      String username = params[RoutesComponents.username]?.first;
 
       return Scaffold(
         body: UserProfileWidget(
@@ -128,10 +132,34 @@ final composeTimelineMessageRouteHandler = Handler(
       return ComposeTimelineMessage();
     });
 
+final userCollectionsListRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      final username = params[RoutesComponents.username].first;
+
+      final subjectType = SubjectType.getTypeByHttpWiredName(
+          params[RoutesComponents.subjectType].first);
+
+      final collectionStatus = CollectionStatus.fromWiredName(
+          params[RoutesComponents.collectionStatus].first);
+
+      return Scaffold(
+        body: UserCollectionsListWidget(
+          request: ListUserCollectionsRequest(
+                (b) =>
+            b
+              ..subjectType = subjectType
+              ..username = username
+              ..orderCollectionBy = OrderCollectionBy.CollectedTime
+              ..collectionStatus = collectionStatus,
+          ),
+        ),
+      );
+    });
+
 /// Discussion
 final groupThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesVariable.threadId]?.first;
+      String threadIdStr = params[RoutesComponents.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
       GetThreadRequest request = GetThreadRequest((b) =>
@@ -147,7 +175,7 @@ final groupThreadRouteHandler = Handler(
 
 final episodeThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesVariable.threadId]?.first;
+      String threadIdStr = params[RoutesComponents.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
       GetThreadRequest request = GetThreadRequest((b) =>
@@ -163,7 +191,7 @@ final episodeThreadRouteHandler = Handler(
 
 final subjectTopicThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesVariable.threadId]?.first;
+      String threadIdStr = params[RoutesComponents.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
       GetThreadRequest request = GetThreadRequest((b) =>
@@ -179,7 +207,7 @@ final subjectTopicThreadRouteHandler = Handler(
 
 final blogThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      String threadIdStr = params[RoutesVariable.threadId]?.first;
+      String threadIdStr = params[RoutesComponents.threadId]?.first;
       int threadId = tryParseInt(threadIdStr, defaultValue: null);
       assert(threadId != null);
       GetThreadRequest request = GetThreadRequest((b) =>

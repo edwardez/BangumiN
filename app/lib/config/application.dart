@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,10 @@ abstract class Application {
     // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
       ...createAppEpics(sharedPreferenceService),
-      ...createSubjectEpics(bangumiSubjectService),
+      ...createSubjectEpics(
+        bangumiSubjectService,
+        bangumiProgressService,
+      ),
       ...createSearchEpics(bangumiSearchService),
       ...createDiscussionEpics(bangumiDiscussionService),
       ...createTimelineEpics(bangumiTimelineService, bangumiUserService),
@@ -128,7 +132,7 @@ abstract class Application {
           themeSetting: store.state.settingState.themeSetting));
     }
 
-    _initializrCrashlytics(
+    _initializeTelemetry(
         store.state.settingState.privacySetting ?? PrivacySetting());
 
     await _checkAuthenticationInfo(bangumiOauthService);
@@ -137,13 +141,20 @@ abstract class Application {
     runApp(MuninApp(this, store));
   }
 
-  _initializrCrashlytics(PrivacySetting privacySetting) {
+  /// Initializes analytics and crashlytics.
+  _initializeTelemetry(PrivacySetting privacySetting) {
     if (environmentType != EnvironmentType.Development &&
         privacySetting.optInAutoSendCrashReport) {
       FlutterError.onError = (FlutterErrorDetails details) {
         Crashlytics.instance.onError(details);
       };
     }
+
+    // If user has chosen to opt out analytics, disable it here.
+    // This setting is persisted through app session so we just need to set it
+    // once on app startup.
+    FirebaseAnalytics()
+        .setAnalyticsCollectionEnabled(privacySetting.optInAnalytics);
   }
 
   _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {

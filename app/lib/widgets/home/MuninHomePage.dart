@@ -5,7 +5,7 @@ import 'package:munin/widgets/discussion/DiscussionHome.dart';
 import 'package:munin/widgets/home/MuninBottomNavigationBar.dart';
 import 'package:munin/widgets/progress/Progress.dart';
 import 'package:munin/widgets/timeline/Timeline.dart';
-import 'package:munin/widgets/userprofile/UserHome.dart';
+import 'package:munin/widgets/user/UserHome.dart';
 
 class MuninHomePage extends StatefulWidget {
   final GeneralSetting generalSetting;

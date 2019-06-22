@@ -7,7 +7,6 @@ import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
 import 'package:munin/models/bangumi/progress/html/SubjectEpisodes.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'ProgressState.g.dart';
@@ -24,17 +23,12 @@ abstract class ProgressState
   /// Key is subject id.
   BuiltMap<int, SubjectEpisodes> get watchableSubjects;
 
-  /// Loading status of subject episodes.
-  BuiltMap<int, LoadingStatus> get subjectsLoadingStatus;
-
   factory ProgressState([updates(ProgressStateBuilder b)]) =>
       _$ProgressState((b) => b
         ..progresses
             .replace(BuiltMap<SubjectType, BuiltList<InProgressCollection>>())
         ..watchableSubjects
             .replace(BuiltMap<int, SubjectEpisodes>())
-        ..subjectsLoadingStatus
-            .replace(BuiltMap<int, LoadingStatus>())
         ..update(updates));
 
   ProgressState._();

@@ -32,10 +32,82 @@
               "client_type": 3
             },
             {
-              "client_id": "674801028596-2k3eh6d6uvg3sqi2u9aot3norttfekid.apps.googleusercontent.com",
+              "client_id": "674801028596-rae532fpdlshhba5at0bkudfh0d2dbj6.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.bangumin.munin"
+                "bundle_id": "com.bangumin.munin.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674801028596:android:011b1d5c8ff2b606",
+        "android_client_info": {
+          "package_name": "com.bangumin.munin.development"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc2YXK0oboNJ5sXn9OkfEPqBci5T5PnLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674801028596-rae532fpdlshhba5at0bkudfh0d2dbj6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bangumin.munin.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674801028596:android:e8cc2e6c05f49092",
+        "android_client_info": {
+          "package_name": "com.bangumin.munin.uat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc2YXK0oboNJ5sXn9OkfEPqBci5T5PnLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674801028596-4ud5p41j874nfurvq4id4puvo128tmmb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674801028596-rae532fpdlshhba5at0bkudfh0d2dbj6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bangumin.munin.ios"
               }
             }
           ]

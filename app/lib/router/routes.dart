@@ -4,19 +4,26 @@ import 'package:flutter/material.dart';
 import './RouteHandlers.dart';
 
 /// Parameters of route variables.
-/// To add a new variable, both the variable and its parameter([paramIdentifier] + variableName)
+/// To add a new variable, both the variable and its parameter([paramIdentifier] + [RoutesComponents])
 /// need to be the variable list.
+class RoutesComponents {
+  static const subjectId = 'subjectId';
+  static const username = 'username';
+  static const threadId = 'threadId';
+  static const subjectType = 'subjectType';
+  static const collectionStatus = 'collectionStatus';
+}
+
 class RoutesVariable {
   static const paramIdentifier = ':';
 
-  static const subjectId = 'subjectId';
-  static const subjectIdParam = '$paramIdentifier$subjectId';
-
-  static const username = ':username';
-  static const usernameParam = '$paramIdentifier$username';
-
-  static const threadId = 'threadId';
-  static const threadIdParam = '$paramIdentifier$threadId';
+  static const subjectIdParam = '$paramIdentifier${RoutesComponents.subjectId}';
+  static const usernameParam = '$paramIdentifier${RoutesComponents.username}';
+  static const threadIdParam = '$paramIdentifier${RoutesComponents.threadId}';
+  static const subjectTypeParam =
+      '$paramIdentifier${RoutesComponents.subjectType}';
+  static const collectionStatusParam =
+      '$paramIdentifier${RoutesComponents.collectionStatus}';
 }
 
 class RoutesQueryParameter {
@@ -25,54 +32,62 @@ class RoutesQueryParameter {
 }
 
 class Routes {
-  static const root = "/";
-  static const loginRoute = "/login";
-  static const homeRoute = "/home";
-  static const bangumiOauthRoute = "/bangumiOauth";
+  static const root = '/';
+  static const loginRoute = '/login';
+  static const homeRoute = '/home';
+  static const bangumiOauthRoute = '/bangumiOauth';
 
   // subject
-  static const subjectMainPageRoute = "/subject/${RoutesVariable
-      .subjectIdParam}";
-  static const subjectDetailInfoPageRoute = "/subject/${RoutesVariable
-      .subjectIdParam}/info";
+
+  // subject root prefix, [subjectRoutePrefix] itself is not a route.
+  static const _subjectRoutePrefix = '/subject/';
+  static const subjectMainPageRoute =
+      '$_subjectRoutePrefix${RoutesVariable.subjectIdParam}';
+  static const subjectDetailInfoPageRoute =
+      '$_subjectRoutePrefix${RoutesVariable.subjectIdParam}/info';
   static const subjectCollectionManagementRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/collection";
+      '$_subjectRoutePrefix${RoutesVariable.subjectIdParam}/collection';
   static const subjectEpisodesRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/episodes";
+      '$_subjectRoutePrefix${RoutesVariable.subjectIdParam}/episodes';
   static const subjectReviewsRoute =
-      "/subject/${RoutesVariable.subjectIdParam}/reviews";
+      '$_subjectRoutePrefix${RoutesVariable.subjectIdParam}/reviews';
 
   // User
-  static const userProfileRoute = "/user/${RoutesVariable.usernameParam}";
+  static const userProfileRoute = '/user/${RoutesVariable.usernameParam}';
   static const userProfileTimelineRoute =
-      "/user/${RoutesVariable.usernameParam}/timeline";
+      '/user/${RoutesVariable.usernameParam}/timeline';
   static String composeTimelineMessageRoute =
-      "/user/${RoutesVariable.usernameParam}/timeline/new";
+      '/user/${RoutesVariable.usernameParam}/timeline/new';
+
+  static const userCollectionsListRoute =
+      '/user/${RoutesVariable.subjectTypeParam}/list/${RoutesVariable
+      .usernameParam}'
+      '/${RoutesVariable.collectionStatusParam}';
 
   // Setting
-  static const settingRoute = "/setting";
-  static const generalSettingRoute = "/setting/general";
-  static const themeSettingRoute = "/setting/theme";
-  static const muteSettingRoute = "/setting/mute";
-  static const privacySettingRoute = "/setting/privacy";
+  // TODO: figure out why [userCollectionsListRoute] conflicts with [settingRoute]
+  static const settingRoute = '/setting';
+  static const generalSettingRoute = '/setting/general';
+  static const themeSettingRoute = '/setting/theme';
+  static const muteSettingRoute = '/setting/mute';
+  static const privacySettingRoute = '/setting/privacy';
   static const muteSettingBatchImportUsersRoute =
-      "/setting/mute/users/import/bangumi";
-
+      '/setting/mute/users/import/bangumi';
 
   /// Discussion
-  static const groupThreadRoute = "/group/topic/${RoutesVariable
-      .threadIdParam}";
-  static const episodeThreadRoute = "/episode/${RoutesVariable.threadIdParam}";
-  static const subjectTopicThreadRoute = "/subject/topic/${RoutesVariable
-      .threadIdParam}";
+  static const groupThreadRoute =
+      '/group/topic/${RoutesVariable.threadIdParam}';
+  static const episodeThreadRoute = '/episode/${RoutesVariable.threadIdParam}';
+  static const subjectTopicThreadRoute =
+      '/subject/topic/${RoutesVariable.threadIdParam}';
 
   /// Blog
-  static const blogThreadRoute = "/blog/${RoutesVariable.threadIdParam}";
+  static const blogThreadRoute = '/blog/${RoutesVariable.threadIdParam}';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      print("Route is not found!");
+          print('Route is not found!');
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);
@@ -83,24 +98,22 @@ class Routes {
         handler: subjectDetailInfoRouteHandler);
     router.define(subjectCollectionManagementRoute,
         handler: subjectCollectionManagementRouteHandler);
-    router.define(subjectEpisodesRoute,
-        handler: subjectEpisodesRouteHandler);
-    router.define(subjectReviewsRoute,
-        handler: subjectReviewsRouteHandler);
+    router.define(subjectEpisodesRoute, handler: subjectEpisodesRouteHandler);
+    router.define(subjectReviewsRoute, handler: subjectReviewsRouteHandler);
 
     router.define(userProfileRoute, handler: userProfileRouteHandler);
 
     router.define(composeTimelineMessageRoute,
         handler: composeTimelineMessageRouteHandler);
 
-    router.define(groupThreadRoute,
-        handler: groupThreadRouteHandler);
-    router.define(episodeThreadRoute,
-        handler: episodeThreadRouteHandler);
+    router.define(userCollectionsListRoute,
+        handler: userCollectionsListRouteHandler);
+
+    router.define(groupThreadRoute, handler: groupThreadRouteHandler);
+    router.define(episodeThreadRoute, handler: episodeThreadRouteHandler);
     router.define(subjectTopicThreadRoute,
         handler: subjectTopicThreadRouteHandler);
-    router.define(blogThreadRoute,
-        handler: blogThreadRouteHandler);
+    router.define(blogThreadRoute, handler: blogThreadRouteHandler);
 
     router.define(settingRoute, handler: settingRouteHandler);
     router.define(generalSettingRoute, handler: generalSettingRouteHandler);

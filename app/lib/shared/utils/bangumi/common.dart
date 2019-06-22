@@ -1,3 +1,4 @@
+import 'package:munin/models/bangumi/common/ChineseNameOwner.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:quiver/core.dart';
@@ -19,18 +20,25 @@ bool isValidIntScore(int score) {
   return isValidDoubleScore(score?.toDouble());
 }
 
-String preferredNameFromSubjectBase(SubjectBase subject,
-    PreferredSubjectInfoLanguage language) {
-  return preferredName(subject.name, subject.nameCn, language);
+String preferredNameFromChineseNameOwner(ChineseNameOwner chineseNameOwner,
+    PreferredSubjectInfoLanguage language,) {
+  return preferredName(
+      chineseNameOwner.name, chineseNameOwner.chineseName, language);
 }
 
-String preferredName(String name, String nameCn,
-    PreferredSubjectInfoLanguage language) {
+String preferredNameFromSubjectBase(SubjectBase subject,
+    PreferredSubjectInfoLanguage language,) {
+  return preferredName(subject.name, subject.chineseName, language);
+}
+
+String preferredName(String name,
+    String chineseName,
+    PreferredSubjectInfoLanguage language,) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Chinese:
 
     /// Ensure there is at least one title
-      return isNotEmpty(nameCn) ? nameCn : name;
+      return isNotEmpty(chineseName) ? chineseName : name;
     case PreferredSubjectInfoLanguage.Original:
     default:
       return name;
@@ -39,21 +47,31 @@ String preferredName(String name, String nameCn,
 
 ///Secondary title might be absent so `Optional` is returned
 Optional<String> secondaryNameFromSubjectBase(SubjectBase subject,
-    PreferredSubjectInfoLanguage language) {
-  return secondaryName(subject.name, subject.nameCn, language);
+    PreferredSubjectInfoLanguage language,) {
+  return secondaryName(subject.name, subject.chineseName, language);
+}
+
+Optional<String> secondaryNameFromChineseNameOwner(
+    ChineseNameOwner chineseNameOwner,
+    PreferredSubjectInfoLanguage language,) {
+  return secondaryName(
+      chineseNameOwner.name, chineseNameOwner.chineseName, language);
 }
 
 ///Secondary title might be absent so `Optional` is returned
-Optional<String> secondaryName(String name, String nameCn,
-    PreferredSubjectInfoLanguage language) {
+Optional<String> secondaryName(String name,
+    String chineseName,
+    PreferredSubjectInfoLanguage language,) {
   switch (language) {
     case PreferredSubjectInfoLanguage.Original:
-      return isNotEmpty(nameCn) ? Optional.of(nameCn) : Optional.absent();
+      return isNotEmpty(chineseName)
+          ? Optional.of(chineseName)
+          : Optional.absent();
     case PreferredSubjectInfoLanguage.Chinese:
     default:
 
-    /// If nameCn is not null or empty, name can be used as the secondary language
-    /// Otherwise, name has been used a fallback for nameCn, so secondary language should return null
-      return isNotEmpty(nameCn) ? Optional.of(name) : Optional.absent();
+    /// If [chineseName] is not null or empty, name can be used as the secondary language
+    /// Otherwise, name has been used a fallback for [chineseName], so secondary language should return null
+      return isNotEmpty(chineseName) ? Optional.of(name) : Optional.absent();
   }
 }

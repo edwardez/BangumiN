@@ -31,7 +31,7 @@ class _$SimpleHtmlBasedEpisodeSerializer
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'name_cn',
-      serializers.serialize(object.nameCn,
+      serializers.serialize(object.chineseName,
           specifiedType: const FullType(String)),
       'status',
       serializers.serialize(object.airStatus,
@@ -72,7 +72,7 @@ class _$SimpleHtmlBasedEpisodeSerializer
               specifiedType: const FullType(String)) as String;
           break;
         case 'name_cn':
-          result.nameCn = serializers.deserialize(value,
+          result.chineseName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'status':
@@ -102,7 +102,7 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
   @override
   final String name;
   @override
-  final String nameCn;
+  final String chineseName;
   @override
   final AirStatus airStatus;
   @override
@@ -118,7 +118,7 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
       {this.episodeInfo,
       this.id,
       this.name,
-      this.nameCn,
+      this.chineseName,
       this.airStatus,
       this.userEpisodeStatus,
       this.episodeType})
@@ -133,8 +133,9 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
     if (name == null) {
       throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'name');
     }
-    if (nameCn == null) {
-      throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'nameCn');
+    if (chineseName == null) {
+      throw new BuiltValueNullFieldError(
+          'SimpleHtmlBasedEpisode', 'chineseName');
     }
     if (airStatus == null) {
       throw new BuiltValueNullFieldError('SimpleHtmlBasedEpisode', 'airStatus');
@@ -165,7 +166,7 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
         episodeInfo == other.episodeInfo &&
         id == other.id &&
         name == other.name &&
-        nameCn == other.nameCn &&
+        chineseName == other.chineseName &&
         airStatus == other.airStatus &&
         userEpisodeStatus == other.userEpisodeStatus &&
         episodeType == other.episodeType;
@@ -179,7 +180,7 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
                 $jc(
                     $jc($jc($jc(0, episodeInfo.hashCode), id.hashCode),
                         name.hashCode),
-                    nameCn.hashCode),
+                    chineseName.hashCode),
                 airStatus.hashCode),
             userEpisodeStatus.hashCode),
         episodeType.hashCode));
@@ -191,7 +192,7 @@ class _$SimpleHtmlBasedEpisode extends SimpleHtmlBasedEpisode {
           ..add('episodeInfo', episodeInfo)
           ..add('id', id)
           ..add('name', name)
-          ..add('nameCn', nameCn)
+          ..add('chineseName', chineseName)
           ..add('airStatus', airStatus)
           ..add('userEpisodeStatus', userEpisodeStatus)
           ..add('episodeType', episodeType))
@@ -217,9 +218,9 @@ class SimpleHtmlBasedEpisodeBuilder
   String get name => _$this._name;
   set name(String name) => _$this._name = name;
 
-  String _nameCn;
-  String get nameCn => _$this._nameCn;
-  set nameCn(String nameCn) => _$this._nameCn = nameCn;
+  String _chineseName;
+  String get chineseName => _$this._chineseName;
+  set chineseName(String chineseName) => _$this._chineseName = chineseName;
 
   AirStatus _airStatus;
   AirStatus get airStatus => _$this._airStatus;
@@ -241,7 +242,7 @@ class SimpleHtmlBasedEpisodeBuilder
       _episodeInfo = _$v.episodeInfo;
       _id = _$v.id;
       _name = _$v.name;
-      _nameCn = _$v.nameCn;
+      _chineseName = _$v.chineseName;
       _airStatus = _$v.airStatus;
       _userEpisodeStatus = _$v.userEpisodeStatus;
       _episodeType = _$v.episodeType;
@@ -270,7 +271,7 @@ class SimpleHtmlBasedEpisodeBuilder
             episodeInfo: episodeInfo,
             id: id,
             name: name,
-            nameCn: nameCn,
+            chineseName: chineseName,
             airStatus: airStatus,
             userEpisodeStatus: userEpisodeStatus,
             episodeType: episodeType);

@@ -1,6 +1,7 @@
 import 'dart:core';
+import 'dart:ui';
 
-import 'package:html/dom.dart' show Element, Node, NodeList;
+import 'package:html/dom.dart' show DocumentFragment, Element, Node, NodeList;
 import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/shared/utils/common.dart';
@@ -223,9 +224,13 @@ DateTime parseBangumiTime(String rawTime, {stripDummyInfo = true}) {
 }
 
 /// Parses time in format like `2019-4-8 02:12` and returns [DateTime]
-/// Bangumi always displays timestamp in GMT+8(Beijing time)
+/// Bangumi typically displays timestamp in GMT+8(Beijing time)
 /// Hence +0800 is default time
-DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
+/// TODO: bangumi allows user to select timezone, find a easy way to read user
+/// timeline and parse time accordingly.
+DateTime parseDateTime(String rawTime, {
+  timeZoneShift = '+0800',
+}) {
   if (rawTime == null) {
     return null;
   }
@@ -235,7 +240,7 @@ DateTime parseDateTime(String rawTime, {timeZoneShift = '+0800'}) {
       return '';
     }
 
-    return '0${m.group(1)}';
+    return '-0${m.group(1)}';
   });
 
   rawTime += timeZoneShift;
@@ -361,4 +366,20 @@ Node nextNodeSibling(Element element) {
     if (s is Node) return s;
   }
   return null;
+}
+
+String attributesValueOrNull(Element element, String attributeName) {
+  if (element == null) {
+    return null;
+  }
+
+  return element.attributes[attributeName];
+}
+
+String toCssRGBAString(Color color) {
+  // [Color] stores color in argb color, it needs to be converted to rgba(used
+  // by css).
+  final argb = color.value.toRadixString(16).padLeft(8, '0');
+  final rgba = '${argb.substring(2)}${argb.substring(0, 2)}';
+  return '#$rgba';
 }

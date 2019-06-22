@@ -61,13 +61,8 @@ class SearchHomeDelegate extends SearchDelegate {
         ..searchType = _searchTypes[0]);
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: portraitHorizontalPadding,
-      ),
-      child: SearchResultsWidget(
-        searchRequest: selectedSearchRequest,
-      ),
+    return SearchResultsWidget(
+      searchRequest: selectedSearchRequest,
     );
   }
 

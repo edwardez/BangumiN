@@ -7,16 +7,11 @@ import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/discussion/DiscussionState.dart';
-import 'package:munin/redux/shared/LoadingStatus.dart';
 import 'package:redux/redux.dart';
 
 final discussionReducers = combineReducers<DiscussionState>([
   TypedReducer<DiscussionState, GetDiscussionRequestSuccessAction>(
       getDiscussionSuccessReducer),
-  TypedReducer<DiscussionState, GetThreadRequestAction>(
-      getThreadRequestReducer),
-  TypedReducer<DiscussionState, GetThreadRequestFailureAction>(
-      getThreadRequestFailureReducer),
   TypedReducer<DiscussionState, GetThreadRequestSuccessAction>(
       getGroupThreadSuccessReducer),
 ]);
@@ -28,28 +23,6 @@ DiscussionState getDiscussionSuccessReducer(DiscussionState discussionState,
 
   return discussionState
       .rebuild((b) => b..discussions.addAll({request: response}));
-}
-
-DiscussionState getThreadRequestReducer(DiscussionState discussionState,
-    GetThreadRequestAction action) {
-  return discussionState.rebuild(
-          (b) =>
-      b
-        ..getThreadLoadingStatus.addAll({
-          action.request: LoadingStatus.Loading
-        })
-  );
-}
-
-DiscussionState getThreadRequestFailureReducer(DiscussionState discussionState,
-    GetThreadRequestFailureAction action) {
-  return discussionState.rebuild(
-          (b) =>
-      b
-        ..getThreadLoadingStatus.addAll({
-          action.request: action.loadingStatus
-        })
-  );
 }
 
 DiscussionState getGroupThreadSuccessReducer(DiscussionState discussionState,

@@ -31,9 +31,7 @@ class BangumiCookieService {
   }
 
   bool get hasCookieCredential {
-    return _bangumiCookieCredential != null &&
-        _bangumiCookieCredential.userAgent != null &&
-        _bangumiCookieCredential.authCookie != null;
+    return _bangumiCookieCredential != null;
   }
 
   /// Updates in-memory bangumi auth credentials info
@@ -102,6 +100,7 @@ class BangumiCookieService {
   }
 
   Future<void> clearCredentials() {
+    _bangumiCookieCredential = null;
     return _secureStorageService.clearBangumiCookieCredentials();
   }
 

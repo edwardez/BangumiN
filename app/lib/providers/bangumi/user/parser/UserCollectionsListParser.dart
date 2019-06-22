@@ -86,7 +86,14 @@ class UserCollectionsListParser {
     List<String> tags = [];
 
     String rawTags =
-        collectionElement.querySelector('.collectInfo .tip')?.text?.trim();
+    collectionElement
+        .querySelectorAll('.collectInfo .tip')
+        .firstWhere(
+          (element) => element.text.contains('标签'),
+      orElse: () => null,
+    )
+        ?.text
+        ?.trim();
 
     if (rawTags != null) {
       rawTags = rawTags.replaceAll(subjectTagsPrefixRegex, '');

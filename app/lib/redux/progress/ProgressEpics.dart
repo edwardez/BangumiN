@@ -67,13 +67,12 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
         progresses: mergedSubjects, subjectTypes: action.subjectTypes);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     action.completer.completeError(error, stack);
 
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: action.showSnackBar,
     );
   }
@@ -109,7 +108,7 @@ Stream<dynamic> _getSubjectEpisodesEpic(
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -177,11 +176,10 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
           SnackBar(content: Text(action.toActionSuccessString())));
     }
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
   } finally {
@@ -273,11 +271,10 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
       );
     }
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
   }

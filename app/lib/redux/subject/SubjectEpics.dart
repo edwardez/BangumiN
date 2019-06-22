@@ -54,7 +54,7 @@ Stream<dynamic> _getSubject(
     print(error.toString());
     print(stack);
 
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -169,7 +169,7 @@ Stream<dynamic> _collectionUpdateRequest(
     print(error.toString());
     print(stack);
 
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   }
 }
 
@@ -211,7 +211,7 @@ Stream<dynamic> _deleteCollectionRequestEpic(
     print(error.toString());
     print(stack);
 
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -272,13 +272,11 @@ Stream<dynamic> _getSubjectReviewsEpic(
     );
     action.completer.complete();
   } catch (error, stack) {
-    // If the search call fails, dispatch an error so we can show it
-    print(error.toString());
-    print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
   } finally {

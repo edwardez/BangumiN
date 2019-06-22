@@ -187,13 +187,12 @@ Stream<dynamic> _getTimelineEpic(
         parsedResponse: fetchFeedsResult);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     action.completer.completeError(error, stack);
 
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
 
@@ -229,9 +228,11 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
         appUsername: store.state.currentAuthenticatedUserBasicInfo.username);
     Scaffold.of(action.context).showSnackBar(SnackBar(content: Text('时间线已删除')));
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    yield HandleErrorAction(context: action.context, error: error);
+    yield HandleErrorAction(
+      context: action.context,
+      error: error,
+      stack: stack,
+    );
   }
 }
 
@@ -280,11 +281,13 @@ Stream<dynamic> _submitTimelineMessage(
       feedLoadType: FeedLoadType.Newer,
     );
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
 
-    yield HandleErrorAction(context: action.context, error: error);
+    yield HandleErrorAction(
+      context: action.context,
+      error: error,
+      stack: stack,
+    );
   } finally {
     completeDanglingCompleter(action.completer);
   }

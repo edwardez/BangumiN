@@ -37,7 +37,7 @@ Stream<dynamic> _getDiscussionEpic(BangumiUserService bangumiUserService,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -100,7 +100,7 @@ Stream<dynamic> _listUserCollectionsEpic(
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }

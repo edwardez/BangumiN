@@ -49,13 +49,12 @@ Stream<dynamic> _searchSubjectOrMonoEpic(
 
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     yield HandleErrorAction(
       error: error,
       context: action.context,
+      stack: stack,
     );
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }

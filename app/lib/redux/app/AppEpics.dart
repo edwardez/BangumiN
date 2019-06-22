@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -48,8 +49,18 @@ Epic<AppState> _createPersistStateEpic(
 Stream<dynamic> _handleErrorEpic(
     EpicStore<AppState> store, HandleErrorAction action) async* {
   try {
+    bool inDev = Application.environmentValue.environmentType ==
+        EnvironmentType.Development;
     final error = action.error;
     final context = action.context;
+
+    // Always reports errors in dev.
+    if (inDev) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: action.stack,
+      ));
+    }
 
     final result = await generalExceptionHandler(
       error,
@@ -61,14 +72,24 @@ Stream<dynamic> _handleErrorEpic(
       return;
     }
 
+    // Only reports unexpected errors in production.
+    if (!inDev) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: action.stack,
+      ));
+    }
+
     if (action.showErrorMessageSnackBar) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(formatErrorMessage(error)),
       ));
     }
   } catch (error, stack) {
-    debugPrint(
-        'Error occured during persisting AppState: $error. Stack: $stack');
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: error,
+      stack: action.stack,
+    ));
   }
 }
 

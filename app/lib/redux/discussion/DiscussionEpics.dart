@@ -35,12 +35,11 @@ Stream<dynamic> _getDiscussion(
         getDiscussionResponse: getDiscussionResponse);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     action.completer.completeError(error, stack);
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
   } finally {
@@ -96,7 +95,7 @@ Stream<dynamic> _getGroupThread(
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }

@@ -474,8 +474,8 @@ class _SubjectCollectionManagementWidgetState
             await vm.collectionInfoUpdateRequest(
                 vm.subject.id, localSubjectCollectionInfo);
             Navigator.pop(context);
-          } catch (error) {
-            vm.handleError(context, error);
+          } catch (error, stack) {
+            vm.handleError(context, error, stack);
           }
         },
         canSubmit: _canSubmitForm,
@@ -608,7 +608,8 @@ class _ViewModel {
   final Function(int subjectId, SubjectCollectionInfo collectionUpdateRequest)
       collectionInfoUpdateRequest;
 
-  final void Function(BuildContext context, Object error) handleError;
+  final void Function(BuildContext context, Object error, StackTrace stack)
+  handleError;
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
     Future<void> _collectionUpdateRequest(
@@ -640,8 +641,12 @@ class _ViewModel {
       preferredSubjectInfoLanguage:
           store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
       subject: _retrieveSubjectInStore(store, subjectId),
-      handleError: (BuildContext context, Object error) {
-        store.dispatch(HandleErrorAction(error: error, context: context));
+      handleError: (BuildContext context, Object error, StackTrace stack) {
+        store.dispatch(HandleErrorAction(
+          error: error,
+          context: context,
+          stack: stack,
+        ));
       },
     );
   }

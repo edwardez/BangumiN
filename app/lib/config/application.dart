@@ -98,7 +98,9 @@ abstract class Application {
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
     bangumiOauthService?.client?.currentUser =
-        appState?.currentAuthenticatedUserBasicInfo;
+        appState.currentAuthenticatedUserBasicInfo;
+
+    _initializeTelemetry(appState.settingState.privacySetting);
 
     // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
@@ -131,9 +133,6 @@ abstract class Application {
           themeSetting: store.state.settingState.themeSetting));
     }
 
-    _initializeTelemetry(
-        store.state.settingState.privacySetting ?? PrivacySetting());
-
     await _checkAuthenticationInfo(bangumiOauthService);
 
     // flutter initialization
@@ -157,9 +156,18 @@ abstract class Application {
   }
 
   _checkAuthenticationInfo(BangumiOauthService bangumiOauthService) async {
-    if (bangumiOauthService.client != null &&
-        bangumiOauthService.client.shouldRefreshAccessToken()) {
-      await bangumiOauthService.client.refreshCredentials();
+    // Silently ignores any error: failing to refresh credentials shouldn't
+    // prevent user from accessing the app.
+    try {
+      if (bangumiOauthService.client != null &&
+          bangumiOauthService.client.shouldRefreshAccessToken()) {
+        await bangumiOauthService.client.refreshCredentials();
+      }
+    } catch (exception, stack) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: exception,
+        stack: stack,
+      ));
     }
   }
 
@@ -167,18 +175,40 @@ abstract class Application {
       BangumiCookieService bangumiCookieService,
       BangumiOauthService bangumiOauthService,
       SharedPreferenceService sharedPreferenceService) async {
-    bool isAuthenticated = bangumiCookieService.hasCookieCredential &&
-        bangumiOauthService.hasOauthClient;
-    Optional<AppState> maybePersistedAppState =
-        await sharedPreferenceService.readAppState();
     AppState persistedAppState;
 
-    if (maybePersistedAppState.isPresent) {
-      persistedAppState = maybePersistedAppState.value;
-    } else {
+    try {
+      Optional<AppState> maybePersistedAppState =
+      await sharedPreferenceService.readAppState();
+
+      if (maybePersistedAppState.isPresent &&
+          maybePersistedAppState.value.currentAuthenticatedUserBasicInfo !=
+              null) {
+        persistedAppState = maybePersistedAppState.value;
+      } else {
+        // If [maybePersistedAppState] is absent while credentials are presented.
+        // Or user info is null.
+        // It indicates user has uninstalled the app but credentials are not
+        // cleared, hence clearing the credentials.
+        bangumiCookieService.clearCredentials();
+        bangumiOauthService.clearCredentials();
+
+        persistedAppState = AppState();
+        return persistedAppState;
+      }
+    } catch (error, stack) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+      ));
+      bangumiCookieService.clearCredentials();
+      bangumiOauthService.clearCredentials();
       persistedAppState = AppState();
     }
 
+
+    bool isAuthenticated = bangumiCookieService.hasCookieCredential &&
+        bangumiOauthService.hasOauthClient;
     persistedAppState =
         persistedAppState.rebuild((b) => b..isAuthenticated = isAuthenticated);
 

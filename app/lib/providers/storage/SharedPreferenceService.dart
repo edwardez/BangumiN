@@ -37,8 +37,10 @@ class SharedPreferenceService {
           ..currentAuthenticatedUserBasicInfo
               .replace(basicAppState.currentAuthenticatedUserBasicInfo));
       } catch (error, stack) {
-        debugPrint(
-            'Error occurred during serializing BasicAppState: $error. Stack: $stack');
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: error,
+          stack: stack,
+        ));
         return Optional.absent();
       }
     }
@@ -60,8 +62,10 @@ class SharedPreferenceService {
         if (appState != null) {
           await persistAppState(appState);
         }
-        debugPrint(
-            'Error occurred during serializing AppState: $error. Stack: $stack');
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: error,
+          stack: stack,
+        ));
       }
     }
 

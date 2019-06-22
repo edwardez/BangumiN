@@ -3,10 +3,24 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
+import 'package:quiver/core.dart';
 
 part 'BangumiContent.g.dart';
 
 class BangumiContent extends EnumClass {
+  static const _subjectSubRoute = 'subject';
+  static const _subjectTopicSubRoute = 'subject/topic';
+  static const _episodeSubRoute = 'ep';
+  static const _userSubRoute = 'user';
+  static const _groupSubRoute = 'group';
+  static const _groupTopicSubRoute = 'group/topic';
+  static const _blogSubRoute = 'blog';
+  static const _catalogSubRoute = 'index';
+  static const _doujinSubRoute = 'doujin';
+  static const _characterSubRoute = 'character';
+  static const _personSubRoute = 'person';
+  static const _subjectCreationSubRoute = 'subject';
+
   static const BangumiContent PublicMessage = _$PublicMessage;
   static const BangumiContent Episode = _$Episode;
   static const BangumiContent Subject = _$Subject;
@@ -34,31 +48,31 @@ class BangumiContent extends EnumClass {
   String get webPageRouteName {
     switch (this) {
       case BangumiContent.Subject:
-        return 'subject';
+        return _subjectSubRoute;
       case BangumiContent.SubjectTopic:
-        return 'subject/topic';
+        return _subjectTopicSubRoute;
       case BangumiContent.Episode:
-        return 'ep';
+        return _episodeSubRoute;
       case BangumiContent.User:
-        return 'user';
+        return _userSubRoute;
       case BangumiContent.Group:
-        return 'group';
+        return _groupSubRoute;
       case BangumiContent.GroupTopic:
-        return 'group/topic';
+        return _groupTopicSubRoute;
       case BangumiContent.Blog:
-        return 'blog';
+        return _blogSubRoute;
       case BangumiContent.Catalog:
-        return 'index';
+        return _catalogSubRoute;
       case BangumiContent.Doujin:
-        return 'doujin';
+        return _doujinSubRoute;
       case BangumiContent.Character:
-        return 'character';
+        return _characterSubRoute;
       case BangumiContent.Person:
-        return 'person';
+        return _personSubRoute;
     // All timeline wiki activity is a [BangumiContent.SubjectCreation] activity,
     // which means user creates a new subject.
       case BangumiContent.SubjectCreation:
-        return 'subject';
+        return _subjectCreationSubRoute;
       default:
       // Default shouldn't be used directly
         assert(false, '$this doesn\'t have a valid webPageRouteName.');
@@ -66,10 +80,45 @@ class BangumiContent extends EnumClass {
     }
   }
 
+  /// A sub route name as seen on bangumi.
+  static Optional<BangumiContent> bangumiContentFromWebPageRouteName(
+      String subRoute) {
+    switch (subRoute) {
+      case _subjectSubRoute:
+        return Optional.of(BangumiContent.Subject);
+      case _subjectTopicSubRoute:
+        return Optional.of(BangumiContent.SubjectTopic);
+      case _episodeSubRoute:
+        return Optional.of(BangumiContent.Episode);
+      case _userSubRoute:
+        return Optional.of(BangumiContent.User);
+      case _groupSubRoute:
+        return Optional.of(BangumiContent.Group);
+      case _groupTopicSubRoute:
+        return Optional.of(BangumiContent.GroupTopic);
+      case _blogSubRoute:
+        return Optional.of(BangumiContent.Blog);
+      case _catalogSubRoute:
+        return Optional.of(BangumiContent.Catalog);
+      case _doujinSubRoute:
+        return Optional.of(BangumiContent.Doujin);
+      case _characterSubRoute:
+        return Optional.of(BangumiContent.Character);
+      case _personSubRoute:
+        return Optional.of(BangumiContent.Person);
+      case _subjectCreationSubRoute:
+        return Optional.of(BangumiContent.SubjectCreation);
+      default:
+      // Default shouldn't be used directly
+        assert(false, '$subRoute doesn\'t have a valid BangumiContent.');
+        return Optional.absent();
+    }
+  }
+
   static const Set<BangumiContent> monoTypes = {
-  BangumiContent.CharacterOrPerson,
-  BangumiContent.Person,
-  BangumiContent.Character
+    BangumiContent.CharacterOrPerson,
+    BangumiContent.Person,
+    BangumiContent.Character
   };
 
   @memoized

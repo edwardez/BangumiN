@@ -32,14 +32,12 @@ abstract class BangumiGeneralSearchResponse
   /// result randomly sometimes and we want to eliminate duplicates
   /// See also explanation in [requestedResults]
   /// BuiltMap guarantees the order so we can iterate it as a [List] by accessing
-  /// [resultsAsList]
+  /// [resultsToList]
   @nullable
   BuiltMap<int, SearchResultItem> get results;
 
   @memoized
-  List<SearchResultItem> get resultsAsList {
-    return results.values.toList();
-  }
+  List<SearchResultItem> get resultsToList => results.values.toList();
 
   @override
   @memoized

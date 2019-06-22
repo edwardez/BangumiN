@@ -78,10 +78,22 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   Widget searchResultCountWidget(int count) {
     return MuninPadding.noVerticalOffset(
       child: Text(
-        '搜索到$count个结果',
+        '搜索到约$count个结果',
         style: defaultCaptionText(context),
       ),
     );
+  }
+
+  String additionalNoMoreResultsExplanation(
+      BangumiGeneralSearchResponse response) {
+    String additionalExplanation = '';
+
+    if (response != null && response.hasReachedEnd &&
+        response.resultsToList.length != response.totalCount) {
+      additionalExplanation = '，部分搜索结果可能已被Bangumi屏蔽';
+    }
+
+    return additionalExplanation;
   }
 
   @override
@@ -102,7 +114,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
             context, currentSearchRequest.searchType, vm);
 
         List<SearchResultItem> results =
-            vm.bangumiSearchResponse?.resultsAsList ?? [];
+            vm.bangumiSearchResponse?.resultsToList ?? [];
 
         bool hasReachedEnd = vm.bangumiSearchResponse?.hasReachedEnd ?? false;
 
@@ -136,9 +148,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                   );
                 },
                 noMoreItemsToLoad: hasReachedEnd,
-                noMoreItemsWidget: Text(
-                  '没有更多${currentSearchRequest.searchType.chineseName}分类下的结果',
-                  style: defaultCaptionText(context),
+                noMoreItemsWidget: MuninPadding.noVerticalOffset(
+                  child: Text(
+                    '没有更多${currentSearchRequest.searchType.chineseName}分类下的结果'
+                        '${additionalNoMoreResultsExplanation(
+                        vm.bangumiSearchResponse)}',
+                    style: defaultCaptionText(context),
+                  ),
                 ),
                 separatorBuilder: null,
                 appBarUnderneathPadding: null,

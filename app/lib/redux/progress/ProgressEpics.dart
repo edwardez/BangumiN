@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/api/InProgressAnimeOrRealCollection.dart';
 import 'package:munin/models/bangumi/progress/common/InProgressCollection.dart';
@@ -205,7 +206,6 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
     BangumiProgressService bangumiProgressService,
     UpdateSubjectEpisodeAction action,
     EpicStore<AppState> store) async* {
-
   /// Gets all episode ids that might be affected by [EpisodeUpdateType.CollectUntil].
   /// Different from [EpisodeProgress], [SimpleHtmlEpisode] which is inside [SubjectEpisodes]
   /// are only available on web page and don't have a valid [sequentialNumber].
@@ -219,15 +219,14 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
     List<int> episodeIds = [];
 
     for (var episode in subjectEpisodes.episodes.values) {
-      if (isEpisodeAffectedByCollectUntilOperation(episode)
-      ) {
+      if (isEpisodeAffectedByCollectUntilOperation(episode)) {
         episodeIds.add(episode.id);
-        assert(episode.id <= collectedUntilEpisodeId,
+        assert(
+        episode.id <= collectedUntilEpisodeId,
         'Munin tried to guess which episode to update for a [EpisodeUpdateType.CollectUntil]'
             ' but it seems like data is malformed. Id ${episode.id} is higher '
             'than current collectedUntilEpisodeId($collectedUntilEpisodeId) '
-            'whike it should always be smaller.'
-        );
+            'whike it should always be smaller.');
 
         // Bangumi web page lists all episodes in sequential, breaks loop after
         // reaching the target episode id.
@@ -240,17 +239,19 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
   }
 
   try {
+    final subjectId = action.subjectId;
+    final episodeId = action.episodeId;
+
     if (action is UpdateSingleSubjectEpisodeAction) {
       await bangumiProgressService.updateSingleAnimeOrRealSingleEpisode(
-          episodeId: action.episodeId,
-          episodeUpdateType: action.episodeUpdateType);
+          episodeId: episodeId, episodeUpdateType: action.episodeUpdateType);
     } else if (action is UpdateBatchSubjectEpisodesAction) {
-      var subjectEpisodes = store.state.progressState.watchableSubjects[action
-          .subjectId];
+      var subjectEpisodes =
+      store.state.progressState.watchableSubjects[subjectId];
 
       List<int> episodeIdsToUpdate = calculateCollectionUntilSubjectEpisodeIds(
         subjectEpisodes: subjectEpisodes,
-        collectedUntilEpisodeId: action.episodeId,
+        collectedUntilEpisodeId: episodeId,
       );
 
       await bangumiProgressService.updateAnimeOrRealBatchEpisodes(
@@ -259,10 +260,19 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
       throw UnsupportedError('不支持的更新操作');
     }
 
-    /// Re-retrieves data from bangumi server to reflect change on widget.
+    // Re-retrieves data from bangumi server to reflect change on widget.
     yield GetSubjectEpisodesRequestAction(
-      subjectId: action.subjectId,
+      subjectId: subjectId,
     );
+
+    // Also updates progress widget if possible.
+    final subjectInStore = store.state.subjectState.subjects[subjectId];
+    if (subjectInStore != null) {
+      yield GetProgressRequestAction(
+        context: action.context,
+        subjectTypes: BuiltSet<SubjectType>.of({subjectInStore.type}),
+      );
+    }
   } catch (error, stack) {
     print(error.toString());
     print(stack);

@@ -21,6 +21,7 @@ import 'package:munin/widgets/shared/text/MuninTextSpans.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
+import 'package:quiver/time.dart';
 import 'package:redux/redux.dart';
 
 typedef UpdateSingleSubjectEpisode = Function({
@@ -210,7 +211,6 @@ class SubjectEpisodesWidget extends StatelessWidget {
               baseEpisode.userEpisodeStatus) {
             return;
           }
-
           // Otherwise, update relevant episode.
           vm.updateSingleSubjectEpisode(
             context: context,
@@ -219,6 +219,12 @@ class SubjectEpisodesWidget extends StatelessWidget {
             episodeUpdateType: episodeUpdateType,
           );
         }
+
+        // Reaching the end means request has been sent, showing a snack bar.
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('已发送请求'),
+          duration: aSecond,
+        ));
       },
     );
   }
@@ -327,8 +333,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
       converter: (Store store) => _ViewModel.fromStore(store, subjectId),
       distinct: true,
       onInit: (store) {
-        final action = GetSubjectEpisodesRequestAction(
-            subjectId: subjectId);
+        final action = GetSubjectEpisodesRequestAction(subjectId: subjectId);
         store.dispatch(action);
         requestStatusFuture = action.completer.future;
       },
@@ -375,8 +380,7 @@ class _ViewModel {
 
   factory _ViewModel.fromStore(Store<AppState> store, int subjectId) {
     Future<void> _getSubjectEpisodes() {
-      final action = GetSubjectEpisodesRequestAction(
-          subjectId: subjectId);
+      final action = GetSubjectEpisodesRequestAction(subjectId: subjectId);
       store.dispatch(action);
 
       return action.completer.future;
@@ -443,6 +447,5 @@ class _ViewModel {
       hash2(
         subjectEpisodes,
         preferredSubjectInfoLanguage,
-
       );
 }

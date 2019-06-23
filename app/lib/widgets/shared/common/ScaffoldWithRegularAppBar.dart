@@ -22,10 +22,10 @@ class ScaffoldWithRegularAppBar extends StatelessWidget {
       appBar: appBar,
       body: SafeArea(
           child: Padding(
-            padding:
+        padding:
             EdgeInsets.symmetric(horizontal: safeAreaChildHorizontalPadding),
-            child: safeAreaChild,
-          )),
+        child: safeAreaChild,
+      )),
     );
   }
 }

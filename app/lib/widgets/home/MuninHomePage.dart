@@ -30,29 +30,29 @@ class _MuninHomePageState extends State<MuninHomePage> {
     super.initState();
 
     pages[PreferredLaunchNavTab.Timeline.pageIndex] = MuninTimeline.onHomePage(
-      key: PageStorageKey<PreferredLaunchNavTab>(
-          PreferredLaunchNavTab.Timeline),
-      preferredTimelineLaunchPage: widget.generalSetting
-          .preferredTimelineLaunchPage,
+      key:
+          PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Timeline),
+      preferredTimelineLaunchPage:
+          widget.generalSetting.preferredTimelineLaunchPage,
     );
 
     pages[PreferredLaunchNavTab.Progress.pageIndex] = MuninSubjectProgress(
-      key: PageStorageKey<PreferredLaunchNavTab>(
-          PreferredLaunchNavTab.Progress),
-      preferredProgressLaunchPage: widget.generalSetting
-          .preferredProgressLaunchPage,
+      key:
+          PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Progress),
+      preferredProgressLaunchPage:
+          widget.generalSetting.preferredProgressLaunchPage,
     );
 
     pages[PreferredLaunchNavTab.Discussion.pageIndex] = DiscussionHome(
       key: PageStorageKey<PreferredLaunchNavTab>(
           PreferredLaunchNavTab.Discussion),
-      preferredDiscussionLaunchPage: widget.generalSetting
-          .preferredDiscussionLaunchPage,
+      preferredDiscussionLaunchPage:
+          widget.generalSetting.preferredDiscussionLaunchPage,
     );
 
     pages[PreferredLaunchNavTab.HomePage.pageIndex] = UserHome(
-      key: PageStorageKey<PreferredLaunchNavTab>(
-          PreferredLaunchNavTab.HomePage),
+      key:
+          PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.HomePage),
     );
 
     currentPage = pages[widget.generalSetting.preferredLaunchNavTab.pageIndex];

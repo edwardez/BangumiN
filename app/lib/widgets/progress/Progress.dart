@@ -25,9 +25,9 @@ class MuninSubjectProgress extends StatefulWidget {
 
 class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
   final List<ProgressBody> progressBodies =
-  List(GetProgressRequest.totalGetProgressRequestTypes);
-  final List<Widget> pages = List(
-      GetProgressRequest.totalGetProgressRequestTypes);
+      List(GetProgressRequest.totalGetProgressRequestTypes);
+  final List<Widget> pages =
+      List(GetProgressRequest.totalGetProgressRequestTypes);
 
   PageController pageController;
 
@@ -36,7 +36,6 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
   int get currentIndex {
     return pageController?.page?.round();
   }
-
 
   ProgressBodyWidget _buildProgressBodyWidget(
       GetProgressRequest getProgressRequest, OneMuninBar oneMuninBar) {
@@ -60,8 +59,8 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
                 setState(() {
                   if (currentIndex !=
                       progressBody.getProgressRequest.pageIndex) {
-                    pageController.jumpToPage(
-                        progressBody.getProgressRequest.pageIndex);
+                    pageController
+                        .jumpToPage(progressBody.getProgressRequest.pageIndex);
                   }
                 });
                 Navigator.pop(context);
@@ -107,8 +106,6 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
       pages[progressBodyPage.getProgressRequest.pageIndex] =
           progressBodyPage.widget;
     });
-
-
   }
 
   @override

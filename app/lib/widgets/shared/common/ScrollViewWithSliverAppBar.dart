@@ -48,7 +48,8 @@ class ScrollViewWithSliverAppBar extends StatelessWidget {
     this.enableBottomSafeArea = true,
   }) : super(key: key);
 
-  _buildAppBarTitle(BuildContext context,
+  _buildAppBarTitle(
+      BuildContext context,
       bool changeAppBarTitleOnScroll,
       bool innerBoxIsScrolled,
       Widget appBarMainTitle,

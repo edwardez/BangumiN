@@ -22,9 +22,7 @@ class CommentsPreview extends StatelessWidget {
     _updateDistributionText(int count, CollectionStatus status) {
       if (count > 0) {
         distributionText.add(
-            '$count人${CollectionStatus.chineseNameWithSubjectType(
-                status, subject.type)}'
-        );
+            '$count人${CollectionStatus.chineseNameWithSubjectType(status, subject.type)}');
       }
     }
 

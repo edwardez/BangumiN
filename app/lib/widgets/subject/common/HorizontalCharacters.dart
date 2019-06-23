@@ -16,15 +16,16 @@ class HorizontalCharacters extends StatelessWidget {
   final double imageWidth;
   final double imageHeight;
 
-
-  const HorizontalCharacters({Key key,
-    @required this.characters,
-    this.horizontalImagePadding = 8.0,
-    this.imageHeight = 60.0,
-    this.imageWidth = 60.0})
+  const HorizontalCharacters(
+      {Key key,
+      @required this.characters,
+      this.horizontalImagePadding = 8.0,
+      this.imageHeight = 60.0,
+      this.imageWidth = 60.0})
       : super(key: key);
 
-  _BuildCharactersListResult _buildCharactersList(BuiltList<Character> characters) {
+  _BuildCharactersListResult _buildCharactersList(
+      BuiltList<Character> characters) {
     bool noCharacterHasActor = true;
 
     List<RoundedElevatedImageWithBottomText> imageWidgets = [];
@@ -44,19 +45,16 @@ class HorizontalCharacters extends StatelessWidget {
         imageHeight: imageHeight,
         imageWidth: imageWidth,
         horizontalImagePadding:
-        imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
         title: character.name,
         subtitle:
-        character.actors.length == 0 ? null : character.actors[0].name,
+            character.actors.length == 0 ? null : character.actors[0].name,
         titleMaxLines: characterNameMaxLines,
         subTitleMaxLines: actorNameMaxLines,
       ));
     }
 
-    return _BuildCharactersListResult(
-        imageWidgets,
-        noCharacterHasActor
-    );
+    return _BuildCharactersListResult(imageWidgets, noCharacterHasActor);
   }
 
   @override
@@ -72,12 +70,8 @@ class HorizontalCharacters extends StatelessWidget {
 
     return HorizontalScrollableWidget(
       horizontalList: buildCharactersListResult.widgets,
-      listHeight:
-      imageHeight + Theme
-          .of(context)
-          .textTheme
-          .caption
-          .fontSize * textScaleFactor,
+      listHeight: imageHeight +
+          Theme.of(context).textTheme.caption.fontSize * textScaleFactor,
     );
   }
 }

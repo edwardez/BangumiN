@@ -31,7 +31,7 @@ class BangumiOauthWebview extends StatelessWidget {
               hidden: true,
               clearCookies: true,
               url:
-              'https://$host/oauth/authorize?response_type=code&client_id=$clientId',
+                  'https://$host/oauth/authorize?response_type=code&client_id=$clientId',
               appBar: new AppBar(
                 title: new Text("完成授权"),
                 elevation: 4.0,

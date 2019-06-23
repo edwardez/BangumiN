@@ -16,7 +16,7 @@ class GetTimelineRequestAction {
   GetTimelineRequestAction(
       {@required this.context,
       @required this.feedLoadType,
-        @required this.getTimelineRequest,
+      @required this.getTimelineRequest,
       Completer completer})
       : this.completer = completer ?? Completer();
 }
@@ -50,9 +50,10 @@ class DeleteTimelineSuccessAction {
   /// user name of the current app user
   final String appUsername;
 
-  DeleteTimelineSuccessAction({@required this.feed,
-    @required this.getTimelineRequest,
-    @required this.appUsername});
+  DeleteTimelineSuccessAction(
+      {@required this.feed,
+      @required this.getTimelineRequest,
+      @required this.appUsername});
 }
 
 class SubmitTimelineMessageAction {

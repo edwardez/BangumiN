@@ -37,7 +37,7 @@ class BangumiSubjectService {
     @required BuiltMap<String, MutedUser> mutedUsers,
   }) async {
     Dio.Response<String> response =
-    await cookieClient.dio.get<String>('/subject/$subjectId');
+        await cookieClient.dio.get<String>('/subject/$subjectId');
 
     BangumiSubject subject = await compute(processBangumiSubject,
         ParseBangumiSubjectMessage(response.data, mutedUsers));
@@ -48,8 +48,7 @@ class BangumiSubjectService {
   /// Gets a bangumi user collection info through api
   Future<SubjectCollectionInfo> getCollectionInfo(int subjectId) async {
     Http.Response response = await oauthClient.client.get(''
-        'https://${Application.environmentValue
-        .bangumiApiHost}/collection/$subjectId');
+        'https://${Application.environmentValue.bangumiApiHost}/collection/$subjectId');
 
     SubjectCollectionInfo subjectCollectionInfo;
     if (response.statusCode == 200) {
@@ -82,8 +81,8 @@ class BangumiSubjectService {
   }
 
   /// Updates collection info info through api
-  Future<SubjectCollectionInfo> updateCollectionInfoRequest(int subjectId,
-      SubjectCollectionInfo collectionUpdateRequest) async {
+  Future<SubjectCollectionInfo> updateCollectionInfoRequest(
+      int subjectId, SubjectCollectionInfo collectionUpdateRequest) async {
     Map<String, String> formData = {};
     String tagSeparator = ' ';
     formData['status'] = collectionUpdateRequest.status.type.wiredName;
@@ -102,8 +101,7 @@ class BangumiSubjectService {
 
     Http.Response response = await oauthClient.client.post(
         ''
-            'https://${Application.environmentValue
-            .bangumiApiHost}/collection/$subjectId/update',
+        'https://${Application.environmentValue.bangumiApiHost}/collection/$subjectId/update',
         body: formData);
 
     SubjectCollectionInfo subjectCollectionInfo;

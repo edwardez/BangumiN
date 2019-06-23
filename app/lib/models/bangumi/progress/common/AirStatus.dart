@@ -36,7 +36,7 @@ class AirStatus extends EnumClass {
       case AirStatus.Unknown:
       default:
         assert(this == AirStatus.Unknown,
-        '$this doesn\'t have a valid chinese name.');
+            '$this doesn\'t have a valid chinese name.');
         return '未知';
     }
   }

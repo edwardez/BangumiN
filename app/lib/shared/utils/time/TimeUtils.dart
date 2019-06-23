@@ -11,7 +11,7 @@ class TimeUtils {
   static final DateFormat fullAbsoluteTimeFormatter =
       DateFormat('yyyy-MM-dd HH:mm');
   static final DateFormat dateOnlyAbsoluteTimeFormatter =
-  DateFormat('yyyy-MM-dd');
+      DateFormat('yyyy-MM-dd');
 
   static initializeTimeago() {
     timeago.setLocaleMessages(
@@ -30,7 +30,8 @@ class TimeUtils {
   /// difference between current time and [epochTimeInMilliSeconds] are longer than
   /// [relativeTimeThreshold], absolute time  will be displayed, otherwise
   /// relative time will be displayed
-  static String formatMilliSecondsEpochTime(int epochTimeInMilliSeconds, {
+  static String formatMilliSecondsEpochTime(
+    int epochTimeInMilliSeconds, {
     displayTimeIn = DisplayTimeIn.SwitchByThreshold,
     AbsoluteTimeFormat formatAbsoluteTimeAs = AbsoluteTimeFormat.Full,
     fallbackTimeStr = '神秘时间',

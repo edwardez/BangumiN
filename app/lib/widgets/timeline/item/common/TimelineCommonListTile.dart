@@ -15,7 +15,6 @@ class TimelineCommonListTile extends StatelessWidget {
   final Widget leadingWidget;
   final GestureTapCallback onTap;
 
-
   const TimelineCommonListTile({
     Key key,
     @required this.title,
@@ -54,8 +53,8 @@ class TimelineCommonListTile extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0.0),
           child: ListTile(
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: 0.0, vertical: 2.0),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 0.0, vertical: 2.0),
             leading: leadingWidget,
             subtitle: _buildSubtitle(subtitle, subTitleMaxLines),
             title: Text(

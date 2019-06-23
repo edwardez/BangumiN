@@ -37,8 +37,6 @@ abstract class EpisodeProgress
   @BuiltValueField(wireName: 'desc')
   String get summary;
 
-
-
   String toJson() {
     return json
         .encode(serializers.serializeWith(EpisodeProgress.serializer, this));

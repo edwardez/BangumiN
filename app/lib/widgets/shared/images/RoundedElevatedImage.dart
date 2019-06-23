@@ -31,9 +31,9 @@ class RoundedElevatedImage extends StatelessWidget {
     this.imageWidth,
     this.imageHeight,
     this.imageFit,
-    this.semanticsLabel, this.cardMargin,
-  })
-      : this.onTapImage = null,
+    this.semanticsLabel,
+    this.cardMargin,
+  })  : this.onTapImage = null,
         super(key: key);
 
   /// If a callback needs to be added to the image, it's mandatory to specify
@@ -48,7 +48,8 @@ class RoundedElevatedImage extends StatelessWidget {
     this.fallbackImageUrl = BangumiImage.defaultCoverImage,
     this.elevation = 1.0,
     this.imageFit,
-    this.semanticsLabel, this.cardMargin,
+    this.semanticsLabel,
+    this.cardMargin,
   }) : super(key: key);
 
   @override

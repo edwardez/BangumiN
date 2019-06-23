@@ -16,15 +16,18 @@ class LinkTextSpan extends TextSpan {
   // manage the recognizer from outside the TextSpan, e.g. in the State of a
   // stateful widget that then hands the recognizer to the TextSpan.
 
-  LinkTextSpan(
-      {TextStyle style, @required String url, String text, bool forceSafariVC = false,
-        bool forceWebView = false,})
-      : super(
+  LinkTextSpan({
+    TextStyle style,
+    @required String url,
+    String text,
+    bool forceSafariVC = false,
+    bool forceWebView = false,
+  }) : super(
             style: style,
             text: text ?? url,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launch(url, forceSafariVC: forceSafariVC,
-                    forceWebView: forceWebView);
+                launch(url,
+                    forceSafariVC: forceSafariVC, forceWebView: forceWebView);
               });
 }

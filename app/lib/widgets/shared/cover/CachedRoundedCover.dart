@@ -9,15 +9,17 @@ class CachedRoundedCover extends StatelessWidget {
   final double height;
   final BorderRadiusGeometry borderRadius;
 
-  CachedRoundedCover({@required this.imageUrl,
-    @required this.width,
-    @required this.height,
-    this.borderRadius =
-    const BorderRadius.all(Radius.circular(defaultImageCircularRadius))});
+  CachedRoundedCover(
+      {@required this.imageUrl,
+      @required this.width,
+      @required this.height,
+      this.borderRadius =
+          const BorderRadius.all(Radius.circular(defaultImageCircularRadius))});
 
-  CachedRoundedCover.asGridSize({@required this.imageUrl,
-    this.borderRadius =
-    const BorderRadius.all(Radius.circular(defaultImageCircularRadius))})
+  CachedRoundedCover.asGridSize(
+      {@required this.imageUrl,
+      this.borderRadius =
+          const BorderRadius.all(Radius.circular(defaultImageCircularRadius))})
       : this.width = 48,
         this.height = 48;
 

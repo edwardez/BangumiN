@@ -11,25 +11,22 @@ part 'GetDiscussionRequest.g.dart';
 
 abstract class GetDiscussionRequest
     implements Built<GetDiscussionRequest, GetDiscussionRequestBuilder> {
-  static final defaultDiscussionLaunchPageType = GetDiscussionRequest((b) =>
-  b
+  static final defaultDiscussionLaunchPageType = GetDiscussionRequest((b) => b
     ..discussionType = DiscussionType.Rakuen
     ..discussionFilter = RakuenTopicFilter.Unrestricted);
 
   static final List<GetDiscussionRequest> validGetDiscussionRequests = [
     defaultDiscussionLaunchPageType,
-    defaultDiscussionLaunchPageType.rebuild((
-        b) => b..discussionFilter = RakuenTopicFilter.AllGroups),
-    defaultDiscussionLaunchPageType.rebuild((b) =>
-    b
-      ..discussionFilter = RakuenTopicFilter.JoinedGroups
-    ),
-    defaultDiscussionLaunchPageType.rebuild((
-        b) => b..discussionFilter = RakuenTopicFilter.Subject),
-    defaultDiscussionLaunchPageType.rebuild((
-        b) => b..discussionFilter = RakuenTopicFilter.Episode),
-    defaultDiscussionLaunchPageType.rebuild((
-        b) => b..discussionFilter = RakuenTopicFilter.Mono),
+    defaultDiscussionLaunchPageType
+        .rebuild((b) => b..discussionFilter = RakuenTopicFilter.AllGroups),
+    defaultDiscussionLaunchPageType
+        .rebuild((b) => b..discussionFilter = RakuenTopicFilter.JoinedGroups),
+    defaultDiscussionLaunchPageType
+        .rebuild((b) => b..discussionFilter = RakuenTopicFilter.Subject),
+    defaultDiscussionLaunchPageType
+        .rebuild((b) => b..discussionFilter = RakuenTopicFilter.Episode),
+    defaultDiscussionLaunchPageType
+        .rebuild((b) => b..discussionFilter = RakuenTopicFilter.Mono),
   ];
 
   DiscussionType get discussionType;
@@ -73,11 +70,10 @@ abstract class GetDiscussionRequest
     return 0;
   }
 
-
   GetDiscussionRequest._();
 
   factory GetDiscussionRequest([updates(GetDiscussionRequestBuilder b)]) =
-  _$GetDiscussionRequest;
+      _$GetDiscussionRequest;
 
   String toJson() {
     return json.encode(

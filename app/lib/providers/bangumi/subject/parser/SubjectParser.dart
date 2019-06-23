@@ -97,14 +97,12 @@ class SubjectParser {
       /// currently, if a infobox item has a link, it must be a person
       /// this behaviour seems to be stable in past years so for performance reason
       /// we don't check whether the link is
-      infoBoxItem = InfoBoxItem((b) =>
-      b
+      infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.Person
         ..id = parseHrefId(element, digitOnly: true)
         ..name = node.text);
     } else if (node.nodeType == Node.TEXT_NODE) {
-      infoBoxItem = InfoBoxItem((b) =>
-      b
+      infoBoxItem = InfoBoxItem((b) => b
         ..type = BangumiContent.PlainText
         ..name = node.text);
     }
@@ -112,8 +110,8 @@ class SubjectParser {
     return infoBoxItem;
   }
 
-  List<InfoBoxItem> parseInfoBoxRow(Element infoBoxRowElement,
-      SubjectType subjectType) {
+  List<InfoBoxItem> parseInfoBoxRow(
+      Element infoBoxRowElement, SubjectType subjectType) {
     List<InfoBoxItem> infoBoxItems = [];
     for (Node node in infoBoxRowElement.nodes) {
       InfoBoxItem infoBoxItem = parseInfoBoxItem(node);
@@ -140,25 +138,18 @@ class SubjectParser {
 
     Count count = Count.fromDescendingScoreArray(scoreArray);
     double score = tryParseDouble(
-        ratingElement
-            .querySelector('[property="v:average"]')
-            ?.text);
+        ratingElement.querySelector('[property="v:average"]')?.text);
 
     Element friendScoreElement = ratingElement.querySelector('.frdScore');
     int friendScoreVotesCount = extractFirstIntGroup(
-        friendScoreElement
-            ?.querySelector('a')
-            ?.text,
+        friendScoreElement?.querySelector('a')?.text,
         defaultValue: 0);
 
     double friendScore = tryParseDouble(
-        friendScoreElement
-            ?.querySelector('.num')
-            ?.text,
+        friendScoreElement?.querySelector('.num')?.text,
         defaultValue: null);
 
-    return Rating((b) =>
-    b
+    return Rating((b) => b
       ..score = score
       ..count.replace(count)
       ..totalScoreVotesCount = totalVotesCount
@@ -167,21 +158,19 @@ class SubjectParser {
   }
 
   SubjectCollectionInfoPreview parseSubjectCollectionInfoPreview(
-      Element collectionStatusElement,
-      Element scoreElement,) {
+    Element collectionStatusElement,
+    Element scoreElement,
+  ) {
     int score = scoreElement == null
         ? 0
         : tryParseInt(scoreElement.attributes['value']);
 
     CollectionStatus status =
-    CollectionStatus.guessCollectionStatusByChineseName(
-        collectionStatusElement
-            .querySelector('.interest_now')
-            ?.text,
-        fallbackCollectionStatus: CollectionStatus.Pristine);
+        CollectionStatus.guessCollectionStatusByChineseName(
+            collectionStatusElement.querySelector('.interest_now')?.text,
+            fallbackCollectionStatus: CollectionStatus.Pristine);
 
-    return SubjectCollectionInfoPreview((b) =>
-    b
+    return SubjectCollectionInfoPreview((b) => b
       ..score = score
       ..status = status);
   }
@@ -189,14 +178,13 @@ class SubjectParser {
   BuiltList<Actor> parseActors(Element characterElement) {
     List<Actor> actors = [];
     List<Element> actorElements =
-    characterElement.querySelectorAll('a[rel=\"v:starring\"]');
+        characterElement.querySelectorAll('a[rel=\"v:starring\"]');
 
     for (Element actorElement in actorElements) {
       int actorId = tryParseInt(parseHrefId(actorElement, digitOnly: true),
           defaultValue: null);
       String actorName = actorElement.text ?? '';
-      actors.add(Actor((b) =>
-      b
+      actors.add(Actor((b) => b
         ..name = actorName
         ..id = actorId));
     }
@@ -210,24 +198,24 @@ class SubjectParser {
     /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
     /// sorted in descending order
     SplayTreeSet<SubjectReview> reviews = SplayTreeSet<SubjectReview>(
-            (SubjectReview reviewA, SubjectReview reviewB) {
-          /// If username is the same, always skipping insertion
-          if (reviewA.metaInfo.username == reviewB.metaInfo.username) {
-            return 0;
-          }
+        (SubjectReview reviewA, SubjectReview reviewB) {
+      /// If username is the same, always skipping insertion
+      if (reviewA.metaInfo.username == reviewB.metaInfo.username) {
+        return 0;
+      }
 
-          int reviewAUpdatedAt = reviewA.metaInfo.updatedAt ?? 0;
-          int reviewBUpdatedAt = reviewB.metaInfo.updatedAt ?? 0;
-          if (reviewAUpdatedAt != reviewBUpdatedAt) {
-            return reviewBUpdatedAt - reviewAUpdatedAt;
-          }
+      int reviewAUpdatedAt = reviewA.metaInfo.updatedAt ?? 0;
+      int reviewBUpdatedAt = reviewB.metaInfo.updatedAt ?? 0;
+      if (reviewAUpdatedAt != reviewBUpdatedAt) {
+        return reviewBUpdatedAt - reviewAUpdatedAt;
+      }
 
-          /// If [UpdatedAt] is the same, we sort by username
-          return reviewB.metaInfo.username.compareTo(reviewA.metaInfo.username);
-        });
+      /// If [UpdatedAt] is the same, we sort by username
+      return reviewB.metaInfo.username.compareTo(reviewA.metaInfo.username);
+    });
 
     List<Element> commentBoxElements =
-    subjectElement.querySelectorAll('#comment_box>.item');
+        subjectElement.querySelectorAll('#comment_box>.item');
 
     /// Elements that are in the comment box
     for (Element commentElement in commentBoxElements) {
@@ -255,7 +243,7 @@ class SubjectParser {
     List<Character> characters = [];
 
     List<Element> characterElements =
-    subjectElement.querySelectorAll('.subject_section .user');
+        subjectElement.querySelectorAll('.subject_section .user');
 
     for (Element characterElement in characterElements) {
       Element avatarElement = characterElement.querySelector('a.avatar');
@@ -263,23 +251,18 @@ class SubjectParser {
           defaultValue: null);
       String characterName = avatarElement?.text?.trim() ?? '';
       String roleName =
-          characterElement
-              .querySelector('.badge_job_tip')
-              ?.text ?? '';
+          characterElement.querySelector('.badge_job_tip')?.text ?? '';
 
       String characterImageSmall = imageUrlFromBackgroundImage(avatarElement);
       BangumiImage avatar = BangumiImage.fromImageUrl(
           characterImageSmall, ImageSize.Unknown, ImageType.MonoAvatar);
 
       String collectionCountsStr =
-          characterElement
-              .querySelector('.fade.rr')
-              ?.text ?? '0';
+          characterElement.querySelector('.fade.rr')?.text ?? '0';
       int collectionCounts = extractFirstIntGroup(collectionCountsStr);
       BuiltList<Actor> actors = parseActors(characterElement);
 
-      Character character = Character((b) =>
-      b
+      Character character = Character((b) => b
         ..id = characterId
         ..name = characterName
         ..roleName = roleName
@@ -295,19 +278,16 @@ class SubjectParser {
   BuiltListMultimap<String, RelatedSubject> parseRelatedSubjects(
       DocumentFragment subjectElement, SubjectType subjectType) {
     ListMultimap<String, RelatedSubject> relatedSubjects =
-    ListMultimap<String, RelatedSubject>();
+        ListMultimap<String, RelatedSubject>();
     List<Element> relatedSubjectElements =
-    subjectElement.querySelectorAll('.browserCoverMedium > li');
+        subjectElement.querySelectorAll('.browserCoverMedium > li');
 
     String lastValidSubjectSubType = '';
 
     /// parse 关联条目
     for (Element subjectElement in relatedSubjectElements) {
       String subjectSubType =
-      subjectElement
-          .querySelector('.sub')
-          ?.text
-          ?.trim();
+          subjectElement.querySelector('.sub')?.text?.trim();
 
       /// bangumi will not set subject type if current subject has the same
       /// subject type as previous ones, hence we need to store and use the
@@ -339,8 +319,7 @@ class SubjectParser {
             coverImage, ImageSize.Unknown, ImageType.SubjectCover);
       }
 
-      RelatedSubject relatedSubject = RelatedSubject((b) =>
-      b
+      RelatedSubject relatedSubject = RelatedSubject((b) => b
         ..name = subjectName
         ..chineseName = subjectNameCn
         ..id = subjectId
@@ -357,7 +336,7 @@ class SubjectParser {
     /// it's possible book is associated with 单行本(tankobon), which is only
     /// valid for book
     List<Element> tankobonElements =
-    subjectElement.querySelectorAll('.browserCoverSmall > li');
+        subjectElement.querySelectorAll('.browserCoverSmall > li');
 
     String typeTankobon = '单行本';
     for (Element tankobonElement in tankobonElements) {
@@ -388,8 +367,7 @@ class SubjectParser {
       BangumiImage cover = BangumiImage.fromImageUrl(
           coverImage, ImageSize.Unknown, ImageType.SubjectCover);
 
-      RelatedSubject relatedSubject = RelatedSubject((b) =>
-      b
+      RelatedSubject relatedSubject = RelatedSubject((b) => b
         ..name = subjectName
         ..id = subjectId
         ..cover.replace(cover)
@@ -403,7 +381,7 @@ class SubjectParser {
 
   InfoBoxRow parseSubjectSubtype(DocumentFragment subjectElement) {
     final subtypeElements =
-    subjectElement.querySelectorAll('.nameSingle > .grey');
+        subjectElement.querySelectorAll('.nameSingle > .grey');
     String subTypeName = '';
     for (Element element in subtypeElements) {
       subTypeName += element?.text?.trim() ?? '';
@@ -413,12 +391,10 @@ class SubjectParser {
       return null;
     }
 
-    InfoBoxItem infoBoxItem = InfoBoxItem((b) =>
-    b
+    InfoBoxItem infoBoxItem = InfoBoxItem((b) => b
       ..name = subTypeName
       ..type = BangumiContent.PlainText);
-    InfoBoxRow infoBoxRow = InfoBoxRow((b) =>
-    b
+    InfoBoxRow infoBoxRow = InfoBoxRow((b) => b
       ..rowName = '类型'
       ..isCuratedRow = true
       ..rowItems.replace(BuiltList<InfoBoxItem>([infoBoxItem])));
@@ -479,8 +455,7 @@ class SubjectParser {
     }
 
     return CollectionStatusDistribution(
-          (b) =>
-      b
+      (b) => b
         ..wish = parseCount(SubjectReviewMainFilter.FromWishedUsers)
         ..completed = parseCount(SubjectReviewMainFilter.FromCompletedUsers)
         ..inProgress = parseCount(SubjectReviewMainFilter.FromInProgressUsers)
@@ -491,15 +466,17 @@ class SubjectParser {
 
   /// Parses BookProgress, or returns an empty [SubjectProgressPreview] if such
   /// info is not available on html.
-  SubjectProgressPreview parseSubjectProgressPreview(DocumentFragment document,
-      SubjectType subjectType,) {
+  SubjectProgressPreview parseSubjectProgressPreview(
+    DocumentFragment document,
+    SubjectType subjectType,
+  ) {
     final progressElement = document.querySelector('.panelProgress');
     if (progressElement == null) {
       return SubjectProgressPreview();
     }
 
     final completedEpisodesElement =
-    progressElement.querySelector('#watchedeps');
+        progressElement.querySelector('#watchedeps');
 
     final completedEpisodesCount = tryParseInt(
         attributesValueOrNull(completedEpisodesElement, 'value'),
@@ -510,7 +487,7 @@ class SubjectParser {
         defaultValue: null);
 
     final completedVolumesElement =
-    progressElement.querySelector('#watched_vols');
+        progressElement.querySelector('#watched_vols');
     final completedVolumesCount = tryParseInt(
         attributesValueOrNull(completedVolumesElement, 'value'),
         defaultValue: null);
@@ -521,10 +498,8 @@ class SubjectParser {
 
     bool isTankobon;
     if (subjectType == SubjectType.Book) {
-      String subjectSubTypeText = document
-          .querySelector('.nameSingle')
-          ?.text
-          ?.trim() ?? '';
+      String subjectSubTypeText =
+          document.querySelector('.nameSingle')?.text?.trim() ?? '';
       if (subjectSubTypeText.endsWith('系列')) {
         isTankobon = true;
       } else {
@@ -532,14 +507,12 @@ class SubjectParser {
       }
     }
 
-    return SubjectProgressPreview((b) =>
-    b
+    return SubjectProgressPreview((b) => b
       ..completedEpisodesCount = completedEpisodesCount
       ..completedVolumesCount = completedVolumesCount
       ..totalEpisodesCount = totalEpisodesCount
       ..totalVolumesCount = totalVolumesCount
-      ..isTankobon = isTankobon
-    );
+      ..isTankobon = isTankobon);
   }
 
   /// In-place updates [infoBoxRows] with [infoBoxItems]
@@ -572,10 +545,10 @@ class SubjectParser {
     chineseName ??= '-';
 
     ListMultimap<String, InfoBoxItem> infoBoxRows =
-    ListMultimap<String, InfoBoxItem>();
+        ListMultimap<String, InfoBoxItem>();
 
     ListMultimap<String, InfoBoxItem> curatedInfoBoxRows =
-    ListMultimap<String, InfoBoxItem>();
+        ListMultimap<String, InfoBoxItem>();
 
     /// manually add subType as another [InfoBoxRow], this info is available
     /// in a difference place
@@ -590,16 +563,14 @@ class SubjectParser {
     }
 
     for (Element infoBoxRowElement
-    in document.querySelectorAll('#infobox li')) {
+        in document.querySelectorAll('#infobox li')) {
       String infoBoxRowName =
-          infoBoxRowElement
-              .querySelector('span.tip')
-              ?.text ?? '';
+          infoBoxRowElement.querySelector('span.tip')?.text ?? '';
       infoBoxRowName = infoBoxRowName.replaceAll(RegExp(r'\s+|:'), '');
       bool isCuratedRow =
-      curatedRowMappings[subjectType].contains(infoBoxRowName);
+          curatedRowMappings[subjectType].contains(infoBoxRowName);
       List<InfoBoxItem> infoBoxItems =
-      parseInfoBoxRow(infoBoxRowElement, subjectType);
+          parseInfoBoxRow(infoBoxRowElement, subjectType);
 
       _addSeparatorIfNotFirstInfoBoxItem(
           infoBoxRows, infoBoxRowName, infoBoxItems);
@@ -635,24 +606,21 @@ class SubjectParser {
     BuiltList<SubjectReview> comments = parseReviews(document);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
-    parseRelatedSubjects(document, subjectType);
+        parseRelatedSubjects(document, subjectType);
 
-    String summary = document
-        .querySelector('#subject_summary')
-        ?.text ?? '暂无简介';
+    String summary = document.querySelector('#subject_summary')?.text ?? '暂无简介';
 
     BuiltList<String> bangumiSuggestedTags =
-    parseBangumiSuggestedTags(document);
+        parseBangumiSuggestedTags(document);
     BuiltList<String> userSelectedTags = parseUserSelectedTags(document);
 
     final collectionStatusDistribution = parserCollectionStatusDistribution(
         document.querySelector('#columnSubjectHomeA'));
 
-    final subjectProgressPreview = parseSubjectProgressPreview(
-        document, subjectType);
+    final subjectProgressPreview =
+        parseSubjectProgressPreview(document, subjectType);
 
-    return BangumiSubject((b) =>
-    b
+    return BangumiSubject((b) => b
       ..infoBoxRows.replace(infoBoxRows)
       ..curatedInfoBoxRows.replace(curatedInfoBoxRows)
       ..id = subjectId
@@ -670,7 +638,6 @@ class SubjectParser {
       ..userSelectedTags.replace(userSelectedTags)
       ..userSubjectCollectionInfoPreview.replace(preview)
       ..collectionStatusDistribution.replace(collectionStatusDistribution)
-      ..subjectProgressPreview.replace(subjectProgressPreview)
-    );
+      ..subjectProgressPreview.replace(subjectProgressPreview));
   }
 }

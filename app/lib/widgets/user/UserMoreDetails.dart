@@ -23,18 +23,15 @@ class UserMoreDetails extends StatelessWidget {
               children: <Widget>[
                 isEmpty(profile.introductionInPlainText)
                     ? WrappableText(
-                  '暂无简介',
-                  textStyle: Theme
-                      .of(context)
-                      .textTheme
-                      .caption,
-                  fit: FlexFit.tight,
-                  outerWrapper: OuterWrapper.Row,
-                )
+                        '暂无简介',
+                        textStyle: Theme.of(context).textTheme.caption,
+                        fit: FlexFit.tight,
+                        outerWrapper: OuterWrapper.Row,
+                      )
                     : BangumiHtml(
-                  html: profile.introductionInHtml,
-                  showSpoiler: false,
-                ),
+                        html: profile.introductionInHtml,
+                        showSpoiler: false,
+                      ),
                 Wrap(
                   children: <Widget>[
                     for (NetworkServiceTag tag in profile.networkServiceTags)

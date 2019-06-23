@@ -38,7 +38,7 @@ class ThreadParser {
   /// #22-24 - 2019-6-1 18:36 / del / edit
   /// This regex is good through year 3000! :P
   static RegExp postTimeAndSequentialNumRegex =
-  RegExp(r'\#(\d+)-?(\d+)?.*-\s+(' + postTimeRegex.pattern + r')');
+      RegExp(r'\#(\d+)-?(\d+)?.*-\s+(' + postTimeRegex.pattern + r')');
 
   final BuiltMap<String, MutedUser> mutedUsers;
 
@@ -69,9 +69,7 @@ class ThreadParser {
   Post _parsePost(Element element, PostType postType) {
     int id = extractFirstIntGroup(element.attributes['id'], defaultValue: null);
     PostTimeAndSeqNum postInfo =
-    _parsePostTimeAndSeqNum(element
-        .querySelector('.re_info')
-        .text);
+        _parsePostTimeAndSeqNum(element.querySelector('.re_info').text);
 
     String userNickName = element.querySelector('.inner a.l').text;
     String username = parseHrefId(element.querySelector('.inner a.l'));
@@ -214,9 +212,7 @@ class ThreadParser {
 
   BlogContent _parseBlogContent(DocumentFragment document) {
     String rawTime = postTimeRegex
-        .firstMatch(document
-        .querySelector('.re_info')
-        ?.text)
+        .firstMatch(document.querySelector('.re_info')?.text)
         .group(0);
 
     DateTime postTime = parseDateTime(rawTime);
@@ -233,8 +229,7 @@ class ThreadParser {
           avatarImageUrl, ImageSize.Unknown, ImageType.UserAvatar);
     }
 
-    BangumiUserBasic author = BangumiUserBasic((b) =>
-    b
+    BangumiUserBasic author = BangumiUserBasic((b) => b
       ..nickname = userNickName
       ..username = username
       ..avatar.replace(avatar));
@@ -242,30 +237,26 @@ class ThreadParser {
     List<ParentSubject> subjects = [];
 
     for (var subjectElement
-    in document.querySelectorAll('#related_subject_list > li')) {
+        in document.querySelectorAll('#related_subject_list > li')) {
       String coverImageUrl =
-      imageSrcOrFallback(subjectElement.querySelector('img'));
+          imageSrcOrFallback(subjectElement.querySelector('img'));
 
       int subjectId = tryParseInt(
           parseHrefId(subjectElement.querySelector('a'), digitOnly: true),
           defaultValue: null);
 
-      subjects.add(ParentSubject((b) =>
-      b
+      subjects.add(ParentSubject((b) => b
         ..id = subjectId
         ..name = subjectElement.text.trim()
         ..cover.replace(BangumiImage.fromImageUrl(
             coverImageUrl, ImageSize.Unknown, ImageType.SubjectCover))));
     }
 
-    return BlogContent((b) =>
-    b
+    return BlogContent((b) => b
       ..associatedSubjects.replace(BuiltList<ParentSubject>.of(subjects))
       ..postTimeInMilliSeconds = postTime.millisecondsSinceEpoch
       ..author.replace(author)
-      ..html = document
-          .querySelector('#entry_content')
-          ?.outerHtml ?? '');
+      ..html = document.querySelector('#entry_content')?.outerHtml ?? '');
   }
 
   _updateQuoteTextColor(DocumentFragment document) {
@@ -278,8 +269,8 @@ class ThreadParser {
         element.attributes['style'] = colorStyle;
       } else {
         // normalizes inline-style by adding a possibly missing semicolon.
-        bool endsWithSemicolon = element.attributes['style'].trim().endsWith(
-            ';');
+        bool endsWithSemicolon =
+            element.attributes['style'].trim().endsWith(';');
         if (!endsWithSemicolon) {
           element.attributes['style'] = ';';
         }
@@ -338,23 +329,18 @@ class ThreadParser {
 
     // Uses title class on page if any.
     String title =
-        firstOrNullInIterable<Node>(document
-            .querySelector('.title')
-            ?.nodes)
+        firstOrNullInIterable<Node>(document.querySelector('.title')?.nodes)
             ?.text;
 
     // If it doesn't exist, use the title html element in head.
-    title ??= document
-        .querySelector('title')
-        ?.text
-        ?.trim();
+    title ??= document.querySelector('title')?.text?.trim();
 
     String descriptionHtml = document.querySelector('.epDesc')?.outerHtml ?? '';
 
     List<Post> replies = _parseReplies(document);
 
     List<ThreadRelatedEpisode> relatedEpisodes =
-    _parseThreadRelatedEpisodes(document.querySelector('.sideEpList'));
+        _parseThreadRelatedEpisodes(document.querySelector('.sideEpList'));
 
     var maybeParentSubject = parseParentSubject(document);
 

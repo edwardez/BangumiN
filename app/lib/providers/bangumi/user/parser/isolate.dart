@@ -22,7 +22,8 @@ class ParseUserCollectionsListMessage {
   final int requestedPageNumber;
   final ListUserCollectionsRequest request;
 
-  ParseUserCollectionsListMessage(this.rawHtml, {
+  ParseUserCollectionsListMessage(
+    this.rawHtml, {
     @required this.requestedPageNumber,
     @required this.request,
   });

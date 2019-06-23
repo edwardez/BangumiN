@@ -46,7 +46,7 @@ class _OneMuninBarState extends State<OneMuninBar> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, String>(
       converter: (Store<AppState> store) =>
-      store.state?.currentAuthenticatedUserBasicInfo?.avatar?.large ??
+          store.state?.currentAuthenticatedUserBasicInfo?.avatar?.large ??
           bangumiAnonymousUserMediumAvatar,
       distinct: true,
       builder: (BuildContext context, String avatarUrl) {
@@ -66,7 +66,7 @@ class _OneMuninBarState extends State<OneMuninBar> {
               ),
               Padding(
                 padding:
-                EdgeInsets.only(right: widget.appBarActionRightPadding),
+                    EdgeInsets.only(right: widget.appBarActionRightPadding),
                 child: IconButton(
                   icon: CachedCircleAvatar(
                     imageUrl: avatarUrl,
@@ -77,9 +77,7 @@ class _OneMuninBarState extends State<OneMuninBar> {
                   ),
                   tooltip: '头像，更多选项',
                   onPressed: () {
-                    Application.router.navigateTo(
-                        context,
-                        Routes.settingRoute,
+                    Application.router.navigateTo(context, Routes.settingRoute,
                         transition: TransitionType.native);
                   },
                 ),

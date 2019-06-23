@@ -21,7 +21,6 @@ abstract class BlogCreationSingle
   /// blog id
   String get id;
 
-
   BlogCreationSingle._();
 
   factory BlogCreationSingle([updates(BlogCreationSingleBuilder b)]) =

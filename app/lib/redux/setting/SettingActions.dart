@@ -23,7 +23,8 @@ class UpdateThemeSettingAction {
   /// default to false
   final bool persistToDisk;
 
-  UpdateThemeSettingAction({@required this.themeSetting, this.persistToDisk = false});
+  UpdateThemeSettingAction(
+      {@required this.themeSetting, this.persistToDisk = false});
 }
 
 /// Updates mute settings.
@@ -57,8 +58,7 @@ class UnmuteGroupAction {
   UnmuteGroupAction({@required this.groupId});
 }
 
-class ImportBlockedBangumiUsersRequestAction {
-}
+class ImportBlockedBangumiUsersRequestAction {}
 
 /// Successfully fetched list of blocked users on bangumi
 class ImportBlockedBangumiUsersResponseSuccessAction {
@@ -67,11 +67,9 @@ class ImportBlockedBangumiUsersResponseSuccessAction {
   ImportBlockedBangumiUsersResponseSuccessAction({@required this.users});
 }
 
-class ImportBlockedBangumiUsersConfirmAction {
-}
+class ImportBlockedBangumiUsersConfirmAction {}
 
-class ImportBlockedBangumiUsersCleanupAction {
-}
+class ImportBlockedBangumiUsersCleanupAction {}
 
 /// Update privacy settings.
 class UpdatePrivacySettingAction {

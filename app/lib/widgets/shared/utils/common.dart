@@ -23,14 +23,15 @@ Function generateOnTapCallbackForBangumiContent({
   if (isEmpty(id)) {
     debugPrint(
         'Recevied empty id $id with BangumiContent $contentType while trying to'
-            'generate BangumiContent callback');
+        'generate BangumiContent callback');
     return () {};
   }
   if (contentType == BangumiContent.Subject) {
     return () {
-      Application.router.navigateTo(context,
-          Routes.subjectMainPageRoute.replaceAll(
-              RoutesVariable.subjectIdParam, id),
+      Application.router.navigateTo(
+          context,
+          Routes.subjectMainPageRoute
+              .replaceAll(RoutesVariable.subjectIdParam, id),
           transition: TransitionType.native);
     };
   }
@@ -53,18 +54,20 @@ Function generateOnTapCallbackForBangumiContent({
 
   if (contentType == BangumiContent.Episode) {
     return () {
-      Application.router.navigateTo(context,
-          Routes.episodeThreadRoute.replaceAll(
-              RoutesVariable.threadIdParam, id),
+      Application.router.navigateTo(
+          context,
+          Routes.episodeThreadRoute
+              .replaceAll(RoutesVariable.threadIdParam, id),
           transition: TransitionType.native);
     };
   }
 
   if (contentType == BangumiContent.SubjectTopic) {
     return () {
-      Application.router.navigateTo(context,
-          Routes.subjectTopicThreadRoute.replaceAll(
-              RoutesVariable.threadIdParam, id),
+      Application.router.navigateTo(
+          context,
+          Routes.subjectTopicThreadRoute
+              .replaceAll(RoutesVariable.threadIdParam, id),
           transition: TransitionType.native);
     };
   }
@@ -76,7 +79,6 @@ Function generateOnTapCallbackForBangumiContent({
           transition: TransitionType.native);
     };
   }
-
 
   String webPageUrl;
 
@@ -97,22 +99,22 @@ Function generateOnTapCallbackForBangumiContent({
   /// otherwise returns an empty function and logs it
   debugPrint(
       'Recevied invalid pair of BangumiContent $contentType and id $id while '
-          'trying to generate BangumiContent callback');
+      'trying to generate BangumiContent callback');
   return () {};
 }
 
 /// Generates corresponding bangumi web url.
 /// returns null corresponding Munin page cannot be found
-Optional<String> generateWebPageUrlByContentType(BangumiContent contentType,
-    String id) {
+Optional<String> generateWebPageUrlByContentType(
+    BangumiContent contentType, String id) {
   String webPageSubRouteName = contentType.webPageRouteName;
 
   if (id == null) {
     return Optional.absent();
   }
 
-  return Optional.of('https://${Application.environmentValue
-      .bangumiMainHost}/$webPageSubRouteName/$id');
+  return Optional.of(
+      'https://${Application.environmentValue.bangumiMainHost}/$webPageSubRouteName/$id');
 }
 
 /// TODO: figure out a better way to calculate text height
@@ -132,17 +134,12 @@ getTextOffsetHeight(String title, String subtitle, TextStyle textStyle) {
 /// on other platforms, returns null(use widget default)
 getSwitchActiveColor(BuildContext context) {
   if (Platform.isIOS) {
-    return Theme
-        .of(context)
-        .colorScheme
-        .primary;
+    return Theme.of(context).colorScheme.primary;
   }
 
   return null;
 }
 
 bool isNightTheme(BuildContext context) {
-  return Theme
-      .of(context)
-      .brightness == Brightness.dark;
+  return Theme.of(context).brightness == Brightness.dark;
 }

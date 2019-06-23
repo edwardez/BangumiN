@@ -26,7 +26,11 @@ class InProgressBookWidget extends StatefulWidget {
       onUpdateBookProgress;
 
   const InProgressBookWidget(
-      {Key key, @required this.collection, @required this.onUpdateBookProgress, @required this.preferredSubjectInfoLanguage, @required this.expandAllProgressTiles})
+      {Key key,
+      @required this.collection,
+      @required this.onUpdateBookProgress,
+      @required this.preferredSubjectInfoLanguage,
+      @required this.expandAllProgressTiles})
       : super(key: key);
 
   @override
@@ -41,7 +45,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
 
   bool get isDirtyOrTouched {
     return episodeEditController.text !=
-        widget.collection.completedEpisodesCount.toString() ||
+            widget.collection.completedEpisodesCount.toString() ||
         volumeEditController.text !=
             widget.collection.completedVolumesCount.toString() ||
         hasTouchedForm;
@@ -117,7 +121,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
   @override
   Widget build(BuildContext context) {
     assert(defaultPortraitHorizontalOffset -
-        defaultDensePortraitHorizontalOffset ==
+            defaultDensePortraitHorizontalOffset ==
         8.0);
 
     return ExpansionTile(
@@ -167,23 +171,20 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Flexible(child: Text(preferredNameFromSubjectBase(
-                          widget.collection.subject,
-                          widget.preferredSubjectInfoLanguage))),
+                      Flexible(
+                          child: Text(preferredNameFromSubjectBase(
+                              widget.collection.subject,
+                              widget.preferredSubjectInfoLanguage))),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       WrappableText(
-                        '${widget.collection.completedEpisodesCount ??
-                            '??'}/${widget.collection.subject
-                            .totalEpisodesCount ?? '??'}话  ',
+                        '${widget.collection.completedEpisodesCount ?? '??'}/${widget.collection.subject.totalEpisodesCount ?? '??'}话  ',
                         textStyle: Theme.of(context).textTheme.caption,
                       ),
                       WrappableText(
-                        '${widget.collection.completedVolumesCount ??
-                            '??'}/${widget.collection.subject
-                            .totalVolumesCount ?? '??'}卷',
+                        '${widget.collection.completedVolumesCount ?? '??'}/${widget.collection.subject.totalVolumesCount ?? '??'}卷',
                         textStyle: Theme.of(context).textTheme.caption,
                       )
                     ],
@@ -203,8 +204,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
             children: <Widget>[
               BookProgressUpdateField(
                 fieldType: FieldType.Episode,
-                totalEpisodesOrVolumeCount: widget.collection.subject
-                    .totalEpisodesCount,
+                totalEpisodesOrVolumeCount:
+                    widget.collection.subject.totalEpisodesCount,
                 subjectId: widget.collection.subject.id,
                 textEditingController: episodeEditController,
               ),
@@ -213,8 +214,8 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
               ),
               BookProgressUpdateField(
                 fieldType: FieldType.Volume,
-                totalEpisodesOrVolumeCount: widget.collection.subject
-                    .totalVolumesCount,
+                totalEpisodesOrVolumeCount:
+                    widget.collection.subject.totalVolumesCount,
                 subjectId: widget.collection.subject.id,
                 textEditingController: volumeEditController,
               ),

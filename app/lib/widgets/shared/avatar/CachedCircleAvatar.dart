@@ -5,7 +5,6 @@ import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:quiver/strings.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-
 class CachedCircleAvatar extends StatelessWidget {
   final String imageUrl;
   final double radius;
@@ -17,8 +16,11 @@ class CachedCircleAvatar extends StatelessWidget {
   /// if [navigateToUserRouteOnTap] is set to true, [username] cannot be null
   final String username;
 
-  const CachedCircleAvatar({@required this.imageUrl, this.radius = 20.0,
-    this.navigateToUserRouteOnTap = false, this.username});
+  const CachedCircleAvatar(
+      {@required this.imageUrl,
+      this.radius = 20.0,
+      this.navigateToUserRouteOnTap = false,
+      this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +49,7 @@ class CachedCircleAvatar extends StatelessWidget {
     return InkWell(
       child: avatar,
       onTap: generateOnTapCallbackForBangumiContent(
-          contentType: BangumiContent.User,
-          id: username,
-          context: context
-      ),
+          contentType: BangumiContent.User, id: username, context: context),
     );
   }
 }

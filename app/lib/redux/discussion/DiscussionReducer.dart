@@ -16,8 +16,8 @@ final discussionReducers = combineReducers<DiscussionState>([
       getGroupThreadSuccessReducer),
 ]);
 
-DiscussionState getDiscussionSuccessReducer(DiscussionState discussionState,
-    GetDiscussionRequestSuccessAction action) {
+DiscussionState getDiscussionSuccessReducer(
+    DiscussionState discussionState, GetDiscussionRequestSuccessAction action) {
   GetDiscussionRequest request = action.getDiscussionRequest;
   GetDiscussionResponse response = action.getDiscussionResponse;
 
@@ -25,29 +25,25 @@ DiscussionState getDiscussionSuccessReducer(DiscussionState discussionState,
       .rebuild((b) => b..discussions.addAll({request: response}));
 }
 
-DiscussionState getGroupThreadSuccessReducer(DiscussionState discussionState,
-    GetThreadRequestSuccessAction action) {
+DiscussionState getGroupThreadSuccessReducer(
+    DiscussionState discussionState, GetThreadRequestSuccessAction action) {
   if (action.request.threadType == ThreadType.Group) {
     assert(action.thread is GroupThread);
     return discussionState.rebuild(
-            (b) => b..groupThreads.addAll({action.thread.id: action.thread}));
+        (b) => b..groupThreads.addAll({action.thread.id: action.thread}));
   } else if (action.request.threadType == ThreadType.Episode) {
     assert(action.thread is EpisodeThread);
     return discussionState.rebuild(
-            (b) => b..episodeThreads.addAll({action.thread.id: action.thread}));
+        (b) => b..episodeThreads.addAll({action.thread.id: action.thread}));
   } else if (action.request.threadType == ThreadType.SubjectTopic) {
     assert(action.thread is SubjectTopicThread);
-    return discussionState.rebuild(
-            (b) =>
-        b
-          ..subjectTopicThreads.addAll({action.thread.id: action.thread}));
+    return discussionState.rebuild((b) =>
+        b..subjectTopicThreads.addAll({action.thread.id: action.thread}));
   } else if (action.request.threadType == ThreadType.Blog) {
     assert(action.thread is BlogThread);
     return discussionState.rebuild(
-            (b) => b..blogThreads.addAll({action.thread.id: action.thread}));
+        (b) => b..blogThreads.addAll({action.thread.id: action.thread}));
   }
 
-
   return null;
-
 }

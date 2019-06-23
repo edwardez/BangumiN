@@ -1,8 +1,8 @@
 import 'package:munin/config/application.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
-final bangumiNonCdnHostUri = Uri.parse(
-    'https://${Application.environmentValue.bangumiNonCdnHost}');
+final bangumiNonCdnHostUri =
+    Uri.parse('https://${Application.environmentValue.bangumiNonCdnHost}');
 
 final String bangumiHomePageUrl =
     'https://${Application.environmentValue.bangumiMainHost}';
@@ -13,8 +13,10 @@ final String rakuenMobileUrl =
 const String bangumiAnonymousUserMediumAvatar =
     'https://$bangumiAssetsServer/pic/user/m/icon.jpg';
 
-const String bangumiTextOnlySubjectCover = 'https://bgm.tv/img/no_icon_subject.png';
-final String bangumiTextOnlyGroupIcon = 'https://$bangumiAssetsServer/pic/icon/m/no_icon.jpg';
+const String bangumiTextOnlySubjectCover =
+    'https://bgm.tv/img/no_icon_subject.png';
+final String bangumiTextOnlyGroupIcon =
+    'https://$bangumiAssetsServer/pic/icon/m/no_icon.jpg';
 
 const String checkWebVersionPrompt = '查看网页版';
 const String appOrBangumiHasAnError = '应用或bangumi出错';

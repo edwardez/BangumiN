@@ -37,7 +37,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 0,
     this.outerWrapper = OuterWrapper.NoWrapper,
-        this.overflow = TextOverflow.ellipsis,
+    this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   const WrappableText.smallVerticalPadding(
@@ -51,7 +51,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 4.0,
     this.outerWrapper = OuterWrapper.NoWrapper,
-        this.overflow = TextOverflow.ellipsis,
+    this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   const WrappableText.mediumVerticalPadding(
@@ -65,7 +65,7 @@ class WrappableText extends StatelessWidget {
     this.right = 0,
     this.bottom = 10.0,
     this.outerWrapper = OuterWrapper.NoWrapper,
-        this.overflow = TextOverflow.ellipsis,
+    this.overflow = TextOverflow.ellipsis,
   }) : super(key: key);
 
   @override
@@ -83,10 +83,7 @@ class WrappableText extends StatelessWidget {
           text,
           maxLines: maxLines,
           overflow: overflow,
-          style: textStyle ?? Theme
-              .of(context)
-              .textTheme
-              .body1,
+          style: textStyle ?? Theme.of(context).textTheme.body1,
         ),
       ),
     );

@@ -22,7 +22,6 @@ class _SpoilerTextState extends State<SpoilerText> {
     showSpoiler = widget.showSpoiler;
   }
 
-
   @override
   void didUpdateWidget(SpoilerText oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -31,16 +30,14 @@ class _SpoilerTextState extends State<SpoilerText> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     Color textColor = showSpoiler ? Colors.white : Colors.transparent;
-    bool isAppBackgroundPureDark = Theme
-        .of(context)
-        .backgroundColor == Colors.black;
-    Color textBackground = isAppBackgroundPureDark ? Theme
-        .of(context)
-        .primaryColor : Colors.black54;
+    bool isAppBackgroundPureDark =
+        Theme.of(context).backgroundColor == Colors.black;
+    Color textBackground = isAppBackgroundPureDark
+        ? Theme.of(context).primaryColor
+        : Colors.black54;
 
     return GestureDetector(
       child: RichText(
@@ -50,8 +47,7 @@ class _SpoilerTextState extends State<SpoilerText> {
                   color: textColor,
 
                   /// Should this also be theme-aware?
-              background: Paint()
-                ..color = textBackground,
+                  background: Paint()..color = textBackground,
                 )),
       ),
       onTapDown: (TapDownDetails details) {

@@ -38,8 +38,7 @@ class SubjectWidget extends StatelessWidget {
       distinct: true,
       onInit: (store) {
         if (store.state.subjectState.subjects[subjectId] == null) {
-          final action =
-          GetSubjectAction(subjectId: subjectId);
+          final action = GetSubjectAction(subjectId: subjectId);
           store.dispatch(action);
 
           requestStatusFuture = action.completer.future;
@@ -137,13 +136,11 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              subject == other.subject &&
-              preferredSubjectInfoLanguage ==
-                  other.preferredSubjectInfoLanguage;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          subject == other.subject &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage;
 
   @override
-  int get hashCode =>
-      hash2(subject, preferredSubjectInfoLanguage);
+  int get hashCode => hash2(subject, preferredSubjectInfoLanguage);
 }

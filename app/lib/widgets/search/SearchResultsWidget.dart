@@ -31,7 +31,7 @@ class SearchResultsWidget extends StatefulWidget {
 
 class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
-  GlobalKey<MuninRefreshState>();
+      GlobalKey<MuninRefreshState>();
 
   _ViewModel viewModel;
   SearchRequest currentSearchRequest;
@@ -78,10 +78,23 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
   Widget searchResultCountWidget(int count) {
     return MuninPadding.noVerticalOffset(
       child: Text(
-        '搜索到$count个结果',
+        '搜索到约$count个结果',
         style: defaultCaptionText(context),
       ),
     );
+  }
+
+  String additionalNoMoreResultsExplanation(
+      BangumiGeneralSearchResponse response) {
+    String additionalExplanation = '';
+
+    if (response != null &&
+        response.hasReachedEnd &&
+        response.resultsToList.length != response.totalCount) {
+      additionalExplanation = '，部分搜索结果可能已被Bangumi屏蔽';
+    }
+
+    return additionalExplanation;
   }
 
   @override
@@ -102,7 +115,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
             context, currentSearchRequest.searchType, vm);
 
         List<SearchResultItem> results =
-            vm.bangumiSearchResponse?.resultsAsList ?? [];
+            vm.bangumiSearchResponse?.resultsToList ?? [];
 
         bool hasReachedEnd = vm.bangumiSearchResponse?.hasReachedEnd ?? false;
 
@@ -131,14 +144,17 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                     child: SearchResultDelegate(
                       searchResult: results[index],
                       preferredSubjectInfoLanguage:
-                      vm.preferredSubjectInfoLanguage,
+                          vm.preferredSubjectInfoLanguage,
                     ),
                   );
                 },
                 noMoreItemsToLoad: hasReachedEnd,
-                noMoreItemsWidget: Text(
-                  '没有更多${currentSearchRequest.searchType.chineseName}分类下的结果',
-                  style: defaultCaptionText(context),
+                noMoreItemsWidget: MuninPadding.noVerticalOffset(
+                  child: Text(
+                    '没有更多${currentSearchRequest.searchType.chineseName}分类下的结果'
+                    '${additionalNoMoreResultsExplanation(vm.bangumiSearchResponse)}',
+                    style: defaultCaptionText(context),
+                  ),
                 ),
                 separatorBuilder: null,
                 appBarUnderneathPadding: null,
@@ -156,13 +172,13 @@ class _ViewModel {
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
   final SearchRequest searchRequest;
   final Future<void> Function(
-      BuildContext context, SearchRequest externalSearchRequest)
+          BuildContext context, SearchRequest externalSearchRequest)
       dispatchSearchAction;
 
-  factory _ViewModel.fromStore(Store<AppState> store,
-      SearchRequest currentSearchRequest) {
-    Future<void> _dispatchSearchAction(BuildContext context,
-        SearchRequest newSearchRequest) async {
+  factory _ViewModel.fromStore(
+      Store<AppState> store, SearchRequest currentSearchRequest) {
+    Future<void> _dispatchSearchAction(
+        BuildContext context, SearchRequest newSearchRequest) async {
       final action = _createSearchAction(context, newSearchRequest);
 
       store.dispatch(action);
@@ -172,10 +188,10 @@ class _ViewModel {
     return _ViewModel(
       searchRequest: currentSearchRequest,
       bangumiSearchResponse:
-      store.state.searchState.results[currentSearchRequest],
+          store.state.searchState.results[currentSearchRequest],
       dispatchSearchAction: _dispatchSearchAction,
       preferredSubjectInfoLanguage:
-      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
+          store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
     );
   }
 
@@ -200,8 +216,8 @@ class _ViewModel {
       hash3(bangumiSearchResponse, searchRequest, preferredSubjectInfoLanguage);
 }
 
-SearchAction _createSearchAction(BuildContext context,
-    SearchRequest externalSearchRequest) {
+SearchAction _createSearchAction(
+    BuildContext context, SearchRequest externalSearchRequest) {
   dynamic action;
   if (externalSearchRequest.searchType.isSubjectSearchType) {
     action = SearchSubjectAction(

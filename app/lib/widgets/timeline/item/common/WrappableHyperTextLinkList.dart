@@ -10,10 +10,11 @@ class WrappableHyperTextLinkList extends StatelessWidget {
   final double verticalPadding;
   final int subjectNameMaxLines;
 
-  const WrappableHyperTextLinkList({Key key,
-    @required this.hyperBangumiItems,
-    this.verticalPadding = 4.0,
-    this.subjectNameMaxLines = 30})
+  const WrappableHyperTextLinkList(
+      {Key key,
+      @required this.hyperBangumiItems,
+      this.verticalPadding = 4.0,
+      this.subjectNameMaxLines = 30})
       : super(key: key);
 
   @override
@@ -25,17 +26,14 @@ class WrappableHyperTextLinkList extends StatelessWidget {
 
     for (var i = 0; i < hyperTextsCount; i++) {
       final hyperBangumiItem = hyperBangumiItems[i];
-      children.add(
-          InkWell(
-            child: Text(hyperBangumiItem.name),
-            onTap: generateOnTapCallbackForBangumiContent(
-                contentType: hyperBangumiItem.contentType,
-                id: hyperBangumiItem.id,
-                context: context,
-                pageUrl: hyperBangumiItem.pageUrl
-            ),
-          )
-      );
+      children.add(InkWell(
+        child: Text(hyperBangumiItem.name),
+        onTap: generateOnTapCallbackForBangumiContent(
+            contentType: hyperBangumiItem.contentType,
+            id: hyperBangumiItem.id,
+            context: context,
+            pageUrl: hyperBangumiItem.pageUrl),
+      ));
 
       final bool isNotLastItem = i != hyperTextsCount - 1;
       if (isNotLastItem) {
@@ -43,12 +41,10 @@ class WrappableHyperTextLinkList extends StatelessWidget {
       }
     }
 
-
     return Container(
         padding: EdgeInsets.symmetric(vertical: verticalPadding),
         child: Wrap(
           children: children,
-        )
-    );
+        ));
   }
 }

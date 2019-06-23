@@ -80,9 +80,7 @@ class DiscussionParser {
     if (contentType.isMono) {
       subtitle = contentType.chineseName;
     } else {
-      subtitle = discussionItemElement
-          .querySelector('.row > a')
-          ?.text;
+      subtitle = discussionItemElement.querySelector('.row > a')?.text;
       if (isEmpty(subtitle)) {
         subtitle = defaultTitle;
       }
@@ -97,8 +95,7 @@ class DiscussionParser {
     DateTime absoluteTime = parseBangumiTime(timeElement?.text);
 
     if (contentType != BangumiContent.GroupTopic) {
-      return Optional.of(GeneralDiscussionItem((b) =>
-      b
+      return Optional.of(GeneralDiscussionItem((b) => b
         ..id = itemId
         ..bangumiContent = contentType
         ..image.replace(image)
@@ -112,11 +109,10 @@ class DiscussionParser {
           defaultValue: null);
 
       Element groupElement =
-      discussionItemElement.querySelector('.row a[href*="/group/"]');
+          discussionItemElement.querySelector('.row a[href*="/group/"]');
       String postedGroupId = parseHrefId(groupElement);
 
-      return Optional.of(GroupDiscussionPost((b) =>
-      b
+      return Optional.of(GroupDiscussionPost((b) => b
         ..id = itemId
         ..bangumiContent = contentType
         ..image.replace(image)
@@ -158,7 +154,7 @@ class DiscussionParser {
 
     /// 3. Checks whether user muted op
     final foundedMutedUser = muteSetting.mutedUsers.values.firstWhere(
-            (u) => u.userId == post.originalPosterUserId,
+        (u) => u.userId == post.originalPosterUserId,
         orElse: () => null);
 
     return foundedMutedUser != null;
@@ -171,7 +167,7 @@ class DiscussionParser {
         document.querySelectorAll('#eden_tpc_list li');
     for (Element element in discussionItemElements) {
       Optional<DiscussionItem> maybeDiscussionItem =
-      _parseDiscussionItem(element);
+          _parseDiscussionItem(element);
       if (maybeDiscussionItem.isPresent &&
           !_isMutedDiscussionItem(maybeDiscussionItem.value)) {
         discussionItems.add(maybeDiscussionItem.value);

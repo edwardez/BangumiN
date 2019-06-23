@@ -45,7 +45,7 @@ class BangumiOauthService {
 
     if (serializedBangumiOauthCredentials != null) {
       Credentials credentials =
-      Credentials.fromJson(serializedBangumiOauthCredentials);
+          Credentials.fromJson(serializedBangumiOauthCredentials);
 
       this.client = BangumiOauthClient(credentials,
           identifier: Application.environmentValue.bangumiOauthClientIdentifier,
@@ -87,16 +87,14 @@ class BangumiOauthService {
         httpClient: retryableAuthHttpClient);
     authorizationUrl = grant
         .getAuthorizationUrl(
-        Uri.parse(Application.environmentValue.bangumiRedirectUrl))
+            Uri.parse(Application.environmentValue.bangumiRedirectUrl))
         .toString();
 
     _flutterWebviewPlugin = FlutterWebviewPlugin();
     _flutterWebviewPlugin.onStateChanged
         .listen((WebViewStateChanged state) async {
       if (state.type == WebViewState.finishLoad &&
-          Uri
-              .parse(state.url)
-              .host ==
+          Uri.parse(state.url).host ==
               Application.environmentValue.bangumiNonCdnHost) {
         Map<String, String> cookies = await _flutterWebviewPlugin.getCookies();
 
@@ -131,7 +129,7 @@ class BangumiOauthService {
               sessionCookie: sessionCookie,
               userAgent: userAgent,
               expiresOnInSeconds:
-              tryParseInt(expiresOnInSecondsStr, defaultValue: null));
+                  tryParseInt(expiresOnInSecondsStr, defaultValue: null));
         }
       }
     });
@@ -142,9 +140,9 @@ class BangumiOauthService {
     // HACK: injects original oauth client and initializes a new customized
     // client
     Client baseOauthClient =
-    await grant.handleAuthorizationResponse({'code': code});
+        await grant.handleAuthorizationResponse({'code': code});
     Credentials credentials =
-    Credentials.fromJson(baseOauthClient.credentials.toJson());
+        Credentials.fromJson(baseOauthClient.credentials.toJson());
 
     client = BangumiOauthClient(credentials,
         identifier: Application.environmentValue.bangumiOauthClientIdentifier,

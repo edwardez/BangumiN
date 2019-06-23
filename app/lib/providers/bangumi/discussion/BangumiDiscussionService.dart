@@ -28,8 +28,9 @@ class BangumiDiscussionService {
   BangumiDiscussionService({@required this.cookieClient})
       : assert(cookieClient != null);
 
-  Future<GetDiscussionResponse> getRakuenTopics({@required GetDiscussionRequest getDiscussionRequest,
-    @required MuteSetting muteSetting}) async {
+  Future<GetDiscussionResponse> getRakuenTopics(
+      {@required GetDiscussionRequest getDiscussionRequest,
+      @required MuteSetting muteSetting}) async {
     assert(getDiscussionRequest.discussionType == DiscussionType.Rakuen);
     assert(getDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
@@ -38,7 +39,7 @@ class BangumiDiscussionService {
     Map<String, String> queryParameters = {};
 
     RakuenTopicFilter filter =
-    getDiscussionRequest.discussionFilter as RakuenTopicFilter;
+        getDiscussionRequest.discussionFilter as RakuenTopicFilter;
 
     /// [RakuenTopicFilter.Unrestricted] doesn't need a type filter
     /// otherwise we'll need to add one
@@ -57,8 +58,7 @@ class BangumiDiscussionService {
       ),
     );
 
-    GetDiscussionResponse getDiscussionResponse = GetDiscussionResponse((b) =>
-    b
+    GetDiscussionResponse getDiscussionResponse = GetDiscussionResponse((b) => b
       ..discussionItems.replace(BuiltSet<DiscussionItem>(discussionItems))
       ..appLastUpdatedAt = DateTime.now().toUtc());
 

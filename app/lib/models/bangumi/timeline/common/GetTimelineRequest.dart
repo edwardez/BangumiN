@@ -37,8 +37,8 @@ abstract class GetTimelineRequest
   }
 
   factory GetTimelineRequest(
-      [void Function(GetTimelineRequestBuilder) updates]) =
-  _$GetTimelineRequest;
+          [void Function(GetTimelineRequestBuilder) updates]) =
+      _$GetTimelineRequest;
 
   String toJson() {
     return json

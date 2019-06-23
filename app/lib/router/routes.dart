@@ -60,8 +60,7 @@ class Routes {
       '/user/${RoutesVariable.usernameParam}/timeline/new';
 
   static const userCollectionsListRoute =
-      '/user/${RoutesVariable.subjectTypeParam}/list/${RoutesVariable
-      .usernameParam}'
+      '/user/${RoutesVariable.subjectTypeParam}/list/${RoutesVariable.usernameParam}'
       '/${RoutesVariable.collectionStatusParam}';
 
   // Setting
@@ -87,7 +86,7 @@ class Routes {
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-          print('Route is not found!');
+      print('Route is not found!');
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);

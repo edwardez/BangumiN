@@ -58,7 +58,6 @@ class DeleteInProgressSubjectAction {
   });
 }
 
-
 class GetProgressSuccessAction {
   final BuiltSet<SubjectType> subjectTypes;
   final LinkedHashMap<SubjectType, LinkedHashMap<int, InProgressCollection>>
@@ -106,8 +105,7 @@ class UpdateInProgressEpisodeAction implements UpdateProgressAction {
     @required this.newEpisodeNumber,
     @required this.subject,
     Completer completer,
-  })
-      : this.completer = completer ?? new Completer(),
+  })  : this.completer = completer ?? new Completer(),
         assert(episodeUpdateType != EpisodeUpdateType.CollectUntil);
 }
 
@@ -141,8 +139,7 @@ class UpdateInProgressBatchEpisodesAction implements UpdateProgressAction {
     @required this.newEpisodeNumber,
     @required this.subject,
     Completer completer,
-  })
-      : this.completer = completer ?? new Completer(),
+  })  : this.completer = completer ?? new Completer(),
         this.episodeUpdateType = EpisodeUpdateType.CollectUntil;
 }
 

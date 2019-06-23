@@ -33,8 +33,8 @@ class MuteSettingWidget extends StatelessWidget {
         return ScrollViewWithSliverAppBar(
             enableTopSafeArea: false,
             enableBottomSafeArea: false,
-            safeAreaChildPadding: const EdgeInsets.only(
-                left: 0, right: 0, top: largeOffset),
+            safeAreaChildPadding:
+                const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
             appBarMainTitle: Text(
               '屏蔽',
             ),

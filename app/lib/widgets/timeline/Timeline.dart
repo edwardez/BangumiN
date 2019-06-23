@@ -31,16 +31,14 @@ class MuninTimeline extends StatefulWidget {
     Key key,
     @required this.preferredTimelineLaunchPage,
     this.timelineSource = TimelineSource.OnlyFriends,
-  })
-      : this.username = null,
+  })  : this.username = null,
         super(key: key);
 
   const MuninTimeline.onUserProfile({
     Key key,
     @required this.username,
     this.preferredTimelineLaunchPage = TimelineCategoryFilter.AllFeeds,
-  })
-      : this.timelineSource = TimelineSource.UserProfile,
+  })  : this.timelineSource = TimelineSource.UserProfile,
         super(key: key);
 
   @override
@@ -51,9 +49,9 @@ class _MuninTimelineState extends State<MuninTimeline> {
   PageController pageController;
 
   final List<TimelineBody> timelineBodies =
-  List(TimelineCategoryFilter.totalTimelineTypes);
+      List(TimelineCategoryFilter.totalTimelineTypes);
   final List<TimelineBodyWidget> pages =
-  List(TimelineCategoryFilter.totalTimelineTypes);
+      List(TimelineCategoryFilter.totalTimelineTypes);
 
   /// page might be a double, however since munin sets physics to NeverScrollableScrollPhysics
   /// we should be fine
@@ -61,8 +59,8 @@ class _MuninTimelineState extends State<MuninTimeline> {
     return pageController?.page?.round();
   }
 
-  TimelineBodyWidget _buildTimelineBodyWidget(GetTimelineRequest request,
-      Widget appBar) {
+  TimelineBodyWidget _buildTimelineBodyWidget(
+      GetTimelineRequest request, Widget appBar) {
     return TimelineBodyWidget(
       key: PageStorageKey<GetTimelineRequest>(request),
       appBar: appBar,
@@ -109,8 +107,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
         initialPage: widget.preferredTimelineLaunchPage.pageIndex);
 
     for (TimelineCategoryFilter filter in TimelineCategoryFilter.values) {
-      GetTimelineRequest request = GetTimelineRequest((b) =>
-      b
+      GetTimelineRequest request = GetTimelineRequest((b) => b
         ..timelineSource = widget.timelineSource
         ..username = widget.username
         ..timelineCategoryFilter = filter);

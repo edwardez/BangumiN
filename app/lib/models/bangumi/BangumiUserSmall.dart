@@ -12,7 +12,7 @@ abstract class BangumiUserSmall
   BangumiUserSmall._();
 
   factory BangumiUserSmall([updates(BangumiUserSmallBuilder b)]) =
-  _$BangumiUserSmall;
+      _$BangumiUserSmall;
 
   /// Unique identifier for bangumi user as a pure digit
   @BuiltValueField(wireName: 'id')

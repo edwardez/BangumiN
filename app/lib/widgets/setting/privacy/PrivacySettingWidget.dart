@@ -120,8 +120,6 @@ List<TextSpan> tosAndPrivacyLinks(BuildContext context) {
         text: '服务条款', style: linkStyle, url: "https://bangumin.app/tos"),
     TextSpan(text: '和'),
     LinkTextSpan(
-        text: '隐私政策',
-        style: linkStyle,
-        url: "https://bangumin.app/privacy"),
+        text: '隐私政策', style: linkStyle, url: "https://bangumin.app/privacy"),
   ];
 }

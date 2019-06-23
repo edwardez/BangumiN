@@ -80,8 +80,7 @@ class SubjectDetailInfoWidget extends StatelessWidget {
           safeAreaChildPadding: const EdgeInsets.only(
               left: defaultDensePortraitHorizontalOffset,
               right: defaultDensePortraitHorizontalOffset,
-              top: largeOffset
-          ),
+              top: largeOffset),
           appBarActions: subjectCommonActions(context, vm.subject),
         );
       },

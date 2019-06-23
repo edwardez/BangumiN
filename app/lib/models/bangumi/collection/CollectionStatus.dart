@@ -83,10 +83,11 @@ class CollectionStatus extends EnumClass {
   bool get canSafelyModifyEpisodeStatus =>
       allowedCanModifyEpisodeStatues.contains(this);
 
-  static String chineseNameWithSubjectType(CollectionStatus status,
-      SubjectType subjectType, {
-        String fallbackChineseName,
-      }) {
+  static String chineseNameWithSubjectType(
+    CollectionStatus status,
+    SubjectType subjectType, {
+    String fallbackChineseName,
+  }) {
     switch (status) {
       case CollectionStatus.Wish:
         return '想${subjectType.activityVerbChineseNameByType}';

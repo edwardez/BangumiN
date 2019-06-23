@@ -29,25 +29,16 @@ class SubjectReviewWidget extends StatelessWidget {
     Icon moreActionsIcon = Icon(
       AdaptiveIcons.moreActionsIconData,
       size: smallerIconSize,
-      color: Theme
-          .of(context)
-          .textTheme
-          .caption
-          .color,
+      color: Theme.of(context).textTheme.caption.color,
     );
-
 
     Widget trailing = InkWell(
         child: moreActionsIcon,
         onTap: () {
           showMoreActionsForReview(
-              subject: subject,
-              context: context,
-              review: review
-          );
+              subject: subject, context: context, review: review);
         },
-        borderRadius: BorderRadius.circular(defaultIconSize)
-    );
+        borderRadius: BorderRadius.circular(defaultIconSize));
     List<Widget> widgets = [];
     widgets.add(UserListTile(
       nickName: review.metaInfo.nickName,
@@ -78,8 +69,7 @@ class SubjectReviewWidget extends StatelessWidget {
           CachedCircleAvatar(
               imageUrl: review.metaInfo.avatar.medium,
               navigateToUserRouteOnTap: true,
-              username: review.metaInfo.username
-          ),
+              username: review.metaInfo.username),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(left: avatarTextPadding),

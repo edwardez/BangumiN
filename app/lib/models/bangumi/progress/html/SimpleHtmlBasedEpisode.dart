@@ -26,12 +26,11 @@ abstract class SimpleHtmlBasedEpisode
   SimpleHtmlBasedEpisode._();
 
   factory SimpleHtmlBasedEpisode(
-      [void Function(SimpleHtmlBasedEpisodeBuilder) updates]) =
-  _$SimpleHtmlBasedEpisode;
+          [void Function(SimpleHtmlBasedEpisodeBuilder) updates]) =
+      _$SimpleHtmlBasedEpisode;
 
   String toJson() {
-    return json
-        .encode(
+    return json.encode(
         serializers.serializeWith(SimpleHtmlBasedEpisode.serializer, this));
   }
 

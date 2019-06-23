@@ -29,10 +29,7 @@ class BlogCreationSingleWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                       text: blogCreationSingle.title,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body2,
+                      style: Theme.of(context).textTheme.body2,
                     )),
               ),
               Row(
@@ -41,10 +38,7 @@ class BlogCreationSingleWidget extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                         text: blogCreationSingle.summary,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .caption,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                   )

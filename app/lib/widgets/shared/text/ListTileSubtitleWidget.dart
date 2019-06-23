@@ -28,23 +28,20 @@ class ListTileSubtitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle captionStyle = Theme
-        .of(context)
-        .textTheme
-        .caption;
+    TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
     if (score == null) {
       return Row(
         children: [
           Expanded(
               child: Text(
-                actionName,
+            actionName,
 
-                // Action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: captionStyle,
-              )),
+            // Action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: captionStyle,
+          )),
           Text(
             TimeUtils.formatMilliSecondsEpochTime(
               updatedAt,

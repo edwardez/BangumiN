@@ -13,14 +13,15 @@ List<Epic<AppState>> createDiscussionEpics(
     BangumiDiscussionService bangumiDiscussionService) {
   final getDiscussionEpic = _createGetDiscussionEpic(bangumiDiscussionService);
   final getGroupThreadEpic =
-  _createGetGroupThreadEpic(bangumiDiscussionService);
+      _createGetGroupThreadEpic(bangumiDiscussionService);
   return [
     getDiscussionEpic,
     getGroupThreadEpic,
   ];
 }
 
-Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
+Stream<dynamic> _getDiscussion(
+    EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetDiscussionRequestAction action) async* {
   try {
@@ -34,12 +35,11 @@ Stream<dynamic> _getDiscussion(EpicStore<AppState> store,
         getDiscussionResponse: getDiscussionResponse);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     action.completer.completeError(error, stack);
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
   } finally {
@@ -57,7 +57,8 @@ Epic<AppState> _createGetDiscussionEpic(
   };
 }
 
-Stream<dynamic> _getGroupThread(EpicStore<AppState> store,
+Stream<dynamic> _getGroupThread(
+    EpicStore<AppState> store,
     BangumiDiscussionService bangumiDiscussionService,
     GetThreadRequestAction action) async* {
   try {
@@ -94,7 +95,7 @@ Stream<dynamic> _getGroupThread(EpicStore<AppState> store,
   } catch (error, stack) {
     print(error.toString());
     print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -106,6 +107,6 @@ Epic<AppState> _createGetGroupThreadEpic(
     return Observable(actions)
         .ofType(TypeToken<GetThreadRequestAction>())
         .switchMap((action) =>
-        _getGroupThread(store, bangumiDiscussionService, action));
+            _getGroupThread(store, bangumiDiscussionService, action));
   };
 }

@@ -82,7 +82,7 @@ class BangumiTimelineService {
         queryParameters: queryParameters,
         options: Options(
             contentType:
-            ContentType.parse("application/x-www-form-urlencoded")));
+                ContentType.parse("application/x-www-form-urlencoded")));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.data);
@@ -110,7 +110,7 @@ class BangumiTimelineService {
         data: body,
         options: Options(
             contentType:
-            ContentType.parse("application/x-www-form-urlencoded")));
+                ContentType.parse("application/x-www-form-urlencoded")));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.data);

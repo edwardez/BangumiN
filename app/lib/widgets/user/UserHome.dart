@@ -14,7 +14,7 @@ class UserHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, String>(
       converter: (Store<AppState> store) =>
-      store.state.currentAuthenticatedUserBasicInfo.username,
+          store.state.currentAuthenticatedUserBasicInfo.username,
       distinct: true,
       builder: (BuildContext context, String username) {
         return UserProfileWidget(
@@ -22,10 +22,7 @@ class UserHome extends StatelessWidget {
           appBar: OneMuninBar(
             title: Text(
               PreferredLaunchNavTab.HomePage.generalSettingPageChineseName,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .button,
+              style: Theme.of(context).textTheme.button,
             ),
           ),
         );

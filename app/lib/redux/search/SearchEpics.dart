@@ -9,8 +9,8 @@ import 'package:rxdart/rxdart.dart';
 
 List<Epic<AppState>> createSearchEpics(
     BangumiSearchService bangumiSearchService) {
-  final searchSubjectOrMonoEpic = _createSearchSubjectOrMonoEpic(
-      bangumiSearchService);
+  final searchSubjectOrMonoEpic =
+      _createSearchSubjectOrMonoEpic(bangumiSearchService);
 
   return [
     searchSubjectOrMonoEpic,
@@ -49,10 +49,12 @@ Stream<dynamic> _searchSubjectOrMonoEpic(
 
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    yield HandleErrorAction(error: error, context: action.context,);
-    action.completer.completeError(error);
+    yield HandleErrorAction(
+      error: error,
+      context: action.context,
+      stack: stack,
+    );
+    action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -63,11 +65,10 @@ Epic<AppState> _createSearchSubjectOrMonoEpic(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<SearchAction>())
-        .switchMap((action) =>
-        _searchSubjectOrMonoEpic(
-          bangumiSearchService,
-          action,
-          store.state.searchState.results[action.searchRequest],
-        ));
+        .switchMap((action) => _searchSubjectOrMonoEpic(
+              bangumiSearchService,
+              action,
+              store.state.searchState.results[action.searchRequest],
+            ));
   };
 }

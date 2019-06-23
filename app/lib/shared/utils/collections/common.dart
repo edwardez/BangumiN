@@ -62,8 +62,8 @@ lastOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
 /// otherwise, move the existing one to the tail of the [orderedHashMap]
 /// It is an in-place operation
 /// Note: it only works if the map is ordered(i.e. [LinkedHashMap])
-void putOrMoveToLastInMap<K, V>(Map<K, V> orderedHashMap, K newKey,
-    V newValue) {
+void putOrMoveToLastInMap<K, V>(
+    Map<K, V> orderedHashMap, K newKey, V newValue) {
   if (orderedHashMap.containsKey(newKey)) {
     orderedHashMap.remove(newKey);
   }

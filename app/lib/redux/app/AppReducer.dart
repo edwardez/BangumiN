@@ -12,16 +12,14 @@ import 'package:munin/redux/user/UserReducer.dart';
 // We create the State reducer by combining many smaller reducers into one!
 AppState appReducer(AppState appState, dynamic action) {
   if (action is OAuthLoginSuccess) {
-    return appState.rebuild((b) =>
-    b
+    return appState.rebuild((b) => b
       ..currentAuthenticatedUserBasicInfo.replace(action.userInfo)
       ..isAuthenticated = true);
   } else if (action is LogoutSuccess) {
     return AppState((b) => b..isAuthenticated = false);
   }
 
-  return appState.rebuild((b) =>
-  b
+  return appState.rebuild((b) => b
     ..oauthState.replace(oauthReducers(appState.oauthState, action))
     ..timelineState.replace(timelineReducers(appState.timelineState, action))
     ..subjectState.replace(subjectReducers(appState.subjectState, action))

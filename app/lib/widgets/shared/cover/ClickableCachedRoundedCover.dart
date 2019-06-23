@@ -12,10 +12,10 @@ class ClickableCachedRoundedCover extends StatelessWidget {
 
   ClickableCachedRoundedCover(
       {@required this.imageUrl,
-        @required this.contentType,
-        @required this.width,
-        @required this.height,
-        @required this.id});
+      @required this.contentType,
+      @required this.width,
+      @required this.height,
+      @required this.id});
 
   ClickableCachedRoundedCover.asGridSize({
     @required this.imageUrl,

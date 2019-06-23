@@ -65,7 +65,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
     List<Widget> chips = [];
     for (EpisodeProgress episode in subject.episodes.values) {
       final episodeColor =
-      EpisodeStatus.getColor(context, episode.userEpisodeStatus);
+          EpisodeStatus.getColor(context, episode.userEpisodeStatus);
 
       chips.add(Padding(
         padding: const EdgeInsets.only(right: 4.0),
@@ -76,8 +76,10 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
               episodeSubTitle: buildEpisodeSubtitle(episode),
               preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
               episode: episode,
-              onUpdateEpisodeOptionTapped: (EpisodeUpdateType episodeUpdateType,
-                  BaseEpisode baseEpisode,) {
+              onUpdateEpisodeOptionTapped: (
+                EpisodeUpdateType episodeUpdateType,
+                BaseEpisode baseEpisode,
+              ) {
                 // Whatever the outcome is, dismiss bottom sheet first.
                 Navigator.of(context).pop();
 
@@ -90,22 +92,21 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                 // For single update, if action results the same outcome as
                 // current, do nothing.
                 if (episodeUpdateType.destinationEpisodeStatus ==
-                    baseEpisode.userEpisodeStatus
-                ) {
+                    baseEpisode.userEpisodeStatus) {
                   return;
                 }
 
                 // Otherwise, update relevant episode.
-                onUpdateSingleEpisode(episodeUpdateType,
-                    episode.id, episode.sequentialNumber);
+                onUpdateSingleEpisode(
+                    episodeUpdateType, episode.id, episode.sequentialNumber);
               },
             );
           },
           backgroundColor: Colors.transparent,
           shape: StadiumBorder(
               side: BorderSide(
-                color: episodeColor,
-              )),
+            color: episodeColor,
+          )),
           label: Text(
             '${tryFormatDoubleAsInt(episode.sequentialNumber)}',
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -124,7 +125,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(defaultPortraitHorizontalOffset -
-        defaultDensePortraitHorizontalOffset ==
+            defaultDensePortraitHorizontalOffset ==
         8.0);
 
     return ExpansionTile(
@@ -183,8 +184,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                     ],
                   ),
                   WrappableText(
-                    '${collection.completedEpisodesCount ?? '??'}/${collection
-                        .subject.totalEpisodesCount ?? '??'}话',
+                    '${collection.completedEpisodesCount ?? '??'}/${collection.subject.totalEpisodesCount ?? '??'}话',
                     textStyle: Theme.of(context).textTheme.caption,
                     outerWrapper: OuterWrapper.Row,
                   ),

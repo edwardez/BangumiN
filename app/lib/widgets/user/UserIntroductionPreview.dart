@@ -52,9 +52,9 @@ class UserIntroductionPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) {
-              return Scaffold(
-                body: UserMoreDetails(profile: profile),
-              );
+          return Scaffold(
+            body: UserMoreDetails(profile: profile),
+          );
         }));
       },
     );

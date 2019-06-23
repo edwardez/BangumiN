@@ -15,7 +15,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
   const ProgressUpdateEpisodeSingleWidget(
       {Key key,
       @required this.progressUpdateEpisodeSingle,
-        @required this.onDeleteFeed,
+      @required this.onDeleteFeed,
       this.episodeNameMaxLines = 2,
       this.subjectNameMaxLines = 1})
       : super(key: key);
@@ -26,8 +26,8 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
       children: <Widget>[
         UserListTile.fromUser(
           user: progressUpdateEpisodeSingle.user,
-          trailing: buildTrailingWidget(
-              progressUpdateEpisodeSingle, onDeleteFeed),
+          trailing:
+              buildTrailingWidget(progressUpdateEpisodeSingle, onDeleteFeed),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -40,8 +40,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: BangumiContent.Episode,
                 id: progressUpdateEpisodeSingle.episodeId,
-                context: context
-            ),
+                context: context),
           ),
           subtitle: InkWell(
             child: Row(
@@ -58,8 +57,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
             onTap: generateOnTapCallbackForBangumiContent(
                 contentType: BangumiContent.Subject,
                 id: progressUpdateEpisodeSingle.subjectId,
-                context: context
-            ),
+                context: context),
           ),
         )
       ],

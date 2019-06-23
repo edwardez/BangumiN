@@ -27,8 +27,7 @@ abstract class ProgressState
       _$ProgressState((b) => b
         ..progresses
             .replace(BuiltMap<SubjectType, BuiltList<InProgressCollection>>())
-        ..watchableSubjects
-            .replace(BuiltMap<int, SubjectEpisodes>())
+        ..watchableSubjects.replace(BuiltMap<int, SubjectEpisodes>())
         ..update(updates));
 
   ProgressState._();

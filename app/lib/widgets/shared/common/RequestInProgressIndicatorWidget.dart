@@ -95,7 +95,7 @@ class _RequestInProgressIndicatorWidgetState
     requestStatusChangeSubscription?.cancel();
 
     requestStatusChangeSubscription = requestStatusFuture.asStream().listen(
-          (_) {
+      (_) {
         rebuildWithRequestStatus(RequestStatus.Success);
       },
       onError: (error) async {
@@ -133,8 +133,7 @@ class _RequestInProgressIndicatorWidgetState
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      converter: (Store store) =>
-          _ViewModel.fromStore(
+      converter: (Store store) => _ViewModel.fromStore(
             store,
           ),
       distinct: true,
@@ -212,7 +211,7 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel && runtimeType == other.runtimeType;
+      other is _ViewModel && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;

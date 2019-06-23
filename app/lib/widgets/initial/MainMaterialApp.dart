@@ -21,20 +21,19 @@ class MainMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
-        muninTheme: store.state.settingState.themeSetting.currentTheme,
-        isAuthenticated: store.state.isAuthenticated,
-        generalSetting: store.state.settingState.generalSetting,
-        privacySetting:
-        store.state.settingState.privacySetting,
-      ),
+            muninTheme: store.state.settingState.themeSetting.currentTheme,
+            isAuthenticated: store.state.isAuthenticated,
+            generalSetting: store.state.settingState.generalSetting,
+            privacySetting: store.state.settingState.privacySetting,
+          ),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
         return MaterialApp(
           theme: vm.muninTheme.themeData,
           home: vm.isAuthenticated
               ? MuninHomePage(
-            generalSetting: vm.generalSetting,
-          )
+                  generalSetting: vm.generalSetting,
+                )
               : MuninLoginPage(),
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: analytics),
@@ -62,12 +61,12 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              muninTheme == other.muninTheme &&
-              isAuthenticated == other.isAuthenticated &&
-              generalSetting == other.generalSetting &&
-              privacySetting == other.privacySetting;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          muninTheme == other.muninTheme &&
+          isAuthenticated == other.isAuthenticated &&
+          generalSetting == other.generalSetting &&
+          privacySetting == other.privacySetting;
 
   @override
   int get hashCode =>

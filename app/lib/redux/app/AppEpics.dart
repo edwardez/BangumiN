@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -29,7 +30,6 @@ Stream<dynamic> _persistState(
     } else {
       await sharedPreferenceService.persistAppState(store.state);
     }
-
   } catch (error, stack) {
     debugPrint(
         'Error occured during persisting AppState: $error. Stack: $stack');
@@ -46,11 +46,21 @@ Epic<AppState> _createPersistStateEpic(
   };
 }
 
-Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
-    HandleErrorAction action) async* {
+Stream<dynamic> _handleErrorEpic(
+    EpicStore<AppState> store, HandleErrorAction action) async* {
   try {
+    bool inDev = Application.environmentValue.environmentType ==
+        EnvironmentType.Development;
     final error = action.error;
     final context = action.context;
+
+    // Always reports errors in dev.
+    if (inDev) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: action.stack,
+      ));
+    }
 
     final result = await generalExceptionHandler(
       error,
@@ -62,6 +72,13 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
       return;
     }
 
+    // Only reports unexpected errors in production.
+    if (!inDev) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: action.stack,
+      ));
+    }
 
     if (action.showErrorMessageSnackBar) {
       Scaffold.of(context).showSnackBar(SnackBar(
@@ -69,8 +86,10 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
       ));
     }
   } catch (error, stack) {
-    debugPrint(
-        'Error occured during persisting AppState: $error. Stack: $stack');
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: error,
+      stack: action.stack,
+    ));
   }
 }
 
@@ -78,7 +97,6 @@ Epic<AppState> _createHandleErrorEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<HandleErrorAction>())
-        .concatMap(
-            (action) => _handleErrorEpic(store, action));
+        .concatMap((action) => _handleErrorEpic(store, action));
   };
 }

@@ -56,6 +56,7 @@ abstract class BangumiSubject
   BuiltListMultimap<String, RelatedSubject> get relatedSubjects;
 
   @nullable
+
   /// a short preview list of comments that are on subject main page
   BuiltList<SubjectReview> get commentsPreview;
 

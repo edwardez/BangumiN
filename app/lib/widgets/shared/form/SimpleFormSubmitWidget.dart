@@ -10,14 +10,13 @@ class SimpleFormSubmitWidget extends StatelessWidget {
 
   final String submitButtonText;
 
-  const SimpleFormSubmitWidget(
-      {Key key,
-      @required this.canSubmit,
-      @required this.loadingStatus,
-        @required this.onSubmitPressed,
-        this.submitButtonText = '发表',
-      })
-      : super(key: key);
+  const SimpleFormSubmitWidget({
+    Key key,
+    @required this.canSubmit,
+    @required this.loadingStatus,
+    @required this.onSubmitPressed,
+    this.submitButtonText = '发表',
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

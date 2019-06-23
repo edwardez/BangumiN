@@ -11,12 +11,14 @@ class PersistAppStateAction {
 class HandleErrorAction {
   final BuildContext context;
   final Object error;
+  final StackTrace stack;
 
   final bool showErrorMessageSnackBar;
 
   HandleErrorAction({
     @required this.context,
     @required this.error,
+    this.stack,
     this.showErrorMessageSnackBar = true,
   });
 }

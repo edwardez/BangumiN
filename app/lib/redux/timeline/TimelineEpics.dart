@@ -26,13 +26,13 @@ List<Epic<AppState>> createTimelineEpics(
     BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   final getTimelineEpic =
-  _createGetTimelineEpics(bangumiTimelineService, bangumiUserService);
+      _createGetTimelineEpics(bangumiTimelineService, bangumiUserService);
 
   final createDeleteTimelineEpic =
-  _createDeleteTimelineEpic(bangumiTimelineService);
+      _createDeleteTimelineEpic(bangumiTimelineService);
 
   final createSubmitTimelineMessageEpic =
-  _createSubmitTimelineMessageEpic(bangumiTimelineService);
+      _createSubmitTimelineMessageEpic(bangumiTimelineService);
 
   return [
     getTimelineEpic,
@@ -41,7 +41,8 @@ List<Epic<AppState>> createTimelineEpics(
   ];
 }
 
-Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
+Stream<dynamic> _getTimelineEpic(
+    BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService,
     GetTimelineRequestAction action,
     EpicStore<AppState> store) async* {
@@ -91,8 +92,8 @@ Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
       /// TODO: clean up all older feeds in this case?
       upperFeedId =
           firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
-              ?.user
-              ?.feedId ??
+                  ?.user
+                  ?.feedId ??
               IntegerHelper.MIN_VALUE;
     }
 
@@ -103,8 +104,8 @@ Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
       /// TODO: clean up all newer feeds in this case?
       lowerFeedId =
           firstOrNullInIterable<TimelineFeed>(feedChunks.unfilteredFeeds)
-              ?.user
-              ?.feedId ??
+                  ?.user
+                  ?.feedId ??
               IntegerHelper.MAX_VALUE;
 
       int tentativeNextPageNum =
@@ -141,14 +142,14 @@ Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
         nextPageNum = tentativeNextPageNum;
       } else {
         GetTimelineParsedResponse fetchFeedsResult =
-        await bangumiTimelineService.getTimeline(
-            request: action.getTimelineRequest,
-            nextPageNum: tentativeNextPageNum,
-            feedLoadType: action.feedLoadType,
-            lowerFeedId: lowerFeedId,
-            upperFeedId: upperFeedId,
-            mutedUsers: mutedUsers,
-            userInfo: userInfo);
+            await bangumiTimelineService.getTimeline(
+                request: action.getTimelineRequest,
+                nextPageNum: tentativeNextPageNum,
+                feedLoadType: action.feedLoadType,
+                lowerFeedId: lowerFeedId,
+                upperFeedId: upperFeedId,
+                mutedUsers: mutedUsers,
+                userInfo: userInfo);
         if (fetchFeedsResult.feeds.length == 0) {
           nextPageNum = tentativeNextPageNum + 1;
         } else {
@@ -165,34 +166,33 @@ Stream<dynamic> _getTimelineEpic(BangumiTimelineService bangumiTimelineService,
     }
 
     assert(action.feedLoadType != FeedLoadType.Gap,
-    '${action.feedLoadType} is currently not implemented');
+        '${action.feedLoadType} is currently not implemented');
 
     GetTimelineParsedResponse fetchFeedsResult =
-    await bangumiTimelineService.getTimeline(
-        request: action.getTimelineRequest,
-        nextPageNum: nextPageNum,
-        feedLoadType: action.feedLoadType,
-        lowerFeedId: lowerFeedId,
-        upperFeedId: upperFeedId,
-        mutedUsers: mutedUsers,
-        userInfo: userInfo);
+        await bangumiTimelineService.getTimeline(
+            request: action.getTimelineRequest,
+            nextPageNum: nextPageNum,
+            feedLoadType: action.feedLoadType,
+            lowerFeedId: lowerFeedId,
+            upperFeedId: upperFeedId,
+            mutedUsers: mutedUsers,
+            userInfo: userInfo);
 
     debugPrint(
         'Feeds number before loading: ${feedChunks.unfilteredFeeds.length}.'
-            ' Recevied ${fetchFeedsResult.feeds.length} new feeds.');
+        ' Recevied ${fetchFeedsResult.feeds.length} new feeds.');
 
     yield GetTimelineSuccessAction(
         getTimelineRequest: action.getTimelineRequest,
         parsedResponse: fetchFeedsResult);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
     action.completer.completeError(error, stack);
 
     yield HandleErrorAction(
       context: action.context,
       error: error,
+      stack: stack,
       showErrorMessageSnackBar: false,
     );
 
@@ -213,8 +213,7 @@ Epic<AppState> _createGetTimelineEpics(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetTimelineRequestAction>())
-        .switchMap((action) =>
-        _getTimelineEpic(
+        .switchMap((action) => _getTimelineEpic(
             bangumiTimelineService, bangumiUserService, action, store));
   };
 }
@@ -229,9 +228,11 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
         appUsername: store.state.currentAuthenticatedUserBasicInfo.username);
     Scaffold.of(action.context).showSnackBar(SnackBar(content: Text('时间线已删除')));
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    yield HandleErrorAction(context: action.context, error: error);
+    yield HandleErrorAction(
+      context: action.context,
+      error: error,
+      stack: stack,
+    );
   }
 }
 
@@ -255,8 +256,7 @@ Stream<dynamic> _submitTimelineMessage(
     Navigator.of(action.context).pop();
 
     // Refreshes main profile timeline
-    GetTimelineRequest request = GetTimelineRequest((b) =>
-    b
+    GetTimelineRequest request = GetTimelineRequest((b) => b
       ..timelineSource = TimelineSource.UserProfile
       ..username = store.state.currentAuthenticatedUserBasicInfo.username
       ..timelineCategoryFilter = TimelineCategoryFilter.AllFeeds);
@@ -274,18 +274,20 @@ Stream<dynamic> _submitTimelineMessage(
 
     // Once refreshing main profile timeline complete, refreshes PublicMessage timeline, too
     request = request.rebuild((b) =>
-    b..timelineCategoryFilter = TimelineCategoryFilter.PublicMessage);
+        b..timelineCategoryFilter = TimelineCategoryFilter.PublicMessage);
     yield GetTimelineRequestAction(
       getTimelineRequest: request,
       context: action.context,
       feedLoadType: FeedLoadType.Newer,
     );
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    action.completer.completeError(error);
+    action.completer.completeError(error, stack);
 
-    yield HandleErrorAction(context: action.context, error: error);
+    yield HandleErrorAction(
+      context: action.context,
+      error: error,
+      stack: stack,
+    );
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -297,6 +299,6 @@ Epic<AppState> _createSubmitTimelineMessageEpic(
     return Observable(actions)
         .ofType(TypeToken<SubmitTimelineMessageAction>())
         .concatMap((action) =>
-        _submitTimelineMessage(bangumiTimelineService, action, store));
+            _submitTimelineMessage(bangumiTimelineService, action, store));
   };
 }

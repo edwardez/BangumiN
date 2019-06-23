@@ -26,9 +26,8 @@ class AdaptiveProgressIndicator extends StatelessWidget {
   const AdaptiveProgressIndicator(
       {Key key,
       this.indicatorRadius = defaultIndicatorRadius,
-        this.materialIndicatorStrokeWidth = defaultMaterialIndicatorStrokeWidth,
-        this.indicatorStyle = IndicatorStyle.Adaptive
-      })
+      this.materialIndicatorStrokeWidth = defaultMaterialIndicatorStrokeWidth,
+      this.indicatorStyle = IndicatorStyle.Adaptive})
       : super(key: key);
 
   @override

@@ -15,24 +15,24 @@ class MuninPadding extends StatelessWidget {
       horizontal: defaultPortraitHorizontalOffset, vertical: baseOffset);
 
   static const vertical1xOffsetDenseHorizontalPadding =
-  const EdgeInsets.symmetric(
-      horizontal: defaultDensePortraitHorizontalOffset,
-      vertical: baseOffset);
+      const EdgeInsets.symmetric(
+          horizontal: defaultDensePortraitHorizontalOffset,
+          vertical: baseOffset);
 
   static const vertical3xOffsetPadding = const EdgeInsets.symmetric(
       horizontal: defaultPortraitHorizontalOffset, vertical: baseOffset3x);
 
   static const vertical3xOffsetDenseHorizontalPadding =
-  const EdgeInsets.symmetric(
-      horizontal: defaultDensePortraitHorizontalOffset,
-      vertical: baseOffset3x);
+      const EdgeInsets.symmetric(
+          horizontal: defaultDensePortraitHorizontalOffset,
+          vertical: baseOffset3x);
 
   static const noVerticalOffsetPadding = const EdgeInsets.symmetric(
       horizontal: defaultPortraitHorizontalOffset, vertical: 0);
 
   static const noVerticalOffsetDenseHorizontalPadding =
-  const EdgeInsets.symmetric(
-      horizontal: defaultDensePortraitHorizontalOffset, vertical: 0);
+      const EdgeInsets.symmetric(
+          horizontal: defaultDensePortraitHorizontalOffset, vertical: 0);
 
   final bool denseHorizontal;
 
@@ -48,15 +48,14 @@ class MuninPadding extends StatelessWidget {
     this.denseHorizontal = false,
   })  : assert(child != null),
         this.padding =
-        denseHorizontal ? defaultDenseHorizontalPadding : defaultPadding,
+            denseHorizontal ? defaultDenseHorizontalPadding : defaultPadding,
         super(key: key);
 
   const MuninPadding.vertical1xOffset({
     Key key,
     @required this.child,
     this.denseHorizontal = false,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         this.padding = denseHorizontal
             ? vertical1xOffsetDenseHorizontalPadding
             : vertical1xOffsetPadding,
@@ -66,8 +65,7 @@ class MuninPadding extends StatelessWidget {
     Key key,
     @required this.child,
     this.denseHorizontal = false,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         this.padding = denseHorizontal
             ? vertical3xOffsetDenseHorizontalPadding
             : vertical3xOffsetPadding,
@@ -77,8 +75,7 @@ class MuninPadding extends StatelessWidget {
     Key key,
     @required this.child,
     this.denseHorizontal = false,
-  })
-      : assert(child != null),
+  })  : assert(child != null),
         this.padding = denseHorizontal
             ? noVerticalOffsetDenseHorizontalPadding
             : noVerticalOffsetPadding,

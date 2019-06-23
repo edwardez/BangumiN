@@ -11,7 +11,6 @@ import 'package:quiver/strings.dart';
 
 part 'SubjectCollectionInfo.g.dart';
 
-
 /// Collection info of a subject. It's roughly the model of collection info
 /// on Bangumi, except progress-related info.
 abstract class SubjectCollectionInfo

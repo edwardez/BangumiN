@@ -27,7 +27,7 @@ class UserParser {
   static const defaultSubjectName = '-';
 
   BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>
-  _parseCollectionPanelWithCover(Element collectionElement,
+      _parseCollectionPanelWithCover(Element collectionElement,
           LinkedHashMap<CollectionStatus, int> count) {
     /// Bangumi uses a fallback strategy to display collected subjects
     /// 1. If user has subjects under [CollectionStatus.Do], this category will be displayed
@@ -48,7 +48,7 @@ class UserParser {
     }
 
     BuiltList<SubjectBaseWithCover> subjectsUnderFirstNonEmptyStatus =
-    BuiltList<SubjectBaseWithCover>();
+        BuiltList<SubjectBaseWithCover>();
     List<Element> subjectElements =
         firstNonEmptyStatusLabel.parent.querySelectorAll('li > a');
     for (Element subjectElement in subjectElements) {
@@ -69,8 +69,7 @@ class UserParser {
         continue;
       }
 
-      SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) =>
-      b
+      SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) => b
         ..cover.replace(BangumiImage.fromImageUrl(
             subjectCover, ImageSize.Small, ImageType.SubjectCover))
         ..id = subjectId
@@ -85,11 +84,11 @@ class UserParser {
   }
 
   BuiltMap<CollectionStatus, BuiltList<SubjectBaseWithCover>>
-  _parsePlainTextCollectionPanel(Element collectionElement,
+      _parsePlainTextCollectionPanel(Element collectionElement,
           LinkedHashMap<CollectionStatus, int> count) {
     CollectionStatus firstNonEmptyStatus = count.keys.first;
     BuiltList<SubjectBaseWithCover> subjectsUnderFirstNonEmptyStatus =
-    BuiltList<SubjectBaseWithCover>();
+        BuiltList<SubjectBaseWithCover>();
 
     bool hasSeenSeparatorElement = false;
     for (Element possibleSubjectElement
@@ -118,8 +117,7 @@ class UserParser {
           continue;
         }
 
-        SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) =>
-        b
+        SubjectBaseWithCover subjectPreview = SubjectBaseWithCover((b) => b
           ..cover.replace(
               BangumiImage.useSameImageUrlForAll(bangumiTextOnlySubjectCover))
           ..id = subjectId
@@ -160,8 +158,7 @@ class UserParser {
       subjects = _parseCollectionPanelWithCover(collectionElement, count);
     }
 
-    return CollectionsOnProfilePage((b) =>
-    b
+    return CollectionsOnProfilePage((b) => b
       ..subjectType = subjectType
       ..onPlainTextPanel = onPlainTextPanel
       ..collectionDistribution.replace(count)
@@ -174,14 +171,14 @@ class UserParser {
   BuiltMap<SubjectType, CollectionsOnProfilePage> _parseCollectionPreviews(
       DocumentFragment document) {
     BuiltMap<SubjectType, CollectionsOnProfilePage> collectionPreviews =
-    BuiltMap<SubjectType, CollectionsOnProfilePage>();
+        BuiltMap<SubjectType, CollectionsOnProfilePage>();
 
     Element mainPanel = document.querySelector('#user_home');
     for (Element element in mainPanel.children) {
       Match idMatcher = bangumiCollectionIdRegex.firstMatch(element.id);
       if (idMatcher != null) {
         SubjectType subjectType =
-        SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
+            SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
         collectionPreviews = collectionPreviews.rebuild((b) => b
           ..addAll({
             subjectType: _parseCollectionPreview(element, subjectType, false)
@@ -194,7 +191,7 @@ class UserParser {
       Match idMatcher = bangumiCollectionIdRegex.firstMatch(element.id);
       if (idMatcher != null) {
         SubjectType subjectType =
-        SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
+            SubjectType.getTypeByHttpWiredName(idMatcher.group(0));
         collectionPreviews = collectionPreviews.rebuild((b) => b
           ..addAll({
             subjectType: _parseCollectionPreview(element, subjectType, true)
@@ -280,13 +277,13 @@ class UserParser {
     }
 
     BuiltMap<SubjectType, CollectionsOnProfilePage> previews =
-    _parseCollectionPreviews(document);
+        _parseCollectionPreviews(document);
 
     BuiltList<NetworkServiceTag> networkServiceTags = _parseNetworkServiceTags(
         document.querySelectorAll('.network_service > li'));
 
     BuiltList<TimelinePreview> timelinePreviews =
-    _parseTimelinePreviews(document.querySelectorAll('.timeline > li'));
+        _parseTimelinePreviews(document.querySelectorAll('.timeline > li'));
 
     return UserProfile((b) => b
       ..introductionInHtml = introductionElement.outerHtml

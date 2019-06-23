@@ -24,8 +24,7 @@ class GroupJoinSingleWidget extends StatelessWidget {
           trailing: buildTrailingWidget(groupJoinSingle, onDeleteFeed),
         ),
         TimelineCommonListTile(
-          leadingWidget:
-          CachedRoundedCover.asGridSize(
+          leadingWidget: CachedRoundedCover.asGridSize(
               imageUrl: groupJoinSingle.groupIcon.medium),
           title: groupJoinSingle.groupName,
           subtitle: groupJoinSingle.groupDescription,

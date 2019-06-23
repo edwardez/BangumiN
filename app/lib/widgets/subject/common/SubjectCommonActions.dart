@@ -5,8 +5,8 @@ import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void _showSubjectModalBottomSheet(BuildContext context,
-    BangumiSubject subject) {
+void _showSubjectModalBottomSheet(
+    BuildContext context, BangumiSubject subject) {
   showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
@@ -18,8 +18,8 @@ void _showSubjectModalBottomSheet(BuildContext context,
                   leading: Icon(Icons.open_in_browser),
                   title: Text('在浏览器中打开'),
                   onTap: () {
-                    launch(
-                        subject.pageUrlFromCalculation, forceSafariVC: false);
+                    launch(subject.pageUrlFromCalculation,
+                        forceSafariVC: false);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -56,8 +56,8 @@ void _showSubjectModalBottomSheet(BuildContext context,
 }
 
 /// A list of common actions on subject page AppBar
-List<Widget> subjectCommonActions(BuildContext context,
-    BangumiSubject subject) {
+List<Widget> subjectCommonActions(
+    BuildContext context, BangumiSubject subject) {
   return [
     IconButton(
       icon: Icon(AdaptiveIcons.shareIconData),

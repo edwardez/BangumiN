@@ -36,7 +36,8 @@ class BangumiResponseIncomprehensibleException implements MuninException {
   /// Message describing the problem. */
   final message;
 
-  BangumiResponseIncomprehensibleException([this.message = '出现了未知错误: 从Bangumi返回了无法处理的数据']);
+  BangumiResponseIncomprehensibleException(
+      [this.message = '出现了未知错误: 从Bangumi返回了无法处理的数据']);
 
   @override
   String toString() {
@@ -56,5 +57,3 @@ class GeneralUnknownException implements MuninException {
     return 'GeneralUnknownException{message: $message}';
   }
 }
-
-

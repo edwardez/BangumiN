@@ -105,8 +105,8 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
   }
 
   @override
-  List<SearchResultItem> get resultsAsList =>
-      __resultsAsList ??= super.resultsAsList;
+  List<SearchResultItem> get resultsToList =>
+      __resultsAsList ??= super.resultsToList;
 
   @override
   bool get hasReachedEnd => __hasReachedEnd ??= super.hasReachedEnd;

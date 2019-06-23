@@ -121,7 +121,6 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
                   episodeSequentialNumber: episodeSequentialNumber,
                 );
               },
-
             );
           } else if (collection is InProgressBookCollection) {
             widget = InProgressBookWidget(
@@ -163,6 +162,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
           itemCount: widgets.length,
           appBar: widget.oneMuninBar,
+
           /// all progress subjects will be loaded in once, hence no more items
           /// to load if progresses are loaded
           noMoreItemsToLoad: progressesLoaded,
@@ -185,8 +185,8 @@ class _ViewModel {
   factory _ViewModel.fromStore(
       Store<AppState> store, BuiltSet<SubjectType> types) {
     Future _getProgress(BuildContext context) {
-      final action = GetProgressRequestAction(
-          context: context, subjectTypes: types);
+      final action =
+          GetProgressRequestAction(context: context, subjectTypes: types);
       store.dispatch(action);
       return action.completer.future;
     }
@@ -246,7 +246,7 @@ class _ViewModel {
       BuiltMap<SubjectType, BuiltList<InProgressCollection>> progressesInStore =
           store.state.progressState.progresses;
       BuiltList<InProgressCollection> progresses =
-      BuiltList<InProgressCollection>();
+          BuiltList<InProgressCollection>();
 
       for (SubjectType subjectType in types) {
         if (progressesInStore.containsKey(subjectType)) {
@@ -264,32 +264,32 @@ class _ViewModel {
       getProgress: _getProgress,
       collections: _progressesSelector(),
       preferredSubjectInfoLanguage:
-      store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
-      expandAllProgressTiles: store.state.settingState.generalSetting
-          .expandAllProgressTiles,
+          store.state.settingState.generalSetting.preferredSubjectInfoLanguage,
+      expandAllProgressTiles:
+          store.state.settingState.generalSetting.expandAllProgressTiles,
       updateAnimeOrRealSingleEpisode: _updateAnimeOrRealSingleEpisode,
       updateAnimeOrRealBatchEpisodes: _updateAnimeOrRealBatchEpisodes,
       updateBookProgress: _updateBookProgress,
     );
   }
 
-  const _ViewModel({@required this.collections,
-    @required this.getProgress,
-    @required this.updateAnimeOrRealSingleEpisode,
-    @required this.updateAnimeOrRealBatchEpisodes,
-    @required this.updateBookProgress,
-    @required this.preferredSubjectInfoLanguage,
-    @required this.expandAllProgressTiles});
+  const _ViewModel(
+      {@required this.collections,
+      @required this.getProgress,
+      @required this.updateAnimeOrRealSingleEpisode,
+      @required this.updateAnimeOrRealBatchEpisodes,
+      @required this.updateBookProgress,
+      @required this.preferredSubjectInfoLanguage,
+      @required this.expandAllProgressTiles});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is _ViewModel &&
-              runtimeType == other.runtimeType &&
-              collections == other.collections &&
-              preferredSubjectInfoLanguage ==
-                  other.preferredSubjectInfoLanguage &&
-              expandAllProgressTiles == other.expandAllProgressTiles;
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          collections == other.collections &&
+          preferredSubjectInfoLanguage == other.preferredSubjectInfoLanguage &&
+          expandAllProgressTiles == other.expandAllProgressTiles;
 
   @override
   int get hashCode =>

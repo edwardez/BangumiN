@@ -76,7 +76,7 @@ class ProgressParser {
     assert(EpisodeType.Trailer.chineseName == '预告$splitter宣传$splitter广告');
 
     for (var trailerKeyword
-    in EpisodeType.Trailer.chineseName.split(splitter)) {
+        in EpisodeType.Trailer.chineseName.split(splitter)) {
       if (chineseName.contains(trailerKeyword)) {
         return EpisodeType.Trailer;
       }
@@ -160,7 +160,7 @@ class ProgressParser {
         ..totalCommentsCount = totalCommentsCount
         ..userEpisodeStatus = EpisodeStatus.Unknown
         ..episodeType =
-        isUnknownNonRegular ? EpisodeType.Unknown : EpisodeType.Regular);
+            isUnknownNonRegular ? EpisodeType.Unknown : EpisodeType.Regular);
 
       episodes[episodeId] = episodeProgress;
     }
@@ -169,12 +169,13 @@ class ProgressParser {
   }
 
   BuiltMap<int, SimpleHtmlBasedEpisode> _parseSubjectEpisodes(
-      List<Element> episodeElements,
-      Map<int, EpisodeStatus> touchedEpisodes,) {
+    List<Element> episodeElements,
+    Map<int, EpisodeStatus> touchedEpisodes,
+  ) {
     EpisodeType episodeType = EpisodeType.Unknown;
 
     BuiltMap<int, SimpleHtmlBasedEpisode> episodes =
-    BuiltMap<int, SimpleHtmlBasedEpisode>();
+        BuiltMap<int, SimpleHtmlBasedEpisode>();
     for (var episodeElement in episodeElements) {
       if (episodeElement.classes.contains('cat')) {
         episodeType = guessEpisodeTypeByChineseName(episodeElement.text.trim());
@@ -184,7 +185,7 @@ class ProgressParser {
       Element episodeLinkElement;
       int episodeId;
       for (var maybeLinkElement
-      in episodeElement.querySelectorAll('a[href*="/ep/"]')) {
+          in episodeElement.querySelectorAll('a[href*="/ep/"]')) {
         if (maybeLinkElement.classes.contains('ep_status')) {
           /// This is a link with episode status, not something we are looking for.
           continue;
@@ -217,7 +218,7 @@ class ProgressParser {
       String episodeInfo = '';
 
       for (var maybeEpisodeInfoElement
-      in episodeElement.querySelectorAll('.grey')) {
+          in episodeElement.querySelectorAll('.grey')) {
         if (maybeEpisodeInfoElement.text.contains(episodeInfoKeywordRegex)) {
           episodeInfo += maybeEpisodeInfoElement.text;
         }
@@ -240,15 +241,14 @@ class ProgressParser {
       // Episode must have a valid type.
       assert(episodeType != EpisodeType.Unknown);
 
-      SimpleHtmlBasedEpisode episode = SimpleHtmlBasedEpisode((b) =>
-      b
+      SimpleHtmlBasedEpisode episode = SimpleHtmlBasedEpisode((b) => b
         ..id = episodeId
         ..name = name
         ..chineseName = chineseName
         ..airStatus = airStatus
         ..episodeInfo = episodeInfo
-        ..userEpisodeStatus = touchedEpisodes[episodeId] ??
-            EpisodeStatus.Pristine
+        ..userEpisodeStatus =
+            touchedEpisodes[episodeId] ?? EpisodeStatus.Pristine
         ..episodeType = episodeType);
 
       episodes = episodes.rebuild((b) => b..addAll({episode.id: episode}));
@@ -259,20 +259,20 @@ class ProgressParser {
 
   /// parse https://bgm.tv/m/prg
   LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>
-  processProgressPreview(String rawHtml) {
+      processProgressPreview(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
 
     LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>> episodesPerSubject =
-    LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>();
+        LinkedHashMap<int, LinkedHashMap<int, EpisodeProgress>>();
 
     List<Element> subjects =
-    document.querySelectorAll('.infoWrapper_tv > .subjectItem');
+        document.querySelectorAll('.infoWrapper_tv > .subjectItem');
 
     Map<int, Element> episodeDetailElements = {};
 
     for (Element detailElement in document.querySelectorAll('.prg_popup')) {
       int episodeId =
-      extractFirstIntGroup(detailElement.id, defaultValue: null);
+          extractFirstIntGroup(detailElement.id, defaultValue: null);
       Element tipElement = detailElement.querySelector('.tip');
       if (episodeId == null || tipElement == null) {
         debugPrint('Recevied unknown subject ${detailElement.outerHtml}');
@@ -284,7 +284,7 @@ class ProgressParser {
 
     for (Element subjectElement in subjects) {
       int subjectId =
-      extractFirstIntGroup(subjectElement.id, defaultValue: null);
+          extractFirstIntGroup(subjectElement.id, defaultValue: null);
       if (subjectId == null) {
         debugPrint('Recevied unknown subject ${subjectElement.outerHtml}');
         continue;
@@ -297,17 +297,15 @@ class ProgressParser {
     return episodesPerSubject;
   }
 
-
-  SubjectEpisodes processSubjectEpisodes(String rawHtml,
-      Map<int, EpisodeStatus> touchedEpisodes) {
+  SubjectEpisodes processSubjectEpisodes(
+      String rawHtml, Map<int, EpisodeStatus> touchedEpisodes) {
     DocumentFragment document = parseFragment(rawHtml);
     List<Element> episodeElements =
-    document.querySelectorAll('.line_list > li');
+        document.querySelectorAll('.line_list > li');
 
     final episodes = _parseSubjectEpisodes(episodeElements, touchedEpisodes);
 
-    return SubjectEpisodes((b) =>
-    b
+    return SubjectEpisodes((b) => b
       ..subject.replace(parseParentSubject(document).orNull)
       ..episodes.replace(episodes));
   }

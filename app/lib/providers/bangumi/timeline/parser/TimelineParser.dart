@@ -53,8 +53,7 @@ class GetTimelineParsedResponse {
     @required this.feedLoadType,
     @required this.fetchedTime,
     this.truncateFeedsInStore = false,
-  })
-      : assert(feeds != null),
+  })  : assert(feeds != null),
         assert(feedLoadType != null),
         assert(fetchedTime != null),
         assert(truncateFeedsInStore != null);
@@ -114,12 +113,13 @@ class TimelineParser {
   /// Otherwise feed is parsed as a feed on main home timeline, an additional
   /// [userAvatarImageCache] can be used as an alternative source to retrieve
   /// user avatar.
-  TimelineFeed _parseFeed(Element timelineItem,
-      int feedId, {
-        @required TimelineSource timelineSource,
-        Map<String, String> userAvatarImageCache,
-        BangumiUserSmall userBasicInfo,
-      }) {
+  TimelineFeed _parseFeed(
+    Element timelineItem,
+    int feedId, {
+    @required TimelineSource timelineSource,
+    Map<String, String> userAvatarImageCache,
+    BangumiUserSmall userBasicInfo,
+  }) {
     Optional<FeedMetaInfo> maybeUserInfo;
 
     if (timelineSource == TimelineSource.UserProfile) {
@@ -132,9 +132,8 @@ class TimelineParser {
         return null;
       }
     } else {
-      maybeUserInfo =
-          _parseHomePageFeedMetaInfo(
-              timelineItem, userAvatarImageCache, feedId);
+      maybeUserInfo = _parseHomePageFeedMetaInfo(
+          timelineItem, userAvatarImageCache, feedId);
       if (maybeUserInfo.isEmpty) {
         print('Skipping unknown timeline item ${timelineItem.innerHtml}');
         return null;
@@ -144,12 +143,12 @@ class TimelineParser {
     FeedMetaInfo userInfo = maybeUserInfo.value;
 
     String selectorName =
-    timelineSource == TimelineSource.UserProfile ? '.info_full' : '.info';
+        timelineSource == TimelineSource.UserProfile ? '.info_full' : '.info';
 
     final Element singleTimelineContent =
-    timelineItem.querySelector(selectorName);
+        timelineItem.querySelector(selectorName);
     final Optional<String> maybeActionPrefix =
-    getFirstTextNodeContent(singleTimelineContent.nodes);
+        getFirstTextNodeContent(singleTimelineContent.nodes);
 
     /// Uses a greedy-based approach to parse timeline event
     /// doujin event is parsed firstly, they make things more complicated and we just need the action name and url
@@ -157,7 +156,7 @@ class TimelineParser {
     /// then feed is parsed based on action keyword
     /// finally unknown event is processed
     final doujinItemElements =
-    timelineItem.querySelectorAll('a[href*="$doujinServerSubDomain"]');
+        timelineItem.querySelectorAll('a[href*="$doujinServerSubDomain"]');
     if (doujinItemElements.length != 0) {
       return _parseDoujinActivity(singleTimelineContent, userInfo);
     }
@@ -234,11 +233,13 @@ class TimelineParser {
         : Optional.of(updateTime.millisecondsSinceEpoch);
   }
 
-  Optional<FeedMetaInfo> _parseProfilePageFeedMetaInfo(Element timelineItem,
-      int feedId,
-      BangumiUserSmall userBasicInfo,) {
+  Optional<FeedMetaInfo> _parseProfilePageFeedMetaInfo(
+    Element timelineItem,
+    int feedId,
+    BangumiUserSmall userBasicInfo,
+  ) {
     Optional<int> maybeUpdateTime =
-    _parseUpdateTime(timelineItem.querySelector('.date'));
+        _parseUpdateTime(timelineItem.querySelector('.date'));
 
     if (maybeUpdateTime.isNotPresent) {
       return Optional.absent();
@@ -246,8 +247,7 @@ class TimelineParser {
 
     /// Sets actionName to a dummy place holder, this will be correctly
     /// set by later method
-    FeedMetaInfo userInfo = FeedMetaInfo((b) =>
-    b
+    FeedMetaInfo userInfo = FeedMetaInfo((b) => b
       ..nickName = userBasicInfo.nickname
       ..updatedAt = maybeUpdateTime.value
       ..feedId = feedId
@@ -261,11 +261,11 @@ class TimelineParser {
   Optional<FeedMetaInfo> _parseHomePageFeedMetaInfo(Element timelineItem,
       Map<String, String> userAvatarImageCache, int feedId) {
     Element userNameElement =
-    timelineItem.querySelector('${aHrefContains('/user/')}.l');
+        timelineItem.querySelector('${aHrefContains('/user/')}.l');
 
     if (userNameElement?.children?.length != 0) {
       for (var possibleUserElement
-      in timelineItem.querySelectorAll('${aHrefContains('/user/')}.l')) {
+          in timelineItem.querySelectorAll('${aHrefContains('/user/')}.l')) {
         if (possibleUserElement.children.length == 0) {
           userNameElement = possibleUserElement;
           break;
@@ -274,7 +274,7 @@ class TimelineParser {
     }
 
     Optional<int> maybeUpdateTime =
-    _parseUpdateTime(timelineItem.querySelector('.date'));
+        _parseUpdateTime(timelineItem.querySelector('.date'));
 
     if (userNameElement == null || maybeUpdateTime.isNotPresent) {
       return Optional.absent();
@@ -293,7 +293,7 @@ class TimelineParser {
 
     /// bangumi timeline might omit avatar, so it's optional
     Element userAvatarElement =
-    timelineItem.querySelector('${aHrefContains('/user/')}.avatar');
+        timelineItem.querySelector('${aHrefContains('/user/')}.avatar');
     String avatarImageUrl = userAvatarImageCache[username];
     if (userAvatarElement != null && avatarImageUrl == null) {
       Match imageMatchers = RegExp(r"""background-image:url\('([^']*)'\)""")
@@ -320,33 +320,33 @@ class TimelineParser {
   UnknownTimelineActivity _parseUnknownTimelineActivity(
       Element singleTimelineContent) {
     return UnknownTimelineActivity(
-            (b) => b..content = singleTimelineContent.text);
+        (b) => b..content = singleTimelineContent.text);
   }
 
-  TimelineFeed _parsePublicMessageNormal(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parsePublicMessageNormal(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     Element statusElement = singleTimelineContent.querySelector('.status');
     Element replyElement = singleTimelineContent.querySelector('.tml_comment');
     if (statusElement == null || replyElement == null) {
       return _parseUnknownTimelineActivity(singleTimelineContent);
     }
     Match replyCountMatcher =
-    RegExp(r'^\d+').firstMatch(replyElement.text.trim());
+        RegExp(r'^\d+').firstMatch(replyElement.text.trim());
     String replyCountStr = replyCountMatcher?.group(0);
     int replyCount = int.parse(replyCountStr ?? '0');
 
     String id = parseHrefId(replyElement);
 
     return PublicMessageNormal((b) => b
-      ..content = statusElement.text
+      ..contentHtml = statusElement.outerHtml
       ..user.replace(userInfo)
       ..replyCount = replyCount
       ..id = id
       ..bangumiContent = BangumiContent.PublicMessage);
   }
 
-  TimelineFeed _parsePublicMessageNoReply(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parsePublicMessageNoReply(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     Element statusElement = singleTimelineContent.querySelector('.status');
     if (statusElement == null) {
       return _parseUnknownTimelineActivity(singleTimelineContent);
@@ -365,8 +365,8 @@ class TimelineParser {
     return publicMessageNoReply;
   }
 
-  TimelineFeed _parsePublicMessage(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parsePublicMessage(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = userInfo.rebuild((b) => b..actionName = '说');
     if (singleTimelineContent.querySelector('.tml_comment') != null) {
       return _parsePublicMessageNormal(singleTimelineContent, userInfo);
@@ -375,22 +375,22 @@ class TimelineParser {
     }
   }
 
-  TimelineFeed _parseCharacterFavoriteSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseCharacterFavoriteSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = userInfo.rebuild((b) => b..actionName = '收藏了角色');
     return _parseMonoFavoriteSingle(
         singleTimelineContent, userInfo, Mono.Character);
   }
 
-  TimelineFeed _parsePersonFavoriteSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parsePersonFavoriteSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = userInfo.rebuild((b) => b..actionName = '收藏了人物');
     return _parseMonoFavoriteSingle(
         singleTimelineContent, userInfo, Mono.Person);
   }
 
-  TimelineFeed _parseMonoFavoriteSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo, Mono monoType) {
+  TimelineFeed _parseMonoFavoriteSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo, Mono monoType) {
     String selectorName;
     if (monoType == Mono.Character) {
       selectorName = 'character';
@@ -435,7 +435,7 @@ class TimelineParser {
     filterIds = filterIds ?? Set<String>();
     String aHrefSelector = aHrefContains('$keywordName');
     List<Element> hyperImageElements =
-    singleTimelineContent.querySelectorAll('$aHrefSelector>img');
+        singleTimelineContent.querySelectorAll('$aHrefSelector>img');
 
     List<HyperImage> hyperImages = [];
     for (var imageElement in hyperImageElements) {
@@ -465,7 +465,7 @@ class TimelineParser {
     filterIds ??= Set<String>();
     String aHrefSelector = aHrefContains('$keywordName');
     List<Element> hyperTextElements =
-    singleTimelineContent.querySelectorAll('$aHrefSelector.l');
+        singleTimelineContent.querySelectorAll('$aHrefSelector.l');
 
     List<HyperBangumiItem> hyperBangumiItems = [];
 
@@ -492,8 +492,8 @@ class TimelineParser {
     return hyperBangumiItems;
   }
 
-  TimelineFeed _parseMonoFavoriteUpdateMultiple(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseMonoFavoriteUpdateMultiple(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = updateUserAction(singleTimelineContent, userInfo);
 
     List<HyperBangumiItem> characterTextList = _parseAllHyperLinks(
@@ -523,10 +523,10 @@ class TimelineParser {
     return statusUpdateMultiple;
   }
 
-  TimelineFeed _parseFriendshipActivity(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseFriendshipActivity(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     Optional<String> maybeActionName =
-    getMergedTextNodeContent(singleTimelineContent.nodes);
+        getMergedTextNodeContent(singleTimelineContent.nodes);
     String actionName = maybeActionName.isEmpty ? '' : maybeActionName.value;
 
     /// Action name contains '位成员' if and only if it's a multi-friend activity
@@ -544,8 +544,8 @@ class TimelineParser {
     return _parseFriendshipCreationMultiple(singleTimelineContent, userInfo);
   }
 
-  TimelineFeed _parseFriendshipCreationSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseFriendshipCreationSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     List<HyperBangumiItem> friendTextList = _parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.User,
@@ -574,8 +574,8 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.User);
   }
 
-  TimelineFeed _parseFriendshipCreationMultiple(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseFriendshipCreationMultiple(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     TimelineFeed timelineFeed = _parseStatusUpdateMultiple(
         singleTimelineContent, userInfo, BangumiContent.User);
     if (timelineFeed is StatusUpdateMultiple) {
@@ -590,16 +590,12 @@ class TimelineParser {
       List<HyperImage> updatedImages = [];
       for (HyperImage image in hyperImages) {
         updatedImages.add(image
-            .rebuild((b) =>
-        b
-          ..id = hyperBangumiItems
-              .elementAt(index)
-              .id));
+            .rebuild((b) => b..id = hyperBangumiItems.elementAt(index).id));
         index++;
       }
 
       return timelineFeed.rebuild((b) =>
-      b..hyperImages.replace(BuiltList<HyperImage>.of(updatedImages)));
+          b..hyperImages.replace(BuiltList<HyperImage>.of(updatedImages)));
     }
 
     return timelineFeed;
@@ -608,14 +604,14 @@ class TimelineParser {
   TimelineFeed _parseStatusUpdateMultiple(Element singleTimelineContent,
       FeedMetaInfo userInfo, BangumiContent contentType,
       {List<HyperImage> imageList,
-        List<HyperBangumiItem> hyperLinkList,
-        parseActionName = false}) {
-    hyperLinkList ??= _parseAllHyperLinks(singleTimelineContent, contentType,
-        contentType.webPageRouteName,
+      List<HyperBangumiItem> hyperLinkList,
+      parseActionName = false}) {
+    hyperLinkList ??= _parseAllHyperLinks(
+        singleTimelineContent, contentType, contentType.webPageRouteName,
         filterIds: {userInfo.username});
 
-    imageList ??= _parseAllHyperImages(singleTimelineContent, contentType,
-        contentType.webPageRouteName,
+    imageList ??= _parseAllHyperImages(
+        singleTimelineContent, contentType, contentType.webPageRouteName,
         filterIds: {userInfo.username});
 
     if (parseActionName) {
@@ -634,8 +630,8 @@ class TimelineParser {
     return statusUpdateMultiple;
   }
 
-  TimelineFeed _parseProgressUpdateEpisodeUntil(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseProgressUpdateEpisodeUntil(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     Optional<String> maybeActionName = getMergedTextNodeContent(
         singleTimelineContent.nodes,
         trimExtraChars: false,
@@ -667,10 +663,10 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.Subject);
   }
 
-  TimelineFeed _parseGroupJoinActivity(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseGroupJoinActivity(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     Optional<String> maybeActionName =
-    getMergedTextNodeContent(singleTimelineContent.nodes);
+        getMergedTextNodeContent(singleTimelineContent.nodes);
     String actionName = maybeActionName.isEmpty ? '' : maybeActionName.value;
 
     /// Action name contains '个小组' if and only if it's a multi-friend activity
@@ -688,8 +684,8 @@ class TimelineParser {
     return _parseGroupJoinMultiple(singleTimelineContent, userInfo);
   }
 
-  TimelineFeed _parseGroupJoinSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseGroupJoinSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     List<HyperBangumiItem> hyperLinkList = _parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Group,
@@ -721,14 +717,14 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.Group);
   }
 
-  TimelineFeed _parseGroupJoinMultiple(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseGroupJoinMultiple(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     return _parseStatusUpdateMultiple(
         singleTimelineContent, userInfo, BangumiContent.Group);
   }
 
-  TimelineFeed _parseProgressUpdateEpisodeSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseProgressUpdateEpisodeSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     List<HyperBangumiItem> episodeLinks = _parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Episode,
@@ -761,16 +757,16 @@ class TimelineParser {
   TimelineFeed _parseSubjectOrEpOrBookVolAction(Element singleTimelineContent,
       FeedMetaInfo userInfo, String actionPrefix) {
     final episodeLinks =
-    singleTimelineContent.querySelectorAll('a[href*="/subject/ep/"]');
+        singleTimelineContent.querySelectorAll('a[href*="/subject/ep/"]');
     if (episodeLinks.length != 0) {
       userInfo = userInfo.rebuild((b) => b..actionName = actionPrefix);
       return _parseProgressUpdateEpisodeSingle(singleTimelineContent, userInfo);
     }
 
     final subjectLinks =
-    singleTimelineContent.querySelectorAll('a[href*="/subject/"]');
+        singleTimelineContent.querySelectorAll('a[href*="/subject/"]');
     final subjectImageLinks =
-    singleTimelineContent.querySelectorAll('a[href*="/subject/"]>img');
+        singleTimelineContent.querySelectorAll('a[href*="/subject/"]>img');
 
     if (subjectLinks.length == 0) {
       return _parseUnknownTimelineActivity(singleTimelineContent);
@@ -788,25 +784,23 @@ class TimelineParser {
     return _parseUnknownTimelineActivity(singleTimelineContent);
   }
 
-  TimelineFeed _parseCollectionUpdateMultiple(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseCollectionUpdateMultiple(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = updateUserAction(singleTimelineContent, userInfo);
 
     return _parseStatusUpdateMultiple(
         singleTimelineContent, userInfo, BangumiContent.Subject);
   }
 
-  TimelineFeed _parseCollectionUpdate(Element singleTimelineContent,
-      FeedMetaInfo userInfo, String actionName) {
+  TimelineFeed _parseCollectionUpdate(
+      Element singleTimelineContent, FeedMetaInfo userInfo, String actionName) {
     List<HyperBangumiItem> hyperLinkList = _parseAllHyperLinks(
         singleTimelineContent,
         BangumiContent.Subject,
         BangumiContent.Subject.webPageRouteName,
         filterIds: {userInfo.username});
-    List<HyperImage> imageList = _parseAllHyperImages(
-        singleTimelineContent,
-        BangumiContent.Subject,
-        BangumiContent.Subject.webPageRouteName,
+    List<HyperImage> imageList = _parseAllHyperImages(singleTimelineContent,
+        BangumiContent.Subject, BangumiContent.Subject.webPageRouteName,
         filterIds: {userInfo.username});
 
     /// subject may not have an icon, and there must be exactly one text subject link
@@ -840,8 +834,8 @@ class TimelineParser {
     }
   }
 
-  TimelineFeed _parseBlogCreationSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseBlogCreationSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = userInfo.rebuild((b) => b..actionName = '发表了日志');
 
     List<HyperBangumiItem> hyperLinkList = _parseAllHyperLinks(
@@ -864,8 +858,8 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.Blog);
   }
 
-  TimelineFeed _parseIndexFavoriteSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo, String actionName) {
+  TimelineFeed _parseIndexFavoriteSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo, String actionName) {
     userInfo = userInfo.rebuild((b) => b..actionName = actionName);
 
     List<HyperBangumiItem> hyperLinkList = _parseAllHyperLinks(
@@ -888,8 +882,8 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.Catalog);
   }
 
-  TimelineFeed _parseWikiCreationSingle(Element singleTimelineContent,
-      FeedMetaInfo userInfo, String actionName) {
+  TimelineFeed _parseWikiCreationSingle(
+      Element singleTimelineContent, FeedMetaInfo userInfo, String actionName) {
     userInfo = updateUserAction(singleTimelineContent, userInfo);
 
     List<HyperBangumiItem> hyperLinkList = _parseAllHyperLinks(
@@ -908,14 +902,16 @@ class TimelineParser {
       ..bangumiContent = BangumiContent.Subject);
   }
 
-  TimelineFeed _parseDoujinActivity(Element singleTimelineContent,
-      FeedMetaInfo userInfo) {
+  TimelineFeed _parseDoujinActivity(
+      Element singleTimelineContent, FeedMetaInfo userInfo) {
     userInfo = updateUserAction(singleTimelineContent, userInfo);
     return _parseStatusUpdateMultiple(
         singleTimelineContent, userInfo, BangumiContent.Doujin);
   }
 
-  bool _isFromMutedUser(TimelineFeed timelineFeed,) {
+  bool _isFromMutedUser(
+    TimelineFeed timelineFeed,
+  ) {
     if (timelineFeed is UnknownTimelineActivity ||
         timelineFeed?.user?.username == null) {
       return false;
@@ -928,7 +924,8 @@ class TimelineParser {
   /// Note: if feedLoadType is set, [upperFeedId]/[lowerFeedId] might also need to be set
   /// If [timelineSource] is set to [TimelineSource.UserProfile], [userInfo] must
   /// not be null
-  GetTimelineParsedResponse processTimelineFeeds(String rawHtml, {
+  GetTimelineParsedResponse processTimelineFeeds(
+    String rawHtml, {
     @required TimelineSource timelineSource,
     @required BangumiUserSmall userInfo,
     feedLoadType = FeedLoadType.Initial,
@@ -941,10 +938,10 @@ class TimelineParser {
           lowerFeedId != IntegerHelper.MIN_VALUE);
     }
     assert(
-    feedLoadType == FeedLoadType.Initial ||
-        feedLoadType == FeedLoadType.Newer ||
-        feedLoadType == FeedLoadType.Older,
-    'feedLoadType $feedLoadType is not supported');
+        feedLoadType == FeedLoadType.Initial ||
+            feedLoadType == FeedLoadType.Newer ||
+            feedLoadType == FeedLoadType.Older,
+        'feedLoadType $feedLoadType is not supported');
 
     assert(timelineSource != TimelineSource.UserProfile ||
         (timelineSource == TimelineSource.UserProfile && userInfo != null));
@@ -996,9 +993,8 @@ class TimelineParser {
           userBasicInfo: userInfo,
           timelineSource: timelineSource);
       if (singleTimelineItem != null) {
-        singleTimelineItem = singleTimelineItem.rebuild((b) =>
-        b
-            .isFromMutedUser = _isFromMutedUser(singleTimelineItem));
+        singleTimelineItem = singleTimelineItem.rebuild(
+            (b) => b.isFromMutedUser = _isFromMutedUser(singleTimelineItem));
         feeds.add(singleTimelineItem);
       }
     }

@@ -26,17 +26,18 @@ class BangumiOauthClient extends Client {
   /// A storage service that's used to persist oauth credentials
   final SecureStorageService secureStorageService;
 
-  BangumiOauthClient(Credentials credentials, {
+  BangumiOauthClient(
+    Credentials credentials, {
     @required this.secureStorageService,
     String identifier,
     String secret,
     bool basicAuth = true,
     http.Client httpClient,
   }) : super(credentials,
-      identifier: identifier,
-      secret: secret,
-      basicAuth: basicAuth,
-      httpClient: httpClient);
+            identifier: identifier,
+            secret: secret,
+            basicAuth: basicAuth,
+            httpClient: httpClient);
 
   bool shouldRefreshAccessToken() {
     /// If `credentials` is null, user is not logged in yet, thus login instead
@@ -56,8 +57,7 @@ class BangumiOauthClient extends Client {
   /// Validates user info to make sure we are receiving info of current app user
   Future<bool> refreshTokenMatchesAppUser() async {
     http.Response response = await this.post(
-        'https://${Application.environmentValue
-            .bangumiMainHost}/oauth/token_status');
+        'https://${Application.environmentValue.bangumiMainHost}/oauth/token_status');
 
     /// If code returns non-200, always returns false
     if (response.statusCode != 200) {
@@ -71,8 +71,8 @@ class BangumiOauthClient extends Client {
     if (!isValidRefreshToken) {
       debugPrint(
           'Authenicated bangumi user and current app user doesn\'t match! '
-              'Bangumi user id: ${decodedResponse['user_id']}, '
-              'app user id: ${currentUser?.id}');
+          'Bangumi user id: ${decodedResponse['user_id']}, '
+          'app user id: ${currentUser?.id}');
     }
 
     return isValidRefreshToken;
@@ -89,15 +89,13 @@ class BangumiOauthClient extends Client {
     /// number of retry has reached
     if (!isValidRefreshToken && triedTimes <= maxRetriesToRefreshCredentials) {
       debugPrint(
-          'Retrying to refresh access token the ${triedTimes +
-              1} time since returned user info doesn\'t match app user');
+          'Retrying to refresh access token the ${triedTimes + 1} time since returned user info doesn\'t match app user');
       newClient = await refreshCredentials(null, triedTimes + 1);
     }
 
     if (isValidRefreshToken) {
       debugPrint(
-          'Successfully refreshed bangumi oauth credentials, new token expires on ${newClient
-              .credentials.expiration}');
+          'Successfully refreshed bangumi oauth credentials, new token expires on ${newClient.credentials.expiration}');
     }
 
     return newClient;

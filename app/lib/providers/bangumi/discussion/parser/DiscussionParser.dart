@@ -26,7 +26,8 @@ class DiscussionParser {
 
   final MuteSetting muteSetting;
 
-  const DiscussionParser(this.muteSetting);
+  DiscussionParser(MuteSetting muteSetting)
+      : muteSetting = muteSetting.rebuild((b) => b);
 
   /// bangumi uses id to identify each discussion element and we can thus use
   /// this info to guess [BangumiContent]

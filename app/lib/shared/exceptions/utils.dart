@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:quiver/core.dart';
@@ -36,4 +37,19 @@ String formatErrorMessage(Object error,
   }
 
   return fallbackErrorMessage;
+}
+
+reportError(dynamic error, {
+  StackTrace stack,
+}) {
+  if (stack != null) {
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: error,
+      stack: stack,
+    ));
+  } else {
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: error,
+    ));
+  }
 }

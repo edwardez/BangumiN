@@ -152,7 +152,7 @@ class UserProfileWidget extends StatelessWidget {
                             profile.relationships)),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: null,
                   ),
                 IconButton(
                   icon: Icon(AdaptiveIcons.moreActionsIconData),

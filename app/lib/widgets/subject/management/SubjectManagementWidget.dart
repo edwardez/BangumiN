@@ -5,7 +5,9 @@ import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 
 class SubjectManagementWidget extends StatelessWidget {
   final BangumiSubject subject;
@@ -54,12 +56,16 @@ class SubjectManagementWidget extends StatelessWidget {
                 child: MuninOutlineButton(
                   child: Text('$collectionActionText收藏'),
                   onPressed: () {
-                    Application.router.navigateTo(
-                      context,
-                      Routes.subjectCollectionManagementRoute.replaceFirst(
-                          RoutesVariable.subjectIdParam,
-                          subject.id?.toString()),
-                      transition: TransitionType.nativeModal,
+                    showSnackBarOnSuccess(
+                        context,
+                        Application.router.navigateTo(
+                          context,
+                          Routes.subjectCollectionManagementRoute.replaceFirst(
+                              RoutesVariable.subjectIdParam,
+                              subject.id?.toString()),
+                          transition: TransitionType.nativeModal,
+                        ),
+                        hasSuccessfullyUpdatedCollection
                     );
                   },
                 ),

@@ -18,6 +18,7 @@ import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/progress/showEpisodeOptionSheet.dart';
 import 'package:munin/widgets/shared/button/customization.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/cover/ClickableCachedRoundedCover.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/core.dart';
@@ -156,12 +157,17 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                   data: smallButtonTheme(context),
                   child: OutlineButton(
                     onPressed: () {
-                      Application.router.navigateTo(
+                      showSnackBarOnSuccess(
                           context,
-                          Routes.subjectCollectionManagementRoute.replaceFirst(
-                              RoutesVariable.subjectIdParam,
-                              collection.subject.id.toString()),
-                          transition: TransitionType.nativeModal);
+                          Application.router.navigateTo(
+                              context,
+                              Routes.subjectCollectionManagementRoute
+                                  .replaceFirst(
+                                  RoutesVariable.subjectIdParam,
+                                  collection.subject.id.toString()),
+                              transition: TransitionType.nativeModal),
+                          hasSuccessfullyUpdatedCollection
+                      );
                     },
                     child: Text("编辑"),
                   ),

@@ -473,9 +473,14 @@ class _SubjectCollectionManagementWidgetState
           try {
             await vm.collectionInfoUpdateRequest(
                 vm.subject.id, localSubjectCollectionInfo);
-            Navigator.pop(context);
+            Navigator.of(context).pop(true);
           } catch (error, stack) {
             vm.handleError(context, error, stack);
+            if (mounted) {
+              setState(() {
+                collectionsSubmissionStatus = RequestStatus.UnknownException;
+              });
+            }
           }
         },
         canSubmit: _canSubmitForm,

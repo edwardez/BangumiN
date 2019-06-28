@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:quiver/time.dart';
 
@@ -69,10 +70,14 @@ class BangumiOauthClient extends Client {
         decodedResponse['user_id'] == currentUser?.id;
 
     if (!isValidRefreshToken) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: BangumiRefreshTokenInvalidException(),
+        stack: StackTrace.current,
+      ));
       debugPrint(
           'Authenicated bangumi user and current app user doesn\'t match! '
-          'Bangumi user id: ${decodedResponse['user_id']}, '
-          'app user id: ${currentUser?.id}');
+              'Bangumi user id: ${decodedResponse['user_id']}, '
+              'app user id: ${currentUser?.id}');
     }
 
     return isValidRefreshToken;

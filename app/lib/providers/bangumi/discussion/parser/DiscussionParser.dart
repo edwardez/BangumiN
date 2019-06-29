@@ -131,7 +131,7 @@ class DiscussionParser {
     if (item is! GroupDiscussionPost) {
       return false;
     }
-    GroupDiscussionPost post = item;
+    final GroupDiscussionPost post = item;
 
     /// 1. Checks whether user muted the group
     bool isMutedGroup = muteSetting.mutedGroups.containsKey(post.postedGroupId);
@@ -154,11 +154,11 @@ class DiscussionParser {
     }
 
     /// 3. Checks whether user muted op
-    final foundedMutedUser = muteSetting.mutedUsers.values.firstWhere(
+    final mutedUser = muteSetting.mutedUsers.values.firstWhere(
         (u) => u.userId == post.originalPosterUserId,
         orElse: () => null);
 
-    return foundedMutedUser != null;
+    return mutedUser != null;
   }
 
   List<DiscussionItem> processDiscussionItems(String rawHtml) {

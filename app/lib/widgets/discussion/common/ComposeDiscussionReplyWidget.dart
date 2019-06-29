@@ -191,4 +191,14 @@ class _ViewModel {
   }
 
   const _ViewModel({this.createReply});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel &&
+              runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
+
 }

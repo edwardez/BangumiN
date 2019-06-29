@@ -19,6 +19,9 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
   Iterable serialize(Serializers serializers, SubPostReply object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'mainPostId',
+      serializers.serialize(object.mainPostId,
+          specifiedType: const FullType(int)),
       'subSequentialNumber',
       serializers.serialize(object.subSequentialNumber,
           specifiedType: const FullType(int)),
@@ -29,6 +32,9 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'contentHtml',
       serializers.serialize(object.contentHtml,
+          specifiedType: const FullType(String)),
+      'authorPostedText',
+      serializers.serialize(object.authorPostedText,
           specifiedType: const FullType(String)),
       'postTimeInMilliSeconds',
       serializers.serialize(object.postTimeInMilliSeconds,
@@ -52,6 +58,10 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'mainPostId':
+          result.mainPostId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'subSequentialNumber':
           result.subSequentialNumber = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -67,6 +77,10 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
           break;
         case 'contentHtml':
           result.contentHtml = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'authorPostedText':
+          result.authorPostedText = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'postTimeInMilliSeconds':
@@ -86,6 +100,8 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
 
 class _$SubPostReply extends SubPostReply {
   @override
+  final int mainPostId;
+  @override
   final int subSequentialNumber;
   @override
   final BangumiUserBasic author;
@@ -93,6 +109,8 @@ class _$SubPostReply extends SubPostReply {
   final int id;
   @override
   final String contentHtml;
+  @override
+  final String authorPostedText;
   @override
   final int postTimeInMilliSeconds;
   @override
@@ -102,13 +120,18 @@ class _$SubPostReply extends SubPostReply {
       (new SubPostReplyBuilder()..update(updates)).build();
 
   _$SubPostReply._(
-      {this.subSequentialNumber,
+      {this.mainPostId,
+      this.subSequentialNumber,
       this.author,
       this.id,
       this.contentHtml,
+      this.authorPostedText,
       this.postTimeInMilliSeconds,
       this.mainSequentialNumber})
       : super._() {
+    if (mainPostId == null) {
+      throw new BuiltValueNullFieldError('SubPostReply', 'mainPostId');
+    }
     if (subSequentialNumber == null) {
       throw new BuiltValueNullFieldError('SubPostReply', 'subSequentialNumber');
     }
@@ -120,6 +143,9 @@ class _$SubPostReply extends SubPostReply {
     }
     if (contentHtml == null) {
       throw new BuiltValueNullFieldError('SubPostReply', 'contentHtml');
+    }
+    if (authorPostedText == null) {
+      throw new BuiltValueNullFieldError('SubPostReply', 'authorPostedText');
     }
     if (postTimeInMilliSeconds == null) {
       throw new BuiltValueNullFieldError(
@@ -142,10 +168,12 @@ class _$SubPostReply extends SubPostReply {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is SubPostReply &&
+        mainPostId == other.mainPostId &&
         subSequentialNumber == other.subSequentialNumber &&
         author == other.author &&
         id == other.id &&
         contentHtml == other.contentHtml &&
+        authorPostedText == other.authorPostedText &&
         postTimeInMilliSeconds == other.postTimeInMilliSeconds &&
         mainSequentialNumber == other.mainSequentialNumber;
   }
@@ -155,9 +183,15 @@ class _$SubPostReply extends SubPostReply {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, subSequentialNumber.hashCode), author.hashCode),
-                    id.hashCode),
-                contentHtml.hashCode),
+                $jc(
+                    $jc(
+                        $jc(
+                            $jc($jc(0, mainPostId.hashCode),
+                                subSequentialNumber.hashCode),
+                            author.hashCode),
+                        id.hashCode),
+                    contentHtml.hashCode),
+                authorPostedText.hashCode),
             postTimeInMilliSeconds.hashCode),
         mainSequentialNumber.hashCode));
   }
@@ -165,10 +199,12 @@ class _$SubPostReply extends SubPostReply {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubPostReply')
+          ..add('mainPostId', mainPostId)
           ..add('subSequentialNumber', subSequentialNumber)
           ..add('author', author)
           ..add('id', id)
           ..add('contentHtml', contentHtml)
+          ..add('authorPostedText', authorPostedText)
           ..add('postTimeInMilliSeconds', postTimeInMilliSeconds)
           ..add('mainSequentialNumber', mainSequentialNumber))
         .toString();
@@ -178,6 +214,10 @@ class _$SubPostReply extends SubPostReply {
 class SubPostReplyBuilder
     implements Builder<SubPostReply, SubPostReplyBuilder>, PostBuilder {
   _$SubPostReply _$v;
+
+  int _mainPostId;
+  int get mainPostId => _$this._mainPostId;
+  set mainPostId(int mainPostId) => _$this._mainPostId = mainPostId;
 
   int _subSequentialNumber;
   int get subSequentialNumber => _$this._subSequentialNumber;
@@ -197,6 +237,11 @@ class SubPostReplyBuilder
   String get contentHtml => _$this._contentHtml;
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
+  String _authorPostedText;
+  String get authorPostedText => _$this._authorPostedText;
+  set authorPostedText(String authorPostedText) =>
+      _$this._authorPostedText = authorPostedText;
+
   int _postTimeInMilliSeconds;
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
@@ -211,10 +256,12 @@ class SubPostReplyBuilder
 
   SubPostReplyBuilder get _$this {
     if (_$v != null) {
+      _mainPostId = _$v.mainPostId;
       _subSequentialNumber = _$v.subSequentialNumber;
       _author = _$v.author?.toBuilder();
       _id = _$v.id;
       _contentHtml = _$v.contentHtml;
+      _authorPostedText = _$v.authorPostedText;
       _postTimeInMilliSeconds = _$v.postTimeInMilliSeconds;
       _mainSequentialNumber = _$v.mainSequentialNumber;
       _$v = null;
@@ -241,10 +288,12 @@ class SubPostReplyBuilder
     try {
       _$result = _$v ??
           new _$SubPostReply._(
+              mainPostId: mainPostId,
               subSequentialNumber: subSequentialNumber,
               author: author.build(),
               id: id,
               contentHtml: contentHtml,
+              authorPostedText: authorPostedText,
               postTimeInMilliSeconds: postTimeInMilliSeconds,
               mainSequentialNumber: mainSequentialNumber);
     } catch (_) {

@@ -1,11 +1,13 @@
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/shared/utils/misc/async.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,9 +16,14 @@ List<Epic<AppState>> createDiscussionEpics(
   final getDiscussionEpic = _createGetDiscussionEpic(bangumiDiscussionService);
   final getGroupThreadEpic =
       _createGetGroupThreadEpic(bangumiDiscussionService);
+
+  final createCreateReplyRequestEpic =
+  _createCreateReplyRequestEpic(bangumiDiscussionService);
+
   return [
     getDiscussionEpic,
     getGroupThreadEpic,
+    createCreateReplyRequestEpic,
   ];
 }
 
@@ -93,9 +100,11 @@ Stream<dynamic> _getGroupThread(
         thread: thread, request: action.request);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
-    action.completer.completeError(error, stack);
+    completeWithErrorAndReport(
+      error,
+      action.completer,
+      stack: stack,
+    );
   } finally {
     completeDanglingCompleter(action.completer);
   }
@@ -108,5 +117,51 @@ Epic<AppState> _createGetGroupThreadEpic(
         .ofType(TypeToken<GetThreadRequestAction>())
         .switchMap((action) =>
             _getGroupThread(store, bangumiDiscussionService, action));
+  };
+}
+
+Stream<dynamic> _createReplyRequestEpic(EpicStore<AppState> store,
+    BangumiDiscussionService bangumiDiscussionService,
+    CreateReplyRequestAction action) async* {
+  try {
+    await bangumiDiscussionService.createReply(
+        reply: action.reply,
+        threadType: action.threadType,
+        targetPost: action.targetPost,
+        threadId: action.threadId,
+        author: store.state.currentAuthenticatedUserBasicInfo
+    );
+
+    final getThreadRequestAction = GetThreadRequestAction(
+      request: GetThreadRequest((b) =>
+      b
+        ..threadType = action.threadType
+        ..id = action.threadId),
+      captionTextColor: defaultCaptionText(action.context).color,
+    );
+
+    yield getThreadRequestAction;
+
+    await getThreadRequestAction.completer.future;
+    action.completer.complete();
+  } catch (error, stack) {
+    completeWithErrorAndReport(
+      error,
+      action.completer,
+      stack: stack,
+    );
+  } finally {
+    // Might need to change to complete error?
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createCreateReplyRequestEpic(
+    BangumiDiscussionService bangumiDiscussionService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<CreateReplyRequestAction>())
+        .concatMap((action) =>
+        _createReplyRequestEpic(store, bangumiDiscussionService, action));
   };
 }

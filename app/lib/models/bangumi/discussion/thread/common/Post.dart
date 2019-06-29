@@ -15,6 +15,10 @@ abstract class Post {
   /// Content of the post in html.
   String get contentHtml;
 
+  /// Post text that's originated from [author].
+  /// It's obtained by parsing [contentHtml] and stripped prefixed quoted text.
+  String get authorPostedText;
+
   /// Post epoch time in milli seconds.
   int get postTimeInMilliSeconds;
 

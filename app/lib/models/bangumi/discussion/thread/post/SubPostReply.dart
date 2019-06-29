@@ -13,6 +13,9 @@ part 'SubPostReply.g.dart';
 /// [SubPostReply] is attached to the [MainPostReply] as a sub floor.
 abstract class SubPostReply
     implements Post, Built<SubPostReply, SubPostReplyBuilder> {
+  /// Main post id this sub-reply is sent against.
+  int get mainPostId;
+
   /// Sub post sequential number of this post.
   /// This the inner sequential number under the main post.
   /// For example, if it's the second reply to a post in third floor, then
@@ -28,7 +31,7 @@ abstract class SubPostReply
   SubPostReply._();
 
   factory SubPostReply([void Function(SubPostReplyBuilder) updates]) =
-      _$SubPostReply;
+  _$SubPostReply;
 
   String toJson() {
     return json

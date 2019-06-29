@@ -88,7 +88,7 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
   final int requestedResults;
   @override
   final BuiltMap<int, SearchResultItem> results;
-  List<SearchResultItem> __resultsAsList;
+  List<SearchResultItem> __resultsToList;
   bool __hasReachedEnd;
 
   factory _$BangumiGeneralSearchResponse(
@@ -106,7 +106,7 @@ class _$BangumiGeneralSearchResponse extends BangumiGeneralSearchResponse {
 
   @override
   List<SearchResultItem> get resultsToList =>
-      __resultsAsList ??= super.resultsToList;
+      __resultsToList ??= super.resultsToList;
 
   @override
   bool get hasReachedEnd => __hasReachedEnd ??= super.hasReachedEnd;

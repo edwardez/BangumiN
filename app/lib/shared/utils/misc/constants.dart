@@ -22,5 +22,6 @@ const String checkWebVersionPrompt = '查看网页版';
 const String appOrBangumiHasAnError = '应用或bangumi出错';
 const String openInBrowser = '在浏览器中打开';
 const String dialogConfirmation = '好的';
+const String hasSuccessfullyUpdatedCollection = '收藏更新成功';
 
 final double avatarSize = 48.0;

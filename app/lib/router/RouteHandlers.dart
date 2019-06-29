@@ -10,10 +10,7 @@ import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsReq
 import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
-import 'package:munin/widgets/discussion/thread/blog/BlogThreadWidget.dart';
-import 'package:munin/widgets/discussion/thread/episode/EpisodeThreadWidget.dart';
-import 'package:munin/widgets/discussion/thread/group/GroupThreadWidget.dart';
-import 'package:munin/widgets/discussion/thread/subject/SubjectTopicThreadWidget.dart';
+import 'package:munin/widgets/discussion/thread/shared/GenericThreadWidget.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
@@ -165,7 +162,7 @@ final groupThreadRouteHandler = Handler(
     ..threadType = ThreadType.Group
     ..id = threadId);
   return Scaffold(
-    body: GroupThreadWidget(
+    body: GenericThreadWidget(
       request: request,
     ),
   );
@@ -180,7 +177,7 @@ final episodeThreadRouteHandler = Handler(
     ..threadType = ThreadType.Episode
     ..id = threadId);
   return Scaffold(
-    body: EpisodeThreadWidget(
+    body: GenericThreadWidget(
       request: request,
     ),
   );
@@ -195,7 +192,7 @@ final subjectTopicThreadRouteHandler = Handler(
     ..threadType = ThreadType.SubjectTopic
     ..id = threadId);
   return Scaffold(
-    body: SubjectTopicThreadWidget(
+    body: GenericThreadWidget(
       request: request,
     ),
   );
@@ -210,7 +207,7 @@ final blogThreadRouteHandler = Handler(
     ..threadType = ThreadType.Blog
     ..id = threadId);
   return Scaffold(
-    body: BlogThreadWidget(
+    body: GenericThreadWidget(
       request: request,
     ),
   );

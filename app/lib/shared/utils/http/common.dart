@@ -1,3 +1,5 @@
+import 'dart:io' show ContentType;
+
 /// Determines whether the status code is a canonical http status 2xx code
 bool is2xxCode(int code) {
   return code != null && code >= 200 && code < 300;
@@ -13,4 +15,9 @@ bool isBangumi2xxCode(int code) {
 
 bool isBangumiWebPageOkResponse(dynamic decodedResponse) {
   return decodedResponse is Map && decodedResponse['status'] == 'ok';
+}
+
+class ExtraContentType {
+  static final xWwwFormUrlencoded =
+  ContentType.parse("application/x-www-form-urlencoded");
 }

@@ -1,16 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
+import 'package:munin/widgets/discussion/common/ComposeDiscussionReplyWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/CopyPostContent.dart';
 import 'package:munin/widgets/discussion/thread/shared/UserWithPostContent.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 class PostWidget extends StatelessWidget {
   /// Parent thread id that this post belongs to.
@@ -46,12 +51,34 @@ class PostWidget extends StatelessWidget {
     return result;
   }
 
-  _showMoreActionsBottomSheet(
-    BuildContext context,
-  ) {
+  _showMoreActionsBottomSheet(BuildContext context,) {
     showMinHeightModalBottomSheet(
       context,
       [
+        ListTile(
+          leading: Icon(OMIcons.reply),
+          title: Text('回复'),
+          onTap: () async {
+            Navigator.pop(context);
+
+            showSnackBarOnSuccess(
+              context,
+              Navigator.push<bool>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ComposeDiscussionReplyWidget(
+                        threadType: ThreadType.fromBangumiContent(
+                            parentBangumiContentType),
+                        targetPost: post,
+                        threadId: threadId,
+                      ),
+                ),
+              ),
+              '回复成功',
+            );
+          },
+        ),
         CopyPostContent(
           contentHtml: post.contentHtml,
           contextWithScaffold: context,
@@ -65,7 +92,7 @@ class PostWidget extends StatelessWidget {
               String postContent;
 
               generateWebPageUrlByContentType(
-                      parentBangumiContentType, threadId.toString())
+                  parentBangumiContentType, threadId.toString())
                   .ifPresent((pageUrl) {
                 // Bangumi url format to navigate to a specific post.
                 // [InitialGroupPost] cannot be navigated like this.

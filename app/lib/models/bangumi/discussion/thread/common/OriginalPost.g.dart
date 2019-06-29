@@ -27,6 +27,9 @@ class _$OriginalPostSerializer implements StructuredSerializer<OriginalPost> {
       'contentHtml',
       serializers.serialize(object.contentHtml,
           specifiedType: const FullType(String)),
+      'authorPostedText',
+      serializers.serialize(object.authorPostedText,
+          specifiedType: const FullType(String)),
       'postTimeInMilliSeconds',
       serializers.serialize(object.postTimeInMilliSeconds,
           specifiedType: const FullType(int)),
@@ -62,6 +65,10 @@ class _$OriginalPostSerializer implements StructuredSerializer<OriginalPost> {
           result.contentHtml = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'authorPostedText':
+          result.authorPostedText = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'postTimeInMilliSeconds':
           result.postTimeInMilliSeconds = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -85,6 +92,8 @@ class _$OriginalPost extends OriginalPost {
   @override
   final String contentHtml;
   @override
+  final String authorPostedText;
+  @override
   final int postTimeInMilliSeconds;
   @override
   final int mainSequentialNumber;
@@ -96,6 +105,7 @@ class _$OriginalPost extends OriginalPost {
       {this.author,
       this.id,
       this.contentHtml,
+      this.authorPostedText,
       this.postTimeInMilliSeconds,
       this.mainSequentialNumber})
       : super._() {
@@ -107,6 +117,9 @@ class _$OriginalPost extends OriginalPost {
     }
     if (contentHtml == null) {
       throw new BuiltValueNullFieldError('OriginalPost', 'contentHtml');
+    }
+    if (authorPostedText == null) {
+      throw new BuiltValueNullFieldError('OriginalPost', 'authorPostedText');
     }
     if (postTimeInMilliSeconds == null) {
       throw new BuiltValueNullFieldError(
@@ -132,6 +145,7 @@ class _$OriginalPost extends OriginalPost {
         author == other.author &&
         id == other.id &&
         contentHtml == other.contentHtml &&
+        authorPostedText == other.authorPostedText &&
         postTimeInMilliSeconds == other.postTimeInMilliSeconds &&
         mainSequentialNumber == other.mainSequentialNumber;
   }
@@ -140,8 +154,10 @@ class _$OriginalPost extends OriginalPost {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, author.hashCode), id.hashCode),
-                contentHtml.hashCode),
+            $jc(
+                $jc($jc($jc(0, author.hashCode), id.hashCode),
+                    contentHtml.hashCode),
+                authorPostedText.hashCode),
             postTimeInMilliSeconds.hashCode),
         mainSequentialNumber.hashCode));
   }
@@ -152,6 +168,7 @@ class _$OriginalPost extends OriginalPost {
           ..add('author', author)
           ..add('id', id)
           ..add('contentHtml', contentHtml)
+          ..add('authorPostedText', authorPostedText)
           ..add('postTimeInMilliSeconds', postTimeInMilliSeconds)
           ..add('mainSequentialNumber', mainSequentialNumber))
         .toString();
@@ -175,6 +192,11 @@ class OriginalPostBuilder
   String get contentHtml => _$this._contentHtml;
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
+  String _authorPostedText;
+  String get authorPostedText => _$this._authorPostedText;
+  set authorPostedText(String authorPostedText) =>
+      _$this._authorPostedText = authorPostedText;
+
   int _postTimeInMilliSeconds;
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
@@ -192,6 +214,7 @@ class OriginalPostBuilder
       _author = _$v.author?.toBuilder();
       _id = _$v.id;
       _contentHtml = _$v.contentHtml;
+      _authorPostedText = _$v.authorPostedText;
       _postTimeInMilliSeconds = _$v.postTimeInMilliSeconds;
       _mainSequentialNumber = _$v.mainSequentialNumber;
       _$v = null;
@@ -221,6 +244,7 @@ class OriginalPostBuilder
               author: author.build(),
               id: id,
               contentHtml: contentHtml,
+              authorPostedText: authorPostedText,
               postTimeInMilliSeconds: postTimeInMilliSeconds,
               mainSequentialNumber: mainSequentialNumber);
     } catch (_) {

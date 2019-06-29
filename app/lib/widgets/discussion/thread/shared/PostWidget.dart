@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/ComposeDiscussionReplyWidget.dart';
@@ -18,6 +20,7 @@ import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostWidget extends StatelessWidget {
   /// Parent thread id that this post belongs to.
@@ -60,6 +63,41 @@ class PostWidget extends StatelessWidget {
     result += TimeUtils.formatMilliSecondsEpochTime(post.postTimeInMilliSeconds,
         displayTimeIn: DisplayTimeIn.AlwaysAbsolute);
     return result;
+  }
+
+  _buildEditReplyWidget(BuildContext context) {
+    bool shouldDisableEdit =
+        post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
+
+    final textStyle =
+    shouldDisableEdit ? captionTextWithBody1Size(context) : null;
+
+    return ListTile(
+      leading: Icon(OMIcons.edit),
+      title: Text(
+        '编辑此回复',
+        style: textStyle,
+      ),
+      subtitle: shouldDisableEdit
+          ? Text(
+        '已有回复的楼层无法编辑',
+      )
+          : null,
+      onTap: shouldDisableEdit
+          ? null
+          : () async {
+        Navigator.pop(context);
+
+        final subUrl = BangumiDiscussionService.urlForEditOrGetReply(
+            replyId: post.id,
+            threadType:
+            ThreadType.fromBangumiContent(parentBangumiContentType));
+        launch(
+          'https://${Application.environmentValue.bangumiMainHost}$subUrl',
+          forceSafariVC: false,
+        );
+      },
+    );
   }
 
   _buildDeleteReplyWidget(BuildContext context) {
@@ -144,7 +182,7 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ComposeDiscussionReplyWidget(
+                      ComposeDiscussionReplyWidget.forCreateReply(
                         threadType: ThreadType.fromBangumiContent(
                             parentBangumiContentType),
                         targetPost: post,
@@ -158,8 +196,10 @@ class PostWidget extends StatelessWidget {
         ),
         // Disable deleting thread for now as it's not a critical feature
         // and we lack a good way to test it.
-        if (appUsername == post.author.username && post is! OriginalPost)
-          _buildDeleteReplyWidget(context)
+        if (appUsername == post.author.username && post is! OriginalPost) ...[
+          _buildEditReplyWidget(context),
+          _buildDeleteReplyWidget(context),
+        ]
       ],
     );
   }

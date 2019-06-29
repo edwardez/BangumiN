@@ -236,7 +236,8 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                     Navigator.push<bool>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ComposeDiscussionReplyWidget(
+                        builder: (context) =>
+                            ComposeDiscussionReplyWidget.forCreateReply(
                               threadType: ThreadType.fromBangumiContent(
                                   parentBangumiContentType),
                               threadId: vm.thread.id,

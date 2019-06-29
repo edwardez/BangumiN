@@ -9,6 +9,7 @@ import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/background/RoundedConcreteBackgroundWithChild.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/form/SimpleFormSubmitWidget.dart';
 import 'package:munin/widgets/shared/text/editor/BBCodeTextEditor.dart';
@@ -21,6 +22,7 @@ class ComposeDiscussionReplyWidget extends StatefulWidget {
   /// (so we don't need to parse the html one more time).
   static const quotedReplyMaxLines = 5;
 
+  /// Id of the thread,
   final int threadId;
 
   final ThreadType threadType;
@@ -32,13 +34,28 @@ class ComposeDiscussionReplyWidget extends StatefulWidget {
 
   final String appBarTitle;
 
-  const ComposeDiscussionReplyWidget({
+  /// Initial text that should be populated in the editor. It's used if
+  /// [ComposeDiscussionReplyWidget] is used to edit a existing reply.
+  final String initialText;
+
+  const ComposeDiscussionReplyWidget.forCreateReply({
     Key key,
     @required this.threadId,
     @required this.threadType,
     this.targetPost,
     this.appBarTitle = '编写回复',
-  }) : super(key: key);
+  })
+      : initialText = null,
+        super(key: key);
+
+//  const ComposeDiscussionReplyWidget.forEditReply({
+//    Key key,
+//    @required this.threadType,
+//    @required this.threadId,
+//    @required this.initialText,
+//    @required this.targetPost,
+//    this.appBarTitle = '编写回复',
+//  }) : super(key: key);
 
   @override
   _ComposeDiscussionReplyWidgetState createState() =>
@@ -50,6 +67,12 @@ class _ComposeDiscussionReplyWidgetState
   final TextEditingController messageController = TextEditingController();
 
   RequestStatus submissionStatus = RequestStatus.Initial;
+
+  @override
+  void initState() {
+    super.initState();
+    messageController.text = widget.initialText ?? '';
+  }
 
   Widget _buildQuotedTextWidget(BuildContext context) {
     return Padding(
@@ -74,9 +97,7 @@ class _ComposeDiscussionReplyWidgetState
           await vm.createReply(context, messageController.text);
           Navigator.of(context).pop(true);
         } catch (error) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(formatErrorMessage(error)),
-          ));
+          showTextOnSnackBar(context, formatErrorMessage(error));
           if (mounted) {
             setState(() {
               submissionStatus = RequestStatus.UnknownException;
@@ -116,7 +137,10 @@ class _ComposeDiscussionReplyWidgetState
             denseHorizontal: true,
             child: ListView(
               children: <Widget>[
-                if (widget.targetPost != null) _buildQuotedTextWidget(context),
+                // Disables [targetPost] for editing text as it might be confused.
+                // ([initialText] already contains a quoted text.)
+                if (widget.targetPost != null && widget.initialText == null)
+                  _buildQuotedTextWidget(context),
                 if (widget.targetPost == null)
                   Padding(
                     padding: EdgeInsets.only(top: mediumOffset),

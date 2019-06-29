@@ -35,8 +35,9 @@ class BangumiDiscussionService {
   BangumiDiscussionService({@required this.cookieClient})
       : assert(cookieClient != null);
 
-  Future<GetDiscussionResponse> getRakuenTopics({@required GetDiscussionRequest getDiscussionRequest,
-    @required MuteSetting muteSetting}) async {
+  Future<GetDiscussionResponse> getRakuenTopics(
+      {@required GetDiscussionRequest getDiscussionRequest,
+        @required MuteSetting muteSetting}) async {
     assert(getDiscussionRequest.discussionType == DiscussionType.Rakuen);
     assert(getDiscussionRequest.discussionFilter is RakuenTopicFilter);
 
@@ -264,7 +265,6 @@ class BangumiDiscussionService {
       'gh': await cookieClient.getXsrfToken(),
     };
 
-
     final response = await cookieClient.dio.get(
       url,
       queryParameters: queryParameters,
@@ -278,5 +278,31 @@ class BangumiDiscussionService {
     if (!isBangumiWebPageOkResponse(decodedResponseBody)) {
       throw GeneralUnknownException('删除回复失败');
     }
+  }
+
+  static urlForEditOrGetReply({
+    @required int replyId,
+    @required ThreadType threadType,
+  }) {
+    String url;
+    switch (threadType) {
+      case ThreadType.Blog:
+        url = '/blog/reply/edit/$replyId';
+        break;
+      case ThreadType.Group:
+        url = '/group/reply/$replyId/edit';
+        break;
+      case ThreadType.SubjectTopic:
+        url = '/subject/reply/$replyId/edit';
+        break;
+      case ThreadType.Episode:
+      default:
+        if (threadType != ThreadType.Episode) {
+          throw ArgumentError('$threadType must be ${ThreadType.Episode}');
+        }
+        url = '/subject/ep/edit_reply/$replyId';
+        break;
+    }
+    return url;
   }
 }

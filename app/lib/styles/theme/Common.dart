@@ -41,6 +41,13 @@ TextStyle defaultCaptionText(BuildContext context) {
   return Theme.of(context).textTheme.caption;
 }
 
+Color defaultCaptionTextColorOrFallback(BuildContext context) {
+  if (context != null) {
+    return defaultCaptionText(context).color;
+  }
+  return Colors.black54;
+}
+
 /// A caption text with a higher opacity.
 TextStyle captionTextWithHigherOpacity(BuildContext context,
     [double scale = 1.25]) {

@@ -72,10 +72,26 @@ class CreateReplyRequestAction {
   CreateReplyRequestAction({
     @required this.threadId,
     @required this.threadType,
-
     @required this.reply,
-    @required this.context,
+    this.context,
     this.targetPost,
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
+}
+
+class DeleteReplyRequestAction {
+  final int threadId;
+  final int replyId;
+  final ThreadType threadType;
+  final Color captionTextColor;
+
+  final Completer completer;
+
+  DeleteReplyRequestAction({
+    @required this.threadId,
+    @required this.replyId,
+    @required this.threadType,
+    @required this.captionTextColor,
     Completer completer,
   }) : this.completer = completer ?? Completer();
 }

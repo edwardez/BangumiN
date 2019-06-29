@@ -3,12 +3,15 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/GetThreadRequest.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/ComposeDiscussionReplyWidget.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
@@ -24,6 +27,7 @@ import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/ExpandableText.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
 /// A single discussion thread.
@@ -192,6 +196,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
               parentBangumiContentType: parentBangumiContentType,
               threadId: thread.id,
               showSpoiler: showSpoiler,
+              onDeletePost: (Post post) {
+                vm.deleteReply(context, post.id);
+              },
+              appUsername: vm.username,
             ));
           }
 
@@ -262,7 +270,11 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
 class _ViewModel {
   final Future<void> Function(BuildContext context) getThread;
 
+  final void Function(BuildContext context, int replyId) deleteReply;
+
   final BangumiThread thread;
+
+  final String username;
 
   factory _ViewModel.fromStore(
       Store<AppState> store, GetThreadRequest request) {
@@ -273,6 +285,26 @@ class _ViewModel {
       );
       store.dispatch(action);
       return action.completer.future;
+    }
+
+    void _deleteReply(BuildContext context, int replyId) async {
+      final action = DeleteReplyRequestAction(
+        threadType: request.threadType,
+        replyId: replyId,
+        threadId: request.id,
+        captionTextColor: defaultCaptionTextColorOrFallback(context),
+      );
+      showTextOnSnackBar(context, '已提交删除回复的请求',
+          duration: shortSnackBarDisplayDuration);
+
+      store.dispatch(action);
+      try {
+        await action.completer.future;
+        showTextOnSnackBar(context, '删除成功');
+      } catch (error, stack) {
+        showTextOnSnackBar(
+            context, formatErrorMessage(error, fallbackErrorMessage: '删除出错'));
+      }
     }
 
     BangumiThread thread;
@@ -290,13 +322,17 @@ class _ViewModel {
 
     return _ViewModel(
       getThread: _getThread,
+      deleteReply: _deleteReply,
       thread: thread,
+      username: store.state.currentAuthenticatedUserBasicInfo.username,
     );
   }
 
   const _ViewModel({
     @required this.getThread,
+    @required this.deleteReply,
     @required this.thread,
+    @required this.username,
   });
 
   @override
@@ -304,8 +340,9 @@ class _ViewModel {
       identical(this, other) ||
       other is _ViewModel &&
           runtimeType == other.runtimeType &&
+          username == other.username &&
           thread == other.thread;
 
   @override
-  int get hashCode => thread.hashCode;
+  int get hashCode => hash2(thread, username);
 }

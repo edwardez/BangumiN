@@ -1,4 +1,5 @@
 import 'package:munin/config/application.dart';
+import 'package:quiver/time.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
 final bangumiNonCdnHostUri =
@@ -25,3 +26,6 @@ const String dialogConfirmation = '好的';
 const String hasSuccessfullyUpdatedCollection = '收藏更新成功';
 
 final double avatarSize = 48.0;
+
+const Duration shortSnackBarDisplayDuration = aSecond;
+const Duration snackBarDisplayDuration = Duration(milliseconds: 4000);

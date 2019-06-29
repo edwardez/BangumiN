@@ -17,13 +17,17 @@ List<Epic<AppState>> createDiscussionEpics(
   final getGroupThreadEpic =
       _createGetGroupThreadEpic(bangumiDiscussionService);
 
-  final createCreateReplyRequestEpic =
+  final createReplyRequestEpic =
   _createCreateReplyRequestEpic(bangumiDiscussionService);
+
+  final deleteReplyRequestEpic =
+  _createDeleteReplyRequestEpic(bangumiDiscussionService);
 
   return [
     getDiscussionEpic,
     getGroupThreadEpic,
-    createCreateReplyRequestEpic,
+    createReplyRequestEpic,
+    deleteReplyRequestEpic,
   ];
 }
 
@@ -129,15 +133,14 @@ Stream<dynamic> _createReplyRequestEpic(EpicStore<AppState> store,
         threadType: action.threadType,
         targetPost: action.targetPost,
         threadId: action.threadId,
-        author: store.state.currentAuthenticatedUserBasicInfo
-    );
+        author: store.state.currentAuthenticatedUserBasicInfo);
 
     final getThreadRequestAction = GetThreadRequestAction(
       request: GetThreadRequest((b) =>
       b
         ..threadType = action.threadType
         ..id = action.threadId),
-      captionTextColor: defaultCaptionText(action.context).color,
+      captionTextColor: defaultCaptionTextColorOrFallback(action.context),
     );
 
     yield getThreadRequestAction;
@@ -163,5 +166,48 @@ Epic<AppState> _createCreateReplyRequestEpic(
         .ofType(TypeToken<CreateReplyRequestAction>())
         .concatMap((action) =>
         _createReplyRequestEpic(store, bangumiDiscussionService, action));
+  };
+}
+
+Stream<dynamic> _deleteRequestEpic(EpicStore<AppState> store,
+    BangumiDiscussionService bangumiDiscussionService,
+    DeleteReplyRequestAction action) async* {
+  try {
+    await bangumiDiscussionService.deleteReply(
+      replyId: action.replyId,
+      threadType: action.threadType,
+    );
+
+    final getThreadRequestAction = GetThreadRequestAction(
+      request: GetThreadRequest((b) =>
+      b
+        ..threadType = action.threadType
+        ..id = action.threadId),
+      captionTextColor: action.captionTextColor,
+    );
+
+    yield getThreadRequestAction;
+
+    await getThreadRequestAction.completer.future;
+    action.completer.complete();
+  } catch (error, stack) {
+    completeWithErrorAndReport(
+      error,
+      action.completer,
+      stack: stack,
+    );
+  } finally {
+    // Might need to change to complete error?
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createDeleteReplyRequestEpic(
+    BangumiDiscussionService bangumiDiscussionService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<DeleteReplyRequestAction>())
+        .concatMap((action) =>
+        _deleteRequestEpic(store, bangumiDiscussionService, action));
   };
 }

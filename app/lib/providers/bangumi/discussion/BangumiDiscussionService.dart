@@ -233,4 +233,50 @@ class BangumiDiscussionService {
       throw GeneralUnknownException('发表回复失败');
     }
   }
+
+  /// Removes a reply on bangumi.
+  Future<void> deleteReply({
+    @required int replyId,
+    @required ThreadType threadType,
+  }) async {
+    String url;
+    switch (threadType) {
+      case ThreadType.Blog:
+        url = '/erase/reply/blog/$replyId';
+        break;
+      case ThreadType.Group:
+        url = '/erase/group/reply/$replyId';
+        break;
+      case ThreadType.SubjectTopic:
+        url = '/erase/subject/reply/$replyId';
+        break;
+      case ThreadType.Episode:
+      default:
+        if (threadType != ThreadType.Episode) {
+          throw ArgumentError('$threadType must be ${ThreadType.Episode}');
+        }
+        url = '/erase/reply/ep/$replyId';
+        break;
+    }
+
+    Map<String, String> queryParameters = {
+      'ajax': '1',
+      'gh': await cookieClient.getXsrfToken(),
+    };
+
+
+    final response = await cookieClient.dio.get(
+      url,
+      queryParameters: queryParameters,
+      options: Dio.Options(
+        contentType: ExtraContentType.xWwwFormUrlencoded,
+      ),
+    );
+
+    final decodedResponseBody = jsonDecode(response.data);
+
+    if (!isBangumiWebPageOkResponse(decodedResponseBody)) {
+      throw GeneralUnknownException('删除回复失败');
+    }
+  }
 }

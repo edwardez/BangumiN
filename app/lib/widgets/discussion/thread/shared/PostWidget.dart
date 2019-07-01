@@ -10,7 +10,7 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/discussion/common/ComposeDiscussionReplyWidget.dart';
+import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/shared/CopyPostContent.dart';
 import 'package:munin/widgets/discussion/thread/shared/UserWithPostContent.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
@@ -182,7 +182,7 @@ class PostWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ComposeDiscussionReplyWidget.forCreateReply(
+                      DiscussionReplyWidgetComposer.forCreateReply(
                         threadType: ThreadType.fromBangumiContent(
                             parentBangumiContentType),
                         targetPost: post,

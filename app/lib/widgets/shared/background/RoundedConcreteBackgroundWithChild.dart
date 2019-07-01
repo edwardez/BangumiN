@@ -6,8 +6,8 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 class RoundedConcreteBackgroundWithChild extends StatelessWidget {
   final Widget child;
 
-  const RoundedConcreteBackgroundWithChild(
-    this.child, {
+  const RoundedConcreteBackgroundWithChild({
+    @required this.child,
     Key key,
   }) : super(key: key);
 

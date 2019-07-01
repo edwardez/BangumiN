@@ -27,6 +27,10 @@ String firstNChars(String input,
     return trailingOverflowText.substring(0, firstN);
   }
 
+  if (firstN >= input.length) {
+    return input;
+  }
+
   int firstNLengthExcludeTrailing = firstN - trailingOverflowText.length;
   return input.substring(0, min(input.length, firstNLengthExcludeTrailing)) +
       trailingOverflowText;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/MonoFavoriteSingle.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 // currently person(real) and character(fictional) shares exactly same code, we call them 'mono'(japanese romaji) so a common widget is created
@@ -20,7 +20,7 @@ class MonoFavoriteSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        UserListTile.fromUser(
+        UserActionTile.fromUser(
           user: monoFavoriteSingle.user,
           trailing: buildTrailingWidget(monoFavoriteSingle, onDeleteFeed),
         ),

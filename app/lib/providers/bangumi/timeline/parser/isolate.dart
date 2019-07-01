@@ -2,8 +2,11 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/models/bangumi/timeline/message/FullPublicMessage.dart';
+import 'package:munin/providers/bangumi/timeline/parser/FullPublicMessageParser.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
 GetTimelineParsedResponse processTimelineFeeds(
@@ -16,6 +19,25 @@ GetTimelineParsedResponse processTimelineFeeds(
     timelineSource: message.timelineSource,
     userInfo: message.userInfo,
   );
+}
+
+FullPublicMessage processFullPublicMessage(
+    ParseFullPublicMessageMessage message,) {
+  return FullPublicMessageParser(mutedUsers: message.mutedUsers)
+      .processReplies(message.html, message.publicMessageNormal);
+}
+
+class ParseFullPublicMessageMessage {
+  final String html;
+
+  final PublicMessageNormal publicMessageNormal;
+
+  final BuiltMap<String, MutedUser> mutedUsers;
+
+  ParseFullPublicMessageMessage(this.html, {
+    @required this.publicMessageNormal,
+    @required this.mutedUsers,
+  });
 }
 
 class ParseTimelineFeedsMessage {

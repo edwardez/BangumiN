@@ -13,7 +13,7 @@ import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/discussion/common/ComposeDiscussionReplyWidget.dart';
+import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
@@ -237,7 +237,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ComposeDiscussionReplyWidget.forCreateReply(
+                            DiscussionReplyWidgetComposer.forCreateReply(
                               threadType: ThreadType.fromBangumiContent(
                                   parentBangumiContentType),
                               threadId: vm.thread.id,

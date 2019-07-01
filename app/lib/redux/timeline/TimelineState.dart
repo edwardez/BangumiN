@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/message/FullPublicMessage.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -13,11 +14,16 @@ abstract class TimelineState
     implements Built<TimelineState, TimelineStateBuilder> {
   BuiltMap<GetTimelineRequest, FeedChunks> get timeline;
 
+
+  BuiltMap<int, FullPublicMessage> get fullPublicMessages;
+
   TimelineState._();
 
   factory TimelineState([updates(TimelineStateBuilder b)]) =>
       _$TimelineState((b) => b
         ..timeline.replace(BuiltMap<GetTimelineRequest, FeedChunks>())
+        ..fullPublicMessages.replace(
+            BuiltMap<int, BuiltList<FullPublicMessage>>())
         ..update(updates));
 
   String toJson() {

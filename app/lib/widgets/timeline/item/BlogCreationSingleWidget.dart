@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 
 class BlogCreationSingleWidget extends StatelessWidget {
   final BlogCreationSingle blogCreationSingle;
@@ -16,7 +16,7 @@ class BlogCreationSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        UserListTile.fromUser(
+        UserActionTile.fromUser(
           user: blogCreationSingle.user,
           trailing: buildTrailingWidget(blogCreationSingle, onDeleteFeed),
         ),

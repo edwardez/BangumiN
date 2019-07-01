@@ -3,9 +3,9 @@ import 'package:munin/models/bangumi/timeline/common/FeedMetaInfo.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/text/ListTileSubtitleWidget.dart';
 
-/// a commonly-used user list tile
+/// A commonly-used tile that displays user's name, its action, time and more.
 /// optionally there is a score parameter which follows the actionName in subtitle,
-class UserListTile extends StatelessWidget {
+class UserActionTile extends StatelessWidget {
   final String nickName;
   final String actionName;
   final int updatedAt;
@@ -22,7 +22,7 @@ class UserListTile extends StatelessWidget {
   final int titleMaxLines;
   final double score;
 
-  UserListTile({
+  UserActionTile({
     Key key,
     @required this.nickName,
     @required this.actionName,
@@ -34,7 +34,7 @@ class UserListTile extends StatelessWidget {
     this.trailing,
   });
 
-  UserListTile.fromUser({
+  UserActionTile.fromUser({
     Key key,
     FeedMetaInfo user,
     this.titleMaxLines = 1,
@@ -49,35 +49,37 @@ class UserListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                child: Text(
-                  nickName,
-                  maxLines: titleMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.subhead,
-                ),
-                fit: FlexFit.tight,
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                nickName,
+                maxLines: titleMaxLines,
+                overflow: TextOverflow.ellipsis,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subhead,
               ),
-            ]..addAll(trailing == null ? [] : [trailing]),
-          ),
-          ListTileSubtitleWidget(
-            actionName: actionName,
-            updatedAt: updatedAt,
-            score: score,
+              fit: FlexFit.tight,
+            ),
+          ]
+            ..addAll(trailing == null ? [] : [trailing]),
+        ),
+        ListTileSubtitleWidget(
+          actionName: actionName,
+          updatedAt: updatedAt,
+          score: score,
 
-            /// [updatedAt] on timeline is parsed by relative time on bangumi WebPage
-            /// timeline, thus using absolute time might results in incorrect time display
-            timeDisplayFormat: timeDisplayFormat,
-            formatAbsoluteTimeAs: formatAbsoluteTimeAs,
-          )
-        ],
-      ),
+          /// [updatedAt] on timeline is parsed by relative time on bangumi WebPage
+          /// timeline, thus using absolute time might results in incorrect time display
+          timeDisplayFormat: timeDisplayFormat,
+          formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+        )
+      ],
     );
   }
 }

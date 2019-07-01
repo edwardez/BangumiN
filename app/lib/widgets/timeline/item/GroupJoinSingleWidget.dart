@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/GroupJoinSingle.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 class GroupJoinSingleWidget extends StatelessWidget {
@@ -19,7 +19,7 @@ class GroupJoinSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        UserListTile.fromUser(
+        UserActionTile.fromUser(
           user: groupJoinSingle.user,
           trailing: buildTrailingWidget(groupJoinSingle, onDeleteFeed),
         ),

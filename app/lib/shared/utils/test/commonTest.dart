@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('firstNChars', () {
     test('Adds trailing string.', () {
-      expect(firstNChars('12345', 6, trailingOverflowText: '...'), '123...');
+      expect(firstNChars('12345', 4, trailingOverflowText: '...'), '1...');
     });
 
     test(
@@ -12,5 +12,12 @@ void main() {
         () {
       expect(firstNChars('12345', 2, trailingOverflowText: '...'), '..');
     });
+
+    test(
+        'Skips stripping input if firstN is longer than input',
+            () {
+          expect(
+              firstNChars('12345', 100, trailingOverflowText: '...'), '12345');
+        });
   });
 }

@@ -99,6 +99,8 @@ import 'package:munin/models/bangumi/timeline/common/Mono.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/models/bangumi/timeline/message/FullPublicMessage.dart';
+import 'package:munin/models/bangumi/timeline/message/PublicMessageReply.dart';
 import 'package:munin/models/bangumi/user/Relationship.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/collection/full/CollectionOnUserList.dart';
@@ -168,6 +170,8 @@ part 'serializers.g.dart';
   HyperImage,
   FeedMetaInfo,
   FeedChunks,
+  FullPublicMessage,
+  PublicMessageReply,
 
   /// Subject
   RequestStatus,

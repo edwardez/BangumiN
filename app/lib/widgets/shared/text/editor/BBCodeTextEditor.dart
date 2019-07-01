@@ -3,22 +3,27 @@ import 'dart:math' show max, min;
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/button/RoundedInkWell.dart';
+import 'package:munin/widgets/shared/text/editor/common.dart';
 import 'package:munin/widgets/shared/text/editor/showBangumiStickersBottomSheet.dart';
 import 'package:munin/widgets/shared/text/editor/sticker/BangumiSticker.dart';
 import 'package:munin/widgets/shared/text/editor/sticker/utils.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class BBCodeTextEditor extends StatefulWidget {
+  /// The external [TextEditingController].
+  /// It's the responsibility of the controller provider to dispose it.
   final TextEditingController messageController;
 
-  final String labelText;
-  final String hintText;
+  final InputDecoration decoration;
 
   const BBCodeTextEditor({
     Key key,
     this.messageController,
-    this.labelText = '有什么想说的？',
-    this.hintText = '',
+    this.decoration = const InputDecoration(
+      labelText: '有什么想说的？',
+      hintText: '',
+      border: OutlineInputBorder(),
+    ),
   }) : super(key: key);
 
   @override
@@ -37,11 +42,6 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
     messageController ??= TextEditingController(text: '');
   }
 
-  @override
-  void dispose() {
-    messageController.dispose();
-    super.dispose();
-  }
 
   /// Inserts a markup after [previousSelection.baseOffset], or if
   /// [previousSelection.baseOffset] is smaller than 0, inserts [text] at the
@@ -105,14 +105,10 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
         TextFormField(
           controller: messageController,
           autocorrect: false,
-          decoration: InputDecoration(
-            labelText: widget.labelText,
-            hintText: widget.hintText,
-            border: OutlineInputBorder(),
-          ),
+          decoration: widget.decoration,
           validator: (value) {},
-          minLines: 10,
-          maxLines: 100,
+          minLines: editorMinLines,
+          maxLines: editorMaxLines,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: baseOffset),

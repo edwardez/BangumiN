@@ -7,9 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
+import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/models/bangumi/timeline/message/FullPublicMessage.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 import 'package:munin/providers/bangumi/timeline/parser/isolate.dart';
@@ -117,6 +119,53 @@ class BangumiTimelineService {
       if (isBangumiWebPageOkResponse(decodedResponse)) {
         return;
       }
+    }
+
+    throw BangumiResponseIncomprehensibleException();
+  }
+
+  /// Gets public message replies on bangumi and combines with input
+  /// [publicMessageNormal] to build a [FullPublicMessage].
+  Future<FullPublicMessage> getFullPublicMessage(PublicMessageNormal message,
+      BuiltMap<String, MutedUser> mutedUsers,) async {
+    Response response = await cookieClient.dio.get(
+      '/user/${message.user.username}/timeline/status/${message.user
+          .feedId}?ajax=1',
+    );
+
+    if (response.statusCode == 200) {
+      return await compute(
+          processFullPublicMessage,
+          ParseFullPublicMessageMessage(
+            response.data,
+            publicMessageNormal: message,
+            mutedUsers: mutedUsers,
+          ));
+    }
+
+    throw BangumiResponseIncomprehensibleException();
+  }
+
+  Future<void> createPublicMessageReply(String reply,
+      int feedId,) async {
+    Map<String, String> formData = {
+      // Not sure what's this for, related to bangumi-hosted image upload?
+      'content': reply,
+      'formhash': await cookieClient.getXsrfToken(),
+      'submit': 'submit',
+    };
+
+
+    Response response = await cookieClient.dio.post(
+      '/timeline/$feedId/new_reply?ajax=1',
+      data: formData,
+      options: Options(
+        contentType: ExtraContentType.xWwwFormUrlencoded,
+      ),
+    );
+
+    if (isBangumiWebPageOkResponse(jsonDecode(response.data))) {
+      return;
     }
 
     throw BangumiResponseIncomprehensibleException();

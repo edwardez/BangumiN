@@ -59,19 +59,30 @@ class HorizontalCharacters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var buildCharactersListResult = _buildCharactersList(characters);
-    double textScaleFactor;
+    final buildCharactersListResult = _buildCharactersList(characters);
+    final systemScaleFactor = MediaQuery
+        .of(context)
+        .textScaleFactor;
+
+    double calculatedTextScaleFactor;
     if (buildCharactersListResult.noCharacterHasActor) {
-      textScaleFactor = characterNameMaxLines * textSpaceScaleBaseFactor;
+      calculatedTextScaleFactor =
+          characterNameMaxLines * textSpaceScaleBaseFactor;
     } else {
-      textScaleFactor = (characterNameMaxLines + actorNameMaxLines) *
+      calculatedTextScaleFactor = (characterNameMaxLines + actorNameMaxLines) *
           textSpaceScaleBaseFactor;
     }
+
+    calculatedTextScaleFactor *= systemScaleFactor;
 
     return HorizontalScrollableWidget(
       horizontalList: buildCharactersListResult.widgets,
       listHeight: imageHeight +
-          Theme.of(context).textTheme.caption.fontSize * textScaleFactor,
+          Theme
+              .of(context)
+              .textTheme
+              .caption
+              .fontSize * calculatedTextScaleFactor,
     );
   }
 }

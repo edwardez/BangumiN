@@ -55,6 +55,7 @@ class TimelinePreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[

@@ -10,6 +10,7 @@ class Logout extends StatelessWidget {
         builder: (innerContext) {
           return AlertDialog(
             title: Text('确定要退出登录吗？'),
+            content: Text('退出登录后所有设置和登陆信息都将被清空'),
             actions: <Widget>[
               FlatButton(
                 child: Text('不退出'),

@@ -98,7 +98,7 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
                           messageSubmissionStatus = RequestStatus.Loading;
                         });
                       }
-                      await vm.submitTimelineMessage(
+                      await vm.createTimelineMessage(
                           context, messageController.text);
                     } catch (error) {
                       if (mounted) {
@@ -142,22 +142,22 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
 
 class _ViewModel {
   final Future<void> Function(BuildContext context, String message)
-      submitTimelineMessage;
+  createTimelineMessage;
 
   factory _ViewModel.fromStore(Store<AppState> store) {
-    Future<void> _submitTimelineMessage(BuildContext context, String message) {
+    Future<void> _createTimelineMessage(BuildContext context, String message) {
       final action =
-          SubmitTimelineMessageAction(context: context, message: message);
+      CreateMainPublicMessageRequestAction(context: context, message: message);
       store.dispatch(action);
 
       return action.completer.future;
     }
 
-    return _ViewModel(submitTimelineMessage: _submitTimelineMessage);
+    return _ViewModel(createTimelineMessage: _createTimelineMessage);
   }
 
   _ViewModel({
-    @required this.submitTimelineMessage,
+    @required this.createTimelineMessage,
   });
 
   @override

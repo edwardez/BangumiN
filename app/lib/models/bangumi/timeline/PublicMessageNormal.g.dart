@@ -29,6 +29,9 @@ class _$PublicMessageNormalSerializer
       'contentHtml',
       serializers.serialize(object.contentHtml,
           specifiedType: const FullType(String)),
+      'contentText',
+      serializers.serialize(object.contentText,
+          specifiedType: const FullType(String)),
       'replyCount',
       serializers.serialize(object.replyCount,
           specifiedType: const FullType(int)),
@@ -36,12 +39,6 @@ class _$PublicMessageNormalSerializer
       serializers.serialize(object.bangumiContent,
           specifiedType: const FullType(BangumiContent)),
     ];
-    if (object.id != null) {
-      result
-        ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(String)));
-    }
     if (object.isFromMutedUser != null) {
       result
         ..add('isFromMutedUser')
@@ -70,13 +67,13 @@ class _$PublicMessageNormalSerializer
           result.contentHtml = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'contentText':
+          result.contentText = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'replyCount':
           result.replyCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
           break;
         case 'bangumiContent':
           result.bangumiContent = serializers.deserialize(value,
@@ -99,9 +96,9 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   @override
   final String contentHtml;
   @override
-  final int replyCount;
+  final String contentText;
   @override
-  final String id;
+  final int replyCount;
   @override
   final BangumiContent bangumiContent;
   @override
@@ -114,8 +111,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
   _$PublicMessageNormal._(
       {this.user,
       this.contentHtml,
+      this.contentText,
       this.replyCount,
-      this.id,
       this.bangumiContent,
       this.isFromMutedUser})
       : super._() {
@@ -124,6 +121,9 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     }
     if (contentHtml == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'contentHtml');
+    }
+    if (contentText == null) {
+      throw new BuiltValueNullFieldError('PublicMessageNormal', 'contentText');
     }
     if (replyCount == null) {
       throw new BuiltValueNullFieldError('PublicMessageNormal', 'replyCount');
@@ -149,8 +149,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     return other is PublicMessageNormal &&
         user == other.user &&
         contentHtml == other.contentHtml &&
+        contentText == other.contentText &&
         replyCount == other.replyCount &&
-        id == other.id &&
         bangumiContent == other.bangumiContent &&
         isFromMutedUser == other.isFromMutedUser;
   }
@@ -161,8 +161,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
         $jc(
             $jc(
                 $jc($jc($jc(0, user.hashCode), contentHtml.hashCode),
-                    replyCount.hashCode),
-                id.hashCode),
+                    contentText.hashCode),
+                replyCount.hashCode),
             bangumiContent.hashCode),
         isFromMutedUser.hashCode));
   }
@@ -172,8 +172,8 @@ class _$PublicMessageNormal extends PublicMessageNormal {
     return (newBuiltValueToStringHelper('PublicMessageNormal')
           ..add('user', user)
           ..add('contentHtml', contentHtml)
+          ..add('contentText', contentText)
           ..add('replyCount', replyCount)
-          ..add('id', id)
           ..add('bangumiContent', bangumiContent)
           ..add('isFromMutedUser', isFromMutedUser))
         .toString();
@@ -194,13 +194,13 @@ class PublicMessageNormalBuilder
   String get contentHtml => _$this._contentHtml;
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
+  String _contentText;
+  String get contentText => _$this._contentText;
+  set contentText(String contentText) => _$this._contentText = contentText;
+
   int _replyCount;
   int get replyCount => _$this._replyCount;
   set replyCount(int replyCount) => _$this._replyCount = replyCount;
-
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
 
   BangumiContent _bangumiContent;
   BangumiContent get bangumiContent => _$this._bangumiContent;
@@ -218,8 +218,8 @@ class PublicMessageNormalBuilder
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _contentHtml = _$v.contentHtml;
+      _contentText = _$v.contentText;
       _replyCount = _$v.replyCount;
-      _id = _$v.id;
       _bangumiContent = _$v.bangumiContent;
       _isFromMutedUser = _$v.isFromMutedUser;
       _$v = null;
@@ -248,8 +248,8 @@ class PublicMessageNormalBuilder
           new _$PublicMessageNormal._(
               user: user.build(),
               contentHtml: contentHtml,
+              contentText: contentText,
               replyCount: replyCount,
-              id: id,
               bangumiContent: bangumiContent,
               isFromMutedUser: isFromMutedUser);
     } catch (_) {

@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bbob_dart:
+    dependency: "direct main"
+    description:
+      name: bbob_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -189,7 +196,7 @@ packages:
       name: expandable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.3"
+    version: "3.0.0+1"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -412,6 +419,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.3+2"
+  markdown:
+    dependency: "direct main"
+    description:
+      name: markdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   matcher:
     dependency: transitive
     description:

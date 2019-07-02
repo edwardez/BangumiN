@@ -4,7 +4,7 @@ import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/subject/share/common.dart';
@@ -40,7 +40,7 @@ class SubjectReviewWidget extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(defaultIconSize));
     List<Widget> widgets = [];
-    widgets.add(UserListTile(
+    widgets.add(UserActionTile(
       nickName: review.metaInfo.nickName,
       updatedAt: review.metaInfo.updatedAt,
       trailing: trailing,

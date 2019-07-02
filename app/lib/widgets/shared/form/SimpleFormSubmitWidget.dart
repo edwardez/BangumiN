@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 
 class SimpleFormSubmitWidget extends StatelessWidget {
@@ -21,8 +22,11 @@ class SimpleFormSubmitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loadingStatus == RequestStatus.Loading) {
-      return AdaptiveProgressIndicator(
-        indicatorStyle: IndicatorStyle.Material,
+      return MuninPadding.noVerticalOffset(
+        denseHorizontal: true,
+        child: AdaptiveProgressIndicator(
+          indicatorStyle: IndicatorStyle.Material,
+        ),
       );
     }
 

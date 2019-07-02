@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 
 /// This currently applies to both book and tv shows(shares same route, layout, etc)
 class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
@@ -25,7 +25,7 @@ class ProgressUpdateEpisodeUntilWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        UserListTile.fromUser(
+        UserActionTile.fromUser(
           user: progressUpdateEpisodeUntil.user,
           trailing:
               buildTrailingWidget(progressUpdateEpisodeUntil, onDeleteFeed),

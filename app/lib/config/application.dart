@@ -29,6 +29,7 @@ import 'package:munin/redux/setting/SettingEpics.dart';
 import 'package:munin/redux/subject/SubjectEpics.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
 import 'package:munin/redux/user/UserEpics.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/injector/injector.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:quiver/core.dart';
@@ -164,10 +165,7 @@ abstract class Application {
         await bangumiOauthService.client.refreshCredentials();
       }
     } catch (exception, stack) {
-      FlutterError.reportError(FlutterErrorDetails(
-        exception: exception,
-        stack: stack,
-      ));
+      reportError(exception, stack: stack);
     }
   }
 

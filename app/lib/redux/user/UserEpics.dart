@@ -19,7 +19,7 @@ List<Epic<AppState>> createUserEpics(BangumiUserService bangumiUserService) {
   ];
 }
 
-Stream<dynamic> _getDiscussionEpic(BangumiUserService bangumiUserService,
+Stream<dynamic> _getUserPreviewEpic(BangumiUserService bangumiUserService,
     GetUserPreviewRequestAction action) async* {
   try {
     List results = await Future.wait([
@@ -48,7 +48,7 @@ Epic<AppState> _createGetUserPreviewEpic(
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<GetUserPreviewRequestAction>())
-        .switchMap((action) => _getDiscussionEpic(bangumiUserService, action));
+        .switchMap((action) => _getUserPreviewEpic(bangumiUserService, action));
   };
 }
 

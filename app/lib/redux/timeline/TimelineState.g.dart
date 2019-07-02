@@ -25,6 +25,10 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
             const FullType(GetTimelineRequest),
             const FullType(FeedChunks)
           ])),
+      'fullPublicMessages',
+      serializers.serialize(object.fullPublicMessages,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(FullPublicMessage)])),
     ];
 
     return result;
@@ -48,6 +52,13 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
                 const FullType(FeedChunks)
               ])) as BuiltMap);
           break;
+        case 'fullPublicMessages':
+          result.fullPublicMessages.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(FullPublicMessage)
+              ])) as BuiltMap);
+          break;
       }
     }
 
@@ -58,13 +69,18 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
 class _$TimelineState extends TimelineState {
   @override
   final BuiltMap<GetTimelineRequest, FeedChunks> timeline;
+  @override
+  final BuiltMap<int, FullPublicMessage> fullPublicMessages;
 
   factory _$TimelineState([void Function(TimelineStateBuilder) updates]) =>
       (new TimelineStateBuilder()..update(updates)).build();
 
-  _$TimelineState._({this.timeline}) : super._() {
+  _$TimelineState._({this.timeline, this.fullPublicMessages}) : super._() {
     if (timeline == null) {
       throw new BuiltValueNullFieldError('TimelineState', 'timeline');
+    }
+    if (fullPublicMessages == null) {
+      throw new BuiltValueNullFieldError('TimelineState', 'fullPublicMessages');
     }
   }
 
@@ -78,18 +94,21 @@ class _$TimelineState extends TimelineState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TimelineState && timeline == other.timeline;
+    return other is TimelineState &&
+        timeline == other.timeline &&
+        fullPublicMessages == other.fullPublicMessages;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, timeline.hashCode));
+    return $jf($jc($jc(0, timeline.hashCode), fullPublicMessages.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('TimelineState')
-          ..add('timeline', timeline))
+          ..add('timeline', timeline)
+          ..add('fullPublicMessages', fullPublicMessages))
         .toString();
   }
 }
@@ -104,11 +123,19 @@ class TimelineStateBuilder
   set timeline(MapBuilder<GetTimelineRequest, FeedChunks> timeline) =>
       _$this._timeline = timeline;
 
+  MapBuilder<int, FullPublicMessage> _fullPublicMessages;
+  MapBuilder<int, FullPublicMessage> get fullPublicMessages =>
+      _$this._fullPublicMessages ??= new MapBuilder<int, FullPublicMessage>();
+  set fullPublicMessages(
+          MapBuilder<int, FullPublicMessage> fullPublicMessages) =>
+      _$this._fullPublicMessages = fullPublicMessages;
+
   TimelineStateBuilder();
 
   TimelineStateBuilder get _$this {
     if (_$v != null) {
       _timeline = _$v.timeline?.toBuilder();
+      _fullPublicMessages = _$v.fullPublicMessages?.toBuilder();
       _$v = null;
     }
     return this;
@@ -131,12 +158,17 @@ class TimelineStateBuilder
   _$TimelineState build() {
     _$TimelineState _$result;
     try {
-      _$result = _$v ?? new _$TimelineState._(timeline: timeline.build());
+      _$result = _$v ??
+          new _$TimelineState._(
+              timeline: timeline.build(),
+              fullPublicMessages: fullPublicMessages.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'timeline';
         timeline.build();
+        _$failedField = 'fullPublicMessages';
+        fullPublicMessages.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'TimelineState', _$failedField, e.toString());

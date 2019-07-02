@@ -61,7 +61,9 @@ class HorizontalRelatedSubjects extends StatelessWidget {
       listHeight: imageHeight +
           Theme.of(context).textTheme.caption.fontSize *
               (titleMaxLines + subTitleMaxLines) *
-              textSpaceScaleBaseFactor,
+              textSpaceScaleBaseFactor * MediaQuery
+              .of(context)
+              .textScaleFactor,
     );
   }
 }

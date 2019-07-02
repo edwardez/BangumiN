@@ -2,19 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/timeline/BlogCreationSingle.dart';
-import 'package:munin/models/bangumi/timeline/CollectionUpdateSingle.dart';
-import 'package:munin/models/bangumi/timeline/FriendshipCreationSingle.dart';
-import 'package:munin/models/bangumi/timeline/GroupJoinSingle.dart';
-import 'package:munin/models/bangumi/timeline/IndexFavoriteSingle.dart';
-import 'package:munin/models/bangumi/timeline/MonoFavoriteSingle.dart';
-import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeSingle.dart';
-import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeUntil.dart';
-import 'package:munin/models/bangumi/timeline/PublicMessageNoReply.dart';
-import 'package:munin/models/bangumi/timeline/PublicMessageNormal.dart';
-import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
-import 'package:munin/models/bangumi/timeline/UnknownTimelineActivity.dart';
-import 'package:munin/models/bangumi/timeline/WikiCreationSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
@@ -25,36 +12,23 @@ import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
-import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
-import 'package:munin/widgets/timeline/item/BlogCreationSingleWidget.dart';
-import 'package:munin/widgets/timeline/item/CollectionUpdateSingle.dart';
-import 'package:munin/widgets/timeline/item/FriendshipCreationSingleWidget.dart';
-import 'package:munin/widgets/timeline/item/GroupJoinSingleWidget.dart';
-import 'package:munin/widgets/timeline/item/IndexFavoriteSingleWidget.dart';
-import 'package:munin/widgets/timeline/item/MonoFavoriteSingle.dart';
-import 'package:munin/widgets/timeline/item/ProgressUpdateEpisodeSingleWidget.dart';
-import 'package:munin/widgets/timeline/item/ProgressUpdateEpisodeUntilWidget.dart';
-import 'package:munin/widgets/timeline/item/PublicMessageNoReplyWidget.dart';
-import 'package:munin/widgets/timeline/item/PublicMessageNormalWidget.dart';
-import 'package:munin/widgets/timeline/item/StatusUpdateMultipleWidget.dart';
-import 'package:munin/widgets/timeline/item/UnknownTimelineActivityWidget.dart';
-import 'package:munin/widgets/timeline/item/WikiCreationSingleWidget.dart';
+import 'package:munin/widgets/timeline/item/common/Actions.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-/// [possibleFeedFilter] means
-typedef DeleteFeedCallback = void Function(
-    BuildContext context, TimelineFeed feed);
 
 class TimelineBodyWidget extends StatefulWidget {
   final Widget appBar;
   final GetTimelineRequest getTimelineRequest;
 
-  const TimelineBodyWidget(
-      {Key key, @required this.appBar, @required this.getTimelineRequest})
+  const TimelineBodyWidget({
+    Key key,
+    @required this.appBar,
+    @required this.getTimelineRequest,
+  })
       : assert(getTimelineRequest != null),
         assert(appBar != null),
         super(key: key);
@@ -70,76 +44,6 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
   GlobalKey<MuninRefreshState> _muninRefreshKey =
       GlobalKey<MuninRefreshState>();
 
-  Widget getWidgetByType(timelineItem, String appUsername,
-      DeleteFeedCallback dispatchDeleteAction) {
-    String feedUsername = timelineItem?.user?.username;
-
-    DeleteFeedCallback callback;
-
-    /// Sets callback to a non-null dispatchDeleteAction only if user is authorized
-    /// to do so
-    if (feedUsername != null && feedUsername == appUsername) {
-      callback = dispatchDeleteAction;
-    }
-
-    if (timelineItem is PublicMessageNoReply) {
-      return PublicMessageNoReplyWidget(
-        publicMessageNoReply: timelineItem,
-      );
-    }
-    if (timelineItem is PublicMessageNormal) {
-      return PublicMessageNormalWidget(
-          publicMessageNormal: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is BlogCreationSingle) {
-      return BlogCreationSingleWidget(
-          blogCreationSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is CollectionUpdateSingle) {
-      return CollectionUpdateSingleWidget(
-          collectionUpdateSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is FriendshipCreationSingle) {
-      return FriendshipCreationSingleWidget(
-          friendshipCreationSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is GroupJoinSingle) {
-      return GroupJoinSingleWidget(
-          groupJoinSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is IndexFavoriteSingle) {
-      return IndexFavoriteSingleWidget(
-          indexFavoriteSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is MonoFavoriteSingle) {
-      return MonoFavoriteSingleWidget(
-          monoFavoriteSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is ProgressUpdateEpisodeSingle) {
-      return ProgressUpdateEpisodeSingleWidget(
-          progressUpdateEpisodeSingle: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is ProgressUpdateEpisodeUntil) {
-      return ProgressUpdateEpisodeUntilWidget(
-          progressUpdateEpisodeUntil: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is StatusUpdateMultiple) {
-      return StatusUpdateMultipleWidget(
-          statusUpdateMultiple: timelineItem, onDeleteFeed: callback);
-    }
-    if (timelineItem is UnknownTimelineActivity) {
-      return UnknownTimelineActivityWidget(
-        unknownTimelineActivity: timelineItem,
-      );
-    }
-    if (timelineItem is WikiCreationSingle) {
-      return WikiCreationSingleWidget(
-          wikiCreationSingle: timelineItem, onDeleteFeed: callback);
-    }
-
-    return Container();
-  }
-
   IndexedWidgetBuilder _createItemBuilder(
       _ViewModel vm, bool hasFilterAllFeeds) {
     if (hasFilterAllFeeds) {
@@ -148,27 +52,11 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
       };
     }
 
-    FeedChunks feedChunks = vm.feedChunks;
     return (BuildContext context, int index) {
-      return MuninPadding.vertical3xOffset(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (feedChunks.getFeedAt(index)?.user?.username != null)
-              CachedCircleAvatar(
-                imageUrl: feedChunks.getFeedAt(index)?.user?.avatar?.medium,
-                navigateToUserRouteOnTap: true,
-                username: feedChunks.getFeedAt(index).user.username,
-              ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(left: 8),
-                child: getWidgetByType(
-                    feedChunks.getFeedAt(index), vm.appUsername, vm.deleteFeed),
-              ),
-            )
-          ],
-        ),
+      return FeedTile(
+        appUsername: vm.appUsername,
+        deleteFeedCallback: vm.deleteFeed,
+        feed: vm.feedChunks.getFeedAt(index),
       );
     };
   }
@@ -321,10 +209,7 @@ class _ViewModel {
     }
 
     void _deleteFeed(BuildContext context, TimelineFeed feed) {
-      store.dispatch(DeleteTimelineAction(
-          context: context,
-          feed: feed,
-          getTimelineRequest: getTimelineRequest));
+      deleteFeedHelper(store, context, getTimelineRequest, feed);
     }
 
     return _ViewModel(

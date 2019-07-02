@@ -45,6 +45,19 @@ class BangumiResponseIncomprehensibleException implements MuninException {
   }
 }
 
+class BangumiRefreshTokenInvalidException implements MuninException {
+  /// Message describing the problem. */
+  final message;
+
+  BangumiRefreshTokenInvalidException(
+      [this.message = 'Bangumi返回了一个和用户资料不匹配的refresh token']);
+
+  @override
+  String toString() {
+    return 'BangumiRefreshTokenInvalidException{message: $message}';
+  }
+}
+
 /// An General UnknownException
 class GeneralUnknownException implements MuninException {
   /// Message describing the problem. */

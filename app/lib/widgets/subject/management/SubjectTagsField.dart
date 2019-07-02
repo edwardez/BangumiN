@@ -7,7 +7,6 @@ import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/chips/StrokeChoiceChip.dart';
 import 'package:munin/widgets/subject/management/MuninExpandIcon.dart';
-import 'package:munin/widgets/subject/management/MuninExpandablePanel.dart';
 import 'package:quiver/strings.dart';
 
 enum TagsType {
@@ -46,7 +45,8 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
   LinkedHashSet<String> selectedTags = LinkedHashSet<String>();
 
   bool expanded = false;
-  ExpandableController expandableController = ExpandableController(false);
+  ExpandableController expandableController =
+  ExpandableController(initialExpanded: false);
   TextEditingController _newTagController = new TextEditingController();
 
   bool _hasReachedMaxTags() {
@@ -267,9 +267,8 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    children.add(MuninExpandablePanel(
-      initialExpanded: expanded,
-      expandableController: expandableController,
+    children.add(ExpandablePanel(
+      controller: expandableController,
       hasIcon: false,
       // Icon is right after text label(we add it manually)
       header: Center(

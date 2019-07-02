@@ -4,10 +4,10 @@ import 'package:munin/models/bangumi/timeline/StatusUpdateMultiple.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/models/bangumi/timeline/common/HyperImage.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:munin/widgets/timeline/item/common/WrappableHyperTextLinkList.dart';
 
 /// see [StatusUpdateMultiple] for further explanation
@@ -58,7 +58,7 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> statusUpdateMultipleWidgets = [
-      UserListTile.fromUser(
+      UserActionTile.fromUser(
         user: statusUpdateMultiple.user,
         trailing: buildTrailingWidget(statusUpdateMultiple, onDeleteFeed),
       ),

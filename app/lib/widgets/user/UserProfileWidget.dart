@@ -152,7 +152,7 @@ class UserProfileWidget extends StatelessWidget {
                             profile.relationships)),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: null,
                   ),
                 IconButton(
                   icon: Icon(AdaptiveIcons.moreActionsIconData),
@@ -311,7 +311,7 @@ class UserProfileWidget extends StatelessWidget {
           } else {
             return NestedScrollView(
               body: RequestInProgressIndicatorWidget(
-                showAppBar: false,
+                showOnlyRequestIndicatorBody: true,
                 retryCallback: (_) => vm.getUserProfile(),
                 requestStatusFuture: requestStatusFuture,
               ),

@@ -13,15 +13,13 @@ abstract class PublicMessageNormal
   /// due to the limitation of bangumi, this has to be a string
   FeedMetaInfo get user;
 
-  /// Content in raw html
+  /// Content in raw html.
   String get contentHtml;
 
-  int get replyCount;
+  /// Content in raw text, by parsing html.
+  String get contentText;
 
-  /// theoretically it should never be null, however to prevent unforeseen
-  /// data corruption we mark it as nullable
-  @nullable
-  String get id;
+  int get replyCount;
 
   PublicMessageNormal._();
 

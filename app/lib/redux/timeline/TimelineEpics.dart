@@ -16,6 +16,7 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
@@ -28,16 +29,23 @@ List<Epic<AppState>> createTimelineEpics(
   final getTimelineEpic =
       _createGetTimelineEpics(bangumiTimelineService, bangumiUserService);
 
-  final createDeleteTimelineEpic =
-      _createDeleteTimelineEpic(bangumiTimelineService);
+  final deleteTimelineEpic = _createDeleteTimelineEpic(bangumiTimelineService);
 
-  final createSubmitTimelineMessageEpic =
-      _createSubmitTimelineMessageEpic(bangumiTimelineService);
+  final createTimelineMessageEpic =
+  _createCreateTimelineMessageEpic(bangumiTimelineService);
+
+  final getFullPublicMessageEpic =
+  _createGetFullPublicMessageEpic(bangumiTimelineService);
+
+  final createPublicMessageReplyRequestEpic =
+  _createCreatePublicMessageReplyRequestEpic(bangumiTimelineService);
 
   return [
     getTimelineEpic,
-    createDeleteTimelineEpic,
-    createSubmitTimelineMessageEpic
+    deleteTimelineEpic,
+    createTimelineMessageEpic,
+    getFullPublicMessageEpic,
+    createPublicMessageReplyRequestEpic,
   ];
 }
 
@@ -226,13 +234,12 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
         feed: action.feed,
         getTimelineRequest: action.getTimelineRequest,
         appUsername: store.state.currentAuthenticatedUserBasicInfo.username);
-    Scaffold.of(action.context).showSnackBar(SnackBar(content: Text('时间线已删除')));
+    action.completer.complete();
   } catch (error, stack) {
-    yield HandleErrorAction(
-      context: action.context,
-      error: error,
-      stack: stack,
-    );
+    reportError(error, stack: stack);
+    action.completer.completeError(error);
+  } finally {
+    completeDanglingCompleter(action.completer);
   }
 }
 
@@ -248,7 +255,7 @@ Epic<AppState> _createDeleteTimelineEpic(
 
 Stream<dynamic> _submitTimelineMessage(
     BangumiTimelineService bangumiTimelineService,
-    SubmitTimelineMessageAction action,
+    CreateMainPublicMessageRequestAction action,
     EpicStore<AppState> store) async* {
   try {
     await bangumiTimelineService.submitTimelineMessage(action.message);
@@ -293,12 +300,70 @@ Stream<dynamic> _submitTimelineMessage(
   }
 }
 
-Epic<AppState> _createSubmitTimelineMessageEpic(
+Epic<AppState> _createCreateTimelineMessageEpic(
     BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
-        .ofType(TypeToken<SubmitTimelineMessageAction>())
+        .ofType(TypeToken<CreateMainPublicMessageRequestAction>())
         .concatMap((action) =>
             _submitTimelineMessage(bangumiTimelineService, action, store));
+  };
+}
+
+Stream<dynamic> _getFullPublicMessageEpic(
+    BangumiTimelineService bangumiTimelineService,
+    GetFullPublicMessageRequestAction action,
+    EpicStore<AppState> store) async* {
+  try {
+    final fullMessage = await bangumiTimelineService.getFullPublicMessage(
+        action.mainMessage, store.state.settingState.muteSetting.mutedUsers);
+
+    yield GetFullPublicMessageSuccessAction(fullPublicMessage: fullMessage);
+    action.completer.complete();
+  } catch (error, stack) {
+    action.completer.completeError(error, stack);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createGetFullPublicMessageEpic(
+    BangumiTimelineService bangumiTimelineService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<GetFullPublicMessageRequestAction>())
+        .concatMap((action) =>
+        _getFullPublicMessageEpic(bangumiTimelineService, action, store));
+  };
+}
+
+Stream<dynamic> _createPublicMessageReplyRequestEpic(
+    BangumiTimelineService bangumiTimelineService,
+    CreatePublicMessageReplyRequestAction action,
+    EpicStore<AppState> store) async* {
+  try {
+    await bangumiTimelineService.createPublicMessageReply(
+      action.reply,
+      action.mainMessage.user.feedId,
+    );
+
+    yield GetFullPublicMessageRequestAction(mainMessage: action.mainMessage);
+
+    action.completer.complete();
+  } catch (error, stack) {
+    action.completer.completeError(error, stack);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createCreatePublicMessageReplyRequestEpic(
+    BangumiTimelineService bangumiTimelineService) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<CreatePublicMessageReplyRequestAction>())
+        .concatMap((action) =>
+        _createPublicMessageReplyRequestEpic(
+            bangumiTimelineService, action, store));
   };
 }

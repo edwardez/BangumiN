@@ -36,12 +36,14 @@ class MoreActions extends StatelessWidget {
 
     if (parentBangumiContent == BangumiContent.Episode) {
       spoilerTypeText = '剧透';
+    } else {
+      spoilerTypeText = '文字';
     }
 
     if (allSpoilersVisible) {
-      return '隐藏本页所有$spoilerTypeText反白';
+      return '一键隐藏本页所有$spoilerTypeText反白';
     } else {
-      return '显示本页所有$spoilerTypeText反白';
+      return '一键显示本页所有$spoilerTypeText反白';
     }
   }
 

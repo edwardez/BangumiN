@@ -18,6 +18,9 @@ abstract class PostBuilder {
   String get contentHtml;
   set contentHtml(String contentHtml);
 
+  String get authorPostedText;
+  set authorPostedText(String authorPostedText);
+
   int get postTimeInMilliSeconds;
   set postTimeInMilliSeconds(int postTimeInMilliSeconds);
 

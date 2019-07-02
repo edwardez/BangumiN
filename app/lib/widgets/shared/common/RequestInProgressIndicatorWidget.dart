@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:munin/redux/app/AppActions.dart';
-import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
+import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
-import 'package:redux/redux.dart';
 
 /// A general-purpose widget to show a [CircularProgressIndicator] if the request
 /// is in Progress, and a button/text to let user retries their requests
@@ -24,10 +21,10 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
   final dynamic refreshAction;
 
   /// A message to show if the request is in progress
-  final String requestInProgressMessage;
+  final String requestInProgressMessageOnAppBar;
 
   /// A message to show if request ends up with an error
-  final String requestGeneralErrorMessage;
+  final String requestGeneralErrorMessageOnSnackBar;
 
   /// Message on the retry button, the button will let user retry previous request
   /// If [refreshAction] is set to null, retry button won't be built hence messages
@@ -37,8 +34,13 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
   /// a [loadingStatus] that can be used to build widget accordingly
   final RequestStatus loadingStatus;
 
-  /// If set to false, appbar inside this widget will be hide
-  final bool showAppBar;
+  /// When set to true, only body request indicator and retry widgets will be
+  /// shown, [RequestInProgressIndicatorWidget] won't be wrapped in a [Scaffold].
+  /// Might be useful if [RequestInProgressIndicatorWidget] needs to be placed
+  /// inside a [Scaffold].
+  ///
+  /// Default to false.
+  final bool showOnlyRequestIndicatorBody;
 
   final Future<void> requestStatusFuture;
 
@@ -47,9 +49,9 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
     this.loadingStatus,
     @required this.requestStatusFuture,
     this.refreshAction,
-    this.showAppBar = true,
-    this.requestInProgressMessage = '加载中',
-    this.requestGeneralErrorMessage = '加载出错',
+    this.showOnlyRequestIndicatorBody = false,
+    this.requestInProgressMessageOnAppBar = '加载中',
+    this.requestGeneralErrorMessageOnSnackBar = '加载出错',
     this.retryButtonMessage = '重试',
     this.retryCallback,
   }) : super(key: key);
@@ -64,8 +66,6 @@ class _RequestInProgressIndicatorWidgetState
   RequestStatus requestStatus = RequestStatus.Initial;
 
   StreamSubscription<void> requestStatusChangeSubscription;
-
-  _ViewModel viewModel;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _RequestInProgressIndicatorWidgetState
           context: context,
         );
         if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-          viewModel?.dispatchAction(OAuthLoginRequest(context));
+          _dispatchAction(OAuthLoginRequest(context));
         } else if (result == GeneralExceptionHandlerResult.Skipped) {
           return;
         }
@@ -130,89 +130,55 @@ class _RequestInProgressIndicatorWidgetState
     }
   }
 
+  _dispatchAction(dynamic action) {
+    findStore(context).dispatch(action);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, _ViewModel>(
-      converter: (Store store) => _ViewModel.fromStore(
-            store,
-          ),
-      distinct: true,
-      builder: (BuildContext context, _ViewModel vm) {
-        viewModel = vm;
-        Widget body;
-        AppBar appBar;
+    Widget body;
+    AppBar appBar;
 
-        if (requestStatus.isException) {
-          List<Widget> errorWidgets = [];
-          errorWidgets.add(Text(widget.requestGeneralErrorMessage));
+    if (requestStatus.isException) {
+      List<Widget> errorWidgets = [];
+      errorWidgets.add(Text(widget.requestGeneralErrorMessageOnSnackBar));
 
-          if (widget.retryCallback != null) {
-            errorWidgets.add(RaisedButton(
-              child: Text(widget.retryButtonMessage),
-              onPressed: () {
-                listenOnRequestFuture(widget.retryCallback(context));
-              },
-            ));
-          }
+      if (widget.retryCallback != null) {
+        errorWidgets.add(RaisedButton(
+          child: Text(widget.retryButtonMessage),
+          onPressed: () {
+            listenOnRequestFuture(widget.retryCallback(context));
+          },
+        ));
+      }
 
-          body = Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: errorWidgets,
-            ),
-          );
+      body = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: errorWidgets,
+        ),
+      );
 
-          if (widget.showAppBar) {
-            appBar = AppBar();
-          }
-        } else {
-          body = Center(
-            child: AdaptiveProgressIndicator(),
-          );
+      appBar = AppBar();
+    } else {
+      body = Center(
+        child: AdaptiveProgressIndicator(),
+      );
 
-          if (widget.showAppBar) {
-            appBar = AppBar(
-              title: Text(widget.requestInProgressMessage),
-            );
-          }
-        }
-
-        return ScaffoldWithRegularAppBar(
-          appBar: appBar,
-          safeAreaChild: body,
-        );
-      },
-    );
-  }
-}
-
-class _ViewModel {
-  final Function(dynamic refreshAction) dispatchAction;
-  final void Function(BuildContext context, Object error) handleError;
-
-  factory _ViewModel.fromStore(Store<AppState> store) {
-    _dispatchAction(dynamic action) {
-      store.dispatch(action);
+      appBar = AppBar(
+        title: Text(widget.requestInProgressMessageOnAppBar),
+      );
     }
 
-    return _ViewModel(
-      dispatchAction: _dispatchAction,
-      handleError: (BuildContext context, Object error) {
-        store.dispatch(HandleErrorAction(error: error, context: context));
-      },
+    if (widget.showOnlyRequestIndicatorBody) {
+      return body;
+    }
+
+    return ScaffoldWithRegularAppBar(
+      appBar: appBar,
+      safeAreaChild: body,
     );
   }
-
-  _ViewModel({
-    @required this.dispatchAction,
-    @required this.handleError,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ViewModel && runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => 0;
 }

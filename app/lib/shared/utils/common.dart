@@ -10,12 +10,30 @@ String upgradeToHttps(String link) {
 
 /// returns first N characters of a string, or
 /// the whole string if its length is less than N
-/// [fallbackValue] if [input] is null
-String firstNChars(String input, int firstN, {String fallbackValue}) {
+/// [fallbackValue] if [input] is null.
+/// [trailingOverflowText] will be added to the end of firstNChars
+/// and be counted as part of [firstN] chars, it's default to '...'
+String firstNChars(String input,
+    int firstN, {
+      String fallbackValue,
+      String trailingOverflowText = '...',
+    }) {
   assert(firstN >= 0);
   if (input == null) return fallbackValue;
 
-  return input.substring(0, min(input.length, firstN));
+// Handle cases where [firstN] is extremely small while [trailingOverflowText]
+  // is very large.
+  if (firstN - trailingOverflowText.length <= 0) {
+    return trailingOverflowText.substring(0, firstN);
+  }
+
+  if (firstN >= input.length) {
+    return input;
+  }
+
+  int firstNLengthExcludeTrailing = firstN - trailingOverflowText.length;
+  return input.substring(0, min(input.length, firstNLengthExcludeTrailing)) +
+      trailingOverflowText;
 }
 
 /// returns last N characters of a string, or

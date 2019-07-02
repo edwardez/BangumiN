@@ -31,6 +31,9 @@ class _$MainPostReplySerializer implements StructuredSerializer<MainPostReply> {
       'contentHtml',
       serializers.serialize(object.contentHtml,
           specifiedType: const FullType(String)),
+      'authorPostedText',
+      serializers.serialize(object.authorPostedText,
+          specifiedType: const FullType(String)),
       'postTimeInMilliSeconds',
       serializers.serialize(object.postTimeInMilliSeconds,
           specifiedType: const FullType(int)),
@@ -72,6 +75,10 @@ class _$MainPostReplySerializer implements StructuredSerializer<MainPostReply> {
           result.contentHtml = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'authorPostedText':
+          result.authorPostedText = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'postTimeInMilliSeconds':
           result.postTimeInMilliSeconds = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -97,6 +104,8 @@ class _$MainPostReply extends MainPostReply {
   @override
   final String contentHtml;
   @override
+  final String authorPostedText;
+  @override
   final int postTimeInMilliSeconds;
   @override
   final int mainSequentialNumber;
@@ -109,6 +118,7 @@ class _$MainPostReply extends MainPostReply {
       this.author,
       this.id,
       this.contentHtml,
+      this.authorPostedText,
       this.postTimeInMilliSeconds,
       this.mainSequentialNumber})
       : super._() {
@@ -123,6 +133,9 @@ class _$MainPostReply extends MainPostReply {
     }
     if (contentHtml == null) {
       throw new BuiltValueNullFieldError('MainPostReply', 'contentHtml');
+    }
+    if (authorPostedText == null) {
+      throw new BuiltValueNullFieldError('MainPostReply', 'authorPostedText');
     }
     if (postTimeInMilliSeconds == null) {
       throw new BuiltValueNullFieldError(
@@ -149,6 +162,7 @@ class _$MainPostReply extends MainPostReply {
         author == other.author &&
         id == other.id &&
         contentHtml == other.contentHtml &&
+        authorPostedText == other.authorPostedText &&
         postTimeInMilliSeconds == other.postTimeInMilliSeconds &&
         mainSequentialNumber == other.mainSequentialNumber;
   }
@@ -158,9 +172,11 @@ class _$MainPostReply extends MainPostReply {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, subReplies.hashCode), author.hashCode),
-                    id.hashCode),
-                contentHtml.hashCode),
+                $jc(
+                    $jc($jc($jc(0, subReplies.hashCode), author.hashCode),
+                        id.hashCode),
+                    contentHtml.hashCode),
+                authorPostedText.hashCode),
             postTimeInMilliSeconds.hashCode),
         mainSequentialNumber.hashCode));
   }
@@ -172,6 +188,7 @@ class _$MainPostReply extends MainPostReply {
           ..add('author', author)
           ..add('id', id)
           ..add('contentHtml', contentHtml)
+          ..add('authorPostedText', authorPostedText)
           ..add('postTimeInMilliSeconds', postTimeInMilliSeconds)
           ..add('mainSequentialNumber', mainSequentialNumber))
         .toString();
@@ -201,6 +218,11 @@ class MainPostReplyBuilder
   String get contentHtml => _$this._contentHtml;
   set contentHtml(String contentHtml) => _$this._contentHtml = contentHtml;
 
+  String _authorPostedText;
+  String get authorPostedText => _$this._authorPostedText;
+  set authorPostedText(String authorPostedText) =>
+      _$this._authorPostedText = authorPostedText;
+
   int _postTimeInMilliSeconds;
   int get postTimeInMilliSeconds => _$this._postTimeInMilliSeconds;
   set postTimeInMilliSeconds(int postTimeInMilliSeconds) =>
@@ -219,6 +241,7 @@ class MainPostReplyBuilder
       _author = _$v.author?.toBuilder();
       _id = _$v.id;
       _contentHtml = _$v.contentHtml;
+      _authorPostedText = _$v.authorPostedText;
       _postTimeInMilliSeconds = _$v.postTimeInMilliSeconds;
       _mainSequentialNumber = _$v.mainSequentialNumber;
       _$v = null;
@@ -249,6 +272,7 @@ class MainPostReplyBuilder
               author: author.build(),
               id: id,
               contentHtml: contentHtml,
+              authorPostedText: authorPostedText,
               postTimeInMilliSeconds: postTimeInMilliSeconds,
               mainSequentialNumber: mainSequentialNumber);
     } catch (_) {

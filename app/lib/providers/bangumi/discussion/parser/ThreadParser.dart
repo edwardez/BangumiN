@@ -21,6 +21,7 @@ import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/providers/bangumi/discussion/parser/common.dart';
+import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
@@ -66,7 +67,7 @@ class ThreadParser {
     );
   }
 
-  Post _parsePost(Element element, PostType postType) {
+  Post _parsePost(Element element, PostType postType, {int mainPostId}) {
     int id = extractFirstIntGroup(element.attributes['id'], defaultValue: null);
     PostTimeAndSeqNum postInfo =
         _parsePostTimeAndSeqNum(element.querySelector('.re_info').text);
@@ -76,6 +77,9 @@ class ThreadParser {
     String avatarImageUrl = imageUrlFromBackgroundImage(
         element.querySelector('.avatarNeue'),
         defaultImageSrc: null);
+    int userId = tryParseInt(
+        firstCapturedStringOrNull(userIdInAvatarGroupRegex, avatarImageUrl),
+        defaultValue: null);
     BangumiImage avatar;
     if (avatarImageUrl != null) {
       avatar = BangumiImage.fromImageUrl(
@@ -85,6 +89,7 @@ class ThreadParser {
     BangumiUserBasic user = BangumiUserBasic((b) => b
       ..nickname = userNickName
       ..username = username
+      ..id = userId
       ..avatar.replace(avatar));
 
     String contentHtmlSelector;
@@ -106,7 +111,34 @@ class ThreadParser {
         break;
     }
 
-    String contentHtml = element.querySelector(contentHtmlSelector).outerHtml;
+    final contentElement = element.querySelector(contentHtmlSelector);
+
+    String contentHtml = contentElement?.outerHtml ?? '';
+
+    String authorPostedText;
+    switch (postType) {
+      case PostType.SubPostReply:
+        final maybeQuotedElement = contentElement?.firstChild;
+
+        if (maybeQuotedElement != null &&
+            maybeQuotedElement is Element &&
+            maybeQuotedElement.classes.contains('quote')) {
+          authorPostedText =
+              nextNodeSibling(maybeQuotedElement)?.text?.trim() ?? '';
+        } else {
+          authorPostedText = maybeQuotedElement?.text?.trim() ?? '';
+        }
+
+        contentHtmlSelector = '.cmt_sub_content';
+        break;
+      case PostType.InitialGroupPost:
+      case PostType.InitialSubjectPost:
+      case PostType.InitialBlogPost:
+      case PostType.MainPostReply:
+      default:
+        authorPostedText = parseFragment(contentHtml).text.trim();
+        break;
+    }
 
     switch (postType) {
       case PostType.InitialGroupPost:
@@ -114,6 +146,7 @@ class ThreadParser {
       case PostType.InitialBlogPost:
         return OriginalPost((b) => b
           ..contentHtml = contentHtml
+          ..authorPostedText = authorPostedText
           ..author.replace(user)
           ..id = id
           ..mainSequentialNumber = postInfo.mainSequentialNumber
@@ -121,8 +154,10 @@ class ThreadParser {
       case PostType.SubPostReply:
         return SubPostReply((b) => b
           ..contentHtml = contentHtml
+          ..authorPostedText = authorPostedText
           ..author.replace(user)
           ..id = id
+          ..mainPostId = mainPostId
           ..mainSequentialNumber = postInfo.mainSequentialNumber
           ..subSequentialNumber = postInfo.subSequentialNumber
           ..postTimeInMilliSeconds = postInfo.postTimeInMilliSeconds);
@@ -131,20 +166,28 @@ class ThreadParser {
         assert(postType == PostType.MainPostReply);
         return MainPostReply((b) => b
           ..contentHtml = contentHtml
+          ..authorPostedText = authorPostedText
           ..author.replace(user)
           ..id = id
           ..mainSequentialNumber = postInfo.mainSequentialNumber
           ..postTimeInMilliSeconds = postInfo.postTimeInMilliSeconds
-          ..subReplies.replace(BuiltList<Post>.of(_parseSubReplies(element))));
+          ..subReplies.replace(BuiltList<Post>.of(_parseSubReplies(
+            element,
+            id,
+          ))));
     }
   }
 
-  List<Post> _parseSubReplies(Element replyElement) {
+  List<Post> _parseSubReplies(Element replyElement, int mainPostId) {
     List<Post> replies = [];
 
     List<Element> elements = replyElement.querySelectorAll('.sub_reply_bg');
     for (var element in elements) {
-      Post post = _parsePost(element, PostType.SubPostReply);
+      Post post = _parsePost(
+        element,
+        PostType.SubPostReply,
+        mainPostId: mainPostId,
+      );
       if (!mutedUsers.containsKey(post.author.username)) {
         replies.add(post);
       }

@@ -335,13 +335,11 @@ class TimelineParser {
     String replyCountStr = replyCountMatcher?.group(0);
     int replyCount = int.parse(replyCountStr ?? '0');
 
-    String id = parseHrefId(replyElement);
-
     return PublicMessageNormal((b) => b
       ..contentHtml = statusElement.outerHtml
+      ..contentText = statusElement.text
       ..user.replace(userInfo)
       ..replyCount = replyCount
-      ..id = id
       ..bangumiContent = BangumiContent.PublicMessage);
   }
 

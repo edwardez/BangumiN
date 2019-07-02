@@ -82,7 +82,7 @@ class WrappableText extends StatelessWidget {
         child: Text(
           text,
           maxLines: maxLines,
-          overflow: overflow,
+          overflow: maxLines == null ? null : overflow,
           style: textStyle ?? Theme.of(context).textTheme.body1,
         ),
       ),

@@ -7,7 +7,7 @@ class HorizontalScrollableWidget extends StatelessWidget {
 
   final ScrollPhysics physics;
 
-  HorizontalScrollableWidget({
+  const HorizontalScrollableWidget({
     Key key,
     @required this.horizontalList,
     @required this.listHeight,

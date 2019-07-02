@@ -56,10 +56,7 @@ Stream<dynamic> _handleErrorEpic(
 
     // Always reports errors in dev.
     if (inDev) {
-      FlutterError.reportError(FlutterErrorDetails(
-        exception: error,
-        stack: action.stack,
-      ));
+      reportError(error, stack: action.stack);
     }
 
     final result = await generalExceptionHandler(
@@ -74,10 +71,7 @@ Stream<dynamic> _handleErrorEpic(
 
     // Only reports unexpected errors in production.
     if (!inDev) {
-      FlutterError.reportError(FlutterErrorDetails(
-        exception: error,
-        stack: action.stack,
-      ));
+      reportError(error, stack: action.stack);
     }
 
     if (action.showErrorMessageSnackBar) {
@@ -86,10 +80,7 @@ Stream<dynamic> _handleErrorEpic(
       ));
     }
   } catch (error, stack) {
-    FlutterError.reportError(FlutterErrorDetails(
-      exception: error,
-      stack: action.stack,
-    ));
+    reportError(error, stack: stack);
   }
 }
 

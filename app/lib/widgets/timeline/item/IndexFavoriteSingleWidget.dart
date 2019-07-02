@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/IndexFavoriteSingle.dart';
-import 'package:munin/widgets/shared/common/UserListTile.dart';
+import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
+import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:munin/widgets/timeline/item/common/TimelineCommonListTile.dart';
 
 class IndexFavoriteSingleWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class IndexFavoriteSingleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        UserListTile.fromUser(
+        UserActionTile.fromUser(
           user: indexFavoriteSingle.user,
           trailing: buildTrailingWidget(indexFavoriteSingle, onDeleteFeed),
         ),

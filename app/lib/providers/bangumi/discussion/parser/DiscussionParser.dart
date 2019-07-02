@@ -3,7 +3,7 @@ import 'package:html/parser.dart' show parseFragment;
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
@@ -113,7 +113,8 @@ class DiscussionParser {
           discussionItemElement.querySelector('.row a[href*="/group/"]');
       String postedGroupId = parseHrefId(groupElement);
 
-      return Optional.of(GroupDiscussionPost((b) => b
+      return Optional.of(GroupDiscussionItem((b) =>
+      b
         ..id = itemId
         ..bangumiContent = contentType
         ..image.replace(image)
@@ -128,10 +129,10 @@ class DiscussionParser {
 
   /// Checks whether a [DiscussionItem] has been muted.
   bool _isMutedDiscussionItem(DiscussionItem item) {
-    if (item is! GroupDiscussionPost) {
+    if (item is! GroupDiscussionItem) {
       return false;
     }
-    final GroupDiscussionPost post = item;
+    final GroupDiscussionItem post = item;
 
     /// 1. Checks whether user muted the group
     bool isMutedGroup = muteSetting.mutedGroups.containsKey(post.postedGroupId);

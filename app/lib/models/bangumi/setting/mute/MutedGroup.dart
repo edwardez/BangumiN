@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'MutedGroup.g.dart';
@@ -19,11 +19,11 @@ abstract class MutedGroup implements Built<MutedGroup, MutedGroupBuilder> {
   @nullable
   BangumiImage get groupIcon;
 
-  factory MutedGroup.fromGroupDiscussionPost(
-      GroupDiscussionPost groupDiscussionPost) {
+  factory MutedGroup.fromGroupDiscussionItem(
+      GroupDiscussionItem groupDiscussionItem) {
     return MutedGroup((b) => b
-      ..groupNickname = groupDiscussionPost.subTitle
-      ..groupId = groupDiscussionPost.postedGroupId);
+      ..groupNickname = groupDiscussionItem.subTitle
+      ..groupId = groupDiscussionItem.postedGroupId);
   }
 
   factory MutedGroup([updates(MutedGroupBuilder b)]) =>

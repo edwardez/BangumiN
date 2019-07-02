@@ -14,7 +14,7 @@ import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/enums/DiscussionType.dart';
 import 'package:munin/models/bangumi/discussion/enums/RakuenFilter.dart';
 import 'package:munin/models/bangumi/discussion/enums/base.dart';
@@ -213,7 +213,7 @@ part 'serializers.g.dart';
 
   /// Discussion
   GeneralDiscussionItem,
-  GroupDiscussionPost,
+  GroupDiscussionItem,
   DiscussionType,
   DiscussionFilter,
   RakuenTopicFilter,

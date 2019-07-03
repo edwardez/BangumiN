@@ -108,6 +108,15 @@ class UserProfileWidget extends StatelessWidget {
                       launch(userProfileMainUrl, forceSafariVC: false);
                     },
                   ),
+                  ListTile(
+                    leading: Icon(OMIcons.timeline),
+                    title: Text('$goToForsetiPrompt查看统计数据'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      launch('https://${Application.environmentValue
+                          .forsetiMainHost}/user/$username/statistics');
+                    },
+                  ),
                   _buildMuteAction(outerContext, vm),
                 ],
               ),

@@ -57,6 +57,7 @@ abstract class Application {
   /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
   final bangumiNonCdnHost = 'bangumi.tv';
   final bangumiApiHost = 'api.bgm.tv';
+  final forsetiMainHost = 'bangumin.tv';
   final forsetiApiHost = 'api.bangumin.tv';
 
   EnvironmentType environmentType;

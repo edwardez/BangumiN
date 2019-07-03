@@ -73,7 +73,7 @@ class SettingHome extends StatelessWidget {
             ListTile(
               title: Text('反馈'),
               onTap: () {
-                launch('https://bgm.tv/group/bangumin',
+                launch('https://bangumin.app/help',
                     forceSafariVC: false, forceWebView: false);
               },
             ),

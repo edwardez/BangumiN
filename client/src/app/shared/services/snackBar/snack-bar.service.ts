@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MatSnackBar, MatSnackBarConfig, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {switchMap, take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';

@@ -5,7 +5,8 @@ import {RuntimeConstantsService} from '../../../../../shared/services/runtime-co
 import {environment} from '../../../../../../environments/environment';
 import {BangumiUser} from '../../../../../shared/models/BangumiUser';
 import {TranslateService} from '@ngx-translate/core';
-import {MatBottomSheet, MatMenuTrigger} from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatMenuTrigger } from '@angular/material/menu';
 import {DeviceWidth} from '../../../../../shared/enums/device-width.enum';
 import {ShareBottomSheetComponent} from '../share-bottom-sheet/share-bottom-sheet.component';
 

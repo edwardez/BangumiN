@@ -4,7 +4,7 @@ import {AuthenticationService, UserInfo} from '../../../shared/services/auth.ser
 import {Subject, throwError} from 'rxjs';
 import {CookieService} from 'ngx-cookie';
 import {catchError, finalize, map, switchMap, take, takeUntil} from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {StorageService} from '../../../shared/services/storage.service';
 import {TranslateService} from '@ngx-translate/core';
 import {SnackBarService} from '../../../shared/services/snackBar/snack-bar.service';

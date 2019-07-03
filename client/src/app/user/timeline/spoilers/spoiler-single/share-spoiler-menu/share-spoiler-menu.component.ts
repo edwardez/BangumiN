@@ -6,7 +6,7 @@ import {map, take} from 'rxjs/operators';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';
 // tslint:disable-next-line:max-line-length
 import {SpoilerDeletionConfirmationDialogComponent} from '../spoiler-deletion-confirmation-dialog/spoiler-deletion-confirmation-dialog.component';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 /**
  * Template is ahred with share-bottom-sheet.component since they're the same

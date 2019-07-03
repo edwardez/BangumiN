@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
 import {Observable, of} from 'rxjs';
-import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog} from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import {CopyEvent, ShareableStringGeneratorService} from '../../../../../shared/services/utils/shareable-string-generator.service';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';
 import {map, take} from 'rxjs/operators';

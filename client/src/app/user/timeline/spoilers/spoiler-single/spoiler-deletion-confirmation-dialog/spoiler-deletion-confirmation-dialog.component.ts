@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {SpoilerExisted} from '../../../../../shared/models/spoiler/spoiler-existed';
 import {BanguminSpoilerService} from '../../../../../shared/services/bangumin/bangumin-spoiler.service';
 import {AuthenticationService} from '../../../../../shared/services/auth.service';

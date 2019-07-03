@@ -68,6 +68,7 @@ import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectBaseWithCover.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectStatus.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
@@ -177,6 +178,7 @@ part 'serializers.g.dart';
   RequestStatus,
   BangumiSubject,
   SubjectType,
+  SubjectStatus,
   Count,
   Rating,
   BangumiImage,

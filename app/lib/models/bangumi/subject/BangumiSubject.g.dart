@@ -23,6 +23,9 @@ class _$BangumiSubjectSerializer
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(SubjectType)),
+      'subjectStatus',
+      serializers.serialize(object.subjectStatus,
+          specifiedType: const FullType(SubjectStatus)),
       'summary',
       serializers.serialize(object.summary,
           specifiedType: const FullType(String)),
@@ -137,6 +140,10 @@ class _$BangumiSubjectSerializer
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(SubjectType)) as SubjectType;
           break;
+        case 'subjectStatus':
+          result.subjectStatus = serializers.deserialize(value,
+              specifiedType: const FullType(SubjectStatus)) as SubjectStatus;
+          break;
         case 'subTypeName':
           result.subTypeName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -246,6 +253,8 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final SubjectType type;
   @override
+  final SubjectStatus subjectStatus;
+  @override
   final String subTypeName;
   @override
   final String summary;
@@ -291,6 +300,7 @@ class _$BangumiSubject extends BangumiSubject {
 
   _$BangumiSubject._(
       {this.type,
+      this.subjectStatus,
       this.subTypeName,
       this.summary,
       this.rating,
@@ -313,6 +323,9 @@ class _$BangumiSubject extends BangumiSubject {
       : super._() {
     if (type == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'type');
+    }
+    if (subjectStatus == null) {
+      throw new BuiltValueNullFieldError('BangumiSubject', 'subjectStatus');
     }
     if (summary == null) {
       throw new BuiltValueNullFieldError('BangumiSubject', 'summary');
@@ -368,6 +381,7 @@ class _$BangumiSubject extends BangumiSubject {
     if (identical(other, this)) return true;
     return other is BangumiSubject &&
         type == other.type &&
+        subjectStatus == other.subjectStatus &&
         subTypeName == other.subTypeName &&
         summary == other.summary &&
         rating == other.rating &&
@@ -410,7 +424,7 @@ class _$BangumiSubject extends BangumiSubject {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc(0, type.hashCode),
+                                                                            $jc($jc($jc(0, type.hashCode), subjectStatus.hashCode),
                                                                                 subTypeName.hashCode),
                                                                             summary.hashCode),
                                                                         rating.hashCode),
@@ -436,6 +450,7 @@ class _$BangumiSubject extends BangumiSubject {
   String toString() {
     return (newBuiltValueToStringHelper('BangumiSubject')
           ..add('type', type)
+          ..add('subjectStatus', subjectStatus)
           ..add('subTypeName', subTypeName)
           ..add('summary', summary)
           ..add('rating', rating)
@@ -469,6 +484,11 @@ class BangumiSubjectBuilder
   SubjectType _type;
   SubjectType get type => _$this._type;
   set type(SubjectType type) => _$this._type = type;
+
+  SubjectStatus _subjectStatus;
+  SubjectStatus get subjectStatus => _$this._subjectStatus;
+  set subjectStatus(SubjectStatus subjectStatus) =>
+      _$this._subjectStatus = subjectStatus;
 
   String _subTypeName;
   String get subTypeName => _$this._subTypeName;
@@ -583,6 +603,7 @@ class BangumiSubjectBuilder
   BangumiSubjectBuilder get _$this {
     if (_$v != null) {
       _type = _$v.type;
+      _subjectStatus = _$v.subjectStatus;
       _subTypeName = _$v.subTypeName;
       _summary = _$v.summary;
       _rating = _$v.rating?.toBuilder();
@@ -629,6 +650,7 @@ class BangumiSubjectBuilder
       _$result = _$v ??
           new _$BangumiSubject._(
               type: type,
+              subjectStatus: subjectStatus,
               subTypeName: subTypeName,
               summary: summary,
               rating: rating.build(),

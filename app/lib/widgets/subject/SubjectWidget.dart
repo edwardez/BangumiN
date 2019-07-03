@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectStatus.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
@@ -11,6 +12,7 @@ import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/appbar/AppbarWithLoadingIndicator.dart';
+import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/subject/common/SubjectCommonActions.dart';
@@ -60,8 +62,8 @@ class SubjectWidget extends StatelessWidget {
     );
   }
 
-  _buildAppBarMainTitle(BuildContext context, Future<void> requestStatusFuture,
-      SubjectType subjectType) {
+  Widget _buildAppBarMainTitle(BuildContext context,
+      Future<void> requestStatusFuture, SubjectType subjectType) {
     return WidgetWithLoadingIndicator(
       requestStatusFuture: requestStatusFuture,
       bottomStatusIndicator: Text(
@@ -72,11 +74,38 @@ class SubjectWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildLockedSubjectBanner(BuildContext context) {
+    return Card(
+      child: MuninPadding.vertical1xOffset(
+        child: Column(
+          children: <Widget>[
+            Text(
+              '条目已锁定',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .title
+                  .copyWith(color: Theme
+                  .of(context)
+                  .errorColor),
+            ),
+            Text(
+              '条目显示可能不正常，条目及相关收藏、讨论、关联等内容将会随时被移除。',
+            ),
+          ],
+        ),
+      ),
+      elevation: 2.0,
+    );
+  }
+
   Widget _buildSubjectMainPage(BuildContext context,
       Future<void> requestStatusFuture,
       BangumiSubject subject,
       PreferredSubjectInfoLanguage preferredSubjectInfoLanguage) {
     List<Widget> widgets = [
+      if (subject.subjectStatus == SubjectStatus.LockedForCollection)
+        _buildLockedSubjectBanner(context),
       SubjectCoverAndBasicInfo(
           subject: subject,
           preferredSubjectInfoLanguage: preferredSubjectInfoLanguage),
@@ -95,8 +124,8 @@ class SubjectWidget extends StatelessWidget {
     ];
 
     return ScrollViewWithSliverAppBar(
-      appBarMainTitle: _buildAppBarMainTitle(
-          context, requestStatusFuture, subject.type),
+      appBarMainTitle:
+      _buildAppBarMainTitle(context, requestStatusFuture, subject.type),
       appBarSecondaryTitle: Text(
           preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage)),
       changeAppBarTitleOnScroll: true,

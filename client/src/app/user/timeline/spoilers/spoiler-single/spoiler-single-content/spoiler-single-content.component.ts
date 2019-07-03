@@ -22,7 +22,7 @@ export class SpoilerSingleContentComponent implements OnInit {
   @Input()
   deviceWidth: DeviceWidth;
 
-  @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) matMenuTrigger: MatMenuTrigger;
 
   spoilerContentReceived: SpoilerExisted;
   spoilerHtml: string;

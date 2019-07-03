@@ -52,13 +52,13 @@ const routes: Routes = [
       },
       {
         path: 'statistics',
-        loadChildren: 'app/user/profile-statistics/profile-statistics.module#ProfileStatisticsModule'
+        loadChildren: () => import('app/user/profile-statistics/profile-statistics.module').then(m => m.ProfileStatisticsModule)
       },
 
       {
         path: 'timeline/spoilers',
         canActivate: [AppGuard],
-        loadChildren: 'app/user/timeline/spoilers/spoilers.module#SpoilersModule'
+        loadChildren: () => import('app/user/timeline/spoilers/spoilers.module').then(m => m.SpoilersModule)
       },
       {
         path: '**',
@@ -86,7 +86,7 @@ const routes: Routes = [
       },
       {
         path: 'statistics',
-        loadChildren: 'app/subject/subject-statistics/subject-statistics.module#SubjectStatisticsModule'
+        loadChildren: () => import('app/subject/subject-statistics/subject-statistics.module').then(m => m.SubjectStatisticsModule)
       },
       {
         path: '**',

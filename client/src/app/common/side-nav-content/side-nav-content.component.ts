@@ -23,7 +23,7 @@ export class SideNavContentComponent implements OnInit {
   @Input()
   currentDeviceWidth: DeviceWidth;
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
+  @ViewChild('sidenav', {static: true}) public sidenav: MatSidenav;
 
   constructor(private sidenavService: SidenavService,
               private navBarService: NavBarService,

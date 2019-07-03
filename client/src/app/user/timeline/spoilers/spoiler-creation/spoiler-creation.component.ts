@@ -87,10 +87,10 @@ export class SpoilerCreationComponent implements OnInit {
   spoilerForm: FormGroup;
   subjectSearchResult: Observable<SubjectBase[]>;
 
-  @ViewChild('subjectInput')
+  @ViewChild('subjectInput', {static: true})
   subjectInput: ElementRef;
 
-  @ViewChild(MatAutocompleteTrigger)
+  @ViewChild(MatAutocompleteTrigger, {static: true})
   matAutocompleteTrigger: MatAutocompleteTrigger;
 
   constructor(private authenticationService: AuthenticationService,

@@ -95,7 +95,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
       take(1),
     )
       .subscribe(spoilerCreationResult => {
-        if (spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
+        if (spoilerCreationResult && spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
           const createdAtStart = this.userSpoilers.length >= 1 ? +this.userSpoilers[0].createdAt + 1 : undefined;
           this.getSpoilersInfo(this.bangumiUser.id, false, createdAtStart,
             undefined);

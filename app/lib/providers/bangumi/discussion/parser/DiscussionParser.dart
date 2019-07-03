@@ -27,7 +27,7 @@ class DiscussionParser {
   final MuteSetting muteSetting;
 
   DiscussionParser(MuteSetting muteSetting)
-      : muteSetting = muteSetting.rebuild((b) => b);
+      : muteSetting = MuteSetting.fromJson(muteSetting.toJson());
 
   /// bangumi uses id to identify each discussion element and we can thus use
   /// this info to guess [BangumiContent]
@@ -155,7 +155,10 @@ class DiscussionParser {
     }
 
     /// 3. Checks whether user muted op
-    final mutedUser = muteSetting.mutedUsers.values.firstWhere(
+    final mutedUser = muteSetting.mutedUsers
+        .toMap()
+        .values
+        .firstWhere(
         (u) => u.userId == post.originalPosterUserId,
         orElse: () => null);
 

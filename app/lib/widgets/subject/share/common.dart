@@ -17,7 +17,7 @@ showMoreActionsForReview({
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  title: Text('分享这条评价'),
+                  title: Text('生成评价分享卡片'),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(

@@ -75,6 +75,7 @@ dev_dependencies:
   built_value_generator: ^6.5.0
   test: ^1.6.1
 
+#　Run `flutter pub run flutter_launcher_icons:main` to generate new icons.
 flutter_icons:
   android: true
   ios: true

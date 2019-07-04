@@ -237,13 +237,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
-  flutter_easyrefresh:
-    dependency: "direct main"
-    description:
-      name: flutter_easyrefresh
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.7"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:

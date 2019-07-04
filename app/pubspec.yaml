@@ -11,7 +11,7 @@ description: Flutter + BangumiN == Munin (a new Bangumi App)
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.1+4
+version: 0.1.0+1
 
 environment:
   sdk: ">=2.3.0-dev.0.5 <3.0.0"
@@ -30,7 +30,6 @@ dependencies:
   firebase_analytics: ^3.0.1
   firebase_crashlytics: ^0.0.4+3
   fluro: ^1.5.0
-  flutter_easyrefresh: ^1.2.7
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.1
   flutter_svg: ^0.12.4

@@ -92,7 +92,7 @@ Function generateOnTapCallbackForBangumiContent({
 
   if (webPageUrl != null) {
     return () {
-      launch(webPageUrl, forceSafariVC: false);
+      launch(webPageUrl);
     };
   }
 

@@ -105,7 +105,7 @@ class UserProfileWidget extends StatelessWidget {
                     title: Text(checkWebVersionPrompt),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch(userProfileMainUrl, forceSafariVC: false);
+                      launch(userProfileMainUrl);
                     },
                   ),
                   ListTile(
@@ -222,7 +222,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/mono', forceSafariVC: false);
+          launch('$userProfileMainUrl/mono');
         },
       ),
       Divider(),
@@ -243,7 +243,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/friends', forceSafariVC: false);
+          launch('$userProfileMainUrl/friends');
         },
       ),
       Divider(),
@@ -264,7 +264,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/index', forceSafariVC: false);
+          launch('$userProfileMainUrl/index');
         },
       ),
       Divider(),
@@ -285,7 +285,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/groups', forceSafariVC: false);
+          launch('$userProfileMainUrl/groups');
         },
       ),
     ]);

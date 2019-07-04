@@ -18,8 +18,7 @@ void _showSubjectModalBottomSheet(
                   leading: Icon(Icons.open_in_browser),
                   title: Text('在浏览器中打开'),
                   onTap: () {
-                    launch(subject.pageUrlFromCalculation,
-                        forceSafariVC: false);
+                    launch(subject.pageUrlFromCalculation);
                     Navigator.of(context).pop();
                   },
                 ),

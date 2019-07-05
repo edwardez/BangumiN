@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionResponse.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/redux/app/AppActions.dart';
@@ -87,11 +87,11 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
             return DiscussionItemWidget(
               discussionItem: vm.rakuenTopics.discussionItemsAsList[index],
               onMute: (DiscussionItem item) {
-                vm.muteGroup(MutedGroup.fromGroupDiscussionPost(
-                    item as GroupDiscussionPost));
+                vm.muteGroup(MutedGroup.fromGroupDiscussionItem(
+                    item as GroupDiscussionItem));
               },
               onUnmute: (DiscussionItem item) {
-                vm.unMuteGroup((item as GroupDiscussionPost).postedGroupId);
+                vm.unMuteGroup((item as GroupDiscussionItem).postedGroupId);
               },
               isMuted: vm.isMuted,
             );
@@ -139,13 +139,13 @@ class _ViewModel {
     }
 
     bool _isMuted(DiscussionItem item) {
-      assert(item is GroupDiscussionPost,
-          'Only GroupDiscussionPost has a valid mute status');
-      if (item is! GroupDiscussionPost) {
+      assert(item is GroupDiscussionItem,
+      'Only GroupDiscussionItem has a valid mute status');
+      if (item is! GroupDiscussionItem) {
         return false;
       }
 
-      String postedGroupId = (item as GroupDiscussionPost).postedGroupId;
+      String postedGroupId = (item as GroupDiscussionItem).postedGroupId;
 
       return postedGroupId != null &&
           store.state.settingState.muteSetting.mutedGroups

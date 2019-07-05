@@ -15,6 +15,7 @@ import 'package:munin/models/bangumi/subject/Count.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectStatus.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxRow.dart';
@@ -527,9 +528,26 @@ class SubjectParser {
     infoBoxRows.addValues(newInfoBoxRowName, infoBoxItems);
   }
 
+  SubjectStatus _parseSubjectStatus(DocumentFragment document) {
+    final containsLockedKeyWord = document
+        .querySelector('#headerSubject')
+        ?.text
+        ?.contains('条目已锁定') ?? false;
+    var subjectStatus;
+    if (containsLockedKeyWord) {
+      subjectStatus = SubjectStatus.LockedForCollection;
+    } else {
+      subjectStatus = SubjectStatus.Normal;
+    }
+
+    return subjectStatus;
+  }
+
   BangumiSubject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
     final subjectType = parseSubjectType(document);
+
+    final subjectStatus = _parseSubjectStatus(document);
 
     final nameElement = document.querySelector('.nameSingle > a');
     String name;
@@ -625,6 +643,7 @@ class SubjectParser {
       ..curatedInfoBoxRows.replace(curatedInfoBoxRows)
       ..id = subjectId
       ..type = subjectType
+      ..subjectStatus = subjectStatus
       ..name = name
       ..chineseName = chineseName
       ..summary = summary

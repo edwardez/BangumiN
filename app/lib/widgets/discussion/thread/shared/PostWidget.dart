@@ -94,7 +94,6 @@ class PostWidget extends StatelessWidget {
             ThreadType.fromBangumiContent(parentBangumiContentType));
         launch(
           'https://${Application.environmentValue.bangumiMainHost}$subUrl',
-          forceSafariVC: false,
         );
       },
     );

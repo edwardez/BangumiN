@@ -23,7 +23,7 @@ import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThrea
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
-import 'package:munin/providers/bangumi/discussion/parser/isoldate.dart';
+import 'package:munin/providers/bangumi/discussion/parser/isolate.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/http/common.dart';
@@ -61,7 +61,9 @@ class BangumiDiscussionService {
       processDiscussion,
       ParseDiscussionMessage(
         response.data,
-        muteSetting,
+        muteSetting.mutedGroups,
+        muteSetting.mutedUsers.values.map((user) => user.userId).toSet(),
+        muteSetting.muteOriginalPosterWithDefaultIcon,
       ),
     );
 

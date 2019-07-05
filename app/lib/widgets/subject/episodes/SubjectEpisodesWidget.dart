@@ -13,6 +13,7 @@ import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/progress/showEpisodeOptionSheet.dart';
+import 'package:munin/widgets/shared/appbar/AppbarWithLoadingIndicator.dart';
 import 'package:munin/widgets/shared/chips/StrokeChip.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
@@ -348,7 +349,14 @@ class SubjectEpisodesWidget extends StatelessWidget {
         List<Widget> widgets = _buildEpisodeWidgets(context, vm);
 
         return ScrollViewWithSliverAppBar(
-          appBarMainTitle: Text('章节'),
+          appBarMainTitle: WidgetWithLoadingIndicator(
+            requestStatusFuture: requestStatusFuture,
+            bottomStatusIndicator: Text(
+              '刷新中',
+              style: defaultCaptionText(context),
+            ),
+            child: Text('章节'),
+          ),
           nestedScrollViewBody: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.only(bottom: bottomOffset),

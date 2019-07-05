@@ -23,6 +23,7 @@ import 'package:munin/widgets/timeline/message/Common.dart';
 import 'package:munin/widgets/timeline/message/PublicMessageReplyComposer.dart';
 import 'package:munin/widgets/timeline/message/PublicMessageReplyWidget.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:share/share.dart';
 
@@ -237,4 +238,15 @@ class _ViewModel {
     @required this.getFullPublicMessage,
     @required this.fullPublicMessage,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              appUsername == other.appUsername &&
+              fullPublicMessage == other.fullPublicMessage;
+
+  @override
+  int get hashCode => hash2(appUsername, fullPublicMessage);
 }

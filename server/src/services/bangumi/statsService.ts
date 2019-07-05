@@ -40,7 +40,7 @@ function getUserStatsById(userId: number, sortBy = 'addDate', descending = false
         exclude: excludingAttributes,
       },
       order: sortBy ? Sequelize.literal(`${snakeCase(sortBy)} ${sortSequence}`) : Sequelize.literal(`addDate ${sortSequence}`),
-    });
+    }) as any as Promise<Record[]>;
 }
 
 function getSubjectStatsById(subjectId: number, sortBy = 'addDate', descending = false,
@@ -56,7 +56,7 @@ function getSubjectStatsById(subjectId: number, sortBy = 'addDate', descending =
         exclude: excludingAttributes,
       },
       order: sortBy ? Sequelize.literal(`${snakeCase(sortBy)} ${sortSequence}`) : Sequelize.literal(`addDate ${sortSequence}`),
-    });
+    }) as any as Promise<Record[]>;
 }
 
 export {getUserStatsByIdOrUsername, getSubjectStatsById};

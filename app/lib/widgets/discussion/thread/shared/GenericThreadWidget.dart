@@ -20,6 +20,7 @@ import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
 import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dart';
 import 'package:munin/widgets/shared/appbar/AppBarTitleForSubject.dart';
+import 'package:munin/widgets/shared/appbar/AppbarWithLoadingIndicator.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
@@ -131,18 +132,29 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
     }
   }
 
-  Widget _buildAppBarMainTitle(BangumiThread thread) {
+  Widget _buildAppBarMainTitle(BangumiThread thread,
+      Future<void> requestStatusFuture) {
+    Widget title;
     if (thread is BlogThread) {
-      return Text('日志');
+      title = Text('日志');
     } else if (thread is SubjectTopicThread) {
-      return Text('作品话题');
+      title = Text('作品话题');
     } else if (thread is GroupThread) {
-      return Text('小组话题');
+      title = Text('小组话题');
     } else if (thread is EpisodeThread) {
-      return Text('章节讨论');
+      title = Text('章节讨论');
     } else {
       throw UnsupportedError('未支持的类型');
     }
+
+    return WidgetWithLoadingIndicator(
+      requestStatusFuture: requestStatusFuture,
+      bottomStatusIndicator: Text(
+        '刷新中',
+        style: defaultCaptionText(context),
+      ),
+      child: title,
+    );
   }
 
   _buildAppBarSecondaryTitle(BangumiThread thread) {
@@ -215,7 +227,8 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
           }
 
           return ScrollViewWithSliverAppBar(
-            appBarMainTitle: _buildAppBarMainTitle(vm.thread),
+            appBarMainTitle:
+            _buildAppBarMainTitle(vm.thread, requestStatusFuture),
             appBarSecondaryTitle: _buildAppBarSecondaryTitle(vm.thread),
             changeAppBarTitleOnScroll: true,
             safeAreaChildPadding: EdgeInsets.zero,

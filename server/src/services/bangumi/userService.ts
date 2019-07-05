@@ -10,10 +10,10 @@ function findUserByIdOrUserName(id: number | string): Promise<User> {
           [Sequelize.Op.eq]: String(id),
         },
       },
-    });
+    }) as any as Promise<User>;
   }
 
-  return User.findById(id);
+  return User.findById(id) as any as Promise<User>;
 }
 
 /**
@@ -66,7 +66,7 @@ function findUserByNicknameLike(nickname: string, excludeFullMatchResult = false
       where: whereClause,
       order: Sequelize.literal('username asc'),
     },
-  );
+  ) as any as Promise<{ rows: User[], count: number }>;
 
 }
 
@@ -88,11 +88,11 @@ function findUserByNicknameEqual(nickname: string, offset = 0, limit = 25): Prom
       },
       order: Sequelize.literal('username asc'),
     },
-  );
+  ) as any as Promise<{ rows: User[], count: number }>;
 }
 
 function findUserById(id: number): Promise<User> {
-  return User.findById(id);
+  return User.findById(id) as any as Promise<User>;
 }
 
 export {findUserById, findUserByIdOrUserName, findUserByNickname};

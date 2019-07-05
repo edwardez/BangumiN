@@ -1,10 +1,11 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GeneralDiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
-import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
@@ -24,10 +25,15 @@ class DiscussionParser {
 
   static final elementTypeRegex = RegExp(r'_(\w+)_');
 
-  final MuteSetting muteSetting;
+  final BuiltMap<String, MutedGroup> mutedGroups;
 
-  DiscussionParser(MuteSetting muteSetting)
-      : muteSetting = muteSetting.rebuild((b) => b);
+  final bool muteOriginalPosterWithDefaultIcon;
+
+  final Set<int> mutedUserIds;
+
+  const DiscussionParser(this.mutedGroups,
+      this.mutedUserIds,
+      this.muteOriginalPosterWithDefaultIcon,);
 
   /// bangumi uses id to identify each discussion element and we can thus use
   /// this info to guess [BangumiContent]
@@ -35,7 +41,7 @@ class DiscussionParser {
   /// If we cannot find a valid type, null will be returned
   BangumiContent _guessContentType(String elementId) {
     String capturedString =
-        firstCapturedStringOrNull(elementTypeRegex, elementId);
+    firstCapturedStringOrNull(elementTypeRegex, elementId);
     return elementIdToContentType[capturedString];
   }
 
@@ -110,10 +116,11 @@ class DiscussionParser {
           defaultValue: null);
 
       Element groupElement =
-          discussionItemElement.querySelector('.row a[href*="/group/"]');
+      discussionItemElement.querySelector('.row a[href*="/group/"]');
       String postedGroupId = parseHrefId(groupElement);
 
-      return Optional.of(GroupDiscussionPost((b) => b
+      return Optional.of(GroupDiscussionItem((b) =>
+      b
         ..id = itemId
         ..bangumiContent = contentType
         ..image.replace(image)
@@ -128,13 +135,13 @@ class DiscussionParser {
 
   /// Checks whether a [DiscussionItem] has been muted.
   bool _isMutedDiscussionItem(DiscussionItem item) {
-    if (item is! GroupDiscussionPost) {
+    if (item is! GroupDiscussionItem) {
       return false;
     }
-    final GroupDiscussionPost post = item;
+    final GroupDiscussionItem post = item;
 
     /// 1. Checks whether user muted the group
-    bool isMutedGroup = muteSetting.mutedGroups.containsKey(post.postedGroupId);
+    bool isMutedGroup = mutedGroups.containsKey(post.postedGroupId);
     if (isMutedGroup) {
       return true;
     }
@@ -142,7 +149,7 @@ class DiscussionParser {
     /// 2. Checks whether user muted user with default icon
     bool muteOPWithDefaultIcon;
 
-    if (muteSetting.muteOriginalPosterWithDefaultIcon &&
+    if (muteOriginalPosterWithDefaultIcon &&
         item.image.small.contains('icon.jpg')) {
       muteOPWithDefaultIcon = true;
     } else {
@@ -154,21 +161,17 @@ class DiscussionParser {
     }
 
     /// 3. Checks whether user muted op
-    final mutedUser = muteSetting.mutedUsers.values.firstWhere(
-        (u) => u.userId == post.originalPosterUserId,
-        orElse: () => null);
-
-    return mutedUser != null;
+    return mutedUserIds.contains(post.originalPosterUserId);
   }
 
   List<DiscussionItem> processDiscussionItems(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
     List<DiscussionItem> discussionItems = [];
     List<Element> discussionItemElements =
-        document.querySelectorAll('#eden_tpc_list li');
+    document.querySelectorAll('#eden_tpc_list li');
     for (Element element in discussionItemElements) {
       Optional<DiscussionItem> maybeDiscussionItem =
-          _parseDiscussionItem(element);
+      _parseDiscussionItem(element);
       if (maybeDiscussionItem.isPresent &&
           !_isMutedDiscussionItem(maybeDiscussionItem.value)) {
         discussionItems.add(maybeDiscussionItem.value);

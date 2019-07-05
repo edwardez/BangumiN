@@ -21,7 +21,6 @@ class RelatedSubjectsPreview extends StatelessWidget {
       children: <Widget>[
         SubjectMoreItemsEntry(
           moreItemsText: '关联条目',
-          onTap: () {},
         ),
         HorizontalRelatedSubjects(
           relatedSubjects: subject.relatedSubjects,

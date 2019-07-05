@@ -10,6 +10,7 @@ import 'package:munin/models/bangumi/subject/CollectionStatusDistribution.dart';
 import 'package:munin/models/bangumi/subject/Rating.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/subject/SubjectCollectionInfoPreview.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectStatus.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/models/bangumi/subject/common/SujectBase.dart';
 import 'package:munin/models/bangumi/subject/info/InfoBoxItem.dart';
@@ -23,6 +24,8 @@ part 'BangumiSubject.g.dart';
 abstract class BangumiSubject
     implements SubjectBase, Built<BangumiSubject, BangumiSubjectBuilder> {
   SubjectType get type;
+
+  SubjectStatus get subjectStatus;
 
   /// for anime, is it a TV series or a movie
   /// for book, is it a comic or novel?..etc

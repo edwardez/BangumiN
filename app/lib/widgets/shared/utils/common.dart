@@ -92,7 +92,7 @@ Function generateOnTapCallbackForBangumiContent({
 
   if (webPageUrl != null) {
     return () {
-      launch(webPageUrl, forceSafariVC: false);
+      launch(webPageUrl);
     };
   }
 
@@ -142,4 +142,9 @@ getSwitchActiveColor(BuildContext context) {
 
 bool isNightTheme(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark;
+}
+
+/// Returns address of bangumi main site with https scheme.
+String httpsBangumiMainSite() {
+  return 'https://${Application.environmentValue.bangumiMainHost}';
 }

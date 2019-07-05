@@ -105,7 +105,16 @@ class UserProfileWidget extends StatelessWidget {
                     title: Text(checkWebVersionPrompt),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch(userProfileMainUrl, forceSafariVC: false);
+                      launch(userProfileMainUrl);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(OMIcons.timeline),
+                    title: Text('$goToForsetiPrompt查看统计数据'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      launch('https://${Application.environmentValue
+                          .forsetiMainHost}/user/$username/statistics');
                     },
                   ),
                   _buildMuteAction(outerContext, vm),
@@ -213,7 +222,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/mono', forceSafariVC: false);
+          launch('$userProfileMainUrl/mono');
         },
       ),
       Divider(),
@@ -234,7 +243,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/friends', forceSafariVC: false);
+          launch('$userProfileMainUrl/friends');
         },
       ),
       Divider(),
@@ -255,7 +264,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/index', forceSafariVC: false);
+          launch('$userProfileMainUrl/index');
         },
       ),
       Divider(),
@@ -276,7 +285,7 @@ class UserProfileWidget extends StatelessWidget {
           ],
         ),
         onTap: () {
-          launch('$userProfileMainUrl/groups', forceSafariVC: false);
+          launch('$userProfileMainUrl/groups');
         },
       ),
     ]);

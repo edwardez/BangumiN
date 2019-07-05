@@ -23,7 +23,7 @@ describe('GET /oauth/bangumi/refresh', () => {
   });
 
   it('should return 401 if unauthorized', () => {
-    return request(server).post('/oauth/bangumi/refresh', {})
+    return request(server).post('/oauth/bangumi/refresh', (err: any, res: request.Response) => null)
       .expect(401);
   });
 

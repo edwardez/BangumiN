@@ -5,22 +5,30 @@ import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
-import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
+import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/providers/bangumi/discussion/parser/DiscussionParser.dart';
 import 'package:munin/providers/bangumi/discussion/parser/ThreadParser.dart';
 
 List<DiscussionItem> processDiscussion(ParseDiscussionMessage message) {
-  return DiscussionParser(message.muteSetting)
-      .processDiscussionItems(message.html);
+  return DiscussionParser(
+    message.mutedGroups,
+    message.mutedUserIds,
+    message.muteOriginalPosterWithDefaultIcon,
+  ).processDiscussionItems(message.html);
 }
 
 class ParseDiscussionMessage {
   final String html;
 
-  final MuteSetting muteSetting;
+  final BuiltMap<String, MutedGroup> mutedGroups;
 
-  const ParseDiscussionMessage(this.html, this.muteSetting);
+  final bool muteOriginalPosterWithDefaultIcon;
+
+  final Set<int> mutedUserIds;
+
+  ParseDiscussionMessage(this.html, this.mutedGroups,
+      this.mutedUserIds, this.muteOriginalPosterWithDefaultIcon,);
 }
 
 BlogThread processBlogThread(ParseThreadMessage message) {

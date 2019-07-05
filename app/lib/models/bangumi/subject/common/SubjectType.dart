@@ -6,7 +6,7 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'SubjectType.g.dart';
 
 class SubjectType extends EnumClass {
-  static const SubjectType Unknown = _$All;
+  static const SubjectType Unknown = _$Unknown;
 
   @BuiltValueEnumConst(wireName: '1')
   static const SubjectType Book = _$Book;

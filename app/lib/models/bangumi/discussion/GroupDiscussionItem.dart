@@ -4,11 +4,11 @@ import 'package:munin/models/bangumi/common/BangumiImage.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 
-part 'GroupDiscussionPost.g.dart';
+part 'GroupDiscussionItem.g.dart';
 
-abstract class GroupDiscussionPost
+abstract class GroupDiscussionItem
     implements
-        Built<GroupDiscussionPost, GroupDiscussionPostBuilder>,
+        Built<GroupDiscussionItem, GroupDiscussionItemBuilder>,
         DiscussionItem {
   @nullable
   String get originalPosterUsername;
@@ -22,11 +22,11 @@ abstract class GroupDiscussionPost
 
   String get postedGroupId;
 
-  GroupDiscussionPost._();
+  GroupDiscussionItem._();
 
-  factory GroupDiscussionPost([updates(GroupDiscussionPostBuilder b)]) =
-      _$GroupDiscussionPost;
+  factory GroupDiscussionItem([updates(GroupDiscussionItemBuilder b)]) =
+  _$GroupDiscussionItem;
 
-  static Serializer<GroupDiscussionPost> get serializer =>
-      _$groupDiscussionPostSerializer;
+  static Serializer<GroupDiscussionItem> get serializer =>
+      _$groupDiscussionItemSerializer;
 }

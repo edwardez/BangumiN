@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
-import 'package:munin/models/bangumi/discussion/GroupDiscussionPost.dart';
+import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -17,7 +17,7 @@ class DiscussionItemWidget extends StatelessWidget {
   final DiscussionItem discussionItem;
 
   /// Checks the item is muted
-  /// Currently only [GroupDiscussionPost] correctly returns its mute status
+  /// Currently only [GroupDiscussionItem] correctly returns its mute status
   final bool Function(DiscussionItem item) isMuted;
 
   /// Called when user requests a mute
@@ -51,7 +51,7 @@ class DiscussionItemWidget extends StatelessWidget {
   }
 
   GestureLongPressCallback _generateOnLongPressCallback(BuildContext context) {
-    if (discussionItem is! GroupDiscussionPost) {
+    if (discussionItem is! GroupDiscussionItem) {
       return null;
     }
 

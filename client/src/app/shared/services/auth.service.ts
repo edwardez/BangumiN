@@ -10,7 +10,7 @@ import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {BangumiUser} from '../models/BangumiUser';
 import {BanguminUser, BanguminUserSchema} from '../models/user/BanguminUser';
 import {BangumiRefreshTokenResponse} from '../models/common/bangumi-refresh-token-response';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {BanguminUserService} from './bangumin/bangumin-user.service';
 import {Router} from '@angular/router';

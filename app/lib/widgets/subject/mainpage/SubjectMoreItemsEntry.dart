@@ -7,13 +7,18 @@ import 'package:munin/widgets/shared/text/WrappableText.dart';
 ///
 /// It's simply a wrapper around [InkWell] to ensure a minimum vertical padding.
 class SubjectMoreItemsEntry extends StatelessWidget {
+  /// An optional [GestureTapCallback] function when user taps this entry.
+  /// If set to null, the trailing [AdaptiveIcons.forwardIconData] will be
+  /// hide.
   final GestureTapCallback onTap;
 
   final String moreItemsText;
 
-  const SubjectMoreItemsEntry(
-      {Key key, @required this.onTap, @required this.moreItemsText})
-      : super(key: key);
+  const SubjectMoreItemsEntry({
+    Key key,
+    @required this.moreItemsText,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +35,11 @@ class SubjectMoreItemsEntry extends StatelessWidget {
                 moreItemsText,
                 fit: FlexFit.tight,
               ),
-              Icon(
-                AdaptiveIcons.forwardIconData,
-                color: lightPrimaryDarkAccentColor(context),
-              )
+              if (onTap != null)
+                Icon(
+                  AdaptiveIcons.forwardIconData,
+                  color: lightPrimaryDarkAccentColor(context),
+                ),
             ],
           ),
         ),

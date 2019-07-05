@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'GroupDiscussionPost.dart';
+part of 'GroupDiscussionItem.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<GroupDiscussionPost> _$groupDiscussionPostSerializer =
-    new _$GroupDiscussionPostSerializer();
+Serializer<GroupDiscussionItem> _$groupDiscussionItemSerializer =
+    new _$GroupDiscussionItemSerializer();
 
-class _$GroupDiscussionPostSerializer
-    implements StructuredSerializer<GroupDiscussionPost> {
+class _$GroupDiscussionItemSerializer
+    implements StructuredSerializer<GroupDiscussionItem> {
   @override
   final Iterable<Type> types = const [
-    GroupDiscussionPost,
-    _$GroupDiscussionPost
+    GroupDiscussionItem,
+    _$GroupDiscussionItem
   ];
   @override
-  final String wireName = 'GroupDiscussionPost';
+  final String wireName = 'GroupDiscussionItem';
 
   @override
-  Iterable serialize(Serializers serializers, GroupDiscussionPost object,
+  Iterable serialize(Serializers serializers, GroupDiscussionItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'postedGroupId',
@@ -66,9 +66,9 @@ class _$GroupDiscussionPostSerializer
   }
 
   @override
-  GroupDiscussionPost deserialize(Serializers serializers, Iterable serialized,
+  GroupDiscussionItem deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GroupDiscussionPostBuilder();
+    final result = new GroupDiscussionItemBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -123,7 +123,7 @@ class _$GroupDiscussionPostSerializer
   }
 }
 
-class _$GroupDiscussionPost extends GroupDiscussionPost {
+class _$GroupDiscussionItem extends GroupDiscussionItem {
   @override
   final String originalPosterUsername;
   @override
@@ -145,11 +145,11 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
   @override
   final int updatedAt;
 
-  factory _$GroupDiscussionPost(
-          [void Function(GroupDiscussionPostBuilder) updates]) =>
-      (new GroupDiscussionPostBuilder()..update(updates)).build();
+  factory _$GroupDiscussionItem(
+          [void Function(GroupDiscussionItemBuilder) updates]) =>
+      (new GroupDiscussionItemBuilder()..update(updates)).build();
 
-  _$GroupDiscussionPost._(
+  _$GroupDiscussionItem._(
       {this.originalPosterUsername,
       this.originalPosterUserId,
       this.postedGroupId,
@@ -163,42 +163,42 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
       : super._() {
     if (postedGroupId == null) {
       throw new BuiltValueNullFieldError(
-          'GroupDiscussionPost', 'postedGroupId');
+          'GroupDiscussionItem', 'postedGroupId');
     }
     if (id == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'id');
+      throw new BuiltValueNullFieldError('GroupDiscussionItem', 'id');
     }
     if (bangumiContent == null) {
       throw new BuiltValueNullFieldError(
-          'GroupDiscussionPost', 'bangumiContent');
+          'GroupDiscussionItem', 'bangumiContent');
     }
     if (image == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'image');
+      throw new BuiltValueNullFieldError('GroupDiscussionItem', 'image');
     }
     if (title == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'title');
+      throw new BuiltValueNullFieldError('GroupDiscussionItem', 'title');
     }
     if (subTitle == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'subTitle');
+      throw new BuiltValueNullFieldError('GroupDiscussionItem', 'subTitle');
     }
     if (replyCount == null) {
-      throw new BuiltValueNullFieldError('GroupDiscussionPost', 'replyCount');
+      throw new BuiltValueNullFieldError('GroupDiscussionItem', 'replyCount');
     }
   }
 
   @override
-  GroupDiscussionPost rebuild(
-          void Function(GroupDiscussionPostBuilder) updates) =>
+  GroupDiscussionItem rebuild(
+          void Function(GroupDiscussionItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GroupDiscussionPostBuilder toBuilder() =>
-      new GroupDiscussionPostBuilder()..replace(this);
+  GroupDiscussionItemBuilder toBuilder() =>
+      new GroupDiscussionItemBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GroupDiscussionPost &&
+    return other is GroupDiscussionItem &&
         originalPosterUsername == other.originalPosterUsername &&
         originalPosterUserId == other.originalPosterUserId &&
         postedGroupId == other.postedGroupId &&
@@ -235,7 +235,7 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('GroupDiscussionPost')
+    return (newBuiltValueToStringHelper('GroupDiscussionItem')
           ..add('originalPosterUsername', originalPosterUsername)
           ..add('originalPosterUserId', originalPosterUserId)
           ..add('postedGroupId', postedGroupId)
@@ -250,11 +250,11 @@ class _$GroupDiscussionPost extends GroupDiscussionPost {
   }
 }
 
-class GroupDiscussionPostBuilder
+class GroupDiscussionItemBuilder
     implements
-        Builder<GroupDiscussionPost, GroupDiscussionPostBuilder>,
+        Builder<GroupDiscussionItem, GroupDiscussionItemBuilder>,
         DiscussionItemBuilder {
-  _$GroupDiscussionPost _$v;
+  _$GroupDiscussionItem _$v;
 
   String _originalPosterUsername;
   String get originalPosterUsername => _$this._originalPosterUsername;
@@ -300,9 +300,9 @@ class GroupDiscussionPostBuilder
   int get updatedAt => _$this._updatedAt;
   set updatedAt(int updatedAt) => _$this._updatedAt = updatedAt;
 
-  GroupDiscussionPostBuilder();
+  GroupDiscussionItemBuilder();
 
-  GroupDiscussionPostBuilder get _$this {
+  GroupDiscussionItemBuilder get _$this {
     if (_$v != null) {
       _originalPosterUsername = _$v.originalPosterUsername;
       _originalPosterUserId = _$v.originalPosterUserId;
@@ -320,24 +320,24 @@ class GroupDiscussionPostBuilder
   }
 
   @override
-  void replace(covariant GroupDiscussionPost other) {
+  void replace(covariant GroupDiscussionItem other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$GroupDiscussionPost;
+    _$v = other as _$GroupDiscussionItem;
   }
 
   @override
-  void update(void Function(GroupDiscussionPostBuilder) updates) {
+  void update(void Function(GroupDiscussionItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$GroupDiscussionPost build() {
-    _$GroupDiscussionPost _$result;
+  _$GroupDiscussionItem build() {
+    _$GroupDiscussionItem _$result;
     try {
       _$result = _$v ??
-          new _$GroupDiscussionPost._(
+          new _$GroupDiscussionItem._(
               originalPosterUsername: originalPosterUsername,
               originalPosterUserId: originalPosterUserId,
               postedGroupId: postedGroupId,
@@ -355,7 +355,7 @@ class GroupDiscussionPostBuilder
         image.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'GroupDiscussionPost', _$failedField, e.toString());
+            'GroupDiscussionItem', _$failedField, e.toString());
       }
       rethrow;
     }

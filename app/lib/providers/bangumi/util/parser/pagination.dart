@@ -5,7 +5,9 @@ import 'package:html/dom.dart' show DocumentFragment, Element, Node, NodeList;
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/core.dart';
 
-final _pageNumberRegex = RegExp(r'\?page=(\d+)');
+// Matches url like
+// collections?filter=friends&page=2 or collections?page=2
+final _pageNumberRegex = RegExp(r'(?:\?|&)page=(\d+)');
 
 /// Parses a common pagination element on bangumi.
 ParsedPaginationElement parsePaginationElement(
@@ -65,7 +67,7 @@ Optional<int> _parseMaxPageNumber(
   const defaultPageNumber = 1;
   currentPageNumber ??= defaultPageNumber;
 
-  final paginationElements = document.querySelectorAll('a.p[href*="?page="]');
+  final paginationElements = document.querySelectorAll('a.p[href*="page="]');
   if (paginationElements.isEmpty) {
     return Optional.absent();
   }

@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/app/BasicAppState.dart';
 
 class PersistAppStateAction {
   /// Whether only [BasicAppState] should be persisted
   final bool basicAppStateOnly;
 
-  PersistAppStateAction({this.basicAppStateOnly = false});
+  /// An optional pass-ed in [AppState]. If not set, current [AppState] in
+  /// [Store] will be used.
+  final AppState appState;
+
+  PersistAppStateAction({this.basicAppStateOnly = false, this.appState,});
 }
 
 class HandleErrorAction {

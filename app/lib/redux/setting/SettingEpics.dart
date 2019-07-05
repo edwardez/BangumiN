@@ -58,12 +58,20 @@ Stream<dynamic> _changeThemeByScreenBrightness(
           roundDeviceBrightnessToPercentage(await Screen.brightness);
       if (shouldChangeToDarkTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
-            themeSetting: themeSetting.rebuild(
-                (b) => b..currentTheme = b.preferredFollowBrightnessDarkTheme));
+          themeSetting: themeSetting.rebuild(
+                  (b) =>
+              b
+                ..currentTheme = b.preferredFollowBrightnessDarkTheme),
+          persistToDisk: true,
+        );
       } else if (shouldChangeToLightTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
-            themeSetting: themeSetting.rebuild((b) =>
-                b..currentTheme = b.preferredFollowBrightnessLightTheme));
+          themeSetting: themeSetting.rebuild(
+                  (b) =>
+              b
+                ..currentTheme = b.preferredFollowBrightnessLightTheme),
+          persistToDisk: true,
+        );
       }
     }
   } catch (error, stack) {
@@ -101,7 +109,7 @@ Epic<AppState> _createChangeThemeByScreenBrightnessEpic() {
   };
 }
 
-Stream<dynamic> _updateThemeSetting(
+Stream<dynamic> _updateThemeSetting(EpicStore<AppState> store,
   UpdateThemeSettingAction action,
 ) async* {
   try {
@@ -109,7 +117,12 @@ Stream<dynamic> _updateThemeSetting(
     assert(action.themeSetting.currentTheme.isLightTheme ||
         action.themeSetting.currentTheme.isDarkTheme);
     if (action.persistToDisk) {
-      yield PersistAppStateAction(basicAppStateOnly: true);
+      final newState = store.state.rebuild(
+              (b) => b.settingState.themeSetting.replace(action.themeSetting));
+      yield PersistAppStateAction(
+        basicAppStateOnly: true,
+        appState: newState,
+      );
     }
   } catch (error, stack) {
     print(error.toString());
@@ -121,7 +134,7 @@ Epic<AppState> _createUpdateThemeSettingEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<UpdateThemeSettingAction>())
-        .switchMap((action) => _updateThemeSetting(action));
+        .switchMap((action) => _updateThemeSetting(store, action));
   };
 }
 

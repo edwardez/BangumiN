@@ -26,9 +26,14 @@ Stream<dynamic> _persistState(
     PersistAppStateAction action) async* {
   try {
     if (action.basicAppStateOnly) {
-      await sharedPreferenceService.persistBasicAppState(store.state);
+      /// New theme must be either light or dark theme
+      assert(store.state.settingState.themeSetting.currentTheme.isLightTheme ||
+          store.state.settingState.themeSetting.currentTheme.isDarkTheme);
+      await sharedPreferenceService
+          .persistBasicAppState(action.appState ?? store.state);
     } else {
-      await sharedPreferenceService.persistAppState(store.state);
+      await sharedPreferenceService
+          .persistAppState(action.appState ?? store.state);
     }
   } catch (error, stack) {
     debugPrint(

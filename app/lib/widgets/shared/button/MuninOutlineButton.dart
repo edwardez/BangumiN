@@ -25,6 +25,7 @@ class MuninOutlineButton extends StatelessWidget {
       child: child,
       textColor: mainColor,
       borderSide: BorderSide(color: mainColor, width: 1.0),
+      highlightedBorderColor: mainColor,
       onPressed: onPressed,
     );
   }

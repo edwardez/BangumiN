@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
-import 'package:munin/shared/utils/bangumi/RedirectableUrlFinder.dart';
+import 'package:munin/shared/utils/bangumi/RedirectableUrlResolver.dart';
 import "package:test/test.dart";
 
 class _Scheme {
@@ -9,7 +9,7 @@ class _Scheme {
 }
 
 void main() {
-  group('findRedirectableUrl', () {
+  group('resolveRedirectableUrl', () {
     const HttpScheme = 'http';
     const HttpsScheme = 'https';
 
@@ -29,7 +29,7 @@ void main() {
         final expectedResult =
             expectedToFindUrl ? RedirectableUrlInfo(bangumiContent, id) : null;
 
-        expect(findRedirectableUrl(url).orNull, expectedResult);
+        expect(resolveRedirectableUrl(url).orNull, expectedResult);
       });
     }
 
@@ -74,6 +74,7 @@ void main() {
       id: '1',
       suffix: '#post_123',
       bangumiContent: BangumiContent.GroupTopic,
+      expectedToFindUrl: false,
     );
 
     runFindRedirectableUrlTest(

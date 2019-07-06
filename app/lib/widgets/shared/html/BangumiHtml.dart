@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:munin/shared/utils/bangumi/RedirectableUrlFinder.dart';
+import 'package:munin/shared/utils/bangumi/RedirectableUrlResolver.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/text/SpoilerText.dart';
@@ -42,7 +42,7 @@ class BangumiHtml extends StatelessWidget {
       },
       hyperlinkColor: lightPrimaryDarkAccentColor(context),
       onTapUrl: (String url) {
-        final maybeRedirectableContent = findRedirectableUrl(url);
+        final maybeRedirectableContent = resolveRedirectableUrl(url);
         if (maybeRedirectableContent.isNotPresent) {
           return canLaunch(url) != null ? launch(url) : null;
         }

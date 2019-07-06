@@ -35,11 +35,11 @@ final possibleDomains = r'https?:\/\/(?:bgm\.tv|bangumi\.tv|chii\.in)\/';
 final _possibleSubRoutes = '(${_supportedSubRoutes.join('|')})';
 
 final _urlRegex = RegExp('$possibleDomains'
-    '$_possibleSubRoutes\\/(\\w+)');
+    '$_possibleSubRoutes\\/(\\w+)\$');
 
 /// Checks whether the url can be redirected to a munin-internal widget, returns
 /// its value in [Optional] if such widget exists.
-Optional<RedirectableUrlInfo> findRedirectableUrl(String url) {
+Optional<RedirectableUrlInfo> resolveRedirectableUrl(String url) {
   if (url == null) {
     return Optional.absent();
   }

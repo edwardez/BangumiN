@@ -98,7 +98,8 @@ class MuninRefreshIndicator extends StatefulWidget {
     this.notificationPredicate = defaultScrollNotificationPredicate,
     this.semanticsLabel,
     this.semanticsValue,
-  })  : assert(child != null),
+  })
+      : assert(child != null),
         assert(onRefresh != null),
         assert(notificationPredicate != null),
         super(key: key);
@@ -165,12 +166,12 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   bool _isIndicatorAtTop;
   double _dragOffset;
 
-  static final Animatable<double> _threeQuarterTween =
-      Tween<double>(begin: 0.0, end: 0.75);
-  static final Animatable<double> _kDragSizeFactorLimitTween =
-      Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
-  static final Animatable<double> _oneToZeroTween =
-      Tween<double>(begin: 1.0, end: 0.0);
+  static final Animatable<double> _threeQuarterTween = Tween<double>(
+      begin: 0.0, end: 0.75);
+  static final Animatable<double> _kDragSizeFactorLimitTween = Tween<double>(
+      begin: 0.0, end: _kDragSizeFactorLimit);
+  static final Animatable<double> _oneToZeroTween = Tween<double>(
+      begin: 1.0, end: 0.0);
 
   @override
   void initState() {
@@ -191,8 +192,9 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
       ColorTween(
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
         end: (widget.color ?? theme.accentColor).withOpacity(1.0),
-      ).chain(
-          CurveTween(curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
+      ).chain(CurveTween(
+          curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit)
+      )),
     );
     super.didChangeDependencies();
   }
@@ -205,11 +207,11 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
-    if (!widget.notificationPredicate(notification)) return false;
+    if (!widget.notificationPredicate(notification))
+      return false;
     if (notification is ScrollStartNotification &&
         notification.metrics.extentBefore == 0.0 &&
-        _mode == null &&
-        _start(notification.metrics.axisDirection)) {
+        _mode == null && _start(notification.metrics.axisDirection)) {
       setState(() {
         _mode = _RefreshIndicatorMode.drag;
       });
@@ -264,7 +266,7 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
           _dismiss(_RefreshIndicatorMode.canceled);
           break;
         default:
-          // do nothing
+        // do nothing
           break;
       }
     }
@@ -272,7 +274,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   }
 
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
-    if (notification.depth != 0 || !notification.leading) return false;
+    if (notification.depth != 0 || !notification.leading)
+      return false;
     if (_mode == _RefreshIndicatorMode.drag) {
       notification.disallowGlow();
       return true;
@@ -306,8 +309,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _RefreshIndicatorMode.drag ||
         _mode == _RefreshIndicatorMode.armed);
-    double newValue =
-        _dragOffset / (containerExtent * _kDragContainerExtentPercentage);
+    double newValue = _dragOffset /
+        (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
@@ -329,12 +332,12 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
     });
     switch (_mode) {
       case _RefreshIndicatorMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        await _scaleController.animateTo(
+            1.0, duration: _kIndicatorScaleDuration);
         break;
       case _RefreshIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        await _positionController.animateTo(
+            0.0, duration: _kIndicatorScaleDuration);
         break;
       default:
         assert(false);
@@ -355,8 +358,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
-        .animateTo(1.0 / _kDragSizeFactorLimit,
-            duration: _kIndicatorSnapDuration)
+        .animateTo(
+        1.0 / _kDragSizeFactorLimit, duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
         assert(widget.onRefresh != null);
@@ -369,14 +372,17 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
         assert(() {
           if (refreshResult == null)
             FlutterError.reportError(FlutterErrorDetails(
-              exception: FlutterError('The onRefresh callback returned null.\n'
-                  'The RefreshIndicator onRefresh callback must return a Future.'),
-              context: 'when calling onRefresh',
+              exception: FlutterError(
+                  'The onRefresh callback returned null.\n'
+                      'The RefreshIndicator onRefresh callback must return a Future.'
+              ),
+              context: ErrorDescription('when calling onRefresh'),
               library: 'material library',
             ));
           return true;
         }());
-        if (refreshResult == null) return;
+        if (refreshResult == null)
+          return;
         refreshResult.whenComplete(() {
           if (mounted && _mode == _RefreshIndicatorMode.refresh) {
             completer.complete();
@@ -403,10 +409,11 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   /// When initiated in this manner, the refresh indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
+  Future<void> show({ bool atTop = true }) {
     if (_mode != _RefreshIndicatorMode.refresh &&
         _mode != _RefreshIndicatorMode.snap) {
-      if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
+      if (_mode == null)
+        _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
     return _pendingRefreshFuture;
@@ -462,7 +469,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
                   builder: (BuildContext context, Widget child) {
                     return RefreshProgressIndicator(
                       semanticsLabel: widget.semanticsLabel ??
-                          MaterialLocalizations.of(context)
+                          MaterialLocalizations
+                              .of(context)
                               .refreshIndicatorSemanticLabel,
                       semanticsValue: widget.semanticsValue,
                       value: showIndeterminateIndicator ? null : _value.value,

@@ -11,10 +11,10 @@ description: Flutter + BangumiN == Munin (a new Bangumi App)
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.1.0+1
+version: 0.1.0+2
 
 environment:
-  sdk: ">=2.3.0-dev.0.5 <3.0.0"
+  sdk: ">=2.4.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -32,7 +32,7 @@ dependencies:
   fluro: ^1.5.0
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.1
-  flutter_svg: ^0.12.4
+  flutter_svg: ^0.13.0+2
   # Waiting https://github.com/fluttercommunity/flutter_webview_plugin/issues/200 to be fixed to switch
   # back to main branch
   flutter_webview_plugin:
@@ -46,7 +46,12 @@ dependencies:
   image_gallery_saver: ^1.1.0
   material_design_icons_flutter: ^3.2.3595
   markdown: ^2.0.3
-  palette_generator: ^0.1.1
+  #  Wait for https://github.com/flutter/packages/pull/22 to be resolved to switch back to offcial.
+  palette_generator:
+    git:
+      url: https://github.com/edwardez/packages.git
+      ref: c0d05fd86b69d00baa7877c3716d7dfd76f4f087
+      path: packages/palette_generator
   screen: ^0.0.5
   transparent_image: ^1.0.0
   timeago: ^2.0.14

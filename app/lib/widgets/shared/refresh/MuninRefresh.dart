@@ -9,7 +9,6 @@ import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
-import 'package:munin/widgets/shared/refresh/workaround/refresh.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh_indicator.dart';
 
 /// The signature for a function that's called when a refresh should be performed
@@ -435,9 +434,7 @@ class MuninRefreshState extends State<MuninRefresh> {
 
         slivers.add(progressIndicator);
       } else {
-        // TODO: waiting for https://github.com/flutter/flutter/issues/31382 to be
-        // resolved to switch back to the official widget
-        slivers.add(MuninCupertinoSliverRefreshControl(
+        slivers.add(CupertinoSliverRefreshControl(
           onRefresh: _generateOnRefreshCallBack(),
           refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
           refreshTriggerPullDistance:

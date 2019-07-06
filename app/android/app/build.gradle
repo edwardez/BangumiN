@@ -59,6 +59,18 @@ android {
         release {
             signingConfig signingConfigs.release
         }
+        debug {
+            signingConfig signingConfigs.release
+        }
+        dynamicProfile {
+            signingConfig signingConfigs.release
+        }
+        profile {
+            signingConfig signingConfigs.release
+        }
+        dynamicRelease {
+            signingConfig signingConfigs.release
+        }
     }
 
     flavorDimensions "flavors"
@@ -67,14 +79,17 @@ android {
             dimension "flavors"
             applicationIdSuffix ".development"
             versionNameSuffix "-development"
+            signingConfig signingConfigs.release
         }
         uat {
             dimension "flavors"
             applicationIdSuffix ".uat"
             versionNameSuffix "-uat"
+            signingConfig signingConfigs.release
         }
         production {
             dimension "flavors"
+            signingConfig signingConfigs.release
         }
     }
 }

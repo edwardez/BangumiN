@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/ProgressUpdateEpisodeSingle.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/timeline/item/common/FeedMoreActionsMenu.dart';
@@ -22,16 +23,18 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ListTile;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         UserActionTile.fromUser(
           user: progressUpdateEpisodeSingle.user,
           trailing:
-              buildTrailingWidget(progressUpdateEpisodeSingle, onDeleteFeed),
+          buildTrailingWidget(progressUpdateEpisodeSingle, onDeleteFeed),
         ),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: InkWell(
+        Padding(
+          padding: EdgeInsets.only(top: smallOffset),
+          child: InkWell(
             child: Text(
               progressUpdateEpisodeSingle.episodeName,
               maxLines: episodeNameMaxLines,
@@ -42,12 +45,16 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
                 id: progressUpdateEpisodeSingle.episodeId,
                 context: context),
           ),
-          subtitle: InkWell(
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: smallOffset),
+          child: InkWell(
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: Text(
                     progressUpdateEpisodeSingle.subjectName,
+                    style: captionTextWithBody1Size(context),
                     maxLines: subjectNameMaxLines,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -59,7 +66,7 @@ class ProgressUpdateEpisodeSingleWidget extends StatelessWidget {
                 id: progressUpdateEpisodeSingle.subjectId,
                 context: context),
           ),
-        )
+        ),
       ],
     );
   }

@@ -19,23 +19,41 @@ UserState fetchUserPreviewSuccessReducer(UserState userState,
   UserProfile profile = fetchUserPreviewSuccessAction.profile;
   String username = profile.basicInfo.username;
   return userState.rebuild(
-    (b) => b..profiles.addAll({username: profile}),
+        (b) => b..profiles.addAll({username: profile}),
   );
 }
 
-UserState listUserCollectionsSuccessReducer(
-    UserState userState, ListUserCollectionsSuccessAction action) {
+UserState listUserCollectionsSuccessReducer(UserState userState,
+    ListUserCollectionsSuccessAction action) {
   if (!action.parsedCollections.isRequestedPageNumberValid) {
     return userState;
   }
 
   ListUserCollectionsResponse responseInStore =
-      userState.collections[action.request];
+  userState.collections[action.request];
   if (responseInStore != null) {
+    BuiltMap<int, CollectionOnUserList> updatedCollectionsInStore;
+    if (action.appendResultsToEnd) {
+      updatedCollectionsInStore = responseInStore.collections
+          .rebuild((b) => b..addAll(action.parsedCollections.collections));
+    } else {
+      updatedCollectionsInStore = BuiltMap<int, CollectionOnUserList>.of(
+          action.parsedCollections.collections);
+
+      // In most cases collections in store are a larget data set. Looping
+      // through it might be inefficient. Maybe looping the smaller data set
+      // instead?
+      for (var collection in responseInStore.collections.values) {
+        updatedCollectionsInStore.rebuild((b) =>
+            b.putIfAbsent(collection.subject.id, () => collection));
+      }
+    }
+
     responseInStore = responseInStore.rebuild(
-      (b) => b
+          (b) =>
+      b
         ..listUserCollectionsRequest.replace(action.request)
-        ..collections.addAll(action.parsedCollections.collections)
+        ..collections.replace(updatedCollectionsInStore)
         ..userCollectionTags.replace(BuiltMap<String, UserCollectionTag>.of(
             action.parsedCollections.tags))
         ..canLoadMoreItems = action.parsedCollections.canLoadMoreItems ?? true
@@ -43,7 +61,8 @@ UserState listUserCollectionsSuccessReducer(
     );
   } else {
     responseInStore = ListUserCollectionsResponse(
-      (b) => b
+          (b) =>
+      b
         ..listUserCollectionsRequest.replace(action.request)
         ..collections.replace(
           BuiltMap<int, CollectionOnUserList>.of(
@@ -56,7 +75,8 @@ UserState listUserCollectionsSuccessReducer(
     );
   }
 
-  return userState.rebuild((b) => b
+  return userState.rebuild((b) =>
+  b
     ..collections.addAll(
       {action.request: responseInStore},
     ));

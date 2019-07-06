@@ -60,16 +60,19 @@ class BangumiUserService {
     return users;
   }
 
+  /// Lists collections on page [webPageNumber].
+  /// Note that [webPageNumber] starts from 1(aligns with how bangumi counts
+  /// web page).
   Future<ParsedCollections> listUserCollections(
       {@required ListUserCollectionsRequest request,
-      @required int requestedPageNumber}) async {
+        @required int webPageNumber}) async {
     final username = request.username;
     final subjectTypeName = request.subjectType.name.toLowerCase();
     final collectionStatusName = request.collectionStatus.wiredName;
 
     Map<String, String> queryParameters = {};
-    if (requestedPageNumber >= 2) {
-      queryParameters['page'] = requestedPageNumber.toString();
+    if (webPageNumber >= 2) {
+      queryParameters['page'] = webPageNumber.toString();
     }
 
     final maybeOrderByWiredName = request.orderCollectionBy.wiredName;
@@ -92,8 +95,9 @@ class BangumiUserService {
 
     final message = ParseUserCollectionsListMessage(
       response.data,
-      requestedPageNumber: requestedPageNumber,
+      requestedPageNumber: webPageNumber,
       request: request,
+      filterTag: request.filterTag,
     );
 
     return compute(processUserCollectionsList, message);

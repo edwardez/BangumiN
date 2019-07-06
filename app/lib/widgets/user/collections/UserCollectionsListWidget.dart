@@ -236,6 +236,19 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
         });
   }
 
+  Function _generateOnRefreshCallback(_ViewModel vm) {
+    // Don't allow refresh is response is not ready yet.
+    if (vm.collectionsResponse == null) {
+      return null;
+    }
+
+    return () =>
+        vm.listUserCollections(
+          currentRequest,
+          listOlderCollections: false,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -260,8 +273,9 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
                 return MuninTextSpans(
                   children: [
                     MuninTextSpanConfig(
-                        CollectionStatus.chineseNameWithSubjectType(
-                            status, currentRequest.subjectType)),
+                      CollectionStatus.chineseNameWithSubjectType(
+                          status, currentRequest.subjectType),
+                    ),
                     if (vm.user != null)
                       MuninTextSpanConfig(
                         ' ${collectionCountByStatus(vm.user, status)}',
@@ -287,7 +301,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
             buildSortBy(context, vm.collectionsResponse),
             Divider(),
           ],
-          onRefresh: null,
+          onRefresh: _generateOnRefreshCallback(vm),
           onLoadMore: () {
             return vm.listUserCollections(
               currentRequest,
@@ -319,18 +333,21 @@ class _ViewModel {
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   final Future Function(
-    ListUserCollectionsRequest externalRequest,
-  ) listUserCollections;
+      ListUserCollectionsRequest externalRequest, {
+      bool listOlderCollections,
+      }) listUserCollections;
 
   factory _ViewModel.fromStore(
     Store<AppState> store,
     ListUserCollectionsRequest request,
   ) {
     Future<void> _listUserCollections(
-      ListUserCollectionsRequest externalRequest,
-    ) {
+        ListUserCollectionsRequest externalRequest, {
+          bool listOlderCollections = true,
+        }) {
       final action = ListUserCollectionsRequestAction(
         request: externalRequest,
+        listOlderCollections: listOlderCollections,
       );
 
       store.dispatch(action);

@@ -14,6 +14,7 @@ ParsedCollections processUserCollectionsList(
       .processUserCollectionsList(
     message.rawHtml,
     requestedPageNumber: message.requestedPageNumber,
+    filterTag: message.filterTag,
   );
 }
 
@@ -21,10 +22,10 @@ class ParseUserCollectionsListMessage {
   final String rawHtml;
   final int requestedPageNumber;
   final ListUserCollectionsRequest request;
+  final String filterTag;
 
-  ParseUserCollectionsListMessage(
-    this.rawHtml, {
-    @required this.requestedPageNumber,
-    @required this.request,
-  });
+  ParseUserCollectionsListMessage(this.rawHtml,
+      {@required this.requestedPageNumber,
+        @required this.request,
+        this.filterTag,});
 }

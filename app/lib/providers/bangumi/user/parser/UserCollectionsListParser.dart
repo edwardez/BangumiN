@@ -153,9 +153,13 @@ class UserCollectionsListParser {
     return tags;
   }
 
+  /// Processes reviews.
+  /// [requestedPageNumber] indicates reviews on which page was requested.
+  /// [filterTag] indicates whether a specific tag was requested.
   ParsedCollections processUserCollectionsList(
     String rawHtml, {
     @required int requestedPageNumber,
+        String filterTag,
   }) {
     DocumentFragment document = parseFragment(rawHtml);
 
@@ -184,14 +188,25 @@ class UserCollectionsListParser {
     int maxPageNumber =
         hasMultiplePages ? maybeMaxPageNumber.value : currentPageNumber;
 
-    final collections = _parseCollections(document);
-
     final tags = _parseUserCollectionTags(document);
 
     bool canLoadMoreItems = true;
     if (!hasMultiplePages) {
       canLoadMoreItems = false;
     } else if (hasMultiplePages && maxPageNumber == currentPageNumber) {
+      canLoadMoreItems = false;
+    }
+
+    LinkedHashMap<int, CollectionOnUserList> collections =
+    LinkedHashMap<int, CollectionOnUserList>();
+    // Parses collections only if filter tag is null, or [tags] contains
+    // [filterTag]. If a [filterTag] is not in [tags], bangumi returns unfiltered
+    // collections instead of an empty collection list.
+    if (filterTag == null || tags.containsKey(filterTag)) {
+      collections = _parseCollections(document);
+    } else {
+      // else requested tag returns an empty list, which indicates no more items
+      // can be loaded.
       canLoadMoreItems = false;
     }
 

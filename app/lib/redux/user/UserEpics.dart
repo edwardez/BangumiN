@@ -74,19 +74,32 @@ Stream<dynamic> _listUserCollectionsEpic(
 
     final responseInStore = store.state.userState.collections[action.request];
 
-    if (responseInStore != null && !responseInStore.canLoadMoreItems) {
+    // If there are collections in store, and no more items can be loaded
+    // while [action] requests to load more items. Immediately returns
+    // after waiting for [futuresToWait].
+    if (responseInStore != null &&
+        !responseInStore.canLoadMoreItems &&
+        action.listOlderCollections) {
       await Future.wait(futuresToWait);
       action.completer.complete();
       return;
     }
 
-    int requestedUntilPageNumber =
-        responseInStore?.requestedUntilPageNumber ?? 0;
+    int webPageNumber;
+    if (responseInStore == null) {
+      webPageNumber = 1;
+    } else {
+      if (action.listOlderCollections) {
+        webPageNumber = responseInStore.requestedUntilPageNumber + 1;
+      } else {
+        webPageNumber = 1;
+      }
+    }
 
     /// Note that [listUserCollections] needs to be kept as last in
     /// [futuresToWait] since [results.last] is used to identify this result.
     futuresToWait.add(bangumiUserService.listUserCollections(
-      requestedPageNumber: requestedUntilPageNumber + 1,
+      webPageNumber: webPageNumber,
       request: action.request,
     ));
     final results = await Future.wait(futuresToWait);
@@ -96,6 +109,7 @@ Stream<dynamic> _listUserCollectionsEpic(
     yield ListUserCollectionsSuccessAction(
       parsedCollections: parsedCollections,
       request: action.request,
+      appendResultsToEnd: action.listOlderCollections,
     );
   } catch (error, stack) {
     print(error.toString());

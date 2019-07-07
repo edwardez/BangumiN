@@ -35,7 +35,8 @@ class SearchHomeDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     if (findAppState(context).settingState.themeSetting.currentTheme
         .isDarkTheme) {
-      return Theme.of(context).copyWith(
+      final ThemeData theme = Theme.of(context);
+      return theme.copyWith(
         primaryColor: theme.primaryColor,
         primaryIconTheme: theme.primaryIconTheme,
         primaryColorBrightness: theme.primaryColorBrightness,

@@ -193,8 +193,7 @@ class SubjectParser {
     return BuiltList<Actor>(actors);
   }
 
-  BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement,
-      {String defaultActionName = '评价道'}) {
+  BuiltList<SubjectReview> parseReviews(DocumentFragment subjectElement) {
     /// a [SplayTreeSet] that contains a sorted set of reviews where
     /// where comparator is the review time([ReviewMetaInfo.updatedAt]) and
     /// sorted in descending order

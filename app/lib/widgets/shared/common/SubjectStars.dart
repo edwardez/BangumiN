@@ -7,7 +7,7 @@ import 'package:munin/styles/theme/Common.dart';
 class SubjectStars extends StatelessWidget {
   final double subjectScore;
   final double starSize;
-  final Color starColor;
+  final Color activateStarColor;
 
   ///Whether star should be resized by
   ///[MediaQuery.of(context).textScaleFactor]. Default to true.
@@ -17,13 +17,20 @@ class SubjectStars extends StatelessWidget {
     Key key,
     @required this.subjectScore,
     this.starSize = 18,
-    this.starColor = MuninColor.score,
+    this.activateStarColor = MuninColor.score,
     this.scaleStarByTextScaleFactor = true,
   }) : super(key: key);
 
   /// score: min 0.0, max 10.0
-  List<Widget> _buildStarIconsWith5StarMax(
+  List<Widget> _buildStarIconsWith5StarMax(BuildContext context,
       double score, double textScaleFactor) {
+    Color starColor;
+    if (score <= 0) {
+      starColor = captionTextWithHigherOpacity(context, 0.6).color;
+      print(starColor);
+    } else {
+      starColor = activateStarColor;
+    }
     assert(score <= 10.0 && score >= 0.0);
 
     const maxStars = 5;
@@ -33,17 +40,14 @@ class SubjectStars extends StatelessWidget {
 
     final scaledStarSize = textScaleFactor * starSize;
 
-    return []
-      ..addAll(List.generate(numOfFullStars,
-          (index) => Icon(Icons.star, size: scaledStarSize, color: starColor)))
-      ..addAll(List.generate(
-          numOfHalfStars,
-          (index) =>
-              Icon(Icons.star_half, size: scaledStarSize, color: starColor)))
-      ..addAll(List.generate(
-          restOfStars,
-          (index) =>
-              Icon(Icons.star_border, size: scaledStarSize, color: starColor)));
+    return []..addAll(List.generate(numOfFullStars,
+            (index) => Icon(Icons.star, size: scaledStarSize, color: starColor)))..addAll(List.generate(
+        numOfHalfStars,
+            (index) =>
+            Icon(Icons.star_half, size: scaledStarSize, color: starColor)))..addAll(List.generate(
+        restOfStars,
+            (index) =>
+            Icon(Icons.star_border, size: scaledStarSize, color: starColor)));
   }
 
   @override
@@ -59,6 +63,7 @@ class SubjectStars extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: _buildStarIconsWith5StarMax(
+        context,
         subjectScore,
         textScaleFactor,
       ),

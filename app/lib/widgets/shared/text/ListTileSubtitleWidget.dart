@@ -30,26 +30,26 @@ class ListTileSubtitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle captionStyle = Theme.of(context).textTheme.caption;
 
+    final timeTextWidget = Text(
+      TimeUtils.formatMilliSecondsEpochTime(
+        updatedAt,
+        displayTimeIn: timeDisplayFormat,
+        formatAbsoluteTimeAs: formatAbsoluteTimeAs,
+      ),
+      style: captionStyle,
+    );
     if (score == null) {
       return Row(
         children: [
           Expanded(
               child: Text(
             actionName,
-
             // Action should be at most 1 line, this is currently hard-coded and forced for aesthetic reason
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: captionStyle,
           )),
-          Text(
-            TimeUtils.formatMilliSecondsEpochTime(
-              updatedAt,
-              displayTimeIn: timeDisplayFormat,
-              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
-            ),
-            style: captionStyle,
-          )
+          timeTextWidget,
         ],
       );
     } else {
@@ -66,14 +66,7 @@ class ListTileSubtitleWidget extends StatelessWidget {
             starSize: captionStyle.fontSize * starCaptionFontSizeRatio,
           ),
           ExpandedEmpty(),
-          Text(
-            TimeUtils.formatMilliSecondsEpochTime(
-              updatedAt,
-              displayTimeIn: timeDisplayFormat,
-              formatAbsoluteTimeAs: formatAbsoluteTimeAs,
-            ),
-            style: captionStyle,
-          )
+          timeTextWidget,
         ],
       );
     }

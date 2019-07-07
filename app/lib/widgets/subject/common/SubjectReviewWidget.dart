@@ -45,7 +45,7 @@ class SubjectReviewWidget extends StatelessWidget {
       updatedAt: review.metaInfo.updatedAt,
       trailing: trailing,
       actionName: review.metaInfo.actionName,
-      score: review.metaInfo.score,
+      score: review.metaInfo.score ?? 0,
       timeDisplayFormat: timeDisplayFormat,
     ));
     if (review.content != null) {

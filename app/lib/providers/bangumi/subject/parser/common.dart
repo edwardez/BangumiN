@@ -81,7 +81,7 @@ SubjectReview parseSubjectReviewOnNonCollectionPage(
   } else if (elementType == ReviewElement.CommentBox) {
     nickName = element.querySelector('.text > a')?.text ?? '';
     score = parseSubjectScore(element);
-    actionName = score == null ? defaultActionName : '';
+    actionName = '';
     collectionStatus = CollectionStatus.Unknown;
   } else {
     throw UnimplementedError('Not implemented yet');

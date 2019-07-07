@@ -15,21 +15,23 @@ void showMuninAboutDialog(BuildContext context) async {
       height: 48.0,
       semanticsLabel: 'BangumiN Logo');
 
-  String applicationVersion;
-
   /// Gets package info, waits for up to one second.
   PackageInfo packageInfo = await PackageInfo.fromPlatform().timeout(
     aSecond,
     onTimeout: () {
-      applicationVersion = '-';
+      return PackageInfo(
+        appName: 'BangumiN',
+        packageName: 'BangumiN',
+        version: '',
+        buildNumber: '',
+      );
     },
   );
-  applicationVersion = packageInfo.version;
 
   showAboutDialog(
     context: context,
     applicationName: 'BangumiN',
-    applicationVersion: applicationVersion,
+    applicationVersion: packageInfo.version,
     applicationIcon: bangumiNLogo,
     applicationLegalese: 'BangumiN Project Authors',
     children: <Widget>[
@@ -41,7 +43,8 @@ void showMuninAboutDialog(BuildContext context) async {
               TextSpan(
                 style: aboutTextStyle,
                 text:
-                    'BanguminN（读作Bangu-min或Bangumi-N）是一个基于Flutter开发的Bangumi的第三方app。 ',
+                'BanguminN（读作Bangu-min或Bangumi-N）是一个基于Flutter开发的'
+                    'Bangumi第三方app。 ',
               ),
               TextSpan(
                 style: aboutTextStyle,

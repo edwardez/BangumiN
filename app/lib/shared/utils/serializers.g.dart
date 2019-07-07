@@ -138,6 +138,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(String), const FullType(RelatedSubject)]),
           () => new ListMultimapBuilder<String, RelatedSubject>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(RelatedSubject)]),
+          () => new ListBuilder<RelatedSubject>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(SubjectReview)]),
           () => new ListBuilder<SubjectReview>())
       ..addBuilderFactory(

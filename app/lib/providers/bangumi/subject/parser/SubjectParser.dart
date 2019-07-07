@@ -275,7 +275,7 @@ class SubjectParser {
     return BuiltList<Character>(characters);
   }
 
-  BuiltListMultimap<String, RelatedSubject> parseRelatedSubjects(
+  BuiltListMultimap<String, RelatedSubject> _parseRelatedSubjects(
       DocumentFragment subjectElement, SubjectType subjectType) {
     ListMultimap<String, RelatedSubject> relatedSubjects =
         ListMultimap<String, RelatedSubject>();
@@ -333,12 +333,23 @@ class SubjectParser {
       return BuiltListMultimap<String, RelatedSubject>(relatedSubjects);
     }
 
+
+
+    return BuiltListMultimap<String, RelatedSubject>(relatedSubjects);
+  }
+
+  BuiltList<RelatedSubject> _parseTankobonSubjects(
+      DocumentFragment subjectElement, SubjectType subjectType) {
+    if (subjectType != SubjectType.Book) {
+      return BuiltList<RelatedSubject>();
+    }
+    List<RelatedSubject> relatedSubjects = [];
+
     /// it's possible book is associated with 单行本(tankobon), which is only
     /// valid for book
     List<Element> tankobonElements =
-        subjectElement.querySelectorAll('.browserCoverSmall > li');
+    subjectElement.querySelectorAll('.browserCoverSmall > li');
 
-    String typeTankobon = '单行本';
     for (Element tankobonElement in tankobonElements) {
       Element coverElement = tankobonElement.querySelector('a.avatar');
 
@@ -367,16 +378,16 @@ class SubjectParser {
       BangumiImage cover = BangumiImage.fromImageUrl(
           coverImage, ImageSize.Unknown, ImageType.SubjectCover);
 
-      RelatedSubject relatedSubject = RelatedSubject((b) => b
+      RelatedSubject relatedSubject = RelatedSubject((b) =>
+      b
         ..name = subjectName
         ..id = subjectId
         ..cover.replace(cover)
-        ..subjectSubTypeName = typeTankobon);
+        ..subjectSubTypeName = '单行本');
 
-      relatedSubjects.add(typeTankobon, relatedSubject);
+      relatedSubjects.add(relatedSubject);
     }
-
-    return BuiltListMultimap<String, RelatedSubject>(relatedSubjects);
+    return BuiltList<RelatedSubject>.of(relatedSubjects);
   }
 
   InfoBoxRow parseSubjectSubtype(DocumentFragment subjectElement) {
@@ -623,7 +634,10 @@ class SubjectParser {
     BuiltList<SubjectReview> comments = parseReviews(document);
 
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
-        parseRelatedSubjects(document, subjectType);
+    _parseRelatedSubjects(document, subjectType);
+
+    final tankobonSubjects =
+    _parseTankobonSubjects(document, subjectType);
 
     String summary = document.querySelector('#subject_summary')?.text ?? '暂无简介';
 
@@ -652,6 +666,7 @@ class SubjectParser {
       ..characters.replace(characters)
       ..commentsPreview.replace(comments)
       ..relatedSubjects.replace(relatedSubjects)
+      ..tankobonSubjects.replace(tankobonSubjects)
       ..bangumiSuggestedTags.replace(bangumiSuggestedTags)
       ..userSelectedTags.replace(userSelectedTags)
       ..userSubjectCollectionInfoPreview.replace(preview)

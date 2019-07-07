@@ -83,6 +83,13 @@ class _$BangumiSubjectSerializer
               const FullType(RelatedSubject)
             ])));
     }
+    if (object.tankobonSubjects != null) {
+      result
+        ..add('tankobonSubjects')
+        ..add(serializers.serialize(object.tankobonSubjects,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(RelatedSubject)])));
+    }
     if (object.commentsPreview != null) {
       result
         ..add('commentsPreview')
@@ -175,6 +182,12 @@ class _$BangumiSubjectSerializer
                 const FullType(String),
                 const FullType(RelatedSubject)
               ])) as BuiltListMultimap);
+          break;
+        case 'tankobonSubjects':
+          result.tankobonSubjects.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(RelatedSubject)]))
+              as BuiltList);
           break;
         case 'commentsPreview':
           result.commentsPreview.replace(serializers.deserialize(value,
@@ -269,6 +282,8 @@ class _$BangumiSubject extends BangumiSubject {
   @override
   final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
   @override
+  final BuiltList<RelatedSubject> tankobonSubjects;
+  @override
   final BuiltList<SubjectReview> commentsPreview;
   @override
   final SubjectCollectionInfoPreview userSubjectCollectionInfoPreview;
@@ -308,6 +323,7 @@ class _$BangumiSubject extends BangumiSubject {
       this.cover,
       this.characters,
       this.relatedSubjects,
+      this.tankobonSubjects,
       this.commentsPreview,
       this.userSubjectCollectionInfoPreview,
       this.infoBoxRows,
@@ -389,6 +405,7 @@ class _$BangumiSubject extends BangumiSubject {
         cover == other.cover &&
         characters == other.characters &&
         relatedSubjects == other.relatedSubjects &&
+        tankobonSubjects == other.tankobonSubjects &&
         commentsPreview == other.commentsPreview &&
         userSubjectCollectionInfoPreview ==
             other.userSubjectCollectionInfoPreview &&
@@ -424,14 +441,14 @@ class _$BangumiSubject extends BangumiSubject {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc(0, type.hashCode), subjectStatus.hashCode),
-                                                                                subTypeName.hashCode),
-                                                                            summary.hashCode),
-                                                                        rating.hashCode),
-                                                                    rank.hashCode),
-                                                                cover.hashCode),
-                                                            characters.hashCode),
-                                                        relatedSubjects.hashCode),
+                                                                            $jc($jc($jc($jc(0, type.hashCode), subjectStatus.hashCode), subTypeName.hashCode),
+                                                                                summary.hashCode),
+                                                                            rating.hashCode),
+                                                                        rank.hashCode),
+                                                                    cover.hashCode),
+                                                                characters.hashCode),
+                                                            relatedSubjects.hashCode),
+                                                        tankobonSubjects.hashCode),
                                                     commentsPreview.hashCode),
                                                 userSubjectCollectionInfoPreview.hashCode),
                                             infoBoxRows.hashCode),
@@ -458,6 +475,7 @@ class _$BangumiSubject extends BangumiSubject {
           ..add('cover', cover)
           ..add('characters', characters)
           ..add('relatedSubjects', relatedSubjects)
+          ..add('tankobonSubjects', tankobonSubjects)
           ..add('commentsPreview', commentsPreview)
           ..add('userSubjectCollectionInfoPreview',
               userSubjectCollectionInfoPreview)
@@ -523,6 +541,12 @@ class BangumiSubjectBuilder
   set relatedSubjects(
           ListMultimapBuilder<String, RelatedSubject> relatedSubjects) =>
       _$this._relatedSubjects = relatedSubjects;
+
+  ListBuilder<RelatedSubject> _tankobonSubjects;
+  ListBuilder<RelatedSubject> get tankobonSubjects =>
+      _$this._tankobonSubjects ??= new ListBuilder<RelatedSubject>();
+  set tankobonSubjects(ListBuilder<RelatedSubject> tankobonSubjects) =>
+      _$this._tankobonSubjects = tankobonSubjects;
 
   ListBuilder<SubjectReview> _commentsPreview;
   ListBuilder<SubjectReview> get commentsPreview =>
@@ -611,6 +635,7 @@ class BangumiSubjectBuilder
       _cover = _$v.cover?.toBuilder();
       _characters = _$v.characters?.toBuilder();
       _relatedSubjects = _$v.relatedSubjects?.toBuilder();
+      _tankobonSubjects = _$v.tankobonSubjects?.toBuilder();
       _commentsPreview = _$v.commentsPreview?.toBuilder();
       _userSubjectCollectionInfoPreview =
           _$v.userSubjectCollectionInfoPreview?.toBuilder();
@@ -658,6 +683,7 @@ class BangumiSubjectBuilder
               cover: cover.build(),
               characters: _characters?.build(),
               relatedSubjects: _relatedSubjects?.build(),
+              tankobonSubjects: _tankobonSubjects?.build(),
               commentsPreview: _commentsPreview?.build(),
               userSubjectCollectionInfoPreview:
                   userSubjectCollectionInfoPreview.build(),
@@ -684,6 +710,8 @@ class BangumiSubjectBuilder
         _characters?.build();
         _$failedField = 'relatedSubjects';
         _relatedSubjects?.build();
+        _$failedField = 'tankobonSubjects';
+        _tankobonSubjects?.build();
         _$failedField = 'commentsPreview';
         _commentsPreview?.build();
         _$failedField = 'userSubjectCollectionInfoPreview';

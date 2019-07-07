@@ -1,4 +1,3 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
@@ -15,12 +14,14 @@ class HorizontalRelatedSubjects extends StatelessWidget {
   /// is * 2
   static const double textSpaceScaleBaseFactor = 1.5;
 
-  final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
+  final Iterable<RelatedSubject> relatedSubjects;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
   final double horizontalImagePadding;
   final double imageWidth;
   final double imageHeight;
+
+  final bool displaySubtitle;
 
   const HorizontalRelatedSubjects({
     Key key,
@@ -29,12 +30,13 @@ class HorizontalRelatedSubjects extends StatelessWidget {
     this.horizontalImagePadding = 8.0,
     this.imageWidth = 71,
     this.imageHeight = 100.0,
+    this.displaySubtitle = true,
   }) : super(key: key);
 
   List<RoundedElevatedImageWithBottomText> _buildCharacterLists(
-      BuiltListMultimap<String, RelatedSubject> relatedSubjects) {
+      Iterable<RelatedSubject> relatedSubjects) {
     List<RoundedElevatedImageWithBottomText> imageWidgets = [];
-    for (var subject in relatedSubjects.values) {
+    for (var subject in relatedSubjects) {
       imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Subject,
         imageUrl: subject.cover.medium,
@@ -45,7 +47,7 @@ class HorizontalRelatedSubjects extends StatelessWidget {
             imageWidgets.length == 0 ? 0 : horizontalImagePadding,
         title:
             preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
-        subtitle: subject.subjectSubTypeName,
+        subtitle: displaySubtitle ? subject.subjectSubTypeName : null,
         titleMaxLines: titleMaxLines,
         subTitleMaxLines: subTitleMaxLines,
       ));
@@ -56,11 +58,13 @@ class HorizontalRelatedSubjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleLines = titleMaxLines + (displaySubtitle ? subTitleMaxLines : 0);
+
     return HorizontalScrollableWidget(
       horizontalList: _buildCharacterLists(relatedSubjects),
       listHeight: imageHeight +
           Theme.of(context).textTheme.caption.fontSize *
-              (titleMaxLines + subTitleMaxLines) *
+              titleLines *
               textSpaceScaleBaseFactor * MediaQuery
               .of(context)
               .textScaleFactor,

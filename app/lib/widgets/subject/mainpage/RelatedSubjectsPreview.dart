@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/widgets/subject/common/HorizontalRelatedSubjects.dart';
 import 'package:munin/widgets/subject/mainpage/SubjectMoreItemsEntry.dart';
 
@@ -23,9 +24,23 @@ class RelatedSubjectsPreview extends StatelessWidget {
           moreItemsText: '关联条目',
         ),
         HorizontalRelatedSubjects(
-          relatedSubjects: subject.relatedSubjects,
+          relatedSubjects: subject.relatedSubjects.values,
           preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
-        )
+        ),
+        if (subject.type == SubjectType.Book &&
+            (subject.tankobonSubjects?.isNotEmpty ?? false)) ...[
+          SubjectMoreItemsEntry(
+            moreItemsText: '单行本',
+          ),
+          HorizontalRelatedSubjects(
+            relatedSubjects: subject.tankobonSubjects,
+            preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
+
+            /// All tankobons share a same subtitle('单行本') hence no need
+            /// to display.
+            displaySubtitle: false,
+          ),
+        ],
       ],
     );
   }

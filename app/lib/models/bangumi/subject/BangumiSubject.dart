@@ -58,6 +58,12 @@ abstract class BangumiSubject
   @nullable
   BuiltListMultimap<String, RelatedSubject> get relatedSubjects;
 
+  /// Tankobon of a book.
+  /// Null for subject that is not a book, or a book that doesn't have a
+  /// tankobon.
+  @nullable
+  BuiltList<RelatedSubject> get tankobonSubjects;
+
   @nullable
 
   /// a short preview list of comments that are on subject main page

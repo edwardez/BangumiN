@@ -7,6 +7,9 @@ import 'package:munin/styles/theme/Common.dart';
 class SubjectStars extends StatelessWidget {
   final double subjectScore;
   final double starSize;
+
+  /// Color of the activated star. Note that un-scored star is current hard-coded
+  /// as the color of caption text color under current theme.
   final Color activateStarColor;
 
   ///Whether star should be resized by
@@ -22,12 +25,11 @@ class SubjectStars extends StatelessWidget {
   }) : super(key: key);
 
   /// score: min 0.0, max 10.0
-  List<Widget> _buildStarIconsWith5StarMax(BuildContext context,
-      double score, double textScaleFactor) {
+  List<Widget> _buildStarIconsWith5StarMax(BuildContext context, double score,
+      double textScaleFactor) {
     Color starColor;
     if (score <= 0) {
-      starColor = captionTextWithHigherOpacity(context, 0.6).color;
-      print(starColor);
+      starColor = captionTextWithCustomizedOpacity(context, 0.6).color;
     } else {
       starColor = activateStarColor;
     }
@@ -41,10 +43,13 @@ class SubjectStars extends StatelessWidget {
     final scaledStarSize = textScaleFactor * starSize;
 
     return []..addAll(List.generate(numOfFullStars,
-            (index) => Icon(Icons.star, size: scaledStarSize, color: starColor)))..addAll(List.generate(
-        numOfHalfStars,
             (index) =>
-            Icon(Icons.star_half, size: scaledStarSize, color: starColor)))..addAll(List.generate(
+            Icon(Icons.star, size: scaledStarSize, color: starColor)))..addAll(
+        List.generate(
+            numOfHalfStars,
+                (index) =>
+                Icon(Icons.star_half, size: scaledStarSize,
+                    color: starColor)))..addAll(List.generate(
         restOfStars,
             (index) =>
             Icon(Icons.star_border, size: scaledStarSize, color: starColor)));
@@ -53,20 +58,23 @@ class SubjectStars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (subjectScore == null) {
-      return Container();
+      return ExcludeSemantics(child: Container());
     }
 
     final textScaleFactor = scaleStarByTextScaleFactor
         ? MediaQuery.of(context).textScaleFactor
         : 1.0;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: _buildStarIconsWith5StarMax(
-        context,
-        subjectScore,
-        textScaleFactor,
+    return Semantics(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: _buildStarIconsWith5StarMax(
+          context,
+          subjectScore,
+          textScaleFactor,
+        ),
       ),
+      label: '分数: $subjectScore',
     );
   }
 }

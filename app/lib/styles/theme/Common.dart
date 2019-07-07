@@ -61,6 +61,15 @@ Color defaultCaptionTextColorOrFallback(BuildContext context) {
 /// A caption text with a higher opacity.
 TextStyle captionTextWithHigherOpacity(BuildContext context,
     [double scale = 1.25]) {
+  return captionTextWithCustomizedOpacity(
+    context, scale,
+  );
+}
+
+TextStyle captionTextWithCustomizedOpacity(BuildContext context,
+    [double scale = 1]) {
+  scale ??= 1;
+
   TextStyle defaultCaption = defaultCaptionText(context);
 
   double higherOpacity = math.min(1.0, defaultCaption.color.opacity * scale);

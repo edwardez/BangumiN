@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/search/SearchRequest.dart';
 import 'package:munin/models/bangumi/search/SearchType.dart';
+import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/search/SearchResultsWidget.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
@@ -28,6 +29,23 @@ class SearchHomeDelegate extends SearchDelegate {
       },
     );
   }
+
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    if (findAppState(context).settingState.themeSetting.currentTheme
+        .isDarkTheme) {
+      return Theme.of(context).copyWith(
+        primaryColor: theme.primaryColor,
+        primaryIconTheme: theme.primaryIconTheme,
+        primaryColorBrightness: theme.primaryColorBrightness,
+        primaryTextTheme: theme.primaryTextTheme,
+      );
+    } else {
+      return super.appBarTheme(context);
+    }
+  }
+
 
   @override
   Widget buildSuggestions(BuildContext context) {

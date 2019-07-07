@@ -34,7 +34,10 @@ class AppBarTitleForSubject extends StatelessWidget {
             child: Text(
           title,
           overflow: TextOverflow.fade,
-          style: Theme.of(context).textTheme.subtitle,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body2,
         ))
       ],
     );

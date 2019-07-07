@@ -11,7 +11,7 @@ description: Flutter + BangumiN == Munin (a new Bangumi App)
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.1.0+2
+version: 0.2.0+1
 
 environment:
   sdk: ">=2.4.0 <3.0.0"
@@ -33,11 +33,6 @@ dependencies:
   flutter_redux: ^0.5.3
   flutter_secure_storage: ^3.2.1
   flutter_svg: ^0.13.0+2
-  # Waiting https://github.com/fluttercommunity/flutter_webview_plugin/issues/200 to be fixed to switch
-  # back to main branch
-  flutter_webview_plugin:
-    git:
-      url: git://github.com/edwardez/flutter_webview_plugin.git
   flutter_widget_from_html: ^0.2.1+1
   get_it: ^1.0.3
   html: ^0.14.0+2

@@ -35,7 +35,6 @@ class Routes {
   static const root = '/';
   static const loginRoute = '/login';
   static const homeRoute = '/home';
-  static const bangumiOauthRoute = '/bangumiOauth';
 
   // subject
 
@@ -90,7 +89,6 @@ class Routes {
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);
-    router.define(bangumiOauthRoute, handler: bangumiOauthRouteHandler);
 
     router.define(subjectMainPageRoute, handler: subjectMainPageRouteHandler);
     router.define(subjectDetailInfoPageRoute,

@@ -1,16 +1,16 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createAppEpics(
-    SharedPreferenceService sharedPreferenceService) {
+List<Epic<AppState>> createAppEpics(SharedPreferenceService sharedPreferenceService) {
   final persistStateEpic = _createPersistStateEpic(sharedPreferenceService);
   final handleErrorEpic = _createHandleErrorEpic();
 
@@ -20,8 +20,7 @@ List<Epic<AppState>> createAppEpics(
   ];
 }
 
-Stream<dynamic> _persistState(
-    EpicStore<AppState> store,
+Stream<dynamic> _persistState(EpicStore<AppState> store,
     SharedPreferenceService sharedPreferenceService,
     PersistAppStateAction action) async* {
   try {
@@ -41,8 +40,7 @@ Stream<dynamic> _persistState(
   }
 }
 
-Epic<AppState> _createPersistStateEpic(
-    SharedPreferenceService sharedPreferenceService) {
+Epic<AppState> _createPersistStateEpic(SharedPreferenceService sharedPreferenceService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<PersistAppStateAction>())
@@ -51,8 +49,7 @@ Epic<AppState> _createPersistStateEpic(
   };
 }
 
-Stream<dynamic> _handleErrorEpic(
-    EpicStore<AppState> store, HandleErrorAction action) async* {
+Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store, HandleErrorAction action) async* {
   try {
     bool inDev = Application.environmentValue.environmentType ==
         EnvironmentType.Development;
@@ -69,7 +66,11 @@ Stream<dynamic> _handleErrorEpic(
       context: context,
     );
     if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-      yield OAuthLoginRequest(context);
+      Application.router.navigateTo(
+        action.context,
+        Routes.loginRoute,
+        transition: TransitionType.native,
+      );
     } else if (result == GeneralExceptionHandlerResult.Skipped) {
       return;
     }

@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/redux/oauth/OauthActions.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/redux/shared/utils.dart';
+import 'package:munin/router/routes.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
@@ -106,7 +108,11 @@ class _RequestInProgressIndicatorWidgetState
           context: context,
         );
         if (result == GeneralExceptionHandlerResult.RequiresReAuthentication) {
-          _dispatchAction(OAuthLoginRequest(context));
+          Application.router.navigateTo(
+            context,
+            Routes.loginRoute,
+            transition: TransitionType.native,
+          );
         } else if (result == GeneralExceptionHandlerResult.Skipped) {
           return;
         }

@@ -41,15 +41,12 @@ String formatErrorMessage(Object error,
 
 reportError(dynamic error, {
   StackTrace stack,
+  DiagnosticsNode context,
 }) {
-  if (stack != null) {
-    FlutterError.reportError(FlutterErrorDetails(
+  FlutterError.reportError(FlutterErrorDetails(
       exception: error,
-      stack: stack,
-    ));
-  } else {
-    FlutterError.reportError(FlutterErrorDetails(
-      exception: error,
-    ));
-  }
+      stack: stack ??= StackTrace.current,
+      context: context
+  ));
+
 }

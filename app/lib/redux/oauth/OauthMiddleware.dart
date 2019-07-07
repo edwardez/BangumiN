@@ -1,9 +1,5 @@
-import 'dart:math' show min;
-
 import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
@@ -11,6 +7,7 @@ import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:redux/redux.dart';
 
 List<Middleware<AppState>> createOauthMiddleware(
@@ -18,35 +15,19 @@ List<Middleware<AppState>> createOauthMiddleware(
     BangumiCookieService cookieClient,
     BangumiUserService bangumiUserService,
     SharedPreferenceService sharedPreferenceService) {
-  final loginPage = _createLoginPage();
-
-  final oauthRequest = _createOAuthRequest(
+  final oauthRequest = _createUpdateLoginData(
       oauthClient, cookieClient, bangumiUserService, sharedPreferenceService);
-  final oauthCancel = _createOAuthCancel(oauthClient, cookieClient);
 
   final logoutRequest =
       _createLogoutRequest(oauthClient, cookieClient, sharedPreferenceService);
 
   return [
-    TypedMiddleware<AppState, LoginPage>(loginPage),
     TypedMiddleware<AppState, LogoutRequest>(logoutRequest),
-    TypedMiddleware<AppState, OAuthLoginRequest>(oauthRequest),
-    TypedMiddleware<AppState, OAuthLoginCancel>(oauthCancel),
+    TypedMiddleware<AppState, UpdateLoginDataAction>(oauthRequest),
   ];
 }
 
-Middleware<AppState> _createLoginPage() {
-  return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (action.context != null) {
-      Navigator.of(action.context).pushNamed('/login');
-    }
-
-    next(action);
-  };
-}
-
-// TODO: refactor this messy middleware
-Middleware<AppState> _createOAuthRequest(
+Middleware<AppState> _createUpdateLoginData(
   BangumiOauthService oauthService,
   BangumiCookieService cookieService,
   BangumiUserService bangumiUserService,
@@ -56,21 +37,7 @@ Middleware<AppState> _createOAuthRequest(
     assert(action.context != null);
 
     try {
-      /// Tries to invalidate previous cookie if user has logged in
-      if (cookieService.hasCookieCredential) {
-        cookieService.silentlyTryLogout();
-      }
-
-      Application.router.navigateTo(
-        action.context,
-        Routes.bangumiOauthRoute,
-        transition: TransitionType.native,
-      );
-      await oauthService.initializeAuthentication();
-      int userId = await oauthService.verifyUser();
-      BangumiUserSmall userInfo =
-          await bangumiUserService.getUserBasicInfo(userId.toString());
-
+      final userInfo = action.userInfo;
       oauthService.client.currentUser = userInfo;
 
       AppState updatedAppState = store.state.rebuild((b) => b
@@ -85,28 +52,11 @@ Middleware<AppState> _createOAuthRequest(
       Application.router.navigateTo(action.context, Routes.homeRoute,
           transition: TransitionType.native, clearStack: true);
     } catch (error, stack) {
-      final maxErrorMessageMaxLength = 200;
-      final errorMessage = error.toString();
-
-      print(errorMessage);
-      print(stack);
+      reportError(error, stack: stack);
       Application.router.navigateTo(action.context, Routes.loginRoute,
           transition: TransitionType.native, clearStack: true);
-      store.dispatch(OAuthLoginFailure(
-          action.context,
-          error.toString().substring(
-              0, min(errorMessage.length, maxErrorMessageMaxLength))));
     }
 
-    next(action);
-  };
-}
-
-Middleware<AppState> _createOAuthCancel(BangumiOauthService oauthClient,
-    BangumiCookieService bangumiCookieService) {
-  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
-    assert(action.context != null);
-    await oauthClient.disposeServerAndWebview();
     next(action);
   };
 }

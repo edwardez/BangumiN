@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 
-class LoginPage {
+class UpdateLoginDataAction {
   final BuildContext context;
+  final BangumiUserSmall userInfo;
 
-  LoginPage(this.context);
-}
-
-class OAuthLoginRequest {
-  final BuildContext context;
-
-  OAuthLoginRequest(this.context);
+  UpdateLoginDataAction({
+    @required this.userInfo,
+    @required this.context,
+  });
 }
 
 class OAuthLoginCancel {

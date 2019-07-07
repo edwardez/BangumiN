@@ -12,7 +12,6 @@ import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/widgets/discussion/thread/shared/GenericThreadWidget.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
-import 'package:munin/widgets/initial/BangumiOauthWebview.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
 import 'package:munin/widgets/setting/Setting.dart';
 import 'package:munin/widgets/setting/general/GeneralSettingWidget.dart';
@@ -39,11 +38,6 @@ final homeRouteHandler = Handler(
   return MuninHomePage(
     generalSetting: GeneralSetting(),
   );
-});
-
-final bangumiOauthRouteHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return BangumiOauthWebview();
 });
 
 final subjectMainPageRouteHandler = Handler(

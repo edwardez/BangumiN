@@ -18,7 +18,6 @@ import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
-import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/user/CollectionPreviewWidget.dart';
 import 'package:munin/widgets/user/TimelinePreviewWidget.dart';
 import 'package:munin/widgets/user/UserIntroductionPreview.dart';
@@ -204,90 +203,90 @@ class UserProfileWidget extends StatelessWidget {
     widgets.addAll([
       TimelinePreviewWidget(
           profile: profile, isCurrentAppUser: vm.isCurrentAppUser),
-      Divider(),
-      InkWell(
-        child: Row(
-          children: <Widget>[
-            WrappableText(
-              '收藏的人物',
-              fit: FlexFit.tight,
-              textStyle: Theme.of(context).textTheme.subhead,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                AdaptiveIcons.forwardIconData,
-              ),
-            )
-          ],
-        ),
-        onTap: () {
-          launch('$userProfileMainUrl/mono');
-        },
-      ),
-      Divider(),
-      InkWell(
-        child: Row(
-          children: <Widget>[
-            WrappableText(
-              '好友',
-              fit: FlexFit.tight,
-              textStyle: Theme.of(context).textTheme.subhead,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                AdaptiveIcons.forwardIconData,
-              ),
-            )
-          ],
-        ),
-        onTap: () {
-          launch('$userProfileMainUrl/friends');
-        },
-      ),
-      Divider(),
-      InkWell(
-        child: Row(
-          children: <Widget>[
-            WrappableText(
-              '目录',
-              fit: FlexFit.tight,
-              textStyle: Theme.of(context).textTheme.subhead,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                AdaptiveIcons.forwardIconData,
-              ),
-            )
-          ],
-        ),
-        onTap: () {
-          launch('$userProfileMainUrl/index');
-        },
-      ),
-      Divider(),
-      InkWell(
-        child: Row(
-          children: <Widget>[
-            WrappableText(
-              '参加的小组',
-              fit: FlexFit.tight,
-              textStyle: Theme.of(context).textTheme.subhead,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                AdaptiveIcons.forwardIconData,
-              ),
-            )
-          ],
-        ),
-        onTap: () {
-          launch('$userProfileMainUrl/groups');
-        },
-      ),
+//      Divider(),
+//      InkWell(
+//        child: Row(
+//          children: <Widget>[
+//            WrappableText(
+//              '收藏的人物',
+//              fit: FlexFit.tight,
+//              textStyle: Theme.of(context).textTheme.subhead,
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: Icon(
+//                AdaptiveIcons.forwardIconData,
+//              ),
+//            )
+//          ],
+//        ),
+//        onTap: () {
+//          launch('$userProfileMainUrl/mono');
+//        },
+//      ),
+//      Divider(),
+//      InkWell(
+//        child: Row(
+//          children: <Widget>[
+//            WrappableText(
+//              '好友',
+//              fit: FlexFit.tight,
+//              textStyle: Theme.of(context).textTheme.subhead,
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: Icon(
+//                AdaptiveIcons.forwardIconData,
+//              ),
+//            )
+//          ],
+//        ),
+//        onTap: () {
+//          launch('$userProfileMainUrl/friends');
+//        },
+//      ),
+//      Divider(),
+//      InkWell(
+//        child: Row(
+//          children: <Widget>[
+//            WrappableText(
+//              '目录',
+//              fit: FlexFit.tight,
+//              textStyle: Theme.of(context).textTheme.subhead,
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: Icon(
+//                AdaptiveIcons.forwardIconData,
+//              ),
+//            )
+//          ],
+//        ),
+//        onTap: () {
+//          launch('$userProfileMainUrl/index');
+//        },
+//      ),
+//      Divider(),
+//      InkWell(
+//        child: Row(
+//          children: <Widget>[
+//            WrappableText(
+//              '参加的小组',
+//              fit: FlexFit.tight,
+//              textStyle: Theme.of(context).textTheme.subhead,
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: Icon(
+//                AdaptiveIcons.forwardIconData,
+//              ),
+//            )
+//          ],
+//        ),
+//        onTap: () {
+//          launch('$userProfileMainUrl/groups');
+//        },
+//      ),
     ]);
 
     return SliverList(

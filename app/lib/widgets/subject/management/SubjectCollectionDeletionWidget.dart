@@ -35,45 +35,47 @@ class SubjectCollectionDeletionWidget extends StatefulWidget {
 
 class _SubjectCollectionDeletionWidgetState
     extends State<SubjectCollectionDeletionWidget> {
-  /// Pops until collection dialog is closed, widget needs to be mounted.
+  /// Pops until collection dialog is closed.
   ///
-  /// Theoretically, at most two context needs to be popped(delete operation
-  /// dialog and collection dialog).
+  /// Widget needs to be mounted in order to pop.
   _popUntilCollectionDialogIsClosed(BuildContext context) {
     if (!mounted) {
       return;
     }
 
-    const maxRouteCountUntilReachTarget = 4;
-
-    int closedRouteCount = 0;
-    String subjectRoute = Routes.subjectMainPageRoute.replaceAll(
+    String subjectManagementRoute = Routes.subjectCollectionManagementRoute
+        .replaceAll(
         RoutesVariable.subjectIdParam, widget.subject.id.toString());
 
+    String lastUnPoppedRoute;
     Navigator.popUntil(context, (route) {
-      closedRouteCount++;
-
-      assert(closedRouteCount <= maxRouteCountUntilReachTarget);
-
       // Note that anonymous route might be null.
       final routeName = route.settings.name;
 
       // until we've reached entry point of subject collection
       // or first route of the app.
-      if (routeName == subjectRoute ||
+      if (routeName == subjectManagementRoute ||
           routeName == Routes.root ||
-          route.isFirst ||
-          closedRouteCount > maxRouteCountUntilReachTarget) {
+          route.isFirst) {
+        lastUnPoppedRoute = routeName;
         return true;
       }
 
       // pops all other routes.
       return false;
     });
+
+    /// If last un-popped route is subject management route and we can still pop,
+    /// then pop it.
+    if (lastUnPoppedRoute == subjectManagementRoute &&
+        Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
   }
 
-  /// Pops context until we reach collection dialog, widget needs to be mounted.
+  /// Pops context until we reach collection dialog
   ///
+  /// Widget needs to be mounted in order to pop.
   /// Theoretically, at most one context needs to be popped(delete operation
   /// dialog).
   _popUntilCollectionDialog(BuildContext context) {
@@ -83,15 +85,14 @@ class _SubjectCollectionDeletionWidgetState
 
     const maxRouteCountUntilReachTarget = 2;
 
-    int closedRouteCount = 0;
+    int routesToCloseCount = 0;
 
     String subjectCollectionManagementRoute =
         Routes.subjectCollectionManagementRoute.replaceAll(
             RoutesVariable.subjectIdParam, widget.subject.id.toString());
 
     Navigator.popUntil(context, (route) {
-      closedRouteCount++;
-      assert(closedRouteCount <= maxRouteCountUntilReachTarget);
+      routesToCloseCount++;
 
       // Note that anonymous route might be null.
       final routeName = route.settings.name;
@@ -101,10 +102,11 @@ class _SubjectCollectionDeletionWidgetState
       // routes have been popped.
       if (routeName == subjectCollectionManagementRoute ||
           route.isFirst ||
-          closedRouteCount > maxRouteCountUntilReachTarget) {
+          routesToCloseCount > maxRouteCountUntilReachTarget) {
         return true;
       }
 
+      assert(routesToCloseCount <= maxRouteCountUntilReachTarget);
       // pops all other routes.
       return false;
     });

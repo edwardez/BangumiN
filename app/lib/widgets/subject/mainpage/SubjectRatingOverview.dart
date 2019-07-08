@@ -139,7 +139,7 @@ class SubjectRatingOverview extends StatelessWidget {
             title: Text(collectionActionText(subject)),
             onTap: () {
               Navigator.pop(context);
-              navigateToSubjectCollection(context, subject);
+              navigateToSubjectCollection(context, subject.id);
             },
           ),
         ]);

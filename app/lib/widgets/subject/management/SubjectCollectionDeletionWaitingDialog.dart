@@ -18,6 +18,7 @@ class _SubjectCollectionDeletionWaitingDialogState
     extends State<SubjectCollectionDeletionWaitingDialog> {
   /// During deletion, a modal, non-dismissible dialog will show up. This is needed
   /// because deletion is considered an important, un-reversible operation.
+  /// (but it's still a bad ux).
   /// Setting a timeout here allows user to switch the task to background if it
   /// does take too long for this operation.
   Duration maxDeletionWaitingTime = const Duration(seconds: 6);

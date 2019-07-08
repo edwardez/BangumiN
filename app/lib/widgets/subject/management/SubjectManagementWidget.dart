@@ -48,7 +48,7 @@ class SubjectManagementWidget extends StatelessWidget {
                 child: MuninOutlineButton(
                   child: Text(collectionActionText(subject)),
                   onPressed: () {
-                    navigateToSubjectCollection(context, subject);
+                    navigateToSubjectCollection(context, subject.id);
                   },
                 ),
               ),

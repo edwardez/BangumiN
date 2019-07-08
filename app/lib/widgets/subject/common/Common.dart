@@ -12,13 +12,13 @@ String collectionActionText(BangumiSubject subject) =>
         ? '加入收藏'
         : '编辑收藏';
 
-void navigateToSubjectCollection(BuildContext context, BangumiSubject subject) {
+void navigateToSubjectCollection(BuildContext context, int subjectId) {
   showSnackBarOnSuccess(
       context,
       Application.router.navigateTo(
         context,
         Routes.subjectCollectionManagementRoute.replaceFirst(
-            RoutesVariable.subjectIdParam, subject.id?.toString()),
+            RoutesVariable.subjectIdParam, subjectId?.toString()),
         transition: TransitionType.nativeModal,
       ),
       hasSuccessfullyUpdatedCollection);

@@ -323,6 +323,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
             return CollectionOnUserListWidget(
               collection: vm.collectionsResponse.toCollectionsList[index],
               preferredSubjectInfoLanguage: vm.preferredSubjectInfoLanguage,
+              collectionOwner: vm.user,
             );
           },
         );

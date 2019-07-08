@@ -137,8 +137,8 @@ Dio _createDioForBangumiCookieService(
 
   var dio = Dio(BaseOptions(
     baseUrl: "https://${Application.environmentValue.bangumiNonCdnHost}",
-    connectTimeout: Duration(seconds: 7).inMilliseconds,
-    receiveTimeout: Duration(seconds: 7).inMilliseconds,
+    connectTimeout: Duration(seconds: 10).inMilliseconds,
+    receiveTimeout: Duration(seconds: 10).inMilliseconds,
     headers: headers,
     contentType: ContentType.html,
     // Transform the response data to a String encoded with UTF8.

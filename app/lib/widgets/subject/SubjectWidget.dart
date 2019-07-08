@@ -127,7 +127,12 @@ class SubjectWidget extends StatelessWidget {
       appBarMainTitle:
       _buildAppBarMainTitle(context, requestStatusFuture, subject.type),
       appBarSecondaryTitle: Text(
-          preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage)),
+        preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
+        style: Theme
+            .of(context)
+            .textTheme
+            .body2,
+      ),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),

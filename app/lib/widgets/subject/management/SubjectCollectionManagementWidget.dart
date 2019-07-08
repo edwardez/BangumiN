@@ -560,7 +560,10 @@ class _SubjectCollectionManagementWidgetState
           appBar: AppBar(
             title: vm.subject != null
                 ? Text(preferredNameFromSubjectBase(
-                    vm.subject, vm.preferredSubjectInfoLanguage))
+                vm.subject, vm.preferredSubjectInfoLanguage), style: Theme
+                .of(context)
+                .textTheme
+                .body2,)
                 : Text('-'),
             actions: <Widget>[
               Builder(

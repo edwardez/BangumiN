@@ -120,8 +120,8 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             key: PageStorageKey(
                 'thread-${widget.request.threadType}-${thread.id}-description'),
             textRenderer: (descriptionHtml) => BangumiHtml(
-                  html: descriptionHtml,
-                ),
+              html: descriptionHtml,
+            ),
             expandButtonText: '展开全部本集介绍',
             textLengthThreshold: 1000,
           ),
@@ -169,7 +169,13 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         coverUrl: thread?.parentSubject?.cover?.common,
       );
     } else {
-      return Text(thread.title);
+      return Text(
+        thread.title,
+        style: Theme
+            .of(context)
+            .textTheme
+            .body2,
+      );
     }
   }
 
@@ -255,7 +261,8 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                                   parentBangumiContentType),
                               threadId: vm.thread.id,
                               appBarTitle:
-                                  '回复此${widget.request.threadType.toBangumiContent.chineseName}',
+                              '回复此${widget.request.threadType.toBangumiContent
+                                  .chineseName}',
                             ),
                       ),
                     ),

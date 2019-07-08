@@ -7,6 +7,8 @@ import 'package:quiver/core.dart';
 /// One and only one of scoreInDouble and scoreInInt must not be null.
 /// Placer holder text is supposed to be smaller than or equal to score text.
 class ScoreTextOrPlaceholder extends StatelessWidget {
+  static const scorePlaceHolderText = '暂无';
+
   /// User rating as text
   final Optional<String> scoreText;
 
@@ -25,24 +27,24 @@ class ScoreTextOrPlaceholder extends StatelessWidget {
 
   ScoreTextOrPlaceholder.fromScoreInDouble(double scoreInDouble,
       {Key key,
-      this.placeholderText = '暂无',
-      this.placeholderAlignWithScore = true,
-      this.scoreTextStyle,
-      this.placeholderTextStyle})
+        this.placeholderText = scorePlaceHolderText,
+        this.placeholderAlignWithScore = true,
+        this.scoreTextStyle,
+        this.placeholderTextStyle})
       : this.scoreText = isValidDoubleScore(scoreInDouble)
-            ? Optional.of(scoreInDouble.toString())
-            : Optional.absent(),
+      ? Optional.of(scoreInDouble.toString())
+      : Optional.absent(),
         super(key: key);
 
   ScoreTextOrPlaceholder.fromScoreInInt(int scoreInInt,
       {Key key,
-      this.placeholderText = '暂无',
-      this.placeholderAlignWithScore = true,
-      this.scoreTextStyle,
-      this.placeholderTextStyle})
+        this.placeholderText = scorePlaceHolderText,
+        this.placeholderAlignWithScore = true,
+        this.scoreTextStyle,
+        this.placeholderTextStyle})
       : this.scoreText = isValidIntScore(scoreInInt)
-            ? Optional.of(scoreInInt.toString())
-            : Optional.absent(),
+      ? Optional.of(scoreInInt.toString())
+      : Optional.absent(),
         super(key: key);
 
   @override
@@ -63,13 +65,13 @@ class ScoreTextOrPlaceholder extends StatelessWidget {
                           fontSize: scoreSize, color: Colors.transparent)),
               hidden: true,
             ),
-            Text('暂无',
+            Text(placeholderText,
                 style: placeholderTextStyle ?? defaultCaptionText(context)),
           ],
         );
       }
 
-      return Text('暂无',
+      return Text(placeholderText,
           style: placeholderTextStyle ?? defaultCaptionText(context));
     }
 

@@ -30,6 +30,9 @@ class _$SubjectCollectionInfoPreviewSerializer
           specifiedType: const FullType(CollectionStatus)),
       'score',
       serializers.serialize(object.score, specifiedType: const FullType(int)),
+      'comment',
+      serializers.serialize(object.comment,
+          specifiedType: const FullType(String)),
     ];
 
     return result;
@@ -56,6 +59,10 @@ class _$SubjectCollectionInfoPreviewSerializer
           result.score = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'comment':
+          result.comment = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -68,12 +75,15 @@ class _$SubjectCollectionInfoPreview extends SubjectCollectionInfoPreview {
   final CollectionStatus status;
   @override
   final int score;
+  @override
+  final String comment;
 
   factory _$SubjectCollectionInfoPreview(
           [void Function(SubjectCollectionInfoPreviewBuilder) updates]) =>
       (new SubjectCollectionInfoPreviewBuilder()..update(updates)).build();
 
-  _$SubjectCollectionInfoPreview._({this.status, this.score}) : super._() {
+  _$SubjectCollectionInfoPreview._({this.status, this.score, this.comment})
+      : super._() {
     if (status == null) {
       throw new BuiltValueNullFieldError(
           'SubjectCollectionInfoPreview', 'status');
@@ -81,6 +91,10 @@ class _$SubjectCollectionInfoPreview extends SubjectCollectionInfoPreview {
     if (score == null) {
       throw new BuiltValueNullFieldError(
           'SubjectCollectionInfoPreview', 'score');
+    }
+    if (comment == null) {
+      throw new BuiltValueNullFieldError(
+          'SubjectCollectionInfoPreview', 'comment');
     }
   }
 
@@ -98,19 +112,22 @@ class _$SubjectCollectionInfoPreview extends SubjectCollectionInfoPreview {
     if (identical(other, this)) return true;
     return other is SubjectCollectionInfoPreview &&
         status == other.status &&
-        score == other.score;
+        score == other.score &&
+        comment == other.comment;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, status.hashCode), score.hashCode));
+    return $jf(
+        $jc($jc($jc(0, status.hashCode), score.hashCode), comment.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('SubjectCollectionInfoPreview')
           ..add('status', status)
-          ..add('score', score))
+          ..add('score', score)
+          ..add('comment', comment))
         .toString();
   }
 }
@@ -129,12 +146,17 @@ class SubjectCollectionInfoPreviewBuilder
   int get score => _$this._score;
   set score(int score) => _$this._score = score;
 
+  String _comment;
+  String get comment => _$this._comment;
+  set comment(String comment) => _$this._comment = comment;
+
   SubjectCollectionInfoPreviewBuilder();
 
   SubjectCollectionInfoPreviewBuilder get _$this {
     if (_$v != null) {
       _status = _$v.status;
       _score = _$v.score;
+      _comment = _$v.comment;
       _$v = null;
     }
     return this;
@@ -156,7 +178,8 @@ class SubjectCollectionInfoPreviewBuilder
   @override
   _$SubjectCollectionInfoPreview build() {
     final _$result = _$v ??
-        new _$SubjectCollectionInfoPreview._(status: status, score: score);
+        new _$SubjectCollectionInfoPreview._(
+            status: status, score: score, comment: comment);
     replace(_$result);
     return _$result;
   }

@@ -17,6 +17,8 @@ abstract class SubjectCollectionInfoPreview
 
   int get score;
 
+  String get comment;
+
   SubjectCollectionInfoPreview._();
 
   factory SubjectCollectionInfoPreview(

@@ -7,7 +7,7 @@ import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/UserActionTile.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
-import 'package:munin/widgets/subject/share/common.dart';
+import 'package:munin/widgets/subject/share/Common.dart';
 
 class SubjectReviewWidget extends StatelessWidget {
   static const commentMaxLines = 20;

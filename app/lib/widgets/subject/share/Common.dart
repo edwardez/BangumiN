@@ -4,6 +4,8 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewShare.dart';
 
+const generateCommentShareCardText = '生成评价分享卡片';
+
 showMoreActionsForReview({
   @required BuildContext context,
   @required BangumiSubject subject,
@@ -17,7 +19,7 @@ showMoreActionsForReview({
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  title: Text('生成评价分享卡片'),
+                  title: Text(generateCommentShareCardText),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(

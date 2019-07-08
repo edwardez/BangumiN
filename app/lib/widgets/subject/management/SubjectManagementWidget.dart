@@ -1,13 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
-import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/router/routes.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
-import 'package:munin/widgets/shared/common/SnackBar.dart';
+import 'package:munin/widgets/subject/common/Common.dart';
 
 class SubjectManagementWidget extends StatelessWidget {
   final BangumiSubject subject;
@@ -17,12 +15,6 @@ class SubjectManagementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String collectionActionText =
-        subject.userSubjectCollectionInfoPreview.status ==
-                CollectionStatus.Pristine
-            ? '加入'
-            : '编辑';
-
     return Column(
       children: <Widget>[
         Row(
@@ -54,19 +46,9 @@ class SubjectManagementWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
                 child: MuninOutlineButton(
-                  child: Text('$collectionActionText收藏'),
+                  child: Text(collectionActionText(subject)),
                   onPressed: () {
-                    showSnackBarOnSuccess(
-                        context,
-                        Application.router.navigateTo(
-                          context,
-                          Routes.subjectCollectionManagementRoute.replaceFirst(
-                              RoutesVariable.subjectIdParam,
-                              subject.id?.toString()),
-                          transition: TransitionType.nativeModal,
-                        ),
-                        hasSuccessfullyUpdatedCollection
-                    );
+                    navigateToSubjectCollection(context, subject);
                   },
                 ),
               ),

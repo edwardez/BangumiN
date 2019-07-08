@@ -160,20 +160,28 @@ class SubjectParser {
 
   SubjectCollectionInfoPreview parseSubjectCollectionInfoPreview(
     Element collectionStatusElement,
-    Element scoreElement,
+      DocumentFragment document,
   ) {
+    final scoreElement = document.querySelector('.rating[checked]');
+
     int score = scoreElement == null
         ? 0
         : tryParseInt(scoreElement.attributes['value']);
 
     CollectionStatus status =
-        CollectionStatus.guessCollectionStatusByChineseName(
-            collectionStatusElement.querySelector('.interest_now')?.text,
-            fallbackCollectionStatus: CollectionStatus.Pristine);
+    CollectionStatus.guessCollectionStatusByChineseName(
+        collectionStatusElement.querySelector('.interest_now')?.text,
+        fallbackCollectionStatus: CollectionStatus.Pristine);
+
+    final comment = document
+        .querySelector('textarea#comment')
+        ?.text ?? '';
 
     return SubjectCollectionInfoPreview((b) => b
       ..score = score
-      ..status = status);
+      ..status = status
+      ..comment = comment
+    );
   }
 
   BuiltList<Actor> parseActors(Element characterElement) {
@@ -614,7 +622,7 @@ class SubjectParser {
     Rating rating = parseRating(reviewElement);
 
     SubjectCollectionInfoPreview preview = parseSubjectCollectionInfoPreview(
-        reviewElement, document.querySelector('.rating[checked]'));
+        reviewElement, document);
 
     int rank = tryParseInt(
         document

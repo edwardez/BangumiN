@@ -117,7 +117,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
   Widget _buildPosterBody(BuildContext context) {
     if (paletteGenerator == null) {
       if (imageProcessingStatus.isException) {
-        String errorText = '生成海报失败';
+        String errorText = '生成分享卡片失败';
         if (imageProcessingStatus == RequestStatus.TimeoutException) {
           errorText += '，加载图片超时。';
         }
@@ -129,7 +129,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
 
       _updatePaletteGenerator(widget.subject.cover.small);
       return Center(
-        child: Text('正在生成海报...'),
+        child: Text('正在生成分享卡片...'),
       );
     }
 

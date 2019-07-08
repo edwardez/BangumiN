@@ -29,7 +29,7 @@ showHowToAddGroupDialog(BuildContext context) {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('如何添加想屏蔽的小组'),
-          content: Text('在app内长按小组图标会弹出"屏蔽此小组"选项，选择后即可屏蔽。\n\n'
+          content: Text('在app内长按帖子图标会弹出"屏蔽此小组"选项，选择后即可屏蔽。\n\n'
               '由于Bangumi的限制，目前暂时无法以搜索小组名的方式进行添加。'),
           actions: <Widget>[
             FlatButton(

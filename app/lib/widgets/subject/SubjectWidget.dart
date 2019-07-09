@@ -22,6 +22,7 @@ import 'package:munin/widgets/subject/mainpage/RelatedSubjectsPreview.dart';
 import 'package:munin/widgets/subject/mainpage/SubjectCoverAndBasicInfo.dart';
 import 'package:munin/widgets/subject/mainpage/SubjectRatingOverview.dart';
 import 'package:munin/widgets/subject/mainpage/SubjectSummary.dart';
+import 'package:munin/widgets/subject/mainpage/TankobonSubjectsPreview.dart';
 import 'package:munin/widgets/subject/management/SubjectManagementWidget.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
@@ -118,7 +119,12 @@ class SubjectWidget extends StatelessWidget {
         CharactersPreview(subject: subject),
       if (!isBuiltListMultimapNullOrEmpty(subject.relatedSubjects))
         RelatedSubjectsPreview(
-            subject: subject,
+            relatedSubjects: subject.relatedSubjects,
+            preferredSubjectInfoLanguage: preferredSubjectInfoLanguage),
+      if (subject.type == SubjectType.Book &&
+          !isIterableNullOrEmpty(subject.tankobonSubjects))
+        TankobonSubjectsPreview(
+            tankobonSubjects: subject.tankobonSubjects,
             preferredSubjectInfoLanguage: preferredSubjectInfoLanguage),
       CommentsPreview(subject: subject)
     ];

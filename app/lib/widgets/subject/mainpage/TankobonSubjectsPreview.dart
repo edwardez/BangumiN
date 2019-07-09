@@ -5,14 +5,15 @@ import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/widgets/subject/common/HorizontalRelatedSubjects.dart';
 import 'package:munin/widgets/subject/mainpage/SubjectMoreItemsEntry.dart';
 
-class RelatedSubjectsPreview extends StatelessWidget {
-  final BuiltListMultimap<String, RelatedSubject> relatedSubjects;
+class TankobonSubjectsPreview extends StatelessWidget {
+  final BuiltList<RelatedSubject> tankobonSubjects;
 
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
-  const RelatedSubjectsPreview({Key key,
-    @required this.relatedSubjects,
-    @required this.preferredSubjectInfoLanguage})
+  const TankobonSubjectsPreview(
+      {Key key,
+      @required this.tankobonSubjects,
+      @required this.preferredSubjectInfoLanguage})
       : super(key: key);
 
   @override
@@ -20,11 +21,15 @@ class RelatedSubjectsPreview extends StatelessWidget {
     return Column(
       children: <Widget>[
         SubjectMoreItemsEntry(
-          moreItemsText: '关联条目',
+          moreItemsText: '单行本',
         ),
         HorizontalRelatedSubjects(
-          relatedSubjects: relatedSubjects.values,
+          relatedSubjects: tankobonSubjects,
           preferredSubjectInfoLanguage: preferredSubjectInfoLanguage,
+
+          /// All tankobons share a same subtitle('单行本') hence no need
+          /// to display subtitle.
+          displaySubtitle: false,
         ),
       ],
     );

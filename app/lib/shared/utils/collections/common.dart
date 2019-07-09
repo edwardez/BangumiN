@@ -8,20 +8,20 @@ MapBuilder<K, V> newLruMapBuilder<K, V>({maximumSize = 100}) {
     ..withBase(() => LruMap<K, V>(maximumSize: maximumSize));
 }
 
-isIterableNullOrEmpty(Iterable iterable) {
+bool isIterableNullOrEmpty(Iterable iterable) {
   return iterable == null || iterable.isEmpty;
 }
 
-isMapNullOrEmpty(Map map) {
+bool isMapNullOrEmpty(Map map) {
   return map == null || map.isEmpty;
 }
 
-isBuiltListMultimapNullOrEmpty(BuiltListMultimap map) {
+bool isBuiltListMultimapNullOrEmpty(BuiltListMultimap map) {
   return map == null || map.isEmpty;
 }
 
 /// exception safe first element accessor, inspired by firstOrNull in kotlin
-firstOrNullInIterable<T>(Iterable<T> iterable) {
+T firstOrNullInIterable<T>(Iterable<T> iterable) {
   if (iterable == null || iterable.isEmpty) {
     return null;
   }
@@ -50,7 +50,7 @@ T lastOrNullInIterable<T>(Iterable<T> iterable) {
 }
 
 /// exception safe last element accessor, inspired by lastOrNull in kotlin
-lastOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
+T lastOrNullInNestedBuiltList<T>(BuiltList<BuiltList<T>> builtList) {
   if (builtList == null || builtList.isEmpty || builtList.last.isEmpty) {
     return null;
   }

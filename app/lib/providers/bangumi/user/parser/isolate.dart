@@ -24,8 +24,9 @@ class ParseUserCollectionsListMessage {
   final ListUserCollectionsRequest request;
   final String filterTag;
 
-  ParseUserCollectionsListMessage(this.rawHtml,
-      {@required this.requestedPageNumber,
-        @required this.request,
-        this.filterTag,});
+  ParseUserCollectionsListMessage(this.rawHtml, {
+    @required this.requestedPageNumber,
+    @required this.request,
+    this.filterTag,
+  });
 }

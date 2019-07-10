@@ -132,7 +132,8 @@ TimelineState deleteTimelineFeedSuccessReducer(
       action.getTimelineRequest.username == action.appUsername);
   int feedId = action?.feed?.user?.feedId;
 
-  TimelineState removeFeed(TimelineState localTimelineState, GetTimelineRequest request) {
+  TimelineState removeFeed(TimelineState localTimelineState,
+      GetTimelineRequest request) {
     FeedChunks feedChunks = localTimelineState.timeline[request];
     if (feedChunks == null) {
       return localTimelineState;
@@ -198,9 +199,8 @@ TimelineState deleteTimelineFeedSuccessReducer(
   }
 
   // finally removes it from fullPublicMessage if it's there.
-  timelineState = timelineState.rebuild(
-          (b) => b..fullPublicMessages.remove(feedId)
-  );
+  timelineState =
+      timelineState.rebuild((b) => b..fullPublicMessages.remove(feedId));
 
   return timelineState;
 }
@@ -209,9 +209,6 @@ TimelineState getFullPublicMessageSuccessReducer(TimelineState timelineState,
     GetFullPublicMessageSuccessAction action) {
   final id = action.fullPublicMessage.mainMessage.user.feedId;
 
-  return timelineState.rebuild((b) =>
-  b
-    ..fullPublicMessages.addAll({
-      id: action.fullPublicMessage
-    }));
+  return timelineState.rebuild(
+          (b) => b..fullPublicMessages.addAll({id: action.fullPublicMessage}));
 }

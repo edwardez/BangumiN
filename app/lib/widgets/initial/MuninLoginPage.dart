@@ -283,7 +283,6 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     await _initLoginData();
   }
 
-
   _submitLoginFormAndReportError() async {
     try {
       await _submitLoginForm();
@@ -291,8 +290,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       _resetDioAndRefreshCaptcha(popContext: true);
       errorText ??= '未知错误';
       reportError(error, stack: stack);
-      FirebaseAnalytics()
-          .logEvent(name: LoginErrorEvent.name);
+      FirebaseAnalytics().logEvent(name: LoginErrorEvent.name);
       showErrorDialog(title: errorText);
     }
   }
@@ -367,8 +365,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       if (authCookie == null ||
           sessionCookie == null ||
           expiresOnInSecondsStr == null) {
-        final errorMatch =
-        loginErrorPromptRegex.firstMatch(loginResponse.data);
+        final errorMatch = loginErrorPromptRegex.firstMatch(loginResponse.data);
 
         if (errorMatch == null) {
           // Try to find unknown error message element.
@@ -422,8 +419,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       final oauthBody = {
         'formhash': oauthXsrf,
         'redirect_uri': Application.environmentValue.bangumiRedirectUrl,
-        'client_id':
-        Application.environmentValue.bangumiOauthClientIdentifier,
+        'client_id': Application.environmentValue.bangumiOauthClientIdentifier,
         'submit': '授权',
       };
       oauthResponse = await dio.post(

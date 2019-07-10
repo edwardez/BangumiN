@@ -138,8 +138,6 @@ class _RequestInProgressIndicatorWidgetState
     findStore(context).dispatch(action);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     Widget body;

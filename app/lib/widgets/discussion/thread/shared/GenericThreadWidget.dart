@@ -257,10 +257,11 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                       .currentAuthenticatedUserBasicInfo
                       .avatar
                       .isUsingDefaultAvatar) {
-                    showMuninSingleActionDialog(context, dialogBody: '你目前正在'
-                        '使用默认头像，$userWithDefaultAvatarCannotPostReplyLabel'
-                        '（评论会被Bangumi自动隐藏）。\n'
-                        '请先在bangumi的网站里更新并上传一个任意的自定义头像。');
+                    showMuninSingleActionDialog(context,
+                        dialogBody: '你目前正在'
+                            '使用默认头像，$userWithDefaultAvatarCannotPostReplyLabel'
+                            '（评论会被Bangumi自动隐藏）。\n'
+                            '请先在bangumi的网站里更新并上传一个任意的自定义头像。');
                     return;
                   }
 

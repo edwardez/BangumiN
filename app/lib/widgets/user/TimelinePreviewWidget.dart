@@ -86,12 +86,12 @@ class TimelinePreviewWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Scaffold(
-                  body: MuninTimeline.onUserProfile(
-                    username: profile.basicInfo.username,
-                  ),
-                  floatingActionButton: _buildFloatingComposeMessageButton(
-                      context, profile.basicInfo.username),
-                ),
+              body: MuninTimeline.onUserProfile(
+                username: profile.basicInfo.username,
+              ),
+              floatingActionButton: _buildFloatingComposeMessageButton(
+                  context, profile.basicInfo.username),
+            ),
             settings: RouteSettings(
                 name: Routes.userProfileTimelineRoute
                     .replaceAll(':username', profile.basicInfo.username)),

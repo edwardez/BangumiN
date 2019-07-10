@@ -44,9 +44,5 @@ reportError(dynamic error, {
   DiagnosticsNode context,
 }) {
   FlutterError.reportError(FlutterErrorDetails(
-      exception: error,
-      stack: stack ??= StackTrace.current,
-      context: context
-  ));
-
+      exception: error, stack: stack ??= StackTrace.current, context: context));
 }

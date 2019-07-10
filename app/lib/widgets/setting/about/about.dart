@@ -42,8 +42,7 @@ void showMuninAboutDialog(BuildContext context) async {
             children: <TextSpan>[
               TextSpan(
                 style: aboutTextStyle,
-                text:
-                'BanguminN（读作Bangu-min或Bangumi-N）是一个基于Flutter开发的'
+                text: 'BanguminN（读作Bangu-min或Bangumi-N）是一个基于Flutter开发的'
                     'Bangumi第三方app。 ',
               ),
               TextSpan(

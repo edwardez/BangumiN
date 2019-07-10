@@ -82,7 +82,8 @@ class HorizontalCharacters extends StatelessWidget {
               .of(context)
               .textTheme
               .caption
-              .fontSize * calculatedTextScaleFactor,
+              .fontSize *
+              calculatedTextScaleFactor,
     );
   }
 }

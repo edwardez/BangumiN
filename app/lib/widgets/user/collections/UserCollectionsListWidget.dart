@@ -75,8 +75,9 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
         Padding(
           padding: EdgeInsets.only(left: smallOffset),
         ),
-        WrappableText('${user.basicInfo.nickname}$actionName'
-            '的${currentRequest.subjectType.chineseName}',
+        WrappableText(
+          '${user.basicInfo.nickname}$actionName'
+              '的${currentRequest.subjectType.chineseName}',
           textStyle: Theme
               .of(context)
               .textTheme

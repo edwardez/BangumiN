@@ -170,7 +170,9 @@ class SubjectParser {
 
     CollectionStatus status =
     CollectionStatus.guessCollectionStatusByChineseName(
-        collectionStatusElement.querySelector('.interest_now')?.text,
+        collectionStatusElement
+            .querySelector('.interest_now')
+            ?.text,
         fallbackCollectionStatus: CollectionStatus.Pristine);
 
     final comment = document
@@ -180,8 +182,7 @@ class SubjectParser {
     return SubjectCollectionInfoPreview((b) => b
       ..score = score
       ..status = status
-      ..comment = comment
-    );
+      ..comment = comment);
   }
 
   BuiltList<Actor> parseActors(Element characterElement) {
@@ -340,8 +341,6 @@ class SubjectParser {
     if (subjectType != SubjectType.Book) {
       return BuiltListMultimap<String, RelatedSubject>(relatedSubjects);
     }
-
-
 
     return BuiltListMultimap<String, RelatedSubject>(relatedSubjects);
   }
@@ -547,10 +546,12 @@ class SubjectParser {
   }
 
   SubjectStatus _parseSubjectStatus(DocumentFragment document) {
-    final containsLockedKeyWord = document
-        .querySelector('#headerSubject')
-        ?.text
-        ?.contains('条目已锁定') ?? false;
+    final containsLockedKeyWord =
+        document
+            .querySelector('#headerSubject')
+            ?.text
+            ?.contains('条目已锁定') ??
+            false;
     var subjectStatus;
     if (containsLockedKeyWord) {
       subjectStatus = SubjectStatus.LockedForCollection;
@@ -621,8 +622,8 @@ class SubjectParser {
 
     Rating rating = parseRating(reviewElement);
 
-    SubjectCollectionInfoPreview preview = parseSubjectCollectionInfoPreview(
-        reviewElement, document);
+    SubjectCollectionInfoPreview preview =
+    parseSubjectCollectionInfoPreview(reviewElement, document);
 
     int rank = tryParseInt(
         document
@@ -644,8 +645,7 @@ class SubjectParser {
     BuiltListMultimap<String, RelatedSubject> relatedSubjects =
     _parseRelatedSubjects(document, subjectType);
 
-    final tankobonSubjects =
-    _parseTankobonSubjects(document, subjectType);
+    final tankobonSubjects = _parseTankobonSubjects(document, subjectType);
 
     String summary = document.querySelector('#subject_summary')?.text ?? '暂无简介';
 

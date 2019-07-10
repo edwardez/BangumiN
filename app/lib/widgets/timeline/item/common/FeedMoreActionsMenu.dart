@@ -3,6 +3,7 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
+
 buildTrailingWidget(TimelineFeed feed, DeleteFeedCallback onDeleteFeed) {
   if (onDeleteFeed == null) {
     return null;

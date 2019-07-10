@@ -30,10 +30,12 @@ class SearchHomeDelegate extends SearchDelegate {
     );
   }
 
-
   @override
   ThemeData appBarTheme(BuildContext context) {
-    if (findAppState(context).settingState.themeSetting.currentTheme
+    if (findAppState(context)
+        .settingState
+        .themeSetting
+        .currentTheme
         .isDarkTheme) {
       final ThemeData theme = Theme.of(context);
       return theme.copyWith(
@@ -46,7 +48,6 @@ class SearchHomeDelegate extends SearchDelegate {
       return super.appBarTheme(context);
     }
   }
-
 
   @override
   Widget buildSuggestions(BuildContext context) {

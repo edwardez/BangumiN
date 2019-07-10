@@ -17,8 +17,8 @@ void navigateToSubjectCollection(BuildContext context, int subjectId) {
       context,
       Application.router.navigateTo(
         context,
-        Routes.subjectCollectionManagementRoute.replaceFirst(
-            RoutesVariable.subjectIdParam, subjectId?.toString()),
+        Routes.subjectCollectionManagementRoute
+            .replaceFirst(RoutesVariable.subjectIdParam, subjectId?.toString()),
         transition: TransitionType.nativeModal,
       ),
       hasSuccessfullyUpdatedCollection);

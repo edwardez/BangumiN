@@ -27,8 +27,10 @@ class ParseDiscussionMessage {
 
   final Set<int> mutedUserIds;
 
-  ParseDiscussionMessage(this.html, this.mutedGroups,
-      this.mutedUserIds, this.muteOriginalPosterWithDefaultIcon,);
+  ParseDiscussionMessage(this.html,
+      this.mutedGroups,
+      this.mutedUserIds,
+      this.muteOriginalPosterWithDefaultIcon,);
 }
 
 BlogThread processBlogThread(ParseThreadMessage message) {

@@ -155,7 +155,6 @@ class BangumiTimelineService {
       'submit': 'submit',
     };
 
-
     Response response = await cookieClient.dio.post(
       '/timeline/$feedId/new_reply?ajax=1',
       data: formData,

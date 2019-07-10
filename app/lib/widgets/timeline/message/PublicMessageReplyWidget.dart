@@ -65,12 +65,11 @@ class PublicMessageReplyWidget extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => PublicMessageReplyComposer(
-                            mainMessage: mainMessage,
-                            widgetOnTop: buildQuotedTextWidget(
-                                publicMessageReply.contentHtml),
-                            initialText:
-                                '@${publicMessageReply.author.username} ',
-                          ),
+                        mainMessage: mainMessage,
+                        widgetOnTop: buildQuotedTextWidget(
+                            publicMessageReply.contentHtml),
+                        initialText: '@${publicMessageReply.author.username} ',
+                      ),
                     ),
                   ),
                   onReplySuccessText);

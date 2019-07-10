@@ -80,7 +80,10 @@ class SubjectRatingOverview extends StatelessWidget {
     return InkWell(
       child: friendScoreWidget,
       onTap: () {
-        _navigateToReviews(context, friendOnly: true,);
+        _navigateToReviews(
+          context,
+          friendOnly: true,
+        );
       },
     );
   }
@@ -103,14 +106,18 @@ class SubjectRatingOverview extends StatelessWidget {
           ListTile(
             title: Text('查看用户评论'),
             onTap: () {
-              _navigateToReviews(context, popContext: true,);
+              _navigateToReviews(
+                context,
+                popContext: true,
+              );
             },
           ),
           ListTile(
             title: Text('$goToForsetiPrompt查看统计数据'),
             onTap: () {
-              launch('https://${Application.environmentValue
-                  .forsetiMainHost}/subject/${subject.id}/statistics');
+              launch(
+                  'https://${Application.environmentValue
+                      .forsetiMainHost}/subject/${subject.id}/statistics');
             },
           ),
         ]);

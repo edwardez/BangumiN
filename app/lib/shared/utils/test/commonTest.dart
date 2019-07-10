@@ -13,11 +13,8 @@ void main() {
       expect(firstNChars('12345', 2, trailingOverflowText: '...'), '..');
     });
 
-    test(
-        'Skips stripping input if firstN is longer than input',
-            () {
-          expect(
-              firstNChars('12345', 100, trailingOverflowText: '...'), '12345');
-        });
+    test('Skips stripping input if firstN is longer than input', () {
+      expect(firstNChars('12345', 100, trailingOverflowText: '...'), '12345');
+    });
   });
 }

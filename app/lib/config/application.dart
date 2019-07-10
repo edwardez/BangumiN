@@ -205,7 +205,6 @@ abstract class Application {
       persistedAppState = AppState();
     }
 
-
     bool isAuthenticated = bangumiCookieService.hasCookieCredential &&
         bangumiOauthService.hasOauthClient;
     persistedAppState =

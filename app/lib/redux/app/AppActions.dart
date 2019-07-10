@@ -10,7 +10,10 @@ class PersistAppStateAction {
   /// [Store] will be used.
   final AppState appState;
 
-  PersistAppStateAction({this.basicAppStateOnly = false, this.appState,});
+  PersistAppStateAction({
+    this.basicAppStateOnly = false,
+    this.appState,
+  });
 }
 
 class HandleErrorAction {

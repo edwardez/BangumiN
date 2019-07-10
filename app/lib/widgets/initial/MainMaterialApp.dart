@@ -21,11 +21,11 @@ class MainMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
-            muninTheme: store.state.settingState.themeSetting.currentTheme,
-            isAuthenticated: store.state.isAuthenticated,
-            generalSetting: store.state.settingState.generalSetting,
-            privacySetting: store.state.settingState.privacySetting,
-          ),
+        muninTheme: store.state.settingState.themeSetting.currentTheme,
+        isAuthenticated: store.state.isAuthenticated,
+        generalSetting: store.state.settingState.generalSetting,
+        privacySetting: store.state.settingState.privacySetting,
+      ),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
         return MaterialApp(

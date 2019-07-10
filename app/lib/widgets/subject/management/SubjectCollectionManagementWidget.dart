@@ -154,8 +154,7 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showMuninYesNoDialog(context, title: '确认放弃编辑这份收藏？') ??
-        false;
+    return await showMuninYesNoDialog(context, title: '确认放弃编辑这份收藏？') ?? false;
   }
 
   /// Listens to comment controller, set [_isCommentFieldValid] if form is currently invalid
@@ -559,11 +558,14 @@ class _SubjectCollectionManagementWidgetState
         return ScaffoldWithRegularAppBar(
           appBar: AppBar(
             title: vm.subject != null
-                ? Text(preferredNameFromSubjectBase(
-                vm.subject, vm.preferredSubjectInfoLanguage), style: Theme
-                .of(context)
-                .textTheme
-                .body2,)
+                ? Text(
+              preferredNameFromSubjectBase(
+                  vm.subject, vm.preferredSubjectInfoLanguage),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body2,
+            )
                 : Text('-'),
             actions: <Widget>[
               Builder(

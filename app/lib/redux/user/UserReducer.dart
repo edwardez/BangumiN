@@ -44,8 +44,8 @@ UserState listUserCollectionsSuccessReducer(UserState userState,
       // through it might be inefficient. Maybe looping the smaller data set
       // instead?
       for (var collection in responseInStore.collections.values) {
-        updatedCollectionsInStore.rebuild((b) =>
-            b.putIfAbsent(collection.subject.id, () => collection));
+        updatedCollectionsInStore.rebuild(
+                (b) => b.putIfAbsent(collection.subject.id, () => collection));
       }
     }
 

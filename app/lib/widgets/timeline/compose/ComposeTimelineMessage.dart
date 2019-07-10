@@ -75,8 +75,7 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
       return true;
     }
 
-    return await showMuninYesNoDialog(context, title: '确认放弃编辑这条消息？') ??
-        false;
+    return await showMuninYesNoDialog(context, title: '确认放弃编辑这条消息？') ?? false;
   }
 
   @override
@@ -146,8 +145,8 @@ class _ViewModel {
 
   factory _ViewModel.fromStore(Store<AppState> store) {
     Future<void> _createTimelineMessage(BuildContext context, String message) {
-      final action =
-      CreateMainPublicMessageRequestAction(context: context, message: message);
+      final action = CreateMainPublicMessageRequestAction(
+          context: context, message: message);
       store.dispatch(action);
 
       return action.completer.future;

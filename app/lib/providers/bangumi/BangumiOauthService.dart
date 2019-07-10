@@ -70,7 +70,6 @@ class BangumiOauthService {
     @required String sessionCookie,
     @required String userAgent,
     @required String expiresOnInSecondsStr,
-
   }) async {
     this._cookieClient.updateBangumiAuthInfo(
         authCookie: authCookie,

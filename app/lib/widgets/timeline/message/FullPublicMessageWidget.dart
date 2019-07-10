@@ -115,10 +115,11 @@ class FullPublicMessageWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PublicMessageReplyComposer(
-                        mainMessage: mainMessage,
-                        widgetOnTop: PublicMessageReplyWidget.buildQuotedTextWidget(
-                            '${mainMessage.user.nickName}: ${mainMessage.contentHtml}'),
-                      ),
+                    mainMessage: mainMessage,
+                    widgetOnTop: PublicMessageReplyWidget.buildQuotedTextWidget(
+                        '${mainMessage.user.nickName}: ${mainMessage
+                            .contentHtml}'),
+                  ),
                 ),
               ),
               onReplySuccessText,
@@ -135,9 +136,9 @@ class FullPublicMessageWidget extends StatelessWidget {
 
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(
-            store,
-            mainMessage,
-          ),
+        store,
+        mainMessage,
+      ),
       distinct: true,
       onInit: (store) {
         final action =

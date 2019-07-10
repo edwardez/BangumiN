@@ -74,8 +74,7 @@ class MoreActions extends StatelessWidget {
                     if (maybeWebUrl.isPresent) {
                       launch(maybeWebUrl.value);
                     } else {
-                      showTextOnSnackBar(
-                          context, '网址无效');
+                      showTextOnSnackBar(context, '网址无效');
                     }
                     Navigator.of(context).pop();
                   },

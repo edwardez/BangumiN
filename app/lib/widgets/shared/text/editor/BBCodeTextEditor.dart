@@ -42,7 +42,6 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
     messageController ??= TextEditingController(text: '');
   }
 
-
   /// Inserts a markup after [previousSelection.baseOffset], or if
   /// [previousSelection.baseOffset] is smaller than 0, inserts [text] at the
   /// start. [rightInsertion] is an optional parameter.

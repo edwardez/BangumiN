@@ -208,8 +208,7 @@ Stream<dynamic> _getTimelineEpic(
     /// For loading older feeds, error messages are directly shown on item list
     if (action.feedLoadType == FeedLoadType.Initial ||
         action.feedLoadType == FeedLoadType.Newer) {
-      showTextOnSnackBar(
-          action.context, error.toString());
+      showTextOnSnackBar(action.context, error.toString());
     }
   } finally {
     completeDanglingCompleter(action.completer);

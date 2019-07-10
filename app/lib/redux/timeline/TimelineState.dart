@@ -14,7 +14,6 @@ abstract class TimelineState
     implements Built<TimelineState, TimelineStateBuilder> {
   BuiltMap<GetTimelineRequest, FeedChunks> get timeline;
 
-
   BuiltMap<int, FullPublicMessage> get fullPublicMessages;
 
   TimelineState._();
@@ -22,8 +21,8 @@ abstract class TimelineState
   factory TimelineState([updates(TimelineStateBuilder b)]) =>
       _$TimelineState((b) => b
         ..timeline.replace(BuiltMap<GetTimelineRequest, FeedChunks>())
-        ..fullPublicMessages.replace(
-            BuiltMap<int, BuiltList<FullPublicMessage>>())
+        ..fullPublicMessages
+            .replace(BuiltMap<int, BuiltList<FullPublicMessage>>())
         ..update(updates));
 
   String toJson() {

@@ -162,12 +162,10 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                           Application.router.navigateTo(
                               context,
                               Routes.subjectCollectionManagementRoute
-                                  .replaceFirst(
-                                  RoutesVariable.subjectIdParam,
+                                  .replaceFirst(RoutesVariable.subjectIdParam,
                                   collection.subject.id.toString()),
                               transition: TransitionType.nativeModal),
-                          hasSuccessfullyUpdatedCollection
-                      );
+                          hasSuccessfullyUpdatedCollection);
                     },
                     child: Text("编辑"),
                   ),

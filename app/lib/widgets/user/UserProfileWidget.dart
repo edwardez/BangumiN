@@ -61,7 +61,8 @@ class UserProfileWidget extends StatelessWidget {
         onTap: () {
           vm.unMuteUser();
           showTextOnSnackBar(
-              context, '${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，'
+              context,
+              '${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，'
               '下次刷新数据后生效');
           Navigator.of(context).pop();
         },

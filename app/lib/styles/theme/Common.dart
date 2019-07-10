@@ -62,7 +62,8 @@ Color defaultCaptionTextColorOrFallback(BuildContext context) {
 TextStyle captionTextWithHigherOpacity(BuildContext context,
     [double scale = 1.25]) {
   return captionTextWithCustomizedOpacity(
-    context, scale,
+    context,
+    scale,
   );
 }
 

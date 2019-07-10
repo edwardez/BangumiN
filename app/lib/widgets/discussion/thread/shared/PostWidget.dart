@@ -10,7 +10,6 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
-import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/shared/Constants.dart';
 import 'package:munin/widgets/discussion/thread/shared/CopyPostContent.dart';
@@ -71,14 +70,10 @@ class PostWidget extends StatelessWidget {
     bool shouldDisableEdit =
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
-    final textStyle =
-    shouldDisableEdit ? captionTextWithBody1Size(context) : null;
-
     return ListTile(
       leading: Icon(OMIcons.edit),
       title: Text(
         '编辑此回复',
-        style: textStyle,
       ),
       subtitle: shouldDisableEdit
           ? Text(
@@ -98,6 +93,7 @@ class PostWidget extends StatelessWidget {
           'https://${Application.environmentValue.bangumiMainHost}$subUrl',
         );
       },
+      enabled: !shouldDisableEdit,
     );
   }
 
@@ -105,14 +101,10 @@ class PostWidget extends StatelessWidget {
     bool shouldDisableDelete =
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
-    final textStyle =
-    shouldDisableDelete ? captionTextWithBody1Size(context) : null;
-
     return ListTile(
       leading: Icon(OMIcons.delete),
       title: Text(
         '删除此回复',
-        style: textStyle,
       ),
       subtitle: shouldDisableDelete
           ? Text(
@@ -135,6 +127,7 @@ class PostWidget extends StatelessWidget {
           onDeletePost(post);
         }
       },
+      enabled: !shouldDisableDelete,
     );
   }
 

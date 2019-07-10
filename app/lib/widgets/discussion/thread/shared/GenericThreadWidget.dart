@@ -10,11 +10,13 @@ import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
+import 'package:munin/widgets/discussion/thread/shared/Constants.dart';
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
@@ -25,6 +27,7 @@ import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
+import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/ExpandableText.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -250,6 +253,17 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
               IconButton(
                 icon: Icon(OMIcons.reply),
                 onPressed: () {
+                  if (findAppState(context)
+                      .currentAuthenticatedUserBasicInfo
+                      .avatar
+                      .isUsingDefaultAvatar) {
+                    showMuninSingleActionDialog(context, dialogBody: '你目前正在'
+                        '使用默认头像，$userWithDefaultAvatarCannotPostReplyLabel'
+                        '（评论会被Bangumi自动隐藏）。\n'
+                        '请先在bangumi的网站里更新并上传一个任意的自定义头像。');
+                    return;
+                  }
+
                   showSnackBarOnSuccess(
                     context,
                     Navigator.push<bool>(

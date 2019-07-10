@@ -8,9 +8,11 @@ import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
+import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
+import 'package:munin/widgets/discussion/thread/shared/Constants.dart';
 import 'package:munin/widgets/discussion/thread/shared/CopyPostContent.dart';
 import 'package:munin/widgets/discussion/thread/shared/UserWithPostContent.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
@@ -122,7 +124,7 @@ class PostWidget extends StatelessWidget {
           : () async {
         Navigator.pop(context);
 
-        final confirmation = await showMuninConfirmActionDialog(
+        final confirmation = await showMuninYesNoDialog(
           context,
           title: '确认删除此回复？',
           dialogBody: '删除后将不可恢复',
@@ -137,6 +139,50 @@ class PostWidget extends StatelessWidget {
   }
 
   _showMoreActionsBottomSheet(BuildContext context,) {
+    Widget _buildReplyOption() {
+      const replyLabel = '回复';
+      if (findAppState(context)
+          .currentAuthenticatedUserBasicInfo
+          .avatar
+          .isUsingDefaultAvatar) {
+        return ListTile(
+          leading: Icon(OMIcons.reply),
+          title: Text(
+            replyLabel,
+          ),
+          subtitle: Text(
+            userWithDefaultAvatarCannotPostReplyLabel,
+          ),
+          enabled: false,
+        );
+      }
+
+      return ListTile(
+        leading: Icon(OMIcons.reply),
+        title: Text(replyLabel),
+        onTap: () async {
+          Navigator.pop(context);
+
+          showSnackBarOnSuccess(
+            context,
+            Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    DiscussionReplyWidgetComposer.forCreateReply(
+                      threadType:
+                      ThreadType.fromBangumiContent(parentBangumiContentType),
+                      targetPost: post,
+                      threadId: threadId,
+                    ),
+              ),
+            ),
+            '$replyLabel成功',
+          );
+        },
+      );
+    }
+
     showMinHeightModalBottomSheet(
       context,
       [
@@ -163,35 +209,11 @@ class PostWidget extends StatelessWidget {
               if (postContent != null) {
                 ClipboardService.copyAsPlainText(context, postContent);
               } else {
-                showTextOnSnackBar(
-                    context, '当前无法复制楼层链接');
+                showTextOnSnackBar(context, '当前无法复制楼层链接');
               }
             },
           ),
-        ListTile(
-          leading: Icon(OMIcons.reply),
-          title: Text('回复'),
-          onTap: () async {
-            Navigator.pop(context);
-
-            showSnackBarOnSuccess(
-              context,
-              Navigator.push<bool>(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      DiscussionReplyWidgetComposer.forCreateReply(
-                        threadType: ThreadType.fromBangumiContent(
-                            parentBangumiContentType),
-                        targetPost: post,
-                        threadId: threadId,
-                      ),
-                ),
-              ),
-              '回复成功',
-            );
-          },
-        ),
+        _buildReplyOption(),
         // Disable deleting thread for now as it's not a critical feature
         // and we lack a good way to test it.
         if (appUsername == post.author.username && post is! OriginalPost) ...[

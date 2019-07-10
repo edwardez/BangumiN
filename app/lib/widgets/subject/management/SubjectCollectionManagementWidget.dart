@@ -154,7 +154,7 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showMuninConfirmActionDialog(context, title: '确认放弃编辑这份收藏？') ??
+    return await showMuninYesNoDialog(context, title: '确认放弃编辑这份收藏？') ??
         false;
   }
 

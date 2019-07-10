@@ -118,7 +118,7 @@ class _SubjectCollectionDeletionWidgetState
     return ListTile(
       title: Text('删除收藏'),
       onTap: () async {
-        bool confirmDeletion = await showMuninConfirmActionDialog(
+        bool confirmDeletion = await showMuninYesNoDialog(
           context,
           title: '确认删除收藏？',
           dialogBody: '将从Bangumi上删除这部作品的收藏，此操作不可逆。',

@@ -128,7 +128,7 @@ class _TextComposerState extends State<TextComposer> {
 
   Future<bool> _onDiscardReply() async {
     if (isNotEmpty(messageController.text)) {
-      return await showMuninConfirmActionDialog(context,
+      return await showMuninYesNoDialog(context,
               title: '确认放弃发表这个回复？') ??
           false;
     }

@@ -8,10 +8,13 @@ part 'BangumiUserAvatar.g.dart';
 
 abstract class BangumiUserAvatar
     implements Built<BangumiUserAvatar, BangumiUserAvatarBuilder> {
+  static const _defaultLargeIconProtocolLessUrl =
+      'lain.bgm.tv/pic/user/l/icon.jpg';
+
   BangumiUserAvatar._();
 
   factory BangumiUserAvatar([updates(BangumiUserAvatarBuilder b)]) =
-      _$BangumiUserAvatar;
+  _$BangumiUserAvatar;
 
   @BuiltValueField(wireName: 'large')
   String get large;
@@ -21,6 +24,14 @@ abstract class BangumiUserAvatar
 
   @BuiltValueField(wireName: 'small')
   String get small;
+
+  bool get isUsingDefaultAvatar {
+    if (large.contains(_defaultLargeIconProtocolLessUrl)) {
+      return true;
+    }
+
+    return false;
+  }
 
   String toJson() {
     return json

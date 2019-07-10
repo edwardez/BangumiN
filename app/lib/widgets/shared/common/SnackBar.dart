@@ -9,16 +9,12 @@ void showSnackBarOnSuccess(
 ) async {
   final hasSucceeded = await future;
   if (hasSucceeded == true) {
-    showTextOnSnackBar(
-        context, successText);
+    showTextOnSnackBar(context, successText);
   }
 }
 
-void showTextOnSnackBar(BuildContext context,
-    String text,
-    {
-      Duration duration = snackBarDisplayDuration
-    }) async {
+void showTextOnSnackBar(BuildContext context, String text,
+    {Duration duration = snackBarDisplayDuration}) async {
   Scaffold.of(context).showSnackBar(SnackBar(
     content: Text(text),
     duration: duration,

@@ -17,6 +17,7 @@ final ThemeData nightDeepGreyBlueThemeData = ThemeData(
     valueIndicatorTextStyle: ThemeData().textTheme.body2,
     primaryColorLight: Colors.lightBlueAccent.shade100,
   ),
+  snackBarTheme: SnackBarThemeData().copyWith(backgroundColor: Colors.black),
   accentColor: Colors.lightBlueAccent,
   toggleableActiveColor: Colors.lightBlueAccent,
 );

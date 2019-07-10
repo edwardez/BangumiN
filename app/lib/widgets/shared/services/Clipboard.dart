@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 
 class ClipboardService {
   /// Copies input text to clipboard and show a snackbar message upon success or failure
@@ -17,11 +18,9 @@ class ClipboardService {
       if (popContext) {
         Navigator.pop(context);
       }
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(successMessage), duration: duration));
+      showTextOnSnackBar(context, successMessage, duration: duration);
     } catch (exception) {
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(failureMessage), duration: duration));
+      showTextOnSnackBar(context, failureMessage, duration: duration);
     }
   }
 

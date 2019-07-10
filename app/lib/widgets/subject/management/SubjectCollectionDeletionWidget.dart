@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/subject/management/SubjectCollectionDeletionWaitingDialog.dart';
 
@@ -138,10 +139,8 @@ class _SubjectCollectionDeletionWidgetState
 
             _popUntilCollectionDialogIsClosed(context);
           } catch (error) {
-            Scaffold.of(widget.outerScaffoldContext ?? context)
-                .showSnackBar(SnackBar(
-              content: Text('删除收藏失败'),
-            ));
+            showTextOnSnackBar(
+                widget.outerScaffoldContext ?? context, '删除收藏失败');
             _popUntilCollectionDialog(context);
           }
         } else {

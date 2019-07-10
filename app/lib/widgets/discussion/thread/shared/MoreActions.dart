@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -73,9 +74,8 @@ class MoreActions extends StatelessWidget {
                     if (maybeWebUrl.isPresent) {
                       launch(maybeWebUrl.value);
                     } else {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text('网址无效'),
-                      ));
+                      showTextOnSnackBar(
+                          context, '网址无效');
                     }
                     Navigator.of(context).pop();
                   },

@@ -20,6 +20,7 @@ import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -207,8 +208,8 @@ Stream<dynamic> _getTimelineEpic(
     /// For loading older feeds, error messages are directly shown on item list
     if (action.feedLoadType == FeedLoadType.Initial ||
         action.feedLoadType == FeedLoadType.Newer) {
-      Scaffold.of(action.context)
-          .showSnackBar(SnackBar(content: Text(error.toString())));
+      showTextOnSnackBar(
+          action.context, error.toString());
     }
   } finally {
     completeDanglingCompleter(action.completer);

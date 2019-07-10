@@ -16,6 +16,7 @@ import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/user/CollectionPreviewWidget.dart';
@@ -59,10 +60,9 @@ class UserProfileWidget extends StatelessWidget {
         title: Text('解除屏蔽'),
         onTap: () {
           vm.unMuteUser();
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content:
-                Text("${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，下次刷新数据后生效"),
-          ));
+          showTextOnSnackBar(
+              context, '${vm.userProfile.basicInfo.nickname} 将会被解除屏蔽，'
+              '下次刷新数据后生效');
           Navigator.of(context).pop();
         },
       );
@@ -72,10 +72,8 @@ class UserProfileWidget extends StatelessWidget {
         title: Text('屏蔽此用户'),
         onTap: () {
           vm.muteUser();
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content:
-                Text("${vm.userProfile.basicInfo.nickname} 将会被屏蔽，下次刷新数据后生效"),
-          ));
+          showTextOnSnackBar(
+              context, '${vm.userProfile.basicInfo.nickname} 将会被屏蔽， 下次刷新数据后生效');
           Navigator.of(context).pop();
         },
       );
@@ -112,8 +110,9 @@ class UserProfileWidget extends StatelessWidget {
                     title: Text('$goToForsetiPrompt查看统计数据'),
                     onTap: () {
                       Navigator.of(context).pop();
-                      launch('https://${Application.environmentValue
-                          .forsetiMainHost}/user/$username/statistics');
+                      launch(
+                          'https://${Application.environmentValue
+                              .forsetiMainHost}/user/$username/statistics');
                     },
                   ),
                   _buildMuteAction(outerContext, vm),

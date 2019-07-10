@@ -9,6 +9,7 @@ import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 
 /// A general-purpose widget to show a [CircularProgressIndicator] if the request
@@ -116,10 +117,7 @@ class _RequestInProgressIndicatorWidgetState
         } else if (result == GeneralExceptionHandlerResult.Skipped) {
           return;
         }
-
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(formatErrorMessage(error)),
-        ));
+        showTextOnSnackBar(context, formatErrorMessage(error));
       },
     );
   }

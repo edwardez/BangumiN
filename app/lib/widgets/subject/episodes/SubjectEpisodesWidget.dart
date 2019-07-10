@@ -18,11 +18,11 @@ import 'package:munin/widgets/shared/chips/StrokeChip.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/text/MuninTextSpans.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
-import 'package:quiver/time.dart';
 import 'package:redux/redux.dart';
 
 typedef UpdateSingleSubjectEpisode = Function({
@@ -222,10 +222,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
         }
 
         // Reaching the end means request has been sent, showing a snack bar.
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('已发送请求'),
-          duration: aSecond,
-        ));
+        showTextOnSnackBar(context, '已发送请求');
       },
     );
   }

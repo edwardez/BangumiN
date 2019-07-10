@@ -7,10 +7,12 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-List<Epic<AppState>> createAppEpics(SharedPreferenceService sharedPreferenceService) {
+List<Epic<AppState>> createAppEpics(
+    SharedPreferenceService sharedPreferenceService) {
   final persistStateEpic = _createPersistStateEpic(sharedPreferenceService);
   final handleErrorEpic = _createHandleErrorEpic();
 
@@ -40,7 +42,8 @@ Stream<dynamic> _persistState(EpicStore<AppState> store,
   }
 }
 
-Epic<AppState> _createPersistStateEpic(SharedPreferenceService sharedPreferenceService) {
+Epic<AppState> _createPersistStateEpic(
+    SharedPreferenceService sharedPreferenceService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
     return Observable(actions)
         .ofType(TypeToken<PersistAppStateAction>())
@@ -49,7 +52,8 @@ Epic<AppState> _createPersistStateEpic(SharedPreferenceService sharedPreferenceS
   };
 }
 
-Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store, HandleErrorAction action) async* {
+Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
+    HandleErrorAction action) async* {
   try {
     bool inDev = Application.environmentValue.environmentType ==
         EnvironmentType.Development;
@@ -81,9 +85,7 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store, HandleErrorAction ac
     }
 
     if (action.showErrorMessageSnackBar) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(formatErrorMessage(error)),
-      ));
+      showTextOnSnackBar(context, formatErrorMessage(error));
     }
   } catch (error, stack) {
     reportError(error, stack: stack);

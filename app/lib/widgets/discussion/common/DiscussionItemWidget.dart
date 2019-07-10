@@ -7,6 +7,7 @@ import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/rakuen/AdaptiveReplyCountIndicator.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -62,9 +63,8 @@ class DiscussionItemWidget extends StatelessWidget {
         title: Text('解除屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onUnmute(discussionItem);
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效"),
-          ));
+          showTextOnSnackBar(
+              context, '${discussionItem.subTitle} 将会被解除屏蔽，下次刷新数据后生效');
           Navigator.of(context).pop();
         },
       );
@@ -74,9 +74,8 @@ class DiscussionItemWidget extends StatelessWidget {
         title: Text('屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onMute(discussionItem);
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效"),
-          ));
+          showTextOnSnackBar(
+              context, '${discussionItem.subTitle} 将会被屏蔽，下次刷新数据后生效');
           Navigator.of(context).pop();
         },
       );

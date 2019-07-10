@@ -9,9 +9,8 @@ void showSnackBarOnSuccess(
 ) async {
   final hasSucceeded = await future;
   if (hasSucceeded == true) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(successText),
-    ));
+    showTextOnSnackBar(
+        context, successText);
   }
 }
 

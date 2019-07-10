@@ -14,6 +14,7 @@ import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/shared/workarounds/munin_permission_handler/lib/permission_handler.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewPoster.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -178,9 +179,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
             onPressed: () async {
               var status = await checkAndRequestPermissionOnAndroid();
               if (status == PermissionStatus.denied) {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('保存失败：没有写入图片的权限。'),
-                ));
+                showTextOnSnackBar(context, '保存失败：没有写入图片的权限。');
                 return;
               }
 
@@ -188,13 +187,9 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
                   await _shareWidgetKey.currentState.capturePng();
               final result = await ImageGallerySaver.save(uint8List);
               if (result) {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('保存成功'),
-                ));
+                showTextOnSnackBar(context, '保存成功');
               } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('保存失败，可能因为没有权限或其它错误。'),
-                ));
+                showTextOnSnackBar(context, '保存失败，可能因为没有权限或其它错误。');
               }
             },
           ),

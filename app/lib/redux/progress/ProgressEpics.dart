@@ -12,6 +12,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -172,8 +173,7 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
         newEpisodeNumber: action.newEpisodeNumber,
         newVolumeNumber: action.newVolumeNumber,
       );
-      Scaffold.of(action.context).showSnackBar(
-          SnackBar(content: Text(action.toActionSuccessString())));
+      showTextOnSnackBar(action.context, action.toActionSuccessString());
     }
   } catch (error, stack) {
     yield HandleErrorAction(

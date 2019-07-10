@@ -163,9 +163,8 @@ class PostWidget extends StatelessWidget {
               if (postContent != null) {
                 ClipboardService.copyAsPlainText(context, postContent);
               } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('当前无法复制楼层链接'),
-                ));
+                showTextOnSnackBar(
+                    context, '当前无法复制楼层链接');
               }
             },
           ),

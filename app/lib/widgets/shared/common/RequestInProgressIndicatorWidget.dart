@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
-import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/router/routes.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
@@ -26,8 +25,9 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
   /// A message to show if the request is in progress
   final String requestInProgressMessageOnAppBar;
 
-  /// A message to show if request ends up with an error
-  final String requestGeneralErrorMessageOnSnackBar;
+  /// A message to be displayed on page if request ends up with an error.
+  /// If unset, error message will be obtained by calling [formatErrorMessage]
+  final String requestErrorMessage;
 
   /// Message on the retry button, the button will let user retry previous request
   /// If [refreshAction] is set to null, retry button won't be built hence messages
@@ -54,7 +54,7 @@ class RequestInProgressIndicatorWidget extends StatefulWidget {
     this.refreshAction,
     this.showOnlyRequestIndicatorBody = false,
     this.requestInProgressMessageOnAppBar = '加载中',
-    this.requestGeneralErrorMessageOnSnackBar = '加载出错',
+    this.requestErrorMessage,
     this.retryButtonMessage = '重试',
     this.retryCallback,
   }) : super(key: key);
@@ -69,6 +69,8 @@ class _RequestInProgressIndicatorWidgetState
   RequestStatus requestStatus = RequestStatus.Initial;
 
   StreamSubscription<void> requestStatusChangeSubscription;
+
+  String errorMessageOnPage = '出现了错误';
 
   @override
   void initState() {
@@ -102,6 +104,7 @@ class _RequestInProgressIndicatorWidgetState
         rebuildWithRequestStatus(RequestStatus.Success);
       },
       onError: (error) async {
+        errorMessageOnPage = formatErrorMessage(error);
         rebuildWithRequestStatus(RequestStatus.UnknownException);
 
         final result = await generalExceptionHandler(
@@ -117,7 +120,7 @@ class _RequestInProgressIndicatorWidgetState
         } else if (result == GeneralExceptionHandlerResult.Skipped) {
           return;
         }
-        showTextOnSnackBar(context, formatErrorMessage(error));
+        showTextOnSnackBar(context, errorMessageOnPage);
       },
     );
   }
@@ -134,10 +137,6 @@ class _RequestInProgressIndicatorWidgetState
     }
   }
 
-  _dispatchAction(dynamic action) {
-    findStore(context).dispatch(action);
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget body;
@@ -145,7 +144,8 @@ class _RequestInProgressIndicatorWidgetState
 
     if (requestStatus.isException) {
       List<Widget> errorWidgets = [];
-      errorWidgets.add(Text(widget.requestGeneralErrorMessageOnSnackBar));
+      errorWidgets.add(Text(
+          widget.requestErrorMessage ?? errorMessageOnPage));
 
       if (widget.retryCallback != null) {
         errorWidgets.add(RaisedButton(

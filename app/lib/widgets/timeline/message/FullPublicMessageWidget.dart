@@ -45,7 +45,7 @@ class FullPublicMessageWidget extends StatelessWidget {
       return RequestInProgressIndicatorWidget(
         requestStatusFuture: requestStatusFuture,
         showOnlyRequestIndicatorBody: true,
-        requestGeneralErrorMessageOnSnackBar: '加载回复出错',
+        requestErrorMessage: '加载回复出错',
         retryCallback: (_) => getFullPublicMessage(),
       );
     }

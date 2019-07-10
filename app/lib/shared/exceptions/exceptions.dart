@@ -58,6 +58,18 @@ class BangumiRefreshTokenInvalidException implements MuninException {
   }
 }
 
+class BangumiResourceNotFoundException implements MuninException {
+  /// Message describing the problem. */
+  final message;
+
+  BangumiResourceNotFoundException([this.message = '未找到资源']);
+
+  @override
+  String toString() {
+    return 'BangumiResourceNotFoundException{message: $message}';
+  }
+}
+
 /// An General UnknownException
 class GeneralUnknownException implements MuninException {
   /// Message describing the problem. */

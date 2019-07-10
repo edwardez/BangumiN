@@ -54,6 +54,7 @@ class SubjectWidget extends StatelessWidget {
               return vm.getSubject(context);
             },
             requestStatusFuture: requestStatusFuture,
+              requestErrorMessage: '出现了错误（新注册的账户无法访问部分条目）。'
           );
         }
 

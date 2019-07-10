@@ -26,6 +26,7 @@ import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/providers/bangumi/subject/parser/common.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
@@ -564,6 +565,14 @@ class SubjectParser {
 
   BangumiSubject process(String rawHtml) {
     DocumentFragment document = parseFragment(rawHtml);
+    if (document
+        .querySelector('#colunmNotice .text')
+        ?.text
+        ?.contains('数据库中没有查询您所指定的条目') ??
+        false) {
+      throw BangumiResourceNotFoundException(
+          '数据库中没有查询您所指定的条目，或你没有权限访问（新注册用户无法访问部分条目）');
+    }
     final subjectType = parseSubjectType(document);
 
     final subjectStatus = _parseSubjectStatus(document);

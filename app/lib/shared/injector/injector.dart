@@ -10,7 +10,6 @@ import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
-import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
 import 'package:munin/providers/bangumi/progress/BangumiProgressService.dart';
 import 'package:munin/providers/bangumi/search/BangumiSearchService.dart';
 import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
@@ -19,6 +18,7 @@ import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/bangumi/util/DioInterceptors.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
+import 'package:munin/providers/util/RetryableHttpClient.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> injector(GetIt getIt) async {
@@ -51,7 +51,7 @@ Future<void> injector(GetIt getIt) async {
   final String serializedBangumiOauthCredentials =
       credentials['bangumiOauthCredentials'];
 
-  OauthHttpClient oauthHttpClient = OauthHttpClient(http.Client());
+  RetryableHttpClient oauthHttpClient = RetryableHttpClient(http.Client());
   final BangumiOauthService _bangumiOauthService = BangumiOauthService(
     cookieClient: _bangumiCookieService,
     serializedBangumiOauthCredentials: serializedBangumiOauthCredentials,
@@ -99,10 +99,11 @@ Future<void> injector(GetIt getIt) async {
 Dio _createDioForBangumiCookieService(
     BangumiCookieCredentials bangumiCookieCredential,
     CookieJar bangumiCookieJar) {
+  final bangumiHostForDio = Application.environmentValue.bangumiHostForDio;
   Map<String, dynamic> headers = {
-    HttpHeaders.hostHeader: Application.environmentValue.bangumiNonCdnHost,
+    HttpHeaders.hostHeader: bangumiHostForDio,
     HttpHeaders.refererHeader:
-        'https://${Application.environmentValue.bangumiNonCdnHost}/',
+    'https://$bangumiHostForDio/',
   };
 
   // Attaches user agent and cookie to dio  if these are not null
@@ -127,16 +128,16 @@ Dio _createDioForBangumiCookieService(
     }
 
     bangumiCookieJar.saveFromResponse(
-        Uri.parse("https://${Application.environmentValue.bangumiMainHost}"),
+        Uri.parse("https://$bangumiMainHost"),
         cookies);
 
     bangumiCookieJar.saveFromResponse(
-        Uri.parse("https://${Application.environmentValue.bangumiNonCdnHost}"),
+        Uri.parse("https://$bangumiHostForDio"),
         cookies);
   }
 
   var dio = Dio(BaseOptions(
-    baseUrl: "https://${Application.environmentValue.bangumiNonCdnHost}",
+    baseUrl: "https://$bangumiHostForDio",
     connectTimeout: Duration(seconds: 10).inMilliseconds,
     receiveTimeout: Duration(seconds: 10).inMilliseconds,
     headers: headers,

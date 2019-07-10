@@ -81,7 +81,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
                   .bangumiQueryParameterValue;
 
               return launch(
-                  'https://${Application.environmentValue.bangumiMainHost}/user/$username/timeline?type=$category',
+                  'https://$bangumiMainHost/user/$username/timeline?type=$category',
                   forceSafariVC: false);
             },
           )

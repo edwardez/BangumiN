@@ -37,7 +37,7 @@ class UserProfileWidget extends StatelessWidget {
   final EdgeInsetsGeometry profileWidgetsPadding;
 
   String get userProfileMainUrl =>
-      'https://${Application.environmentValue.bangumiMainHost}/user/$username';
+      'https://$bangumiMainHost/user/$username';
 
   const UserProfileWidget(
       {Key key,

@@ -82,9 +82,6 @@ class BangumiCookieService {
 
   void updateDioHeaders(
       {String authCookie, String sessionCookie, String userAgent}) {
-    final String bangumiMainHost = Application.environmentValue.bangumiMainHost;
-    final String bangumiNonCdnHost =
-        Application.environmentValue.bangumiNonCdnHost;
     List<Cookie> cookies = [
       Cookie("chii_auth", authCookie),
       Cookie("chii_sid", sessionCookie)

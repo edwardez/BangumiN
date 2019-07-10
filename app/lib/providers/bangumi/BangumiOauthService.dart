@@ -8,8 +8,8 @@ import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiUserIdentity.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/oauth/BangumiOauthClient.dart';
-import 'package:munin/providers/bangumi/oauth/OauthHttpClient.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
+import 'package:munin/providers/util/RetryableHttpClient.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:oauth2/oauth2.dart'
@@ -78,7 +78,8 @@ class BangumiOauthService {
         expiresOnInSeconds:
         tryParseInt(expiresOnInSecondsStr, defaultValue: null));
 
-    var retryableAuthHttpClient = OauthHttpClient(http.Client(), retries: 5);
+    var retryableAuthHttpClient = RetryableHttpClient(
+        http.Client(), retries: 5);
     AuthorizationCodeGrant grant = AuthorizationCodeGrant(
         Application.environmentValue.bangumiOauthClientIdentifier,
         Uri.parse(Application.bangumiOauthAuthorizationEndpoint),

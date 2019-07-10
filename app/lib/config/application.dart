@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 import 'package:munin/main.dart';
 import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
@@ -17,6 +19,7 @@ import 'package:munin/providers/bangumi/subject/BangumiSubjectService.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
+import 'package:munin/providers/util/RetryableHttpClient.dart';
 import 'package:munin/redux/app/AppEpics.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
@@ -41,6 +44,13 @@ final GetIt getIt = GetIt();
 
 enum EnvironmentType { Development, Uat, Production }
 
+/// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
+/// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
+const bangumiMainHost = 'bgm.tv';
+
+/// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
+const bangumiNonCdnHost = 'bangumi.tv';
+
 abstract class Application {
   static Application environmentValue;
   static Router router;
@@ -50,15 +60,16 @@ abstract class Application {
   static final String bangumiOauthTokenEndpoint =
       'https://bgm.tv/oauth/access_token';
 
-  /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
-  /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
-  final bangumiMainHost = 'bgm.tv';
-
-  /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
-  final bangumiNonCdnHost = 'bangumi.tv';
   final bangumiApiHost = 'api.bgm.tv';
   final forsetiMainHost = 'bangumin.tv';
   final forsetiApiHost = 'api.bangumin.tv';
+
+  /// Bangumi host that dio will be using.
+  /// This is required because some bangumi hosts are blocked by cloudflare
+  /// see https://github.com/edwardez/BangumiN/commit/f901f1cde4b9a80f04b6195a1502f07f0c059e9a
+  String _bangumiHostForDio = bangumiNonCdnHost;
+
+  String get bangumiHostForDio => _bangumiHostForDio;
 
   EnvironmentType environmentType;
   String bangumiOauthClientIdentifier;
@@ -75,27 +86,29 @@ abstract class Application {
     // misc utils initialization
     TimeUtils.initializeTimeago();
 
+    _bangumiHostForDio = await _decideBangumiHostForDio();
+
     // service locator initialization
     await injector(getIt);
 
     final BangumiCookieService bangumiCookieService =
-        getIt.get<BangumiCookieService>();
+    getIt.get<BangumiCookieService>();
     final BangumiOauthService bangumiOauthService =
-        getIt.get<BangumiOauthService>();
+    getIt.get<BangumiOauthService>();
     final BangumiUserService bangumiUserService =
-        getIt.get<BangumiUserService>();
+    getIt.get<BangumiUserService>();
     final BangumiTimelineService bangumiTimelineService =
-        getIt.get<BangumiTimelineService>();
+    getIt.get<BangumiTimelineService>();
     final BangumiSubjectService bangumiSubjectService =
-        getIt.get<BangumiSubjectService>();
+    getIt.get<BangumiSubjectService>();
     final BangumiSearchService bangumiSearchService =
-        getIt.get<BangumiSearchService>();
+    getIt.get<BangumiSearchService>();
     final BangumiDiscussionService bangumiDiscussionService =
-        getIt.get<BangumiDiscussionService>();
+    getIt.get<BangumiDiscussionService>();
     final BangumiProgressService bangumiProgressService =
-        getIt.get<BangumiProgressService>();
+    getIt.get<BangumiProgressService>();
     final SharedPreferenceService sharedPreferenceService =
-        getIt.get<SharedPreferenceService>();
+    getIt.get<SharedPreferenceService>();
 
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
@@ -123,11 +136,12 @@ abstract class Application {
         middleware: [
 //          LoggingMiddleware.printer(),
           EpicMiddleware<AppState>(epics),
-        ]..addAll(createOauthMiddleware(
-            bangumiOauthService,
-            bangumiCookieService,
-            bangumiUserService,
-            sharedPreferenceService)));
+        ]
+          ..addAll(createOauthMiddleware(
+              bangumiOauthService,
+              bangumiCookieService,
+              bangumiUserService,
+              sharedPreferenceService)));
 
     if (store.state.settingState.themeSetting.themeSwitchMode ==
         ThemeSwitchMode.FollowScreenBrightness) {
@@ -211,6 +225,45 @@ abstract class Application {
         persistedAppState.rebuild((b) => b..isAuthenticated = isAuthenticated);
 
     return persistedAppState;
+  }
+
+  /// Decide which host dio should use by checking bgm.tv and bangumi.tv
+  /// with a preference for bangumi.tv
+  /// This might force user to log out if user login with bangumi.tv
+  /// then [_decideBangumiHostForDio] returns bgm.tv and cookies are not shared
+  /// across domains.
+  /// However seems like bangumi share cookies across these two domains now.
+  /// TODO: maybe make this method reactive to network change?
+  Future<String> _decideBangumiHostForDio() async {
+    // iOS app store requires app to be functional in pure ipv6 environment.
+    // While [bangumiNonCdnHost] doesn't support. If the target platform is not iOS,
+    // there is no need to continue.
+    if (!Platform.isIOS) {
+      return bangumiNonCdnHost;
+    }
+    final retryableClient = RetryableHttpClient(http.Client(),
+      retries: 3,
+      whenError: ((_, __) => true),
+      delay: (_) => Duration(),);
+    try {
+      await retryableClient.get('https://$bangumiNonCdnHost/json/notify');
+      return bangumiNonCdnHost;
+    } catch (error, stack) {
+      reportError(error, stack: stack);
+    }
+
+    try {
+      await retryableClient.get('https://$bangumiMainHost/json/notify');
+      return bangumiMainHost;
+    } catch (error, stack) {
+      reportError(error, stack: stack);
+    }
+
+    // [bangumiMainHost] supports ipv6, if the connectivity issue is due to
+    // ipv6, above code should work. However if it's due to something else
+    // (i.e. user is not connected to a network). Then [bangumiNonCdnHost]
+    // will still be used.
+    return bangumiNonCdnHost;
   }
 
   String get name => runtimeType.toString();

@@ -90,7 +90,7 @@ class FullPublicMessageWidget extends StatelessWidget {
     return IconButton(
       icon: Icon(AdaptiveIcons.shareIconData),
       onPressed: () {
-        String url = 'https://${Application.environmentValue.bangumiMainHost}'
+        String url = 'https://$bangumiMainHost'
             '/user/${mainMessage.user.username}/timeline/status/${mainMessage.user.feedId}';
 
         Share.share(url);

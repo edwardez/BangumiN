@@ -90,7 +90,7 @@ class PostWidget extends StatelessWidget {
             threadType:
             ThreadType.fromBangumiContent(parentBangumiContentType));
         launch(
-          'https://${Application.environmentValue.bangumiMainHost}$subUrl',
+          'https://$bangumiMainHost$subUrl',
         );
       },
       enabled: !shouldDisableEdit,

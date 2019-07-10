@@ -131,7 +131,7 @@ abstract class BangumiSubject
   /// see also [pageUrl]
   @memoized
   String get pageUrlFromCalculation {
-    return 'https://${Application.environmentValue.bangumiMainHost}/subject/$id';
+    return 'https://$bangumiMainHost/subject/$id';
   }
 
   BangumiSubject._();

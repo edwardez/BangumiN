@@ -48,7 +48,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   static const screenSvgRatio = 4;
   static const captchaLength = 5;
   static final String bangumiAuthWebUrl =
-      'https://${Application.environmentValue.bangumiNonCdnHost}';
+      'https://${Application.environmentValue.bangumiHostForDio}';
   static final bangumiAuthWebUri = Uri.parse(bangumiAuthWebUrl);
 
   // https://emailregex.com/
@@ -385,7 +385,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         }
 
         throw BangumiResponseIncomprehensibleException('''
-      Authentication cookies are missing.
+      Authentication cookies are missing because $errorText.
       authCookie exists: ${authCookie != null},
       sessionCookie exists:  ${sessionCookie != null},
       expiresOnInSecondsStr exists: ${expiresOnInSecondsStr != null},
@@ -399,11 +399,11 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         loginStopWatch.elapsed.inMilliseconds;
 
     /// 2. Gets auth cookie, visit oauth page to get xsrf token
-    final String host = Application.environmentValue.bangumiNonCdnHost;
     final String clientId =
         Application.environmentValue.bangumiOauthClientIdentifier;
     final authorizationUrl =
-        'https://$host/oauth/authorize?response_type=code&client_id=$clientId';
+        'https://${Application.environmentValue.bangumiHostForDio}'
+        '/oauth/authorize?response_type=code&client_id=$clientId';
 
     Response oauthResponse;
     try {

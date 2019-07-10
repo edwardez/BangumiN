@@ -19,7 +19,7 @@ class MutedGroupListTile extends StatelessWidget {
         child: ListTile(
           title: Text(mutedGroup.groupNickname),
           subtitle: Text(
-              'https://${Application.environmentValue.bangumiMainHost}/group/${mutedGroup.groupId}'),
+              'https://$bangumiMainHost/group/${mutedGroup.groupId}'),
         ),
         onTap: () {
           showModalBottomSheet(

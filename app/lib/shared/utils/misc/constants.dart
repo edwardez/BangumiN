@@ -3,14 +3,14 @@ import 'package:quiver/time.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
 final bangumiNonCdnHostUri =
-    Uri.parse('https://${Application.environmentValue.bangumiNonCdnHost}');
+Uri.parse('https://$bangumiNonCdnHost');
 
 final String bangumiHomePageUrl =
-    'https://${Application.environmentValue.bangumiMainHost}';
+    'https://$bangumiMainHost';
 final String bangumiTimelineUrl =
-    'https://${Application.environmentValue.bangumiMainHost}/timeline';
+    'https://$bangumiMainHost/timeline';
 final String rakuenMobileUrl =
-    'https://${Application.environmentValue.bangumiMainHost}/m';
+    'https://$bangumiMainHost/m';
 const String bangumiAnonymousUserMediumAvatar =
     'https://$bangumiAssetsServer/pic/user/m/icon.jpg';
 

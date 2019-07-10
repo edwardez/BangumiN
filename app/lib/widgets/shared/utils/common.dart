@@ -114,7 +114,7 @@ Optional<String> generateWebPageUrlByContentType(
   }
 
   return Optional.of(
-      'https://${Application.environmentValue.bangumiMainHost}/$webPageSubRouteName/$id');
+      'https://$bangumiMainHost/$webPageSubRouteName/$id');
 }
 
 /// TODO: figure out a better way to calculate text height
@@ -146,5 +146,5 @@ bool isNightTheme(BuildContext context) {
 
 /// Returns address of bangumi main site with https scheme.
 String httpsBangumiMainSite() {
-  return 'https://${Application.environmentValue.bangumiMainHost}';
+  return 'https://$bangumiMainHost';
 }

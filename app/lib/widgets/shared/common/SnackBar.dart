@@ -22,5 +22,6 @@ void showTextOnSnackBar(BuildContext context,
   Scaffold.of(context).showSnackBar(SnackBar(
     content: Text(text),
     duration: duration,
+    behavior: SnackBarBehavior.floating,
   ));
 }

@@ -46,13 +46,11 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
 
   IndexedWidgetBuilder _createItemBuilder(
       _ViewModel vm, bool hasFilterAllFeeds) {
-    if (hasFilterAllFeeds) {
-      return (BuildContext context, int index) {
-        Semantics(child: Container(), excludeSemantics: true);
-      };
-    }
-
     return (BuildContext context, int index) {
+      if (hasFilterAllFeeds) {
+        return Semantics(child: Container(), excludeSemantics: true);
+      }
+
       return FeedTile(
         appUsername: vm.appUsername,
         deleteFeedCallback: vm.deleteFeed,

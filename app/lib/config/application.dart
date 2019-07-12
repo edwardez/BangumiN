@@ -49,7 +49,7 @@ enum EnvironmentType { Development, Uat, Production }
 const bangumiMainHost = 'bgm.tv';
 /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
 const bangumiNonCdnHost = 'bangumi.tv';
-const upgradeInfoUrl = 'https://raw.githubusercontent.com/edwardez/BangumiN/tree/master/app/lib/config/upgrader/production_appcast.xml';
+const upgradeInfoUrl = 'https://raw.githubusercontent.com/edwardez/BangumiN/master/app/lib/config/upgrader/production_appcast.xml';
 
 abstract class Application {
   static Application environmentValue;

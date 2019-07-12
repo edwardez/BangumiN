@@ -62,13 +62,7 @@ android {
         debug {
             signingConfig signingConfigs.release
         }
-        dynamicProfile {
-            signingConfig signingConfigs.release
-        }
         profile {
-            signingConfig signingConfigs.release
-        }
-        dynamicRelease {
             signingConfig signingConfigs.release
         }
     }

@@ -22,6 +22,10 @@ final settingReducers = combineReducers<SettingState>([
       importBlockedBangumiUsersConfirmReducer),
   TypedReducer<SettingState, ImportBlockedBangumiUsersCleanupAction>(
       importBlockedBangumiUsersCleanupReducer),
+
+  /// Version
+  TypedReducer<SettingState, GetLatestMuninVersionSuccessAction>(
+      getLatestMuninVersionSuccessReducer),
 ]);
 
 ///General-related
@@ -101,3 +105,10 @@ SettingState importBlockedBangumiUsersCleanupReducer(
   return settingState
       .rebuild((b) => b..muteSetting.importedBangumiBlockedUsers = null);
 }
+
+SettingState getLatestMuninVersionSuccessReducer(SettingState settingState,
+    GetLatestMuninVersionSuccessAction action) {
+  return settingState
+      .rebuild((b) => b..muninVersionInfo.replace(action.muninVersionInfo));
+}
+

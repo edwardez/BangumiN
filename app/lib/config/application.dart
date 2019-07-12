@@ -38,7 +38,7 @@ import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // ignore: unused_import
+import 'package:upgrader/upgrader.dart'; // ignore: unused_import
 
 final GetIt getIt = GetIt();
 
@@ -47,9 +47,9 @@ enum EnvironmentType { Development, Uat, Production }
 /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
 /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
 const bangumiMainHost = 'bgm.tv';
-
 /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
 const bangumiNonCdnHost = 'bangumi.tv';
+const upgradeInfoUrl = 'https://raw.githubusercontent.com/edwardez/BangumiN/tree/master/app/lib/config/upgrader/production_appcast.xml';
 
 abstract class Application {
   static Application environmentValue;
@@ -76,12 +76,20 @@ abstract class Application {
   String bangumiOauthClientSecret;
   String bangumiRedirectUrl;
 
+  /// Whether the app should activate the update detector to check new version
+  /// Currently, only app that's installed by a local .apk should enable this
+  /// option.
+  bool shouldCheckUpdate = false;
+
   Application() {
     _initialize();
   }
 
   _initialize() async {
     environmentValue = this;
+
+    assert(!shouldCheckUpdate ||
+        (shouldCheckUpdate && Platform.isAndroid));
 
     // misc utils initialization
     TimeUtils.initializeTimeago();
@@ -129,7 +137,7 @@ abstract class Application {
       ...createTimelineEpics(bangumiTimelineService, bangumiUserService),
       ...createUserEpics(bangumiUserService),
       ...createProgressEpics(bangumiProgressService),
-      ...createSettingEpics(bangumiUserService),
+      ...createSettingEpics(bangumiUserService, bangumiCookieService),
     ]);
     final store = Store<AppState>(appReducer,
         initialState: appState,
@@ -241,10 +249,12 @@ abstract class Application {
     if (!Platform.isIOS) {
       return bangumiNonCdnHost;
     }
-    final retryableClient = RetryableHttpClient(http.Client(),
+    final retryableClient = RetryableHttpClient(
+      http.Client(),
       retries: 3,
       whenError: ((_, __) => true),
-      delay: (_) => Duration(),);
+      delay: (_) => Duration(),
+    );
     try {
       await retryableClient.get('https://$bangumiNonCdnHost/json/notify');
       return bangumiNonCdnHost;

@@ -5,6 +5,7 @@ import 'package:munin/router/routes.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
+import 'package:munin/widgets/setting/version/MuninVersionWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,6 +78,10 @@ class SettingHome extends StatelessWidget {
                     forceSafariVC: false, forceWebView: false);
               },
             ),
+            if (Application.environmentValue.shouldCheckUpdate) ...[
+              Divider(),
+              MuninVersionWidget(),
+            ],
             Divider(),
             ListTile(
               title: Text('关于'),

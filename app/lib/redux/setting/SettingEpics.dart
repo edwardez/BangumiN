@@ -1,20 +1,32 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/version/MuninVersionInfo.dart';
+import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/Common.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/analytics/Constants.dart';
+import 'package:munin/widgets/shared/text/WrappableText.dart';
+import 'package:package_info/package_info.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screen/screen.dart';
+import 'package:upgrader/upgrader.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const Duration listenToBrightnessChangeInterval = const Duration(seconds: 2);
 
-List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService) {
+List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService,
+    BangumiCookieService httpService,) {
   final changeThemeByScreenBrightnessEpic =
       _createChangeThemeByScreenBrightnessEpic();
 
@@ -23,10 +35,13 @@ List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService) {
   final createImportBlockedBangumiUsersEpic =
       _createImportBlockedBangumiUsersEpic(bangumiUserService);
 
+  final getLatestVersionEpic = _createGetLatestVersionEpic();
+
   return [
     changeThemeByScreenBrightnessEpic,
     updateThemeSettingEpic,
-    createImportBlockedBangumiUsersEpic
+    createImportBlockedBangumiUsersEpic,
+    getLatestVersionEpic,
   ];
 }
 
@@ -75,9 +90,7 @@ Stream<dynamic> _changeThemeByScreenBrightness(
       }
     }
   } catch (error, stack) {
-    debugPrint(
-        'Error occurred during listening to theme change ${error.toString()}');
-    debugPrint(stack.toString());
+    reportError(error, stack: stack);
   }
 }
 
@@ -125,8 +138,7 @@ Stream<dynamic> _updateThemeSetting(EpicStore<AppState> store,
       );
     }
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
+    reportError(error, stack: stack);
   }
 }
 
@@ -159,5 +171,146 @@ Epic<AppState> _createImportBlockedBangumiUsersEpic(
         .ofType(TypeToken<ImportBlockedBangumiUsersRequestAction>())
         .switchMap((action) =>
             _createImportBlockedBangumiUsers(bangumiUserService, action));
+  };
+}
+
+Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
+    EpicStore<AppState> store,
+    GetLatestMuninVersionRequestAction action,) async* {
+  try {
+    await appcast.parseAppcastItemsFromUri(upgradeInfoUrl);
+
+    final packageInfo = await PackageInfo.fromPlatform();
+    final currentVersion = Version.parse(packageInfo.version);
+    final bestItem = appcast.bestItem();
+    // Version info in store, might be null.
+    var muninVersionInStore = store.state.settingState.muninVersionInfo;
+
+    // note that [criticalUpdateItem] might be different from [bestItem]
+    // i.e. A minor fix is released after a critical update.
+    AppcastItem availableCriticalUpdate;
+    for (var item in appcast.items) {
+      final itemVersion = Version.parse(item.versionString);
+      if (itemVersion.compareTo(currentVersion) <= 0) {
+        break;
+      } else {
+        if (item.isCriticalUpdate ?? false) {
+          availableCriticalUpdate = item;
+        }
+      }
+    }
+
+    bool userRefuseInstallLatestCriticalUpdate = false;
+    final currentMutedUpdateVersion = muninVersionInStore?.mutedUpdateVersion;
+    print('$currentMutedUpdateVersion $availableCriticalUpdate');
+    if (currentMutedUpdateVersion != null && availableCriticalUpdate != null) {
+      print(
+          '${Version.parse(availableCriticalUpdate.versionString).compareTo(
+              Version.parse(currentMutedUpdateVersion))}');
+      if (Version.parse(availableCriticalUpdate.versionString)
+          .compareTo(Version.parse(currentMutedUpdateVersion)) <=
+          0) {
+        userRefuseInstallLatestCriticalUpdate = true;
+      }
+    }
+
+    String updatedMutedVersion;
+    if (bestItem != null &&
+        availableCriticalUpdate != null &&
+        !userRefuseInstallLatestCriticalUpdate) {
+      await showDialog(
+          context: action.context,
+          barrierDismissible: false,
+          builder: (innerContext) {
+            return AlertDialog(
+              title: Text('有一个未安装的重要更新'),
+              content: SingleChildScrollView(
+                child: WrappableText(
+                  '更新内容为:${availableCriticalUpdate.itemDescription ??
+                      '重要更新'}\n',
+                  maxLines: null,
+                  outerWrapper: OuterWrapper.Row,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('不再提醒此版本'),
+                  onPressed: () {
+                    Navigator.pop(innerContext);
+                    // Latest version must be older or equal to best item.
+                    // hence set to bestItem so user is harder to get notified.
+                    updatedMutedVersion = bestItem.versionString;
+                    FirebaseAnalytics().logEvent(
+                        name: InstallUpdatePromptEvent.name,
+                        parameters: {
+                          InstallUpdatePromptEvent.refuseToInstall: 1,
+                          InstallUpdatePromptEvent.agreeToInstall: 0,
+                          InstallUpdatePromptEvent.criticalUpdateVersion:
+                          availableCriticalUpdate.versionString
+                        });
+                  },
+                ),
+                FlatButton(
+                  child: Text('下载安装包'),
+                  onPressed: () {
+                    Navigator.pop(innerContext);
+                    launch(
+                      bestItem.fileURL,
+                      forceSafariVC: false,
+                    );
+                    FirebaseAnalytics().logEvent(
+                        name: InstallUpdatePromptEvent.name,
+                        parameters: {
+                          InstallUpdatePromptEvent.refuseToInstall: 0,
+                          InstallUpdatePromptEvent.agreeToInstall: 1,
+                          InstallUpdatePromptEvent.criticalUpdateVersion:
+                          availableCriticalUpdate.versionString
+                        });
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    if (muninVersionInStore == null) {
+      muninVersionInStore = MuninVersionInfo((b) =>
+      b
+        ..downloadPageUrl = bestItem.fileURL
+        ..latestVersion = bestItem.versionString
+        ..hasCriticalUpdate = availableCriticalUpdate != null
+        ..mutedUpdateVersion = updatedMutedVersion);
+    } else {
+      muninVersionInStore = muninVersionInStore.rebuild((b) =>
+      b
+        ..downloadPageUrl = bestItem.fileURL
+        ..latestVersion = bestItem.versionString
+        ..hasCriticalUpdate = availableCriticalUpdate != null
+        ..mutedUpdateVersion =
+            updatedMutedVersion ?? muninVersionInStore.mutedUpdateVersion);
+    }
+
+    yield GetLatestMuninVersionSuccessAction(
+      muninVersionInfo: muninVersionInStore,
+    );
+
+    if (updatedMutedVersion != null) {
+      // TODO: figure out a way to dispatch another action after the first is
+      // completed.
+      await Future.delayed(Duration(seconds: 1));
+      yield PersistAppStateAction(basicAppStateOnly: true);
+    }
+    action.completer.complete();
+  } catch (error, stack) {
+    action.completer.completeError(error);
+    reportError(error, stack: stack);
+  }
+}
+
+Epic<AppState> _createGetLatestVersionEpic() {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<GetLatestMuninVersionRequestAction>())
+        .switchMap((action) => _getLatestVersionEpic(Appcast(), store, action));
   };
 }

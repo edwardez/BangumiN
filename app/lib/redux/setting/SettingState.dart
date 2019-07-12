@@ -6,6 +6,7 @@ import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/version/MuninVersionInfo.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'SettingState.g.dart';
@@ -21,6 +22,9 @@ abstract class SettingState
 
   @nullable
   PrivacySetting get privacySetting;
+
+  @nullable
+  MuninVersionInfo get muninVersionInfo;
 
   factory SettingState([updates(SettingStateBuilder b)]) =>
       _$SettingState((b) => b

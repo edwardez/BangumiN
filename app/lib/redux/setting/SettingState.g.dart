@@ -38,6 +38,12 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
         ..add(serializers.serialize(object.privacySetting,
             specifiedType: const FullType(PrivacySetting)));
     }
+    if (object.muninVersionInfo != null) {
+      result
+        ..add('muninVersionInfo')
+        ..add(serializers.serialize(object.muninVersionInfo,
+            specifiedType: const FullType(MuninVersionInfo)));
+    }
     return result;
   }
 
@@ -68,6 +74,11 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
           result.privacySetting.replace(serializers.deserialize(value,
               specifiedType: const FullType(PrivacySetting)) as PrivacySetting);
           break;
+        case 'muninVersionInfo':
+          result.muninVersionInfo.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(MuninVersionInfo))
+              as MuninVersionInfo);
+          break;
       }
     }
 
@@ -84,6 +95,8 @@ class _$SettingState extends SettingState {
   final MuteSetting muteSetting;
   @override
   final PrivacySetting privacySetting;
+  @override
+  final MuninVersionInfo muninVersionInfo;
 
   factory _$SettingState([void Function(SettingStateBuilder) updates]) =>
       (new SettingStateBuilder()..update(updates)).build();
@@ -92,7 +105,8 @@ class _$SettingState extends SettingState {
       {this.generalSetting,
       this.themeSetting,
       this.muteSetting,
-      this.privacySetting})
+      this.privacySetting,
+      this.muninVersionInfo})
       : super._() {
     if (themeSetting == null) {
       throw new BuiltValueNullFieldError('SettingState', 'themeSetting');
@@ -116,15 +130,18 @@ class _$SettingState extends SettingState {
         generalSetting == other.generalSetting &&
         themeSetting == other.themeSetting &&
         muteSetting == other.muteSetting &&
-        privacySetting == other.privacySetting;
+        privacySetting == other.privacySetting &&
+        muninVersionInfo == other.muninVersionInfo;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, generalSetting.hashCode), themeSetting.hashCode),
-            muteSetting.hashCode),
-        privacySetting.hashCode));
+        $jc(
+            $jc($jc($jc(0, generalSetting.hashCode), themeSetting.hashCode),
+                muteSetting.hashCode),
+            privacySetting.hashCode),
+        muninVersionInfo.hashCode));
   }
 
   @override
@@ -133,7 +150,8 @@ class _$SettingState extends SettingState {
           ..add('generalSetting', generalSetting)
           ..add('themeSetting', themeSetting)
           ..add('muteSetting', muteSetting)
-          ..add('privacySetting', privacySetting))
+          ..add('privacySetting', privacySetting)
+          ..add('muninVersionInfo', muninVersionInfo))
         .toString();
   }
 }
@@ -166,6 +184,12 @@ class SettingStateBuilder
   set privacySetting(PrivacySettingBuilder privacySetting) =>
       _$this._privacySetting = privacySetting;
 
+  MuninVersionInfoBuilder _muninVersionInfo;
+  MuninVersionInfoBuilder get muninVersionInfo =>
+      _$this._muninVersionInfo ??= new MuninVersionInfoBuilder();
+  set muninVersionInfo(MuninVersionInfoBuilder muninVersionInfo) =>
+      _$this._muninVersionInfo = muninVersionInfo;
+
   SettingStateBuilder();
 
   SettingStateBuilder get _$this {
@@ -174,6 +198,7 @@ class SettingStateBuilder
       _themeSetting = _$v.themeSetting?.toBuilder();
       _muteSetting = _$v.muteSetting?.toBuilder();
       _privacySetting = _$v.privacySetting?.toBuilder();
+      _muninVersionInfo = _$v.muninVersionInfo?.toBuilder();
       _$v = null;
     }
     return this;
@@ -201,7 +226,8 @@ class SettingStateBuilder
               generalSetting: _generalSetting?.build(),
               themeSetting: themeSetting.build(),
               muteSetting: muteSetting.build(),
-              privacySetting: _privacySetting?.build());
+              privacySetting: _privacySetting?.build(),
+              muninVersionInfo: _muninVersionInfo?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -213,6 +239,8 @@ class SettingStateBuilder
         muteSetting.build();
         _$failedField = 'privacySetting';
         _privacySetting?.build();
+        _$failedField = 'muninVersionInfo';
+        _muninVersionInfo?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SettingState', _$failedField, e.toString());

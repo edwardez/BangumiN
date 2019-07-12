@@ -19,6 +19,7 @@ import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/analytics/Constants.dart';
 import 'package:munin/shared/utils/http/common.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/initial/Common.dart';
 import 'package:munin/widgets/setting/privacy/PrivacySettingWidget.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 import 'package:munin/widgets/shared/common/SingleChildExpandedRow.dart';
@@ -72,6 +73,12 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   String errorText;
   var refreshCaptchaInProgress = false;
   var loginInProgress = false;
+
+  /// Whether munin should check for update
+  ///
+  /// This value is used as a flag to avoid duplicated update check. It will
+  /// be set to true after first check.
+  bool hasCheckedUpdate = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -686,5 +693,13 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   @override
   Widget build(BuildContext context) {
     return _buildLoginPage(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!hasCheckedUpdate) {
+      hasCheckedUpdate = checkUpdate(context, hasCheckedUpdate);
+    }
   }
 }

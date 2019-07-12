@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -7,6 +9,7 @@ import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/version/MuninVersionInfo.dart';
 
 /// Updates general settings.
 class UpdateGeneralSettingAction {
@@ -76,4 +79,21 @@ class UpdatePrivacySettingAction {
   final PrivacySetting privacySetting;
 
   UpdatePrivacySettingAction({@required this.privacySetting});
+}
+
+class GetLatestMuninVersionRequestAction {
+  final BuildContext context;
+  final Completer completer;
+
+  GetLatestMuninVersionRequestAction({
+    @required this.context,
+    Completer completer,
+  }) : this.completer = completer ?? Completer();
+}
+
+/// Successfully fetched list of blocked users on bangumi
+class GetLatestMuninVersionSuccessAction {
+  final MuninVersionInfo muninVersionInfo;
+
+  GetLatestMuninVersionSuccessAction({@required this.muninVersionInfo});
 }

@@ -60,6 +60,7 @@ import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/setting/version/MuninVersionInfo.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/CollectionStatusDistribution.dart';
 import 'package:munin/models/bangumi/subject/Count.dart';
@@ -280,7 +281,8 @@ part 'serializers.g.dart';
   MutedGroup,
   GeneralSetting,
   PreferredLaunchNavTab,
-  PreferredSubjectInfoLanguage
+  PreferredSubjectInfoLanguage,
+  MuninVersionInfo,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),

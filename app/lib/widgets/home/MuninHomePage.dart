@@ -3,6 +3,7 @@ import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/widgets/discussion/DiscussionHome.dart';
 import 'package:munin/widgets/home/MuninBottomNavigationBar.dart';
+import 'package:munin/widgets/initial/Common.dart';
 import 'package:munin/widgets/progress/Progress.dart';
 import 'package:munin/widgets/timeline/Timeline.dart';
 import 'package:munin/widgets/user/UserHome.dart';
@@ -24,6 +25,12 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
   int currentIndex;
   Widget currentPage;
+
+  /// Whether munin should check for update
+  ///
+  /// This value is used as a flag to avoid duplicated update check. It will
+  /// be set to true after first check.
+  bool hasCheckedUpdate = false;
 
   @override
   void initState() {
@@ -88,5 +95,14 @@ class _MuninHomePageState extends State<MuninHomePage> {
         currentIndex: currentIndex,
       ),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!hasCheckedUpdate) {
+      hasCheckedUpdate = checkUpdate(context, hasCheckedUpdate);
+    }
   }
 }

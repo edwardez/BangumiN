@@ -11,3 +11,10 @@ class LoginElapsedTimeEvent {
 class LoginErrorEvent {
   static const name = 'login_error';
 }
+
+class InstallUpdatePromptEvent {
+  static const name = 'install_critical_update_prompt';
+  static const agreeToInstall = 'agree_to_install';
+  static const refuseToInstall = 'refuse_to_install';
+  static const criticalUpdateVersion = 'critical_update_version';
+}

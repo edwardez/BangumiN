@@ -30,10 +30,10 @@ class _MuninAppState extends State<MuninApp> {
 
   @override
   void initState() {
+    super.initState();
     final router = Router();
     Routes.configureRoutes(router);
     Application.router = router;
-    super.initState();
   }
 
   @override

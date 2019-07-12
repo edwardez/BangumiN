@@ -1,0 +1,1 @@
+Upgrade configuration for user who installed the app from a non-store environment.

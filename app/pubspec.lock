@@ -183,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.9"
+  device_info:
+    dependency: transitive
+    description:
+      name: device_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+2"
   dio:
     dependency: "direct main"
     description:
@@ -546,7 +553,7 @@ packages:
     source: hosted
     version: "1.4.0"
   pub_semver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
@@ -781,6 +788,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  upgrader:
+    dependency: "direct main"
+    description:
+      name: upgrader
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1+1"
   url_launcher:
     dependency: "direct main"
     description:
@@ -802,6 +816,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  version:
+    dependency: transitive
+    description:
+      name: version
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   vm_service_client:
     dependency: transitive
     description:

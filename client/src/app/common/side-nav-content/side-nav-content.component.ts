@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import {SidenavService} from '../../shared/services/sidenav.service';
 import {AuthenticationService} from '../../shared/services/auth.service';
 import {filter, first} from 'rxjs/operators';
@@ -7,6 +7,8 @@ import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {environment} from '../../../environments/environment';
 import {BuildVersion} from '../../../environments/build-version';
 import {BangumiUser} from '../../shared/models/BangumiUser';
+import {NavBarService} from '../../shared/services/navbar/nav-bar.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-side-nav-content',
@@ -21,9 +23,10 @@ export class SideNavContentComponent implements OnInit {
   @Input()
   currentDeviceWidth: DeviceWidth;
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
+  @ViewChild('sidenav', {static: true}) public sidenav: MatSidenav;
 
   constructor(private sidenavService: SidenavService,
+              private navBarService: NavBarService,
               private authenticationService: AuthenticationService) {
 
 
@@ -46,6 +49,10 @@ export class SideNavContentComponent implements OnInit {
     });
 
 
+  }
+
+  isNavBarVisible(): BehaviorSubject<boolean> {
+    return this.navBarService.visibleSubject;
   }
 
   get Environment() {

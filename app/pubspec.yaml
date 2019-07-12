@@ -1,0 +1,133 @@
+name: munin
+description: Flutter + BangumiN == Munin (a new Bangumi App)
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 0.3.1+5
+
+environment:
+  sdk: ">=2.4.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bbob_dart: ^0.1.0
+  built_collection: ^4.2.1
+  built_value: ^6.5.0
+  #  please pay extra attention while upgrading cached_network_image as there is no test for this dep
+  cached_network_image: 0.8.0
+  cookie_jar: ^1.0.0
+  expandable: ^3.0.0+1
+  dio: ^2.1.3
+  firebase_analytics: ^3.0.1
+  firebase_crashlytics: ^0.0.4+3
+  fluro: ^1.5.0
+  flutter_redux: ^0.5.3
+  flutter_secure_storage: ^3.2.1
+  flutter_svg: ^0.13.0+2
+  flutter_widget_from_html: ^0.2.1+1
+  get_it: ^1.0.3
+  html: ^0.14.0+2
+  http: ^0.12.0
+  intl: ^0.15.8
+  image_gallery_saver: ^1.1.0
+  material_design_icons_flutter: ^3.2.3595
+  markdown: ^2.0.3
+  #  Wait for https://github.com/flutter/packages/pull/22 to be resolved to switch back to offcial.
+  palette_generator:
+    git:
+      url: https://github.com/edwardez/packages.git
+      ref: c0d05fd86b69d00baa7877c3716d7dfd76f4f087
+      path: packages/palette_generator
+  screen: ^0.0.5
+  transparent_image: ^1.0.0
+  timeago: ^2.0.14
+  oauth2: ^1.2.3
+  outline_material_icons: ^0.1.0
+  package_info: ^0.4.0+4
+  pub_semver: ^1.4.2
+  redux_epics: ^0.10.6
+  redux_logging: ^0.3.0
+  rxdart: ^0.20.0
+  share: ^0.6.1
+  shared_preferences: ^0.5.2
+  tuple: ^1.0.2
+  quiver: ^2.0.2
+  url_launcher: ^5.0.2
+  upgrader: ^0.5.1+1
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.7.2
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.4.0
+  built_value_generator: ^6.5.0
+  test: ^1.6.1
+
+#　Run `flutter pub run flutter_launcher_icons:main` to generate new icons.
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/logo/munin_logo_padding_rounded_2048x2048.png"
+  image_path_ios: "assets/logo/munin_logo_full_2048x2048.png"
+  adaptive_icon_background: "#FFF09199"
+  adaptive_icon_foreground: "assets/logo/munin_logo_padding_rounded_2048x2048.png"
+
+
+# For information on the generic Dart part of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/logo/munin_logo_rounded.svg
+    - assets/stickers/bangumi/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.io/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.io/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.io/custom-fonts/#from-packages
+  fonts:
+    - family: MuninIcons
+      fonts:
+        - asset: fonts/icons/munin/MuninIcons.ttf

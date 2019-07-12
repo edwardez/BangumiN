@@ -43,7 +43,9 @@ class Record(Base):
 
     def __repr__(self):
         return "<Record(name=%s, iid=%s, typ=%s, state=%s)>" % (self.name,
-                                                                self.iid, self.typ, self.state)
+                                                                self.iid,
+                                                                self.typ,
+                                                                self.state)
 
 
 class Subject(Base):
@@ -60,12 +62,15 @@ class Subject(Base):
 
     def __repr__(self):
         return "<Subject(name=%s, id=%s, trueid=%s, type=%s)>" % (self.name,
-                                                                  self.id, self.trueid, self.type)
+                                                                  self.id,
+                                                                  self.trueid,
+                                                                  self.type)
 
 
-engine = create_engine("mysql+mysqldb://" + MYSQL_USER + ":" + MYSQL_PASSWD + "@" +
-                       MYSQL_HOST + "/" + MYSQL_DBNAME +
-                       "?charset=utf8&use_unicode=0&unix_socket=/var/run/mysqld/mysqld.sock")
+engine = create_engine(
+    "mysql+mysqldb://" + MYSQL_USER + ":" + MYSQL_PASSWD + "@" +
+    MYSQL_HOST + "/" + MYSQL_DBNAME +
+    "?charset=utf8&use_unicode=0&unix_socket=/var/run/mysqld/mysqld.sock")
 Base.metadata.create_all(engine)
 
 # Session is a custom class
@@ -82,8 +87,10 @@ def store_users():
             if not rec: break;
 
             user = json.loads(rec)
-            user_instance = User(name=user['name'], nickname=user['nickname'], uid=user['uid'],
-                                 joindate=user['joindate'], activedate=user['activedate'])
+            user_instance = User(name=user['name'], nickname=user['nickname'],
+                                 uid=user['uid'],
+                                 joindate=user['joindate'],
+                                 activedate=user['activedate'])
             session.add(user_instance)
             if cnt % 10000 == 0:
                 session.commit()
@@ -104,8 +111,10 @@ def store_record():
             tags = record.get('tags', None)
             if tags:
                 tags = u" ".join(tags)
-            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
+            record_instance = Record(name=record['name'], typ=record['typ'],
+                                     iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'],
+                                     rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
             if cnt % 100000 == 0:
                 try_commit_record(session, backup)
@@ -128,8 +137,10 @@ def try_commit_record(session, backup):
             if tags:
                 tags = u" ".join(tags)
 
-            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
+            record_instance = Record(name=record['name'], typ=record['typ'],
+                                     iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'],
+                                     rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
         try_commit_record(session, backup[:h])
 
@@ -139,8 +150,10 @@ def try_commit_record(session, backup):
             if tags:
                 tags = u" ".join(tags)
 
-            record_instance = Record(name=record['name'], typ=record['typ'], iid=record['iid'], state=record['state'],
-                                     adddate=record['adddate'], rate=record.get('rate', None), tags=tags)
+            record_instance = Record(name=record['name'], typ=record['typ'],
+                                     iid=record['iid'], state=record['state'],
+                                     adddate=record['adddate'],
+                                     rate=record.get('rate', None), tags=tags)
             session.add(record_instance)
         try_commit_record(session, backup[h:])
 

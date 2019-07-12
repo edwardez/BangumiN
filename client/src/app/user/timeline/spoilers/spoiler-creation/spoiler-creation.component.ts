@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatDialogRef} from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatDialogRef } from '@angular/material/dialog';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, finalize, map} from 'rxjs/operators';
 import Quill from 'quill';
@@ -87,10 +88,10 @@ export class SpoilerCreationComponent implements OnInit {
   spoilerForm: FormGroup;
   subjectSearchResult: Observable<SubjectBase[]>;
 
-  @ViewChild('subjectInput')
+  @ViewChild('subjectInput', {static: true})
   subjectInput: ElementRef;
 
-  @ViewChild(MatAutocompleteTrigger)
+  @ViewChild(MatAutocompleteTrigger, {static: true})
   matAutocompleteTrigger: MatAutocompleteTrigger;
 
   constructor(private authenticationService: AuthenticationService,

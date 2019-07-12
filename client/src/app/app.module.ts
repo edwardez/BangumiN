@@ -25,6 +25,7 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
 import {DocumentsModule} from './documents/documents.module';
+import {QuillModule} from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import {DocumentsModule} from './documents/documents.module';
         }
       }
     ),
+    QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   entryComponents: [],

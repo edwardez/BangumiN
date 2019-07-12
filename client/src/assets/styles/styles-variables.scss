@@ -5,8 +5,7 @@ $mat-button-border-radius: 4px !default;
 
 // Override the typography in the core CSS.
 $custom-typography: mat-typography-config(
-  $font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+  $font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
 );
 @include mat-core($custom-typography);
 
@@ -22,7 +21,8 @@ $grid-breakpoints: (
 $container-max-widths: (
   sm: 900px,
   md: 1200px,
-  lg: 1800px
+  lg: 1800px,
+  xl: 1900px,
 );
 
 $dark-primary-text: rgba(black, 0.87);

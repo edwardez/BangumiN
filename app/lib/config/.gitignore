@@ -1,0 +1,4 @@
+*.dart
+!application.dart
+!/upgrader/
+!/upgrader/Utils.dart

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {SpoilerCreationComponent} from '../spoiler-creation/spoiler-creation.component';
 import {ResponsiveDialogService} from '../../../../shared/services/dialog/responsive-dialog.service';
 import {BanguminSpoilerService} from '../../../../shared/services/bangumin/bangumin-spoiler.service';
@@ -95,7 +95,7 @@ export class SpoilerOverviewComponent implements OnInit, OnDestroy {
       take(1),
     )
       .subscribe(spoilerCreationResult => {
-        if (spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
+        if (spoilerCreationResult && spoilerCreationResult.spoilerId && spoilerCreationResult.isSuccessful) {
           const createdAtStart = this.userSpoilers.length >= 1 ? +this.userSpoilers[0].createdAt + 1 : undefined;
           this.getSpoilersInfo(this.bangumiUser.id, false, createdAtStart,
             undefined);

@@ -1,5 +1,5 @@
 import {Injectable, TemplateRef} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import {map, take} from 'rxjs/operators';
 import {LayoutService} from '../layout/layout.service';
 import {DeviceWidth} from '../../enums/device-width.enum';

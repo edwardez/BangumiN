@@ -1,0 +1,32 @@
+import 'package:munin/config/application.dart';
+import 'package:quiver/time.dart';
+
+const String bangumiAssetsServer = 'lain.bgm.tv';
+final bangumiNonCdnHostUri =
+Uri.parse('https://$bangumiNonCdnHost');
+
+final String bangumiHomePageUrl =
+    'https://$bangumiMainHost';
+final String bangumiTimelineUrl =
+    'https://$bangumiMainHost/timeline';
+final String rakuenMobileUrl =
+    'https://$bangumiMainHost/m';
+const String bangumiAnonymousUserMediumAvatar =
+    'https://$bangumiAssetsServer/pic/user/m/icon.jpg';
+
+const String bangumiTextOnlySubjectCover =
+    'https://bgm.tv/img/no_icon_subject.png';
+final String bangumiTextOnlyGroupIcon =
+    'https://$bangumiAssetsServer/pic/icon/m/no_icon.jpg';
+
+const String checkWebVersionPrompt = '查看网页版';
+const String goToForsetiPrompt = '在bangumin.tv';
+const String appOrBangumiHasAnError = '应用或bangumi出错';
+const String openInBrowser = '在浏览器中打开';
+const String dialogConfirmation = '好的';
+const String hasSuccessfullyUpdatedCollection = '收藏更新成功';
+
+final double avatarSize = 48.0;
+
+const Duration shortSnackBarDisplayDuration = aSecond;
+const Duration snackBarDisplayDuration = Duration(milliseconds: 4000);

@@ -27,6 +27,11 @@ mat-sidenav {
   }
 }
 
+.hide-nav {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .build-version-footer {
   color: grey;
   position: fixed;

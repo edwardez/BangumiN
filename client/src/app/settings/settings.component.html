@@ -1,5 +1,5 @@
 <div *ngIf="this.userSettings">
-  <form [formGroup]="settingsForm">
+  <form [attr.aria-label]="'settings.a11y.form.title' | translate" [formGroup]="settingsForm">
 
     <div class="row ml-0 mr-0 justify-content-center align-content-start bangumin-height-container">
 
@@ -7,11 +7,13 @@
       >
         <h3 class="text-align-center">{{'settings.category.language.name' | translate}}</h3>
         <mat-card-content class="align-self-start">
-          <h4>{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
+          <h4
+            id="main-display-language-radio-label">{{'settings.category.language.BangumiNLanguage.name' | translate}}</h4>
           <div class="mt-3">
             <mat-radio-group formControlName="appLanguage">
               <mat-radio-button class="mr-3"
                                 [value]="language.key" *ngFor="let language of availableLanguage | keys"
+                                aria-labelledby="main-display-language-radio-label"
               >
                 {{language.value}}
               </mat-radio-button>
@@ -20,14 +22,16 @@
           </div>
           <div class="mt-3"></div>
           <div class="d-flex flex-row justify-content-start align-content-center">
-            <h4>{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
+            <h4
+              id="bangumi-info-display-language-radio-label">{{'settings.category.language.BangumiLanguage.name' | translate}}</h4>
             <mat-icon matTooltip="{{'settings.category.language.BangumiLanguage.explanation' | translate}}"
                       matTooltipPosition="{{'above'}}">info
             </mat-icon>
           </div>
 
           <div class="mt-3">
-            <mat-radio-group formControlName="bangumiLanguage">
+            <mat-radio-group aria-labelledby="bangumi-info-display-language-radio-label"
+                             formControlName="bangumiLanguage">
               <mat-radio-button class="mr-3"
                                 [value]="'original'">
                 {{'settings.category.language.BangumiLanguage.options.original' | translate}}
@@ -50,11 +54,13 @@
         class="card col-11 col-sm-9 col-md-7 d-flex flex-column justify-content-center align-content-center mt-3">
         <h3 class="text-align-center">{{'settings.category.appearance.name' | translate}}</h3>
         <mat-card-content class="align-self-start">
-          <h4>{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
+          <h4 id="color-theme-label">{{'settings.category.appearance.colorTheme.name' | translate}}</h4>
 
 
           <div class="mt-3">
-            <mat-radio-group class="d-flex flex-column flex-md-row" formControlName="appTheme">
+            <mat-radio-group aria-labelledby="color-theme-label" class="d-flex flex-column flex-md-row"
+                             formControlName="appTheme"
+            >
               <ng-container *ngFor="let appTheme of availableAppThemes">
                 <mat-radio-button
                   class="mr-3"
@@ -98,7 +104,7 @@
         class="card col-11 col-sm-9 col-md-7 d-flex flex-column justify-content-center align-content-center mt-3">
         <h3 class="text-align-center">{{'settings.category.privacy.name' | translate}}</h3>
         <mat-card-content class="align-self-start">
-          <h4>{{'settings.category.privacy.personalData.name' | translate}}</h4>
+          <h4 id="personal-data-label">{{'settings.category.privacy.personalData.name' | translate}}</h4>
 
           <div class="mt-3">
             <div class="d-flex flex-row justify-content-start align-content-center">
@@ -106,9 +112,11 @@
                 formControlName="stopCrawling"
                 (change)="showStopCrawlingExplanationDialog()"
                 class="mr-2"
+                aria-labelledby="personal-data-label personal-data-explanation-label"
 
               >
-                <span class="long-text-wrap">{{'settings.category.privacy.personalData.stopCrawling.name' | translate}}</span>
+                <span class="long-text-wrap"
+                      id="personal-data-explanation-label">{{'settings.category.privacy.personalData.stopCrawling.name' | translate}}</span>
               </mat-slide-toggle>
               <mat-icon
                 matTooltip="{{'settings.category.privacy.personalData.stopCrawling.tooltip.explanation' | translate}}"

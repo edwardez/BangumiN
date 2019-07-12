@@ -36,7 +36,7 @@ export class NavSearchBarComponent implements OnInit {
     }
   ];
 
-  @ViewChild('searchBar')
+  @ViewChild('searchBar', {static: true})
   searchBarInput: ElementRef;
 
   constructor(

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--WARNING: CHANGES MADE HERE IN STABLE BRANCH WILL BE PUSHED TO PRODUCTION USERS IMMEDIATELY-->
+<rss version="2.0" xmlns:sparkle="https://bangumin.app">
+    <channel>
+        <title>BangumiN Changelog</title>
+        <item>
+            <title>Version 0.3.1</title>
+            <description>正式发布</description>
+            <pubDate>2019/07/11 20:00</pubDate>
+            <enclosure url="https://github.com/edwardez/BangumiN/releases"
+                       sparkle:version="0.3.1" sparkle:os="android"/>
+        </item>
+        <item>
+            <title>Version 0.3.0</title>
+            <description>测试发布</description>
+            <pubDate>2019/07/10 20:00</pubDate>
+            <enclosure url="https://github.com/edwardez/BangumiN/releases"
+                       sparkle:version="0.3.0" sparkle:os="android"/>
+        </item>
+    </channel>
+</rss>

@@ -43,7 +43,7 @@ class _MuninVersionWidgetState extends State<MuninVersionWidget> {
         packageInfo = await PackageInfo.fromPlatform();
       }
 
-      final current = Version.parse('0.1.0');
+      final current = Version.parse(packageInfo.version);
       final latest = Version.parse(muninVersion.latestVersion);
       if (latest.compareTo(current) > 0) {
         latestVersionPrompt = '有新版本 ${muninVersion.latestVersion}';

@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/mono/Character.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
@@ -11,7 +12,6 @@ class HorizontalCharacters extends StatelessWidget {
   static const double textSpaceScaleBaseFactor = 1.5;
 
   final BuiltList<Character> characters;
-  final double horizontalImagePadding;
 
   final double imageWidth;
   final double imageHeight;
@@ -19,7 +19,6 @@ class HorizontalCharacters extends StatelessWidget {
   const HorizontalCharacters(
       {Key key,
       @required this.characters,
-      this.horizontalImagePadding = 8.0,
       this.imageHeight = 60.0,
       this.imageWidth = 60.0})
       : super(key: key);
@@ -35,7 +34,6 @@ class HorizontalCharacters extends StatelessWidget {
       }
       imageWidgets.add(RoundedElevatedImageWithBottomText(
         contentType: BangumiContent.Character,
-
         /// TODO: grid/small stores a low-resolution size avatar, medium/large stores a hi-res one
         /// However Bangumi allows user to crop image and produces a corresponding small/grid image
         /// We can let user select using a high-res but incorrectly cropped version
@@ -44,8 +42,7 @@ class HorizontalCharacters extends StatelessWidget {
         id: character.id.toString(),
         imageHeight: imageHeight,
         imageWidth: imageWidth,
-        horizontalImagePadding:
-            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+        padding: EdgeInsets.only(right: mediumOffset),
         title: character.name,
         subtitle:
             character.actors.length == 0 ? null : character.actors[0].name,

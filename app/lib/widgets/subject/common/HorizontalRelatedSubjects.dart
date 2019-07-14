@@ -3,6 +3,7 @@ import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguag
 import 'package:munin/models/bangumi/subject/RelatedSubject.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
+import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/HorizontalScrollableWidget.dart';
 import 'package:munin/widgets/shared/images/RoundedElevatedImageWithBottomText.dart';
 
@@ -17,7 +18,6 @@ class HorizontalRelatedSubjects extends StatelessWidget {
   final Iterable<RelatedSubject> relatedSubjects;
   final PreferredSubjectInfoLanguage preferredSubjectInfoLanguage;
 
-  final double horizontalImagePadding;
   final double imageWidth;
   final double imageHeight;
 
@@ -27,7 +27,6 @@ class HorizontalRelatedSubjects extends StatelessWidget {
     Key key,
     @required this.relatedSubjects,
     @required this.preferredSubjectInfoLanguage,
-    this.horizontalImagePadding = 8.0,
     this.imageWidth = 71,
     this.imageHeight = 100.0,
     this.displaySubtitle = true,
@@ -43,8 +42,7 @@ class HorizontalRelatedSubjects extends StatelessWidget {
         id: subject.id?.toString(),
         imageWidth: imageWidth,
         imageHeight: imageHeight,
-        horizontalImagePadding:
-            imageWidgets.length == 0 ? 0 : horizontalImagePadding,
+        padding: EdgeInsets.only(right: mediumOffset),
         title:
             preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
         subtitle: displaySubtitle ? subject.subjectSubTypeName : null,

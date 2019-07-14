@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
+import 'package:quiver/time.dart';
+
+const Duration shortSnackBarDisplayDuration = aSecond;
+const Duration snackBarDisplayDuration = Duration(milliseconds: 4000);
 
 /// Shows a snackbar on success of [future].
 void showSnackBarOnSuccess(

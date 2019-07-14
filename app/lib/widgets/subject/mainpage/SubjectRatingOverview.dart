@@ -113,7 +113,7 @@ class SubjectRatingOverview extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('$goToForsetiPrompt查看统计数据'),
+            title: Text('$goToForsetiLabel查看统计数据'),
             onTap: () {
               launch(
                   'https://${Application.environmentValue

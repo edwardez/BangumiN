@@ -21,5 +21,5 @@ void navigateToSubjectCollection(BuildContext context, int subjectId) {
             .replaceFirst(RoutesVariable.subjectIdParam, subjectId?.toString()),
         transition: TransitionType.nativeModal,
       ),
-      hasSuccessfullyUpdatedCollection);
+      hasSuccessfullyUpdatedCollectionLabel);
 }

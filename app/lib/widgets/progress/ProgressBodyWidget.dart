@@ -68,10 +68,10 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
     return Column(
       children: <Widget>[
         Text('在看的$requestSubjectTypes列表为空，可能因为：'),
-        Text('1. $appOrBangumiHasAnError，下拉可重试'),
+        Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
         Text('2. 目前没有在看的$requestSubjectTypes'),
         FlatButton(
-          child: Text(checkWebVersionPrompt),
+          child: Text(checkWebVersionLabel),
           onPressed: () {
             return launch(bangumiHomePageUrl, forceSafariVC: false);
           },

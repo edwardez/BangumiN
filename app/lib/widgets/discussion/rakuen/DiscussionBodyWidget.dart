@@ -46,9 +46,9 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
     return MuninPadding(
       child: Column(
         children: <Widget>[
-          Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
+          Text('讨论列表为空，可能因为$appOrBangumiHasAnErrorLabel，下拉可重试'),
           FlatButton(
-            child: Text(checkWebVersionPrompt),
+            child: Text(checkWebVersionLabel),
             onPressed: () {
               return launch(rakuenMobileUrl, forceSafariVC: false);
             },

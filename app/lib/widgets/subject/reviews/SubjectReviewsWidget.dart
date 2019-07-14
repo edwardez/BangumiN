@@ -9,12 +9,12 @@ import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/appbar/AppBarTitleForSubject.dart';
 import 'package:munin/widgets/shared/chips/FilterChipsGroup.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
+import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/subject/common/SubjectReviewWidget.dart';
 import 'package:quiver/core.dart';
@@ -95,23 +95,12 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
     return GestureDetector(
       child: showOnlyFriendsSwitch,
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                content: Text('由于bangumi的限制，'
-                    '"只看${SubjectReviewMainFilter.withNonEmptyCommentsChineseName}"'
-                    '和"$showOnlyFriendsText"不能同时使用'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(dialogConfirmation),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  )
-                ],
-              );
-            });
+        showMuninSingleActionDialog(
+          context,
+          dialogBody: '由于bangumi的限制，'
+              '"只看${SubjectReviewMainFilter.withNonEmptyCommentsChineseName}"'
+              '和"$showOnlyFriendsText"不能同时使用',
+        );
       },
     );
   }

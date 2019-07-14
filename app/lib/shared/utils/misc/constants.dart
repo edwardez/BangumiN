@@ -1,5 +1,4 @@
 import 'package:munin/config/application.dart';
-import 'package:quiver/time.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
 final bangumiNonCdnHostUri =
@@ -19,14 +18,11 @@ const String bangumiTextOnlySubjectCover =
 final String bangumiTextOnlyGroupIcon =
     'https://$bangumiAssetsServer/pic/icon/m/no_icon.jpg';
 
-const String checkWebVersionPrompt = '查看网页版';
-const String goToForsetiPrompt = '在bangumin.tv';
-const String appOrBangumiHasAnError = '应用或bangumi出错';
-const String openInBrowser = '在浏览器中打开';
-const String dialogConfirmation = '好的';
-const String hasSuccessfullyUpdatedCollection = '收藏更新成功';
+const String checkWebVersionLabel = '查看网页版';
+const String goToForsetiLabel = '在bangumin.tv';
+const String appOrBangumiHasAnErrorLabel = '应用或bangumi出错';
+const String openInBrowserLabel = '在浏览器中打开';
+const String hasSuccessfullyUpdatedCollectionLabel = '收藏更新成功';
 
 final double avatarSize = 48.0;
 
-const Duration shortSnackBarDisplayDuration = aSecond;
-const Duration snackBarDisplayDuration = Duration(milliseconds: 4000);

@@ -66,7 +66,7 @@ class MoreActions extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.open_in_browser),
-                  title: Text(openInBrowser),
+                  title: Text(openInBrowserLabel),
                   onTap: () {
                     var maybeWebUrl = generateWebPageUrlByContentType(
                         parentBangumiContent, thread.id.toString());

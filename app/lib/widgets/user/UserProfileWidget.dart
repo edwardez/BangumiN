@@ -100,7 +100,7 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(OMIcons.openInBrowser),
-                    title: Text(checkWebVersionPrompt),
+                    title: Text(checkWebVersionLabel),
                     onTap: () {
                       Navigator.of(context).pop();
                       launch(userProfileMainUrl);
@@ -108,7 +108,7 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(OMIcons.timeline),
-                    title: Text('$goToForsetiPrompt查看统计数据'),
+                    title: Text('$goToForsetiLabel查看统计数据'),
                     onTap: () {
                       Navigator.of(context).pop();
                       launch(

@@ -102,7 +102,7 @@ class TimelineParser {
     }
 
     if (!nextPageIndicatorElement.text.contains('下一页')) {
-      throw AuthenticationExpiredException('认证已过期');
+      throw AuthenticationExpiredException('认证已过期，或你没有关注任何用户');
     }
   }
 

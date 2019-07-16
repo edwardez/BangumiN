@@ -6,6 +6,7 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/shared/ExceptionHandler.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -57,7 +58,16 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
   try {
     bool inDev = Application.environmentValue.environmentType ==
         EnvironmentType.Development;
-    final error = action.error;
+    var error = action.error;
+    // Error might be swollen by isolate, the only exception that we really care
+    // and shouldn't be swollen is AuthenticationExpiredException, which will
+    // be thrown by timeline parser, hence re-convert it here.
+    if (error.toString().contains('AuthenticationExpiredException') &&
+        error is! AuthenticationExpiredException) {
+      reportError(error, stack: action.stack, context: DiagnosticsNode.message(
+          'Error that might have been swollen by isolate.'));
+      error = AuthenticationExpiredException('认证已过期');
+    }
     final context = action.context;
 
     // Always reports errors in dev.

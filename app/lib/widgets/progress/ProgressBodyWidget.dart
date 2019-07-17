@@ -45,11 +45,11 @@ typedef Future<void> UpdateBookProgress({
 });
 
 class ProgressBodyWidget extends StatefulWidget {
-  final OneMuninBar oneMuninBar;
+  final OneMuninBar appBar;
   final BuiltSet<SubjectType> subjectTypes;
 
   const ProgressBodyWidget(
-      {Key key, @required this.oneMuninBar, @required this.subjectTypes})
+      {Key key, @required this.appBar, @required this.subjectTypes})
       : super(key: key);
 
   @override
@@ -161,7 +161,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           onLoadMore: null,
           refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
           itemCount: widgets.length,
-          appBar: widget.oneMuninBar,
+          appBar: widget.appBar,
 
           /// all progress subjects will be loaded in once, hence no more items
           /// to load if progresses are loaded

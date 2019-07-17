@@ -47,7 +47,7 @@ class FlatButtonWithTrailingIcon extends FlatButton
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               label,
-              const SizedBox(width: 8.0),
+              const SizedBox(width: 4.0),
               icon,
             ],
           ),

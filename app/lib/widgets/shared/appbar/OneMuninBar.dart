@@ -27,17 +27,25 @@ class OneMuninBar extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _OneMuninBarState();
+    return OneMuninBarState();
   }
 }
 
-class _OneMuninBarState extends State<OneMuninBar> {
+class OneMuninBarState extends State<OneMuninBar> {
   SearchHomeDelegate searchHomeDelegate;
+  Widget title;
 
   @override
   void initState() {
-    searchHomeDelegate = SearchHomeDelegate();
     super.initState();
+    searchHomeDelegate = SearchHomeDelegate();
+    title = widget.title;
+  }
+
+  void setNewTitle(Widget newTitle) {
+    setState(() {
+      title = newTitle;
+    });
   }
 
   @override
@@ -47,7 +55,7 @@ class _OneMuninBarState extends State<OneMuninBar> {
         pinned: true,
         centerTitle: true,
         elevation: 0.5,
-        title: widget.title,
+        title: title,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

@@ -58,4 +58,7 @@ class MuninIcons {
   /// https://material.io/tools/icons/?icon=subdirectory_arrow_right&style=round
   static const IconData muninReplyCount =
       const IconData(0xe801, fontFamily: _kFontFam);
+
+  static const IconData muninRoundedTriangle =
+  const IconData(0xe802, fontFamily: _kFontFam);
 }

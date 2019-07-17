@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/widgets/discussion/rakuen/DiscussionBodyWidget.dart';
+import 'package:munin/widgets/home/HomePageAppBarTitle.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 
 class DiscussionBody {
@@ -27,6 +28,7 @@ class _DiscussionHomeState extends State<DiscussionHome> {
       List(GetDiscussionRequest.validGetDiscussionRequests.length);
   final List<DiscussionBodyWidget> pages =
       List(GetDiscussionRequest.validGetDiscussionRequests.length);
+  final _oneMuninBarKey = GlobalKey<OneMuninBarState>();
 
   PageController pageController;
 
@@ -52,14 +54,20 @@ class _DiscussionHomeState extends State<DiscussionHome> {
           List<ListTile> options = [];
 
           for (DiscussionBody page in discussionBodyPages) {
+            final request = page.getDiscussionRequest;
             options.add(ListTile(
               title:
-                  Text(page.getDiscussionRequest.discussionFilter.chineseName),
+              Text(request.discussionFilter.chineseName),
               onTap: () {
-                if (currentIndex != page.getDiscussionRequest.pageIndex) {
-                  pageController
-                      .jumpToPage(page.getDiscussionRequest.pageIndex);
-                }
+                setState(() {
+                  if (currentIndex != request.pageIndex) {
+                    pageController
+                        .jumpToPage(request.pageIndex);
+                  }
+                  _oneMuninBarKey.currentState.setNewTitle(
+                      _buildAppBarTitle(request));
+                });
+
                 Navigator.pop(context);
               },
             ));
@@ -80,17 +88,13 @@ class _DiscussionHomeState extends State<DiscussionHome> {
     pageController = PageController(
         initialPage: widget.preferredDiscussionLaunchPage.pageIndex);
 
+    final oneMuninBar = OneMuninBar(
+      key: _oneMuninBarKey,
+      title: _buildAppBarTitle(widget.preferredDiscussionLaunchPage),
+    );
+
     for (GetDiscussionRequest request
         in GetDiscussionRequest.validGetDiscussionRequests) {
-      /// Maybe we can initialize only one app bar
-      OneMuninBar oneMuninBar = OneMuninBar(
-        title: FlatButton(
-          onPressed: () {
-            _filterModalBottomSheet();
-          },
-          child: Text(request.discussionFilter.chineseName),
-        ),
-      );
 
       var discussionBody = DiscussionBody(
           widget: _buildDiscussionBodyWidget(request, oneMuninBar),
@@ -101,6 +105,13 @@ class _DiscussionHomeState extends State<DiscussionHome> {
       pages[discussionBody.getDiscussionRequest.pageIndex] =
           discussionBody.widget;
     }
+  }
+
+  Widget _buildAppBarTitle(GetDiscussionRequest request) {
+    return HomePageAppBarTitle(
+      onPressed: _filterModalBottomSheet,
+      titleText: request.discussionFilter.chineseName,
+    );
   }
 
   @override

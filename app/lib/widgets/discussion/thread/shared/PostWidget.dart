@@ -234,7 +234,7 @@ class PostWidget extends StatelessWidget {
     if (post is SubPostReply) {
       return MuninPadding.vertical1xOffset(
         child: Padding(
-          padding: EdgeInsets.only(left: UserWithPostContent.avatarRadius),
+          padding: EdgeInsets.only(left: UserWithPostContent.avatarRadius * 2),
           child: body,
         ),
       );

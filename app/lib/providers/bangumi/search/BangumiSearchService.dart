@@ -17,11 +17,14 @@ import 'package:munin/providers/bangumi/search/parser/isolate.dart';
 
 /// A Bangumi search service that handles search-related http requests
 class BangumiSearchService {
+  /// Search query cannot start with illegal prefixes, otherwise Bangumi returns
+  /// 403.
+  static final _illegalSearchQueryPrefix = RegExp(r'^\.+');
+
   BangumiCookieService cookieClient;
   BangumiOauthService oauthClient;
 
-  BangumiSearchService(
-      {@required this.cookieClient, @required this.oauthClient})
+  BangumiSearchService({@required this.cookieClient, @required this.oauthClient})
       : assert(cookieClient != null),
         assert(oauthClient != null);
 
@@ -37,6 +40,8 @@ class BangumiSearchService {
     start = 0,
     maxResults = 25,
   }) async {
+    query = query.replaceAll(_illegalSearchQueryPrefix, '');
+
     /// Some Bangumi search results depend on cookie chii_searchDateLine
     /// If this value is not set, bangumi might return html even though there
     /// does exist some results, so we need to set [chii_searchDateLine] cookie
@@ -63,10 +68,10 @@ class BangumiSearchService {
     }
 
     BangumiGeneralSearchResponse bangumiSearchResponse =
-        BangumiGeneralSearchResponse.fromJson(response.body);
+    BangumiGeneralSearchResponse.fromJson(response.body);
 
     LinkedHashMap<int, SubjectSearchResultItem> results =
-        LinkedHashMap<int, SubjectSearchResultItem>();
+    LinkedHashMap<int, SubjectSearchResultItem>();
 
     /// theoretically, this should be done in the serializer
     /// However custom serializer for [built_value] is not flexible enough and
@@ -77,7 +82,7 @@ class BangumiSearchService {
         /// BuiltValueEnumConst requires wireName to be string
         rawSubject['type'] = rawSubject['type']?.toString();
         SubjectSearchResultItem subject =
-            SubjectSearchResultItem.fromJson(json.encode(rawSubject));
+        SubjectSearchResultItem.fromJson(json.encode(rawSubject));
         results[subject.id] = subject;
       }
     }
@@ -93,8 +98,7 @@ class BangumiSearchService {
   /// (actually Bangumi has pagination for mono search, but second page is hidden)
   /// According to https://bgm.tv/group/topic/4428#post_56015, it seems like
   /// pagination is hidden intentionally
-  Future<BangumiGeneralSearchResponse> searchMono(
-      {@required String query, @required SearchType searchType}) async {
+  Future<BangumiGeneralSearchResponse> searchMono({@required String query, @required SearchType searchType}) async {
     assert(searchType.isMonoSearchType);
 
     String searchWiredName;
@@ -115,10 +119,10 @@ class BangumiSearchService {
         ));
 
     BangumiGeneralSearchResponse bangumiSearchResponse =
-        BangumiGeneralSearchResponse((b) => b
-          ..totalCount = monoSearchResults.length
-          ..requestedResults = monoSearchResults.length
-          ..results.addAll(monoSearchResults));
+    BangumiGeneralSearchResponse((b) => b
+      ..totalCount = monoSearchResults.length
+      ..requestedResults = monoSearchResults.length
+      ..results.addAll(monoSearchResults));
 
     return bangumiSearchResponse;
   }

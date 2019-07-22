@@ -204,9 +204,6 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
     final currentMutedUpdateVersion = muninVersionInStore?.mutedUpdateVersion;
     print('$currentMutedUpdateVersion $availableCriticalUpdate');
     if (currentMutedUpdateVersion != null && availableCriticalUpdate != null) {
-      print(
-          '${Version.parse(availableCriticalUpdate.versionString).compareTo(
-              Version.parse(currentMutedUpdateVersion))}');
       if (Version.parse(availableCriticalUpdate.versionString)
           .compareTo(Version.parse(currentMutedUpdateVersion)) <=
           0) {

@@ -963,7 +963,7 @@ class TimelineParser {
     Map<String, String> userAvatarImageCache = {};
 
     for (var item in document.querySelectorAll('.tml_item')) {
-      int feedId = tryParseInt(parseFeedId(item));
+      final feedId = parseEndsWithDigitId(item);
 
       /// if we are trying to load a newer feed, and response feed id is equal to
       /// or lower than max feed id in store, we've loaded all new contents and can break

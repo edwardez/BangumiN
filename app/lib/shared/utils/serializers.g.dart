@@ -40,8 +40,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FeedChunks.serializer)
       ..add(FeedMetaInfo.serializer)
       ..add(FriendshipCreationSingle.serializer)
+      ..add(FriendshipRequestNotificationItem.serializer)
       ..add(FullPublicMessage.serializer)
       ..add(GeneralDiscussionItem.serializer)
+      ..add(GeneralNotificationItem.serializer)
       ..add(GeneralSetting.serializer)
       ..add(GetDiscussionRequest.serializer)
       ..add(GetDiscussionResponse.serializer)
@@ -74,6 +76,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NetworkServiceTagLink.serializer)
       ..add(NetworkServiceTagPlainText.serializer)
       ..add(NetworkServiceType.serializer)
+      ..add(NotificationState.serializer)
       ..add(OauthState.serializer)
       ..add(OrderCollectionBy.serializer)
       ..add(OriginalPost.serializer)
@@ -131,6 +134,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Actor)]),
           () => new ListBuilder<Actor>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(BaseNotificationItem)]),
+          () => new ListBuilder<BaseNotificationItem>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(BaseNotificationItem)]),
+          () => new ListBuilder<BaseNotificationItem>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Character)]),
           () => new ListBuilder<Character>())
@@ -262,19 +273,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
             const FullType(FeedChunks)
           ]),
           () => new MapBuilder<GetTimelineRequest, FeedChunks>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap,
-              const [const FullType(int), const FullType(FullPublicMessage)]),
-          () => new MapBuilder<int, FullPublicMessage>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap, const [
-            const FullType(SearchRequest),
-            const FullType(BangumiSearchResponse)
-          ]),
-          () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]),
-          () => new MapBuilder<String, MutedUser>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(int), const FullType(FullPublicMessage)]), () => new MapBuilder<int, FullPublicMessage>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(SearchRequest), const FullType(BangumiSearchResponse)]), () => new MapBuilder<SearchRequest, BangumiSearchResponse>())
+      ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedGroup)]), () => new MapBuilder<String, MutedGroup>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(MutedUser)]), () => new MapBuilder<String, MutedUser>())
       ..addBuilderFactory(const FullType(BuiltMap, const [const FullType(String), const FullType(SubjectReview)]), () => new MapBuilder<String, SubjectReview>())

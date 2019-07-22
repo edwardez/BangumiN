@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
-import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
-import 'package:redux/redux.dart';
 
 import 'UserProfileWidget.dart';
 
@@ -12,21 +10,19 @@ class UserHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, String>(
-      converter: (Store<AppState> store) =>
-          store.state.currentAuthenticatedUserBasicInfo.username,
-      distinct: true,
-      builder: (BuildContext context, String username) {
-        return UserProfileWidget(
-          username: username,
-          appBar: OneMuninBar(
-            title: Text(
-              PreferredLaunchNavTab.HomePage.generalSettingPageChineseName,
-              style: Theme.of(context).textTheme.button,
-            ),
-          ),
-        );
-      },
+    return UserProfileWidget(
+      username: findAppState(context).currentAuthenticatedUserBasicInfo
+          .username,
+      appBar: OneMuninBar(
+        title: Text(
+          PreferredLaunchNavTab.HomePage.generalSettingPageChineseName,
+          style: Theme
+              .of(context)
+              .textTheme
+              .button,
+        ),
+        addNotificationWidget: true,
+      ),
     );
   }
 }

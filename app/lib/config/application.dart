@@ -31,6 +31,7 @@ import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/setting/SettingEpics.dart';
 import 'package:munin/redux/subject/SubjectEpics.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
+import 'package:munin/redux/user/UserActions.dart';
 import 'package:munin/redux/user/UserEpics.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/injector/injector.dart';
@@ -159,6 +160,10 @@ abstract class Application {
 
     await _checkAuthenticationInfo(bangumiOauthService);
 
+    /// Starts listening notifications for logged in users.
+    if (store.state.isAuthenticated ?? false) {
+      store.dispatch(ListenOnUnreadNotificationAction());
+    }
     // flutter initialization
     runApp(MuninApp(this, store));
   }

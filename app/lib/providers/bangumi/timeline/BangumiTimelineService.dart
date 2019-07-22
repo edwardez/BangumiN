@@ -111,8 +111,8 @@ class BangumiTimelineService {
         queryParameters: queryParameters,
         data: body,
         options: Options(
-            contentType:
-                ContentType.parse("application/x-www-form-urlencoded")));
+          contentType: ExtraContentType.xWwwFormUrlencoded,
+        ));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.data);

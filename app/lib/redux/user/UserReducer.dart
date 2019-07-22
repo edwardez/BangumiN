@@ -12,6 +12,8 @@ final userReducers = combineReducers<UserState>([
       fetchUserPreviewSuccessReducer),
   TypedReducer<UserState, ListUserCollectionsSuccessAction>(
       listUserCollectionsSuccessReducer),
+  TypedReducer<UserState, ListNotificationItemsSuccessAction>(
+      listNotificationItemsSuccessReducer),
 ]);
 
 UserState fetchUserPreviewSuccessReducer(UserState userState,
@@ -80,4 +82,21 @@ UserState listUserCollectionsSuccessReducer(UserState userState,
     ..collections.addAll(
       {action.request: responseInStore},
     ));
+}
+
+UserState listNotificationItemsSuccessReducer(UserState userState,
+    ListNotificationItemsSuccessAction action) {
+  if (action.onlyUnread) {
+    return userState.rebuild((b) =>
+    b
+      ..notificationState
+          .unreadNotificationItems
+          .replace(action.items));
+  } else {
+    return userState.rebuild((b) =>
+    b
+      ..notificationState
+          .allNotificationItems
+          .replace(action.items));
+  }
 }

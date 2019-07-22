@@ -112,6 +112,10 @@ import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart
 import 'package:munin/models/bangumi/user/collection/full/SubjectOnUserCollectionList.dart';
 import 'package:munin/models/bangumi/user/collection/full/UserCollectionTag.dart';
 import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
+import 'package:munin/models/bangumi/user/notification/BaseNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/FriendshipRequestNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/GeneralNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/NotificationState.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
@@ -254,6 +258,11 @@ part 'serializers.g.dart';
   CollectionOnUserList,
   UserCollectionTag,
   SubjectOnUserCollectionList,
+  // User notifications
+  NotificationState,
+  BaseNotificationItem,
+  FriendshipRequestNotificationItem,
+  GeneralNotificationItem,
 
   /// Progress
   ProgressState,

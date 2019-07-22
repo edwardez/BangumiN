@@ -82,13 +82,14 @@ String parseHrefId(Element element, {bool digitOnly = false}) {
   return endsWithWordsRegex.firstMatch(hrefId)?.group(0);
 }
 
-String parseFeedId(Element element) {
+int parseEndsWithDigitId(Element element) {
   String id = element?.attributes['id']?.trim();
   if (id == null) {
     return null;
   }
 
-  return endsWithDigitRegex.firstMatch(id)?.group(0);
+  return tryParseInt(
+    endsWithDigitRegex.firstMatch(id)?.group(0), defaultValue: null,);
 }
 
 /// extract first int from a string

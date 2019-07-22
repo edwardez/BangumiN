@@ -49,7 +49,7 @@ class MuteSettingWidget extends StatelessWidget {
                         .body2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
-                  subtitle: Text('作用于所有地方'),
+                  subtitle: Text('除通知外都会被屏蔽'),
                   trailing: IconButton(
                     icon: Icon(OMIcons.helpOutline),
                     onPressed: () {

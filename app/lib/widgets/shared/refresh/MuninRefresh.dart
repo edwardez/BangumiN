@@ -5,9 +5,11 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
+import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/refresh/workaround/refresh_indicator.dart';
 
@@ -116,6 +118,9 @@ class MuninRefresh extends StatefulWidget {
   /// bottom, [onLoadMore] will be triggered
   final double loadMoreTriggerDistance;
 
+  /// Whether a snackbar should be shown on error.
+  final bool showSnackbarOnError;
+
   const MuninRefresh({
     Key key,
     @required this.onRefresh,
@@ -134,6 +139,7 @@ class MuninRefresh extends StatefulWidget {
     this.cupertinoRefreshTriggerPullDistance = 70,
     this.cupertinoRefreshIndicatorExtent = 50,
     this.loadMoreTriggerDistance = 200,
+    this.showSnackbarOnError = false,
   })  : assert(itemCount != null),
         assert(itemBuilder != null),
         super(key: key);
@@ -210,6 +216,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       /// TODO: Waiting for https://github.com/flutter/flutter/issues/31376 to be fixed
       /// then refresh method inside [CupertinoSliverRefreshControl] should be called
       /// instead(like how [_materialRefreshKey] is used below)
+      /// code in [NotificationsWidget] also needs to be cleaned up.
       completer = widget.onRefresh();
     } else {
       completer = _materialRefreshKey?.currentState?.show();
@@ -226,6 +233,9 @@ class MuninRefreshState extends State<MuninRefresh> {
         setState(() {
           refreshLoadingStatus = RequestStatus.UnknownException;
         });
+        if (widget.showSnackbarOnError) {
+          showTextOnSnackBar(context, formatErrorMessage(error));
+        }
       }
     });
 
@@ -251,6 +261,9 @@ class MuninRefreshState extends State<MuninRefresh> {
           setState(() {
             refreshLoadingStatus = RequestStatus.UnknownException;
           });
+          if (widget.showSnackbarOnError) {
+            showTextOnSnackBar(context, formatErrorMessage(error));
+          }
         }
       });
 
@@ -280,6 +293,9 @@ class MuninRefreshState extends State<MuninRefresh> {
           setState(() {
             loadMoreStatus = RequestStatus.UnknownException;
           });
+          if (widget.showSnackbarOnError) {
+            showTextOnSnackBar(context, formatErrorMessage(error));
+          }
         }
       },
     );
@@ -535,9 +551,6 @@ class MuninRefreshState extends State<MuninRefresh> {
         notification.metrics.maxScrollExtent != 0.0 &&
         currentMaxScrollExtent != notification.metrics.maxScrollExtent) {
       currentMaxScrollExtent = notification.metrics.maxScrollExtent;
-      debugPrint(
-          'Fetch older items under maxScrollExtent:${notification.metrics.maxScrollExtent}, ' +
-              'pixels: ${notification.metrics.pixels}, diff: ${notification.metrics.maxScrollExtent - notification.metrics.pixels}.');
 
       callOnLoadMore();
     }

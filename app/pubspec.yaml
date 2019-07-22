@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  badges: ^1.1.0
   bbob_dart: ^0.1.0
   built_collection: ^4.2.1
   built_value: ^6.5.0

@@ -10,9 +10,10 @@ Future<bool> showMuninYesNoDialog(
   bool confirmation = await showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
+      assert(title != null || dialogBody != null);
       return AlertDialog(
-        title: Text(title),
-        content: Text(
+        title: title == null ? null : Text(title),
+        content: dialogBody == null ? null : Text(
           dialogBody,
         ),
         actions: <Widget>[

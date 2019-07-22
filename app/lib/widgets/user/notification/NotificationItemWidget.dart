@@ -24,7 +24,7 @@ clearNotification(
   try {
     await onClearNotification();
 
-    final howManyNotificationsLabel = clearAllNotifications ? '全部' : '';
+    final howManyNotificationsLabel = clearAllNotifications ? '全部' : '此';
 
     showTextOnSnackBar(context, '已标记$howManyNotificationsLabel通知为已读');
   } catch (error) {

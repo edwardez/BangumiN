@@ -164,7 +164,7 @@ Epic<AppState> _createListNotificationItemsEpic(
   };
 }
 
-const listenOnUnreadNotificationsInterval = const Duration(seconds: 15);
+const listenOnUnreadNotificationsInterval = const Duration(seconds: 30);
 
 /// Listens on unread notifications, update store if unread messages are not the
 /// same as notifications in store.

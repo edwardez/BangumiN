@@ -17,7 +17,7 @@ class _$PublicMessageReplySerializer
   final String wireName = 'PublicMessageReply';
 
   @override
-  Iterable serialize(Serializers serializers, PublicMessageReply object,
+  Iterable<Object> serialize(Serializers serializers, PublicMessageReply object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'author',
@@ -35,7 +35,8 @@ class _$PublicMessageReplySerializer
   }
 
   @override
-  PublicMessageReply deserialize(Serializers serializers, Iterable serialized,
+  PublicMessageReply deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PublicMessageReplyBuilder();
 

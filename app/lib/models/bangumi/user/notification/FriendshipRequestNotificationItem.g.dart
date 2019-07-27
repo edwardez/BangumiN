@@ -21,7 +21,7 @@ class _$FriendshipRequestNotificationItemSerializer
   final String wireName = 'FriendshipRequestNotificationItem';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, FriendshipRequestNotificationItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -40,7 +40,7 @@ class _$FriendshipRequestNotificationItemSerializer
 
   @override
   FriendshipRequestNotificationItem deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FriendshipRequestNotificationItemBuilder();
 

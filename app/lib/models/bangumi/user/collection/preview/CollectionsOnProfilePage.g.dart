@@ -20,7 +20,8 @@ class _$CollectionsOnProfilePageSerializer
   final String wireName = 'CollectionsOnProfilePage';
 
   @override
-  Iterable serialize(Serializers serializers, CollectionsOnProfilePage object,
+  Iterable<Object> serialize(
+      Serializers serializers, CollectionsOnProfilePage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'subjectType',
@@ -47,7 +48,7 @@ class _$CollectionsOnProfilePageSerializer
 
   @override
   CollectionsOnProfilePage deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionsOnProfilePageBuilder();
 
@@ -70,7 +71,7 @@ class _$CollectionsOnProfilePageSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(CollectionStatus),
                 const FullType(int)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'subjects':
           result.subjects.replace(serializers.deserialize(value,
@@ -78,7 +79,7 @@ class _$CollectionsOnProfilePageSerializer
                 const FullType(CollectionStatus),
                 const FullType(
                     BuiltList, const [const FullType(SubjectBaseWithCover)])
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

@@ -16,7 +16,7 @@ class _$ThemeSettingSerializer implements StructuredSerializer<ThemeSetting> {
   final String wireName = 'ThemeSetting';
 
   @override
-  Iterable serialize(Serializers serializers, ThemeSetting object,
+  Iterable<Object> serialize(Serializers serializers, ThemeSetting object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'currentTheme',
@@ -40,7 +40,7 @@ class _$ThemeSettingSerializer implements StructuredSerializer<ThemeSetting> {
   }
 
   @override
-  ThemeSetting deserialize(Serializers serializers, Iterable serialized,
+  ThemeSetting deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ThemeSettingBuilder();
 

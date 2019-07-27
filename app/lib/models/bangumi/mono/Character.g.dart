@@ -15,7 +15,7 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
   final String wireName = 'Character';
 
   @override
-  Iterable serialize(Serializers serializers, Character object,
+  Iterable<Object> serialize(Serializers serializers, Character object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'role_name',
@@ -61,7 +61,7 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
   }
 
   @override
-  Character deserialize(Serializers serializers, Iterable serialized,
+  Character deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CharacterBuilder();
 
@@ -95,7 +95,7 @@ class _$CharacterSerializer implements StructuredSerializer<Character> {
           result.actors.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(Actor)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'id':
           result.id = serializers.deserialize(value,

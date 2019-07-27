@@ -17,7 +17,7 @@ class _$GeneralSettingSerializer
   final String wireName = 'GeneralSetting';
 
   @override
-  Iterable serialize(Serializers serializers, GeneralSetting object,
+  Iterable<Object> serialize(Serializers serializers, GeneralSetting object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'preferredSubjectInfoLanguage',
@@ -44,7 +44,8 @@ class _$GeneralSettingSerializer
   }
 
   @override
-  GeneralSetting deserialize(Serializers serializers, Iterable serialized,
+  GeneralSetting deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GeneralSettingBuilder();
 

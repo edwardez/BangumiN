@@ -17,7 +17,7 @@ class _$EpisodeProgressSerializer
   final String wireName = 'EpisodeProgress';
 
   @override
-  Iterable serialize(Serializers serializers, EpisodeProgress object,
+  Iterable<Object> serialize(Serializers serializers, EpisodeProgress object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'sort',
@@ -59,7 +59,8 @@ class _$EpisodeProgressSerializer
   }
 
   @override
-  EpisodeProgress deserialize(Serializers serializers, Iterable serialized,
+  EpisodeProgress deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EpisodeProgressBuilder();
 

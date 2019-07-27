@@ -17,7 +17,7 @@ class _$GetTimelineRequestSerializer
   final String wireName = 'GetTimelineRequest';
 
   @override
-  Iterable serialize(Serializers serializers, GetTimelineRequest object,
+  Iterable<Object> serialize(Serializers serializers, GetTimelineRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'timelineSource',
@@ -37,7 +37,8 @@ class _$GetTimelineRequestSerializer
   }
 
   @override
-  GetTimelineRequest deserialize(Serializers serializers, Iterable serialized,
+  GetTimelineRequest deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GetTimelineRequestBuilder();
 

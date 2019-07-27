@@ -21,7 +21,7 @@ class _$SubjectCollectionInfoPreviewSerializer
   final String wireName = 'SubjectCollectionInfoPreview';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, SubjectCollectionInfoPreview object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -40,7 +40,7 @@ class _$SubjectCollectionInfoPreviewSerializer
 
   @override
   SubjectCollectionInfoPreview deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectCollectionInfoPreviewBuilder();
 

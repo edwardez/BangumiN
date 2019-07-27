@@ -16,7 +16,7 @@ class _$MainPostReplySerializer implements StructuredSerializer<MainPostReply> {
   final String wireName = 'MainPostReply';
 
   @override
-  Iterable serialize(Serializers serializers, MainPostReply object,
+  Iterable<Object> serialize(Serializers serializers, MainPostReply object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'subReplies',
@@ -46,7 +46,8 @@ class _$MainPostReplySerializer implements StructuredSerializer<MainPostReply> {
   }
 
   @override
-  MainPostReply deserialize(Serializers serializers, Iterable serialized,
+  MainPostReply deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MainPostReplyBuilder();
 
@@ -60,7 +61,7 @@ class _$MainPostReplySerializer implements StructuredSerializer<MainPostReply> {
           result.subReplies.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(SubPostReply)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'author':
           result.author.replace(serializers.deserialize(value,
@@ -109,6 +110,7 @@ class _$MainPostReply extends MainPostReply {
   final int postTimeInMilliSeconds;
   @override
   final int mainSequentialNumber;
+  int __includedPostsNewestReplyTime;
 
   factory _$MainPostReply([void Function(MainPostReplyBuilder) updates]) =>
       (new MainPostReplyBuilder()..update(updates)).build();
@@ -146,6 +148,10 @@ class _$MainPostReply extends MainPostReply {
           'MainPostReply', 'mainSequentialNumber');
     }
   }
+
+  @override
+  int get includedPostsNewestReplyTime =>
+      __includedPostsNewestReplyTime ??= super.includedPostsNewestReplyTime;
 
   @override
   MainPostReply rebuild(void Function(MainPostReplyBuilder) updates) =>

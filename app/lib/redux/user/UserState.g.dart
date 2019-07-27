@@ -15,7 +15,7 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
   final String wireName = 'UserState';
 
   @override
-  Iterable serialize(Serializers serializers, UserState object,
+  Iterable<Object> serialize(Serializers serializers, UserState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'profiles',
@@ -37,7 +37,7 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
   }
 
   @override
-  UserState deserialize(Serializers serializers, Iterable serialized,
+  UserState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserStateBuilder();
 
@@ -52,14 +52,14 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(UserProfile)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'collections':
           result.collections.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(ListUserCollectionsRequest),
                 const FullType(ListUserCollectionsResponse)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'notificationState':
           result.notificationState.replace(serializers.deserialize(value,

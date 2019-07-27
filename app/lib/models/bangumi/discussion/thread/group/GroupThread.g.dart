@@ -15,7 +15,7 @@ class _$GroupThreadSerializer implements StructuredSerializer<GroupThread> {
   final String wireName = 'GroupThread';
 
   @override
-  Iterable serialize(Serializers serializers, GroupThread object,
+  Iterable<Object> serialize(Serializers serializers, GroupThread object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'title',
@@ -39,7 +39,7 @@ class _$GroupThreadSerializer implements StructuredSerializer<GroupThread> {
   }
 
   @override
-  GroupThread deserialize(Serializers serializers, Iterable serialized,
+  GroupThread deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GroupThreadBuilder();
 
@@ -69,7 +69,7 @@ class _$GroupThreadSerializer implements StructuredSerializer<GroupThread> {
           result.mainPostReplies.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(MainPostReply)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }
@@ -89,7 +89,9 @@ class _$GroupThread extends GroupThread {
   final int id;
   @override
   final BuiltList<MainPostReply> mainPostReplies;
-  List<Post> __posts;
+  List<Post> __normalModePosts;
+  List<Post> __hasNewestReplyFirstNestedPosts;
+  List<Post> __newestFirstFlattenedPosts;
 
   factory _$GroupThread([void Function(GroupThreadBuilder) updates]) =>
       (new GroupThreadBuilder()..update(updates)).build();
@@ -119,7 +121,15 @@ class _$GroupThread extends GroupThread {
   }
 
   @override
-  List<Post> get posts => __posts ??= super.posts;
+  List<Post> get normalModePosts => __normalModePosts ??= super.normalModePosts;
+
+  @override
+  List<Post> get hasNewestReplyFirstNestedPosts =>
+      __hasNewestReplyFirstNestedPosts ??= super.hasNewestReplyFirstNestedPosts;
+
+  @override
+  List<Post> get newestFirstFlattenedPosts =>
+      __newestFirstFlattenedPosts ??= super.newestFirstFlattenedPosts;
 
   @override
   GroupThread rebuild(void Function(GroupThreadBuilder) updates) =>

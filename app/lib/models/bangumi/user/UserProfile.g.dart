@@ -15,7 +15,7 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
   final String wireName = 'UserProfile';
 
   @override
-  Iterable serialize(Serializers serializers, UserProfile object,
+  Iterable<Object> serialize(Serializers serializers, UserProfile object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'introductionInHtml',
@@ -53,7 +53,7 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
   }
 
   @override
-  UserProfile deserialize(Serializers serializers, Iterable serialized,
+  UserProfile deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserProfileBuilder();
 
@@ -80,25 +80,26 @@ class _$UserProfileSerializer implements StructuredSerializer<UserProfile> {
           result.networkServiceTags.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(NetworkServiceTag)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'collectionPreviews':
           result.collectionPreviews.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(SubjectType),
                 const FullType(CollectionsOnProfilePage)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'timelinePreviews':
           result.timelinePreviews.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimelinePreview)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'relationships':
           result.relationships.replace(serializers.deserialize(value,
-              specifiedType: const FullType(
-                  BuiltSet, const [const FullType(Relationship)])) as BuiltSet);
+                  specifiedType: const FullType(
+                      BuiltSet, const [const FullType(Relationship)]))
+              as BuiltSet<dynamic>);
           break;
       }
     }

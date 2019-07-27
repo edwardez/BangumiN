@@ -20,7 +20,8 @@ class _$FriendshipCreationSingleSerializer
   final String wireName = 'FriendshipCreationSingle';
 
   @override
-  Iterable serialize(Serializers serializers, FriendshipCreationSingle object,
+  Iterable<Object> serialize(
+      Serializers serializers, FriendshipCreationSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -50,7 +51,7 @@ class _$FriendshipCreationSingleSerializer
 
   @override
   FriendshipCreationSingle deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FriendshipCreationSingleBuilder();
 

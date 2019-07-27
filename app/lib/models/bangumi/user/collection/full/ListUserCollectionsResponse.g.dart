@@ -21,7 +21,7 @@ class _$ListUserCollectionsResponseSerializer
   final String wireName = 'ListUserCollectionsResponse';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, ListUserCollectionsResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -53,7 +53,7 @@ class _$ListUserCollectionsResponseSerializer
 
   @override
   ListUserCollectionsResponse deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ListUserCollectionsResponseBuilder();
 
@@ -74,14 +74,14 @@ class _$ListUserCollectionsResponseSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(CollectionOnUserList)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'userCollectionTags':
           result.userCollectionTags.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(UserCollectionTag)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'requestedUntilPageNumber':
           result.requestedUntilPageNumber = serializers.deserialize(value,

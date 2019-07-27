@@ -21,7 +21,7 @@ class _$BangumiGeneralSearchResponseSerializer
   final String wireName = 'BangumiGeneralSearchResponse';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, BangumiGeneralSearchResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -49,7 +49,7 @@ class _$BangumiGeneralSearchResponseSerializer
 
   @override
   BangumiGeneralSearchResponse deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiGeneralSearchResponseBuilder();
 
@@ -72,7 +72,7 @@ class _$BangumiGeneralSearchResponseSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SearchResultItem)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

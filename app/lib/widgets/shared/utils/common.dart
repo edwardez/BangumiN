@@ -14,6 +14,7 @@ Function generateOnTapCallbackForBangumiContent({
   @required String id,
   @required BuildContext context,
   String pageUrl,
+  int postId,
 }) {
   assert(contentType != null);
   assert(id != null);
@@ -44,10 +45,18 @@ Function generateOnTapCallbackForBangumiContent({
     };
   }
 
+  String replaceForThread(String route) {
+    route = route.replaceAll(RoutesVariable.threadIdParam, id);
+    if (postId != null) {
+      route = route.replaceAll(RoutesVariable.postIdParam, postId.toString());
+    }
+    return route;
+  }
+
   if (contentType == BangumiContent.GroupTopic) {
     return () {
       Application.router.navigateTo(context,
-          Routes.groupThreadRoute.replaceAll(RoutesVariable.threadIdParam, id),
+          replaceForThread(Routes.groupThreadRoute),
           transition: TransitionType.native);
     };
   }
@@ -56,8 +65,7 @@ Function generateOnTapCallbackForBangumiContent({
     return () {
       Application.router.navigateTo(
           context,
-          Routes.episodeThreadRoute
-              .replaceAll(RoutesVariable.threadIdParam, id),
+          replaceForThread(Routes.episodeThreadRoute),
           transition: TransitionType.native);
     };
   }
@@ -66,8 +74,7 @@ Function generateOnTapCallbackForBangumiContent({
     return () {
       Application.router.navigateTo(
           context,
-          Routes.subjectTopicThreadRoute
-              .replaceAll(RoutesVariable.threadIdParam, id),
+          replaceForThread(Routes.subjectTopicThreadRoute),
           transition: TransitionType.native);
     };
   }
@@ -75,7 +82,7 @@ Function generateOnTapCallbackForBangumiContent({
   if (contentType == BangumiContent.Blog) {
     return () {
       Application.router.navigateTo(context,
-          Routes.blogThreadRoute.replaceAll(RoutesVariable.threadIdParam, id),
+          replaceForThread(Routes.blogThreadRoute),
           transition: TransitionType.native);
     };
   }

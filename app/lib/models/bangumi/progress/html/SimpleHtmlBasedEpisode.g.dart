@@ -20,7 +20,8 @@ class _$SimpleHtmlBasedEpisodeSerializer
   final String wireName = 'SimpleHtmlBasedEpisode';
 
   @override
-  Iterable serialize(Serializers serializers, SimpleHtmlBasedEpisode object,
+  Iterable<Object> serialize(
+      Serializers serializers, SimpleHtmlBasedEpisode object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'episodeInfo',
@@ -49,7 +50,7 @@ class _$SimpleHtmlBasedEpisodeSerializer
 
   @override
   SimpleHtmlBasedEpisode deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SimpleHtmlBasedEpisodeBuilder();
 

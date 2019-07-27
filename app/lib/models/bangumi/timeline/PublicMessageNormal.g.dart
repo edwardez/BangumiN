@@ -20,7 +20,8 @@ class _$PublicMessageNormalSerializer
   final String wireName = 'PublicMessageNormal';
 
   @override
-  Iterable serialize(Serializers serializers, PublicMessageNormal object,
+  Iterable<Object> serialize(
+      Serializers serializers, PublicMessageNormal object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -49,7 +50,8 @@ class _$PublicMessageNormalSerializer
   }
 
   @override
-  PublicMessageNormal deserialize(Serializers serializers, Iterable serialized,
+  PublicMessageNormal deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PublicMessageNormalBuilder();
 

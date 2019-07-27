@@ -20,7 +20,8 @@ class _$BangumiUserSearchResponseSerializer
   final String wireName = 'BangumiUserSearchResponse';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiUserSearchResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, BangumiUserSearchResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'count',
@@ -59,7 +60,7 @@ class _$BangumiUserSearchResponseSerializer
 
   @override
   BangumiUserSearchResponse deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiUserSearchResponseBuilder();
 
@@ -82,7 +83,7 @@ class _$BangumiUserSearchResponseSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SearchResultItem)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'hasReachedFullMatchEnd':
           result.hasReachedFullMatchEnd = serializers.deserialize(value,

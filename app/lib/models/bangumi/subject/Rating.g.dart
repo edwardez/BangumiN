@@ -15,7 +15,7 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
   final String wireName = 'Rating';
 
   @override
-  Iterable serialize(Serializers serializers, Rating object,
+  Iterable<Object> serialize(Serializers serializers, Rating object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'total',
@@ -43,7 +43,7 @@ class _$RatingSerializer implements StructuredSerializer<Rating> {
   }
 
   @override
-  Rating deserialize(Serializers serializers, Iterable serialized,
+  Rating deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new RatingBuilder();
 

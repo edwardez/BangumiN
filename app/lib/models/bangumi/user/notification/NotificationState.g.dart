@@ -17,7 +17,7 @@ class _$NotificationStateSerializer
   final String wireName = 'NotificationState';
 
   @override
-  Iterable serialize(Serializers serializers, NotificationState object,
+  Iterable<Object> serialize(Serializers serializers, NotificationState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
     if (object.allNotificationItems != null) {
@@ -38,7 +38,8 @@ class _$NotificationStateSerializer
   }
 
   @override
-  NotificationState deserialize(Serializers serializers, Iterable serialized,
+  NotificationState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NotificationStateBuilder();
 
@@ -52,13 +53,13 @@ class _$NotificationStateSerializer
           result.allNotificationItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(BaseNotificationItem)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'unreadNotificationItems':
           result.unreadNotificationItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(BaseNotificationItem)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }

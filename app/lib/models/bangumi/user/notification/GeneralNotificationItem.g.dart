@@ -20,7 +20,8 @@ class _$GeneralNotificationItemSerializer
   final String wireName = 'GeneralNotificationItem';
 
   @override
-  Iterable serialize(Serializers serializers, GeneralNotificationItem object,
+  Iterable<Object> serialize(
+      Serializers serializers, GeneralNotificationItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -38,7 +39,7 @@ class _$GeneralNotificationItemSerializer
 
   @override
   GeneralNotificationItem deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GeneralNotificationItemBuilder();
 

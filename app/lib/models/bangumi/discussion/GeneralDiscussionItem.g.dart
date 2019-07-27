@@ -20,7 +20,8 @@ class _$GeneralDiscussionItemSerializer
   final String wireName = 'GeneralDiscussionItem';
 
   @override
-  Iterable serialize(Serializers serializers, GeneralDiscussionItem object,
+  Iterable<Object> serialize(
+      Serializers serializers, GeneralDiscussionItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -52,7 +53,7 @@ class _$GeneralDiscussionItemSerializer
 
   @override
   GeneralDiscussionItem deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GeneralDiscussionItemBuilder();
 

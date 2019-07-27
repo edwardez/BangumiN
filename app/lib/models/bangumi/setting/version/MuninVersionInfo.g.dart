@@ -17,7 +17,7 @@ class _$MuninVersionInfoSerializer
   final String wireName = 'MuninVersionInfo';
 
   @override
-  Iterable serialize(Serializers serializers, MuninVersionInfo object,
+  Iterable<Object> serialize(Serializers serializers, MuninVersionInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'latestVersion',
@@ -40,7 +40,8 @@ class _$MuninVersionInfoSerializer
   }
 
   @override
-  MuninVersionInfo deserialize(Serializers serializers, Iterable serialized,
+  MuninVersionInfo deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MuninVersionInfoBuilder();
 

@@ -21,7 +21,7 @@ class _$CollectionStatusDistributionSerializer
   final String wireName = 'Collection';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, CollectionStatusDistribution object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -44,7 +44,7 @@ class _$CollectionStatusDistributionSerializer
 
   @override
   CollectionStatusDistribution deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionStatusDistributionBuilder();
 

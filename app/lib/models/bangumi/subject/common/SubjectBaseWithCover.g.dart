@@ -20,7 +20,8 @@ class _$SubjectBaseWithCoverSerializer
   final String wireName = 'SubjectBaseWithCover';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectBaseWithCover object,
+  Iterable<Object> serialize(
+      Serializers serializers, SubjectBaseWithCover object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'name',
@@ -54,7 +55,8 @@ class _$SubjectBaseWithCoverSerializer
   }
 
   @override
-  SubjectBaseWithCover deserialize(Serializers serializers, Iterable serialized,
+  SubjectBaseWithCover deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectBaseWithCoverBuilder();
 

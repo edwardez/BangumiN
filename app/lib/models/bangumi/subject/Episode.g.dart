@@ -15,7 +15,7 @@ class _$EpisodeSerializer implements StructuredSerializer<Episode> {
   final String wireName = 'Episode';
 
   @override
-  Iterable serialize(Serializers serializers, Episode object,
+  Iterable<Object> serialize(Serializers serializers, Episode object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -51,7 +51,7 @@ class _$EpisodeSerializer implements StructuredSerializer<Episode> {
   }
 
   @override
-  Episode deserialize(Serializers serializers, Iterable serialized,
+  Episode deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EpisodeBuilder();
 

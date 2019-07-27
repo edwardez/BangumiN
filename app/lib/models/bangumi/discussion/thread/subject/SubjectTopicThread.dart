@@ -30,8 +30,22 @@ abstract class SubjectTopicThread
   /// A flattened list of all posts.
   @override
   @memoized
-  List<Post> get posts {
-    return addFlattenedMainPostReplies([originalPost], mainPostReplies);
+  List<Post> get normalModePosts {
+    return mergePostsWithMainPostReplies([originalPost], mainPostReplies);
+  }
+
+  @override
+  @memoized
+  List<Post> get hasNewestReplyFirstNestedPosts {
+    return mergePostsWithHasNewestReplyFirstNestedPosts(
+        [originalPost], mainPostReplies);
+  }
+
+  @override
+  @memoized
+  List<Post> get newestFirstFlattenedPosts {
+    return flattenedReverseOrderMainPostReplies(
+        [originalPost], mainPostReplies);
   }
 
   SubjectTopicThread._();

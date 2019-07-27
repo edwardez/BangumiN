@@ -21,7 +21,7 @@ class _$CollectionStatusFromBangumiSerializer
   final String wireName = 'status';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, CollectionStatusFromBangumi object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -35,7 +35,7 @@ class _$CollectionStatusFromBangumiSerializer
 
   @override
   CollectionStatusFromBangumi deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionStatusFromBangumiBuilder();
 

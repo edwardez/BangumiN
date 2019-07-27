@@ -89,7 +89,7 @@ class _ExpandableChildState extends State<ExpandableChild>
       children: <Widget>[
         ClipRect(
           child: Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.topLeft,
             heightFactor: _heightFactor.value,
             child: child,
           ),

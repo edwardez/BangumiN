@@ -17,7 +17,7 @@ class _$WikiCreationSingleSerializer
   final String wireName = 'WikiCreationSingle';
 
   @override
-  Iterable serialize(Serializers serializers, WikiCreationSingle object,
+  Iterable<Object> serialize(Serializers serializers, WikiCreationSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -43,7 +43,8 @@ class _$WikiCreationSingleSerializer
   }
 
   @override
-  WikiCreationSingle deserialize(Serializers serializers, Iterable serialized,
+  WikiCreationSingle deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new WikiCreationSingleBuilder();
 

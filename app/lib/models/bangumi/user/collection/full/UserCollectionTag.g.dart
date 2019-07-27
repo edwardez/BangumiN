@@ -17,7 +17,7 @@ class _$UserCollectionTagSerializer
   final String wireName = 'UserCollectionTag';
 
   @override
-  Iterable serialize(Serializers serializers, UserCollectionTag object,
+  Iterable<Object> serialize(Serializers serializers, UserCollectionTag object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'name',
@@ -31,7 +31,8 @@ class _$UserCollectionTagSerializer
   }
 
   @override
-  UserCollectionTag deserialize(Serializers serializers, Iterable serialized,
+  UserCollectionTag deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserCollectionTagBuilder();
 

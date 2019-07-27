@@ -97,9 +97,9 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
       onTap: () {
         showMuninSingleActionDialog(
           context,
-          dialogBody: '由于bangumi的限制，'
+          content: Text('由于bangumi的限制，'
               '"只看${SubjectReviewMainFilter.withNonEmptyCommentsChineseName}"'
-              '和"$showOnlyFriendsText"不能同时使用',
+              '和"$showOnlyFriendsText"不能同时使用'),
         );
       },
     );

@@ -17,7 +17,7 @@ class _$BangumiUserBasicSerializer
   final String wireName = 'BangumiUserBasic';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiUserBasic object,
+  Iterable<Object> serialize(Serializers serializers, BangumiUserBasic object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'username',
@@ -43,7 +43,8 @@ class _$BangumiUserBasicSerializer
   }
 
   @override
-  BangumiUserBasic deserialize(Serializers serializers, Iterable serialized,
+  BangumiUserBasic deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiUserBasicBuilder();
 

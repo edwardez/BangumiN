@@ -47,6 +47,12 @@ class PostWidget extends StatelessWidget {
   /// User name of the user who is using the app.
   final String appUsername;
 
+  /// Whether post is in flattened read mode, a left padding should be added to
+  /// sub posts such as [SubPostReply] if this is set to false.
+  ///
+  /// Default to false.
+  final bool isInFlattenedReadMode;
+
   const PostWidget({
     Key key,
     @required this.post,
@@ -55,6 +61,7 @@ class PostWidget extends StatelessWidget {
     @required this.onDeletePost,
     @required this.appUsername,
     this.showSpoiler = false,
+    this.isInFlattenedReadMode = false,
   }) : super(key: key);
 
   String get postSequentialNameAndTime {
@@ -118,10 +125,10 @@ class PostWidget extends StatelessWidget {
 
         final confirmation = await showMuninYesNoDialog(
           context,
-          title: '确认删除此回复？',
-          dialogBody: '删除后将不可恢复',
-          cancelActionText: '取消',
-          confirmActionText: '确认删除',
+          title: Text('确认删除此回复？'),
+          content: Text('删除后将不可恢复'),
+          cancelAction: Text('取消'),
+          confirmAction: Text('确认删除'),
         );
         if (confirmation == true) {
           onDeletePost(post);
@@ -231,7 +238,7 @@ class PostWidget extends StatelessWidget {
       author: post.author,
     );
 
-    if (post is SubPostReply) {
+    if (post is SubPostReply && !isInFlattenedReadMode) {
       return MuninPadding.vertical1xOffset(
         child: Padding(
           padding: EdgeInsets.only(left: UserWithPostContent.avatarRadius * 2),

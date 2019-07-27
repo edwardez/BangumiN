@@ -15,7 +15,7 @@ class _$MutedGroupSerializer implements StructuredSerializer<MutedGroup> {
   final String wireName = 'MutedGroup';
 
   @override
-  Iterable serialize(Serializers serializers, MutedGroup object,
+  Iterable<Object> serialize(Serializers serializers, MutedGroup object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'groupNickname',
@@ -35,7 +35,7 @@ class _$MutedGroupSerializer implements StructuredSerializer<MutedGroup> {
   }
 
   @override
-  MutedGroup deserialize(Serializers serializers, Iterable serialized,
+  MutedGroup deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MutedGroupBuilder();
 

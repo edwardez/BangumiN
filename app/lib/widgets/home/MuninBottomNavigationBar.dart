@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/widgets/shared/utils/Scroll.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/user/notification/NotificationIcon.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -34,13 +35,7 @@ class MuninBottomNavigationBar extends StatelessWidget {
       ],
       onTap: (int tappedIndex) {
         /// If user taps current tab, scroll to the top
-        if (PrimaryScrollController.of(context) != null &&
-            PrimaryScrollController.of(context).hasClients) {
-          /// eyeballed values from `_handleStatusBarTap` in `scaffold.dart`
-          PrimaryScrollController.of(context).animateTo(0.0,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.linearToEaseOut);
-        }
+        scrollPrimaryScrollControllerToTop(context);
         onSelectedIndexChanged(tappedIndex);
       },
     );

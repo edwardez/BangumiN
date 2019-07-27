@@ -8,21 +8,23 @@ import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/EpisodeThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/group/GroupThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/subject/SubjectTopicThread.dart';
+import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/Constants.dart';
 import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
-import 'package:munin/widgets/discussion/thread/shared/ShareThread.dart';
+import 'package:munin/widgets/discussion/thread/shared/ReadModeSwitcher.dart';
 import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dart';
 import 'package:munin/widgets/shared/appbar/AppBarTitleForSubject.dart';
 import 'package:munin/widgets/shared/appbar/AppbarWithLoadingIndicator.dart';
+import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
+import 'package:munin/widgets/shared/button/FilledFlatButton.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
@@ -30,6 +32,7 @@ import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
 import 'package:munin/widgets/shared/text/ExpandableText.dart';
+import 'package:munin/widgets/shared/utils/Scroll.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
@@ -42,8 +45,16 @@ import 'package:redux/redux.dart';
 class GenericThreadWidget extends StatefulWidget {
   final GetThreadRequest request;
 
-  const GenericThreadWidget({Key key, @required this.request})
-      : super(key: key);
+  /// An additional [postId], if this value is presented, only the specific
+  /// post with [postId] will be shown, otherwise all posts under the thread
+  /// will be shown.
+  final int postId;
+
+  const GenericThreadWidget({
+    Key key,
+    @required this.request,
+    this.postId,
+  }) : super(key: key);
 
   @override
   _GenericThreadWidgetState createState() => _GenericThreadWidgetState();
@@ -51,6 +62,7 @@ class GenericThreadWidget extends StatefulWidget {
 
 class _GenericThreadWidgetState extends State<GenericThreadWidget> {
   bool showSpoiler = false;
+  PostReadMode postReadMode = PostReadMode.Normal;
 
   toggleShowSpoiler() {
     setState(() {
@@ -182,6 +194,85 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
     }
   }
 
+  Post _findPostById(int postId, List<Post> posts) {
+    return posts.firstWhere((post) => post.id == postId, orElse: () => null);
+  }
+
+  List<Widget> _buildSpecificPostWidgets(Post post,
+      _ViewModel vm,
+      BangumiContent parentBangumiContentType,) {
+    return [
+      PostWidget(
+        post: post,
+        parentBangumiContentType: parentBangumiContentType,
+        threadId: vm.thread.id,
+        showSpoiler: showSpoiler,
+        onDeletePost: (Post post) {
+          vm.deleteReply(context, post.id);
+        },
+        appUsername: vm.username,
+        isInFlattenedReadMode: true,
+      ),
+      MuninPadding(
+        child: Column(
+          children: <Widget>[
+            Text('当前仅展示指定楼层'),
+            FilledFlatButton(
+              child: Text('展示所有楼层'),
+              onPressed: () {
+                setState(() {
+                  postReadMode = PostReadMode.Normal;
+                });
+              },
+            )
+          ],
+        ),
+      )
+    ];
+  }
+
+  List<Widget> _buildNestedPostWidgets(_ViewModel vm,
+      List<Post> posts,
+      BangumiContent parentBangumiContentType,) {
+    final thread = vm.thread;
+
+    return [
+      ..._buildThreadHeadContent(context, thread),
+      for (var post in posts)
+        PostWidget(
+          post: post,
+          parentBangumiContentType: parentBangumiContentType,
+          threadId: thread.id,
+          showSpoiler: showSpoiler,
+          onDeletePost: (Post post) {
+            vm.deleteReply(context, post.id);
+          },
+          appUsername: vm.username,
+        ),
+    ];
+  }
+
+  List<Widget> _buildFlattenedPostWidgets(_ViewModel vm,
+      BangumiContent parentBangumiContentType,) {
+    final thread = vm.thread;
+
+    return [
+      ..._buildThreadHeadContent(context, thread),
+      for (var post in thread.newestFirstFlattenedPosts)
+        PostWidget(
+          post: post,
+          parentBangumiContentType: parentBangumiContentType,
+          threadId: thread.id,
+          showSpoiler: showSpoiler,
+          onDeletePost: (Post post) {
+            vm.deleteReply(context, post.id);
+          },
+          appUsername: vm.username,
+          isInFlattenedReadMode: true,
+        ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<void> requestStatusFuture;
@@ -205,27 +296,45 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             requestStatusFuture: requestStatusFuture,
           );
         } else {
-          List<Widget> children = [];
           var parentBangumiContentType =
               widget.request.threadType.toBangumiContent;
 
-          children.addAll(_buildThreadHeadContent(context, thread));
+          Post specificPost;
+          List<Widget> widgets;
+          switch (postReadMode) {
+            case PostReadMode.OnlySpecificPost:
 
-          for (var post in thread.posts) {
-            children.add(PostWidget(
-              post: post,
-              parentBangumiContentType: parentBangumiContentType,
-              threadId: thread.id,
-              showSpoiler: showSpoiler,
-              onDeletePost: (Post post) {
-                vm.deleteReply(context, post.id);
-              },
-              appUsername: vm.username,
-            ));
+            /// Try to cache the result first.
+              specificPost =
+                  _findPostById(widget.postId, thread.normalModePosts);
+              if (specificPost == null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showTextOnSnackBar(context, '无法找到该特定回复(已被删除？)');
+                });
+                continue specificPostFallback;
+              }
+              widgets = _buildSpecificPostWidgets(
+                  specificPost, vm, parentBangumiContentType);
+              break;
+            specificPostFallback:
+            case PostReadMode.Normal:
+              widgets = _buildNestedPostWidgets(
+                  vm, vm.thread.normalModePosts, parentBangumiContentType);
+              break;
+            case PostReadMode.HasNewestReplyFirstNestedPost:
+              widgets = _buildNestedPostWidgets(
+                  vm,
+                  vm.thread.hasNewestReplyFirstNestedPosts,
+                  parentBangumiContentType);
+              break;
+            case PostReadMode.NewestFirstFlattenedPost:
+              widgets =
+                  _buildFlattenedPostWidgets(vm, parentBangumiContentType);
+              break;
           }
 
-          if (thread.mainPostReplies.isEmpty) {
-            children.add(MuninPadding(
+          if (vm.thread.mainPostReplies.isEmpty) {
+            widgets.add(MuninPadding(
               child: Center(
                 child: Text(
                   '暂无回复',
@@ -244,9 +353,9 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             enableBottomSafeArea: false,
             nestedScrollViewBody: ListView.builder(
               padding: EdgeInsets.only(bottom: bottomOffset),
-              itemCount: children.length,
+              itemCount: widgets.length,
               itemBuilder: (context, index) {
-                return children[index];
+                return widgets[index];
               },
             ),
             appBarActions: [
@@ -258,10 +367,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                       .avatar
                       .isUsingDefaultAvatar) {
                     showMuninSingleActionDialog(context,
-                        dialogBody: '你目前正在'
+                        content: Text('你目前正在'
                             '使用默认头像，$userWithDefaultAvatarCannotPostReplyLabel'
                             '（评论会被Bangumi自动隐藏）。\n'
-                            '请先在bangumi的网站里更新并上传一个任意的自定义头像。');
+                            '请先在bangumi的网站里更新并上传一个任意的自定义头像。'));
                     return;
                   }
 
@@ -285,9 +394,24 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                   );
                 },
               ),
-              ShareThread(
-                thread: vm.thread,
-                parentBangumiContent: parentBangumiContentType,
+              IconButton(
+                icon: Icon(OMIcons.sort),
+                onPressed: () {
+                  showMinHeightModalBottomSheet(context, [
+                    ReadModeSwitcher(
+                      onModeChanged: (PostReadMode newMode) {
+                        if (newMode != postReadMode) {
+                          setState(() {
+                            postReadMode = newMode;
+                          });
+                          scrollPrimaryScrollControllerToTop(context);
+                        }
+                        Navigator.pop(context);
+                      },
+                      currentMode: postReadMode,
+                    )
+                  ]);
+                },
               ),
               MoreActions(
                 parentBangumiContent: parentBangumiContentType,
@@ -300,6 +424,14 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         }
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.postId != null) {
+      postReadMode = PostReadMode.OnlySpecificPost;
+    }
   }
 }
 

@@ -17,7 +17,7 @@ class _$DiscussionStateSerializer
   final String wireName = 'DiscussionState';
 
   @override
-  Iterable serialize(Serializers serializers, DiscussionState object,
+  Iterable<Object> serialize(Serializers serializers, DiscussionState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'discussions',
@@ -48,7 +48,8 @@ class _$DiscussionStateSerializer
   }
 
   @override
-  DiscussionState deserialize(Serializers serializers, Iterable serialized,
+  DiscussionState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new DiscussionStateBuilder();
 
@@ -63,35 +64,35 @@ class _$DiscussionStateSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(GetDiscussionRequest),
                 const FullType(GetDiscussionResponse)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'groupThreads':
           result.groupThreads.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(GroupThread)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'episodeThreads':
           result.episodeThreads.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(EpisodeThread)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'subjectTopicThreads':
           result.subjectTopicThreads.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SubjectTopicThread)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'blogThreads':
           result.blogThreads.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(BlogThread)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

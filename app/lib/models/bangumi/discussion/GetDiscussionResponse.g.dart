@@ -20,7 +20,8 @@ class _$GetDiscussionResponseSerializer
   final String wireName = 'GetDiscussionResponse';
 
   @override
-  Iterable serialize(Serializers serializers, GetDiscussionResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, GetDiscussionResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'discussionItems',
@@ -37,7 +38,7 @@ class _$GetDiscussionResponseSerializer
 
   @override
   GetDiscussionResponse deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GetDiscussionResponseBuilder();
 
@@ -51,7 +52,7 @@ class _$GetDiscussionResponseSerializer
           result.discussionItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltSet, const [const FullType(DiscussionItem)]))
-              as BuiltSet);
+              as BuiltSet<dynamic>);
           break;
         case 'appLastUpdatedAt':
           result.appLastUpdatedAt = serializers.deserialize(value,

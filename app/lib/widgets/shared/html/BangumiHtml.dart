@@ -52,6 +52,7 @@ class BangumiHtml extends StatelessWidget {
         return generateOnTapCallbackForBangumiContent(
             contentType: redirectableContent.bangumiContent,
             id: redirectableContent.id,
+            postId: redirectableContent.postId,
             context: context)();
       },
     );

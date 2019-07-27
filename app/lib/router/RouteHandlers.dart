@@ -146,65 +146,44 @@ final userCollectionsListRouteHandler = Handler(
   );
 });
 
-/// Discussion
-final groupThreadRouteHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+Scaffold _threadHandler(BuildContext context, Map<String, List<String>> params,
+    ThreadType threadType) {
   String threadIdStr = params[RoutesComponents.threadId]?.first;
   int threadId = tryParseInt(threadIdStr, defaultValue: null);
   assert(threadId != null);
   GetThreadRequest request = GetThreadRequest((b) => b
-    ..threadType = ThreadType.Group
+    ..threadType = threadType
     ..id = threadId);
+
+  String postIdStr = params[RoutesComponents.postId]?.first;
+  int postId = tryParseInt(postIdStr, defaultValue: null);
   return Scaffold(
     body: GenericThreadWidget(
       request: request,
+      postId: postId,
     ),
   );
+}
+
+/// Discussion
+final groupThreadRouteHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return _threadHandler(context, params, ThreadType.Group);
 });
 
 final episodeThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String threadIdStr = params[RoutesComponents.threadId]?.first;
-  int threadId = tryParseInt(threadIdStr, defaultValue: null);
-  assert(threadId != null);
-  GetThreadRequest request = GetThreadRequest((b) => b
-    ..threadType = ThreadType.Episode
-    ..id = threadId);
-  return Scaffold(
-    body: GenericThreadWidget(
-      request: request,
-    ),
-  );
+      return _threadHandler(context, params, ThreadType.Episode);
 });
 
 final subjectTopicThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String threadIdStr = params[RoutesComponents.threadId]?.first;
-  int threadId = tryParseInt(threadIdStr, defaultValue: null);
-  assert(threadId != null);
-  GetThreadRequest request = GetThreadRequest((b) => b
-    ..threadType = ThreadType.SubjectTopic
-    ..id = threadId);
-  return Scaffold(
-    body: GenericThreadWidget(
-      request: request,
-    ),
-  );
+      return _threadHandler(context, params, ThreadType.SubjectTopic);
 });
 
 final blogThreadRouteHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String threadIdStr = params[RoutesComponents.threadId]?.first;
-  int threadId = tryParseInt(threadIdStr, defaultValue: null);
-  assert(threadId != null);
-  GetThreadRequest request = GetThreadRequest((b) => b
-    ..threadType = ThreadType.Blog
-    ..id = threadId);
-  return Scaffold(
-    body: GenericThreadWidget(
-      request: request,
-    ),
-  );
+      return _threadHandler(context, params, ThreadType.Blog);
 });
 
 /// Setting

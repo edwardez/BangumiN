@@ -15,7 +15,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   final String wireName = 'AppState';
 
   @override
-  Iterable serialize(Serializers serializers, AppState object,
+  Iterable<Object> serialize(Serializers serializers, AppState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'isAuthenticated',
@@ -56,7 +56,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   }
 
   @override
-  AppState deserialize(Serializers serializers, Iterable serialized,
+  AppState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new AppStateBuilder();
 

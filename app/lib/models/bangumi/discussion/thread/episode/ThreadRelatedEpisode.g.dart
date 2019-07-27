@@ -20,7 +20,8 @@ class _$ThreadRelatedEpisodeSerializer
   final String wireName = 'ThreadRelatedEpisode';
 
   @override
-  Iterable serialize(Serializers serializers, ThreadRelatedEpisode object,
+  Iterable<Object> serialize(
+      Serializers serializers, ThreadRelatedEpisode object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -39,7 +40,8 @@ class _$ThreadRelatedEpisodeSerializer
   }
 
   @override
-  ThreadRelatedEpisode deserialize(Serializers serializers, Iterable serialized,
+  ThreadRelatedEpisode deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ThreadRelatedEpisodeBuilder();
 

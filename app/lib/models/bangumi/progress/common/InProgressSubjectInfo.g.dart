@@ -20,7 +20,8 @@ class _$InProgressSubjectInfoSerializer
   final String wireName = 'InProgressSubjectInfo';
 
   @override
-  Iterable serialize(Serializers serializers, InProgressSubjectInfo object,
+  Iterable<Object> serialize(
+      Serializers serializers, InProgressSubjectInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'type',
@@ -82,7 +83,7 @@ class _$InProgressSubjectInfoSerializer
 
   @override
   InProgressSubjectInfo deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new InProgressSubjectInfoBuilder();
 

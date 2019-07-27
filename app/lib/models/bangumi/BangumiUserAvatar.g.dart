@@ -17,7 +17,7 @@ class _$BangumiUserAvatarSerializer
   final String wireName = 'BangumiUserAvatar';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiUserAvatar object,
+  Iterable<Object> serialize(Serializers serializers, BangumiUserAvatar object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'large',
@@ -35,7 +35,8 @@ class _$BangumiUserAvatarSerializer
   }
 
   @override
-  BangumiUserAvatar deserialize(Serializers serializers, Iterable serialized,
+  BangumiUserAvatar deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiUserAvatarBuilder();
 

@@ -6,6 +6,7 @@ import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MoreActions extends StatelessWidget {
@@ -64,6 +65,25 @@ class MoreActions extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                ListTile(
+                  leading: Icon(AdaptiveIcons.shareIconData),
+                  title: Text('分享'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    String url;
+
+                    generateWebPageUrlByContentType(
+                        parentBangumiContent, thread.id.toString())
+                      ..ifPresent((pageUrl) {
+                        url = pageUrl;
+                      })
+                      ..ifAbsent(() {
+                        url = '';
+                      });
+
+                    Share.share('${thread.title} \n$url');
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.open_in_browser),
                   title: Text(openInBrowserLabel),

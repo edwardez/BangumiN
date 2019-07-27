@@ -20,7 +20,8 @@ class _$PublicMessageNoReplySerializer
   final String wireName = 'PublicMessageNoReply';
 
   @override
-  Iterable serialize(Serializers serializers, PublicMessageNoReply object,
+  Iterable<Object> serialize(
+      Serializers serializers, PublicMessageNoReply object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -43,7 +44,8 @@ class _$PublicMessageNoReplySerializer
   }
 
   @override
-  PublicMessageNoReply deserialize(Serializers serializers, Iterable serialized,
+  PublicMessageNoReply deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PublicMessageNoReplyBuilder();
 

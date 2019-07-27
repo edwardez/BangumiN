@@ -16,7 +16,7 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
   final String wireName = 'ProgressState';
 
   @override
-  Iterable serialize(Serializers serializers, ProgressState object,
+  Iterable<Object> serialize(Serializers serializers, ProgressState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'progresses',
@@ -36,7 +36,8 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
   }
 
   @override
-  ProgressState deserialize(Serializers serializers, Iterable serialized,
+  ProgressState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProgressStateBuilder();
 
@@ -52,14 +53,14 @@ class _$ProgressStateSerializer implements StructuredSerializer<ProgressState> {
                 const FullType(SubjectType),
                 const FullType(
                     BuiltList, const [const FullType(InProgressCollection)])
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'watchableSubjects':
           result.watchableSubjects.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SubjectEpisodes)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

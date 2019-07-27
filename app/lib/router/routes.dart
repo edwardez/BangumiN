@@ -10,6 +10,7 @@ class RoutesComponents {
   static const subjectId = 'subjectId';
   static const username = 'username';
   static const threadId = 'threadId';
+  static const postId = 'postId';
   static const subjectType = 'subjectType';
   static const collectionStatus = 'collectionStatus';
 }
@@ -20,6 +21,7 @@ class RoutesVariable {
   static const subjectIdParam = '$paramIdentifier${RoutesComponents.subjectId}';
   static const usernameParam = '$paramIdentifier${RoutesComponents.username}';
   static const threadIdParam = '$paramIdentifier${RoutesComponents.threadId}';
+  static const postIdParam = '$paramIdentifier${RoutesComponents.postId}';
   static const subjectTypeParam =
       '$paramIdentifier${RoutesComponents.subjectType}';
   static const collectionStatusParam =
@@ -74,18 +76,22 @@ class Routes {
 
   /// Discussion
   static const groupThreadRoute =
-      '/group/topic/${RoutesVariable.threadIdParam}';
-  static const episodeThreadRoute = '/episode/${RoutesVariable.threadIdParam}';
+      '/group/topic/${RoutesVariable.threadIdParam}/${RoutesVariable
+      .postIdParam}';
+  static const episodeThreadRoute =
+      '/episode/${RoutesVariable.threadIdParam}/${RoutesVariable.postIdParam}';
   static const subjectTopicThreadRoute =
-      '/subject/topic/${RoutesVariable.threadIdParam}';
+      '/subject/topic/${RoutesVariable.threadIdParam}/${RoutesVariable
+      .postIdParam}';
 
   /// Blog
-  static const blogThreadRoute = '/blog/${RoutesVariable.threadIdParam}';
+  static const blogThreadRoute =
+      '/blog/${RoutesVariable.threadIdParam}/${RoutesVariable.postIdParam}';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      print('Route is not found!');
+          return Text('Route is not found!');
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);

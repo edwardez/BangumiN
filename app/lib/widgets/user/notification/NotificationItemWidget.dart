@@ -128,10 +128,10 @@ class NotificationItemWidget extends StatelessWidget {
                   item is FriendshipRequestNotificationItem && onlyUnreadMode;
               final confirm = await showMuninYesNoDialog(
                 context,
-                title: '要标记此通知为已读吗？',
-                dialogBody: isAddFriendRequest ? '这条好友请求将会被忽略' : null,
-                cancelActionText: '否',
-                confirmActionText: '是，标为已读',
+                title: Text('要标记此通知为已读吗？'),
+                content: isAddFriendRequest ? Text('这条好友请求将会被忽略') : null,
+                cancelAction: Text('否'),
+                confirmAction: Text('是，标为已读'),
               );
               if (confirm == true) {
                 clearNotification(context, () {

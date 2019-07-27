@@ -20,7 +20,8 @@ class _$UnknownTimelineActivitySerializer
   final String wireName = 'UnknownTimelineActivity';
 
   @override
-  Iterable serialize(Serializers serializers, UnknownTimelineActivity object,
+  Iterable<Object> serialize(
+      Serializers serializers, UnknownTimelineActivity object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'content',
@@ -50,7 +51,7 @@ class _$UnknownTimelineActivitySerializer
 
   @override
   UnknownTimelineActivity deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UnknownTimelineActivityBuilder();
 

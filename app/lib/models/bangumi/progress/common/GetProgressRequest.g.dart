@@ -17,7 +17,7 @@ class _$GetProgressRequestSerializer
   final String wireName = 'GetProgressRequest';
 
   @override
-  Iterable serialize(Serializers serializers, GetProgressRequest object,
+  Iterable<Object> serialize(Serializers serializers, GetProgressRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'requestedSubjectTypes',
@@ -30,7 +30,8 @@ class _$GetProgressRequestSerializer
   }
 
   @override
-  GetProgressRequest deserialize(Serializers serializers, Iterable serialized,
+  GetProgressRequest deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GetProgressRequestBuilder();
 
@@ -42,8 +43,9 @@ class _$GetProgressRequestSerializer
       switch (key) {
         case 'requestedSubjectTypes':
           result.requestedSubjectTypes.replace(serializers.deserialize(value,
-              specifiedType: const FullType(
-                  BuiltSet, const [const FullType(SubjectType)])) as BuiltSet);
+                  specifiedType: const FullType(
+                      BuiltSet, const [const FullType(SubjectType)]))
+              as BuiltSet<dynamic>);
           break;
       }
     }

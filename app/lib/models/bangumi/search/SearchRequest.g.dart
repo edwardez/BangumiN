@@ -16,7 +16,7 @@ class _$SearchRequestSerializer implements StructuredSerializer<SearchRequest> {
   final String wireName = 'SearchRequest';
 
   @override
-  Iterable serialize(Serializers serializers, SearchRequest object,
+  Iterable<Object> serialize(Serializers serializers, SearchRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'query',
@@ -31,7 +31,8 @@ class _$SearchRequestSerializer implements StructuredSerializer<SearchRequest> {
   }
 
   @override
-  SearchRequest deserialize(Serializers serializers, Iterable serialized,
+  SearchRequest deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SearchRequestBuilder();
 

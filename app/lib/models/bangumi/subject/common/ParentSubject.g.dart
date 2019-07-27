@@ -16,7 +16,7 @@ class _$ParentSubjectSerializer implements StructuredSerializer<ParentSubject> {
   final String wireName = 'ParentSubject';
 
   @override
-  Iterable serialize(Serializers serializers, ParentSubject object,
+  Iterable<Object> serialize(Serializers serializers, ParentSubject object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'cover',
@@ -47,7 +47,8 @@ class _$ParentSubjectSerializer implements StructuredSerializer<ParentSubject> {
   }
 
   @override
-  ParentSubject deserialize(Serializers serializers, Iterable serialized,
+  ParentSubject deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ParentSubjectBuilder();
 

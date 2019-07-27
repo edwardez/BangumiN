@@ -20,7 +20,8 @@ class _$GetDiscussionRequestSerializer
   final String wireName = 'GetDiscussionRequest';
 
   @override
-  Iterable serialize(Serializers serializers, GetDiscussionRequest object,
+  Iterable<Object> serialize(
+      Serializers serializers, GetDiscussionRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'discussionType',
@@ -35,7 +36,8 @@ class _$GetDiscussionRequestSerializer
   }
 
   @override
-  GetDiscussionRequest deserialize(Serializers serializers, Iterable serialized,
+  GetDiscussionRequest deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GetDiscussionRequestBuilder();
 

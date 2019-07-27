@@ -15,7 +15,7 @@ class _$ActorSerializer implements StructuredSerializer<Actor> {
   final String wireName = 'Actor';
 
   @override
-  Iterable serialize(Serializers serializers, Actor object,
+  Iterable<Object> serialize(Serializers serializers, Actor object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -33,7 +33,7 @@ class _$ActorSerializer implements StructuredSerializer<Actor> {
   }
 
   @override
-  Actor deserialize(Serializers serializers, Iterable serialized,
+  Actor deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ActorBuilder();
 

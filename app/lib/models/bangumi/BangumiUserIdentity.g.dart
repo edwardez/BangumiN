@@ -20,7 +20,8 @@ class _$BangumiUserIdentitySerializer
   final String wireName = 'BangumiUserIdentity';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiUserIdentity object,
+  Iterable<Object> serialize(
+      Serializers serializers, BangumiUserIdentity object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'access_token',
@@ -44,7 +45,8 @@ class _$BangumiUserIdentitySerializer
   }
 
   @override
-  BangumiUserIdentity deserialize(Serializers serializers, Iterable serialized,
+  BangumiUserIdentity deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiUserIdentityBuilder();
 

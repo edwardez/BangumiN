@@ -17,7 +17,7 @@ class _$GroupJoinSingleSerializer
   final String wireName = 'GroupJoinSingle';
 
   @override
-  Iterable serialize(Serializers serializers, GroupJoinSingle object,
+  Iterable<Object> serialize(Serializers serializers, GroupJoinSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -52,7 +52,8 @@ class _$GroupJoinSingleSerializer
   }
 
   @override
-  GroupJoinSingle deserialize(Serializers serializers, Iterable serialized,
+  GroupJoinSingle deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GroupJoinSingleBuilder();
 

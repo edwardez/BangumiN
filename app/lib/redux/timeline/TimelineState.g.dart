@@ -16,7 +16,7 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
   final String wireName = 'TimelineState';
 
   @override
-  Iterable serialize(Serializers serializers, TimelineState object,
+  Iterable<Object> serialize(Serializers serializers, TimelineState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'timeline',
@@ -35,7 +35,8 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
   }
 
   @override
-  TimelineState deserialize(Serializers serializers, Iterable serialized,
+  TimelineState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TimelineStateBuilder();
 
@@ -50,14 +51,14 @@ class _$TimelineStateSerializer implements StructuredSerializer<TimelineState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(GetTimelineRequest),
                 const FullType(FeedChunks)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'fullPublicMessages':
           result.fullPublicMessages.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(FullPublicMessage)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

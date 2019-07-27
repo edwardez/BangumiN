@@ -16,7 +16,7 @@ class _$BangumiImageSerializer implements StructuredSerializer<BangumiImage> {
   final String wireName = 'BangumiImage';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiImage object,
+  Iterable<Object> serialize(Serializers serializers, BangumiImage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'large',
@@ -45,7 +45,7 @@ class _$BangumiImageSerializer implements StructuredSerializer<BangumiImage> {
   }
 
   @override
-  BangumiImage deserialize(Serializers serializers, Iterable serialized,
+  BangumiImage deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiImageBuilder();
 

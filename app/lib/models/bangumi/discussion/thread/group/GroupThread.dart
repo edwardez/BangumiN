@@ -28,8 +28,21 @@ abstract class GroupThread
   /// A flattened list of all posts.
   @override
   @memoized
-  List<Post> get posts {
-    return addFlattenedMainPostReplies([initialPost], mainPostReplies);
+  List<Post> get normalModePosts {
+    return mergePostsWithMainPostReplies([initialPost], mainPostReplies);
+  }
+
+  @override
+  @memoized
+  List<Post> get hasNewestReplyFirstNestedPosts {
+    return mergePostsWithHasNewestReplyFirstNestedPosts(
+      [initialPost], mainPostReplies,);
+  }
+
+  @override
+  @memoized
+  List<Post> get newestFirstFlattenedPosts {
+    return flattenedReverseOrderMainPostReplies([initialPost], mainPostReplies);
   }
 
   GroupThread._();

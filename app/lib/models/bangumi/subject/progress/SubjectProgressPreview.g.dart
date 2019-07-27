@@ -20,7 +20,8 @@ class _$SubjectProgressPreviewSerializer
   final String wireName = 'SubjectProgressPreview';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectProgressPreview object,
+  Iterable<Object> serialize(
+      Serializers serializers, SubjectProgressPreview object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
     if (object.completedEpisodesCount != null) {
@@ -58,7 +59,7 @@ class _$SubjectProgressPreviewSerializer
 
   @override
   SubjectProgressPreview deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectProgressPreviewBuilder();
 

@@ -15,7 +15,7 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
   final String wireName = 'FeedChunks';
 
   @override
-  Iterable serialize(Serializers serializers, FeedChunks object,
+  Iterable<Object> serialize(Serializers serializers, FeedChunks object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'filteredFeeds',
@@ -43,7 +43,7 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
   }
 
   @override
-  FeedChunks deserialize(Serializers serializers, Iterable serialized,
+  FeedChunks deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FeedChunksBuilder();
 
@@ -57,13 +57,13 @@ class _$FeedChunksSerializer implements StructuredSerializer<FeedChunks> {
           result.filteredFeeds.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimelineFeed)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'unfilteredFeeds':
           result.unfilteredFeeds.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimelineFeed)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'lastFetchedTime':
           result.lastFetchedTime = serializers.deserialize(value,

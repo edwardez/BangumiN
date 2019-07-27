@@ -15,7 +15,7 @@ class _$InfoBoxItemSerializer implements StructuredSerializer<InfoBoxItem> {
   final String wireName = 'InfoBoxItem';
 
   @override
-  Iterable serialize(Serializers serializers, InfoBoxItem object,
+  Iterable<Object> serialize(Serializers serializers, InfoBoxItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'type',
@@ -40,7 +40,7 @@ class _$InfoBoxItemSerializer implements StructuredSerializer<InfoBoxItem> {
   }
 
   @override
-  InfoBoxItem deserialize(Serializers serializers, Iterable serialized,
+  InfoBoxItem deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new InfoBoxItemBuilder();
 

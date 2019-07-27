@@ -346,7 +346,6 @@ class BangumiDiscussionService {
     );
 
     final redirectLocation = response.headers[HttpHeaders.locationHeader];
-    print('redirectLocation $redirectLocation');
 
     /// On success, bangumi redirects user to the corresponding web page.
     if (redirectLocation == null ||

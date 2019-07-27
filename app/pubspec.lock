@@ -63,7 +63,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.5"
   build_config:
     dependency: transitive
     description:
@@ -77,21 +77,21 @@ packages:
       name: build_daemon
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.0"
   build_resolvers:
     dependency: transitive
     description:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   build_runner:
     dependency: "direct dev"
     description:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.1"
+    version: "1.6.3"
   build_runner_core:
     dependency: transitive
     description:
@@ -112,14 +112,14 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.6.0"
+    version: "6.7.0"
   built_value_generator:
     dependency: "direct dev"
     description:
       name: built_value_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.6.0"
+    version: "6.7.0"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -210,7 +210,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.12"
+    version: "2.1.13"
   expandable:
     dependency: "direct main"
     description:
@@ -231,7 +231,7 @@ packages:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+10"
+    version: "0.0.4+11"
   fixnum:
     dependency: transitive
     description:
@@ -245,7 +245,7 @@ packages:
       name: fluro
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.0"
+    version: "1.5.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -285,7 +285,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.0+2"
+    version: "0.13.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -444,7 +444,7 @@ packages:
       name: material_design_icons_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.3695"
+    version: "3.2.3895"
   meta:
     dependency: transitive
     description:
@@ -472,7 +472,7 @@ packages:
       name: node_preamble
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.4"
+    version: "1.4.5"
   oauth2:
     dependency: "direct main"
     description:
@@ -507,7 +507,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0+4"
+    version: "0.4.0+6"
   package_resolver:
     dependency: transitive
     description:
@@ -551,7 +551,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0+1"
+    version: "1.2.0"
   pedantic:
     dependency: transitive
     description:
@@ -635,14 +635,14 @@ packages:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1+1"
+    version: "0.6.2+1"
   shared_preferences:
     dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3+2"
+    version: "0.5.3+4"
   shelf:
     dependency: transitive
     description:
@@ -682,7 +682,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.4+2"
+    version: "0.9.4+3"
   source_map_stack_trace:
     dependency: transitive
     description:
@@ -710,7 +710,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6+1"
+    version: "1.1.6+2"
   stack_trace:
     dependency: transitive
     description:
@@ -780,7 +780,7 @@ packages:
       name: timeago
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.17"
+    version: "2.0.18"
   timing:
     dependency: transitive
     description:
@@ -822,7 +822,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.3"
+    version: "5.1.0"
   uuid:
     dependency: transitive
     description:
@@ -864,7 +864,7 @@ packages:
       name: watcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.7+10"
+    version: "0.9.7+12"
   web_socket_channel:
     dependency: transitive
     description:
@@ -878,7 +878,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.9+1"
+    version: "0.3.10+3"
   xml:
     dependency: transitive
     description:
@@ -895,4 +895,4 @@ packages:
     version: "2.1.16"
 sdks:
   dart: ">=2.4.0 <3.0.0"
-  flutter: ">=1.5.9-pre.94 <2.0.0"
+  flutter: ">=1.6.0 <2.0.0"

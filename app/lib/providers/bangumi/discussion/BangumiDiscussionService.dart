@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/models/bangumi/BangumiUserSmall.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
@@ -282,29 +284,93 @@ class BangumiDiscussionService {
     }
   }
 
-  static urlForEditOrGetReply({
-    @required int replyId,
-    @required ThreadType threadType,
-  }) {
-    String url;
+  /// Gets post content for edit.
+  ///
+  /// Throws [BangumiUnauthorizedAccessException] if user tries to access a reply
+  /// that user is not authorized to.
+  /// Throws [BangumiResourceNotFoundException] if reply/post has been deleted.
+  /// Throws [BangumiResponseIncomprehensibleException] for all other bangumi
+  /// response related exceptions.
+  Future<String> getReplyContentForEdit(int replyId,
+      ThreadType threadType) async {
+    final url = _replyEditUrl(replyId, threadType);
+
+    final response = await cookieClient.dio.get(url);
+    if (!is2xxCode(response.statusCode)) {
+      throw BangumiResponseIncomprehensibleException();
+    }
+
+    final replyContent =
+        parseFragment(response.data)
+            .querySelector('textarea#content')
+            ?.text;
+    if (replyContent == null) {
+      final unauthorizedAccessMessage = '只能修改自己发表的帖子';
+      final resourceNotFoundMessage = '没有查询到指定';
+      if (response.data.contains(unauthorizedAccessMessage)) {
+        throw BangumiUnauthorizedAccessException(unauthorizedAccessMessage);
+      } else if (response.data.contains(resourceNotFoundMessage)) {
+        throw BangumiResourceNotFoundException('数据库中没有查询到指定话题，话题可能'
+            '正在审核或已被删除。');
+      } else {
+        throw BangumiResponseIncomprehensibleException();
+      }
+    }
+
+    return replyContent;
+  }
+
+  /// Updates a reply.
+  ///
+  /// Note that bangumi doesn't provide a reliable way to verify whether a post
+  /// has been successfully updated. Hence munin can only guess by checking
+  /// the status code and redirect location.
+  Future<void> updateReply(int replyId, ThreadType threadType,
+      String replyContent) async {
+    final url = _replyEditUrl(replyId, threadType);
+
+    Map<String, String> formData = {
+      'formhash': await cookieClient.getXsrfToken(),
+      'submit': '改好了',
+      'content': replyContent,
+    };
+
+    final response = await cookieClient.dio.post(
+      url,
+      data: formData,
+      options: Dio.Options(
+          contentType: ExtraContentType.xWwwFormUrlencoded,
+
+          /// Bangumi returns a 302 redirect if reply is successfully posted.
+          validateStatus: (code) => code == HttpStatus.found),
+    );
+
+    final redirectLocation = response.headers[HttpHeaders.locationHeader];
+    print('redirectLocation $redirectLocation');
+
+    /// On success, bangumi redirects user to the corresponding web page.
+    if (redirectLocation == null ||
+        !redirectLocation.any((url) =>
+            url.contains(threadType.toBangumiContent.webPageRouteName))) {
+      throw BangumiResponseIncomprehensibleException('回复发表失败：从Bangumi返回'
+          '了无法处理的数据');
+    }
+  }
+
+  static String _replyEditUrl(int replyId, ThreadType threadType) {
     switch (threadType) {
       case ThreadType.Blog:
-        url = '/blog/reply/edit/$replyId';
-        break;
+        return '/blog/reply/edit/$replyId';
       case ThreadType.Group:
-        url = '/group/reply/$replyId/edit';
-        break;
+        return '/group/reply/$replyId/edit';
       case ThreadType.SubjectTopic:
-        url = '/subject/reply/$replyId/edit';
-        break;
+        return '/subject/reply/$replyId/edit';
       case ThreadType.Episode:
       default:
         if (threadType != ThreadType.Episode) {
           throw ArgumentError('$threadType must be ${ThreadType.Episode}');
         }
-        url = '/subject/ep/edit_reply/$replyId';
-        break;
+        return '/subject/ep/edit_reply/$replyId';
     }
-    return url;
   }
 }

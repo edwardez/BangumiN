@@ -70,10 +70,7 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
     }
     final context = action.context;
 
-    // Always reports errors in dev.
-    if (inDev) {
-      reportError(error, stack: action.stack);
-    }
+    reportError(error, stack: action.stack);
 
     final result = await generalExceptionHandler(
       error,
@@ -87,11 +84,6 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
       );
     } else if (result == GeneralExceptionHandlerResult.Skipped) {
       return;
-    }
-
-    // Only reports unexpected errors in production.
-    if (!inDev) {
-      reportError(error, stack: action.stack);
     }
 
     if (action.showErrorMessageSnackBar) {

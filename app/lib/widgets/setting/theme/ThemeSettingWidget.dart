@@ -117,8 +117,9 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                   subtitle: Text(
                     '只在手动更改设置后切换',
                   ),
-                  trailing: buildSwitchModeTrailingIcon(
-                      context, vm.themeSetting, ThemeSwitchMode.Manual),
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(
+                      context, vm.themeSetting.themeSwitchMode,
+                      ThemeSwitchMode.Manual),
                   onTap: () {
                     setState(() {
                       if (vm.themeSetting.themeSwitchMode !=
@@ -137,8 +138,9 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                   subtitle: Text(
                     '跟随屏幕亮度自动切换',
                   ),
-                  trailing: buildSwitchModeTrailingIcon(context,
-                      vm.themeSetting, ThemeSwitchMode.FollowScreenBrightness),
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(context,
+                      vm.themeSetting.themeSwitchMode,
+                      ThemeSwitchMode.FollowScreenBrightness),
                   onTap: () {
                     setState(() {
                       if (vm.themeSetting.themeSwitchMode !=

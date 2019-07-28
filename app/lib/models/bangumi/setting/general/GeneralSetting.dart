@@ -6,6 +6,7 @@ import 'package:munin/models/bangumi/discussion/GetDiscussionRequest.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
+import 'package:munin/models/bangumi/setting/general/browser/BrowserSetting.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
@@ -27,6 +28,9 @@ abstract class GeneralSetting
 
   bool get expandAllProgressTiles;
 
+  @nullable
+  BrowserSetting get browserSetting;
+
   factory GeneralSetting([updates(GeneralSettingBuilder b)]) =>
       _$GeneralSetting((b) => b
         ..preferredSubjectInfoLanguage = defaultSubjectInfoLanguage
@@ -37,6 +41,7 @@ abstract class GeneralSetting
         ..preferredDiscussionLaunchPage
             .replace(GetDiscussionRequest.defaultDiscussionLaunchPageType)
         ..expandAllProgressTiles = false
+        ..browserSetting.replace(BrowserSetting())
         ..update(updates));
 
   String toJson() {

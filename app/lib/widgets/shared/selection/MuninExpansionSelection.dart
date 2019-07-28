@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:munin/styles/theme/Common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/setting/theme/Common.dart';
 
 typedef SelectionLabelBuilder<T> = Widget Function(T selection);
 
@@ -15,10 +14,12 @@ class MuninExpansionSelection<T> extends StatelessWidget {
 
   final T currentSelection;
 
-  /// Title of the option.
+  /// Title builder of the option.
   final SelectionLabelBuilder<T> optionTitleBuilder;
 
-  /// Subtitle of the option.
+  /// Subtitle builder of the option.
+  ///
+  /// Optional. Subtitle will not be shown if set to true.
   final SelectionLabelBuilder<T> optionSubTitleBuilder;
 
   /// All available options.
@@ -43,17 +44,6 @@ class MuninExpansionSelection<T> extends StatelessWidget {
     this.optionSubTitleBuilder,
     this.transparentDivider = true,
   }) : super(key: key);
-
-  Icon buildTrailingIcon<T>(BuildContext context, T t1, T t2) {
-    if (t1 == t2) {
-      return Icon(
-        OMIcons.done,
-        color: lightPrimaryDarkAccentColor(context),
-      );
-    } else {
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

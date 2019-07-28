@@ -27,7 +27,12 @@ class LinkTextSpan extends TextSpan {
             text: text ?? url,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launch(url,
-                    forceSafariVC: forceSafariVC, forceWebView: forceWebView);
+                launch(
+                  url,
+                  forceSafariVC: forceSafariVC,
+                  forceWebView: forceWebView,
+                  enableJavaScript: true,
+                  enableDomStorage: true,
+                );
               });
 }

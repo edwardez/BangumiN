@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 Function generateOnTapCallbackForBangumiContent({
   @required BangumiContent contentType,
@@ -99,7 +99,7 @@ Function generateOnTapCallbackForBangumiContent({
 
   if (webPageUrl != null) {
     return () {
-      launch(webPageUrl);
+      launchByPreference(context, webPageUrl);
     };
   }
 

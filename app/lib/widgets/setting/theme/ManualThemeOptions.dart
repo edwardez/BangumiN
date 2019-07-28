@@ -35,7 +35,7 @@ class ManualThemeOptions extends StatelessWidget {
         for (MuninTheme theme in MuninTheme.allAvailableThemes(showHiddenTheme))
           ListTile(
             title: Text(theme.chineseName),
-            trailing: buildThemeStyleTrailingIcon(
+            trailing: buildTrailingIcon<MuninTheme>(
                 context, themeSetting.currentTheme, theme),
             onTap: () {
               onUpdateTheme(theme);

@@ -53,6 +53,8 @@ import 'package:munin/models/bangumi/search/result/UserSearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
+import 'package:munin/models/bangumi/setting/general/browser/BrowserSetting.dart';
+import 'package:munin/models/bangumi/setting/general/browser/LaunchBrowserPreference.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
@@ -292,6 +294,8 @@ part 'serializers.g.dart';
   PreferredLaunchNavTab,
   PreferredSubjectInfoLanguage,
   MuninVersionInfo,
+  BrowserSetting,
+  LaunchBrowserPreference
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),

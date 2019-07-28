@@ -13,6 +13,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/discussion/common/DiscussionItemWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
@@ -20,7 +21,6 @@ import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DiscussionBodyWidget extends StatefulWidget {
   final GetDiscussionRequest getDiscussionRequest;
@@ -50,7 +50,7 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
           FlatButton(
             child: Text(checkWebVersionLabel),
             onPressed: () {
-              return launch(rakuenMobileUrl, forceSafariVC: false);
+              launchByPreference(context, rakuenMobileUrl);
             },
           )
         ],

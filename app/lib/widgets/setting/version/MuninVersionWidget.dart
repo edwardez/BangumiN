@@ -5,10 +5,10 @@ import 'package:munin/models/bangumi/setting/version/MuninVersionInfo.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MuninVersionWidget extends StatefulWidget {
   @override
@@ -94,14 +94,14 @@ class _MuninVersionWidgetState extends State<MuninVersionWidget> {
               : _buildVersionWidget(),
           onTap: () {
             if (latestVersionPrompt == null) {
-              launch(
+              launchByPreference(
+                context,
                 defaultDownloadUrl,
-                forceSafariVC: false,
               );
             } else {
-              launch(
+              launchByPreference(
+                context,
                 muninVersion.downloadPageUrl,
-                forceSafariVC: false,
               );
             }
           },

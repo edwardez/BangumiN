@@ -14,6 +14,7 @@ import 'package:munin/redux/setting/Common.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/analytics/Constants.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:package_info/package_info.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -21,7 +22,6 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screen/screen.dart';
 import 'package:upgrader/upgrader.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 const Duration listenToBrightnessChangeInterval = const Duration(seconds: 2);
 
@@ -250,11 +250,8 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
                 FlatButton(
                   child: Text('下载安装包'),
                   onPressed: () {
-                    Navigator.pop(innerContext);
-                    launch(
-                      bestItem.fileURL,
-                      forceSafariVC: false,
-                    );
+                    launchWithExternalBrowser(innerContext, bestItem.fileURL,
+                        popContext: true);
                     FirebaseAnalytics().logEvent(
                         name: InstallUpdatePromptEvent.name,
                         parameters: {

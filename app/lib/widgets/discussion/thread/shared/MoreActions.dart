@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MoreActions extends StatelessWidget {
   final BangumiThread thread;
@@ -92,7 +92,7 @@ class MoreActions extends StatelessWidget {
                         parentBangumiContent, thread.id.toString());
 
                     if (maybeWebUrl.isPresent) {
-                      launch(maybeWebUrl.value);
+                      launchByPreference(context, maybeWebUrl.value);
                     } else {
                       showTextOnSnackBar(context, '网址无效');
                     }

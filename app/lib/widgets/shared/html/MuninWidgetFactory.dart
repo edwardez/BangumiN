@@ -11,7 +11,10 @@ import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
-  errorImageWidget(
+  final BuildContext outerContext;
+
+
+  static errorImageWidget(
     BuildContext context,
     String url,
   ) {
@@ -49,19 +52,24 @@ class MuninWidgetFactory extends WidgetFactory {
     );
   }
 
-  MuninWidgetFactory(BuildContext context, HtmlWidget htmlWidget)
-      : super(context, htmlWidget);
+  MuninWidgetFactory(this.outerContext, HtmlWidget htmlWidget)
+      : super(outerContext, htmlWidget);
 
   @override
   Widget buildImageFromUrl(String url) => url?.isNotEmpty == true
-      ? CachedNetworkImage(
-          imageUrl: url,
-          fadeOutDuration: Duration(milliseconds: 300),
-          fadeInDuration: Duration(milliseconds: 300),
-          fit: BoxFit.cover,
-          placeholder: (context, url) => AdaptiveProgressIndicator(),
-          errorWidget: (context, url, obj) {
-            return errorImageWidget(context, url);
+      ? InkWell(
+    child: CachedNetworkImage(
+      imageUrl: url,
+      fadeOutDuration: Duration(milliseconds: 300),
+      fadeInDuration: Duration(milliseconds: 300),
+      fit: BoxFit.cover,
+      placeholder: (context, url) => AdaptiveProgressIndicator(),
+      errorWidget: (context, url, obj) {
+        return errorImageWidget(context, url);
+      },
+    ),
+    onTap: () {
+      launchByPreference(outerContext, url);
           },
         )
       : null;

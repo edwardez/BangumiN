@@ -21,16 +21,15 @@ import 'package:munin/widgets/discussion/thread/shared/MoreActions.dart';
 import 'package:munin/widgets/discussion/thread/shared/PostWidget.dart';
 import 'package:munin/widgets/discussion/thread/shared/ReadModeSwitcher.dart';
 import 'package:munin/widgets/discussion/thread/shared/SubjectCoverTitleTile.dart';
-import 'package:munin/widgets/shared/appbar/AppBarTitleForSubject.dart';
 import 'package:munin/widgets/shared/appbar/AppbarWithLoadingIndicator.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
 import 'package:munin/widgets/shared/button/FilledFlatButton.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dart';
-import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
+import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/shared/text/ExpandableText.dart';
 import 'package:munin/widgets/shared/utils/Scroll.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -63,6 +62,9 @@ class GenericThreadWidget extends StatefulWidget {
 class _GenericThreadWidgetState extends State<GenericThreadWidget> {
   bool showSpoiler = false;
   PostReadMode postReadMode = PostReadMode.Normal;
+
+  final _muninRefreshKey = GlobalKey<MuninRefreshState>();
+  Future<void> requestStatusFuture;
 
   toggleShowSpoiler() {
     setState(() {
@@ -147,20 +149,21 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
     }
   }
 
-  Widget _buildAppBarMainTitle(BangumiThread thread,
+  Widget _buildAppBarTitle(BangumiThread thread,
       Future<void> requestStatusFuture) {
-    Widget title;
-    if (thread is BlogThread) {
-      title = Text('日志');
-    } else if (thread is SubjectTopicThread) {
-      title = Text('作品话题');
-    } else if (thread is GroupThread) {
-      title = Text('小组话题');
-    } else if (thread is EpisodeThread) {
-      title = Text('章节讨论');
-    } else {
-      throw UnsupportedError('未支持的类型');
-    }
+    final title = Row(
+      children: <Widget>[
+        Flexible(
+            child: Text(
+              thread.title,
+              overflow: TextOverflow.fade,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body2,
+            )),
+      ],
+    );
 
     return WidgetWithLoadingIndicator(
       requestStatusFuture: requestStatusFuture,
@@ -170,28 +173,6 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
       ),
       child: title,
     );
-  }
-
-  _buildAppBarSecondaryTitle(BangumiThread thread) {
-    if (thread is SubjectTopicThread) {
-      return AppBarTitleForSubject(
-        title: thread.title,
-        coverUrl: thread?.parentSubject?.cover?.common,
-      );
-    } else if (thread is EpisodeThread) {
-      return AppBarTitleForSubject(
-        title: thread.title,
-        coverUrl: thread?.parentSubject?.cover?.common,
-      );
-    } else {
-      return Text(
-        thread.title,
-        style: Theme
-            .of(context)
-            .textTheme
-            .body2,
-      );
-    }
   }
 
   Post _findPostById(int postId, List<Post> posts) {
@@ -273,9 +254,74 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
     ];
   }
 
+  List<Widget> _appBarActions(BangumiThread thread,
+      BangumiContent parentBangumiContentType) {
+    return [
+      IconButton(
+        icon: Icon(OMIcons.reply),
+        onPressed: () {
+          if (findAppState(context)
+              .currentAuthenticatedUserBasicInfo
+              .avatar
+              .isUsingDefaultAvatar) {
+            showMuninSingleActionDialog(context,
+                content: Text('你目前正在使用默认头像，'
+                    '$userWithDefaultAvatarCannotPostReplyLabel'
+                    '（评论会被Bangumi自动隐藏）。\n'
+                    '请先在bangumi的网站里更新并上传一个任意的自定义头像。'));
+            return;
+          }
+
+          showSnackBarOnSuccess(
+            context,
+            Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    DiscussionReplyWidgetComposer.forCreateReply(
+                      threadType:
+                      ThreadType.fromBangumiContent(parentBangumiContentType),
+                      threadId: thread.id,
+                      appBarTitle:
+                      '回复此${widget.request.threadType.toBangumiContent
+                          .chineseName}',
+                    ),
+              ),
+            ),
+            '回复成功',
+          );
+        },
+      ),
+      IconButton(
+        icon: Icon(OMIcons.sort),
+        onPressed: () {
+          showMinHeightModalBottomSheet(context, [
+            ReadModeSwitcher(
+              onModeChanged: (PostReadMode newMode) {
+                if (newMode != postReadMode) {
+                  setState(() {
+                    postReadMode = newMode;
+                  });
+                  scrollPrimaryScrollControllerToTop(context);
+                }
+                Navigator.pop(context);
+              },
+              currentMode: postReadMode,
+            )
+          ]);
+        },
+      ),
+      MoreActions(
+        parentBangumiContent: parentBangumiContentType,
+        thread: thread,
+        allSpoilersVisible: showSpoiler,
+        toggleSpoilerCallback: toggleShowSpoiler,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> requestStatusFuture;
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store store) => _ViewModel.fromStore(store, widget.request),
       distinct: true,
@@ -287,8 +333,11 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         store.dispatch(action);
         requestStatusFuture = action.completer.future;
       },
+      onInitialBuild: (vm) {
+        requestStatusFuture = _muninRefreshKey?.currentState?.callOnRefresh();
+      },
       builder: (BuildContext context, _ViewModel vm) {
-        BangumiThread thread = vm.thread;
+        final thread = vm.thread;
 
         if (thread == null) {
           return RequestInProgressIndicatorWidget(
@@ -296,7 +345,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             requestStatusFuture: requestStatusFuture,
           );
         } else {
-          var parentBangumiContentType =
+          final parentBangumiContentType =
               widget.request.threadType.toBangumiContent;
 
           Post specificPost;
@@ -344,82 +393,27 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             ));
           }
 
-          return ScrollViewWithSliverAppBar(
-            appBarMainTitle:
-            _buildAppBarMainTitle(vm.thread, requestStatusFuture),
-            appBarSecondaryTitle: _buildAppBarSecondaryTitle(vm.thread),
-            changeAppBarTitleOnScroll: true,
-            safeAreaChildPadding: EdgeInsets.zero,
-            enableBottomSafeArea: false,
-            nestedScrollViewBody: ListView.builder(
-              padding: EdgeInsets.only(bottom: bottomOffset),
-              itemCount: widgets.length,
-              itemBuilder: (context, index) {
-                return widgets[index];
-              },
+          return MuninRefresh(
+            key: _muninRefreshKey,
+            onLoadMore: null,
+            onRefresh: () {
+              final onRefreshFuture = vm.getThread(context);
+              requestStatusFuture = onRefreshFuture;
+              return onRefreshFuture;
+            },
+            itemCount: widgets.length,
+            itemBuilder: (context, index) {
+              return widgets[index];
+            },
+            separatorBuilder: null,
+            appBar: SliverAppBar(
+              pinned: true,
+              actions: _appBarActions(vm.thread, parentBangumiContentType),
+              title: _buildAppBarTitle(
+                vm.thread,
+                requestStatusFuture,
+              ),
             ),
-            appBarActions: [
-              IconButton(
-                icon: Icon(OMIcons.reply),
-                onPressed: () {
-                  if (findAppState(context)
-                      .currentAuthenticatedUserBasicInfo
-                      .avatar
-                      .isUsingDefaultAvatar) {
-                    showMuninSingleActionDialog(context,
-                        content: Text('你目前正在'
-                            '使用默认头像，$userWithDefaultAvatarCannotPostReplyLabel'
-                            '（评论会被Bangumi自动隐藏）。\n'
-                            '请先在bangumi的网站里更新并上传一个任意的自定义头像。'));
-                    return;
-                  }
-
-                  showSnackBarOnSuccess(
-                    context,
-                    Navigator.push<bool>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DiscussionReplyWidgetComposer.forCreateReply(
-                              threadType: ThreadType.fromBangumiContent(
-                                  parentBangumiContentType),
-                              threadId: vm.thread.id,
-                              appBarTitle:
-                              '回复此${widget.request.threadType.toBangumiContent
-                                  .chineseName}',
-                            ),
-                      ),
-                    ),
-                    '回复成功',
-                  );
-                },
-              ),
-              IconButton(
-                icon: Icon(OMIcons.sort),
-                onPressed: () {
-                  showMinHeightModalBottomSheet(context, [
-                    ReadModeSwitcher(
-                      onModeChanged: (PostReadMode newMode) {
-                        if (newMode != postReadMode) {
-                          setState(() {
-                            postReadMode = newMode;
-                          });
-                          scrollPrimaryScrollControllerToTop(context);
-                        }
-                        Navigator.pop(context);
-                      },
-                      currentMode: postReadMode,
-                    )
-                  ]);
-                },
-              ),
-              MoreActions(
-                parentBangumiContent: parentBangumiContentType,
-                thread: vm.thread,
-                allSpoilersVisible: showSpoiler,
-                toggleSpoilerCallback: toggleShowSpoiler,
-              ),
-            ],
           );
         }
       },

@@ -393,6 +393,8 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             ));
           }
 
+          widgets.add(Padding(padding: EdgeInsets.only(bottom: bottomOffset),));
+
           return MuninRefresh(
             key: _muninRefreshKey,
             onLoadMore: null,
@@ -414,6 +416,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
                 requestStatusFuture,
               ),
             ),
+            appBarUnderneathPadding: EdgeInsets.zero,
           );
         }
       },

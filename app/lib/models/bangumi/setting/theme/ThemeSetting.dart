@@ -38,7 +38,7 @@ abstract class ThemeSetting
   factory ThemeSetting([updates(ThemeSettingBuilder b)]) =>
       _$ThemeSetting((b) => b
         ..currentTheme = MuninTheme.BrightBangumiPinkBlue
-        ..preferredFollowBrightnessSwitchThreshold = 10
+        ..preferredFollowBrightnessSwitchThreshold = 30
         ..preferredFollowBrightnessLightTheme = MuninTheme.BrightBangumiPinkBlue
         ..preferredFollowBrightnessDarkTheme = MuninTheme.NightPureDarkBlue
         ..currentTheme = MuninTheme.BrightBangumiPinkBlue

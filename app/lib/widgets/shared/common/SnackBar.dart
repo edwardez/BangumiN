@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:munin/shared/utils/misc/constants.dart';
+import 'package:quiver/time.dart';
+
+const Duration shortSnackBarDisplayDuration = aSecond;
+const Duration snackBarDisplayDuration = Duration(milliseconds: 4000);
 
 /// Shows a snackbar on success of [future].
 void showSnackBarOnSuccess(
@@ -13,11 +16,13 @@ void showSnackBarOnSuccess(
   }
 }
 
+/// Show text on snackbar, if [shortDuration] is set to true, value in [duration]
+/// will be ignored and [shortSnackBarDisplayDuration] will always be used.
 void showTextOnSnackBar(BuildContext context, String text,
-    {Duration duration = snackBarDisplayDuration}) async {
+    {duration = snackBarDisplayDuration, shortDuration = false,}) async {
   Scaffold.of(context).showSnackBar(SnackBar(
     content: Text(text),
-    duration: duration,
+    duration: shortDuration ? shortSnackBarDisplayDuration : duration,
     behavior: SnackBarBehavior.floating,
   ));
 }

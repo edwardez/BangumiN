@@ -159,7 +159,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                                   .replaceFirst(RoutesVariable.subjectIdParam,
                                   widget.collection.subject.id.toString()),
                               transition: TransitionType.nativeModal),
-                          hasSuccessfullyUpdatedCollection);
+                          hasSuccessfullyUpdatedCollectionLabel);
                     },
                     child: Text("编辑"),
                   ),

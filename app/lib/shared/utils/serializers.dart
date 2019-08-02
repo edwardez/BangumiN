@@ -53,6 +53,8 @@ import 'package:munin/models/bangumi/search/result/UserSearchResultItem.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
+import 'package:munin/models/bangumi/setting/general/browser/BrowserSetting.dart';
+import 'package:munin/models/bangumi/setting/general/browser/LaunchBrowserPreference.dart';
 import 'package:munin/models/bangumi/setting/mute/MuteSetting.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
@@ -112,6 +114,10 @@ import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart
 import 'package:munin/models/bangumi/user/collection/full/SubjectOnUserCollectionList.dart';
 import 'package:munin/models/bangumi/user/collection/full/UserCollectionTag.dart';
 import 'package:munin/models/bangumi/user/collection/preview/CollectionsOnProfilePage.dart';
+import 'package:munin/models/bangumi/user/notification/BaseNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/FriendshipRequestNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/GeneralNotificationItem.dart';
+import 'package:munin/models/bangumi/user/notification/NotificationState.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
@@ -254,6 +260,11 @@ part 'serializers.g.dart';
   CollectionOnUserList,
   UserCollectionTag,
   SubjectOnUserCollectionList,
+  // User notifications
+  NotificationState,
+  BaseNotificationItem,
+  FriendshipRequestNotificationItem,
+  GeneralNotificationItem,
 
   /// Progress
   ProgressState,
@@ -283,6 +294,8 @@ part 'serializers.g.dart';
   PreferredLaunchNavTab,
   PreferredSubjectInfoLanguage,
   MuninVersionInfo,
+  BrowserSetting,
+  LaunchBrowserPreference
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(FullType(BuiltList, [FullType(SubjectBaseWithCover)]),

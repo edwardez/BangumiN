@@ -30,6 +30,12 @@ final defaultIconSize = IconThemeData.fallback().size;
 /// 87.5% of the default icon size
 final smallerIconSize = defaultIconSize * 0.875;
 
+TextTheme textTheme(BuildContext context) {
+  return Theme
+      .of(context)
+      .textTheme;
+}
+
 TextStyle body1TextWithLightPrimaryDarkAccentColor(BuildContext context) {
   return Theme.of(context)
       .textTheme

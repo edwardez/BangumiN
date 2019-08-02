@@ -21,7 +21,7 @@ class _$InProgressAnimeOrRealCollectionSerializer
   final String wireName = 'InProgressAnimeOrRealCollection';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, InProgressAnimeOrRealCollection object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -47,7 +47,7 @@ class _$InProgressAnimeOrRealCollectionSerializer
 
   @override
   InProgressAnimeOrRealCollection deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new InProgressAnimeOrRealCollectionBuilder();
 
@@ -66,7 +66,7 @@ class _$InProgressAnimeOrRealCollectionSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(EpisodeProgress)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'lasttouch':
           result.userUpdatedAt = serializers.deserialize(value,

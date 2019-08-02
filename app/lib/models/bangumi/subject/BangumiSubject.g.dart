@@ -17,7 +17,7 @@ class _$BangumiSubjectSerializer
   final String wireName = 'BangumiSubject';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiSubject object,
+  Iterable<Object> serialize(Serializers serializers, BangumiSubject object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'type',
@@ -133,7 +133,8 @@ class _$BangumiSubjectSerializer
   }
 
   @override
-  BangumiSubject deserialize(Serializers serializers, Iterable serialized,
+  BangumiSubject deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiSubjectBuilder();
 
@@ -173,27 +174,28 @@ class _$BangumiSubjectSerializer
           break;
         case 'crt':
           result.characters.replace(serializers.deserialize(value,
-              specifiedType: const FullType(
-                  BuiltList, const [const FullType(Character)])) as BuiltList);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Character)]))
+              as BuiltList<dynamic>);
           break;
         case 'relatedSubjects':
           result.relatedSubjects.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
                 const FullType(RelatedSubject)
-              ])) as BuiltListMultimap);
+              ])) as BuiltListMultimap<dynamic, dynamic>);
           break;
         case 'tankobonSubjects':
           result.tankobonSubjects.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(RelatedSubject)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'commentsPreview':
           result.commentsPreview.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(SubjectReview)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'userSubjectCollectionInfoPreview':
           result.userSubjectCollectionInfoPreview.replace(
@@ -207,19 +209,19 @@ class _$BangumiSubjectSerializer
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
                 const FullType(InfoBoxItem)
-              ])) as BuiltListMultimap);
+              ])) as BuiltListMultimap<dynamic, dynamic>);
           break;
         case 'bangumiSuggestedTags':
           result.bangumiSuggestedTags.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'userSelectedTags':
           result.userSelectedTags.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'collection':
           result.collectionStatusDistribution.replace(serializers.deserialize(
@@ -237,7 +239,7 @@ class _$BangumiSubjectSerializer
               specifiedType: const FullType(BuiltListMultimap, const [
                 const FullType(String),
                 const FullType(InfoBoxItem)
-              ])) as BuiltListMultimap);
+              ])) as BuiltListMultimap<dynamic, dynamic>);
           break;
         case 'id':
           result.id = serializers.deserialize(value,

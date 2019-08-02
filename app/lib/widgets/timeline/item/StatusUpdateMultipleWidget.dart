@@ -41,8 +41,9 @@ class StatusUpdateMultipleWidget extends StatelessWidget {
       for (var hyperImage in hyperImages) {
         bool isMono = statusUpdateMultiple.bangumiContent.isMono;
         imageWidgets.add(RoundedElevatedImageWithBottomText(
-          horizontalImagePadding: horizontalImagePadding,
-          verticalImagePadding: verticalImagePadding,
+          padding: EdgeInsets.symmetric(
+              horizontal: horizontalImagePadding,
+              vertical: verticalImagePadding),
           contentType: hyperImage.contentType,
           // for mono, grid has a correctly cropped square image
           imageUrl: isMono ? hyperImage.image.grid : hyperImage.image.medium,

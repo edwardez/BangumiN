@@ -20,7 +20,8 @@ class _$InProgressBookCollectionSerializer
   final String wireName = 'InProgressBookCollection';
 
   @override
-  Iterable serialize(Serializers serializers, InProgressBookCollection object,
+  Iterable<Object> serialize(
+      Serializers serializers, InProgressBookCollection object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'ep_status',
@@ -42,7 +43,7 @@ class _$InProgressBookCollectionSerializer
 
   @override
   InProgressBookCollection deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new InProgressBookCollectionBuilder();
 

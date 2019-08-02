@@ -17,7 +17,7 @@ class _$BlogCreationSingleSerializer
   final String wireName = 'BlogCreationSingle';
 
   @override
-  Iterable serialize(Serializers serializers, BlogCreationSingle object,
+  Iterable<Object> serialize(Serializers serializers, BlogCreationSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -48,7 +48,8 @@ class _$BlogCreationSingleSerializer
   }
 
   @override
-  BlogCreationSingle deserialize(Serializers serializers, Iterable serialized,
+  BlogCreationSingle deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BlogCreationSingleBuilder();
 

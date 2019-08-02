@@ -20,7 +20,8 @@ class _$NetworkServiceTagLinkSerializer
   final String wireName = 'NetworkServiceTagLink';
 
   @override
-  Iterable serialize(Serializers serializers, NetworkServiceTagLink object,
+  Iterable<Object> serialize(
+      Serializers serializers, NetworkServiceTagLink object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'link',
@@ -40,7 +41,7 @@ class _$NetworkServiceTagLinkSerializer
 
   @override
   NetworkServiceTagLink deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NetworkServiceTagLinkBuilder();
 

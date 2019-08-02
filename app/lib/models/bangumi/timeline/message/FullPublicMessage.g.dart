@@ -17,7 +17,7 @@ class _$FullPublicMessageSerializer
   final String wireName = 'FullPublicMessage';
 
   @override
-  Iterable serialize(Serializers serializers, FullPublicMessage object,
+  Iterable<Object> serialize(Serializers serializers, FullPublicMessage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'mainMessage',
@@ -33,7 +33,8 @@ class _$FullPublicMessageSerializer
   }
 
   @override
-  FullPublicMessage deserialize(Serializers serializers, Iterable serialized,
+  FullPublicMessage deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FullPublicMessageBuilder();
 
@@ -52,7 +53,7 @@ class _$FullPublicMessageSerializer
           result.replies.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(PublicMessageReply)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }

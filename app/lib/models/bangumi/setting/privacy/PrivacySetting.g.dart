@@ -17,7 +17,7 @@ class _$PrivacySettingSerializer
   final String wireName = 'PrivacySetting';
 
   @override
-  Iterable serialize(Serializers serializers, PrivacySetting object,
+  Iterable<Object> serialize(Serializers serializers, PrivacySetting object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'optInAnalytics',
@@ -32,7 +32,8 @@ class _$PrivacySettingSerializer
   }
 
   @override
-  PrivacySetting deserialize(Serializers serializers, Iterable serialized,
+  PrivacySetting deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PrivacySettingBuilder();
 

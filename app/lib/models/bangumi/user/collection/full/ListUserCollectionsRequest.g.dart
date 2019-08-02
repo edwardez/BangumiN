@@ -20,7 +20,8 @@ class _$ListUserCollectionsRequestSerializer
   final String wireName = 'ListUserCollectionsRequest';
 
   @override
-  Iterable serialize(Serializers serializers, ListUserCollectionsRequest object,
+  Iterable<Object> serialize(
+      Serializers serializers, ListUserCollectionsRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'username',
@@ -47,7 +48,7 @@ class _$ListUserCollectionsRequestSerializer
 
   @override
   ListUserCollectionsRequest deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ListUserCollectionsRequestBuilder();
 

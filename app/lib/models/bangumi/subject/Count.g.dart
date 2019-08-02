@@ -15,7 +15,7 @@ class _$CountSerializer implements StructuredSerializer<Count> {
   final String wireName = 'Count';
 
   @override
-  Iterable serialize(Serializers serializers, Count object,
+  Iterable<Object> serialize(Serializers serializers, Count object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       '1',
@@ -54,7 +54,7 @@ class _$CountSerializer implements StructuredSerializer<Count> {
   }
 
   @override
-  Count deserialize(Serializers serializers, Iterable serialized,
+  Count deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CountBuilder();
 

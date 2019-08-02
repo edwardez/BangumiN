@@ -70,6 +70,18 @@ class BangumiResourceNotFoundException implements MuninException {
   }
 }
 
+class BangumiUnauthorizedAccessException implements MuninException {
+  /// Message describing the problem. */
+  final message;
+
+  BangumiUnauthorizedAccessException([this.message = '没有权限访问']);
+
+  @override
+  String toString() {
+    return 'BangumiResourceNotFoundException{message: $message}';
+  }
+}
+
 /// An General UnknownException
 class GeneralUnknownException implements MuninException {
   /// Message describing the problem. */

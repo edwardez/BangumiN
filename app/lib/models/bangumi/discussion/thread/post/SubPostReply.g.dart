@@ -16,7 +16,7 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
   final String wireName = 'SubPostReply';
 
   @override
-  Iterable serialize(Serializers serializers, SubPostReply object,
+  Iterable<Object> serialize(Serializers serializers, SubPostReply object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'mainPostId',
@@ -48,7 +48,7 @@ class _$SubPostReplySerializer implements StructuredSerializer<SubPostReply> {
   }
 
   @override
-  SubPostReply deserialize(Serializers serializers, Iterable serialized,
+  SubPostReply deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubPostReplyBuilder();
 

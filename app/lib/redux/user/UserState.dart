@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
 import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsRequest.dart';
 import 'package:munin/models/bangumi/user/collection/full/ListUserCollectionsResponse.dart';
+import 'package:munin/models/bangumi/user/notification/NotificationState.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'UserState.g.dart';
@@ -18,10 +19,13 @@ abstract class UserState implements Built<UserState, UserStateBuilder> {
   BuiltMap<ListUserCollectionsRequest, ListUserCollectionsResponse>
       get collections;
 
+  NotificationState get notificationState;
+
   factory UserState([updates(UserStateBuilder b)]) => _$UserState((b) => b
     ..profiles.replace(BuiltMap<String, UserProfile>())
     ..collections.replace(
         BuiltMap<ListUserCollectionsRequest, ListUserCollectionsResponse>())
+    ..notificationState.replace(NotificationState())
     ..update(updates));
 
   UserState._();

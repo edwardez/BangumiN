@@ -12,6 +12,7 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
@@ -25,7 +26,6 @@ import 'package:munin/widgets/user/UserIntroductionPreview.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UserProfileWidget extends StatelessWidget {
   ///  An [SliverAppBar] or its container that's on top of the profile
@@ -100,20 +100,20 @@ class UserProfileWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(OMIcons.openInBrowser),
-                    title: Text(checkWebVersionPrompt),
+                    title: Text(checkWebVersionLabel),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      launch(userProfileMainUrl);
+                      launchByPreference(
+                          context, userProfileMainUrl, popContext: true);
                     },
                   ),
                   ListTile(
                     leading: Icon(OMIcons.timeline),
-                    title: Text('$goToForsetiPrompt查看统计数据'),
+                    title: Text('$goToForsetiLabel查看统计数据'),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      launch(
+                      launchByPreference(context,
                           'https://${Application.environmentValue
-                              .forsetiMainHost}/user/$username/statistics');
+                              .forsetiMainHost}/user/$username/statistics',
+                          popContext: true);
                     },
                   ),
                   _buildMuteAction(outerContext, vm),

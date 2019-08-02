@@ -17,7 +17,7 @@ class _$MonoSearchResultSerializer
   final String wireName = 'MonoSearchResult';
 
   @override
-  Iterable serialize(Serializers serializers, MonoSearchResult object,
+  Iterable<Object> serialize(Serializers serializers, MonoSearchResult object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'miscInfo',
@@ -45,7 +45,8 @@ class _$MonoSearchResultSerializer
   }
 
   @override
-  MonoSearchResult deserialize(Serializers serializers, Iterable serialized,
+  MonoSearchResult deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MonoSearchResultBuilder();
 
@@ -59,7 +60,7 @@ class _$MonoSearchResultSerializer
           result.miscInfo.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'name_cn':
           result.chineseName = serializers.deserialize(value,

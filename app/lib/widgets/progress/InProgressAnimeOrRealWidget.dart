@@ -165,7 +165,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                                   .replaceFirst(RoutesVariable.subjectIdParam,
                                   collection.subject.id.toString()),
                               transition: TransitionType.nativeModal),
-                          hasSuccessfullyUpdatedCollection);
+                          hasSuccessfullyUpdatedCollectionLabel);
                     },
                     child: Text("编辑"),
                   ),

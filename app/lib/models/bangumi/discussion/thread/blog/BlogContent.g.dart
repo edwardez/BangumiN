@@ -15,7 +15,7 @@ class _$BlogContentSerializer implements StructuredSerializer<BlogContent> {
   final String wireName = 'BlogContent';
 
   @override
-  Iterable serialize(Serializers serializers, BlogContent object,
+  Iterable<Object> serialize(Serializers serializers, BlogContent object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'author',
@@ -36,7 +36,7 @@ class _$BlogContentSerializer implements StructuredSerializer<BlogContent> {
   }
 
   @override
-  BlogContent deserialize(Serializers serializers, Iterable serialized,
+  BlogContent deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BlogContentBuilder();
 
@@ -63,7 +63,7 @@ class _$BlogContentSerializer implements StructuredSerializer<BlogContent> {
           result.associatedSubjects.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(ParentSubject)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }

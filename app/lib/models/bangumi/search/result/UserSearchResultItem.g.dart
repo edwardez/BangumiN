@@ -20,7 +20,8 @@ class _$UserSearchResultItemSerializer
   final String wireName = 'UserSearchResultItem';
 
   @override
-  Iterable serialize(Serializers serializers, UserSearchResultItem object,
+  Iterable<Object> serialize(
+      Serializers serializers, UserSearchResultItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'nickname',
@@ -44,7 +45,8 @@ class _$UserSearchResultItemSerializer
   }
 
   @override
-  UserSearchResultItem deserialize(Serializers serializers, Iterable serialized,
+  UserSearchResultItem deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserSearchResultItemBuilder();
 

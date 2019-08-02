@@ -16,7 +16,7 @@ class _$SubjectReviewSerializer implements StructuredSerializer<SubjectReview> {
   final String wireName = 'SubjectReview';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectReview object,
+  Iterable<Object> serialize(Serializers serializers, SubjectReview object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'metaInfo',
@@ -33,7 +33,8 @@ class _$SubjectReviewSerializer implements StructuredSerializer<SubjectReview> {
   }
 
   @override
-  SubjectReview deserialize(Serializers serializers, Iterable serialized,
+  SubjectReview deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectReviewBuilder();
 

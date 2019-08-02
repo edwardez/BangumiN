@@ -17,7 +17,7 @@ class _$RelatedSubjectSerializer
   final String wireName = 'RelatedSubject';
 
   @override
-  Iterable serialize(Serializers serializers, RelatedSubject object,
+  Iterable<Object> serialize(Serializers serializers, RelatedSubject object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'subjectSubTypeName',
@@ -54,7 +54,8 @@ class _$RelatedSubjectSerializer
   }
 
   @override
-  RelatedSubject deserialize(Serializers serializers, Iterable serialized,
+  RelatedSubject deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new RelatedSubjectBuilder();
 

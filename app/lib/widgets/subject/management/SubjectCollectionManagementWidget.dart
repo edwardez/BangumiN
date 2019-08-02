@@ -154,7 +154,9 @@ class _SubjectCollectionManagementWidgetState
       return true;
     }
 
-    return await showMuninYesNoDialog(context, title: '确认放弃编辑这份收藏？') ?? false;
+    return await showMuninYesNoDialog(context, title: Text('确认放弃编辑这份收藏？'),
+      confirmAction: EditorYesNoPrompt.confirmAction,
+      cancelAction: EditorYesNoPrompt.cancelAction,) ?? false;
   }
 
   /// Listens to comment controller, set [_isCommentFieldValid] if form is currently invalid

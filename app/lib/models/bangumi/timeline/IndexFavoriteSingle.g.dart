@@ -20,7 +20,8 @@ class _$IndexFavoriteSingleSerializer
   final String wireName = 'IndexFavoriteSingle';
 
   @override
-  Iterable serialize(Serializers serializers, IndexFavoriteSingle object,
+  Iterable<Object> serialize(
+      Serializers serializers, IndexFavoriteSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -51,7 +52,8 @@ class _$IndexFavoriteSingleSerializer
   }
 
   @override
-  IndexFavoriteSingle deserialize(Serializers serializers, Iterable serialized,
+  IndexFavoriteSingle deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new IndexFavoriteSingleBuilder();
 

@@ -20,7 +20,8 @@ class _$BangumiCookieCredentialsSerializer
   final String wireName = 'BangumiCookieCredentials';
 
   @override
-  Iterable serialize(Serializers serializers, BangumiCookieCredentials object,
+  Iterable<Object> serialize(
+      Serializers serializers, BangumiCookieCredentials object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'authCookie',
@@ -42,7 +43,7 @@ class _$BangumiCookieCredentialsSerializer
 
   @override
   BangumiCookieCredentials deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BangumiCookieCredentialsBuilder();
 

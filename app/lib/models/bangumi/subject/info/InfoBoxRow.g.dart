@@ -15,7 +15,7 @@ class _$InfoBoxRowSerializer implements StructuredSerializer<InfoBoxRow> {
   final String wireName = 'InfoBoxRow';
 
   @override
-  Iterable serialize(Serializers serializers, InfoBoxRow object,
+  Iterable<Object> serialize(Serializers serializers, InfoBoxRow object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'rowName',
@@ -34,7 +34,7 @@ class _$InfoBoxRowSerializer implements StructuredSerializer<InfoBoxRow> {
   }
 
   @override
-  InfoBoxRow deserialize(Serializers serializers, Iterable serialized,
+  InfoBoxRow deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new InfoBoxRowBuilder();
 
@@ -56,7 +56,7 @@ class _$InfoBoxRowSerializer implements StructuredSerializer<InfoBoxRow> {
           result.rowItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(InfoBoxItem)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }

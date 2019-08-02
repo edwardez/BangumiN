@@ -10,6 +10,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/timeline/FeedChunks.dart';
 import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
@@ -18,7 +19,6 @@ import 'package:munin/widgets/timeline/item/common/Actions.dart';
 import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TimelineBodyWidget extends StatefulWidget {
   final Widget appBar;
@@ -68,19 +68,18 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
       emptyTimelineWidget = Column(
         children: <Widget>[
           Text('时间线为空，可能因为：'),
-          Text('1. $appOrBangumiHasAnError，下拉可重试'),
+          Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
           Text(
               '2. 用户未发表任何${widget.getTimelineRequest.timelineCategoryFilter.chineseName}分类下的动态'),
           FlatButton(
-            child: Text(checkWebVersionPrompt),
+            child: Text(checkWebVersionLabel),
             onPressed: () {
               String username = widget.getTimelineRequest.username;
               String category = widget.getTimelineRequest.timelineCategoryFilter
                   .bangumiQueryParameterValue;
 
-              return launch(
-                  'https://$bangumiMainHost/user/$username/timeline?type=$category',
-                  forceSafariVC: false);
+              return launchByPreference(context,
+                  'https://$bangumiMainHost/user/$username/timeline?type=$category');
             },
           )
         ],
@@ -89,12 +88,12 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
       emptyTimelineWidget = Column(
         children: <Widget>[
           Text('时间线为空，可能因为：'),
-          Text('1. $appOrBangumiHasAnError，下拉可重试'),
+          Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
           Text('2. 您尚未关注任何已发表动态的用户'),
           FlatButton(
-            child: Text(checkWebVersionPrompt),
+            child: Text(checkWebVersionLabel),
             onPressed: () {
-              return launch(bangumiTimelineUrl, forceSafariVC: false);
+              return launchByPreference(context, bangumiTimelineUrl);
             },
           )
         ],

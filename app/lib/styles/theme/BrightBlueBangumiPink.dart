@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Colors.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/styles/theme/CommonThemeData.dart';
 import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
@@ -10,6 +11,7 @@ final ThemeData brightBangumiPinkBlueThemeData = ThemeData(
   buttonTheme: ButtonThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),
+  bottomSheetTheme: muninBottomSheetThemeData(),
   dialogTheme: DialogTheme(
     shape: RoundedRectangleBorder(borderRadius: defaultContainerCircularRadius),
   ),

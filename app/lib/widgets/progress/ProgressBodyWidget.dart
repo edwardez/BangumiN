@@ -14,6 +14,7 @@ import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguag
 import 'package:munin/models/bangumi/subject/common/SubjectType.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/progress/InProgressAnimeOrRealWidget.dart';
 import 'package:munin/widgets/progress/InProgressBookWidget.dart';
@@ -21,7 +22,6 @@ import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 typedef UpdateAnimeOrRealSingleEpisode({
   @required BuildContext context,
@@ -45,11 +45,11 @@ typedef Future<void> UpdateBookProgress({
 });
 
 class ProgressBodyWidget extends StatefulWidget {
-  final OneMuninBar oneMuninBar;
+  final OneMuninBar appBar;
   final BuiltSet<SubjectType> subjectTypes;
 
   const ProgressBodyWidget(
-      {Key key, @required this.oneMuninBar, @required this.subjectTypes})
+      {Key key, @required this.appBar, @required this.subjectTypes})
       : super(key: key);
 
   @override
@@ -68,12 +68,12 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
     return Column(
       children: <Widget>[
         Text('在看的$requestSubjectTypes列表为空，可能因为：'),
-        Text('1. $appOrBangumiHasAnError，下拉可重试'),
+        Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
         Text('2. 目前没有在看的$requestSubjectTypes'),
         FlatButton(
-          child: Text(checkWebVersionPrompt),
+          child: Text(checkWebVersionLabel),
           onPressed: () {
-            return launch(bangumiHomePageUrl, forceSafariVC: false);
+            launchByPreference(context, bangumiHomePageUrl,);
           },
         )
       ],
@@ -161,7 +161,7 @@ class _ProgressBodyWidgetState extends State<ProgressBodyWidget> {
           onLoadMore: null,
           refreshWidgetStyle: RefreshWidgetStyle.Adaptive,
           itemCount: widgets.length,
-          appBar: widget.oneMuninBar,
+          appBar: widget.appBar,
 
           /// all progress subjects will be loaded in once, hence no more items
           /// to load if progresses are loaded

@@ -20,7 +20,8 @@ class _$CollectionOnUserListSerializer
   final String wireName = 'CollectionOnUserList';
 
   @override
-  Iterable serialize(Serializers serializers, CollectionOnUserList object,
+  Iterable<Object> serialize(
+      Serializers serializers, CollectionOnUserList object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'collectionStatus',
@@ -56,7 +57,8 @@ class _$CollectionOnUserListSerializer
   }
 
   @override
-  CollectionOnUserList deserialize(Serializers serializers, Iterable serialized,
+  CollectionOnUserList deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionOnUserListBuilder();
 
@@ -87,7 +89,7 @@ class _$CollectionOnUserListSerializer
           result.tags.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'subject':
           result.subject.replace(serializers.deserialize(value,

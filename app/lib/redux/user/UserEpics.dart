@@ -4,18 +4,19 @@ import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/bangumi/user/parser/UserCollectionsListParser.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
 List<Epic<AppState>> createUserEpics(BangumiUserService bangumiUserService) {
-  final getUserPreviewEpic = _createGetUserPreviewEpic(bangumiUserService);
-  final listUserCollectionsEpic =
-      _createListUserCollectionsEpic(bangumiUserService);
-
   return [
-    getUserPreviewEpic,
-    listUserCollectionsEpic,
+    _createGetUserPreviewEpic(bangumiUserService),
+    _createListUserCollectionsEpic(bangumiUserService),
+    _createListNotificationItemsEpic(bangumiUserService),
+    _createListenOnUnreadNotificationsEpic(bangumiUserService),
+    _createClearUnreadNotificationsEpic(bangumiUserService),
+    _createChangeFriendRelationshipEpic(bangumiUserService),
   ];
 }
 
@@ -35,8 +36,7 @@ Stream<dynamic> _getUserPreviewEpic(BangumiUserService bangumiUserService,
     yield GetUserPreviewSuccessAction(profile: profile);
     action.completer.complete();
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
+    reportError(error, stack: stack);
     action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
@@ -112,8 +112,7 @@ Stream<dynamic> _listUserCollectionsEpic(
       appendResultsToEnd: action.listOlderCollections,
     );
   } catch (error, stack) {
-    print(error.toString());
-    print(stack);
+    reportError(error, stack: stack);
     action.completer.completeError(error, stack);
   } finally {
     completeDanglingCompleter(action.completer);
@@ -130,5 +129,155 @@ Epic<AppState> _createListUserCollectionsEpic(
               store,
               action,
             ));
+  };
+}
+
+Stream<dynamic> _listNotificationItemsEpic(
+    BangumiUserService bangumiUserService,
+    ListNotificationItemsAction action,) async* {
+  try {
+    final items = await bangumiUserService.listNotifications(
+      onlyUnread: action.onlyUnread,
+    );
+
+    yield ListNotificationItemsSuccessAction(items,
+        onlyUnread: action.onlyUnread);
+    action.completer.complete();
+  } catch (error, stack) {
+    reportError(error, stack: stack);
+    action.completer.completeError(error, stack);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createListNotificationItemsEpic(
+    BangumiUserService bangumiUserService,) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<ListNotificationItemsAction>())
+        .switchMap((action) =>
+        _listNotificationItemsEpic(
+          bangumiUserService,
+          action,
+        ));
+  };
+}
+
+const listenOnUnreadNotificationsInterval = const Duration(seconds: 30);
+
+/// Listens on unread notifications, update store if unread messages are not the
+/// same as notifications in store.
+Stream<dynamic> _listenOnUnreadNotificationsEpic(EpicStore<AppState> store,
+    BangumiUserService bangumiUserService,
+    ListenOnUnreadNotificationAction action,) async* {
+  try {
+    final unreadCountHttp =
+    await bangumiUserService.getUnreadNotificationsCount();
+    final unreadCountInStore =
+        store.state.userState.notificationState.unreadNotificationItems?.length;
+
+    // Returns early to avoid one more http call if count matches.
+    if (unreadCountHttp == unreadCountInStore) {
+      return;
+    }
+
+    final items = await bangumiUserService.listNotifications();
+
+    if (items !=
+        store.state.userState.notificationState.unreadNotificationItems) {
+      yield ListNotificationItemsSuccessAction(items);
+    }
+  } catch (error, stack) {
+    reportError(error, stack: stack);
+  }
+}
+
+Epic<AppState> _createListenOnUnreadNotificationsEpic(
+    BangumiUserService bangumiUserService,) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<ListenOnUnreadNotificationAction>())
+        .switchMap<ListenOnUnreadNotificationAction>(
+            (action) =>
+            Observable.concat(
+              [
+                Observable.just(action),
+                Observable.periodic(
+                    listenOnUnreadNotificationsInterval, (i) => action)
+              ],
+            ))
+        .switchMap((action) =>
+        _listenOnUnreadNotificationsEpic(
+          store,
+          bangumiUserService,
+          action,
+        ));
+  };
+}
+
+Stream<dynamic> _clearUnreadNotificationsEpic(EpicStore<AppState> store,
+    BangumiUserService bangumiUserService,
+    ClearUnreadNotificationsAction action,) async* {
+  try {
+    await bangumiUserService.clearUnreadNotifications(
+      notificationId: action.notificationId,
+      clearAll: action.clearAll,
+    );
+    action.completer.complete();
+
+    /// Refresh notifications in store.
+    yield ListNotificationItemsAction();
+  } catch (error, stack) {
+    action.completer.completeError(error);
+    reportError(error, stack: stack);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createClearUnreadNotificationsEpic(
+    BangumiUserService bangumiUserService,) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<ClearUnreadNotificationsAction>())
+        .concatMap((action) =>
+        _clearUnreadNotificationsEpic(
+          store,
+          bangumiUserService,
+          action,
+        ));
+  };
+}
+
+
+Stream<dynamic> _changeFriendRelationshipEpic(
+    BangumiUserService bangumiUserService,
+    ChangeFriendRelationshipRequestAction action,) async* {
+  try {
+    await bangumiUserService.changeFriendRelationship(
+        userId: action.userId,
+        actionType: action.actionType
+    );
+
+    action.completer.complete();
+  } catch (error, stack) {
+    action.completer.completeError(error);
+    reportError(error, stack: stack);
+  } finally {
+    completeDanglingCompleter(action.completer);
+  }
+}
+
+Epic<AppState> _createChangeFriendRelationshipEpic(
+    BangumiUserService bangumiUserService,) {
+  return (Stream<dynamic> actions, EpicStore<AppState> store) {
+    return Observable(actions)
+        .ofType(TypeToken<ChangeFriendRelationshipRequestAction>())
+        .concatMap((action) =>
+        _changeFriendRelationshipEpic(
+          bangumiUserService,
+          action,
+        ));
   };
 }

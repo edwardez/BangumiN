@@ -9,12 +9,6 @@ class RoundedElevatedImageWithBottomText extends StatelessWidget {
   final double imageWidth;
   final double imageHeight;
 
-  /// Padding on the left/right side of this image
-  final double horizontalImagePadding;
-
-  /// Padding on the top/down side of this image
-  final double verticalImagePadding;
-
   /// Used by [BangumiContent.Doujin]
   final String pageUrl;
 
@@ -34,9 +28,12 @@ class RoundedElevatedImageWithBottomText extends StatelessWidget {
   /// Subtitle that's directly under the title
   final String subtitle;
 
-  // Style of the subtitle, default to TextTheme.caption
+  /// Style of the subtitle, default to TextTheme.caption
   final TextStyle subTitleStyle;
   final int subTitleMaxLines;
+
+  /// Outer padding of this widget.
+  final EdgeInsetsGeometry padding;
 
   const RoundedElevatedImageWithBottomText({
     Key key,
@@ -51,9 +48,8 @@ class RoundedElevatedImageWithBottomText extends StatelessWidget {
     this.subtitle,
     this.subTitleStyle,
     this.subTitleMaxLines = 1,
-    this.horizontalImagePadding = 8,
-    this.verticalImagePadding = 0,
     this.pageUrl,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
   })  : assert(imageWidth != null),
         assert(imageHeight != null),
         super(key: key);
@@ -99,8 +95,7 @@ class RoundedElevatedImageWithBottomText extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: horizontalImagePadding, vertical: verticalImagePadding),
+      padding: padding,
       child: Container(
         /// Give text a little bit more space than image, otherwise text wraps
         /// to next line too early

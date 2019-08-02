@@ -17,7 +17,7 @@ class _$ReviewMetaInfoSerializer
   final String wireName = 'ReviewMetaInfo';
 
   @override
-  Iterable serialize(Serializers serializers, ReviewMetaInfo object,
+  Iterable<Object> serialize(Serializers serializers, ReviewMetaInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'updatedAt',
@@ -55,7 +55,8 @@ class _$ReviewMetaInfoSerializer
   }
 
   @override
-  ReviewMetaInfo deserialize(Serializers serializers, Iterable serialized,
+  ReviewMetaInfo deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ReviewMetaInfoBuilder();
 

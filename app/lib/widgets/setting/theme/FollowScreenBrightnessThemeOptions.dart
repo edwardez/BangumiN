@@ -7,7 +7,7 @@ import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/redux/setting/Common.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/setting/theme/Common.dart';
+import 'package:munin/widgets/shared/selection/MuninExpansionSelection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:screen/screen.dart';
 
@@ -110,54 +110,33 @@ class _FollowScreenBrightnessThemeOptionsState
                 .copyWith(color: lightPrimaryDarkAccentColor(context)),
           ),
         ),
-        ExpansionTile(
-          title: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text('明亮模式下偏好主题'),
-              ),
-              Text(widget.themeSetting.preferredFollowBrightnessLightTheme
-                  .chineseName),
-            ],
-          ),
-          children: <Widget>[
-            for (MuninTheme theme
-                in MuninTheme.availableLightThemes(widget.showHiddenTheme))
-              ListTile(
-                title: Text(theme.chineseName),
-                trailing: buildThemeStyleTrailingIcon(
-                    context,
-                    widget.themeSetting.preferredFollowBrightnessLightTheme,
-                    theme),
-                onTap: () {
-                  widget.onLightThemePreferenceChange(theme);
-                },
-              )
-          ],
+        MuninExpansionSelection<MuninTheme>(
+          expansionKey: PageStorageKey<String>(
+              'theme-setting-follow-screen-brightness-bright-preference'),
+          title: Text('明亮模式下偏好主题'),
+          optionTitleBuilder: (selection) =>
+              Text(selection.chineseName),
+          options: MuninTheme.availableLightThemes(widget.showHiddenTheme),
+          currentSelection: widget.themeSetting
+              .preferredFollowBrightnessLightTheme,
+          onTapOption: (theme) {
+            widget.onLightThemePreferenceChange(theme);
+          },
+          transparentDivider: false,
         ),
-        ExpansionTile(
-          title: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text('黑暗模式下偏好主题'),
-              ),
-              Text(widget
-                  .themeSetting.preferredFollowBrightnessDarkTheme.chineseName),
-            ],
-          ),
-          children: <Widget>[
-            for (MuninTheme theme in MuninTheme.availableDarkThemes())
-              ListTile(
-                title: Text(theme.chineseName),
-                trailing: buildThemeStyleTrailingIcon(
-                    context,
-                    widget.themeSetting.preferredFollowBrightnessDarkTheme,
-                    theme),
-                onTap: () {
-                  widget.onDarkThemePreferenceChange(theme);
-                },
-              )
-          ],
+        MuninExpansionSelection<MuninTheme>(
+          expansionKey: PageStorageKey<String>(
+              'theme-setting-follow-screen-brightness-dark-preference'),
+          title: Text('黑暗模式下偏好主题'),
+          optionTitleBuilder: (selection) =>
+              Text(selection.chineseName),
+          options: MuninTheme.availableDarkThemes(),
+          currentSelection: widget.themeSetting
+              .preferredFollowBrightnessDarkTheme,
+          onTapOption: (theme) {
+            widget.onDarkThemePreferenceChange(theme);
+          },
+          transparentDivider: false,
         ),
         Divider(),
         ListTile(

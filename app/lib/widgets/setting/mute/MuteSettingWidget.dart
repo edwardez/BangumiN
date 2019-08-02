@@ -49,7 +49,7 @@ class MuteSettingWidget extends StatelessWidget {
                         .body2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
-                  subtitle: Text('作用于时间线，小组讨论与作品评价'),
+                  subtitle: Text('除通知外都会被屏蔽'),
                   trailing: IconButton(
                     icon: Icon(OMIcons.helpOutline),
                     onPressed: () {

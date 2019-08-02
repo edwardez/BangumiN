@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTag.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NetworkServiceTagWidget extends StatelessWidget {
   final NetworkServiceTag tag;
@@ -46,7 +46,7 @@ class NetworkServiceTagWidget extends StatelessWidget {
       ),
       onTap: () {
         if (isLink) {
-          launch((tag as NetworkServiceTagLink).link);
+          launchByPreference(context, (tag as NetworkServiceTagLink).link);
         } else {
           ClipboardService.copyConfirmationDialog(context, tag.content);
         }

@@ -16,7 +16,7 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
   final String wireName = 'staff';
 
   @override
-  Iterable serialize(Serializers serializers, JobsPerStaff object,
+  Iterable<Object> serialize(Serializers serializers, JobsPerStaff object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'role_name',
@@ -62,7 +62,7 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
   }
 
   @override
-  JobsPerStaff deserialize(Serializers serializers, Iterable serialized,
+  JobsPerStaff deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new JobsPerStaffBuilder();
 
@@ -96,7 +96,7 @@ class _$JobsPerStaffSerializer implements StructuredSerializer<JobsPerStaff> {
           result.jobs.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'id':
           result.id = serializers.deserialize(value,

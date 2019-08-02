@@ -32,7 +32,10 @@ class TextComposer extends StatefulWidget {
 
   final InputDecoration inputDecoration;
 
-  final popContextOnSuccess;
+  final bool popContextOnSuccess;
+
+  /// A prompt that'll shown up when user wants to go back to previous screen.
+  final String onWillPopPromptTitle;
 
   /// A callback function that returns a [Future] to indicate status of
   /// submitting a reply.
@@ -54,6 +57,7 @@ class TextComposer extends StatefulWidget {
       border: OutlineInputBorder(),
     ),
     this.popContextOnSuccess = true,
+    this.onWillPopPromptTitle = '确认放弃发表这个回复？',
   }) : super(key: key);
 
   @override
@@ -128,7 +132,10 @@ class _TextComposerState extends State<TextComposer> {
 
   Future<bool> _onDiscardReply() async {
     if (isNotEmpty(messageController.text)) {
-      return await showMuninYesNoDialog(context, title: '确认放弃发表这个回复？') ?? false;
+      return await showMuninYesNoDialog(
+        context, title: Text(widget.onWillPopPromptTitle),
+        confirmAction: EditorYesNoPrompt.confirmAction,
+        cancelAction: EditorYesNoPrompt.cancelAction,) ?? false;
     }
 
     return true;

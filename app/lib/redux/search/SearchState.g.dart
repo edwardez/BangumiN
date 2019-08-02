@@ -15,7 +15,7 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
   final String wireName = 'SearchState';
 
   @override
-  Iterable serialize(Serializers serializers, SearchState object,
+  Iterable<Object> serialize(Serializers serializers, SearchState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'results',
@@ -30,7 +30,7 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
   }
 
   @override
-  SearchState deserialize(Serializers serializers, Iterable serialized,
+  SearchState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SearchStateBuilder();
 
@@ -45,7 +45,7 @@ class _$SearchStateSerializer implements StructuredSerializer<SearchState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(SearchRequest),
                 const FullType(BangumiSearchResponse)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

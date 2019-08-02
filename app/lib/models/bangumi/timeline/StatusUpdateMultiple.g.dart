@@ -20,7 +20,8 @@ class _$StatusUpdateMultipleSerializer
   final String wireName = 'StatusUpdateMultiple';
 
   @override
-  Iterable serialize(Serializers serializers, StatusUpdateMultiple object,
+  Iterable<Object> serialize(
+      Serializers serializers, StatusUpdateMultiple object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -48,7 +49,8 @@ class _$StatusUpdateMultipleSerializer
   }
 
   @override
-  StatusUpdateMultiple deserialize(Serializers serializers, Iterable serialized,
+  StatusUpdateMultiple deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new StatusUpdateMultipleBuilder();
 
@@ -64,14 +66,15 @@ class _$StatusUpdateMultipleSerializer
           break;
         case 'hyperImages':
           result.hyperImages.replace(serializers.deserialize(value,
-              specifiedType: const FullType(
-                  BuiltList, const [const FullType(HyperImage)])) as BuiltList);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(HyperImage)]))
+              as BuiltList<dynamic>);
           break;
         case 'hyperBangumiItems':
           result.hyperBangumiItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(HyperBangumiItem)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
         case 'bangumiContent':
           result.bangumiContent = serializers.deserialize(value,

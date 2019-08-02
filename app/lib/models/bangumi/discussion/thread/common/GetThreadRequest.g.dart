@@ -17,7 +17,7 @@ class _$GetThreadRequestSerializer
   final String wireName = 'GetThreadRequest';
 
   @override
-  Iterable serialize(Serializers serializers, GetThreadRequest object,
+  Iterable<Object> serialize(Serializers serializers, GetThreadRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'threadType',
@@ -31,7 +31,8 @@ class _$GetThreadRequestSerializer
   }
 
   @override
-  GetThreadRequest deserialize(Serializers serializers, Iterable serialized,
+  GetThreadRequest deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GetThreadRequestBuilder();
 

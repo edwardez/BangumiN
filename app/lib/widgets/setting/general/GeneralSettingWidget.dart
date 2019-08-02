@@ -5,15 +5,17 @@ import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredSubjectInfoLanguage.dart';
+import 'package:munin/models/bangumi/setting/general/browser/BrowserSetting.dart';
+import 'package:munin/models/bangumi/setting/general/browser/LaunchBrowserPreference.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/setting/general/BrowserSettingWidget.dart';
 import 'package:munin/widgets/setting/general/PreferredLanguageWidget.dart';
-import 'package:munin/widgets/setting/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
-import 'package:munin/widgets/shared/common/TransparentDividerThemeContext.dart';
+import 'package:munin/widgets/shared/selection/MuninExpansionSelection.dart';
 import 'package:redux/redux.dart';
 
 class GeneralSettingWidget extends StatelessWidget {
@@ -23,42 +25,36 @@ class GeneralSettingWidget extends StatelessWidget {
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
+        final settingTitleStyle = Theme
+            .of(context)
+            .textTheme
+            .body2
+            .copyWith(color: lightPrimaryDarkAccentColor(context));
+
         return ScrollViewWithSliverAppBar(
           enableTopSafeArea: false,
           enableBottomSafeArea: false,
           safeAreaChildPadding:
-              const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
+          const EdgeInsets.only(left: 0, right: 0, top: largeOffset),
           appBarMainTitle: Text('通用设置'),
           nestedScrollViewBody: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               ListTile(
-                title: Text(
-                  '语言',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
-                ),
+                title: Text('语言', style: settingTitleStyle),
               ),
               PreferredLanguageWidget(
                 currentSubjectLanguage:
-                    vm.generalSetting.preferredSubjectInfoLanguage,
+                vm.generalSetting.preferredSubjectInfoLanguage,
                 onSubjectLanguageUpdate:
                     (PreferredSubjectInfoLanguage language) {
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                      (b) => b..preferredSubjectInfoLanguage = language));
+                          (b) => b..preferredSubjectInfoLanguage = language));
                 },
               ),
               Divider(),
               ListTile(
-                title: Text(
-                  '进度',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
-                ),
+                title: Text('进度', style: settingTitleStyle),
               ),
               SwitchListTile.adaptive(
                 value: vm.generalSetting.expandAllProgressTiles,
@@ -66,165 +62,92 @@ class GeneralSettingWidget extends StatelessWidget {
                 onChanged: (bool value) {
                   final currentValue = vm.generalSetting.expandAllProgressTiles;
                   vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                      (b) => b..expandAllProgressTiles = !currentValue));
+                          (b) => b..expandAllProgressTiles = !currentValue));
                 },
                 activeColor: lightPrimaryDarkAccentColor(context),
               ),
               Divider(),
               ListTile(
-                title: Text(
-                  '启动',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
-                ),
+                title: Text('启动', style: settingTitleStyle),
               ),
-              ThemeWithTransparentDivider(
-                child: ExpansionTile(
-                  key: PageStorageKey<String>(
-                      'general-setting-launch-preferredLaunchNavTab'),
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text('启动后进入页面'),
-                      ),
-                      Text(vm.generalSetting.preferredLaunchNavTab
-                          .generalSettingPageChineseName),
-                    ],
-                  ),
-                  children: <Widget>[
-                    for (PreferredLaunchNavTab launchPage
-                        in PreferredLaunchNavTab.values.toList())
-                      ListTile(
-                        title: Text(launchPage.generalSettingPageChineseName),
-                        trailing: buildTrailingIcon<PreferredLaunchNavTab>(
-                            context,
-                            vm.generalSetting.preferredLaunchNavTab,
-                            launchPage),
-                        onTap: () {
-                          vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                              (b) => b..preferredLaunchNavTab = launchPage));
-                        },
-                      )
-                  ],
-                ),
+              MuninExpansionSelection<PreferredLaunchNavTab>(
+                expansionKey: PageStorageKey<String>(
+                    'general-setting-launch-preferredLaunchNavTab'),
+                title: Text('启动后进入页面'),
+                optionTitleBuilder: (selection) =>
+                    Text(selection.generalSettingPageChineseName),
+                options: PreferredLaunchNavTab.values,
+                currentSelection: vm.generalSetting.preferredLaunchNavTab,
+                onTapOption: (launchPage) {
+                  vm.updateGeneralSetting(vm.generalSetting
+                      .rebuild((b) => b..preferredLaunchNavTab = launchPage));
+                },
               ),
               Divider(),
               ListTile(
-                title: Text(
-                  '各页面默认分组',
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(color: lightPrimaryDarkAccentColor(context)),
-                ),
+                title: Text('各页面默认分组', style: settingTitleStyle),
               ),
-              ThemeWithTransparentDivider(
-                child: ExpansionTile(
-                  key: PageStorageKey<String>(
-                      'general-setting-launch-preferredTimelineLaunchPage'),
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text('时间线默认显示'),
-                      ),
-                      Text(vm.generalSetting.preferredTimelineLaunchPage
-                          .chineseName),
-                    ],
-                  ),
-                  children: <Widget>[
-                    for (TimelineCategoryFilter launchPage
-                        in TimelineCategoryFilter.values.toList())
-                      ListTile(
-                        title: Text(launchPage.chineseName),
-                        trailing: buildTrailingIcon<TimelineCategoryFilter>(
-                            context,
-                            vm.generalSetting.preferredTimelineLaunchPage,
-                            launchPage),
-                        onTap: () {
-                          vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                              (b) =>
-                                  b..preferredTimelineLaunchPage = launchPage));
-                        },
-                      )
-                  ],
-                ),
+              MuninExpansionSelection<TimelineCategoryFilter>(
+                expansionKey: PageStorageKey<String>(
+                    'general-setting-launch-preferredTimelineLaunchPage'),
+                title: Text('时间线默认显示'),
+                optionTitleBuilder: (selection) => Text(selection.chineseName),
+                options: TimelineCategoryFilter.values,
+                currentSelection: vm.generalSetting.preferredTimelineLaunchPage,
+                onTapOption: (launchPage) {
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild(
+                          (b) => b..preferredTimelineLaunchPage = launchPage));
+                },
               ),
               Divider(),
-              ThemeWithTransparentDivider(
-                child: ExpansionTile(
-                  key: PageStorageKey<String>(
-                      'general-setting-launch-preferredProgressLaunchPage'),
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text('进度页默认显示'),
-                      ),
-                      Text(vm.generalSetting.preferredProgressLaunchPage
-                          .chineseName),
-                    ],
-                  ),
-                  children: <Widget>[
-                    for (GetProgressRequest launchPage
-                        in GetProgressRequest.validGetProgressRequests)
-                      ListTile(
-                        title: Text(launchPage.chineseName),
-                        trailing: buildTrailingIcon<GetProgressRequest>(
-                            context,
-                            vm.generalSetting.preferredProgressLaunchPage,
-                            launchPage),
-                        onTap: () {
-                          vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                              (b) => b
-                                ..preferredProgressLaunchPage
-                                    .replace(launchPage)));
-                        },
-                        subtitle: launchPage == GetProgressRequest.allWatchable
-                            ? Text('动画，三次元与书籍')
-                            : null,
-                      )
-                  ],
-                ),
+              MuninExpansionSelection<GetProgressRequest>(
+                expansionKey: PageStorageKey<String>(
+                    'general-setting-launch-preferredProgressLaunchPage'),
+                title: Text('进度页默认显示'),
+                optionTitleBuilder: (selection) => Text(selection.chineseName),
+                optionSubTitleBuilder: (launchPage) {
+                  return launchPage == GetProgressRequest.allWatchable
+                      ? Text('动画，三次元与书籍')
+                      : null;
+                },
+                options: GetProgressRequest.validGetProgressRequests,
+                currentSelection: vm.generalSetting.preferredProgressLaunchPage,
+                onTapOption: (launchPage) {
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild((b) =>
+                  b..preferredProgressLaunchPage.replace(launchPage)));
+                },
               ),
               Divider(),
-              ThemeWithTransparentDivider(
-                child: ExpansionTile(
-                  key: PageStorageKey<String>(
-                      'general-setting-launch-preferredDiscussionLaunchPage'),
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text('讨论页默认显示'),
-                      ),
-                      Text(vm.generalSetting.preferredDiscussionLaunchPage
-                          .discussionFilter.chineseName),
-                    ],
-                  ),
-                  children: <Widget>[
-                    for (GetDiscussionRequest launchPage
-                        in GetDiscussionRequest.validGetDiscussionRequests)
-                      ListTile(
-                        title: Text(launchPage.discussionFilter.chineseName),
-                        trailing: buildTrailingIcon<GetDiscussionRequest>(
-                            context,
-                            vm.generalSetting.preferredDiscussionLaunchPage,
-                            launchPage),
-                        onTap: () {
-                          vm.updateGeneralSetting(vm.generalSetting.rebuild(
-                              (b) => b
-                                ..preferredDiscussionLaunchPage
-                                    .replace(launchPage)));
-                        },
-                      )
-                  ],
-                ),
+              MuninExpansionSelection<GetDiscussionRequest>(
+                expansionKey: PageStorageKey<String>(
+                    'general-setting-launch-preferredDiscussionLaunchPage'),
+                title: Text('讨论页默认显示'),
+                optionTitleBuilder: (selection) =>
+                    Text(selection.discussionFilter.chineseName),
+                options: GetDiscussionRequest.validGetDiscussionRequests,
+                currentSelection:
+                vm.generalSetting.preferredDiscussionLaunchPage,
+                onTapOption: (launchPage) {
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild((b) =>
+                  b..preferredDiscussionLaunchPage.replace(launchPage)));
+                },
               ),
               Divider(),
               ListTile(
-                subtitle: Text(
-                  '可以点击时间线，进度或讨论顶部导航条中间的长方形按钮来随时在各个分组间切换',
-                ),
+                title: Text('浏览器', style: settingTitleStyle),
+              ),
+              BrowserSettingWidget(
+                onTapOption: (LaunchBrowserPreference browser) {
+                  var browserSetting =
+                      vm.generalSetting.browserSetting ?? BrowserSetting();
+
+                  browserSetting = browserSetting
+                      .rebuild((b) => b.launchBrowserPreference = browser);
+                  vm.updateGeneralSetting(vm.generalSetting.rebuild(
+                          (b) => b..browserSetting.replace(browserSetting)));
+                },
+                currentLaunchBrowserPreference:
+                vm.generalSetting.browserSetting?.launchBrowserPreference,
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 60),

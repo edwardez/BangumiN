@@ -21,7 +21,7 @@ class _$SubjectOnUserCollectionListSerializer
   final String wireName = 'SubjectOnUserCollectionList';
 
   @override
-  Iterable serialize(
+  Iterable<Object> serialize(
       Serializers serializers, SubjectOnUserCollectionList object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
@@ -60,7 +60,7 @@ class _$SubjectOnUserCollectionListSerializer
 
   @override
   SubjectOnUserCollectionList deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectOnUserCollectionListBuilder();
 

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
@@ -6,6 +7,9 @@ import 'package:munin/router/routes.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
+import 'package:munin/widgets/user/notification/NotificationIcon.dart';
+import 'package:munin/widgets/user/notification/NotificationsWidget.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 /// A unified app bar that's displayed on the top of each munin home page
 /// TODO: change avatar to actual user avatar and change fixed constants to
@@ -18,26 +22,81 @@ class OneMuninBar extends StatefulWidget {
 
   final Widget title;
 
+  /// Whether a notification widget should be attached to the left side of the
+  /// app bar.
+  final bool addNotificationWidget;
+
   const OneMuninBar({
     Key key,
     this.appBarActionRightPadding = 8.0,
     @required this.title,
+    this.addNotificationWidget = false,
   })  : assert(title != null),
         super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _OneMuninBarState();
+    return OneMuninBarState();
   }
 }
 
-class _OneMuninBarState extends State<OneMuninBar> {
+class OneMuninBarState extends State<OneMuninBar> {
   SearchHomeDelegate searchHomeDelegate;
+  Widget title;
 
   @override
   void initState() {
-    searchHomeDelegate = SearchHomeDelegate();
     super.initState();
+    searchHomeDelegate = SearchHomeDelegate();
+    title = widget.title;
+  }
+
+  void setNewTitle(Widget newTitle) {
+    setState(() {
+      title = newTitle;
+    });
+  }
+
+  _navigateToNotification() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              Scaffold(
+                body: NotificationsWidget(),
+              )),
+    );
+  }
+
+  Widget _buildCountWidget(BuildContext context, int count) {
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
+    final textScaleFactor = MediaQuery
+        .of(context)
+        .textScaleFactor;
+
+    final badgeTextStyle = textTheme.caption.copyWith(
+        color: Colors.white, fontSize: textTheme.caption.fontSize * 0.85);
+
+    // 2.5: padding on each side plus 0.5 buffer
+    final size =
+        (badgeTextStyle.fontSize + NotificationIcon.baseBadgeEdgeOffset * 2.5) *
+            textScaleFactor;
+
+    return InkWell(
+      child: Container(
+        constraints: BoxConstraints.tight(Size.square(size)),
+        child: Center(
+            child: Text(
+              '$count',
+              style: badgeTextStyle,
+            )),
+      ),
+      onTap: () {
+        _navigateToNotification();
+      },
+    );
   }
 
   @override
@@ -47,7 +106,19 @@ class _OneMuninBarState extends State<OneMuninBar> {
         pinned: true,
         centerTitle: true,
         elevation: 0.5,
-        title: widget.title,
+        title: title,
+        leading: widget.addNotificationWidget
+            ? NotificationIcon(
+          child: IconButton(
+            icon: Icon(OMIcons.notifications),
+            onPressed: () {
+              _navigateToNotification();
+            },
+          ),
+          position: BadgePosition.topRight(top: 10, right: 10),
+          countWidgetBuilder: _buildCountWidget,
+        )
+            : null,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

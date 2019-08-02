@@ -15,7 +15,7 @@ class _$MuteSettingSerializer implements StructuredSerializer<MuteSetting> {
   final String wireName = 'MuteSetting';
 
   @override
-  Iterable serialize(Serializers serializers, MuteSetting object,
+  Iterable<Object> serialize(Serializers serializers, MuteSetting object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'mutedUsers',
@@ -41,7 +41,7 @@ class _$MuteSettingSerializer implements StructuredSerializer<MuteSetting> {
   }
 
   @override
-  MuteSetting deserialize(Serializers serializers, Iterable serialized,
+  MuteSetting deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MuteSettingBuilder();
 
@@ -56,14 +56,14 @@ class _$MuteSettingSerializer implements StructuredSerializer<MuteSetting> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(MutedUser)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'mutedGroups':
           result.mutedGroups.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(MutedGroup)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'muteOriginalPosterWithDefaultIcon':
           result.muteOriginalPosterWithDefaultIcon = serializers
@@ -75,7 +75,7 @@ class _$MuteSettingSerializer implements StructuredSerializer<MuteSetting> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(MutedUser)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

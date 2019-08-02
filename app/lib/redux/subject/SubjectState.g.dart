@@ -16,7 +16,7 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
   final String wireName = 'SubjectState';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectState object,
+  Iterable<Object> serialize(Serializers serializers, SubjectState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'collections',
@@ -43,7 +43,7 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
   }
 
   @override
-  SubjectState deserialize(Serializers serializers, Iterable serialized,
+  SubjectState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectStateBuilder();
 
@@ -58,21 +58,21 @@ class _$SubjectStateSerializer implements StructuredSerializer<SubjectState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(BangumiSubject)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'collections':
           result.collections.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(SubjectCollectionInfo)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'subjectsReviews':
           result.subjectsReviews.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(GetSubjectReviewRequest),
                 const FullType(SubjectReviewResponse)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

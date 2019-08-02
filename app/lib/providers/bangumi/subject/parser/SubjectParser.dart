@@ -49,6 +49,9 @@ class SubjectParser {
       '制作',
       '平台',
       '发行日期',
+      '剧本',
+      '原画',
+      '音乐',
     },
     SubjectType.Music: {
       '艺术家',

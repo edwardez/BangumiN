@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/widgets/home/HomePageAppBarTitle.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/button/FlatButtonWithTrailingIcon.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
@@ -47,6 +48,7 @@ class MuninTimeline extends StatefulWidget {
 
 class _MuninTimelineState extends State<MuninTimeline> {
   PageController pageController;
+  final _oneMuninBarKey = GlobalKey<OneMuninBarState>();
 
   final List<TimelineBody> timelineBodies =
       List(TimelineCategoryFilter.totalTimelineTypes);
@@ -84,6 +86,8 @@ class _MuninTimelineState extends State<MuninTimeline> {
                   if (currentIndex != pageIndex) {
                     pageController.jumpToPage(pageIndex);
                   }
+                  _oneMuninBarKey.currentState?.setNewTitle(
+                      _buildAppBarTitle(timelineBody.getTimelineRequest));
                 });
                 Navigator.pop(context);
               },
@@ -99,6 +103,13 @@ class _MuninTimelineState extends State<MuninTimeline> {
         });
   }
 
+  Widget _buildAppBarTitle(GetTimelineRequest request) {
+    return HomePageAppBarTitle(
+      onPressed: _filterModalBottomSheet,
+      titleText: request.chineseName,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -106,13 +117,22 @@ class _MuninTimelineState extends State<MuninTimeline> {
     pageController = PageController(
         initialPage: widget.preferredTimelineLaunchPage.pageIndex);
 
+    final preferredPageRequest = GetTimelineRequest((b) =>
+    b
+      ..timelineSource = widget.timelineSource
+      ..username = widget.username
+      ..timelineCategoryFilter = widget.preferredTimelineLaunchPage);
+    Widget appBar = OneMuninBar(
+      key: _oneMuninBarKey,
+      title: _buildAppBarTitle(preferredPageRequest),
+    );
+
     for (TimelineCategoryFilter filter in TimelineCategoryFilter.values) {
       GetTimelineRequest request = GetTimelineRequest((b) => b
         ..timelineSource = widget.timelineSource
         ..username = widget.username
         ..timelineCategoryFilter = filter);
 
-      Widget appBar;
       if (request.timelineSource == TimelineSource.UserProfile) {
         appBar = SliverAppBar(
           pinned: true,
@@ -122,15 +142,6 @@ class _MuninTimelineState extends State<MuninTimeline> {
             },
             label: Text(request.chineseName),
             icon: Icon(OMIcons.expandMore),
-          ),
-        );
-      } else {
-        appBar = OneMuninBar(
-          title: FlatButton(
-            onPressed: () {
-              _filterModalBottomSheet();
-            },
-            child: Text(request.chineseName),
           ),
         );
       }

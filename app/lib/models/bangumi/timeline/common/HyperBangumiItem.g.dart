@@ -17,7 +17,7 @@ class _$HyperBangumiItemSerializer
   final String wireName = 'HyperBangumiItem';
 
   @override
-  Iterable serialize(Serializers serializers, HyperBangumiItem object,
+  Iterable<Object> serialize(Serializers serializers, HyperBangumiItem object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -44,7 +44,8 @@ class _$HyperBangumiItemSerializer
   }
 
   @override
-  HyperBangumiItem deserialize(Serializers serializers, Iterable serialized,
+  HyperBangumiItem deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new HyperBangumiItemBuilder();
 

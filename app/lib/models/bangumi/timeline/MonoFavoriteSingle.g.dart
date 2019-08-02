@@ -17,7 +17,7 @@ class _$MonoFavoriteSingleSerializer
   final String wireName = 'MonoFavoriteSingle';
 
   @override
-  Iterable serialize(Serializers serializers, MonoFavoriteSingle object,
+  Iterable<Object> serialize(Serializers serializers, MonoFavoriteSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -48,7 +48,8 @@ class _$MonoFavoriteSingleSerializer
   }
 
   @override
-  MonoFavoriteSingle deserialize(Serializers serializers, Iterable serialized,
+  MonoFavoriteSingle deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MonoFavoriteSingleBuilder();
 

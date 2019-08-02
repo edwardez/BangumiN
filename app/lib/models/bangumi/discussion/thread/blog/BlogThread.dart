@@ -17,9 +17,22 @@ abstract class BlogThread
   BlogContent get blogContent;
 
   /// A flattened list of all posts.
+  @override
   @memoized
-  List<Post> get posts {
-    return addFlattenedMainPostReplies([], mainPostReplies);
+  List<Post> get normalModePosts {
+    return mergePostsWithMainPostReplies([], mainPostReplies);
+  }
+
+  @override
+  @memoized
+  List<Post> get hasNewestReplyFirstNestedPosts {
+    return mergePostsWithHasNewestReplyFirstNestedPosts([], mainPostReplies,);
+  }
+
+  @override
+  @memoized
+  List<Post> get newestFirstFlattenedPosts {
+    return flattenedReverseOrderMainPostReplies([], mainPostReplies);
   }
 
   BlogThread._();

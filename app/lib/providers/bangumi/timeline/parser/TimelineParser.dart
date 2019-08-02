@@ -102,7 +102,7 @@ class TimelineParser {
     }
 
     if (!nextPageIndicatorElement.text.contains('下一页')) {
-      throw AuthenticationExpiredException('认证已过期');
+      throw AuthenticationExpiredException('认证已过期，或你没有关注任何用户');
     }
   }
 
@@ -963,7 +963,7 @@ class TimelineParser {
     Map<String, String> userAvatarImageCache = {};
 
     for (var item in document.querySelectorAll('.tml_item')) {
-      int feedId = tryParseInt(parseFeedId(item));
+      final feedId = parseEndsWithDigitId(item);
 
       /// if we are trying to load a newer feed, and response feed id is equal to
       /// or lower than max feed id in store, we've loaded all new contents and can break

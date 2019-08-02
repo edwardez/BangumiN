@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 class MoreActions extends StatelessWidget {
   final BangumiThread thread;
@@ -65,14 +66,33 @@ class MoreActions extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
+                  leading: Icon(AdaptiveIcons.shareIconData),
+                  title: Text('分享'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    String url;
+
+                    generateWebPageUrlByContentType(
+                        parentBangumiContent, thread.id.toString())
+                      ..ifPresent((pageUrl) {
+                        url = pageUrl;
+                      })
+                      ..ifAbsent(() {
+                        url = '';
+                      });
+
+                    Share.share('${thread.title} \n$url');
+                  },
+                ),
+                ListTile(
                   leading: Icon(Icons.open_in_browser),
-                  title: Text(openInBrowser),
+                  title: Text(openInBrowserLabel),
                   onTap: () {
                     var maybeWebUrl = generateWebPageUrlByContentType(
                         parentBangumiContent, thread.id.toString());
 
                     if (maybeWebUrl.isPresent) {
-                      launch(maybeWebUrl.value);
+                      launchByPreference(context, maybeWebUrl.value);
                     } else {
                       showTextOnSnackBar(context, '网址无效');
                     }

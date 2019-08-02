@@ -5,6 +5,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/BangumiThread.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
+import 'package:munin/models/bangumi/discussion/thread/common/utils.dart';
 import 'package:munin/models/bangumi/discussion/thread/episode/ThreadRelatedEpisode.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
@@ -33,17 +34,20 @@ abstract class EpisodeThread
 
   /// A flattened list of all posts.
   @memoized
-  List<Post> get posts {
-    List<Post> posts = [];
+  List<Post> get normalModePosts {
+    return mergePostsWithMainPostReplies([], mainPostReplies);
+  }
 
-    for (var mainReply in mainPostReplies) {
-      posts.add(mainReply);
-      for (var subReply in mainReply.subReplies) {
-        posts.add(subReply);
-      }
-    }
+  @override
+  @memoized
+  List<Post> get hasNewestReplyFirstNestedPosts {
+    return mergePostsWithHasNewestReplyFirstNestedPosts([], mainPostReplies,);
+  }
 
-    return posts;
+  @override
+  @memoized
+  List<Post> get newestFirstFlattenedPosts {
+    return flattenedReverseOrderMainPostReplies([], mainPostReplies);
   }
 
   EpisodeThread._();

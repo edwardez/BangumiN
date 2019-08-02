@@ -15,7 +15,7 @@ class _$OauthStateSerializer implements StructuredSerializer<OauthState> {
   final String wireName = 'OauthState';
 
   @override
-  Iterable serialize(Serializers serializers, OauthState object,
+  Iterable<Object> serialize(Serializers serializers, OauthState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
     if (object.showLoginErrorSnackBar != null) {
@@ -40,7 +40,7 @@ class _$OauthStateSerializer implements StructuredSerializer<OauthState> {
   }
 
   @override
-  OauthState deserialize(Serializers serializers, Iterable serialized,
+  OauthState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new OauthStateBuilder();
 

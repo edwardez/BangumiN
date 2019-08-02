@@ -16,7 +16,7 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
   final String wireName = 'FeedMetaInfo';
 
   @override
-  Iterable serialize(Serializers serializers, FeedMetaInfo object,
+  Iterable<Object> serialize(Serializers serializers, FeedMetaInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'feedId',
@@ -44,7 +44,7 @@ class _$FeedMetaInfoSerializer implements StructuredSerializer<FeedMetaInfo> {
   }
 
   @override
-  FeedMetaInfo deserialize(Serializers serializers, Iterable serialized,
+  FeedMetaInfo deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FeedMetaInfoBuilder();
 

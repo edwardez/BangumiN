@@ -20,7 +20,8 @@ class _$CollectionUpdateSingleSerializer
   final String wireName = 'CollectionUpdateSingle';
 
   @override
-  Iterable serialize(Serializers serializers, CollectionUpdateSingle object,
+  Iterable<Object> serialize(
+      Serializers serializers, CollectionUpdateSingle object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
@@ -62,7 +63,7 @@ class _$CollectionUpdateSingleSerializer
 
   @override
   CollectionUpdateSingle deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CollectionUpdateSingleBuilder();
 

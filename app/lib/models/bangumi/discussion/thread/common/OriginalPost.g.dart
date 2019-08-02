@@ -16,7 +16,7 @@ class _$OriginalPostSerializer implements StructuredSerializer<OriginalPost> {
   final String wireName = 'OriginalPost';
 
   @override
-  Iterable serialize(Serializers serializers, OriginalPost object,
+  Iterable<Object> serialize(Serializers serializers, OriginalPost object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'author',
@@ -42,7 +42,7 @@ class _$OriginalPostSerializer implements StructuredSerializer<OriginalPost> {
   }
 
   @override
-  OriginalPost deserialize(Serializers serializers, Iterable serialized,
+  OriginalPost deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new OriginalPostBuilder();
 

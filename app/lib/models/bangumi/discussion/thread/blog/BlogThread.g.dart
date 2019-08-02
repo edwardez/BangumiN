@@ -15,7 +15,7 @@ class _$BlogThreadSerializer implements StructuredSerializer<BlogThread> {
   final String wireName = 'BlogThread';
 
   @override
-  Iterable serialize(Serializers serializers, BlogThread object,
+  Iterable<Object> serialize(Serializers serializers, BlogThread object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'blogContent',
@@ -36,7 +36,7 @@ class _$BlogThreadSerializer implements StructuredSerializer<BlogThread> {
   }
 
   @override
-  BlogThread deserialize(Serializers serializers, Iterable serialized,
+  BlogThread deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BlogThreadBuilder();
 
@@ -62,7 +62,7 @@ class _$BlogThreadSerializer implements StructuredSerializer<BlogThread> {
           result.mainPostReplies.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(MainPostReply)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }
@@ -80,7 +80,9 @@ class _$BlogThread extends BlogThread {
   final String title;
   @override
   final BuiltList<MainPostReply> mainPostReplies;
-  List<Post> __posts;
+  List<Post> __normalModePosts;
+  List<Post> __hasNewestReplyFirstNestedPosts;
+  List<Post> __newestFirstFlattenedPosts;
 
   factory _$BlogThread([void Function(BlogThreadBuilder) updates]) =>
       (new BlogThreadBuilder()..update(updates)).build();
@@ -102,7 +104,15 @@ class _$BlogThread extends BlogThread {
   }
 
   @override
-  List<Post> get posts => __posts ??= super.posts;
+  List<Post> get normalModePosts => __normalModePosts ??= super.normalModePosts;
+
+  @override
+  List<Post> get hasNewestReplyFirstNestedPosts =>
+      __hasNewestReplyFirstNestedPosts ??= super.hasNewestReplyFirstNestedPosts;
+
+  @override
+  List<Post> get newestFirstFlattenedPosts =>
+      __newestFirstFlattenedPosts ??= super.newestFirstFlattenedPosts;
 
   @override
   BlogThread rebuild(void Function(BlogThreadBuilder) updates) =>

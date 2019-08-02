@@ -51,7 +51,7 @@ Stream<dynamic> _getDiscussion(
       context: action.context,
       error: error,
       stack: stack,
-      showErrorMessageSnackBar: false,
+      showErrorMessageSnackBar: true,
     );
   } finally {
     completeDanglingCompleter(action.completer);

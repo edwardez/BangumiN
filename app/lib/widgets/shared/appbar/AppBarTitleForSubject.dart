@@ -30,15 +30,16 @@ class AppBarTitleForSubject extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: mediumOffset),
         ),
-        Flexible(
-            child: Text(
-          title,
-          overflow: TextOverflow.fade,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body2,
-        ))
+        if (title != null)
+          Flexible(
+              child: Text(
+                title,
+                overflow: TextOverflow.fade,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2,
+              )),
       ],
     );
   }

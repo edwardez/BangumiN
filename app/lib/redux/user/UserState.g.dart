@@ -15,7 +15,7 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
   final String wireName = 'UserState';
 
   @override
-  Iterable serialize(Serializers serializers, UserState object,
+  Iterable<Object> serialize(Serializers serializers, UserState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'profiles',
@@ -28,13 +28,16 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
             const FullType(ListUserCollectionsRequest),
             const FullType(ListUserCollectionsResponse)
           ])),
+      'notificationState',
+      serializers.serialize(object.notificationState,
+          specifiedType: const FullType(NotificationState)),
     ];
 
     return result;
   }
 
   @override
-  UserState deserialize(Serializers serializers, Iterable serialized,
+  UserState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserStateBuilder();
 
@@ -49,14 +52,19 @@ class _$UserStateSerializer implements StructuredSerializer<UserState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(UserProfile)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'collections':
           result.collections.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(ListUserCollectionsRequest),
                 const FullType(ListUserCollectionsResponse)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
+          break;
+        case 'notificationState':
+          result.notificationState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(NotificationState))
+              as NotificationState);
           break;
       }
     }
@@ -71,16 +79,22 @@ class _$UserState extends UserState {
   @override
   final BuiltMap<ListUserCollectionsRequest, ListUserCollectionsResponse>
       collections;
+  @override
+  final NotificationState notificationState;
 
   factory _$UserState([void Function(UserStateBuilder) updates]) =>
       (new UserStateBuilder()..update(updates)).build();
 
-  _$UserState._({this.profiles, this.collections}) : super._() {
+  _$UserState._({this.profiles, this.collections, this.notificationState})
+      : super._() {
     if (profiles == null) {
       throw new BuiltValueNullFieldError('UserState', 'profiles');
     }
     if (collections == null) {
       throw new BuiltValueNullFieldError('UserState', 'collections');
+    }
+    if (notificationState == null) {
+      throw new BuiltValueNullFieldError('UserState', 'notificationState');
     }
   }
 
@@ -96,19 +110,22 @@ class _$UserState extends UserState {
     if (identical(other, this)) return true;
     return other is UserState &&
         profiles == other.profiles &&
-        collections == other.collections;
+        collections == other.collections &&
+        notificationState == other.notificationState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, profiles.hashCode), collections.hashCode));
+    return $jf($jc($jc($jc(0, profiles.hashCode), collections.hashCode),
+        notificationState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('UserState')
           ..add('profiles', profiles)
-          ..add('collections', collections))
+          ..add('collections', collections)
+          ..add('notificationState', notificationState))
         .toString();
   }
 }
@@ -133,12 +150,19 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
               collections) =>
       _$this._collections = collections;
 
+  NotificationStateBuilder _notificationState;
+  NotificationStateBuilder get notificationState =>
+      _$this._notificationState ??= new NotificationStateBuilder();
+  set notificationState(NotificationStateBuilder notificationState) =>
+      _$this._notificationState = notificationState;
+
   UserStateBuilder();
 
   UserStateBuilder get _$this {
     if (_$v != null) {
       _profiles = _$v.profiles?.toBuilder();
       _collections = _$v.collections?.toBuilder();
+      _notificationState = _$v.notificationState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -163,7 +187,9 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
     try {
       _$result = _$v ??
           new _$UserState._(
-              profiles: profiles.build(), collections: collections.build());
+              profiles: profiles.build(),
+              collections: collections.build(),
+              notificationState: notificationState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -171,6 +197,8 @@ class UserStateBuilder implements Builder<UserState, UserStateBuilder> {
         profiles.build();
         _$failedField = 'collections';
         collections.build();
+        _$failedField = 'notificationState';
+        notificationState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserState', _$failedField, e.toString());

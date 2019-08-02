@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void _showSubjectModalBottomSheet(
     BuildContext context, BangumiSubject subject) {
@@ -18,8 +18,8 @@ void _showSubjectModalBottomSheet(
                   leading: Icon(Icons.open_in_browser),
                   title: Text('在浏览器中打开'),
                   onTap: () {
-                    launch(subject.pageUrlFromCalculation);
-                    Navigator.of(context).pop();
+                    launchByPreference(context, subject.pageUrlFromCalculation,
+                        popContext: true);
                   },
                 ),
                 ListTile(

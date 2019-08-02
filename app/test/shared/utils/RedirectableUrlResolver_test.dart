@@ -16,6 +16,7 @@ void main() {
     runFindRedirectableUrlTest({
       @required BangumiContent bangumiContent,
       @required String id,
+      int postId,
       String suffix = '',
       String host = 'bgm.tv',
       String scheme = HttpsScheme,
@@ -26,8 +27,9 @@ void main() {
           '$scheme://$host/${bangumiContent.webPageRouteName}/$id$suffix';
 
       test('$expectedBehavior find $url for $bangumiContent', () {
-        final expectedResult =
-            expectedToFindUrl ? RedirectableUrlInfo(bangumiContent, id) : null;
+        final expectedResult = expectedToFindUrl
+            ? RedirectableUrlInfo(bangumiContent, id, postId: postId)
+            : null;
 
         expect(resolveRedirectableUrl(url).orNull, expectedResult);
       });
@@ -62,7 +64,6 @@ void main() {
     runFindRedirectableUrlTest(
       id: 'abc_12',
       bangumiContent: BangumiContent.User,
-      expectedToFindUrl: true,
     );
 
     runFindRedirectableUrlTest(
@@ -73,8 +74,24 @@ void main() {
     runFindRedirectableUrlTest(
       id: '1',
       suffix: '#post_123',
+      postId: 123,
       bangumiContent: BangumiContent.GroupTopic,
+    );
+
+    runFindRedirectableUrlTest(
+      id: '1',
+      suffix: '#post_123',
+      postId: null,
       expectedToFindUrl: false,
+      bangumiContent: BangumiContent.Person,
+    );
+
+    runFindRedirectableUrlTest(
+      id: 'test',
+      suffix: '/timeline/status/2#post_3',
+      postId: null,
+      expectedToFindUrl: false,
+      bangumiContent: BangumiContent.User,
     );
 
     runFindRedirectableUrlTest(

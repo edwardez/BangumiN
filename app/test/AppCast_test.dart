@@ -10,7 +10,8 @@ void main() {
 
     setUp(() async {
       appCastXml =
-          File('lib/config/upgrader/production_appcast.xml').readAsStringSync();
+          File('../lib/config/upgrader/production_appcast.xml')
+              .readAsStringSync();
     });
 
     test('verifies production upgarder xml is valid', () {

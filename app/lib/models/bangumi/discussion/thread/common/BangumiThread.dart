@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
+import 'package:munin/widgets/discussion/thread/shared/ReadModeSwitcher.dart';
 
 part 'BangumiThread.g.dart';
 
@@ -18,11 +19,24 @@ abstract class BangumiThread {
   /// reply to [mainPostReplies].
   BuiltList<MainPostReply> get mainPostReplies;
 
-  /// A flattened list of all posts.
+  /// A flattened list of all posts. It's used by [PostReadMode.Normal]
   @memoized
-  List<Post> get posts {
-    throw UnsupportedError('Subclass must override getter `posts` instead'
-        'of callling it directly.');
+  List<Post> get normalModePosts {
+    throw UnsupportedError('Subclass needs to implement this');
+  }
+
+  /// Posts sorted by [MainPostReply] with reverse order of [normalModePosts].
+  /// It's used by [PostReadMode.HasNewestReplyFirstNestedPost]
+  @memoized
+  List<Post> get hasNewestReplyFirstNestedPosts {
+    throw UnsupportedError('Subclass needs to implement this');
+  }
+
+  /// Posts flattened with a newest first order.
+  /// It's used by [PostReadMode.NewestFirstFlattenedPost]
+  @memoized
+  List<Post> get newestFirstFlattenedPosts {
+    throw UnsupportedError('Subclass needs to implement this');
   }
 
   BangumiThread rebuild(void updates(BangumiThreadBuilder b));

@@ -4,6 +4,13 @@
     <channel>
         <title>BangumiN Changelog</title>
         <item>
+            <title>Version 0.4.2</title>
+            <description>加入了编辑回复和应用内收取通知，以及其他修复。</description>
+            <pubDate>2019/08/01 20:00</pubDate>
+            <enclosure url="https://github.com/edwardez/BangumiN/releases"
+                       sparkle:version="0.4.2" sparkle:os="android"/>
+        </item>
+        <item>
             <title>Version 0.3.1</title>
             <description>正式发布</description>
             <pubDate>2019/07/11 20:00</pubDate>

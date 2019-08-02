@@ -13,6 +13,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/shared/utils/collections/common.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/discussion/common/DiscussionItemWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
@@ -20,7 +21,6 @@ import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DiscussionBodyWidget extends StatefulWidget {
   final GetDiscussionRequest getDiscussionRequest;
@@ -46,11 +46,11 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
     return MuninPadding(
       child: Column(
         children: <Widget>[
-          Text('讨论列表为空，可能因为$appOrBangumiHasAnError，下拉可重试'),
+          Text('讨论列表为空，可能因为$appOrBangumiHasAnErrorLabel，下拉可重试'),
           FlatButton(
-            child: Text(checkWebVersionPrompt),
+            child: Text(checkWebVersionLabel),
             onPressed: () {
-              return launch(rakuenMobileUrl, forceSafariVC: false);
+              launchByPreference(context, rakuenMobileUrl);
             },
           )
         ],

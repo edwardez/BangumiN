@@ -75,7 +75,11 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
       return true;
     }
 
-    return await showMuninYesNoDialog(context, title: '确认放弃编辑这条消息？') ?? false;
+    return await showMuninYesNoDialog(context,
+      title: const Text('确认放弃编辑这条消息？'),
+      confirmAction: EditorYesNoPrompt.confirmAction,
+      cancelAction: EditorYesNoPrompt.cancelAction,) ??
+        false;
   }
 
   @override

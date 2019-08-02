@@ -2,13 +2,13 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/about/about.dart';
 import 'package:munin/widgets/setting/logout/Logout.dart';
 import 'package:munin/widgets/setting/version/MuninVersionWidget.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingHome extends StatelessWidget {
   @override
@@ -74,8 +74,7 @@ class SettingHome extends StatelessWidget {
             ListTile(
               title: Text('反馈'),
               onTap: () {
-                launch('https://bangumin.app/help',
-                    forceSafariVC: false, forceWebView: false);
+                launchByPreference(context, 'https://bangumin.app/help');
               },
             ),
             if (Application.environmentValue.shouldCheckUpdate) ...[

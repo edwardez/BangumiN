@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/styles/theme/CommonThemeData.dart';
 import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData nightPureDarkBlueThemeData = ThemeData(
@@ -8,6 +9,7 @@ final ThemeData nightPureDarkBlueThemeData = ThemeData(
   canvasColor: Colors.black,
   backgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
+  bottomSheetTheme: muninBottomSheetThemeData(pureDartTheme: true),
   buttonTheme: ButtonThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),

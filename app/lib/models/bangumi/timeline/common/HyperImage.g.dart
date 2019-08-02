@@ -15,7 +15,7 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
   final String wireName = 'HyperImage';
 
   @override
-  Iterable serialize(Serializers serializers, HyperImage object,
+  Iterable<Object> serialize(Serializers serializers, HyperImage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -37,7 +37,7 @@ class _$HyperImageSerializer implements StructuredSerializer<HyperImage> {
   }
 
   @override
-  HyperImage deserialize(Serializers serializers, Iterable serialized,
+  HyperImage deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new HyperImageBuilder();
 

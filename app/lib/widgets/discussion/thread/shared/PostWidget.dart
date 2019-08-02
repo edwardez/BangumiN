@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/OriginalPost.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/Post.dart';
 import 'package:munin/models/bangumi/discussion/thread/common/ThreadType.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/MainPostReply.dart';
 import 'package:munin/models/bangumi/discussion/thread/post/SubPostReply.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
-import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/shared/Constants.dart';
 import 'package:munin/widgets/discussion/thread/shared/CopyPostContent.dart';
+import 'package:munin/widgets/discussion/thread/shared/PostEditor.dart';
 import 'package:munin/widgets/discussion/thread/shared/UserWithPostContent.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
@@ -21,7 +20,6 @@ import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PostWidget extends StatelessWidget {
   /// Parent thread id that this post belongs to.
@@ -47,6 +45,12 @@ class PostWidget extends StatelessWidget {
   /// User name of the user who is using the app.
   final String appUsername;
 
+  /// Whether post is in flattened read mode, a left padding should be added to
+  /// sub posts such as [SubPostReply] if this is set to false.
+  ///
+  /// Default to false.
+  final bool isInFlattenedReadMode;
+
   const PostWidget({
     Key key,
     @required this.post,
@@ -55,6 +59,7 @@ class PostWidget extends StatelessWidget {
     @required this.onDeletePost,
     @required this.appUsername,
     this.showSpoiler = false,
+    this.isInFlattenedReadMode = false,
   }) : super(key: key);
 
   String get postSequentialNameAndTime {
@@ -84,14 +89,17 @@ class PostWidget extends StatelessWidget {
           ? null
           : () async {
         Navigator.pop(context);
-
-        final subUrl = BangumiDiscussionService.urlForEditOrGetReply(
-            replyId: post.id,
-            threadType:
-            ThreadType.fromBangumiContent(parentBangumiContentType));
-        launch(
-          'https://$bangumiMainHost$subUrl',
-        );
+        showSnackBarOnSuccess(context, Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  PostEditor(
+                    threadType: ThreadType.fromBangumiContent(
+                        parentBangumiContentType),
+                    replyId: post.id,
+                    threadId: threadId,
+                  )),
+        ), '回复编辑成功');
       },
       enabled: !shouldDisableEdit,
     );
@@ -118,10 +126,10 @@ class PostWidget extends StatelessWidget {
 
         final confirmation = await showMuninYesNoDialog(
           context,
-          title: '确认删除此回复？',
-          dialogBody: '删除后将不可恢复',
-          cancelActionText: '取消',
-          confirmActionText: '确认删除',
+          title: Text('确认删除此回复？'),
+          content: Text('删除后将不可恢复'),
+          cancelAction: Text('取消'),
+          confirmAction: Text('确认删除'),
         );
         if (confirmation == true) {
           onDeletePost(post);
@@ -231,10 +239,10 @@ class PostWidget extends StatelessWidget {
       author: post.author,
     );
 
-    if (post is SubPostReply) {
+    if (post is SubPostReply && !isInFlattenedReadMode) {
       return MuninPadding.vertical1xOffset(
         child: Padding(
-          padding: EdgeInsets.only(left: UserWithPostContent.avatarRadius),
+          padding: EdgeInsets.only(left: UserWithPostContent.avatarRadius * 2),
           child: body,
         ),
       );

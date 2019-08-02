@@ -20,7 +20,8 @@ class _$SubjectReviewResponseSerializer
   final String wireName = 'SubjectReviewResponse';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectReviewResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, SubjectReviewResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'requestedUntilPageNumber',
@@ -45,7 +46,7 @@ class _$SubjectReviewResponseSerializer
 
   @override
   SubjectReviewResponse deserialize(
-      Serializers serializers, Iterable serialized,
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectReviewResponseBuilder();
 
@@ -72,7 +73,7 @@ class _$SubjectReviewResponseSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(SubjectReview)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }

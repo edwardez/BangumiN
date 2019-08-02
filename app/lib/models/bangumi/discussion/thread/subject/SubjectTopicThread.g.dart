@@ -17,7 +17,7 @@ class _$SubjectTopicThreadSerializer
   final String wireName = 'SubjectTopicThread';
 
   @override
-  Iterable serialize(Serializers serializers, SubjectTopicThread object,
+  Iterable<Object> serialize(Serializers serializers, SubjectTopicThread object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'title',
@@ -41,7 +41,8 @@ class _$SubjectTopicThreadSerializer
   }
 
   @override
-  SubjectTopicThread deserialize(Serializers serializers, Iterable serialized,
+  SubjectTopicThread deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SubjectTopicThreadBuilder();
 
@@ -71,7 +72,7 @@ class _$SubjectTopicThreadSerializer
           result.mainPostReplies.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(MainPostReply)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }
@@ -91,7 +92,9 @@ class _$SubjectTopicThread extends SubjectTopicThread {
   final int id;
   @override
   final BuiltList<MainPostReply> mainPostReplies;
-  List<Post> __posts;
+  List<Post> __normalModePosts;
+  List<Post> __hasNewestReplyFirstNestedPosts;
+  List<Post> __newestFirstFlattenedPosts;
 
   factory _$SubjectTopicThread(
           [void Function(SubjectTopicThreadBuilder) updates]) =>
@@ -123,7 +126,15 @@ class _$SubjectTopicThread extends SubjectTopicThread {
   }
 
   @override
-  List<Post> get posts => __posts ??= super.posts;
+  List<Post> get normalModePosts => __normalModePosts ??= super.normalModePosts;
+
+  @override
+  List<Post> get hasNewestReplyFirstNestedPosts =>
+      __hasNewestReplyFirstNestedPosts ??= super.hasNewestReplyFirstNestedPosts;
+
+  @override
+  List<Post> get newestFirstFlattenedPosts =>
+      __newestFirstFlattenedPosts ??= super.newestFirstFlattenedPosts;
 
   @override
   SubjectTopicThread rebuild(

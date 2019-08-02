@@ -5,12 +5,12 @@ import 'package:munin/models/bangumi/collection/CollectionStatus.dart';
 import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
 import 'package:munin/widgets/shared/text/ScoreTextOrPlaceholder.dart';
 import 'package:munin/widgets/subject/common/Common.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SubjectRatingOverview extends StatelessWidget {
   static const wholeWebsiteScoreLabel = '全站评分';
@@ -113,11 +113,14 @@ class SubjectRatingOverview extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('$goToForsetiPrompt查看统计数据'),
+            title: Text('$goToForsetiLabel查看统计数据'),
             onTap: () {
-              launch(
-                  'https://${Application.environmentValue
-                      .forsetiMainHost}/subject/${subject.id}/statistics');
+              launchByPreference(
+                context,
+                'https://${Application.environmentValue
+                    .forsetiMainHost}/subject/${subject.id}/statistics',
+                popContext: true,
+              );
             },
           ),
         ]);

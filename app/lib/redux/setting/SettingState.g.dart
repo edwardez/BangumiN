@@ -16,7 +16,7 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
   final String wireName = 'SettingState';
 
   @override
-  Iterable serialize(Serializers serializers, SettingState object,
+  Iterable<Object> serialize(Serializers serializers, SettingState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'themeSetting',
@@ -48,7 +48,7 @@ class _$SettingStateSerializer implements StructuredSerializer<SettingState> {
   }
 
   @override
-  SettingState deserialize(Serializers serializers, Iterable serialized,
+  SettingState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SettingStateBuilder();
 

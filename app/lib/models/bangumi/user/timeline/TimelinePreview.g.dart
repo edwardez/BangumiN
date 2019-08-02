@@ -17,7 +17,7 @@ class _$TimelinePreviewSerializer
   final String wireName = 'TimelinePreview';
 
   @override
-  Iterable serialize(Serializers serializers, TimelinePreview object,
+  Iterable<Object> serialize(Serializers serializers, TimelinePreview object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'content',
@@ -32,7 +32,8 @@ class _$TimelinePreviewSerializer
   }
 
   @override
-  TimelinePreview deserialize(Serializers serializers, Iterable serialized,
+  TimelinePreview deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TimelinePreviewBuilder();
 

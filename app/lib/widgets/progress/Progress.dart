@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/progress/common/GetProgressRequest.dart';
+import 'package:munin/widgets/home/HomePageAppBarTitle.dart';
 import 'package:munin/widgets/progress/ProgressBodyWidget.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 
@@ -28,6 +29,7 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
       List(GetProgressRequest.totalGetProgressRequestTypes);
   final List<Widget> pages =
       List(GetProgressRequest.totalGetProgressRequestTypes);
+  final _oneMuninBarKey = GlobalKey<OneMuninBarState>();
 
   PageController pageController;
 
@@ -41,7 +43,7 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
       GetProgressRequest getProgressRequest, OneMuninBar oneMuninBar) {
     return ProgressBodyWidget(
       key: PageStorageKey<GetProgressRequest>(getProgressRequest),
-      oneMuninBar: oneMuninBar,
+      appBar: oneMuninBar,
       subjectTypes: getProgressRequest.requestedSubjectTypes,
     );
   }
@@ -62,6 +64,8 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
                     pageController
                         .jumpToPage(progressBody.getProgressRequest.pageIndex);
                   }
+                  _oneMuninBarKey.currentState.setNewTitle(
+                      _buildAppBarTitle(progressBody.getProgressRequest));
                 });
                 Navigator.pop(context);
               },
@@ -86,17 +90,13 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
     pageController = PageController(
         initialPage: widget.preferredProgressLaunchPage.pageIndex);
 
+    final oneMuninBar = OneMuninBar(
+      key: _oneMuninBarKey,
+      title: _buildAppBarTitle(widget.preferredProgressLaunchPage),
+    );
+
     GetProgressRequest.validGetProgressRequests
         .forEach((GetProgressRequest getProgressRequest) {
-      OneMuninBar oneMuninBar = OneMuninBar(
-        title: FlatButton(
-          onPressed: () {
-            _filterModalBottomSheet();
-          },
-          child: Text(getProgressRequest.chineseName),
-        ),
-      );
-
       var progressBodyPage = ProgressBody(
         widget: _buildProgressBodyWidget(getProgressRequest, oneMuninBar),
         getProgressRequest: getProgressRequest,
@@ -106,6 +106,13 @@ class _MuninSubjectProgressState extends State<MuninSubjectProgress> {
       pages[progressBodyPage.getProgressRequest.pageIndex] =
           progressBodyPage.widget;
     });
+  }
+
+  Widget _buildAppBarTitle(GetProgressRequest request) {
+    return HomePageAppBarTitle(
+      onPressed: _filterModalBottomSheet,
+      titleText: request.chineseName,
+    );
   }
 
   @override

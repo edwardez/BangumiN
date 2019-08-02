@@ -23,7 +23,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:screen/screen.dart';
 import 'package:upgrader/upgrader.dart';
 
-const Duration listenToBrightnessChangeInterval = const Duration(seconds: 2);
+const Duration listenToBrightnessChangeInterval = const Duration(seconds: 5);
 
 List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService,
     BangumiCookieService httpService,) {

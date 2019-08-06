@@ -1,8 +1,8 @@
 import 'package:munin/config/application.dart';
 
 const String bangumiAssetsServer = 'lain.bgm.tv';
-final bangumiNonCdnHostUri =
-Uri.parse('https://$bangumiNonCdnHost');
+final bangumiHostUriForDio =
+Uri.parse('https://${Application.environmentValue.bangumiHostForDio}');
 
 final String bangumiHomePageUrl =
     'https://$bangumiMainHost';

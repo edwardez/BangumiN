@@ -24,7 +24,7 @@ class BangumiHtml extends StatelessWidget {
       html,
       factoryBuilder: (context, htmlWidget) =>
           MuninWidgetFactory(context, htmlWidget),
-      baseUrl: bangumiNonCdnHostUri,
+      baseUrl: bangumiHostUriForDio,
       bodyPadding: EdgeInsets.zero,
       //Optional parameters:
       builderCallback: (NodeMetadata meta, dom.Element e) {

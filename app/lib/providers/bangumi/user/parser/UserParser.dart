@@ -52,17 +52,15 @@ class UserParser {
     List<Element> subjectElements =
         firstNonEmptyStatusLabel.parent.querySelectorAll('li > a');
     for (Element subjectElement in subjectElements) {
-      int subjectId = tryParseInt(parseHrefId(subjectElement, digitOnly: true),
+      final subjectId = tryParseInt(
+          parseHrefId(subjectElement, digitOnly: true),
           defaultValue: null);
-      String subjectName =
+      final subjectName =
           subjectElement.attributes['title'] ?? defaultSubjectName;
-      String subjectCover =
-          subjectElement.querySelector('img')?.attributes['src'];
-      if (subjectCover == null) {
-        subjectCover = bangumiTextOnlySubjectCover;
-      } else {
-        subjectCover = normalizeImageUrl(subjectCover);
-      }
+      var subjectCover =
+          imageSrcOrFallback(subjectElement.querySelector('img')) ??
+              bangumiTextOnlySubjectCover;
+      subjectCover = normalizeImageUrl(subjectCover);
 
       if (subjectId == null) {
         debugPrint('Unexpected subject element ${subjectElement.outerHtml}');

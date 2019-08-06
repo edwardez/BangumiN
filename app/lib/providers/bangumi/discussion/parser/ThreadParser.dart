@@ -23,7 +23,6 @@ import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/providers/bangumi/discussion/parser/common.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
-import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 
@@ -113,7 +112,8 @@ class ThreadParser {
 
     final contentElement = element.querySelector(contentHtmlSelector);
 
-    String contentHtml = contentElement?.outerHtml ?? '';
+    var contentHtml = contentElement?.outerHtml ?? '';
+    contentHtml = contentHtml.replaceAll(cloudFlareNoScriptTagRegex, '');
 
     String authorPostedText;
     switch (postType) {
@@ -328,8 +328,14 @@ class ThreadParser {
 
     String title = document.querySelector('title')?.text?.trim();
 
-    String groupName =
-        document.querySelector('#pageHeader a.avatar')?.text ?? '小组讨论';
+    String groupName = firstTextNodeContent(
+        document
+            .querySelector('#pageHeader a.avatar')
+            ?.nodes,
+        skipWhiteCharsOnlyNode: true,
+        trimExtraChars: false)
+        .or('小组讨论')
+        .trim();
 
     Post initialPost = _parsePost(
         document.querySelector('.postTopic'), PostType.InitialGroupPost);
@@ -370,13 +376,15 @@ class ThreadParser {
     DocumentFragment document = parseFragment(rawHtml);
     _updateQuoteTextColor(document);
 
-    // Uses title class on page if any.
-    String title =
-        firstOrNullInIterable<Node>(document.querySelector('.title')?.nodes)
-            ?.text;
-
+    // Uses title class on page.
     // If it doesn't exist, use the title html element in head.
-    title ??= document.querySelector('title')?.text?.trim();
+    String title = firstTextNodeContent(document
+        .querySelector('.title')
+        ?.nodes)
+        .or(document
+        .querySelector('title')
+        ?.text ?? '')
+        .trim();
 
     String descriptionHtml = document.querySelector('.epDesc')?.outerHtml ?? '';
 

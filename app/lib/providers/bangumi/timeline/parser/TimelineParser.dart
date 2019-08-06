@@ -148,7 +148,7 @@ class TimelineParser {
     final Element singleTimelineContent =
         timelineItem.querySelector(selectorName);
     final Optional<String> maybeActionPrefix =
-        getFirstTextNodeContent(singleTimelineContent.nodes);
+    firstTextNodeContent(singleTimelineContent.nodes);
 
     /// Uses a greedy-based approach to parse timeline event
     /// doujin event is parsed firstly, they make things more complicated and we just need the action name and url

@@ -40,3 +40,6 @@ final RegExp blockedUserIdGroupRegex =
     RegExp(r'privacy\?ignore_reset=(\d+)&gh=');
 
 final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');
+
+/// Cloudflare related
+final RegExp cloudFlareNoScriptTagRegex = RegExp(r'<noscript>|</noscript>');

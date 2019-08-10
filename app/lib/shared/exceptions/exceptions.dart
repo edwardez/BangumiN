@@ -20,6 +20,9 @@ class AuthenticationFailedException implements MuninException {
 
 /// Exception that signals authentication has expired
 class AuthenticationExpiredException implements MuninException {
+  /// Literal name of the exception.
+  static const exceptionName = 'AuthenticationExpiredException';
+
   /// Message describing the problem. */
   final message;
 

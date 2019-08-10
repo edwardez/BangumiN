@@ -172,8 +172,8 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
 }
 
 double parseSubjectScore(Element element) {
-  final Element starsInfoElement =
-      element.querySelector('.starsinfo,.starstop');
+  final Element starsInfoElement = element.querySelector('.starlight') ??
+      element.querySelector('[class^="star"]');
 
   if (starsInfoElement == null) {
     return null;

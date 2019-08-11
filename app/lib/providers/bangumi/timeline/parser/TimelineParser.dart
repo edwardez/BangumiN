@@ -86,7 +86,15 @@ class TimelineParser {
 
   final BuiltMap<String, MutedUser> mutedUsers;
 
-  const TimelineParser({@required this.mutedUsers});
+  /// Whether this should check authentication. Throws [AuthenticationExpiredException]
+  /// if check fails.
+  /// Default to true.
+  final bool checkAuthentication;
+
+  const TimelineParser({
+    @required this.mutedUsers,
+    this.checkAuthentication = true,
+  });
 
   /// verify whether user is authenticated
   /// tricky part is: bangumi WILL returns site global timeline instead of returning
@@ -101,7 +109,7 @@ class TimelineParser {
       throw BangumiResponseIncomprehensibleException();
     }
 
-    if (!nextPageIndicatorElement.text.contains('下一页')) {
+    if (checkAuthentication && !nextPageIndicatorElement.text.contains('下一页')) {
       throw AuthenticationExpiredException('认证已过期，或你没有关注任何用户');
     }
   }
@@ -148,7 +156,7 @@ class TimelineParser {
     final Element singleTimelineContent =
         timelineItem.querySelector(selectorName);
     final Optional<String> maybeActionPrefix =
-        getFirstTextNodeContent(singleTimelineContent.nodes);
+    firstTextNodeContent(singleTimelineContent.nodes);
 
     /// Uses a greedy-based approach to parse timeline event
     /// doujin event is parsed firstly, they make things more complicated and we just need the action name and url

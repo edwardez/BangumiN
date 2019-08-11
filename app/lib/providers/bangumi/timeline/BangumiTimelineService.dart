@@ -62,17 +62,27 @@ class BangumiTimelineService {
     Response feedsHtml = await cookieClient.dio
         .get(requestPath, queryParameters: queryParameters);
 
-    return await compute(
-        processTimelineFeeds,
-        ParseTimelineFeedsMessage(
-          feedsHtml.data,
-          feedLoadType: feedLoadType,
-          upperFeedId: upperFeedId,
-          lowerFeedId: lowerFeedId,
-          timelineSource: request.timelineSource,
-          userInfo: userInfo,
-          mutedUsers: mutedUsers,
-        ));
+    final isolateMessage = ParseTimelineFeedsMessage(
+      feedsHtml.data,
+      feedLoadType: feedLoadType,
+      upperFeedId: upperFeedId,
+      lowerFeedId: lowerFeedId,
+      timelineSource: request.timelineSource,
+      userInfo: userInfo,
+      mutedUsers: mutedUsers,
+    );
+    try {
+      return await compute(processTimelineFeeds, isolateMessage);
+    } catch (error) {
+      // Isolate swallows all errors as string
+      if ('$error'.contains(AuthenticationExpiredException.exceptionName) &&
+          await cookieClient.isLoggedIn()) {
+        isolateMessage.checkAuthentication = false;
+        return await compute(processTimelineFeeds, isolateMessage);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   Future<void> deleteTimeline(int feedId) async {

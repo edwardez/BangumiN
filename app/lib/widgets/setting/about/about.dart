@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:munin/config/application.dart';
 import 'package:munin/widgets/shared/link/LinkTextSpan.dart';
 import 'package:package_info/package_info.dart';
 import 'package:quiver/time.dart';
@@ -28,9 +29,16 @@ void showMuninAboutDialog(BuildContext context) async {
     },
   );
 
+  var additionalEnvironmentInfo = '';
+  if (Application.environmentValue.environmentType !=
+      EnvironmentType.Production) {
+    additionalEnvironmentInfo =
+    '${(Application.environmentValue.environmentType)}';
+  }
+
   showAboutDialog(
     context: context,
-    applicationName: 'BangumiN',
+    applicationName: 'BangumiN$additionalEnvironmentInfo',
     applicationVersion: packageInfo.version,
     applicationIcon: bangumiNLogo,
     applicationLegalese: 'BangumiN Project Authors',

@@ -86,8 +86,6 @@ class _MuninTimelineState extends State<MuninTimeline> {
                   if (currentIndex != pageIndex) {
                     pageController.jumpToPage(pageIndex);
                   }
-                  _oneMuninBarKey.currentState?.setNewTitle(
-                      _buildAppBarTitle(timelineBody.getTimelineRequest));
                 });
                 Navigator.pop(context);
               },
@@ -143,6 +141,10 @@ class _MuninTimelineState extends State<MuninTimeline> {
             label: Text(request.chineseName),
             icon: Icon(OMIcons.expandMore),
           ),
+        );
+      } else {
+        appBar = OneMuninBar(
+          title: _buildAppBarTitle(request),
         );
       }
 

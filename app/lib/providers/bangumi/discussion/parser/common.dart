@@ -11,7 +11,9 @@ Optional<ParentSubject> parseParentSubject(DocumentFragment document) {
 
   int id = tryParseInt(parseHrefId(subjectElement), defaultValue: null);
 
-  String name = subjectElement?.text ?? '??';
+  String name = firstTextNodeContent(subjectElement?.nodes,
+      skipWhiteCharsOnlyNode: true, trimExtraChars: false)
+      .or(subjectElement?.text ?? '??');
   String chineseName =
       (document.querySelector('.nameSingle>a')?.attributes ?? {})['title'] ??
           null;

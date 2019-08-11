@@ -130,6 +130,26 @@ class BangumiCookieService {
     await dio.get('/logout/$xsrfToken');
   }
 
+  /// Checks whether user is logged in.
+  ///
+  /// This method visits `/signup` page of bangumi, if user has logged in, user
+  /// will be 302 redirected to home page, otherwise it indicates user has not
+  /// logged in.
+  Future<bool> isLoggedIn() async {
+    try {
+      await dio.get('/signup', options: Options(followRedirects: false));
+      return false;
+    } catch (error) {
+      if (error is DioError &&
+          error.type == DioErrorType.RESPONSE &&
+          error.response.statusCode == HttpStatus.movedTemporarily) {
+        return true;
+      }
+
+      rethrow;
+    }
+  }
+
   /// Silently tries to logout without reporting any errors to upstream
   Future<void> silentlyTryLogout(
       {timeoutThreshold: const Duration(seconds: 3)}) async {

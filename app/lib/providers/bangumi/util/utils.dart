@@ -40,16 +40,22 @@ String imageUrlFromBackgroundImage(Element imageElement,
 String normalizeImageUrl(String imageUrl,
     {defaultImageSrc = 'https://bgm.tv/img/no_icon_subject.png',
     checkImageExtensionType = true}) {
+  if (imageUrl == null) return defaultImageSrc;
   if (checkImageExtensionType) {
     if (!validBangumiImageTypeRegex.hasMatch(imageUrl)) {
       return defaultImageSrc;
     }
   }
 
-  if (imageUrl != null &&
-      imageUrl.length >= 2 &&
-      imageUrl.substring(0, 2) == '//') {
+  if (imageUrl.length >= 2 && imageUrl.substring(0, 2) == '//') {
     return 'https:' + imageUrl;
+  }
+
+  /// Check if the url is a valid uri.
+  /// TODO: improve this logic.
+  final parsesUri = Uri.tryParse(imageUrl);
+  if (parsesUri != null && parsesUri.hasScheme && isNotEmpty(parsesUri.host)) {
+    return imageUrl;
   }
 
   return defaultImageSrc;
@@ -89,7 +95,9 @@ int parseEndsWithDigitId(Element element) {
   }
 
   return tryParseInt(
-    endsWithDigitRegex.firstMatch(id)?.group(0), defaultValue: null,);
+    endsWithDigitRegex.firstMatch(id)?.group(0),
+    defaultValue: null,
+  );
 }
 
 /// extract first int from a string
@@ -108,7 +116,7 @@ int extractFirstIntGroup(String rawString, {defaultValue = 0}) {
 
 String imageSrcOrFallback(Element imageElement,
     {fallbackImageSrc = 'https://bgm.tv/img/no_icon_subject.png'}) {
-  if (imageElement == null) return null;
+  if (imageElement == null) return fallbackImageSrc;
   String imageUrl = imageElement.attributes['src'];
 
   ///maybe because of https://blog.cloudflare.com/mirage2-solving-mobile-speed/ ?
@@ -117,10 +125,15 @@ String imageSrcOrFallback(Element imageElement,
   return normalizeImageUrl(imageUrl, defaultImageSrc: fallbackImageSrc);
 }
 
-Optional<String> getFirstTextNodeContent(NodeList nodeList,
-    {trimExtraChars = true}) {
+Optional<String> firstTextNodeContent(NodeList nodeList,
+    {trimExtraChars = true, skipWhiteCharsOnlyNode = false}) {
+  if (nodeList == null) return Optional.absent();
+
   for (var node in nodeList) {
     if (node.nodeType == Node.TEXT_NODE) {
+      if (skipWhiteCharsOnlyNode && isEmpty(node.text.trim())) {
+        continue;
+      }
       if (trimExtraChars) {
         return Optional.of(node.text.replaceAll(RegExp(r'\s+|、|等|：|:'), ''));
       }
@@ -159,8 +172,8 @@ Optional<String> getMergedTextNodeContent(NodeList nodeList,
 }
 
 double parseSubjectScore(Element element) {
-  final Element starsInfoElement =
-      element.querySelector('.starsinfo,.starstop');
+  final Element starsInfoElement = element.querySelector('.starlight') ??
+      element.querySelector('[class^="star"]');
 
   if (starsInfoElement == null) {
     return null;

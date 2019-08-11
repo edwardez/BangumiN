@@ -131,7 +131,11 @@ SubjectReview parseReviewOnCollectionPage(
       collectionStatus, subjectType);
   final usernameElement = element.querySelector('a.avatar[href*="/user/"]');
   final username = parseHrefId(usernameElement);
-  final nickName = usernameElement.text.trim();
+  final nickName = firstTextNodeContent(
+    usernameElement.nodes,
+    trimExtraChars: false,
+    skipWhiteCharsOnlyNode: true,
+  ).or(usernameElement.text.trim()).trim();
 
   ReviewMetaInfo metaInfo = ReviewMetaInfo((b) => b
     ..updatedAt = absoluteTime?.millisecondsSinceEpoch

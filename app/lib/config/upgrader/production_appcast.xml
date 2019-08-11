@@ -4,6 +4,19 @@
     <channel>
         <title>BangumiN Changelog</title>
         <item>
+            <title>Version 0.4.3</title>
+            <description>
+                * 修复了由于主站更新导致的评分显示不正确的问题
+                * 改进了未添加过好友的用户的动态页面的显示
+            </description>
+            <sparkle:tags>
+                <sparkle:criticalUpdate/>
+            </sparkle:tags>
+            <pubDate>2019/08/10 19:00</pubDate>
+            <enclosure url="https://github.com/edwardez/BangumiN/releases"
+                       sparkle:version="0.4.3" sparkle:os="android"/>
+        </item>
+        <item>
             <title>Version 0.4.2</title>
             <description>加入了编辑回复和应用内收取通知，以及其他修复。</description>
             <pubDate>2019/08/01 20:00</pubDate>

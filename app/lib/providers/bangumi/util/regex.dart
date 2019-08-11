@@ -32,7 +32,7 @@ final RegExp userIdInAvatarGroupRegex = RegExp(r'(\d+)\.jpg');
 final RegExp atLeastOneSpaceRegex = RegExp(r'\s+');
 final RegExp endsOrStartsWithSpaceRegex = RegExp(r'^\s+|\s+$');
 
-final RegExp scoreRegex = RegExp(r's?stars(\d+)');
+final RegExp scoreRegex = RegExp(r'star[A-Za-z\-_]*(\d+)');
 
 final RegExp contentAfterFistColonGroupRegex = RegExp(r':(.*)');
 
@@ -40,3 +40,6 @@ final RegExp blockedUserIdGroupRegex =
     RegExp(r'privacy\?ignore_reset=(\d+)&gh=');
 
 final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');
+
+/// Cloudflare related
+final RegExp cloudFlareNoScriptTagRegex = RegExp(r'<noscript>|</noscript>');

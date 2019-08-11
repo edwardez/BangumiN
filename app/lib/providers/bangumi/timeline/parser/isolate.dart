@@ -11,7 +11,10 @@ import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
 
 GetTimelineParsedResponse processTimelineFeeds(
     ParseTimelineFeedsMessage message) {
-  return TimelineParser(mutedUsers: message.mutedUsers).processTimelineFeeds(
+  return TimelineParser(
+    mutedUsers: message.mutedUsers,
+    checkAuthentication: message.checkAuthentication,
+  ).processTimelineFeeds(
     message.html,
     feedLoadType: message.feedLoadType,
     upperFeedId: message.upperFeedId,
@@ -53,12 +56,15 @@ class ParseTimelineFeedsMessage {
   final int upperFeedId;
   final int lowerFeedId;
 
+  bool checkAuthentication;
+
   ParseTimelineFeedsMessage(
     this.html, {
     @required this.timelineSource,
     @required this.userInfo,
     @required this.feedLoadType,
     @required this.mutedUsers,
+        this.checkAuthentication = true,
     this.upperFeedId,
     this.lowerFeedId,
   });

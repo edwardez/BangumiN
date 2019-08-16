@@ -158,7 +158,7 @@ class BangumiDiscussionService {
 
   /// Creates reply. Throws exception if reply is not successfully created.
   ///
-  /// An optional [targetPost] can be used to send
+  /// An optional [targetPost] can be used to send sub reply.
   Future<void> createReply({
     @required int threadId,
     @required ThreadType threadType,

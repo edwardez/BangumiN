@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
+import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/providers/util/RetryableHttpClient.dart';
@@ -17,8 +18,11 @@ import 'package:munin/shared/injector/injector.dart';
 class HttpTestHelper {
   final BangumiCookieService cookieService;
   final BangumiOauthService oauthService;
+  final BangumiUserService bangumiUserService;
 
-  HttpTestHelper(this.cookieService, this.oauthService);
+  HttpTestHelper(this.cookieService,
+      this.oauthService,
+      this.bangumiUserService,);
 }
 
 Future<HttpTestHelper> initializeHttpTestHelper() async {
@@ -37,12 +41,12 @@ Future<HttpTestHelper> initializeHttpTestHelper() async {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  var cookieService = BangumiCookieService(
+  final cookieService = BangumiCookieService(
     dio: dio,
     bangumiCookieCredential: bangumiCookieCredentials,
     secureStorageService: MockSecureStorageService(),
   );
-  var oauthService = BangumiOauthService(
+  final oauthService = BangumiOauthService(
     cookieClient: MockBangumiCookieService(),
     serializedBangumiOauthCredentials:
         jsonEncode(credentials[bangumiOauthCredentialsKey]),
@@ -51,8 +55,13 @@ Future<HttpTestHelper> initializeHttpTestHelper() async {
     identifier: credentials['bangumiOauthClientIdentifier'],
     secret: credentials['bangumiOauthClientSecret'],
   );
+  final userService = BangumiUserService(
+    sharedPreferenceService: MockSharedPreferenceService(),
+    cookieClient: cookieService,
+    oauthClient: oauthService,
+  );
 
-  return HttpTestHelper(cookieService, oauthService);
+  return HttpTestHelper(cookieService, oauthService, userService);
 }
 
 class MockSecureStorageService extends Mock implements SecureStorageService {}

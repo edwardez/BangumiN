@@ -8,7 +8,6 @@ import 'package:munin/models/bangumi/timeline/common/TimelineFeed.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/timeline/BangumiTimelineService.dart';
 import 'package:munin/providers/bangumi/timeline/parser/TimelineParser.dart';
-import 'package:munin/providers/bangumi/user/BangumiUserService.dart';
 import 'package:munin/shared/utils/collections/common.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:test/test.dart';
@@ -18,18 +17,12 @@ import 'setup.dart';
 void main() {
   group(BangumiTimelineService, () {
     BangumiTimelineService bangumiTimelineService;
-    BangumiUserService bangumiUserService;
     HttpTestHelper httpTestHelper;
 
     setUp(() async {
       httpTestHelper = await initializeHttpTestHelper();
       bangumiTimelineService =
           BangumiTimelineService(cookieClient: httpTestHelper.cookieService);
-      bangumiUserService = BangumiUserService(
-        sharedPreferenceService: MockSharedPreferenceService(),
-        cookieClient: httpTestHelper.cookieService,
-        oauthClient: httpTestHelper.oauthService,
-      );
     });
 
     test('getTimeline works', () async {
@@ -63,17 +56,22 @@ void main() {
             userInfo: userInfo);
       }
 
-      const messageContent = 'TestPublicmessageCreation';
+      final messageContent = 'TestPublicmessageCreation${DateTime
+          .now()
+          .millisecondsSinceEpoch}';
       await bangumiTimelineService.submitTimelineMessage(messageContent);
 
       final userId = await httpTestHelper.oauthService.verifyUser();
-      final userInfo = await bangumiUserService.getUserBasicInfo('$userId');
+      final userInfo = await httpTestHelper.bangumiUserService.getUserBasicInfo(
+          '$userId');
       final timeline = await getUserTimeline(userInfo);
       final PublicMessageNormal message = timeline.feeds.first;
 
       expect(message.contentHtml, contains(messageContent));
 
-      const replyContent = 'TestTimelineReply';
+      final replyContent = 'TestTimelineReply${DateTime
+          .now()
+          .millisecondsSinceEpoch}';
       await bangumiTimelineService.createPublicMessageReply(
           replyContent, message.user.feedId);
 

@@ -16,7 +16,7 @@ import 'package:test/test.dart';
 import 'setup.dart';
 
 void main() {
-  group('HttpTimeline', () {
+  group(BangumiTimelineService, () {
     BangumiTimelineService bangumiTimelineService;
     BangumiUserService bangumiUserService;
     HttpTestHelper httpTestHelper;

@@ -94,7 +94,9 @@ void main() {
       expect(reply.contentHtml, contains(replyContent));
 
       final editedReplyContent =
-          'updateForEdit${DateTime.now().millisecondsSinceEpoch}';
+          'TestEditBlogReply${DateTime
+          .now()
+          .millisecondsSinceEpoch}';
       await bangumiDiscussionService.updateReply(
           reply.id, ThreadType.Blog, editedReplyContent);
 

@@ -52,7 +52,9 @@ class BangumiProgressService {
     retry ??= episodeUpdateType == EpisodeUpdateType.Remove ? 0 : 1;
 
     Http.Response response = await oauthClient.client.post(
-        'https://${Application.environmentValue.bangumiApiHost}/ep/$episodeId/status/${episodeUpdateType.wiredName}',
+        'https://${Application
+            .bangumiApiHost}/ep/$episodeId/status/${episodeUpdateType
+            .wiredName}',
         body: {});
 
     var decodedBody = json.decode(response.body) ?? {};
@@ -87,7 +89,8 @@ class BangumiProgressService {
     body['ep_id'] = episodeIds.join(',');
 
     Http.Response response = await oauthClient.client.post(
-        'https://${Application.environmentValue.bangumiApiHost}/ep/${episodeIds.first}/status/${EpisodeUpdateType.Collect.wiredName}',
+        'https://${Application.bangumiApiHost}/ep/${episodeIds
+            .first}/status/${EpisodeUpdateType.Collect.wiredName}',
         body: body);
 
     var decodedBody = json.decode(response.body) ?? {};
@@ -121,7 +124,8 @@ class BangumiProgressService {
     }
 
     Http.Response response = await oauthClient.client.post(
-        'https://${Application.environmentValue.bangumiApiHost}/subject/$subjectId/update/watched_eps',
+        'https://${Application
+            .bangumiApiHost}/subject/$subjectId/update/watched_eps',
         body: body);
 
     var decodedBody = json.decode(response.body) ?? {};
@@ -179,9 +183,10 @@ class BangumiProgressService {
     /// 2. Among these subjects, all episodes that user has touched
     List<Http.Response> responses = await Future.wait([
       oauthClient.client.get(
-          'https://${Application.environmentValue.bangumiApiHost}/user/$username/collection?cat=$category&responseGroup=medium'),
+          'https://${Application
+              .bangumiApiHost}/user/$username/collection?cat=$category&responseGroup=medium'),
       oauthClient.client.get(
-          'https://${Application.environmentValue.bangumiApiHost}/user/$username/progress')
+          'https://${Application.bangumiApiHost}/user/$username/progress')
     ]);
     Http.Response collectionResponse = responses[0];
     Http.Response inProgressEpisodesResponse = responses[1];
@@ -372,7 +377,8 @@ class BangumiProgressService {
     List responses = await Future.wait([
       cookieClient.dio.get('/subject/$subjectId/ep'),
       oauthClient.client.get(
-          'https://${Application.environmentValue.bangumiApiHost}/user/$username/progress?subject_id=$subjectId')
+          'https://${Application
+              .bangumiApiHost}/user/$username/progress?subject_id=$subjectId')
     ]);
 
     Dio.Response allEpisodesResponse = responses[0];

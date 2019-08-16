@@ -48,7 +48,7 @@ class BangumiSearchService {
     /// header here
     /// see https://github.com/bangumi/api/issues/43
     String requestUrl =
-        'https://${Application.environmentValue.bangumiApiHost}/search/subject/'
+        'https://${Application.bangumiApiHost}/search/subject/'
         '$query?responseGroup=$responseGroup&start=$start&max_results=$maxResults';
     if (searchType.isConcreteSubjectType && searchType.wiredName != null) {
       requestUrl += '&type=${searchType.wiredName}';

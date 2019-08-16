@@ -12,7 +12,8 @@ import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:quiver/strings.dart';
 
-// A client for Bangumi thst sends requests with cookie and handles relevant persistence
+const bangumiCookieCredentialsKey = 'bangumiCookieCredentials';
+// A client for Bangumi that sends requests with cookie and handles relevant persistence
 class BangumiCookieService {
   BangumiCookieCredentials _bangumiCookieCredential;
 

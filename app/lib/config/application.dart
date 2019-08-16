@@ -43,14 +43,16 @@ import 'package:upgrader/upgrader.dart'; // ignore: unused_import
 
 final GetIt getIt = GetIt();
 
-enum EnvironmentType { Development, Uat, Production }
+enum EnvironmentType { Test, Development, Uat, Production }
 
 /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
 /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
 const bangumiMainHost = 'bgm.tv';
+
 /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
 const bangumiNonCdnHost = 'bangumi.tv';
-const upgradeInfoUrl = 'https://raw.githubusercontent.com/edwardez/BangumiN/master/app/lib/config/upgrader/production_appcast.xml';
+const upgradeInfoUrl =
+    'https://raw.githubusercontent.com/edwardez/BangumiN/master/app/lib/config/upgrader/production_appcast.xml';
 
 abstract class Application {
   static Application environmentValue;
@@ -61,7 +63,7 @@ abstract class Application {
   static final String bangumiOauthTokenEndpoint =
       'https://bgm.tv/oauth/access_token';
 
-  final bangumiApiHost = 'api.bgm.tv';
+  static const bangumiApiHost = 'api.bgm.tv';
   final forsetiMainHost = 'bangumin.tv';
   final forsetiApiHost = 'api.bangumin.tv';
 
@@ -89,8 +91,7 @@ abstract class Application {
   _initialize() async {
     environmentValue = this;
 
-    assert(!shouldCheckUpdate ||
-        (shouldCheckUpdate && Platform.isAndroid));
+    assert(!shouldCheckUpdate || (shouldCheckUpdate && Platform.isAndroid));
 
     // misc utils initialization
     TimeUtils.initializeTimeago();

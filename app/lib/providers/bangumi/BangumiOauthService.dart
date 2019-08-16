@@ -15,6 +15,7 @@ import 'package:munin/shared/utils/common.dart';
 import 'package:oauth2/oauth2.dart'
     show AuthorizationCodeGrant, Client, Credentials;
 
+const bangumiOauthCredentialsKey = 'bangumiOauthCredentials';
 // A client for Bangumi that authorizes user, send requests with oauth token and handles relevant persistence
 class BangumiOauthService {
   BangumiCookieService _cookieClient;
@@ -28,6 +29,8 @@ class BangumiOauthService {
     @required String serializedBangumiOauthCredentials,
     @required SecureStorageService secureStorageService,
     @required http.Client oauthHttpClient,
+    String identifier,
+    String secret,
   }) {
     assert(secureStorageService != null);
     assert(cookieClient != null);
@@ -42,8 +45,10 @@ class BangumiOauthService {
           Credentials.fromJson(serializedBangumiOauthCredentials);
 
       this.client = BangumiOauthClient(credentials,
-          identifier: Application.environmentValue.bangumiOauthClientIdentifier,
-          secret: Application.environmentValue.bangumiOauthClientSecret,
+          identifier: identifier ??
+              Application.environmentValue.bangumiOauthClientIdentifier,
+          secret:
+          secret ?? Application.environmentValue.bangumiOauthClientSecret,
           basicAuth: false,
           httpClient: _baseOauthHttpClient,
           secureStorageService: secureStorageService);
@@ -78,8 +83,8 @@ class BangumiOauthService {
         expiresOnInSeconds:
         tryParseInt(expiresOnInSecondsStr, defaultValue: null));
 
-    var retryableAuthHttpClient = RetryableHttpClient(
-        http.Client(), retries: 5);
+    var retryableAuthHttpClient =
+    RetryableHttpClient(http.Client(), retries: 5);
     AuthorizationCodeGrant grant = AuthorizationCodeGrant(
         Application.environmentValue.bangumiOauthClientIdentifier,
         Uri.parse(Application.bangumiOauthAuthorizationEndpoint),

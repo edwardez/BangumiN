@@ -1,6 +1,5 @@
 import * as express from 'express';
 import _ from 'lodash';
-import dayjs from 'dayjs';
 import {Record} from '../models/relational/bangumi/record';
 import {getSubjectStatsById, getUserStatsByIdOrUsername} from '../services/bangumi/statsService';
 import {celebrate, Joi} from 'celebrate';
@@ -13,7 +12,7 @@ const router = express.Router();
  */
 router.get('/user/:userIdOrUsername', celebrate({
   params: {
-    userIdOrUsername: Joi.string().alphanum(),
+    userIdOrUsername: Joi.string().token(),
   },
 }), (req: any, res: any, next: any) => {
   const userIdOrUsername: string | number = isNaN(Number(req.params.userIdOrUsername)) ? req.params.userIdOrUsername : Number(

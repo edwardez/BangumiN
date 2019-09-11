@@ -37,7 +37,7 @@ PODS:
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
   - Flutter (1.0.0)
-  - flutter_secure_storage (3.2.0):
+  - flutter_secure_storage (3.3.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -97,7 +97,7 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `.symlinks/flutter/ios-release`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -131,7 +131,7 @@ EXTERNAL SOURCES:
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: ".symlinks/flutter/ios-release"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   image_gallery_saver:
@@ -165,12 +165,12 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseCore: e38f025287b413255a53acc1945d048a112047f7
   FirebaseInstanceID: 0e0348a3c00a734fa376a070f5ad4533ad975cb5
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  flutter_secure_storage: 0c5779648ff644110e507909b77a57e620cbbf8b
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 7f028ea162b72c8f326daec74afc95d94f7a47d6
   GoogleUtilities: 84df567c76ca84f67b7bb40e769fdd4acc746a10
-  image_gallery_saver: 1798f45aab0db52c4a2a161409c361340a19908e
+  image_gallery_saver: 73b3cd8ad9c950c739878af9c311744d1bf5405d
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259

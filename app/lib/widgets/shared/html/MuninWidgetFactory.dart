@@ -6,12 +6,10 @@ import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/background/GreyRoundedBorderContainer.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
-import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
-  final BuildContext outerContext;
 
 
   static errorImageWidget(
@@ -52,25 +50,12 @@ class MuninWidgetFactory extends WidgetFactory {
     );
   }
 
-  MuninWidgetFactory(this.outerContext, HtmlWidget htmlWidget)
-      : super(outerContext, htmlWidget);
+  MuninWidgetFactory(HtmlWidgetConfig _config) : super(_config);
 
   @override
-  Widget buildImageFromUrl(String url) => url?.isNotEmpty == true
-      ? InkWell(
-    child: CachedNetworkImage(
-      imageUrl: url,
-      fadeOutDuration: Duration(milliseconds: 300),
-      fadeInDuration: Duration(milliseconds: 300),
-      fit: BoxFit.cover,
-      placeholder: (context, url) => AdaptiveProgressIndicator(),
-      errorWidget: (context, url, obj) {
-        return errorImageWidget(context, url);
-      },
-    ),
-    onTap: () {
-      launchByPreference(outerContext, url);
-          },
+  ImageProvider buildImageFromUrl(String url) => url?.isNotEmpty == true
+      ? CachedNetworkImageProvider(
+          url,
         )
       : null;
 }

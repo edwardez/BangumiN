@@ -85,6 +85,7 @@ abstract class Application {
   bool shouldCheckUpdate = false;
 
   Application() {
+    WidgetsFlutterBinding.ensureInitialized();
     _initialize();
   }
 
@@ -165,6 +166,7 @@ abstract class Application {
     if (store.state.isAuthenticated ?? false) {
       store.dispatch(ListenOnUnreadNotificationAction());
     }
+
     // flutter initialization
     runApp(MuninApp(this, store));
   }

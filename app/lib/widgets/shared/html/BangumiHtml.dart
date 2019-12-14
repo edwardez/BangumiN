@@ -5,7 +5,6 @@ import 'package:munin/shared/utils/bangumi/RedirectableUrlResolver.dart';
 import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
-import 'package:munin/widgets/shared/html/MuninWidgetFactory.dart';
 import 'package:munin/widgets/shared/text/SpoilerText.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,8 +21,6 @@ class BangumiHtml extends StatelessWidget {
   Widget build(BuildContext context) {
     return HtmlWidget(
       html,
-      factoryBuilder: (context, htmlWidget) =>
-          MuninWidgetFactory(context, htmlWidget),
       baseUrl: bangumiHostUriForDio,
       bodyPadding: EdgeInsets.zero,
       //Optional parameters:

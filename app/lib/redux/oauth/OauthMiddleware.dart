@@ -46,7 +46,7 @@ Middleware<AppState> _createUpdateLoginData(
       await Future.wait([
         oauthService.persistCredentials(),
         cookieService.persistCredentials(),
-        sharedPreferenceService.persistAppState(updatedAppState)
+        sharedPreferenceService.persistBasicAppState(updatedAppState)
       ]);
       store.dispatch(OAuthLoginSuccess(userInfo));
       Application.router.navigateTo(action.context, Routes.homeRoute,

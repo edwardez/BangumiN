@@ -6,12 +6,14 @@ import 'package:munin/shared/utils/serializers.dart';
 part 'ThemeSwitchMode.g.dart';
 
 class ThemeSwitchMode extends EnumClass {
+  @BuiltValueEnumConst(fallback: true)
   static const ThemeSwitchMode Manual = _$Manual;
 
   static const ThemeSwitchMode FollowScreenBrightness =
       _$FollowScreenBrightness;
 
-//  static const ThemeSwitchMode FollowSystemThemeSetting = _$FollowSystemThemeSetting;
+  static const ThemeSwitchMode FollowSystemThemeSetting =
+      _$FollowSystemThemeSetting;
 
   const ThemeSwitchMode._(String name) : super(name);
 

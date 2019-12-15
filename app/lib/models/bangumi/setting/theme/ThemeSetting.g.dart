@@ -35,7 +35,18 @@ class _$ThemeSettingSerializer implements StructuredSerializer<ThemeSetting> {
       serializers.serialize(object.themeSwitchMode,
           specifiedType: const FullType(ThemeSwitchMode)),
     ];
-
+    if (object.preferredFollowSystemLightTheme != null) {
+      result
+        ..add('preferredFollowSystemLightTheme')
+        ..add(serializers.serialize(object.preferredFollowSystemLightTheme,
+            specifiedType: const FullType(MuninTheme)));
+    }
+    if (object.preferredFollowSystemDarkTheme != null) {
+      result
+        ..add('preferredFollowSystemDarkTheme')
+        ..add(serializers.serialize(object.preferredFollowSystemDarkTheme,
+            specifiedType: const FullType(MuninTheme)));
+    }
     return result;
   }
 
@@ -68,6 +79,15 @@ class _$ThemeSettingSerializer implements StructuredSerializer<ThemeSetting> {
               value,
               specifiedType: const FullType(MuninTheme)) as MuninTheme;
           break;
+        case 'preferredFollowSystemLightTheme':
+          result.preferredFollowSystemLightTheme = serializers.deserialize(
+              value,
+              specifiedType: const FullType(MuninTheme)) as MuninTheme;
+          break;
+        case 'preferredFollowSystemDarkTheme':
+          result.preferredFollowSystemDarkTheme = serializers.deserialize(value,
+              specifiedType: const FullType(MuninTheme)) as MuninTheme;
+          break;
         case 'themeSwitchMode':
           result.themeSwitchMode = serializers.deserialize(value,
                   specifiedType: const FullType(ThemeSwitchMode))
@@ -90,6 +110,10 @@ class _$ThemeSetting extends ThemeSetting {
   @override
   final MuninTheme preferredFollowBrightnessDarkTheme;
   @override
+  final MuninTheme preferredFollowSystemLightTheme;
+  @override
+  final MuninTheme preferredFollowSystemDarkTheme;
+  @override
   final ThemeSwitchMode themeSwitchMode;
 
   factory _$ThemeSetting([void Function(ThemeSettingBuilder) updates]) =>
@@ -100,6 +124,8 @@ class _$ThemeSetting extends ThemeSetting {
       this.preferredFollowBrightnessSwitchThreshold,
       this.preferredFollowBrightnessLightTheme,
       this.preferredFollowBrightnessDarkTheme,
+      this.preferredFollowSystemLightTheme,
+      this.preferredFollowSystemDarkTheme,
       this.themeSwitchMode})
       : super._() {
     if (currentTheme == null) {
@@ -140,6 +166,10 @@ class _$ThemeSetting extends ThemeSetting {
             other.preferredFollowBrightnessLightTheme &&
         preferredFollowBrightnessDarkTheme ==
             other.preferredFollowBrightnessDarkTheme &&
+        preferredFollowSystemLightTheme ==
+            other.preferredFollowSystemLightTheme &&
+        preferredFollowSystemDarkTheme ==
+            other.preferredFollowSystemDarkTheme &&
         themeSwitchMode == other.themeSwitchMode;
   }
 
@@ -148,10 +178,14 @@ class _$ThemeSetting extends ThemeSetting {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc(0, currentTheme.hashCode),
-                    preferredFollowBrightnessSwitchThreshold.hashCode),
-                preferredFollowBrightnessLightTheme.hashCode),
-            preferredFollowBrightnessDarkTheme.hashCode),
+                $jc(
+                    $jc(
+                        $jc($jc(0, currentTheme.hashCode),
+                            preferredFollowBrightnessSwitchThreshold.hashCode),
+                        preferredFollowBrightnessLightTheme.hashCode),
+                    preferredFollowBrightnessDarkTheme.hashCode),
+                preferredFollowSystemLightTheme.hashCode),
+            preferredFollowSystemDarkTheme.hashCode),
         themeSwitchMode.hashCode));
   }
 
@@ -165,6 +199,10 @@ class _$ThemeSetting extends ThemeSetting {
               preferredFollowBrightnessLightTheme)
           ..add('preferredFollowBrightnessDarkTheme',
               preferredFollowBrightnessDarkTheme)
+          ..add('preferredFollowSystemLightTheme',
+              preferredFollowSystemLightTheme)
+          ..add(
+              'preferredFollowSystemDarkTheme', preferredFollowSystemDarkTheme)
           ..add('themeSwitchMode', themeSwitchMode))
         .toString();
   }
@@ -203,12 +241,28 @@ class ThemeSettingBuilder
       _$this._preferredFollowBrightnessDarkTheme =
           preferredFollowBrightnessDarkTheme;
 
+  MuninTheme _preferredFollowSystemLightTheme;
+  MuninTheme get preferredFollowSystemLightTheme =>
+      _$this._preferredFollowSystemLightTheme;
+  set preferredFollowSystemLightTheme(
+          MuninTheme preferredFollowSystemLightTheme) =>
+      _$this._preferredFollowSystemLightTheme = preferredFollowSystemLightTheme;
+
+  MuninTheme _preferredFollowSystemDarkTheme;
+  MuninTheme get preferredFollowSystemDarkTheme =>
+      _$this._preferredFollowSystemDarkTheme;
+  set preferredFollowSystemDarkTheme(
+          MuninTheme preferredFollowSystemDarkTheme) =>
+      _$this._preferredFollowSystemDarkTheme = preferredFollowSystemDarkTheme;
+
   ThemeSwitchMode _themeSwitchMode;
   ThemeSwitchMode get themeSwitchMode => _$this._themeSwitchMode;
   set themeSwitchMode(ThemeSwitchMode themeSwitchMode) =>
       _$this._themeSwitchMode = themeSwitchMode;
 
-  ThemeSettingBuilder();
+  ThemeSettingBuilder() {
+    ThemeSetting._initializeBuilder(this);
+  }
 
   ThemeSettingBuilder get _$this {
     if (_$v != null) {
@@ -219,6 +273,8 @@ class ThemeSettingBuilder
           _$v.preferredFollowBrightnessLightTheme;
       _preferredFollowBrightnessDarkTheme =
           _$v.preferredFollowBrightnessDarkTheme;
+      _preferredFollowSystemLightTheme = _$v.preferredFollowSystemLightTheme;
+      _preferredFollowSystemDarkTheme = _$v.preferredFollowSystemDarkTheme;
       _themeSwitchMode = _$v.themeSwitchMode;
       _$v = null;
     }
@@ -249,6 +305,8 @@ class ThemeSettingBuilder
                 preferredFollowBrightnessLightTheme,
             preferredFollowBrightnessDarkTheme:
                 preferredFollowBrightnessDarkTheme,
+            preferredFollowSystemLightTheme: preferredFollowSystemLightTheme,
+            preferredFollowSystemDarkTheme: preferredFollowSystemDarkTheme,
             themeSwitchMode: themeSwitchMode);
     replace(_$result);
     return _$result;

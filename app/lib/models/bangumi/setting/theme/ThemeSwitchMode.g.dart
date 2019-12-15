@@ -9,6 +9,8 @@ part of 'ThemeSwitchMode.dart';
 const ThemeSwitchMode _$Manual = const ThemeSwitchMode._('Manual');
 const ThemeSwitchMode _$FollowScreenBrightness =
     const ThemeSwitchMode._('FollowScreenBrightness');
+const ThemeSwitchMode _$FollowSystemThemeSetting =
+    const ThemeSwitchMode._('FollowSystemThemeSetting');
 
 ThemeSwitchMode _$valueOf(String name) {
   switch (name) {
@@ -16,8 +18,10 @@ ThemeSwitchMode _$valueOf(String name) {
       return _$Manual;
     case 'FollowScreenBrightness':
       return _$FollowScreenBrightness;
+    case 'FollowSystemThemeSetting':
+      return _$FollowSystemThemeSetting;
     default:
-      throw new ArgumentError(name);
+      return _$Manual;
   }
 }
 
@@ -25,6 +29,7 @@ final BuiltSet<ThemeSwitchMode> _$values =
     new BuiltSet<ThemeSwitchMode>(const <ThemeSwitchMode>[
   _$Manual,
   _$FollowScreenBrightness,
+  _$FollowSystemThemeSetting,
 ]);
 
 Serializer<ThemeSwitchMode> _$themeSwitchModeSerializer =

@@ -24,6 +24,12 @@ abstract class ThemeSetting
 
   MuninTheme get preferredFollowBrightnessDarkTheme;
 
+  @nullable
+  MuninTheme get preferredFollowSystemLightTheme;
+
+  @nullable
+  MuninTheme get preferredFollowSystemDarkTheme;
+
   ThemeSwitchMode get themeSwitchMode;
 
   /// Returns true if user has selected at least one hidden theme in theme options
@@ -36,14 +42,21 @@ abstract class ThemeSetting
   }
 
   factory ThemeSetting([updates(ThemeSettingBuilder b)]) =>
-      _$ThemeSetting((b) => b
+      _$ThemeSetting((b) =>
+      b
         ..currentTheme = MuninTheme.BrightBangumiPinkBlue
         ..preferredFollowBrightnessSwitchThreshold = 30
         ..preferredFollowBrightnessLightTheme = MuninTheme.BrightBangumiPinkBlue
         ..preferredFollowBrightnessDarkTheme = MuninTheme.NightPureDarkBlue
+        ..preferredFollowSystemLightTheme = MuninTheme.BrightBangumiPinkBlue
+        ..preferredFollowSystemDarkTheme = MuninTheme.NightPureDarkBlue
         ..currentTheme = MuninTheme.BrightBangumiPinkBlue
         ..themeSwitchMode = ThemeSwitchMode.Manual
         ..update(updates));
+
+  static void _initializeBuilder(ThemeSettingBuilder b) => b
+    ..preferredFollowSystemLightTheme = MuninTheme.BrightBangumiPinkBlue
+    ..preferredFollowSystemDarkTheme = MuninTheme.NightPureDarkBlue;
 
   String toJson() {
     return json

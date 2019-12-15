@@ -5,11 +5,14 @@ import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
+import 'package:munin/shared/utils/misc/DeviceInfo.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/setting/theme/Common.dart';
 import 'package:munin/widgets/setting/theme/FollowScreenBrightnessThemeOptions.dart';
+import 'package:munin/widgets/setting/theme/FollowSystemThemeOptions.dart';
 import 'package:munin/widgets/setting/theme/ManualThemeOptions.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
+import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:redux/redux.dart';
 
 class ThemeSettingWidget extends StatefulWidget {
@@ -23,8 +26,13 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
   static const hiddenThemeTriggerTappedTimesThreshold = 7;
   static const optionsFadeInDurationInMilliSeconds = 500;
 
-  bool hasActivatedHiddenThemeTrigger = false;
-  int hiddenThemeTriggerTappedTimes = 0;
+  var hasActivatedHiddenThemeTrigger = false;
+  var hiddenThemeTriggerTappedTimes = 0;
+
+  /// Support info for dark mode.
+  ///
+  /// Relevant settings should be disabled if this is null.
+  DarkModeSupportInfo darkModeSupportInfo;
 
   showHiddenThemeConfirmationDialog() {
     return showDialog(
@@ -61,6 +69,36 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
     }
 
     return false;
+  }
+
+  Future<void> onSelectFollowSystemTheme(_ViewModel vm) async {
+    final showAlertDialog = darkModeSupportInfo.darkModeAvailability ==
+            DarkModeAvailability.unavailable ||
+        darkModeSupportInfo.darkModeAvailability ==
+            DarkModeAvailability.unknown;
+    if (showAlertDialog) {
+      final concatSupportedVersions =
+          darkModeSupportInfo.minimumSupportedPlatformVersion.join('\n');
+      final shouldEnable = await showMuninYesNoDialog(context,
+          title: Text('不受支持的选项'),
+          content: Text(''
+              '主题跟随系统仅支持:\n'
+              '$concatSupportedVersions\n'
+              '检测当前系统版本为一个不受支持的版本: ${darkModeSupportInfo.currentSystemVersion}\n'
+              '如果你确信这是一个错误，可以尝试启用此模式，但此选项可能无效，或带来未知的后果'),
+          confirmAction: Text('仍然启用'),
+          cancelAction: Text('放弃更改'));
+
+      if (!shouldEnable) return;
+    }
+
+    setState(() {
+      if (vm.themeSetting.themeSwitchMode !=
+          ThemeSwitchMode.FollowSystemThemeSetting) {
+        vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
+            b..themeSwitchMode = ThemeSwitchMode.FollowSystemThemeSetting));
+      }
+    });
   }
 
   @override
@@ -112,20 +150,22 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                 ListTile(
                   title: Text(
                     '手动',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
                   ),
                   subtitle: Text(
                     '只在手动更改设置后切换',
                   ),
-                  trailing: buildTrailingIcon<ThemeSwitchMode>(
-                      context, vm.themeSetting.themeSwitchMode,
-                      ThemeSwitchMode.Manual),
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(context,
+                      vm.themeSetting.themeSwitchMode, ThemeSwitchMode.Manual),
                   onTap: () {
                     setState(() {
                       if (vm.themeSetting.themeSwitchMode !=
                           ThemeSwitchMode.Manual) {
                         vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-                            b..themeSwitchMode = ThemeSwitchMode.Manual));
+                        b..themeSwitchMode = ThemeSwitchMode.Manual));
                       }
                     });
                   },
@@ -133,34 +173,51 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                 ListTile(
                   title: Text(
                     '跟随屏幕亮度',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
                   ),
                   subtitle: Text(
                     '跟随屏幕亮度自动切换',
                   ),
-                  trailing: buildTrailingIcon<ThemeSwitchMode>(context,
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(
+                      context,
                       vm.themeSetting.themeSwitchMode,
                       ThemeSwitchMode.FollowScreenBrightness),
                   onTap: () {
                     setState(() {
                       if (vm.themeSetting.themeSwitchMode !=
                           ThemeSwitchMode.FollowScreenBrightness) {
-                        vm.updateThemeSetting(vm.themeSetting.rebuild((b) => b
+                        vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
+                        b
                           ..themeSwitchMode =
                               ThemeSwitchMode.FollowScreenBrightness));
                       }
                     });
                   },
                 ),
-
-//              ListTile(
-//                  title: Text(
-//                    '跟随系统',
-//                    style: Theme.of(context).textTheme.body2,
-//                  ),
-//                  subtitle: Text(
-//                    '跟随系统主题设置（需设备支持系统系黑暗主题）',
-//                  )),
+                ListTile(
+                  enabled: darkModeSupportInfo != null,
+                  title: Text(
+                    '跟随系统',
+                    style: darkModeSupportInfo != null
+                        ? Theme
+                        .of(context)
+                        .textTheme
+                        .body2
+                        : null,
+                  ),
+                  subtitle: Text(
+                    darkModeSupportInfo != null
+                        ? '跟随系统主题设置（需设备支持）'
+                        : '获取信息中...',
+                  ),
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(context,
+                      vm.themeSetting.themeSwitchMode,
+                      ThemeSwitchMode.FollowSystemThemeSetting),
+                  onTap: () => onSelectFollowSystemTheme(vm),
+                ),
                 if (showOptionsUnderSwitchMode(
                   ThemeSwitchMode.Manual,
                   vm.themeSetting,
@@ -190,17 +247,48 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                     },
                     onLightThemePreferenceChange: (MuninTheme newTheme) {
                       vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-                          b..preferredFollowBrightnessLightTheme = newTheme));
+                      b..preferredFollowBrightnessLightTheme = newTheme));
                     },
                     onDarkThemePreferenceChange: (MuninTheme newTheme) {
                       vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-                          b..preferredFollowBrightnessDarkTheme = newTheme));
+                      b..preferredFollowBrightnessDarkTheme = newTheme));
+                    },
+                  ),
+
+                if (showOptionsUnderSwitchMode(
+                  ThemeSwitchMode.FollowSystemThemeSetting,
+                  vm.themeSetting,
+                ))
+                  FollowSystemThemeOptions(
+                    themeSetting: vm.themeSetting,
+                    showHiddenTheme: hasActivatedHiddenThemeTrigger,
+                    onLightThemePreferenceChange: (MuninTheme newTheme) {
+                      vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
+                      b..preferredFollowSystemLightTheme = newTheme));
+                    },
+                    onDarkThemePreferenceChange: (MuninTheme newTheme) {
+                      vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
+                      b..preferredFollowSystemDarkTheme = newTheme));
                     },
                   ),
               ],
             ),
           ),
         );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkDarkThemeSupport().then(
+          (v) =>
+      {
+        setState(() {
+          darkModeSupportInfo = v;
+        })
       },
     );
   }

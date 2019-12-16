@@ -34,7 +34,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
       outerWrapper: OuterWrapper.Row,
-      maxLines: 3,
+      isSelectable: true,
     ));
 
     Optional<String> maybeSecondaryTitle =
@@ -42,10 +42,13 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     if (maybeSecondaryTitle.isPresent) {
       widgets.add(WrappableText(
         maybeSecondaryTitle.value,
-        textStyle: Theme.of(context).textTheme.caption,
+        textStyle: Theme
+            .of(context)
+            .textTheme
+            .caption,
         fit: FlexFit.tight,
         outerWrapper: OuterWrapper.Row,
-        maxLines: 3,
+        isSelectable: true,
       ));
     }
 

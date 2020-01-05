@@ -29,6 +29,9 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
   var hasActivatedHiddenThemeTrigger = false;
   var hiddenThemeTriggerTappedTimes = 0;
 
+  bool get _isSystemInDarkMode =>
+      MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+
   /// Support info for dark mode.
   ///
   /// Relevant settings should be disabled if this is null.
@@ -92,11 +95,15 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
       if (!shouldEnable) return;
     }
 
+    final currentTheme = _isSystemInDarkMode
+        ? vm.themeSetting.preferredFollowSystemDarkTheme
+        : vm.themeSetting.preferredFollowSystemLightTheme;
     setState(() {
       if (vm.themeSetting.themeSwitchMode !=
           ThemeSwitchMode.FollowSystemThemeSetting) {
-        vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-            b..themeSwitchMode = ThemeSwitchMode.FollowSystemThemeSetting));
+        vm.updateThemeSetting(vm.themeSetting.rebuild((b) => b
+          ..themeSwitchMode = ThemeSwitchMode.FollowSystemThemeSetting
+          ..currentTheme = currentTheme));
       }
     });
   }
@@ -213,7 +220,8 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                         ? '跟随系统主题设置（需设备支持）'
                         : '获取信息中...',
                   ),
-                  trailing: buildTrailingIcon<ThemeSwitchMode>(context,
+                  trailing: buildTrailingIcon<ThemeSwitchMode>(
+                      context,
                       vm.themeSetting.themeSwitchMode,
                       ThemeSwitchMode.FollowSystemThemeSetting),
                   onTap: () => onSelectFollowSystemTheme(vm),
@@ -254,7 +262,6 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                       b..preferredFollowBrightnessDarkTheme = newTheme));
                     },
                   ),
-
                 if (showOptionsUnderSwitchMode(
                   ThemeSwitchMode.FollowSystemThemeSetting,
                   vm.themeSetting,
@@ -263,12 +270,23 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                     themeSetting: vm.themeSetting,
                     showHiddenTheme: hasActivatedHiddenThemeTrigger,
                     onLightThemePreferenceChange: (MuninTheme newTheme) {
-                      vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-                      b..preferredFollowSystemLightTheme = newTheme));
+                      var themeSetting = vm.themeSetting.rebuild((b) =>
+                      b..preferredFollowSystemLightTheme = newTheme);
+                      if (!_isSystemInDarkMode) {
+                        themeSetting = themeSetting.rebuild((b) =>
+                        b..currentTheme = newTheme);
+                      }
+                      vm.updateThemeSetting(themeSetting);
                     },
                     onDarkThemePreferenceChange: (MuninTheme newTheme) {
-                      vm.updateThemeSetting(vm.themeSetting.rebuild((b) =>
-                      b..preferredFollowSystemDarkTheme = newTheme));
+                      var themeSetting = vm.themeSetting.rebuild(
+                              (
+                              b) => b..preferredFollowSystemDarkTheme = newTheme);
+                      if (_isSystemInDarkMode) {
+                        themeSetting = themeSetting.rebuild((b) =>
+                        b..currentTheme = newTheme);
+                      }
+                      vm.updateThemeSetting(themeSetting);
                     },
                   ),
               ],

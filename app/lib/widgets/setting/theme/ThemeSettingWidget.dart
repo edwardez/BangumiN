@@ -13,6 +13,7 @@ import 'package:munin/widgets/setting/theme/FollowSystemThemeOptions.dart';
 import 'package:munin/widgets/setting/theme/ManualThemeOptions.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:redux/redux.dart';
 
 class ThemeSettingWidget extends StatefulWidget {
@@ -106,6 +107,30 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
           ..currentTheme = currentTheme));
       }
     });
+  }
+
+  Widget get _systemMultiThemeSupportText {
+    if (darkModeSupportInfo == null) return Text('获取信息中...');
+
+    const followSystemThemeLabel = '跟随系统主题设置';
+
+    if (darkModeSupportInfo.darkModeAvailability ==
+        DarkModeAvailability.available) {
+      return Text(followSystemThemeLabel);
+    }
+
+    if (darkModeSupportInfo.darkModeAvailability ==
+        DarkModeAvailability.unavailable) {
+      return Text(
+        '$followSystemThemeLabel(当前设备可能不支持)',
+        style: TextStyle(color: Theme.of(context).accentColor),
+      );
+    }
+
+    return Text(
+      '$followSystemThemeLabel（当前设备不支持）',
+      style: TextStyle(color: Theme.of(context).errorColor),
+    );
   }
 
   @override
@@ -215,15 +240,16 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                         .body2
                         : null,
                   ),
-                  subtitle: Text(
-                    darkModeSupportInfo != null
-                        ? '跟随系统主题设置（需设备支持）'
-                        : '获取信息中...',
-                  ),
+                  subtitle: _systemMultiThemeSupportText,
                   trailing: buildTrailingIcon<ThemeSwitchMode>(
-                      context,
-                      vm.themeSetting.themeSwitchMode,
-                      ThemeSwitchMode.FollowSystemThemeSetting),
+                    context,
+                    vm.themeSetting.themeSwitchMode,
+                    ThemeSwitchMode.FollowSystemThemeSetting,
+                    iconData: darkModeSupportInfo?.darkModeAvailability ==
+                        DarkModeAvailability.available
+                        ? OMIcons.done
+                        : OMIcons.warning,
+                  ),
                   onTap: () => onSelectFollowSystemTheme(vm),
                 ),
                 if (showOptionsUnderSwitchMode(
@@ -270,11 +296,12 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                     themeSetting: vm.themeSetting,
                     showHiddenTheme: hasActivatedHiddenThemeTrigger,
                     onLightThemePreferenceChange: (MuninTheme newTheme) {
-                      var themeSetting = vm.themeSetting.rebuild((b) =>
-                      b..preferredFollowSystemLightTheme = newTheme);
+                      var themeSetting = vm.themeSetting.rebuild(
+                              (
+                              b) => b..preferredFollowSystemLightTheme = newTheme);
                       if (!_isSystemInDarkMode) {
-                        themeSetting = themeSetting.rebuild((b) =>
-                        b..currentTheme = newTheme);
+                        themeSetting = themeSetting
+                            .rebuild((b) => b..currentTheme = newTheme);
                       }
                       vm.updateThemeSetting(themeSetting);
                     },
@@ -283,8 +310,8 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                               (
                               b) => b..preferredFollowSystemDarkTheme = newTheme);
                       if (_isSystemInDarkMode) {
-                        themeSetting = themeSetting.rebuild((b) =>
-                        b..currentTheme = newTheme);
+                        themeSetting = themeSetting
+                            .rebuild((b) => b..currentTheme = newTheme);
                       }
                       vm.updateThemeSetting(themeSetting);
                     },

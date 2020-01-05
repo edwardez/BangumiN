@@ -69,12 +69,13 @@ abstract class ThemeSetting
         ..preferredFollowSystemLightTheme = MuninTheme.BrightBangumiPinkBlue
         ..preferredFollowSystemDarkTheme = MuninTheme.NightPureDarkBlue
         ..currentTheme = MuninTheme.BrightBangumiPinkBlue
-        ..themeSwitchMode = ThemeSwitchMode.Manual
+        ..themeSwitchMode = ThemeSwitchMode.FollowSystemThemeSetting
         ..update(updates));
 
   static void _initializeBuilder(ThemeSettingBuilder b) => b
     ..preferredFollowSystemLightTheme = MuninTheme.BrightBangumiPinkBlue
-    ..preferredFollowSystemDarkTheme = MuninTheme.NightPureDarkBlue;
+    ..preferredFollowSystemDarkTheme = MuninTheme.NightPureDarkBlue
+    ..themeSwitchMode = ThemeSwitchMode.FollowSystemThemeSetting;
 
   String toJson() {
     return json

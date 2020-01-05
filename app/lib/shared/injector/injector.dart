@@ -96,14 +96,23 @@ Future<void> injector(GetIt getIt) async {
   return;
 }
 
+void saveBangumiCookieToCookieJar(CookieJar bangumiCookieJar,
+    List<Cookie> cookies, String bangumiHostForDio) {
+  bangumiCookieJar.saveFromResponse(
+      Uri.parse("https://$bangumiMainHost"), cookies);
+
+  bangumiCookieJar.saveFromResponse(
+      Uri.parse("https://$bangumiHostForDio"), cookies);
+}
+
 /// Creates a new dio client with present settings
 Dio createDioForBangumiCookieService(
-    BangumiCookieCredentials bangumiCookieCredential,
-    CookieJar bangumiCookieJar, {
-      String bangumiHostForDio,
-    }) {
-  final bangumiHost = bangumiHostForDio ??
-      Application.environmentValue.bangumiHostForDio;
+  BangumiCookieCredentials bangumiCookieCredential,
+  CookieJar bangumiCookieJar, {
+  String bangumiHostForDio,
+}) {
+  final bangumiHost =
+      bangumiHostForDio ?? Application.environmentValue.bangumiHostForDio;
   Map<String, dynamic> headers = {
     HttpHeaders.hostHeader: bangumiHost,
     HttpHeaders.refererHeader:
@@ -131,13 +140,7 @@ Dio createDioForBangumiCookieService(
       headers[HttpHeaders.userAgentHeader] = bangumiCookieCredential.userAgent;
     }
 
-    bangumiCookieJar.saveFromResponse(
-        Uri.parse("https://$bangumiMainHost"),
-        cookies);
-
-    bangumiCookieJar.saveFromResponse(
-        Uri.parse("https://$bangumiHost"),
-        cookies);
+    saveBangumiCookieToCookieJar(bangumiCookieJar, cookies, bangumiHost);
   }
 
   var dio = Dio(BaseOptions(

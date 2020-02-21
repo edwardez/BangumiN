@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
-import 'package:munin/shared/utils/common.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 const _minimumAndroidDarkModeSdkInt = 29;
-const _minimumRequiredIOSDarkModeVersion = 13.0;
+final _minimumRequiredIOSDarkModeVersion = Version(13, 0, 0);
 
-const _readableMinimumRequiredAndroidDarkModeVersion = 'Android 10';
-const _readableMinimumRequiredIOSDarkModeVersion = 'iOS 13.0';
+const _readableMinimumRequiredAndroidDarkModeVersion = 'Android 10或以上';
+const _readableMinimumRequiredIOSDarkModeVersion = 'iOS 13.0或以上';
 
 class DarkModeSupportInfo {
   final DarkModeAvailability darkModeAvailability;
@@ -52,16 +52,16 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
   List<String> minimumSupportedPlatformVersion = [];
 
   if (Platform.isIOS) {
-    final systemVersion = tryParseDouble(
-      (await deviceInfo.iosInfo).systemVersion,
-      defaultValue: null,
-    );
-    if (systemVersion != null) {
+    final versionString = (await deviceInfo.iosInfo).systemVersion;
+    try {
+      final systemVersion = Version.parse(versionString);
       darkModeAvailability = systemVersion >= _minimumRequiredIOSDarkModeVersion
           ? DarkModeAvailability.available
           : DarkModeAvailability.unavailable;
 
-      currentSystemVersion = 'iOS $systemVersion';
+      currentSystemVersion = 'iOS $versionString';
+    } on FormatException {
+      darkModeAvailability = DarkModeAvailability.unknown;
     }
 
     minimumSupportedPlatformVersion
@@ -72,7 +72,7 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
     if (currentSdkInt != null) {
       currentSystemVersion = 'Android ${androidInfo.version.release}';
 
-      darkModeAvailability = currentSdkInt >= _minimumAndroidDarkModeSdkInt
+      darkModeAvailability = currentSdkInt <= _minimumAndroidDarkModeSdkInt
           ? DarkModeAvailability.available
           : DarkModeAvailability.unavailable;
     }
@@ -85,7 +85,11 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
       _readableMinimumRequiredIOSDarkModeVersion,
     ]);
   }
-
+  print(DarkModeSupportInfo(
+    darkModeAvailability,
+    currentSystemVersion,
+    minimumSupportedPlatformVersion,
+  ));
   return DarkModeSupportInfo(
     darkModeAvailability,
     currentSystemVersion,

@@ -210,7 +210,7 @@ SPEC CHECKSUMS:
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
-  webview_flutter: db3aba222b23e4dc432e0c5882834123dc50ff9f
+  webview_flutter: bec7599de6bfbe8008a739aa3ebd7b364ea9d0cd
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 

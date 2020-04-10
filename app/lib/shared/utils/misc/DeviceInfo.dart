@@ -85,11 +85,6 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
       _readableMinimumRequiredIOSDarkModeVersion,
     ]);
   }
-  print(DarkModeSupportInfo(
-    darkModeAvailability,
-    currentSystemVersion,
-    minimumSupportedPlatformVersion,
-  ));
   return DarkModeSupportInfo(
     darkModeAvailability,
     currentSystemVersion,

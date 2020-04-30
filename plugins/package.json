@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/edwardez/bangumin#readme",
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "qunit": "^2.7.1"
   },
   "devDependencies": {

@@ -334,7 +334,9 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         requestStatusFuture = action.completer.future;
       },
       onInitialBuild: (vm) {
-        requestStatusFuture = _muninRefreshKey?.currentState?.callOnRefresh();
+        if (vm.thread == null) {
+          requestStatusFuture = _muninRefreshKey?.currentState?.callOnRefresh();
+        }
       },
       builder: (BuildContext context, _ViewModel vm) {
         final thread = vm.thread;

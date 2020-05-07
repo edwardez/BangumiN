@@ -46,8 +46,8 @@ Stream<dynamic> _getUserPreviewEpic(BangumiUserService bangumiUserService,
 Epic<AppState> _createGetUserPreviewEpic(
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetUserPreviewRequestAction>())
+    return actions
+        .whereType<GetUserPreviewRequestAction>()
         .switchMap((action) => _getUserPreviewEpic(bangumiUserService, action));
   };
 }
@@ -122,8 +122,8 @@ Stream<dynamic> _listUserCollectionsEpic(
 Epic<AppState> _createListUserCollectionsEpic(
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ListUserCollectionsRequestAction>())
+    return actions
+        .whereType<ListUserCollectionsRequestAction>()
         .switchMap((action) => _listUserCollectionsEpic(
               bangumiUserService,
               store,
@@ -154,8 +154,8 @@ Stream<dynamic> _listNotificationItemsEpic(
 Epic<AppState> _createListNotificationItemsEpic(
     BangumiUserService bangumiUserService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ListNotificationItemsAction>())
+    return actions
+        .whereType<ListNotificationItemsAction>()
         .switchMap((action) =>
         _listNotificationItemsEpic(
           bangumiUserService,
@@ -196,14 +196,14 @@ Stream<dynamic> _listenOnUnreadNotificationsEpic(EpicStore<AppState> store,
 Epic<AppState> _createListenOnUnreadNotificationsEpic(
     BangumiUserService bangumiUserService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ListenOnUnreadNotificationAction>())
+    return actions
+        .whereType<ListenOnUnreadNotificationAction>()
         .switchMap<ListenOnUnreadNotificationAction>(
             (action) =>
-            Observable.concat(
+            ConcatStream(
               [
-                Observable.just(action),
-                Observable.periodic(
+                Stream.value(action),
+                Stream.periodic(
                     listenOnUnreadNotificationsInterval, (i) => action)
               ],
             ))
@@ -239,9 +239,9 @@ Stream<dynamic> _clearUnreadNotificationsEpic(EpicStore<AppState> store,
 Epic<AppState> _createClearUnreadNotificationsEpic(
     BangumiUserService bangumiUserService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ClearUnreadNotificationsAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<ClearUnreadNotificationsAction>()
+        .asyncExpand((action) =>
         _clearUnreadNotificationsEpic(
           store,
           bangumiUserService,
@@ -272,9 +272,9 @@ Stream<dynamic> _changeFriendRelationshipEpic(
 Epic<AppState> _createChangeFriendRelationshipEpic(
     BangumiUserService bangumiUserService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ChangeFriendRelationshipRequestAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<ChangeFriendRelationshipRequestAction>()
+        .asyncExpand((action) =>
         _changeFriendRelationshipEpic(
           bangumiUserService,
           action,

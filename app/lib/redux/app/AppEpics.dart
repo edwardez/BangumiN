@@ -46,10 +46,8 @@ Stream<dynamic> _persistState(EpicStore<AppState> store,
 Epic<AppState> _createPersistStateEpic(
     SharedPreferenceService sharedPreferenceService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<PersistAppStateAction>())
-        .concatMap(
-            (action) => _persistState(store, sharedPreferenceService, action));
+    return actions.whereType<PersistAppStateAction>().asyncExpand(
+        (action) => _persistState(store, sharedPreferenceService, action));
   };
 }
 
@@ -96,8 +94,8 @@ Stream<dynamic> _handleErrorEpic(EpicStore<AppState> store,
 
 Epic<AppState> _createHandleErrorEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<HandleErrorAction>())
-        .concatMap((action) => _handleErrorEpic(store, action));
+    return actions
+        .whereType<HandleErrorAction>()
+        .asyncExpand((action) => _handleErrorEpic(store, action));
   };
 }

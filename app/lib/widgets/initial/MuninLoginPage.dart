@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -346,7 +347,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         '$bangumiAuthWebUrl/FollowTheRabbit',
         data: body,
         options: Options(
-          contentType: ExtraContentType.xWwwFormUrlencoded,
+          contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
         ),
       );
 
@@ -433,7 +434,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         authorizationUrl,
         data: oauthBody,
         options: Options(
-            contentType: ExtraContentType.xWwwFormUrlencoded,
+            contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
             headers: {
               HttpHeaders.refererHeader: authorizationUrl,
             },

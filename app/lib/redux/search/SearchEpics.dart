@@ -63,8 +63,8 @@ Stream<dynamic> _searchSubjectOrMonoEpic(
 Epic<AppState> _createSearchSubjectOrMonoEpic(
     BangumiSearchService bangumiSearchService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<SearchAction>())
+    return actions
+        .whereType<SearchAction>()
         .switchMap((action) => _searchSubjectOrMonoEpic(
               bangumiSearchService,
               action,

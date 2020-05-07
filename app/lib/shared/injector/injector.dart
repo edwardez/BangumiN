@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -148,7 +149,7 @@ Dio createDioForBangumiCookieService(
     connectTimeout: Duration(seconds: 10).inMilliseconds,
     receiveTimeout: Duration(seconds: 10).inMilliseconds,
     headers: headers,
-    contentType: ContentType.html,
+    contentType: ContentType.html.mimeType,
     // Transform the response data to a String encoded with UTF8.
     // The default value is [ResponseType.JSON].
     responseType: ResponseType.plain,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
@@ -92,9 +91,8 @@ class BangumiTimelineService {
 
     Response response = await cookieClient.dio.get('/erase/tml/$feedId',
         queryParameters: queryParameters,
-        options: Options(
-            contentType:
-                ContentType.parse("application/x-www-form-urlencoded")));
+        options:
+            Options(contentType: ExtraContentType.xWwwFormUrlencoded.mimeType));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.data);
@@ -121,7 +119,7 @@ class BangumiTimelineService {
         queryParameters: queryParameters,
         data: body,
         options: Options(
-          contentType: ExtraContentType.xWwwFormUrlencoded,
+          contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
         ));
 
     if (response.statusCode == 200) {
@@ -169,7 +167,7 @@ class BangumiTimelineService {
       '/timeline/$feedId/new_reply?ajax=1',
       data: formData,
       options: Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 

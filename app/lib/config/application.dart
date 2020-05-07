@@ -41,7 +41,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:upgrader/upgrader.dart'; // ignore: unused_import
 
-final GetIt getIt = GetIt();
+final GetIt getIt = GetIt.instance;
 
 enum EnvironmentType { Test, Development, Uat, Production }
 
@@ -176,7 +176,7 @@ abstract class Application {
     if (environmentType != EnvironmentType.Development &&
         privacySetting.optInAutoSendCrashReport) {
       FlutterError.onError = (FlutterErrorDetails details) {
-        Crashlytics.instance.onError(details);
+        Crashlytics.instance.recordFlutterError(details);
       };
     }
 

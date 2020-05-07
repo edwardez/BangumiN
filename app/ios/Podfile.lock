@@ -100,6 +100,8 @@ PODS:
     - Flutter
   - video_player_web (0.0.1):
     - Flutter
+  - wakelock (0.0.1):
+    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
@@ -123,6 +125,7 @@ DEPENDENCIES:
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -177,16 +180,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
   video_player_web:
     :path: ".symlinks/plugins/video_player_web/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   Crashlytics: 1f5f752c7feac0add0cc1774756f96444fa3b1a7
-  device_info: cbf09d2ec12aa7110e0b09fabe54b5bd6c8efe74
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Fabric: 09de1e053eb7dc415593166ad3e53d4c88123405
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
-  firebase_analytics: b0d7c086f5a50042153fd0441dafef51bde36cd0
-  firebase_crashlytics: 90224b1e8534bb61de9db7d786892ba582e49a9a
+  firebase_analytics: dacdcfc524d722fff13dcff942f0dfa47e6be567
+  firebase_crashlytics: bd8c58df07f107cb7e1a20cb190b9a468e0a69fd
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseCore: e38f025287b413255a53acc1945d048a112047f7
   FirebaseInstanceID: 0e0348a3c00a734fa376a070f5ad4533ad975cb5
@@ -197,7 +202,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 84df567c76ca84f67b7bb40e769fdd4acc746a10
   image_gallery_saver: 73b3cd8ad9c950c739878af9c311744d1bf5405d
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
@@ -210,7 +215,8 @@ SPEC CHECKSUMS:
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
-  webview_flutter: bec7599de6bfbe8008a739aa3ebd7b364ea9d0cd
+  wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 

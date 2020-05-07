@@ -173,7 +173,7 @@ class BangumiUserService {
       path,
       queryParameters: queryParameters,
       options: Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 
@@ -212,7 +212,7 @@ class BangumiUserService {
       path,
       queryParameters: queryParameters,
       options: Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 

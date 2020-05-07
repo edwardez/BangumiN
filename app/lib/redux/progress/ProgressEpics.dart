@@ -82,8 +82,8 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
 Epic<AppState> _createGetProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetProgressRequestAction>())
+    return actions
+        .whereType<GetProgressRequestAction>()
         .switchMap((action) => _getProgress(
               bangumiProgressService,
               action,
@@ -118,13 +118,14 @@ Stream<dynamic> _getSubjectEpisodesEpic(
 Epic<AppState> _createGetSubjectEpisodesEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetSubjectEpisodesRequestAction>())
-        .switchMap((action) => _getSubjectEpisodesEpic(
-              bangumiProgressService,
-              action,
-              store.state.currentAuthenticatedUserBasicInfo.username,
-            ));
+    return actions
+        .whereType<GetSubjectEpisodesRequestAction>()
+        .switchMap((action) =>
+        _getSubjectEpisodesEpic(
+          bangumiProgressService,
+          action,
+          store.state.currentAuthenticatedUserBasicInfo.username,
+        ));
   };
 }
 
@@ -190,10 +191,10 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
 Epic<AppState> _createUpdateProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    /// concatMap should be used: user might update another subject while the first one is not finished yet
-    return Observable(actions)
-        .ofType(TypeToken<UpdateProgressAction>())
-        .concatMap(
+    /// asyncExpand should be used: user might update another subject while the first one is not finished yet
+    return actions
+        .whereType<UpdateProgressAction>()
+        .asyncExpand(
             (action) => _updateProgress(bangumiProgressService, action, store));
   };
 }
@@ -283,10 +284,10 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
 Epic<AppState> _createUpdateSubjectEpisodeEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    /// concatMap should be used: user might update another subject while the first one is not finished yet
-    return Observable(actions)
-        .ofType(TypeToken<UpdateSubjectEpisodeAction>())
-        .concatMap((action) =>
-            _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
+    /// asyncExpand should be used: user might update another subject while the first one is not finished yet
+    return actions
+        .whereType<UpdateSubjectEpisodeAction>()
+        .asyncExpand((action) =>
+        _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
   };
 }

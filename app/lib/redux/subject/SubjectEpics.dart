@@ -61,8 +61,8 @@ Stream<dynamic> _getSubject(EpicStore<AppState> store,
 Epic<AppState> _createGetSubjectEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions).ofType(TypeToken<GetSubjectAction>()).switchMap(
-            (action) => _getSubject(store, bangumiSubjectService, action));
+    return actions.whereType<GetSubjectAction>().switchMap(
+        (action) => _getSubject(store, bangumiSubjectService, action));
   };
 }
 
@@ -108,8 +108,8 @@ Stream<dynamic> _getCollectionInfo(BangumiSubjectService bangumiSubjectService,
 Epic<AppState> _createGetCollectionInfoEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetCollectionInfoAction>())
+    return actions
+        .whereType<GetCollectionInfoAction>()
         .switchMap((action) =>
         _getCollectionInfo(bangumiSubjectService, action, store));
   };
@@ -190,8 +190,8 @@ Epic<AppState> _createCollectionUpdateRequestEpic(
     BangumiSubjectService bangumiSubjectService,
     BangumiProgressService bangumiProgressService,) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<UpdateCollectionRequestAction>())
+    return actions
+        .whereType<UpdateCollectionRequestAction>()
         .switchMap((action) =>
         _collectionUpdateRequest(
             bangumiSubjectService, bangumiProgressService, action, store));
@@ -232,11 +232,11 @@ Stream<dynamic> _deleteCollectionRequestEpic(EpicStore<AppState> store,
 Epic<AppState> _createDeleteCollectionRequestEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<DeleteCollectionRequestAction>())
+    return actions
+        .whereType<DeleteCollectionRequestAction>()
 
-    /// All previous cancel request needs to be kept so concatMap is used.
-        .concatMap(
+    /// All previous cancel request needs to be kept so asyncExpand is used.
+        .asyncExpand(
           (action) =>
           _deleteCollectionRequestEpic(
               store, bangumiSubjectService, action),
@@ -299,8 +299,8 @@ Stream<dynamic> _getSubjectReviewsEpic(EpicStore<AppState> store,
 Epic<AppState> _createGetSubjectReviewsEpic(
     BangumiSubjectService bangumiSubjectService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetSubjectReviewAction>())
+    return actions
+        .whereType<GetSubjectReviewAction>()
         .switchMap((action) =>
         _getSubjectReviewsEpic(store, bangumiSubjectService, action));
   };

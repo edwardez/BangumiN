@@ -228,7 +228,7 @@ class BangumiDiscussionService {
       data: formData,
       queryParameters: queryParameters,
       options: Dio.Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 
@@ -273,7 +273,7 @@ class BangumiDiscussionService {
       url,
       queryParameters: queryParameters,
       options: Dio.Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 
@@ -339,7 +339,7 @@ class BangumiDiscussionService {
       url,
       data: formData,
       options: Dio.Options(
-          contentType: ExtraContentType.xWwwFormUrlencoded,
+          contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
 
           /// Bangumi returns a 302 redirect if reply is successfully posted.
           validateStatus: (code) => code == HttpStatus.found),

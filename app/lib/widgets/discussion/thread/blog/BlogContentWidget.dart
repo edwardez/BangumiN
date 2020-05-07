@@ -57,7 +57,7 @@ class BlogContentWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: mediumOffset),
                     child: Text(
                       '关联条目',
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
                   for (var subject in blogContent.associatedSubjects) ...[

@@ -61,7 +61,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
     return Optional.of(StrokeChip(
       label: Text(
         status.chineseName,
-        style: Theme.of(context).textTheme.body1.copyWith(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(
               color: color,
               decoration: chipTextDecoration,
             ),

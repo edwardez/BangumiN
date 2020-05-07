@@ -14,7 +14,7 @@ class NetworkServiceTagWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLink = tag.isLink;
-    TextStyle contentTextStyle = Theme.of(context).textTheme.body1;
+    TextStyle contentTextStyle = Theme.of(context).textTheme.bodyText2;
 
     if (isLink) {
       contentTextStyle = contentTextStyle.copyWith(

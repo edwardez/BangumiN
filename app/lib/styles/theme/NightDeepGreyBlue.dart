@@ -14,7 +14,7 @@ final ThemeData nightDeepGreyBlueThemeData = ThemeData(
   sliderTheme: SliderThemeData.fromPrimaryColors(
     primaryColor: Colors.lightBlueAccent,
     primaryColorDark: Colors.lightBlueAccent.shade700,
-    valueIndicatorTextStyle: ThemeData().textTheme.body2,
+    valueIndicatorTextStyle: ThemeData().textTheme.bodyText1,
     primaryColorLight: Colors.lightBlueAccent.shade100,
   ),
   accentColor: Colors.lightBlueAccent,

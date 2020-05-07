@@ -79,7 +79,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         BlogContentWidget(
@@ -96,7 +96,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
         ),
       ];
@@ -112,7 +115,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
               ),
               Text(
                 thread.title,
-                style: Theme.of(context).textTheme.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
               )
             ],
           ),
@@ -128,7 +134,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
         ),
         MuninPadding.vertical1xOffset(

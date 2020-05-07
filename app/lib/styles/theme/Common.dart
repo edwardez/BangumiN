@@ -89,7 +89,7 @@ TextStyle captionTextWithBody1Size(BuildContext context) {
   return Theme.of(context)
       .textTheme
       .caption
-      .copyWith(fontSize: Theme.of(context).textTheme.body1.fontSize);
+      .copyWith(fontSize: Theme.of(context).textTheme.bodyText2.fontSize);
 }
 
 TextStyle scoreStyle(BuildContext context, {fontSize = 18.0}) {
@@ -112,6 +112,12 @@ Color lightPrimaryDarkAccentColor(BuildContext context) {
 }
 
 TextStyle defaultDialogContentTextStyle(BuildContext context) {
-  return Theme.of(context).dialogTheme.contentTextStyle ??
-      Theme.of(context).textTheme.subhead;
+  return Theme
+      .of(context)
+      .dialogTheme
+      .contentTextStyle ??
+      Theme
+          .of(context)
+          .textTheme
+          .subtitle1;
 }

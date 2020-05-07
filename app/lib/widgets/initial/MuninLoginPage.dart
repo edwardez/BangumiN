@@ -494,7 +494,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   _buildTosAndPrivacy(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText2,
         children: <TextSpan>[
           TextSpan(text: '点击登录即代表您同意BangumiN的'),
           ...tosAndPrivacyLinks(context),

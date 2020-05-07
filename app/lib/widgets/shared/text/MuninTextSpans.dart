@@ -17,7 +17,8 @@ class MuninTextSpans extends StatelessWidget {
           for (var textConfig in children)
             TextSpan(
               text: textConfig.text,
-              style: textConfig.textStyle ?? Theme.of(context).textTheme.body1,
+              style:
+                  textConfig.textStyle ?? Theme.of(context).textTheme.bodyText2,
             )
         ],
       ),

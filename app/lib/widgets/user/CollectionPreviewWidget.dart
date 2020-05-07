@@ -36,7 +36,7 @@ class CollectionPreviewWidget extends StatelessWidget {
       children: <Widget>[
         WrappableText(
           '${subjectType.chineseName}收藏',
-          textStyle: Theme.of(context).textTheme.subhead,
+          textStyle: Theme.of(context).textTheme.subtitle1,
           fit: FlexFit.tight,
         ),
         Row(
@@ -66,7 +66,10 @@ class CollectionPreviewWidget extends StatelessWidget {
           text: TextSpan(children: [
             TextSpan(
                 text: _formatWithBulletPoint(subject.name),
-                style: Theme.of(context).textTheme.body1),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2),
           ]),
         );
       }).toList();

@@ -7,9 +7,9 @@ import 'package:quiver/time.dart';
 
 void showMuninAboutDialog(BuildContext context) async {
   final ThemeData themeData = Theme.of(context);
-  final TextStyle aboutTextStyle = themeData.textTheme.body2;
+  final TextStyle aboutTextStyle = themeData.textTheme.bodyText1;
   final TextStyle linkStyle =
-      themeData.textTheme.body2.copyWith(color: themeData.accentColor);
+      themeData.textTheme.bodyText1.copyWith(color: themeData.accentColor);
   final Widget bangumiNLogo = SvgPicture.asset(
       'assets/logo/munin_logo_rounded.svg',
       width: 48.0,

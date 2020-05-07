@@ -110,7 +110,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
           )),
           label: Text(
             '${tryFormatDoubleAsInt(episode.sequentialNumber)}',
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                 decoration: episode.userEpisodeStatus == EpisodeStatus.Dropped
                     ? TextDecoration.lineThrough
                     : null,

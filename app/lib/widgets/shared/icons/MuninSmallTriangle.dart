@@ -15,7 +15,7 @@ class MuninSmallTriangle extends StatelessWidget {
     return Icon(
       MuninIcons.muninRoundedTriangle,
       size: size ??
-          Theme.of(context).textTheme.subhead.fontSize *
+          Theme.of(context).textTheme.subtitle1.fontSize *
               MediaQuery.of(context).textScaleFactor /
               4.2,
     );

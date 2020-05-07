@@ -43,7 +43,7 @@ class _SpoilerTextState extends State<SpoilerText> {
       child: RichText(
         text: TextSpan(
             text: widget.text,
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: textColor,
 
                   /// Should this also be theme-aware?

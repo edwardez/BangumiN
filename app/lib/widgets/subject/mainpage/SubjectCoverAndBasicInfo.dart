@@ -73,7 +73,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
           TextSpan(
               text: subject.rating.score?.toString() ?? '-',
               style: scoreStyle(context)),
-          TextSpan(text: '分  ', style: Theme.of(context).textTheme.body1),
+          TextSpan(text: '分  ', style: Theme.of(context).textTheme.bodyText2),
           TextSpan(
               text: '${subject.rating.totalScoreVotesCount}人',
               style: Theme.of(context).textTheme.caption)

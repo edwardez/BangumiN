@@ -1,15 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 
-InterceptorsWrapper createBangumiCookieExpirationCheckInterceptor(
-    DateTime expiresOn) {
-  return InterceptorsWrapper(
-    onRequest: (RequestOptions options) {
-      if (DateTime.now().isAfter(expiresOn)) {
-        throw AuthenticationExpiredException('认证已过期');
-      }
+class BangumiCookieExpirationCheckInterceptor extends InterceptorsWrapper {
+  /// [DateTime] that current cookie should expire.
+  DateTime _expiresOn;
 
-      return options;
-    },
-  );
+  set expiresOn(DateTime expiresOn) {
+    _expiresOn = expiresOn;
+  }
+
+  BangumiCookieExpirationCheckInterceptor(DateTime expiresOn) {
+    this._expiresOn = expiresOn;
+  }
+
+  @override
+  Future onRequest(RequestOptions options) {
+    if (DateTime.now().isAfter(_expiresOn)) {
+      throw AuthenticationExpiredException('认证已过期');
+    }
+
+    return super.onRequest(options);
+  }
 }

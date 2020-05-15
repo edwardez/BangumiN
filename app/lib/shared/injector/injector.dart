@@ -157,9 +157,14 @@ Dio createDioForBangumiCookieService(
 
   dio.interceptors.add(CookieManager(bangumiCookieJar));
 
+  BangumiCookieExpirationCheckInterceptor expirationChecker =
+      BangumiCookieExpirationCheckInterceptor(
+          bangumiCookieCredential.expiresOn);
+  getIt.registerSingleton<BangumiCookieExpirationCheckInterceptor>(
+      expirationChecker);
+
   if (bangumiCookieCredential != null) {
-    dio.interceptors.add(createBangumiCookieExpirationCheckInterceptor(
-        bangumiCookieCredential.expiresOn));
+    dio.interceptors.add(expirationChecker);
   }
 
   // Enables logging in development environment

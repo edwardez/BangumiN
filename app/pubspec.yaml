@@ -14,8 +14,8 @@ description: Flutter + BangumiN == Munin (a new Bangumi App)
 version: 0.5.0+14
 
 environment:
-  sdk: ">=2.4.0 <3.0.0"
-  flutter: ^1.17.0
+  sdk: ">=2.8.0 <3.0.0"
+  flutter: ^1.17.2
 
 dependencies:
   flutter:

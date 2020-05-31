@@ -5,6 +5,7 @@ import 'package:pub_semver/pub_semver.dart';
 
 const _minimumAndroidDarkModeSdkInt = 29;
 final _minimumRequiredIOSDarkModeVersion = Version(13, 0, 0);
+final _iOSVersionRegex = RegExp(r'^(\d+)(?:\.(\d+))?(?:\.(\d+))?(.+)?$');
 
 const _readableMinimumRequiredAndroidDarkModeVersion = 'Android 10或以上';
 const _readableMinimumRequiredIOSDarkModeVersion = 'iOS 13.0或以上';
@@ -54,7 +55,7 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
   if (Platform.isIOS) {
     final versionString = (await deviceInfo.iosInfo).systemVersion;
     try {
-      final systemVersion = Version.parse(versionString);
+      final systemVersion = VersionExtension.parseIOSVersion(versionString);
       darkModeAvailability = systemVersion >= _minimumRequiredIOSDarkModeVersion
           ? DarkModeAvailability.available
           : DarkModeAvailability.unavailable;
@@ -98,4 +99,29 @@ enum DarkModeAvailability {
 
   /// Cannot decide whether current platform supports dark mode.
   unknown
+}
+
+extension VersionExtension on Version {
+  /// Creates a new [Version] by parsing [text].
+  static Version parseIOSVersion(String text) {
+    final match = _iOSVersionRegex.firstMatch(text);
+
+    if (match == null) {
+      throw FormatException('Could not parse "$text".');
+    }
+    if (match[4] != null) {
+      print('Possible invalid version string. Expecting iOS string to be like '
+          '13 or 13.1 or 13.1.1 but got $text');
+    }
+
+    try {
+      var major = int.parse(match[1]);
+      var minor = int.parse(match[2] ?? '0');
+      var patch = int.parse(match[3] ?? '0');
+
+      return Version(major, minor, patch);
+    } on FormatException {
+      throw FormatException('Could not parse "$text".');
+    }
+  }
 }

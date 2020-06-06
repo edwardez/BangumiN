@@ -12,7 +12,33 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
   final _assetOrDataImageUriPattern = RegExp('^(asset|data):');
-  final BuildContext _outerContext;
+
+  MuninWidgetFactory() : super();
+
+  @override
+  Widget buildImage(String url, {double height, String text, double width}) {
+    if (url?.isEmpty ?? true) return null;
+
+    if (_assetOrDataImageUriPattern.hasMatch(url))
+      return super.buildImage(
+        url,
+        height: height,
+        text: text,
+        width: width,
+      );
+
+    return _InkWellHtmlWrapper(
+      url: url,
+    );
+  }
+}
+
+/// A simpler wrapper to get [BuildContext] since [WidgetFactory.buildImage]
+/// doesn't provide one.
+class _InkWellHtmlWrapper extends StatelessWidget {
+  final url;
+
+  const _InkWellHtmlWrapper({Key key, @required this.url}) : super(key: key);
 
   static errorImageWidget(
     BuildContext context,
@@ -52,21 +78,8 @@ class MuninWidgetFactory extends WidgetFactory {
     );
   }
 
-  MuninWidgetFactory(HtmlWidgetConfig _config, BuildContext _outerContext)
-      : this._outerContext = _outerContext,
-        super(_config);
-
   @override
-  Widget buildImage(String url, {double height, String text, double width}) {
-    if (url?.isEmpty ?? true) return null;
-
-    if (_assetOrDataImageUriPattern.hasMatch(url)) return super.buildImage(
-      url,
-      height: height,
-      text: text,
-      width: width,
-    );
-
+  Widget build(BuildContext context) {
     return InkWell(
       child: CachedNetworkImage(
         imageUrl: url,
@@ -79,7 +92,7 @@ class MuninWidgetFactory extends WidgetFactory {
         },
       ),
       onTap: () {
-        launchByPreference(_outerContext, url);
+        launchByPreference(context, url);
       },
     );
   }

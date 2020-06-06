@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 const _minimumAndroidDarkModeSdkInt = 29;
@@ -61,8 +62,9 @@ Future<DarkModeSupportInfo> checkDarkThemeSupport() async {
           : DarkModeAvailability.unavailable;
 
       currentSystemVersion = 'iOS $versionString';
-    } on FormatException {
+    } on FormatException catch (e, s) {
       darkModeAvailability = DarkModeAvailability.unknown;
+      reportError(e, stack: s);
     }
 
     minimumSupportedPlatformVersion

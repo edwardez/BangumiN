@@ -18,11 +18,6 @@ class BangumiHtml extends StatelessWidget {
 
   static WidgetFactory _widgetFactory;
 
-  static WidgetFactory _factoryBuilder() {
-    _widgetFactory ??= MuninWidgetFactory();
-    return _widgetFactory;
-  }
-
   const BangumiHtml({Key key, @required this.html, this.showSpoiler})
       : super(key: key);
 
@@ -31,7 +26,7 @@ class BangumiHtml extends StatelessWidget {
     return HtmlWidget(
       html,
       baseUrl: bangumiHostUriForDio,
-      factoryBuilder: _factoryBuilder,
+      factoryBuilder: () => MuninWidgetFactory(),
       bodyPadding: EdgeInsets.zero,
       enableCaching: false,
       //Optional parameters:

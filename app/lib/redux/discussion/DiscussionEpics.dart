@@ -6,6 +6,7 @@ import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -47,6 +48,11 @@ Stream<dynamic> _getDiscussion(
     action.completer.complete();
   } catch (error, stack) {
     action.completer.completeError(error, stack);
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
+
     yield HandleErrorAction(
       context: action.context,
       error: error,

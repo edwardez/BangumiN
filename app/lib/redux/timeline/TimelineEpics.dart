@@ -198,6 +198,11 @@ Stream<dynamic> _getTimelineEpic(
   } catch (error, stack) {
     action.completer.completeError(error, stack);
 
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
+
     yield HandleErrorAction(
       context: action.context,
       error: error,

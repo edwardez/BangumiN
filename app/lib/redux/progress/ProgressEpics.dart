@@ -11,6 +11,7 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/common.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -69,6 +70,11 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
     action.completer.complete();
   } catch (error, stack) {
     action.completer.completeError(error, stack);
+
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
 
     yield HandleErrorAction(
       context: action.context,

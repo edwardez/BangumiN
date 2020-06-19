@@ -22,13 +22,12 @@ import 'package:munin/providers/storage/SharedPreferenceService.dart';
 import 'package:munin/providers/util/RetryableHttpClient.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 Future<void> injector(GetIt getIt) async {
   final FlutterSecureStorage secureStorage = new FlutterSecureStorage();
   Map<String, String> credentials = await secureStorage.readAll();
 
   String serializedBangumiCookieCredentials =
-  credentials[bangumiCookieCredentialsKey];
+      credentials[bangumiCookieCredentialsKey];
   BangumiCookieCredentials bangumiCookieCredential;
 
   if (serializedBangumiCookieCredentials != null) {
@@ -116,8 +115,7 @@ Dio createDioForBangumiCookieService(
       bangumiHostForDio ?? Application.environmentValue.bangumiHostForDio;
   Map<String, dynamic> headers = {
     HttpHeaders.hostHeader: bangumiHost,
-    HttpHeaders.refererHeader:
-    'https://$bangumiHost/',
+    HttpHeaders.refererHeader: 'https://$bangumiHost/',
   };
 
   // Attaches user agent and cookie to dio  if these are not null
@@ -158,14 +156,12 @@ Dio createDioForBangumiCookieService(
   dio.interceptors.add(CookieManager(bangumiCookieJar));
 
   BangumiCookieExpirationCheckInterceptor expirationChecker =
-      BangumiCookieExpirationCheckInterceptor(
-          bangumiCookieCredential.expiresOn);
+  BangumiCookieExpirationCheckInterceptor(
+      expiresOn: bangumiCookieCredential?.expiresOn);
+
   getIt.registerSingleton<BangumiCookieExpirationCheckInterceptor>(
       expirationChecker);
-
-  if (bangumiCookieCredential != null) {
-    dio.interceptors.add(expirationChecker);
-  }
+  dio.interceptors.add(expirationChecker);
 
   // Enables logging in development environment
   if (Application.environmentValue?.environmentType ==

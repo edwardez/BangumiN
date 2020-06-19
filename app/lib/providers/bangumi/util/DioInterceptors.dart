@@ -9,13 +9,13 @@ class BangumiCookieExpirationCheckInterceptor extends InterceptorsWrapper {
     _expiresOn = expiresOn;
   }
 
-  BangumiCookieExpirationCheckInterceptor(DateTime expiresOn) {
+  BangumiCookieExpirationCheckInterceptor({DateTime expiresOn}) {
     this._expiresOn = expiresOn;
   }
 
   @override
   Future onRequest(RequestOptions options) {
-    if (DateTime.now().isAfter(_expiresOn)) {
+    if (_expiresOn != null && DateTime.now().isAfter(_expiresOn)) {
       throw AuthenticationExpiredException('认证已过期');
     }
 

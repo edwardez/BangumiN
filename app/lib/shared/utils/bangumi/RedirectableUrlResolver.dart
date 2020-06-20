@@ -33,7 +33,7 @@ final _supportedSubRoutes = [
   ..._supportedSubRoutesWithDigitOnlyId,
 ].map(_escapeRoute);
 
-final possibleDomains = r'https?:\/\/(?:bgm\.tv|bangumi\.tv|chii\.in)\/';
+final possibleDomains = r'^https?:\/\/(?:bgm\.tv|bangumi\.tv|chii\.in)\/';
 
 final _possibleSubRoutes = '(${_supportedSubRoutes.join('|')})';
 

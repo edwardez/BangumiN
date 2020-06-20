@@ -19,6 +19,11 @@ class GetDiscussionRequestAction {
     @required this.getDiscussionRequest,
     Completer completer,
   }) : this.completer = completer ?? Completer();
+
+  GetDiscussionRequestAction.initialLaunch({
+    @required this.getDiscussionRequest,
+  })  : this.completer = Completer(),
+        this.context = null;
 }
 
 class GetDiscussionRequestSuccessAction {

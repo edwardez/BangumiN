@@ -6,6 +6,7 @@ import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart
 import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -47,6 +48,11 @@ Stream<dynamic> _getDiscussion(
     action.completer.complete();
   } catch (error, stack) {
     action.completer.completeError(error, stack);
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
+
     yield HandleErrorAction(
       context: action.context,
       error: error,
@@ -61,10 +67,8 @@ Stream<dynamic> _getDiscussion(
 Epic<AppState> _createGetDiscussionEpic(
     BangumiDiscussionService bangumiDiscussionService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetDiscussionRequestAction>())
-        .switchMap((action) =>
-            _getDiscussion(store, bangumiDiscussionService, action));
+    return actions.whereType<GetDiscussionRequestAction>().switchMap(
+        (action) => _getDiscussion(store, bangumiDiscussionService, action));
   };
 }
 
@@ -117,10 +121,10 @@ Stream<dynamic> _getGroupThread(
 Epic<AppState> _createGetGroupThreadEpic(
     BangumiDiscussionService bangumiDiscussionService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetThreadRequestAction>())
+    return actions
+        .whereType<GetThreadRequestAction>()
         .switchMap((action) =>
-            _getGroupThread(store, bangumiDiscussionService, action));
+        _getGroupThread(store, bangumiDiscussionService, action));
   };
 }
 
@@ -162,9 +166,9 @@ Stream<dynamic> _createReplyRequestEpic(EpicStore<AppState> store,
 Epic<AppState> _createCreateReplyRequestEpic(
     BangumiDiscussionService bangumiDiscussionService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<CreateReplyRequestAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<CreateReplyRequestAction>()
+        .asyncExpand((action) =>
         _createReplyRequestEpic(store, bangumiDiscussionService, action));
   };
 }
@@ -205,9 +209,9 @@ Stream<dynamic> _deleteRequestEpic(EpicStore<AppState> store,
 Epic<AppState> _createDeleteReplyRequestEpic(
     BangumiDiscussionService bangumiDiscussionService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<DeleteReplyRequestAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<DeleteReplyRequestAction>()
+        .asyncExpand((action) =>
         _deleteRequestEpic(store, bangumiDiscussionService, action));
   };
 }

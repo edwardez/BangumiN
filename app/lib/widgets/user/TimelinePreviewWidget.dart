@@ -23,7 +23,7 @@ class TimelinePreviewWidget extends StatelessWidget {
       text: TextSpan(children: [
         TextSpan(
             text: '•  ${previewFeed.content}',
-            style: Theme.of(context).textTheme.body1),
+            style: Theme.of(context).textTheme.bodyText2),
         TextSpan(
             text:
                 ' ${TimeUtils.formatMilliSecondsEpochTime(previewFeed.userUpdatedAt, displayTimeIn: DisplayTimeIn.AlwaysRelative)}',
@@ -62,7 +62,10 @@ class TimelinePreviewWidget extends StatelessWidget {
               WrappableText(
                 '时间胶囊',
                 fit: FlexFit.tight,
-                textStyle: Theme.of(context).textTheme.subhead,
+                textStyle: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle1,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

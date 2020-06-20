@@ -185,7 +185,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
 
               Uint8List uint8List =
                   await _shareWidgetKey.currentState.capturePng();
-              final result = await ImageGallerySaver.save(uint8List);
+              final result = await ImageGallerySaver.saveImage(uint8List);
               if (result) {
                 showTextOnSnackBar(context, '保存成功');
               } else {

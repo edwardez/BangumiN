@@ -210,7 +210,7 @@ class UserProfileWidget extends StatelessWidget {
 //            WrappableText(
 //              '收藏的人物',
 //              fit: FlexFit.tight,
-//              textStyle: Theme.of(context).textTheme.subhead,
+//              textStyle: Theme.of(context).textTheme.subtitle1,
 //            ),
 //            Padding(
 //              padding: const EdgeInsets.all(8.0),
@@ -231,7 +231,7 @@ class UserProfileWidget extends StatelessWidget {
 //            WrappableText(
 //              '好友',
 //              fit: FlexFit.tight,
-//              textStyle: Theme.of(context).textTheme.subhead,
+//              textStyle: Theme.of(context).textTheme.subtitle1,
 //            ),
 //            Padding(
 //              padding: const EdgeInsets.all(8.0),
@@ -252,7 +252,7 @@ class UserProfileWidget extends StatelessWidget {
 //            WrappableText(
 //              '目录',
 //              fit: FlexFit.tight,
-//              textStyle: Theme.of(context).textTheme.subhead,
+//              textStyle: Theme.of(context).textTheme.subtitle1,
 //            ),
 //            Padding(
 //              padding: const EdgeInsets.all(8.0),
@@ -273,7 +273,7 @@ class UserProfileWidget extends StatelessWidget {
 //            WrappableText(
 //              '参加的小组',
 //              fit: FlexFit.tight,
-//              textStyle: Theme.of(context).textTheme.subhead,
+//              textStyle: Theme.of(context).textTheme.subtitle1,
 //            ),
 //            Padding(
 //              padding: const EdgeInsets.all(8.0),

@@ -48,7 +48,7 @@ class BangumiSubjectService {
   /// Gets a bangumi user collection info through api
   Future<SubjectCollectionInfo> getCollectionInfo(int subjectId) async {
     Http.Response response = await oauthClient.client.get(''
-        'https://${Application.environmentValue.bangumiApiHost}/collection/$subjectId');
+        'https://${Application.bangumiApiHost}/collection/$subjectId');
 
     SubjectCollectionInfo subjectCollectionInfo;
     if (response.statusCode == 200) {
@@ -101,7 +101,8 @@ class BangumiSubjectService {
 
     Http.Response response = await oauthClient.client.post(
         ''
-        'https://${Application.environmentValue.bangumiApiHost}/collection/$subjectId/update',
+            'https://${Application
+            .bangumiApiHost}/collection/$subjectId/update',
         body: formData);
 
     SubjectCollectionInfo subjectCollectionInfo;

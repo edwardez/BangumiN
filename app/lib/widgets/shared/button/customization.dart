@@ -14,7 +14,7 @@ ButtonThemeData smallButtonTheme(
 
   ButtonThemeData modifiedButtonTheme = defaultButtonTheme.copyWith(
     minWidth: minWidth,
-    height: height ?? Theme.of(context).textTheme.body1.fontSize * 2,
+    height: height ?? Theme.of(context).textTheme.bodyText2.fontSize * 2,
     padding: padding,
   );
 

@@ -79,7 +79,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         BlogContentWidget(
@@ -96,7 +96,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
         ),
       ];
@@ -112,7 +115,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
               ),
               Text(
                 thread.title,
-                style: Theme.of(context).textTheme.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
               )
             ],
           ),
@@ -128,7 +134,10 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         MuninPadding.vertical1xOffset(
           child: Text(
             thread.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
         ),
         MuninPadding.vertical1xOffset(
@@ -334,7 +343,9 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         requestStatusFuture = action.completer.future;
       },
       onInitialBuild: (vm) {
-        requestStatusFuture = _muninRefreshKey?.currentState?.callOnRefresh();
+        if (vm.thread == null) {
+          requestStatusFuture = _muninRefreshKey?.currentState?.callOnRefresh();
+        }
       },
       builder: (BuildContext context, _ViewModel vm) {
         final thread = vm.thread;

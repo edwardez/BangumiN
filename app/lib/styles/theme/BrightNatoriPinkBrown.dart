@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Colors.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/styles/theme/CommonThemeData.dart';
-import 'package:munin/styles/theme/Font.dart';
 
 final ThemeData brightNatoriPinkBrownThemeData = ThemeData(
-  typography: typography,
   canvasColor: Colors.white,
   brightness: Brightness.light,
   bottomSheetTheme: muninBottomSheetThemeData(),

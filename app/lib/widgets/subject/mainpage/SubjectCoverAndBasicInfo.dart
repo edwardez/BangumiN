@@ -34,7 +34,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
       textStyle: Theme.of(context).textTheme.subtitle,
       fit: FlexFit.tight,
       outerWrapper: OuterWrapper.Row,
-      maxLines: 3,
+      isSelectable: true,
     ));
 
     Optional<String> maybeSecondaryTitle =
@@ -42,10 +42,13 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     if (maybeSecondaryTitle.isPresent) {
       widgets.add(WrappableText(
         maybeSecondaryTitle.value,
-        textStyle: Theme.of(context).textTheme.caption,
+        textStyle: Theme
+            .of(context)
+            .textTheme
+            .caption,
         fit: FlexFit.tight,
         outerWrapper: OuterWrapper.Row,
-        maxLines: 3,
+        isSelectable: true,
       ));
     }
 
@@ -70,7 +73,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
           TextSpan(
               text: subject.rating.score?.toString() ?? '-',
               style: scoreStyle(context)),
-          TextSpan(text: '分  ', style: Theme.of(context).textTheme.body1),
+          TextSpan(text: '分  ', style: Theme.of(context).textTheme.bodyText2),
           TextSpan(
               text: '${subject.rating.totalScoreVotesCount}人',
               style: Theme.of(context).textTheme.caption)

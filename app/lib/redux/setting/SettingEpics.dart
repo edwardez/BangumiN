@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +30,12 @@ const Duration listenToBrightnessChangeInterval = const Duration(seconds: 5);
 List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService,
     BangumiCookieService httpService,) {
   final changeThemeByScreenBrightnessEpic =
-      _createChangeThemeByScreenBrightnessEpic();
+  _createChangeThemeByScreenBrightnessEpic();
 
   final updateThemeSettingEpic = _createUpdateThemeSettingEpic();
 
   final createImportBlockedBangumiUsersEpic =
-      _createImportBlockedBangumiUsersEpic(bangumiUserService);
+  _createImportBlockedBangumiUsersEpic(bangumiUserService);
 
   final getLatestVersionEpic = _createGetLatestVersionEpic();
 
@@ -47,21 +49,20 @@ List<Epic<AppState>> createSettingEpics(BangumiUserService bangumiUserService,
 
 /// Note: [Screen.brightness] returns value between 0 and 1 so we need to manually
 /// convert it to 0~100 scale
-Stream<dynamic> _changeThemeByScreenBrightness(
-  UpdateThemeSettingAction action,
+Stream<dynamic> _changeThemeByScreenBrightness(UpdateThemeSettingAction action,
 ) async* {
   ThemeSetting themeSetting = action.themeSetting;
 
   bool shouldChangeToDarkTheme(int roundedDeviceBrightness) {
     return roundedDeviceBrightness <=
-            themeSetting.preferredFollowBrightnessSwitchThreshold &&
+        themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessDarkTheme;
   }
 
   bool shouldChangeToLightTheme(int currentDeviceBrightness) {
     return currentDeviceBrightness >
-            themeSetting.preferredFollowBrightnessSwitchThreshold &&
+        themeSetting.preferredFollowBrightnessSwitchThreshold &&
         themeSetting.currentTheme !=
             action.themeSetting.preferredFollowBrightnessLightTheme;
   }
@@ -70,7 +71,7 @@ Stream<dynamic> _changeThemeByScreenBrightness(
     if (themeSetting.themeSwitchMode ==
         ThemeSwitchMode.FollowScreenBrightness) {
       int roundedDeviceBrightness =
-          roundDeviceBrightnessToPercentage(await Screen.brightness);
+      roundDeviceBrightnessToPercentage(await Screen.brightness);
       if (shouldChangeToDarkTheme(roundedDeviceBrightness)) {
         yield UpdateThemeSettingAction(
           themeSetting: themeSetting.rebuild(
@@ -99,8 +100,8 @@ Stream<dynamic> _changeThemeByScreenBrightness(
 /// it
 Epic<AppState> _createChangeThemeByScreenBrightnessEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<UpdateThemeSettingAction>())
+    return actions
+        .whereType<UpdateThemeSettingAction>()
         .switchMap<UpdateThemeSettingAction>((action) {
       if (action.themeSetting.themeSwitchMode ==
           ThemeSwitchMode.FollowScreenBrightness) {
@@ -110,20 +111,20 @@ Epic<AppState> _createChangeThemeByScreenBrightnessEpic() {
         /// since `Observable.periodic` starts emitting values only after first
         /// `listenToBrightnessChangeInterval` is ended and user expects to see
         /// changes immediately after they modified relevant `themeSetting` values
-        return Observable.concat([
-          Observable.just(action),
-          Observable.periodic(listenToBrightnessChangeInterval, (i) => action)
+        return ConcatStream([
+          Stream.value(action),
+          Stream.periodic(listenToBrightnessChangeInterval, (i) => action)
         ]);
       } else {
         /// Otherwise, just emit a empty value to abort the stream
-        return Observable.empty();
+        return Stream.empty();
       }
     }).switchMap((action) => _changeThemeByScreenBrightness(action));
   };
 }
 
 Stream<dynamic> _updateThemeSetting(EpicStore<AppState> store,
-  UpdateThemeSettingAction action,
+    UpdateThemeSettingAction action,
 ) async* {
   try {
     /// New theme must be either light or dark theme
@@ -144,19 +145,18 @@ Stream<dynamic> _updateThemeSetting(EpicStore<AppState> store,
 
 Epic<AppState> _createUpdateThemeSettingEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<UpdateThemeSettingAction>())
+    return actions
+        .whereType<UpdateThemeSettingAction>()
         .switchMap((action) => _updateThemeSetting(store, action));
   };
 }
 
-Stream<dynamic> _createImportBlockedBangumiUsers(
-  BangumiUserService bangumiUserService,
-  ImportBlockedBangumiUsersRequestAction action,
+Stream<dynamic> _createImportBlockedBangumiUsers(BangumiUserService bangumiUserService,
+    ImportBlockedBangumiUsersRequestAction action,
 ) async* {
   try {
     BuiltMap<String, MutedUser> users =
-        await bangumiUserService.importBlockedUser();
+    await bangumiUserService.importBlockedUser();
     yield ImportBlockedBangumiUsersResponseSuccessAction(users: users);
   } catch (error, stack) {
     print(error.toString());
@@ -164,15 +164,16 @@ Stream<dynamic> _createImportBlockedBangumiUsers(
   }
 }
 
-Epic<AppState> _createImportBlockedBangumiUsersEpic(
-    BangumiUserService bangumiUserService) {
+Epic<AppState> _createImportBlockedBangumiUsersEpic(BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<ImportBlockedBangumiUsersRequestAction>())
+    return actions
+        .whereType<ImportBlockedBangumiUsersRequestAction>()
         .switchMap((action) =>
             _createImportBlockedBangumiUsers(bangumiUserService, action));
   };
 }
+
+final _lineSplitter = LineSplitter();
 
 Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
     EpicStore<AppState> store,
@@ -219,12 +220,21 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
           context: action.context,
           barrierDismissible: false,
           builder: (innerContext) {
+            String updateDescription;
+            if (availableCriticalUpdate.itemDescription != null) {
+              // Removes extra white space in xml.
+              updateDescription =
+                  _lineSplitter.convert(availableCriticalUpdate.itemDescription)
+                      .map((s) => s.trim())
+                      .join('\n');
+            }
+
+            updateDescription ??= '重要更新';
             return AlertDialog(
               title: Text('有一个未安装的重要更新'),
               content: SingleChildScrollView(
                 child: WrappableText(
-                  '更新内容为:${availableCriticalUpdate.itemDescription ??
-                      '重要更新'}\n',
+                  '更新内容为:$updateDescription\n',
                   maxLines: null,
                   outerWrapper: OuterWrapper.Row,
                 ),
@@ -303,8 +313,8 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
 
 Epic<AppState> _createGetLatestVersionEpic() {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetLatestMuninVersionRequestAction>())
+    return actions
+        .whereType<GetLatestMuninVersionRequestAction>()
         .switchMap((action) => _getLatestVersionEpic(Appcast(), store, action));
   };
 }

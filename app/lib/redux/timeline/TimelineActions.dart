@@ -21,6 +21,14 @@ class GetTimelineRequestAction {
       @required this.getTimelineRequest,
       Completer completer})
       : this.completer = completer ?? Completer();
+
+  /// A constructor that's used when a request is sent upon app launch.
+  ///
+  /// Some parameters are hidden since they are not available on app launch.
+  GetTimelineRequestAction.initialLaunch(
+      {@required this.feedLoadType, @required this.getTimelineRequest})
+      : this.completer = Completer(),
+        this.context = null;
 }
 
 class GetTimelineSuccessAction {

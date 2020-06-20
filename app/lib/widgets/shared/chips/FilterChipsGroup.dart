@@ -119,7 +119,7 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
     if (widget.chipsLayout == ChipsLayout.HorizontalList) {
       /// TODO: figure out a better way to constraint list size
       return Container(
-        height: Theme.of(context).textTheme.body1.fontSize * 3.5,
+        height: Theme.of(context).textTheme.bodyText2.fontSize * 3.5,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext context, index) {

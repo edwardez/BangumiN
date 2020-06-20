@@ -52,7 +52,7 @@ showEpisodeOptionSheet({
             child: Text(
               preferredName(episode.name, episode.chineseName,
                   preferredSubjectInfoLanguage),
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
           MuninPadding.vertical1xOffset(
@@ -67,7 +67,10 @@ showEpisodeOptionSheet({
           ),
           ListTile(
             title: Center(
-              child: Text('查看讨论', style: Theme.of(context).textTheme.body2),
+              child: Text('查看讨论', style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText1),
             ),
             onTap: () {
               var callback = generateOnTapCallbackForBangumiContent(
@@ -84,7 +87,11 @@ showEpisodeOptionSheet({
             title: Center(
               child: Text(
                 '看过',
-                style: Theme.of(context).textTheme.body2.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(
                     color: episodeActionTextColor(EpisodeStatus.Completed)),
               ),
             ),
@@ -103,7 +110,10 @@ showEpisodeOptionSheet({
           if (episode.episodeType == EpisodeType.Regular) ...[
             ListTile(
               title: Center(
-                child: Text('看到', style: Theme.of(context).textTheme.body2),
+                child: Text('看到', style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1),
               ),
               onTap: () {
                 onUpdateEpisodeOptionTapped(
@@ -117,7 +127,11 @@ showEpisodeOptionSheet({
             title: Center(
               child: Text(
                 '想看',
-                style: Theme.of(context).textTheme.body2.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(
                     color: episodeActionTextColor(EpisodeStatus.Wish)),
               ),
             ),
@@ -132,7 +146,11 @@ showEpisodeOptionSheet({
             title: Center(
               child: Text(
                 '抛弃',
-                style: Theme.of(context).textTheme.body2.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(
                     color: episodeActionTextColor(EpisodeStatus.Dropped)),
               ),
             ),
@@ -148,7 +166,10 @@ showEpisodeOptionSheet({
               title: Center(
                 child: Text(
                   '撤销',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText1,
                 ),
               ),
               onTap: () {

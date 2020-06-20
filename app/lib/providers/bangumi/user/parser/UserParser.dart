@@ -16,6 +16,7 @@ import 'package:munin/models/bangumi/user/social/NetworkServiceTagLink.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceTagPlainText.dart';
 import 'package:munin/models/bangumi/user/social/NetworkServiceType.dart';
 import 'package:munin/models/bangumi/user/timeline/TimelinePreview.dart';
+import 'package:munin/providers/bangumi/util/parser/Spoiler.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
@@ -257,7 +258,7 @@ class UserParser {
   }
 
   UserProfile processUserProfile(String rawHtml) {
-    DocumentFragment document = parseFragment(rawHtml);
+    DocumentFragment document = addSpoilerAttribute(parseFragment(rawHtml));
 
     Element introductionElement =
         document.querySelector('blockquote.intro>div') ?? Element.tag('div');

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ import 'package:munin/redux/oauth/OauthActions.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/injector/injector.dart';
 import 'package:munin/shared/utils/analytics/Constants.dart';
 import 'package:munin/shared/utils/http/common.dart';
 import 'package:munin/styles/theme/Common.dart';
@@ -307,8 +309,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   /// 2. Visits oauth page to get xsrf token
   /// 3. Gets user profile.
   _submitLoginForm() async {
-    final loginStopWatch = Stopwatch()
-      ..start();
+    final loginStopWatch = Stopwatch()..start();
     Map<String, int> loginMetrics = {};
     showDialog(
         context: context,
@@ -346,7 +347,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         '$bangumiAuthWebUrl/FollowTheRabbit',
         data: body,
         options: Options(
-          contentType: ExtraContentType.xWwwFormUrlencoded,
+          contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
         ),
       );
 
@@ -433,7 +434,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         authorizationUrl,
         data: oauthBody,
         options: Options(
-            contentType: ExtraContentType.xWwwFormUrlencoded,
+            contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
             headers: {
               HttpHeaders.refererHeader: authorizationUrl,
             },
@@ -470,6 +471,10 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     try {
       final userId = await _oauthService.verifyUser();
       final userInfo = await _userService.getUserBasicInfo(userId.toString());
+      saveBangumiCookieToCookieJar(
+          cookieJar,
+          cookieJar.loadForRequest(bangumiAuthWebUri),
+          Application.environmentValue.bangumiHostForDio);
       findStore(context).dispatch(
           UpdateLoginDataAction(context: context, userInfo: userInfo));
     } catch (error) {
@@ -489,7 +494,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   _buildTosAndPrivacy(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText2,
         children: <TextSpan>[
           TextSpan(text: '点击登录即代表您同意BangumiN的'),
           ...tosAndPrivacyLinks(context),

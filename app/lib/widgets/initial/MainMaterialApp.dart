@@ -5,7 +5,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
-import 'package:munin/models/bangumi/setting/theme/MuninTheme.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
+import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/widgets/home/MuninHomePage.dart';
 import 'package:munin/widgets/initial/MuninLoginPage.dart';
@@ -21,15 +22,23 @@ class MainMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: (Store<AppState> store) => _ViewModel(
-        muninTheme: store.state.settingState.themeSetting.currentTheme,
+        themeSetting: store.state.settingState.themeSetting,
         isAuthenticated: store.state.isAuthenticated,
         generalSetting: store.state.settingState.generalSetting,
         privacySetting: store.state.settingState.privacySetting,
       ),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
+        final shouldFollowSystemBrightness = vm.themeSetting.themeSwitchMode ==
+            ThemeSwitchMode.FollowSystemThemeSetting;
+
         return MaterialApp(
-          theme: vm.muninTheme.themeData,
+          theme: shouldFollowSystemBrightness
+              ? vm.themeSetting.preferredFollowSystemLightTheme.themeData
+              : vm.themeSetting.currentTheme.themeData,
+          darkTheme: shouldFollowSystemBrightness
+              ? vm.themeSetting.preferredFollowSystemDarkTheme.themeData
+              : null,
           home: vm.isAuthenticated
               ? MuninHomePage(
                   generalSetting: vm.generalSetting,
@@ -46,13 +55,13 @@ class MainMaterialApp extends StatelessWidget {
 }
 
 class _ViewModel {
-  final MuninTheme muninTheme;
+  final ThemeSetting themeSetting;
   final bool isAuthenticated;
   final GeneralSetting generalSetting;
   final PrivacySetting privacySetting;
 
   const _ViewModel({
-    @required this.muninTheme,
+    @required this.themeSetting,
     @required this.isAuthenticated,
     @required this.generalSetting,
     @required this.privacySetting,
@@ -61,14 +70,14 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          muninTheme == other.muninTheme &&
-          isAuthenticated == other.isAuthenticated &&
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              themeSetting == other.themeSetting &&
+              isAuthenticated == other.isAuthenticated &&
           generalSetting == other.generalSetting &&
           privacySetting == other.privacySetting;
 
   @override
   int get hashCode =>
-      hash4(muninTheme, isAuthenticated, generalSetting, privacySetting);
+      hash4(themeSetting, isAuthenticated, generalSetting, privacySetting);
 }

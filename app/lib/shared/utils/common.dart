@@ -1,5 +1,7 @@
 import 'dart:math' show min, max;
 
+import 'package:html/dom.dart';
+
 String upgradeToHttps(String link) {
   if (link?.runtimeType != String) {
     return link;
@@ -13,11 +15,12 @@ String upgradeToHttps(String link) {
 /// [fallbackValue] if [input] is null.
 /// [trailingOverflowText] will be added to the end of firstNChars
 /// and be counted as part of [firstN] chars, it's default to '...'
-String firstNChars(String input,
-    int firstN, {
-      String fallbackValue,
-      String trailingOverflowText = '...',
-    }) {
+String firstNChars(
+  String input,
+  int firstN, {
+  String fallbackValue,
+  String trailingOverflowText = '...',
+}) {
   assert(firstN >= 0);
   if (input == null) return fallbackValue;
 
@@ -123,4 +126,17 @@ String tryFormatDoubleAsInt(double input) {
 class IntegerHelper {
   static const MAX_VALUE = 9007199254740991;
   static const MIN_VALUE = -9007199254740991;
+}
+
+/// All custom html classes that munin uses to identify some special
+/// usage in bangumi html.
+class MuninCustomHtmlClasses {
+  /// An class name that marks content inside a tag as spoiler.
+  ///
+  /// Spoiler text should be rendered with a contrast background color and
+  /// its content should be hidden.
+  static String muninSpoiler = 'muninBangumiSpoiler';
+
+  static bool hasSpoilerClass(Element element) =>
+      element.classes.contains(muninSpoiler);
 }

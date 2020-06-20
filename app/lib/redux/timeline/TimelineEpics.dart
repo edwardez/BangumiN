@@ -198,6 +198,11 @@ Stream<dynamic> _getTimelineEpic(
   } catch (error, stack) {
     action.completer.completeError(error, stack);
 
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
+
     yield HandleErrorAction(
       context: action.context,
       error: error,
@@ -219,9 +224,8 @@ Epic<AppState> _createGetTimelineEpics(
     BangumiTimelineService bangumiTimelineService,
     BangumiUserService bangumiUserService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetTimelineRequestAction>())
-        .switchMap((action) => _getTimelineEpic(
+    return actions.whereType<GetTimelineRequestAction>().switchMap((action) =>
+        _getTimelineEpic(
             bangumiTimelineService, bangumiUserService, action, store));
   };
 }
@@ -246,9 +250,9 @@ Stream<dynamic> _deleteTimeline(BangumiTimelineService bangumiTimelineService,
 Epic<AppState> _createDeleteTimelineEpic(
     BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<DeleteTimelineAction>())
-        .concatMap(
+    return actions
+        .whereType<DeleteTimelineAction>()
+        .asyncExpand(
             (action) => _deleteTimeline(bangumiTimelineService, action, store));
   };
 }
@@ -303,10 +307,10 @@ Stream<dynamic> _submitTimelineMessage(
 Epic<AppState> _createCreateTimelineMessageEpic(
     BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<CreateMainPublicMessageRequestAction>())
-        .concatMap((action) =>
-            _submitTimelineMessage(bangumiTimelineService, action, store));
+    return actions
+        .whereType<CreateMainPublicMessageRequestAction>()
+        .asyncExpand((action) =>
+        _submitTimelineMessage(bangumiTimelineService, action, store));
   };
 }
 
@@ -330,9 +334,9 @@ Stream<dynamic> _getFullPublicMessageEpic(
 Epic<AppState> _createGetFullPublicMessageEpic(
     BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetFullPublicMessageRequestAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<GetFullPublicMessageRequestAction>()
+        .asyncExpand((action) =>
         _getFullPublicMessageEpic(bangumiTimelineService, action, store));
   };
 }
@@ -360,9 +364,9 @@ Stream<dynamic> _createPublicMessageReplyRequestEpic(
 Epic<AppState> _createCreatePublicMessageReplyRequestEpic(
     BangumiTimelineService bangumiTimelineService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<CreatePublicMessageReplyRequestAction>())
-        .concatMap((action) =>
+    return actions
+        .whereType<CreatePublicMessageReplyRequestAction>()
+        .asyncExpand((action) =>
         _createPublicMessageReplyRequestEpic(
             bangumiTimelineService, action, store));
   };

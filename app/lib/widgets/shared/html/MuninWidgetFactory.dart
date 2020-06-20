@@ -11,8 +11,34 @@ import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
-  final BuildContext outerContext;
+  final _assetOrDataImageUriPattern = RegExp('^(asset|data):');
 
+  MuninWidgetFactory() : super();
+
+  @override
+  Widget buildImage(String url, {double height, String text, double width}) {
+    if (url?.isEmpty ?? true) return null;
+
+    if (_assetOrDataImageUriPattern.hasMatch(url))
+      return super.buildImage(
+        url,
+        height: height,
+        text: text,
+        width: width,
+      );
+
+    return _InkWellHtmlWrapper(
+      url: url,
+    );
+  }
+}
+
+/// A simpler wrapper to get [BuildContext] since [WidgetFactory.buildImage]
+/// doesn't provide one.
+class _InkWellHtmlWrapper extends StatelessWidget {
+  final url;
+
+  const _InkWellHtmlWrapper({Key key, @required this.url}) : super(key: key);
 
   static errorImageWidget(
     BuildContext context,
@@ -52,25 +78,22 @@ class MuninWidgetFactory extends WidgetFactory {
     );
   }
 
-  MuninWidgetFactory(this.outerContext, HtmlWidget htmlWidget)
-      : super(outerContext, htmlWidget);
-
   @override
-  Widget buildImageFromUrl(String url) => url?.isNotEmpty == true
-      ? InkWell(
-    child: CachedNetworkImage(
-      imageUrl: url,
-      fadeOutDuration: Duration(milliseconds: 300),
-      fadeInDuration: Duration(milliseconds: 300),
-      fit: BoxFit.cover,
-      placeholder: (context, url) => AdaptiveProgressIndicator(),
-      errorWidget: (context, url, obj) {
-        return errorImageWidget(context, url);
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: CachedNetworkImage(
+        imageUrl: url,
+        fadeOutDuration: Duration(milliseconds: 300),
+        fadeInDuration: Duration(milliseconds: 300),
+        fit: BoxFit.cover,
+        placeholder: (context, url) => AdaptiveProgressIndicator(),
+        errorWidget: (context, url, obj) {
+          return errorImageWidget(context, url);
+        },
+      ),
+      onTap: () {
+        launchByPreference(context, url);
       },
-    ),
-    onTap: () {
-      launchByPreference(outerContext, url);
-          },
-        )
-      : null;
+    );
+  }
 }

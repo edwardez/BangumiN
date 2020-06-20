@@ -70,7 +70,7 @@ class _MuninVersionWidgetState extends State<MuninVersionWidget> {
     final theme = Theme.of(context);
     return Text(
       latestVersionPrompt,
-      style: theme.textTheme.body1.copyWith(color: theme.primaryColor),
+      style: theme.textTheme.bodyText2.copyWith(color: theme.primaryColor),
     );
   }
 

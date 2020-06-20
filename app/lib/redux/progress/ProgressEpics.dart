@@ -11,6 +11,7 @@ import 'package:munin/redux/app/AppActions.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/common.dart';
+import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -70,6 +71,11 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
   } catch (error, stack) {
     action.completer.completeError(error, stack);
 
+    if (action.context == null) {
+      reportError(error, stack: stack);
+      return;
+    }
+
     yield HandleErrorAction(
       context: action.context,
       error: error,
@@ -82,8 +88,8 @@ Stream<dynamic> _getProgress(BangumiProgressService bangumiProgressService,
 Epic<AppState> _createGetProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetProgressRequestAction>())
+    return actions
+        .whereType<GetProgressRequestAction>()
         .switchMap((action) => _getProgress(
               bangumiProgressService,
               action,
@@ -118,13 +124,14 @@ Stream<dynamic> _getSubjectEpisodesEpic(
 Epic<AppState> _createGetSubjectEpisodesEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    return Observable(actions)
-        .ofType(TypeToken<GetSubjectEpisodesRequestAction>())
-        .switchMap((action) => _getSubjectEpisodesEpic(
-              bangumiProgressService,
-              action,
-              store.state.currentAuthenticatedUserBasicInfo.username,
-            ));
+    return actions
+        .whereType<GetSubjectEpisodesRequestAction>()
+        .switchMap((action) =>
+        _getSubjectEpisodesEpic(
+          bangumiProgressService,
+          action,
+          store.state.currentAuthenticatedUserBasicInfo.username,
+        ));
   };
 }
 
@@ -190,10 +197,10 @@ Stream<dynamic> _updateProgress(BangumiProgressService bangumiProgressService,
 Epic<AppState> _createUpdateProgressEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    /// concatMap should be used: user might update another subject while the first one is not finished yet
-    return Observable(actions)
-        .ofType(TypeToken<UpdateProgressAction>())
-        .concatMap(
+    /// asyncExpand should be used: user might update another subject while the first one is not finished yet
+    return actions
+        .whereType<UpdateProgressAction>()
+        .asyncExpand(
             (action) => _updateProgress(bangumiProgressService, action, store));
   };
 }
@@ -283,10 +290,10 @@ Stream<dynamic> _updateSubjectEpisodeEpic(
 Epic<AppState> _createUpdateSubjectEpisodeEpic(
     BangumiProgressService bangumiProgressService) {
   return (Stream<dynamic> actions, EpicStore<AppState> store) {
-    /// concatMap should be used: user might update another subject while the first one is not finished yet
-    return Observable(actions)
-        .ofType(TypeToken<UpdateSubjectEpisodeAction>())
-        .concatMap((action) =>
-            _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
+    /// asyncExpand should be used: user might update another subject while the first one is not finished yet
+    return actions
+        .whereType<UpdateSubjectEpisodeAction>()
+        .asyncExpand((action) =>
+        _updateSubjectEpisodeEpic(bangumiProgressService, action, store));
   };
 }

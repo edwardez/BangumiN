@@ -1,0 +1,17 @@
+{
+  "bangumiOauthCredentials": {
+    "accessToken": "",
+    "refreshToken": "",
+    "tokenEndpoint": "",
+    "scopes": [],
+    "expiration": 1
+  },
+  "bangumiCookieCredentials": {
+    "authCookie": "",
+    "sessionCookie": "",
+    "userAgent": "",
+    "expiresOn": 1
+  },
+  "bangumiOauthClientIdentifier": "",
+  "bangumiOauthClientSecret": ""
+}

@@ -8,8 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:munin/main.dart';
+import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/privacy/PrivacySetting.dart';
 import 'package:munin/models/bangumi/setting/theme/ThemeSwitchMode.dart';
+import 'package:munin/models/bangumi/timeline/common/FeedLoadType.dart';
+import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
+import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
 import 'package:munin/providers/bangumi/BangumiCookieService.dart';
 import 'package:munin/providers/bangumi/BangumiOauthService.dart';
 import 'package:munin/providers/bangumi/discussion/BangumiDiscussionService.dart';
@@ -23,13 +27,16 @@ import 'package:munin/providers/util/RetryableHttpClient.dart';
 import 'package:munin/redux/app/AppEpics.dart';
 import 'package:munin/redux/app/AppReducer.dart';
 import 'package:munin/redux/app/AppState.dart';
+import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/discussion/DiscussionEpics.dart';
 import 'package:munin/redux/oauth/OauthMiddleware.dart';
+import 'package:munin/redux/progress/ProgressActions.dart';
 import 'package:munin/redux/progress/ProgressEpics.dart';
 import 'package:munin/redux/search/SearchEpics.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/setting/SettingEpics.dart';
 import 'package:munin/redux/subject/SubjectEpics.dart';
+import 'package:munin/redux/timeline/TimelineActions.dart';
 import 'package:munin/redux/timeline/TimelineEpics.dart';
 import 'package:munin/redux/user/UserActions.dart';
 import 'package:munin/redux/user/UserEpics.dart';
@@ -41,16 +48,18 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:upgrader/upgrader.dart'; // ignore: unused_import
 
-final GetIt getIt = GetIt();
+final GetIt getIt = GetIt.instance;
 
-enum EnvironmentType { Development, Uat, Production }
+enum EnvironmentType { Test, Development, Uat, Production }
 
 /// bgm.tv is the cdn version(behind cloud flare) of bangumi, it's the main host
 /// of bangumi(i.e. static assets under `lain.bgm.tv`, api under `api.bgm.tv`)
 const bangumiMainHost = 'bgm.tv';
+
 /// bangumi.tv is the non-cdn version of bangumi, it's mainly used for parsing html
 const bangumiNonCdnHost = 'bangumi.tv';
-const upgradeInfoUrl = 'https://raw.githubusercontent.com/edwardez/BangumiN/master/app/lib/config/upgrader/production_appcast.xml';
+const upgradeInfoUrl =
+    'https://raw.githubusercontent.com/edwardez/BangumiN/master/app/lib/config/upgrader/production_appcast.xml';
 
 abstract class Application {
   static Application environmentValue;
@@ -61,7 +70,7 @@ abstract class Application {
   static final String bangumiOauthTokenEndpoint =
       'https://bgm.tv/oauth/access_token';
 
-  final bangumiApiHost = 'api.bgm.tv';
+  static const bangumiApiHost = 'api.bgm.tv';
   final forsetiMainHost = 'bangumin.tv';
   final forsetiApiHost = 'api.bangumin.tv';
 
@@ -83,14 +92,14 @@ abstract class Application {
   bool shouldCheckUpdate = false;
 
   Application() {
+    WidgetsFlutterBinding.ensureInitialized();
     _initialize();
   }
 
   _initialize() async {
     environmentValue = this;
 
-    assert(!shouldCheckUpdate ||
-        (shouldCheckUpdate && Platform.isAndroid));
+    assert(!shouldCheckUpdate || (shouldCheckUpdate && Platform.isAndroid));
 
     // misc utils initialization
     TimeUtils.initializeTimeago();
@@ -101,23 +110,23 @@ abstract class Application {
     await injector(getIt);
 
     final BangumiCookieService bangumiCookieService =
-    getIt.get<BangumiCookieService>();
+        getIt.get<BangumiCookieService>();
     final BangumiOauthService bangumiOauthService =
-    getIt.get<BangumiOauthService>();
+        getIt.get<BangumiOauthService>();
     final BangumiUserService bangumiUserService =
-    getIt.get<BangumiUserService>();
+        getIt.get<BangumiUserService>();
     final BangumiTimelineService bangumiTimelineService =
-    getIt.get<BangumiTimelineService>();
+        getIt.get<BangumiTimelineService>();
     final BangumiSubjectService bangumiSubjectService =
-    getIt.get<BangumiSubjectService>();
+        getIt.get<BangumiSubjectService>();
     final BangumiSearchService bangumiSearchService =
-    getIt.get<BangumiSearchService>();
+        getIt.get<BangumiSearchService>();
     final BangumiDiscussionService bangumiDiscussionService =
-    getIt.get<BangumiDiscussionService>();
+        getIt.get<BangumiDiscussionService>();
     final BangumiProgressService bangumiProgressService =
-    getIt.get<BangumiProgressService>();
+        getIt.get<BangumiProgressService>();
     final SharedPreferenceService sharedPreferenceService =
-    getIt.get<SharedPreferenceService>();
+        getIt.get<SharedPreferenceService>();
 
     AppState appState = await _initializeAppState(
         bangumiCookieService, bangumiOauthService, sharedPreferenceService);
@@ -163,7 +172,9 @@ abstract class Application {
     /// Starts listening notifications for logged in users.
     if (store.state.isAuthenticated ?? false) {
       store.dispatch(ListenOnUnreadNotificationAction());
+      _sendInitialPageLoadingRequest(store);
     }
+
     // flutter initialization
     runApp(MuninApp(this, store));
   }
@@ -173,7 +184,7 @@ abstract class Application {
     if (environmentType != EnvironmentType.Development &&
         privacySetting.optInAutoSendCrashReport) {
       FlutterError.onError = (FlutterErrorDetails details) {
-        Crashlytics.instance.onError(details);
+        Crashlytics.instance.recordFlutterError(details);
       };
     }
 
@@ -279,6 +290,34 @@ abstract class Application {
     // (i.e. user is not connected to a network). Then [bangumiNonCdnHost]
     // will still be used.
     return bangumiNonCdnHost;
+  }
+
+  /// Sends out initial request in a non blocking way so initial pages can be
+  /// loaded upon app launch for authenticated users.
+  void _sendInitialPageLoadingRequest(Store<AppState> store) {
+    if (!store.state.isAuthenticated) return;
+
+    final generalSetting =
+        store.state.settingState?.generalSetting ?? GeneralSetting();
+    final filter = generalSetting.preferredTimelineLaunchPage;
+    final request = GetTimelineRequest((b) =>
+    b
+      ..timelineSource = TimelineSource.OnlyFriends
+      ..timelineCategoryFilter = filter);
+    store.dispatch(GetTimelineRequestAction.initialLaunch(
+        feedLoadType: FeedLoadType.Initial, getTimelineRequest: request));
+
+    store.dispatch(GetProgressRequestAction.initialLaunch(
+        subjectTypes:
+        generalSetting.preferredProgressLaunchPage.requestedSubjectTypes));
+
+    store.dispatch(GetDiscussionRequestAction.initialLaunch(
+        getDiscussionRequest: generalSetting.preferredDiscussionLaunchPage));
+
+    final userInfo = store.state.currentAuthenticatedUserBasicInfo;
+    if (userInfo != null) {
+      store.dispatch(GetUserPreviewRequestAction(username: userInfo.username));
+    }
   }
 
   String get name => runtimeType.toString();

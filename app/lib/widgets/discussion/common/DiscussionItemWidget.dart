@@ -120,7 +120,7 @@ class DiscussionItemWidget extends StatelessWidget {
                   Text(
                     discussionItem.title,
                     maxLines: titleMaxLines,
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(

@@ -21,6 +21,7 @@ import 'package:munin/models/bangumi/progress/common/AirStatus.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
 import 'package:munin/models/bangumi/subject/common/ParentSubject.dart';
 import 'package:munin/providers/bangumi/discussion/parser/common.dart';
+import 'package:munin/providers/bangumi/util/parser/Spoiler.dart';
 import 'package:munin/providers/bangumi/util/regex.dart';
 import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/common.dart';
@@ -323,17 +324,15 @@ class ThreadParser {
   }
 
   GroupThread processGroupThread(String rawHtml, int threadId) {
-    DocumentFragment document = parseFragment(rawHtml);
+    DocumentFragment document = _parseAndAddSpoilerClass(rawHtml);
     _updateQuoteTextColor(document);
 
     String title = document.querySelector('title')?.text?.trim();
 
     String groupName = firstTextNodeContent(
-        document
-            .querySelector('#pageHeader a.avatar')
-            ?.nodes,
-        skipWhiteCharsOnlyNode: true,
-        trimExtraChars: false)
+            document.querySelector('#pageHeader a.avatar')?.nodes,
+            skipWhiteCharsOnlyNode: true,
+            trimExtraChars: false)
         .or('小组讨论')
         .trim();
 
@@ -351,10 +350,13 @@ class ThreadParser {
   }
 
   SubjectTopicThread processSubjectTopicThread(String rawHtml, int threadId) {
-    DocumentFragment document = parseFragment(rawHtml);
+    DocumentFragment document = _parseAndAddSpoilerClass(rawHtml);
     _updateQuoteTextColor(document);
 
-    String title = document.querySelector('#header')?.text?.trim() ?? '??';
+    String title = document
+        .querySelector('#header')
+        ?.text
+        ?.trim() ?? '??';
 
     var maybeParentSubject = parseParentSubject(document);
 
@@ -373,7 +375,7 @@ class ThreadParser {
   }
 
   EpisodeThread processEpisodeThread(String rawHtml, int threadId) {
-    DocumentFragment document = parseFragment(rawHtml);
+    DocumentFragment document = _parseAndAddSpoilerClass(rawHtml);
     _updateQuoteTextColor(document);
 
     // Uses title class on page.
@@ -407,21 +409,28 @@ class ThreadParser {
   }
 
   BlogThread processBlogThread(String rawHtml, int blogId) {
-    DocumentFragment document = parseFragment(rawHtml);
+    DocumentFragment document = _parseAndAddSpoilerClass(rawHtml);
     _updateQuoteTextColor(document);
 
-    String title = document.querySelector('title')?.text?.trim();
+    String title = document
+        .querySelector('title')
+        ?.text
+        ?.trim();
 
     BlogContent blogContent = _parseBlogContent(document);
 
     List<Post> replies = _parseReplies(document);
 
-    return BlogThread((b) => b
+    return BlogThread((b) =>
+    b
       ..id = blogId
       ..title = title
       ..blogContent.replace(blogContent)
       ..mainPostReplies.replace(BuiltList<Post>.of(replies)));
   }
+
+  DocumentFragment _parseAndAddSpoilerClass(String html) =>
+      addSpoilerAttribute(parseFragment(html));
 }
 
 class PostTimeAndSeqNum {

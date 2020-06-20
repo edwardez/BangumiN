@@ -13,7 +13,7 @@ const router = express.Router();
  */
 router.get('/:userId', celebrate({
   params: {
-    userId: Joi.string().alphanum(),
+    userId: Joi.string().token(),
   },
 }), (req: any, res: any, next: any) => {
   const userId = req.params.userId;

@@ -98,5 +98,13 @@ void main() {
       id: '1',
       bangumiContent: BangumiContent.Blog,
     );
+
+    runFindRedirectableUrlTest(
+      id: '123',
+      scheme: 'https://web.archive.org/web/123/https',
+      postId: null,
+      expectedToFindUrl: false,
+      bangumiContent: BangumiContent.GroupTopic,
+    );
   });
 }

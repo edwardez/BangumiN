@@ -8,11 +8,14 @@ import 'package:html/parser.dart';
 import 'package:meta/meta.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/BangumiCookieCredentials.dart';
+import 'package:munin/providers/bangumi/util/DioInterceptors.dart';
 import 'package:munin/providers/storage/SecureStorageService.dart';
 import 'package:munin/shared/exceptions/exceptions.dart';
 import 'package:quiver/strings.dart';
 
-// A client for Bangumi thst sends requests with cookie and handles relevant persistence
+const bangumiCookieCredentialsKey = 'bangumiCookieCredentials';
+
+// A client for Bangumi that sends requests with cookie and handles relevant persistence
 class BangumiCookieService {
   BangumiCookieCredentials _bangumiCookieCredential;
 
@@ -74,6 +77,16 @@ class BangumiCookieService {
             ..expiresOn = expiresOn
         });
 
+    final expirationChecker =
+        getIt.get<BangumiCookieExpirationCheckInterceptor>();
+    expirationChecker.expiresOn = expiresOn;
+
+    /// Checks interceptor in dio is the one in getIt, and there's only one.
+    assert(dio.interceptors
+            .where((element) => element == expirationChecker)
+            .toList()
+            .length ==
+        1);
     updateDioHeaders(
         authCookie: authCookie,
         sessionCookie: sessionCookie,

@@ -43,7 +43,7 @@ class BangumiUserService {
   // get bangumi user basic info through api
   Future<BangumiUserSmall> getUserBasicInfo(String username) async {
     final response = await oauthClient.client.get(
-        'https://${Application.environmentValue.bangumiApiHost}/user/$username');
+        'https://${Application.bangumiApiHost}/user/$username');
 
     BangumiUserSmall basicInfo = BangumiUserSmall.fromJson(response.body);
     return basicInfo;
@@ -173,7 +173,7 @@ class BangumiUserService {
       path,
       queryParameters: queryParameters,
       options: Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 
@@ -212,7 +212,7 @@ class BangumiUserService {
       path,
       queryParameters: queryParameters,
       options: Options(
-        contentType: ExtraContentType.xWwwFormUrlencoded,
+        contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
       ),
     );
 

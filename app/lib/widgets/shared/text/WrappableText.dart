@@ -26,6 +26,14 @@ class WrappableText extends StatelessWidget {
   /// How visual overflow should be handled.
   final TextOverflow overflow;
 
+  /// Whether the text should be selectable.
+  ///
+  /// This uses [SelectableText] instead of [Text], hence:
+  /// [overflow] no longer works, which is not in [SelectableText]
+  /// [maxLines] will be ignored(since looks like it will be minLines as well).
+  /// Default to false since selectable text might have performance issue.
+  final bool isSelectable;
+
   const WrappableText(
     this.text, {
     Key key,
@@ -38,35 +46,38 @@ class WrappableText extends StatelessWidget {
     this.bottom = 0,
     this.outerWrapper = OuterWrapper.NoWrapper,
     this.overflow = TextOverflow.ellipsis,
+    this.isSelectable = false,
   }) : super(key: key);
 
   const WrappableText.smallVerticalPadding(
     this.text, {
-    Key key,
-    this.textStyle,
-    this.maxLines = 1,
-    this.fit = FlexFit.loose,
-    this.left = 0,
-    this.top = 4.0,
-    this.right = 0,
-    this.bottom = 4.0,
-    this.outerWrapper = OuterWrapper.NoWrapper,
-    this.overflow = TextOverflow.ellipsis,
-  }) : super(key: key);
+        Key key,
+        this.textStyle,
+        this.maxLines = 1,
+        this.fit = FlexFit.loose,
+        this.left = 0,
+        this.top = 4.0,
+        this.right = 0,
+        this.bottom = 4.0,
+        this.outerWrapper = OuterWrapper.NoWrapper,
+        this.overflow = TextOverflow.ellipsis,
+        this.isSelectable = false,
+      }) : super(key: key);
 
   const WrappableText.mediumVerticalPadding(
     this.text, {
-    Key key,
-    this.textStyle,
-    this.maxLines = 1,
-    this.fit = FlexFit.loose,
-    this.left = 0,
-    this.top = 10.0,
-    this.right = 0,
-    this.bottom = 10.0,
-    this.outerWrapper = OuterWrapper.NoWrapper,
-    this.overflow = TextOverflow.ellipsis,
-  }) : super(key: key);
+        Key key,
+        this.textStyle,
+        this.maxLines = 1,
+        this.fit = FlexFit.loose,
+        this.left = 0,
+        this.top = 10.0,
+        this.right = 0,
+        this.bottom = 10.0,
+        this.outerWrapper = OuterWrapper.NoWrapper,
+        this.overflow = TextOverflow.ellipsis,
+        this.isSelectable = false,
+      }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +90,18 @@ class WrappableText extends StatelessWidget {
           right: right,
           bottom: bottom,
         ),
-        child: Text(
+        child: isSelectable
+            ? SelectableText(
+          text,
+        )
+            : Text(
           text,
           maxLines: maxLines,
           overflow: maxLines == null ? null : overflow,
-          style: textStyle ?? Theme.of(context).textTheme.body1,
+          style: textStyle ?? Theme
+              .of(context)
+              .textTheme
+              .body1,
         ),
       ),
     );

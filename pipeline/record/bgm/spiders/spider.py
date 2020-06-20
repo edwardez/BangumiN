@@ -78,7 +78,7 @@ class IndexSpider(scrapy.Spider):
 
     def parse(self, response):
         if len(
-            response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a")) == 0:
+                response.xpath(".//*[@id='columnSubjectBrowserA']/div[1]/a")) == 0:
             return
         indexid = response.url.split('/')[-1]
         indexid = int(indexid)
@@ -91,7 +91,7 @@ class IndexSpider(scrapy.Spider):
             0]
         date = parsedate(td.split(' ')[0])
         if len(response.xpath(
-            ".//*[@id='columnSubjectBrowserA']/div[1]/span/span")) == 2:
+                ".//*[@id='columnSubjectBrowserA']/div[1]/span/span")) == 2:
             favourite = response.xpath(
                 ".//*[@id='columnSubjectBrowserA']/div[1]/span/span[2]/text()").extract()[
                 0]
@@ -114,7 +114,7 @@ class RecordSpider(scrapy.Spider):
     }
 
     def __init__(self, user_id_min=None, user_id_max=None, excluding_list=(),
-        *args, **kwargs):
+                 *args, **kwargs):
         """
         Initalize spider
         :param user_id_min: passed in user_id_min
@@ -152,7 +152,7 @@ class RecordSpider(scrapy.Spider):
     def parse(self, response):
         username = response.url.split('/')[-1]
         if (not response.xpath(".//*[@id='headerProfile']")) or response.xpath(
-            ".//div[@class='tipIntro']"):
+                ".//div[@class='tipIntro']"):
             return
         uid = int(response.meta['redirect_urls'][0].split('/')[
                       -1]) if 'redirect_urls' in response.meta else int(
@@ -215,10 +215,9 @@ class RecordSpider(scrapy.Spider):
             else:
                 item_tags = None
 
-            try_match = re.match(r'sstars(\d+) starsinfo',
-                                 item.xpath(
-                                     "./div/p[@class='collectInfo']/span[1]/@class").extract()[
-                                     0])
+            star_class_name_or_empty = next(iter(item.xpath(
+                "./div/p[@class='collectInfo']/span[1]/span/@class").extract()), '')
+            try_match = re.search(r'star[A-Za-z\-_]*(\d+)', star_class_name_or_empty)
             if try_match:
                 item_rate = try_match.group(1)
                 item_rate = int(item_rate)
@@ -256,7 +255,7 @@ class WikiHistorySpider(scrapy.Spider):
     }
 
     def __init__(self, user_id_min=None, user_id_max=None, excluding_list=(),
-        *args, **kwargs):
+                 *args, **kwargs):
         """
         Initalize spider
         :param user_id_min: passed in user_id_min
@@ -298,7 +297,7 @@ class WikiHistorySpider(scrapy.Spider):
         username = response.url.split('/')[-2]
 
         if (not response.xpath(".//*[@id='headerProfile']")) or response.xpath(
-            ".//div[@class='tipIntro']"):
+                ".//div[@class='tipIntro']"):
             return
 
         user_id = int(response.meta['redirect_urls'][0].split('/')[
@@ -394,7 +393,6 @@ class WikiHistorySpider(scrapy.Spider):
             'subject_person_relation': 'subject',
             'subject_character_relation': 'subject'
         }[edit_type]
-
 
 
 class FriendsSpider(scrapy.Spider):

@@ -24,6 +24,14 @@ class GetProgressRequestAction {
       Completer completer,
       this.showSnackBar = true})
       : this.completer = completer ?? Completer();
+
+  /// A constructor that's used when a request is sent upon app launch.
+  ///
+  /// Some parameters are hidden since they are not available on app launch.
+  GetProgressRequestAction.initialLaunch({@required this.subjectTypes})
+      : this.completer = Completer(),
+        this.showSnackBar = false,
+        this.context = null;
 }
 
 class GetSubjectEpisodesRequestAction {

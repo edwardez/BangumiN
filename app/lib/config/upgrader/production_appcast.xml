@@ -4,6 +4,20 @@
     <channel>
         <title>BangumiN Changelog</title>
         <item>
+            <title>Version 0.5.3</title>
+            <description>
+                * 支持系统级黑暗模式
+                * 修复了一个登录过期后登录信息需重启app才能刷新的问题
+                * 其他若干bug修复和性能提升
+            </description>
+            <sparkle:tags>
+                <sparkle:criticalUpdate/>
+            </sparkle:tags>
+            <pubDate>2020/06/19 00:00</pubDate>
+            <enclosure url="https://github.com/edwardez/BangumiN/releases"
+                       sparkle:version="0.5.3" sparkle:os="android"/>
+        </item>
+        <item>
             <title>Version 0.4.3</title>
             <description>
                 * 修复了由于主站更新导致的评分显示不正确的问题

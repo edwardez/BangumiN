@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -27,7 +28,6 @@ import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 import 'package:munin/widgets/shared/common/SingleChildExpandedRow.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:quiver/strings.dart';
 
 const _iOSUserAgent =
     'Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) '
@@ -87,18 +87,8 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
   final emailController = TextEditingController();
   final passWordController = TextEditingController();
   final captchaController = TextEditingController();
-  final emailFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
-  final captchaFocusNode = FocusNode();
+  var _formHasPristineFields = true;
   var _shouldObscurePassword = true;
-
-  bool isEmailFieldPristine = true;
-  bool isPasswordFieldPristine = true;
-  bool isCaptchaFieldPristine = true;
-  bool isFormValid = false;
-
-  bool get formHasPristineFields =>
-      isEmailFieldPristine || isPasswordFieldPristine || isCaptchaFieldPristine;
 
   void _createNewDio() {
     dio = Dio(BaseOptions(
@@ -118,83 +108,40 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
     ]);
   }
 
+  void _onFormValueChanged() {
+    if (emailController.text.isEmpty ||
+        passWordController.text.isEmpty ||
+        captchaController.text.isEmpty) {
+      if (!_formHasPristineFields) {
+        setState(() {
+          _formHasPristineFields = true;
+        });
+      }
+    } else {
+      if (_formHasPristineFields) {
+        setState(() {
+          _formHasPristineFields = false;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    emailFocusNode.addListener(_listenToEmailNodeFocusChanges);
-    passwordFocusNode.addListener(_listenToPasswordNodeFocusChanges);
-    captchaFocusNode.addListener(_listenToCaptchaNodeFocusChanges);
-    captchaController.addListener(_listenToCaptchaFieldChanges);
     _createNewDio();
     _initLoginData();
-    isEmailFieldPristine = isEmpty(emailController.text);
-    isPasswordFieldPristine = isEmpty(passWordController.text);
-    isCaptchaFieldPristine = isEmpty(captchaController.text);
+    emailController.addListener(_onFormValueChanged);
+    passWordController.addListener(_onFormValueChanged);
+    captchaController.addListener(_onFormValueChanged);
   }
 
   @override
   void dispose() {
     emailController.dispose();
-    emailFocusNode.dispose();
     passWordController.dispose();
-    passwordFocusNode.dispose();
     captchaController.dispose();
-    captchaFocusNode.dispose();
     super.dispose();
-  }
-
-  /// Listens to form fields and rebuilds.
-  /// Maybe find a way to rebuild login button only?
-  void _listenToFormFieldChanges() {
-    if (!formHasPristineFields) {
-      setState(() {});
-    }
-  }
-
-  void _listenToCaptchaFieldChanges() {
-    if (isCaptchaFieldPristine) {
-      final inputLength = captchaController.text.length ?? 0;
-      if (inputLength == captchaLength) {
-        captchaFocusNode.unfocus();
-      }
-    } else {
-      _listenToFormFieldChanges();
-    }
-  }
-
-  /// Listens to email node focus, removes listener after loosing first
-  /// focus.
-  void _listenToEmailNodeFocusChanges() {
-    if (!emailFocusNode.hasFocus) {
-      emailFocusNode.removeListener(_listenToEmailNodeFocusChanges);
-      emailController.addListener(_listenToFormFieldChanges);
-      setState(() {
-        isEmailFieldPristine = false;
-      });
-    }
-  }
-
-  /// Listens to password node focus, removes listener after loosing first
-  /// focus.
-  void _listenToPasswordNodeFocusChanges() {
-    if (!passwordFocusNode.hasFocus) {
-      passwordFocusNode.removeListener(_listenToPasswordNodeFocusChanges);
-      passWordController.addListener(_listenToFormFieldChanges);
-      setState(() {
-        isPasswordFieldPristine = false;
-      });
-    }
-  }
-
-  /// Listens to captcha node focus, removes listener after loosing first
-  /// focus.
-  void _listenToCaptchaNodeFocusChanges() {
-    if (!captchaFocusNode.hasFocus) {
-      captchaFocusNode.removeListener(_listenToCaptchaNodeFocusChanges);
-      setState(() {
-        isCaptchaFieldPristine = false;
-      });
-    }
   }
 
   Future<void> showErrorDialog({
@@ -444,9 +391,8 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
             validateStatus: (statusCode) => statusCode < 400),
       );
       final code =
-      Uri
-          .parse(oauthResponse.headers.value(HttpHeaders.locationHeader))
-          .queryParameters['code'];
+          Uri.parse(oauthResponse.headers.value(HttpHeaders.locationHeader))
+              .queryParameters['code'];
       if (code == null) {
         throw BangumiResponseIncomprehensibleException(
             'Oauth code is invalid.');
@@ -533,9 +479,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           Expanded(
             child: TextFormField(
               controller: captchaController,
-              focusNode: captchaFocusNode,
               autocorrect: false,
-              autovalidate: !isCaptchaFieldPristine,
               decoration: InputDecoration(
                 labelText: '验证码',
                 hintText: '$captchaLength位字母',
@@ -576,9 +520,8 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       padding: const EdgeInsets.symmetric(vertical: mediumOffset),
       child: TextFormField(
         controller: passWordController,
-        focusNode: passwordFocusNode,
         autocorrect: false,
-        autovalidate: !isPasswordFieldPristine,
+        autofillHints: [AutofillHints.password],
         obscureText: _shouldObscurePassword,
         decoration: InputDecoration(
           labelText: '密码',
@@ -613,10 +556,9 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       padding: const EdgeInsets.only(top: baseOffset4x, bottom: mediumOffset),
       child: TextFormField(
         controller: emailController,
-        focusNode: emailFocusNode,
         autocorrect: false,
-        autovalidate: !isEmailFieldPristine,
         keyboardType: TextInputType.emailAddress,
+        autofillHints: [AutofillHints.email],
         decoration: InputDecoration(
           labelText: '邮箱',
           hintText: '输入Bangumi邮箱',
@@ -653,6 +595,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           padding: EdgeInsets.all(baseOffset * 6),
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -664,8 +607,14 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                 ),
                 Flexible(
                   child: Column(children: <Widget>[
-                    _buildEmail(),
-                    _buildPassword(),
+                    AutofillGroup(
+                      child: Column(
+                        children: [
+                          _buildEmail(),
+                          _buildPassword(),
+                        ],
+                      ),
+                    ),
                     _buildCaptcha(),
                     if (errorText != null)
                       Text(
@@ -674,10 +623,9 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
                       ),
                     SingleChildExpandedRow(
                       child: MuninOutlineButton(
-                        onPressed: (!formHasPristineFields &&
-                            _formKey.currentState.validate())
-                            ? _submitLoginFormAndReportError
-                            : null,
+                        onPressed: _formHasPristineFields
+                            ? null
+                            : _submitLoginFormAndReportError,
                         child: Text(
                           '登录到Bangumi',
                         ),

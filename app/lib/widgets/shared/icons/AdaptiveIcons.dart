@@ -2,14 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munin/widgets/shared/icons/MuninIcons.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 /// A set of [IconData] that has platform awareness
 class AdaptiveIcons {
   static IconData get shareIconData {
     if (Platform.isIOS) {
-      return MuninIcons.muninCupertinoShare;
+      return CupertinoIcons.share;
     } else {
       return Icons.share;
     }
@@ -17,7 +16,7 @@ class AdaptiveIcons {
 
   static IconData get backIconData {
     if (Platform.isIOS) {
-      return Icons.arrow_back_ios;
+      return CupertinoIcons.back;
     } else {
       return Icons.arrow_back;
     }
@@ -25,7 +24,7 @@ class AdaptiveIcons {
 
   static IconData get forwardIconData {
     if (Platform.isIOS) {
-      return Icons.arrow_forward_ios;
+      return CupertinoIcons.forward;
     } else {
       return Icons.arrow_forward;
     }
@@ -33,7 +32,7 @@ class AdaptiveIcons {
 
   static IconData get moreActionsIconData {
     if (Platform.isIOS) {
-      return Icons.more_horiz;
+      return CupertinoIcons.ellipsis;
     } else {
       return Icons.more_vert;
     }
@@ -41,7 +40,7 @@ class AdaptiveIcons {
 
   static IconData get conversationIconData {
     if (Platform.isIOS) {
-      return CupertinoIcons.conversation_bubble;
+      return CupertinoIcons.chat_bubble;
     } else {
       return OMIcons.modeComment;
     }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
+import 'package:munin/widgets/shared/icons/MuninIcons.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 /// An adaptive indicator that displays number of replies.
@@ -70,7 +71,7 @@ class AdaptiveReplyCountIndicator extends StatelessWidget {
       alignment: AlignmentDirectional.center,
       children: <Widget>[
         Icon(
-          CupertinoIcons.conversation_bubble,
+          MuninIcons.muninCupertinoChatBubble,
           size: replyCountIconSize(textScaleFactor),
         ),
         Text(

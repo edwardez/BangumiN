@@ -100,7 +100,7 @@ class MuninRefresh extends StatefulWidget {
 
   /// Displacement value for [RefreshWidgetStyle.Material]
   /// see [displacement] in [MuninRefreshIndicator]
-  final double materialMuninRefreshIndicatorDisplacement;
+  final double materialRefreshIndicatorDisplacement;
 
   /// refreshTriggerPullDistance for [RefreshWidgetStyle.Cupertino]
   /// see [refreshTriggerPullDistance] in [CupertinoSliverRefreshControl]
@@ -108,7 +108,7 @@ class MuninRefresh extends StatefulWidget {
 
   /// MuninRefreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
   /// see [MuninRefreshIndicatorExtent] in [CupertinoSliverRefreshControl]
-  final double cupertinoMuninRefreshIndicatorExtent;
+  final double cupertinoRefreshIndicatorExtent;
 
   /// Padding between appBar and underneath items
   /// Won't take effect if appBar is not set
@@ -135,9 +135,9 @@ class MuninRefresh extends StatefulWidget {
     this.refreshWidgetStyle = RefreshWidgetStyle.Adaptive,
     this.separatorBuilder = _defaultDividerBuilder,
     this.appBarUnderneathPadding = const EdgeInsets.only(bottom: largeOffset),
-    this.materialMuninRefreshIndicatorDisplacement = 80,
+    this.materialRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
-    this.cupertinoMuninRefreshIndicatorExtent = 50,
+    this.cupertinoRefreshIndicatorExtent = 50,
     this.loadMoreTriggerDistance = 200,
     this.showSnackbarOnError = false,
   })  : assert(itemCount != null),
@@ -411,7 +411,7 @@ class MuninRefreshState extends State<MuninRefresh> {
 
   /// HACKHACK: block Cupertino Refresh since we are manually trigger refresh
   /// under this condition
-  bool showPlaceholderCupertinoMuninRefreshIndicator() {
+  bool showPlaceholderCupertinoRefreshIndicator() {
     return refreshLoadingStatus == RequestStatus.Loading &&
         widget.itemCount == 0 &&
         computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
@@ -437,7 +437,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       // then this code bock can be removed
       // Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
       // [RefreshWidgetStyle.Cupertino]
-      if (showPlaceholderCupertinoMuninRefreshIndicator()) {
+      if (showPlaceholderCupertinoRefreshIndicator()) {
         SliverFixedExtentList progressIndicator = SliverFixedExtentList(
           itemExtent: sliverGeneralExtent,
           delegate: SliverChildBuilderDelegate(
@@ -452,7 +452,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       } else {
         slivers.add(CupertinoSliverRefreshControl(
           onRefresh: _generateOnRefreshCallBack(),
-          refreshIndicatorExtent: widget.cupertinoMuninRefreshIndicatorExtent,
+          refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
           refreshTriggerPullDistance:
           widget.cupertinoRefreshTriggerPullDistance,
         ));
@@ -533,7 +533,7 @@ class MuninRefreshState extends State<MuninRefresh> {
     } else {
       return MuninRefreshIndicator(
         key: _materialRefreshKey,
-        displacement: widget.materialMuninRefreshIndicatorDisplacement,
+        displacement: widget.materialRefreshIndicatorDisplacement,
         child: _buildItemsScrollBody(
             includeLoadMoreStatusWidget: includeLoadMoreStatusWidget),
         onRefresh: _generateOnRefreshCallBack(),

@@ -558,7 +558,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         controller: emailController,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
-        autofillHints: [AutofillHints.email],
+        autofillHints: [AutofillHints.email, AutofillHints.username],
         decoration: InputDecoration(
           labelText: '邮箱',
           hintText: '输入Bangumi邮箱',

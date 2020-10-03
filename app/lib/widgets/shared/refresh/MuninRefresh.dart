@@ -18,10 +18,10 @@ import 'package:munin/widgets/shared/refresh/workaround/refresh_indicator.dart';
 /// finished.
 typedef RefreshCallback = Future<void> Function();
 
-/// If it's [RefreshWidgetStyle.Material], [RefreshIndicator] will always be used
+/// If it's [RefreshWidgetStyle.Material], [MuninRefreshIndicator] will always be used
 /// If it's [RefreshWidgetStyle.Cupertino], [CupertinoSliverRefreshControl] will always be used
 /// If it's [RefreshWidgetStyle.Adaptive], [MuninRefresh] will try to match platform standard
-/// By default, [RefreshIndicator] will be used
+/// By default, [MuninRefreshIndicator] will be used
 enum RefreshWidgetStyle {
   Material,
   Cupertino,
@@ -33,8 +33,8 @@ enum RefreshWidgetStyle {
 
 /// A refresh widget that supports infinite scroll and pull to refresh
 /// For pull to refresh: on iOS [CupertinoSliverRefreshControl] is used
-/// on Android [RefreshIndicator] is used
-/// Note: [CupertinoSliverRefreshControl] works differently from [RefreshIndicator]
+/// on Android [MuninRefreshIndicator] is used
+/// Note: [CupertinoSliverRefreshControl] works differently from [MuninRefreshIndicator]
 /// instead of being an overlay on top of the scrollable, the
 /// [CupertinoSliverRefreshControl] is part of the scrollable and actively occupies
 ///  scrollable space.
@@ -99,16 +99,16 @@ class MuninRefresh extends StatefulWidget {
   final List<Widget> topWidgets;
 
   /// Displacement value for [RefreshWidgetStyle.Material]
-  /// see [displacement] in [RefreshIndicator]
-  final double materialRefreshIndicatorDisplacement;
+  /// see [displacement] in [MuninRefreshIndicator]
+  final double materialMuninRefreshIndicatorDisplacement;
 
   /// refreshTriggerPullDistance for [RefreshWidgetStyle.Cupertino]
   /// see [refreshTriggerPullDistance] in [CupertinoSliverRefreshControl]
   final double cupertinoRefreshTriggerPullDistance;
 
-  /// refreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
-  /// see [refreshIndicatorExtent] in [CupertinoSliverRefreshControl]
-  final double cupertinoRefreshIndicatorExtent;
+  /// MuninRefreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
+  /// see [MuninRefreshIndicatorExtent] in [CupertinoSliverRefreshControl]
+  final double cupertinoMuninRefreshIndicatorExtent;
 
   /// Padding between appBar and underneath items
   /// Won't take effect if appBar is not set
@@ -135,9 +135,9 @@ class MuninRefresh extends StatefulWidget {
     this.refreshWidgetStyle = RefreshWidgetStyle.Adaptive,
     this.separatorBuilder = _defaultDividerBuilder,
     this.appBarUnderneathPadding = const EdgeInsets.only(bottom: largeOffset),
-    this.materialRefreshIndicatorDisplacement = 80,
+    this.materialMuninRefreshIndicatorDisplacement = 80,
     this.cupertinoRefreshTriggerPullDistance = 70,
-    this.cupertinoRefreshIndicatorExtent = 50,
+    this.cupertinoMuninRefreshIndicatorExtent = 50,
     this.loadMoreTriggerDistance = 200,
     this.showSnackbarOnError = false,
   })  : assert(itemCount != null),
@@ -411,7 +411,7 @@ class MuninRefreshState extends State<MuninRefresh> {
 
   /// HACKHACK: block Cupertino Refresh since we are manually trigger refresh
   /// under this condition
-  bool showPlaceholderCupertinoRefreshIndicator() {
+  bool showPlaceholderCupertinoMuninRefreshIndicator() {
     return refreshLoadingStatus == RequestStatus.Loading &&
         widget.itemCount == 0 &&
         computedRefreshWidgetStyle == RefreshWidgetStyle.Cupertino;
@@ -437,7 +437,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       // then this code bock can be removed
       // Workaround to show a refresh indicator if [computedRefreshWidgetStyle] is
       // [RefreshWidgetStyle.Cupertino]
-      if (showPlaceholderCupertinoRefreshIndicator()) {
+      if (showPlaceholderCupertinoMuninRefreshIndicator()) {
         SliverFixedExtentList progressIndicator = SliverFixedExtentList(
           itemExtent: sliverGeneralExtent,
           delegate: SliverChildBuilderDelegate(
@@ -452,9 +452,9 @@ class MuninRefreshState extends State<MuninRefresh> {
       } else {
         slivers.add(CupertinoSliverRefreshControl(
           onRefresh: _generateOnRefreshCallBack(),
-          refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
+          refreshIndicatorExtent: widget.cupertinoMuninRefreshIndicatorExtent,
           refreshTriggerPullDistance:
-              widget.cupertinoRefreshTriggerPullDistance,
+          widget.cupertinoRefreshTriggerPullDistance,
         ));
       }
     }
@@ -533,7 +533,7 @@ class MuninRefreshState extends State<MuninRefresh> {
     } else {
       return MuninRefreshIndicator(
         key: _materialRefreshKey,
-        displacement: widget.materialRefreshIndicatorDisplacement,
+        displacement: widget.materialMuninRefreshIndicatorDisplacement,
         child: _buildItemsScrollBody(
             includeLoadMoreStatusWidget: includeLoadMoreStatusWidget),
         onRefresh: _generateOnRefreshCallBack(),

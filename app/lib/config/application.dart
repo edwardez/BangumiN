@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +63,7 @@ const upgradeInfoUrl =
 
 abstract class Application {
   static Application environmentValue;
-  static Router router;
+  static fluro.Router router;
 
   static final String bangumiOauthAuthorizationEndpoint =
       'https://bgm.tv/oauth/authorize';

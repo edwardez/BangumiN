@@ -1,5 +1,5 @@
 import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as flutter;
 
 import './RouteHandlers.dart';
 
@@ -89,9 +89,9 @@ class Routes {
       '/blog/${RoutesVariable.threadIdParam}/${RoutesVariable.postIdParam}';
 
   static void configureRoutes(Router router) {
-    router.notFoundHandler = Handler(
-        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-          return Text('Route is not found!');
+    router.notFoundHandler = Handler(handlerFunc:
+        (flutter.BuildContext context, Map<String, List<String>> params) {
+      return flutter.Text('Route is not found!');
     });
     router.define(loginRoute, handler: loginRouteHandler);
     router.define(homeRoute, handler: homeRouteHandler);

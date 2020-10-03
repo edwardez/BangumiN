@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/discussion/DiscussionItem.dart';
 import 'package:munin/models/bangumi/discussion/GroupDiscussionItem.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/rakuen/AdaptiveReplyCountIndicator.dart';
@@ -10,7 +11,6 @@ import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class DiscussionItemWidget extends StatelessWidget {
   static const titleMaxLines = 3;
@@ -59,7 +59,9 @@ class DiscussionItemWidget extends StatelessWidget {
     Widget muteOptionWidget;
     if (isMuted(discussionItem)) {
       muteOptionWidget = ListTile(
-        leading: Icon(OMIcons.clear),
+        leading: Icon(isCupertinoPlatform()
+            ? CupertinoIcons.shield_slash_fill
+            : Icons.clear_rounded),
         title: Text('解除屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onUnmute(discussionItem);
@@ -70,7 +72,9 @@ class DiscussionItemWidget extends StatelessWidget {
       );
     } else {
       muteOptionWidget = ListTile(
-        leading: Icon(OMIcons.block),
+        leading: Icon(isCupertinoPlatform()
+            ? CupertinoIcons.shield_fill
+            : Icons.block_rounded),
         title: Text('屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onMute(discussionItem);

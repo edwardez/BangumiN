@@ -90,7 +90,7 @@ class UserProfileWidget extends StatelessWidget {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
-                    leading: Icon(Icons.content_copy),
+                    leading: Icon(AdaptiveIcons.clipBoardIconData),
                     title: Text('复制主页地址'),
                     onTap: () {
                       ClipboardService.copyAsPlainText(

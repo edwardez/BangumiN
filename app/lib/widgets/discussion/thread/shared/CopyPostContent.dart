@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 
 class CopyPostContent extends StatelessWidget {
@@ -17,7 +18,7 @@ class CopyPostContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.content_copy),
+      leading: Icon(AdaptiveIcons.clipBoardIconData),
       title: Text('复制内容'),
       onTap: () {
         Navigator.pop(context);

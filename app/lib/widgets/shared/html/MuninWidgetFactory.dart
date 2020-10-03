@@ -6,6 +6,7 @@ import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/background/GreyRoundedBorderContainer.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -60,7 +61,7 @@ class _InkWellHtmlWrapper extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.content_copy),
+            leading: Icon(AdaptiveIcons.clipBoardIconData),
             title: Text('复制地址'),
             onTap: () {
               ClipboardService.copyAsPlainText(context, url, popContext: true);

@@ -45,4 +45,12 @@ class AdaptiveIcons {
       return OMIcons.modeComment;
     }
   }
+
+  static IconData get clipBoardIconData {
+    if (Platform.isIOS) {
+      return CupertinoIcons.doc_on_clipboard;
+    } else {
+      return Icons.content_copy;
+    }
+  }
 }

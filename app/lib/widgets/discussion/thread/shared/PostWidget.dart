@@ -17,6 +17,7 @@ import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.d
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -193,14 +194,14 @@ class PostWidget extends StatelessWidget {
         ),
         if (post is! OriginalPost)
           ListTile(
-            leading: Icon(Icons.content_copy),
+            leading: Icon(AdaptiveIcons.clipBoardIconData),
             title: Text('复制楼层链接'),
             onTap: () {
               Navigator.pop(context);
               String postContent;
 
               generateWebPageUrlByContentType(
-                  parentBangumiContentType, threadId.toString())
+                      parentBangumiContentType, threadId.toString())
                   .ifPresent((pageUrl) {
                 // Bangumi url format to navigate to a specific post.
                 // [InitialGroupPost] cannot be navigated like this.

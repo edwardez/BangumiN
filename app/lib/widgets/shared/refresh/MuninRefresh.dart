@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
@@ -313,7 +314,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       return refreshWidgetStyle;
     }
 
-    if (Platform.isIOS) {
+    if (isCupertinoPlatform()) {
       return RefreshWidgetStyle.Cupertino;
     }
 

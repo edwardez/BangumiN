@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
@@ -268,7 +268,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
   List<Widget> _appBarActions(BangumiThread thread,
       BangumiContent parentBangumiContentType) {
     IconData sortIcon() {
-      if (!Platform.isIOS) {
+      if (!isCupertinoPlatform()) {
         return Icons.sort_rounded;
       }
 

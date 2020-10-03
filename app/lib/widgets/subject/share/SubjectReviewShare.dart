@@ -11,12 +11,12 @@ import 'package:munin/models/bangumi/subject/BangumiSubject.dart';
 import 'package:munin/models/bangumi/subject/review/SubjectReview.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/shared/workarounds/munin_permission_handler/lib/permission_handler.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/ScaffoldWithRegularAppBar.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/subject/share/SubjectReviewPoster.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SubjectReviewShare extends StatefulWidget {
   final BangumiSubject subject;
@@ -76,17 +76,15 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
   /// Checks and requests permission on Android
   Future<PermissionStatus> checkAndRequestPermissionOnAndroid() async {
     if (!Platform.isAndroid) {
-      return PermissionStatus.unknown;
+      return PermissionStatus.undetermined;
     }
 
-    var status = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+    var status = await Permission.storage.status;
     if (status != PermissionStatus.granted) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      await Permission.storage.request();
     }
 
-    return await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+    return await Permission.storage.status;
   }
 
   /// Currently this calculation might block ui thread
@@ -177,10 +175,12 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
               '保存到相册',
             ),
             onPressed: () async {
-              var status = await checkAndRequestPermissionOnAndroid();
-              if (status == PermissionStatus.denied) {
-                showTextOnSnackBar(context, '保存失败：没有写入图片的权限。');
-                return;
+              if (Platform.isAndroid) {
+                var status = await checkAndRequestPermissionOnAndroid();
+                if (status != PermissionStatus.granted) {
+                  showTextOnSnackBar(context, '保存失败：没有写入图片的权限。');
+                  return;
+                }
               }
 
               Uint8List uint8List =

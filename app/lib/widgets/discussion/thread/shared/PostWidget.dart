@@ -148,7 +148,7 @@ class PostWidget extends StatelessWidget {
           .avatar
           .isUsingDefaultAvatar) {
         return ListTile(
-          leading: Icon(OMIcons.reply),
+          leading: Icon(AdaptiveIcons.replyIconData),
           title: Text(
             replyLabel,
           ),
@@ -160,7 +160,7 @@ class PostWidget extends StatelessWidget {
       }
 
       return ListTile(
-        leading: Icon(OMIcons.reply),
+        leading: Icon(AdaptiveIcons.replyIconData),
         title: Text(replyLabel),
         onTap: () async {
           Navigator.pop(context);

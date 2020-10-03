@@ -117,7 +117,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
               child: InkWell(
                 child: Row(
                   children: <Widget>[
-                    Icon(OMIcons.sort),
+                    Icon(Icons.sort_rounded),
                     WrappableText(
                         '${currentRequest.orderCollectionBy.chineseName}'),
                   ],
@@ -134,7 +134,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
               child: InkWell(
                 child: Row(
                   children: <Widget>[
-                    Icon(OMIcons.filterList),
+                    Icon(Icons.filter_alt_outlined),
                     WrappableText(
                       '标签${maybeCurrentTagName.or('')}',
                       maxLines: tagsFilterMaxLines,

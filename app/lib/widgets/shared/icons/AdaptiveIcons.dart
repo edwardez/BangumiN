@@ -53,4 +53,20 @@ class AdaptiveIcons {
       return Icons.content_copy;
     }
   }
+
+  static IconData get replyIconData {
+    if (Platform.isIOS) {
+      return CupertinoIcons.reply;
+    } else {
+      return Icons.reply_outlined;
+    }
+  }
+
+  static IconData get sortDownIconData {
+    if (Platform.isIOS) {
+      return CupertinoIcons.sort_down;
+    } else {
+      return Icons.sort_rounded;
+    }
+  }
 }

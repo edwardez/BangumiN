@@ -87,7 +87,7 @@ class SearchHomeDelegate extends SearchDelegate {
         : [
             IconButton(
               tooltip: '清除',
-              icon: const Icon(Icons.clear),
+              icon: Icon(AdaptiveIcons.clearIconData),
               onPressed: () {
                 query = '';
                 showSuggestions(context);

@@ -40,14 +40,14 @@ class CollectionUpdateSingleWidget extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Transform.scale(
                   scale: -1,
-                  child: Icon(Icons.format_quote),
+                  child: Icon(Icons.format_quote_rounded),
                 )),
             Expanded(
               child: Text(subjectComment),
             ),
             Align(
                 alignment: Alignment.bottomCenter,
-                child: Icon(Icons.format_quote))
+                child: Icon(Icons.format_quote_rounded))
           ],
         ),
       ),

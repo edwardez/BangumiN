@@ -9,7 +9,6 @@ import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.d
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
   final _assetOrDataImageUriPattern = RegExp('^(asset|data):');
@@ -66,7 +65,7 @@ class _InkWellHtmlWrapper extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(OMIcons.openInBrowser),
+            leading: Icon(Icons.open_in_browser_rounded),
             title: Text('浏览器中打开'),
             onTap: () {
               launchByPreference(context, url, popContext: true);

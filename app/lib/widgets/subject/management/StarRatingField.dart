@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
 
@@ -36,13 +37,13 @@ class _StarRatingFieldState extends State<StarRatingField> {
     double iconSize = widget.size;
 
     if (index >= widget.rating) {
-      iconData = Icons.star_border;
+      iconData = Icons.star_outline_rounded;
       iconColor = widget.color ?? lightPrimaryDarkAccentColor(context);
     } else if (index > widget.rating - 1 && index < widget.rating) {
-      iconData = Icons.star_half;
+      iconData = Icons.star_half_rounded;
       iconColor = widget.borderColor ?? Theme.of(context).buttonColor;
     } else {
-      iconData = Icons.star;
+      iconData = Icons.star_rounded;
       iconColor = widget.color ?? lightPrimaryDarkAccentColor(context);
     }
     return InkResponse(
@@ -63,7 +64,7 @@ class _StarRatingFieldState extends State<StarRatingField> {
       mainAxisAlignment: widget.mainAxisAlignment,
       children: List.generate(
         widget.starCount,
-        (index) => buildStar(context, index),
+            (index) => buildStar(context, index),
       ),
     );
   }

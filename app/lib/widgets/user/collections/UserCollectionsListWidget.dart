@@ -19,7 +19,6 @@ import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/shared/text/MuninTextSpans.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/user/collections/CollectionOnUserListWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 

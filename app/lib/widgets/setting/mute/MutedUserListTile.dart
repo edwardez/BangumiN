@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedUser.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 
 class MutedUserListTile extends StatelessWidget {
   final MutedUser mutedUser;
@@ -30,7 +30,7 @@ class MutedUserListTile extends StatelessWidget {
                     children: <Widget>[
                       InkWell(
                         child: ListTile(
-                          leading: Icon(OMIcons.clear),
+                          leading: Icon(AdaptiveIcons.unmuteIconData),
                           title: Text('解除屏蔽'),
                         ),
                         onTap: () {

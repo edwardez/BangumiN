@@ -26,8 +26,8 @@ import 'package:munin/widgets/initial/Common.dart';
 import 'package:munin/widgets/setting/privacy/PrivacySettingWidget.dart';
 import 'package:munin/widgets/shared/button/MuninOutlineButton.dart';
 import 'package:munin/widgets/shared/common/SingleChildExpandedRow.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 const _iOSUserAgent =
     'Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) '
@@ -534,8 +534,8 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
             },
             child: Icon(
               _shouldObscurePassword
-                  ? OMIcons.visibilityOff
-                  : OMIcons.visibility,
+                  ? AdaptiveIcons.visibilityOffIconData
+                  : AdaptiveIcons.visibilityOnIconData,
               semanticLabel: _shouldObscurePassword ? '显示密码' : '隐藏密码',
             ),
           ),

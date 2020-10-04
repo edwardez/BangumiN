@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/styles/theme/Common.dart';
 
@@ -40,13 +41,13 @@ class StarRating extends StatelessWidget {
     double ratingStarSizeRelativeToScreen = totalWidth / totalIcons;
 
     if (index >= rating) {
-      iconData = Icons.star_border;
+      iconData = Icons.star_outline_rounded;
       iconColor = color ?? lightPrimaryDarkAccentColor(context);
     } else if (index > rating - 1 && index < rating) {
-      iconData = Icons.star_half;
+      iconData = Icons.star_half_rounded;
       iconColor = borderColor ?? Theme.of(context).buttonColor;
     } else {
-      iconData = Icons.star;
+      iconData = Icons.star_rounded;
       iconColor = color ?? lightPrimaryDarkAccentColor(context);
     }
     return InkWell(
@@ -56,15 +57,17 @@ class StarRating extends StatelessWidget {
         size: size ?? ratingStarSizeRelativeToScreen,
       ),
       onTap:
-          onRatingChanged == null ? null : () => onRatingChanged(index + 1.0),
+      onRatingChanged == null ? null : () => onRatingChanged(index + 1.0),
     );
   }
 
   Widget _buildClearStarIcon(BuildContext context) {
     return InkResponse(
-      child: Icon(
-        Icons.remove_circle_outline,
-        color: Theme.of(context).colorScheme.secondary,
+      child: Icon(Icons.remove_circle_outline_rounded,
+        color: Theme
+            .of(context)
+            .colorScheme
+            .secondary,
         size: size,
       ),
       onTap: onRatingChanged == null ? null : () => onRatingChanged(0),
@@ -80,7 +83,7 @@ class StarRating extends StatelessWidget {
 
     children.addAll(List.generate(
       starCount,
-      (index) => _buildStarIcon(context, index),
+          (index) => _buildStarIcon(context, index),
     ));
 
     return Row(

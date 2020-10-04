@@ -6,7 +6,6 @@ import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:share/share.dart';
 
 class MoreActions extends StatelessWidget {
@@ -51,9 +50,9 @@ class MoreActions extends StatelessWidget {
 
   Icon toggleSpoilerMenuIcon() {
     if (allSpoilersVisible) {
-      return Icon(OMIcons.visibilityOff);
+      return Icon(AdaptiveIcons.visibilityOffIconData);
     } else {
-      return Icon(OMIcons.visibility);
+      return Icon(AdaptiveIcons.visibilityOnIconData);
     }
   }
 
@@ -85,7 +84,7 @@ class MoreActions extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.open_in_browser),
+                  leading: Icon(AdaptiveIcons.openInBrowserIconData),
                   title: Text(openInBrowserLabel),
                   onTap: () {
                     var maybeWebUrl = generateWebPageUrlByContentType(

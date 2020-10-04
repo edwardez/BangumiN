@@ -13,7 +13,7 @@ import 'package:munin/widgets/setting/theme/FollowSystemThemeOptions.dart';
 import 'package:munin/widgets/setting/theme/ManualThemeOptions.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:redux/redux.dart';
 
 class ThemeSettingWidget extends StatefulWidget {
@@ -246,9 +246,9 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                     vm.themeSetting.themeSwitchMode,
                     ThemeSwitchMode.FollowSystemThemeSetting,
                     iconData: darkModeSupportInfo?.darkModeAvailability ==
-                        DarkModeAvailability.available
-                        ? OMIcons.done
-                        : OMIcons.warning,
+                            DarkModeAvailability.available
+                        ? AdaptiveIcons.doneIconData
+                        : AdaptiveIcons.warningIconData,
                   ),
                   onTap: () => onSelectFollowSystemTheme(vm),
                 ),

@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/Scroll.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/user/notification/NotificationIcon.dart';
@@ -25,15 +26,12 @@ class MuninBottomNavigationBar extends StatelessWidget {
       showUnselectedLabels: false,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-            icon: Icon(isCupertinoPlatform()
+            icon: Icon(!isCupertinoPlatform()
                 ? CupertinoIcons.home
-                : Icons.home_outlined),
+                : Icons.home_rounded),
             label: '动态'),
         BottomNavigationBarItem(
-            icon: Icon(isCupertinoPlatform()
-                ? CupertinoIcons.checkmark_alt
-                : Icons.done_rounded),
-            label: '进度'),
+            icon: Icon(AdaptiveIcons.doneIconData), label: '进度'),
         BottomNavigationBarItem(
             icon: Icon(isCupertinoPlatform()
                 ? CupertinoIcons.person_2

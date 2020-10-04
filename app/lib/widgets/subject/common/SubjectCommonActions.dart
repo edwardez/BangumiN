@@ -15,7 +15,7 @@ void _showSubjectModalBottomSheet(BuildContext context, BangumiSubject subject) 
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.open_in_browser),
+                  leading: Icon(AdaptiveIcons.openInBrowserIconData),
                   title: Text('在浏览器中打开'),
                   onTap: () {
                     launchByPreference(context, subject.pageUrlFromCalculation,

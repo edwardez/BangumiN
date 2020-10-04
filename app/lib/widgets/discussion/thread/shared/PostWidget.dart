@@ -20,7 +20,6 @@ import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class PostWidget extends StatelessWidget {
   /// Parent thread id that this post belongs to.
@@ -77,7 +76,7 @@ class PostWidget extends StatelessWidget {
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
     return ListTile(
-      leading: Icon(OMIcons.edit),
+      leading: Icon(AdaptiveIcons.editIconData),
       title: Text(
         '编辑此回复',
       ),
@@ -111,7 +110,7 @@ class PostWidget extends StatelessWidget {
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
     return ListTile(
-      leading: Icon(OMIcons.delete),
+      leading: Icon(AdaptiveIcons.deleteIconData),
       title: Text(
         '删除此回复',
       ),

@@ -23,7 +23,6 @@ import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/user/CollectionPreviewWidget.dart';
 import 'package:munin/widgets/user/TimelinePreviewWidget.dart';
 import 'package:munin/widgets/user/UserIntroductionPreview.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
@@ -56,7 +55,7 @@ class UserProfileWidget extends StatelessWidget {
 
     if (vm.isMuted) {
       return ListTile(
-        leading: Icon(OMIcons.clear),
+        leading: Icon(AdaptiveIcons.unmuteIconData),
         title: Text('解除屏蔽'),
         onTap: () {
           vm.unMuteUser();
@@ -69,7 +68,7 @@ class UserProfileWidget extends StatelessWidget {
       );
     } else {
       return ListTile(
-        leading: Icon(OMIcons.block),
+        leading: Icon(AdaptiveIcons.muteIconData),
         title: Text('屏蔽此用户'),
         onTap: () {
           vm.muteUser();
@@ -99,7 +98,7 @@ class UserProfileWidget extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: Icon(OMIcons.openInBrowser),
+                    leading: Icon(AdaptiveIcons.openInBrowserIconData),
                     title: Text(checkWebVersionLabel),
                     onTap: () {
                       launchByPreference(
@@ -107,7 +106,7 @@ class UserProfileWidget extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: Icon(OMIcons.timeline),
+                    leading: Icon(AdaptiveIcons.statisticsIconData),
                     title: Text('$goToForsetiLabel查看统计数据'),
                     onTap: () {
                       launchByPreference(context,

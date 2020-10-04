@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/setting/general/GeneralSetting.dart';
 import 'package:munin/models/bangumi/setting/general/PreferredLaunchNavTab.dart';
@@ -18,7 +20,8 @@ class MuninHomePage extends StatefulWidget {
   _MuninHomePageState createState() => _MuninHomePageState();
 }
 
-class _MuninHomePageState extends State<MuninHomePage> {
+class _MuninHomePageState extends State<MuninHomePage>
+    with WidgetsBindingObserver {
   static const totalBottomNavNumber = 4;
   final List<Widget> pages = List(totalBottomNavNumber);
   final PageStorageBucket bucket = PageStorageBucket();
@@ -38,16 +41,16 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
     pages[PreferredLaunchNavTab.Timeline.pageIndex] = MuninTimeline.onHomePage(
       key:
-          PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Timeline),
+      PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Timeline),
       preferredTimelineLaunchPage:
-          widget.generalSetting.preferredTimelineLaunchPage,
+      widget.generalSetting.preferredTimelineLaunchPage,
     );
 
     pages[PreferredLaunchNavTab.Progress.pageIndex] = MuninSubjectProgress(
       key:
-          PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Progress),
+      PageStorageKey<PreferredLaunchNavTab>(PreferredLaunchNavTab.Progress),
       preferredProgressLaunchPage:
-          widget.generalSetting.preferredProgressLaunchPage,
+      widget.generalSetting.preferredProgressLaunchPage,
     );
 
     pages[PreferredLaunchNavTab.Discussion.pageIndex] = DiscussionHome(
@@ -64,11 +67,25 @@ class _MuninHomePageState extends State<MuninHomePage> {
 
     currentPage = pages[widget.generalSetting.preferredLaunchNavTab.pageIndex];
     currentIndex = widget.generalSetting.preferredLaunchNavTab.pageIndex;
+
+    if (Platform.isAndroid) {
+      WidgetsBinding.instance.addObserver(this);
+    }
   }
 
   @override
   void dispose() {
+    if (Platform.isAndroid) {
+      WidgetsBinding.instance.removeObserver(this);
+    }
     super.dispose();
+  }
+
+  /*系统亮度变化*/
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    changeAndroidSystemUIOverlay();
   }
 
   _onSelectedIndexChanged(int index) {

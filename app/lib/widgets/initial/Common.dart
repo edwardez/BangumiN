@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/redux/setting/SettingActions.dart';
 import 'package:munin/redux/shared/utils.dart';
@@ -16,4 +19,29 @@ bool checkUpdate(BuildContext context, bool hasCheckedUpdate) {
   }
 
   return true;
+}
+
+// Changes android system ui overlay style to match currency system brightness.
+changeAndroidSystemUIOverlay() async {
+  if (!Platform.isAndroid) {
+    return;
+  }
+
+  final brightness = WidgetsBinding.instance.window.platformBrightness;
+  switch (brightness) {
+    case Brightness.dark:
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+      break;
+    case Brightness.light:
+    default:
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ));
+      if (brightness != Brightness.light) {
+        print('Unhandled brightness enum $brightness, falling back to light');
+      }
+  }
 }

@@ -17,20 +17,18 @@ class MuninWidgetFactory extends WidgetFactory {
   MuninWidgetFactory() : super();
 
   @override
-  Widget buildImage(String url, {double height, String text, double width}) {
-    if (url?.isEmpty ?? true) return null;
+  Widget buildImage(BuildMetadata meta, Object provider, ImageMetadata image) {
+    if (image?.sources == null || image.sources.isEmpty) return null;
+    if (image.sources.length > 1) {
+      print('More than one url in this image, this is not expected: $image');
+    }
 
-    if (_assetOrDataImageUriPattern.hasMatch(url))
-      return super.buildImage(
-        url,
-        height: height,
-        text: text,
-        width: width,
-      );
+    final url = image.sources.first.url;
 
-    return _InkWellHtmlWrapper(
-      url: url,
-    );
+    if (_assetOrDataImageUriPattern.hasMatch(image.sources.first.url))
+      return super.buildImage(meta, provider, image);
+
+    return _InkWellHtmlWrapper(url: url);
   }
 }
 

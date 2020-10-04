@@ -44,7 +44,7 @@ class MuninBottomNavigationBar extends StatelessWidget {
             child: Icon(isCupertinoPlatform()
                 ? CupertinoIcons.person
                 : Icons.person_outline_rounded),
-            position: BadgePosition.topRight(top: 0, right: 0),
+            position: BadgePosition.topEnd(top: 0, end: 0),
             padding: EdgeInsets.all(4.0),
           ),
           label: '我的',

@@ -111,16 +111,16 @@ class OneMuninBarState extends State<OneMuninBar> {
         leading: widget.addNotificationWidget
             ? NotificationIcon(
           child: IconButton(
-            icon: Icon(isCupertinoPlatform()
+                  icon: Icon(isCupertinoPlatform()
                       ? CupertinoIcons.bell
                       : Icons.notifications_none_rounded),
                   onPressed: () {
                     _navigateToNotification();
                   },
                 ),
-          position: BadgePosition.topRight(top: 10, right: 10),
-          countWidgetBuilder: _buildCountWidget,
-        )
+                position: BadgePosition.topEnd(top: 10, end: 10),
+                countWidgetBuilder: _buildCountWidget,
+              )
             : null,
         actions: <Widget>[
           IconButton(

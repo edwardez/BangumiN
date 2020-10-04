@@ -21,6 +21,8 @@ class MuninBottomNavigationBar extends StatelessWidget {
     BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
             icon: Icon(isCupertinoPlatform()
@@ -40,7 +42,7 @@ class MuninBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: NotificationIcon(
             child: Icon(isCupertinoPlatform()
-                ? CupertinoIcons.profile_circled
+                ? CupertinoIcons.person
                 : Icons.person_outline_rounded),
             position: BadgePosition.topRight(top: 0, right: 0),
             padding: EdgeInsets.all(4.0),

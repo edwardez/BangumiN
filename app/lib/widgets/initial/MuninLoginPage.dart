@@ -480,6 +480,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
             child: TextFormField(
               controller: captchaController,
               autocorrect: false,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 labelText: '验证码',
                 hintText: '$captchaLength位字母',
@@ -521,6 +522,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       child: TextFormField(
         controller: passWordController,
         autocorrect: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         autofillHints: [AutofillHints.password],
         obscureText: _shouldObscurePassword,
         decoration: InputDecoration(
@@ -557,6 +559,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       child: TextFormField(
         controller: emailController,
         autocorrect: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: TextInputType.emailAddress,
         autofillHints: [AutofillHints.email, AutofillHints.username],
         decoration: InputDecoration(
@@ -595,7 +598,6 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           padding: EdgeInsets.all(baseOffset * 6),
           child: Form(
             key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

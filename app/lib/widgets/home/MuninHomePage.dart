@@ -81,10 +81,15 @@ class _MuninHomePageState extends State<MuninHomePage>
     super.dispose();
   }
 
-  /*系统亮度变化*/
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
+    changeAndroidSystemUIOverlay();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
     changeAndroidSystemUIOverlay();
   }
 

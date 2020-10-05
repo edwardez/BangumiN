@@ -6,9 +6,9 @@ import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/background/GreyRoundedBorderContainer.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/AdaptiveProgressIndicator.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninWidgetFactory extends WidgetFactory {
   final _assetOrDataImageUriPattern = RegExp('^(asset|data):');
@@ -16,20 +16,18 @@ class MuninWidgetFactory extends WidgetFactory {
   MuninWidgetFactory() : super();
 
   @override
-  Widget buildImage(String url, {double height, String text, double width}) {
-    if (url?.isEmpty ?? true) return null;
+  Widget buildImage(BuildMetadata meta, Object provider, ImageMetadata image) {
+    if (image?.sources == null || image.sources.isEmpty) return null;
+    if (image.sources.length > 1) {
+      print('More than one url in this image, this is not expected: $image');
+    }
 
-    if (_assetOrDataImageUriPattern.hasMatch(url))
-      return super.buildImage(
-        url,
-        height: height,
-        text: text,
-        width: width,
-      );
+    final url = image.sources.first.url;
 
-    return _InkWellHtmlWrapper(
-      url: url,
-    );
+    if (_assetOrDataImageUriPattern.hasMatch(image.sources.first.url))
+      return super.buildImage(meta, provider, image);
+
+    return _InkWellHtmlWrapper(url: url);
   }
 }
 
@@ -60,14 +58,14 @@ class _InkWellHtmlWrapper extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.content_copy),
+            leading: Icon(AdaptiveIcons.clipBoardIconData),
             title: Text('复制地址'),
             onTap: () {
               ClipboardService.copyAsPlainText(context, url, popContext: true);
             },
           ),
           ListTile(
-            leading: Icon(OMIcons.openInBrowser),
+            leading: Icon(Icons.open_in_browser_rounded),
             title: Text('浏览器中打开'),
             onTap: () {
               launchByPreference(context, url, popContext: true);

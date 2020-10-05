@@ -7,7 +7,6 @@ import 'package:munin/widgets/shared/text/editor/common.dart';
 import 'package:munin/widgets/shared/text/editor/showBangumiStickersBottomSheet.dart';
 import 'package:munin/widgets/shared/text/editor/sticker/BangumiSticker.dart';
 import 'package:munin/widgets/shared/text/editor/sticker/utils.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class BBCodeTextEditor extends StatefulWidget {
   /// The external [TextEditingController].
@@ -115,7 +114,7 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
             spacing: mediumOffset,
             children: <Widget>[
               RoundedInkWell(
-                child: Icon(OMIcons.formatBold),
+                child: Icon(Icons.format_bold_rounded),
                 onTap: () {
                   insertMarkup(messageController.selection,
                       leftInsertion: '[b]', rightInsertion: '[/b]');
@@ -123,7 +122,7 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
                 tooltip: '加粗',
               ),
               RoundedInkWell(
-                child: Icon(OMIcons.formatItalic),
+                child: Icon(Icons.format_italic_rounded),
                 onTap: () {
                   insertMarkup(messageController.selection,
                       leftInsertion: '[i]', rightInsertion: '[/i]');
@@ -131,7 +130,7 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
                 tooltip: '斜体',
               ),
               RoundedInkWell(
-                child: Icon(OMIcons.strikethroughS),
+                child: Icon(Icons.format_strikethrough_rounded),
                 onTap: () {
                   insertMarkup(messageController.selection,
                       leftInsertion: '[s]', rightInsertion: '[/s]');
@@ -139,7 +138,7 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
                 tooltip: '删除线',
               ),
               RoundedInkWell(
-                child: Icon(OMIcons.formatUnderlined),
+                child: Icon(Icons.format_underline_rounded),
                 onTap: () {
                   insertMarkup(messageController.selection,
                       leftInsertion: '[u]', rightInsertion: '[/u]');
@@ -147,7 +146,7 @@ class _BBCodeTextEditorState extends State<BBCodeTextEditor> {
                 tooltip: '下划线',
               ),
               RoundedInkWell(
-                child: Icon(OMIcons.subject),
+                child: Icon(Icons.subject_rounded),
                 onTap: () {
                   insertMarkup(messageController.selection,
                       leftInsertion: '[mask]', rightInsertion: '[/mask]');

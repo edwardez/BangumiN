@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/common.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/Scroll.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
 import 'package:munin/widgets/user/notification/NotificationIcon.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MuninBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -20,17 +22,30 @@ class MuninBottomNavigationBar extends StatelessWidget {
     BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(OMIcons.home), title: Text('动态')),
-        BottomNavigationBarItem(icon: Icon(OMIcons.done), title: Text('进度')),
-        BottomNavigationBarItem(icon: Icon(OMIcons.group), title: Text('讨论')),
+        BottomNavigationBarItem(
+            icon: Icon(!isCupertinoPlatform()
+                ? CupertinoIcons.home
+                : Icons.home_rounded),
+            label: '动态'),
+        BottomNavigationBarItem(
+            icon: Icon(AdaptiveIcons.doneIconData), label: '进度'),
+        BottomNavigationBarItem(
+            icon: Icon(isCupertinoPlatform()
+                ? CupertinoIcons.person_2
+                : Icons.group_outlined),
+            label: '讨论'),
         BottomNavigationBarItem(
           icon: NotificationIcon(
-            child: Icon(OMIcons.person),
-            position: BadgePosition.topRight(top: 0, right: 0),
+            child: Icon(isCupertinoPlatform()
+                ? CupertinoIcons.person
+                : Icons.person_outline_rounded),
+            position: BadgePosition.topEnd(top: 0, end: 0),
             padding: EdgeInsets.all(4.0),
           ),
-          title: Text('主页'),
+          label: '我的',
         ),
       ],
       onTap: (int tappedIndex) {

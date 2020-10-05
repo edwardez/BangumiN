@@ -1,10 +1,10 @@
-import 'dart:io';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/timeline/common/BangumiContent.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -140,7 +140,7 @@ getTextOffsetHeight(String title, String subtitle, TextStyle textStyle) {
 /// on iOS, set secondary theme color as target color
 /// on other platforms, returns null(use widget default)
 getSwitchActiveColor(BuildContext context) {
-  if (Platform.isIOS) {
+  if (isCupertinoPlatform()) {
     return Theme.of(context).colorScheme.primary;
   }
 

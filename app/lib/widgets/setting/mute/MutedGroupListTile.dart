@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/setting/mute/MutedGroup.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 
 class MutedGroupListTile extends StatelessWidget {
   final MutedGroup mutedGroup;
@@ -32,7 +32,7 @@ class MutedGroupListTile extends StatelessWidget {
                     children: <Widget>[
                       InkWell(
                         child: ListTile(
-                          leading: Icon(OMIcons.clear),
+                          leading: Icon(AdaptiveIcons.unmuteIconData),
                           title: Text('解除屏蔽'),
                         ),
                         onTap: () {

@@ -22,7 +22,6 @@ import 'package:munin/widgets/timeline/item/common/FeedTile.dart';
 import 'package:munin/widgets/timeline/message/Common.dart';
 import 'package:munin/widgets/timeline/message/PublicMessageReplyComposer.dart';
 import 'package:munin/widgets/timeline/message/PublicMessageReplyWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 import 'package:share/share.dart';
@@ -106,7 +105,7 @@ class FullPublicMessageWidget extends StatelessWidget {
       builder: (buttonContext) {
         return IconButton(
           icon: Icon(
-            OMIcons.reply,
+            AdaptiveIcons.replyIconData,
           ),
           onPressed: () {
             showSnackBarOnSuccess(

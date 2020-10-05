@@ -42,17 +42,19 @@ class SubjectStars extends StatelessWidget {
 
     final scaledStarSize = textScaleFactor * starSize;
 
-    return []..addAll(List.generate(numOfFullStars,
-            (index) =>
-            Icon(Icons.star, size: scaledStarSize, color: starColor)))..addAll(
-        List.generate(
-            numOfHalfStars,
-                (index) =>
-                Icon(Icons.star_half, size: scaledStarSize,
-                    color: starColor)))..addAll(List.generate(
-        restOfStars,
-            (index) =>
-            Icon(Icons.star_border, size: scaledStarSize, color: starColor)));
+    return []
+      ..addAll(List.generate(
+          numOfFullStars,
+          (index) =>
+              Icon(Icons.star_rounded, size: scaledStarSize, color: starColor)))
+      ..addAll(List.generate(
+          numOfHalfStars,
+          (index) => Icon(Icons.star_half_rounded,
+              size: scaledStarSize, color: starColor)))
+      ..addAll(List.generate(
+          restOfStars,
+          (index) => Icon(Icons.star_border_rounded,
+              size: scaledStarSize, color: starColor)));
   }
 
   @override

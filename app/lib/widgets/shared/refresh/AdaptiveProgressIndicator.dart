@@ -1,7 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/common.dart';
 
 enum IndicatorStyle {
   Material,
@@ -55,7 +55,7 @@ class AdaptiveProgressIndicator extends StatelessWidget {
       return materialIndicator;
     }
 
-    if (Platform.isIOS) {
+    if (isCupertinoPlatform()) {
       return cupertinoIndicator;
     }
 

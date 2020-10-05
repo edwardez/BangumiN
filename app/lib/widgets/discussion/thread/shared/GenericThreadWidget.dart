@@ -1,3 +1,5 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/models/bangumi/discussion/thread/blog/BlogThread.dart';
@@ -13,6 +15,7 @@ import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
@@ -29,10 +32,10 @@ import 'package:munin/widgets/shared/common/RequestInProgressIndicatorWidget.dar
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
 import 'package:munin/widgets/shared/html/BangumiHtml.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/shared/text/ExpandableText.dart';
 import 'package:munin/widgets/shared/utils/Scroll.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
@@ -72,8 +75,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
     });
   }
 
-  List<Widget> _buildThreadHeadContent(
-      BuildContext context, BangumiThread thread) {
+  List<Widget> _buildThreadHeadContent(BuildContext context, BangumiThread thread) {
     if (thread is BlogThread) {
       return [
         MuninPadding.vertical1xOffset(
@@ -265,9 +267,26 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
 
   List<Widget> _appBarActions(BangumiThread thread,
       BangumiContent parentBangumiContentType) {
+    IconData sortIcon() {
+      if (!isCupertinoPlatform()) {
+        return Icons.sort_rounded;
+      }
+
+      switch (postReadMode) {
+        case PostReadMode.Normal:
+          return CupertinoIcons.sort_down;
+        case PostReadMode.HasNewestReplyFirstNestedPost:
+          return CupertinoIcons.sort_up;
+        case PostReadMode.NewestFirstFlattenedPost:
+        case PostReadMode.OnlySpecificPost:
+        default:
+          return CupertinoIcons.square_list;
+      }
+    }
+
     return [
       IconButton(
-        icon: Icon(OMIcons.reply),
+        icon: Icon(AdaptiveIcons.replyIconData),
         onPressed: () {
           if (findAppState(context)
               .currentAuthenticatedUserBasicInfo
@@ -302,7 +321,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
         },
       ),
       IconButton(
-        icon: Icon(OMIcons.sort),
+        icon: Icon(sortIcon()),
         onPressed: () {
           showMinHeightModalBottomSheet(context, [
             ReadModeSwitcher(
@@ -452,8 +471,7 @@ class _ViewModel {
 
   final String username;
 
-  factory _ViewModel.fromStore(
-      Store<AppState> store, GetThreadRequest request) {
+  factory _ViewModel.fromStore(Store<AppState> store, GetThreadRequest request) {
     Future<void> _getThread(BuildContext context) {
       final action = GetThreadRequestAction(
         request: request,
@@ -514,10 +532,10 @@ class _ViewModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          username == other.username &&
-          thread == other.thread;
+          other is _ViewModel &&
+              runtimeType == other.runtimeType &&
+              username == other.username &&
+              thread == other.thread;
 
   @override
   int get hashCode => hash2(thread, username);

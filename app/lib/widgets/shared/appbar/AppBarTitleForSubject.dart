@@ -20,6 +20,22 @@ class AppBarTitleForSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Theme.of(context);
+
+    ThemeData(
+      appBarTheme: AppBarTheme(
+          textTheme: TextTheme(
+              headline6: ThemeData()
+                  .textTheme
+                  .headline6
+                  .copyWith(color: Colors.white))),
+    );
+    Scaffold(
+      appBar: AppBar(
+        title: Text('s'),
+      ),
+    );
+    AppBar();
     return Row(
       children: <Widget>[
         CachedRoundedCover(

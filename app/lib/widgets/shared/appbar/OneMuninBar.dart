@@ -1,15 +1,16 @@
 import 'package:badges/badges.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/search/home/SearchHomeDelegate.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/user/notification/NotificationIcon.dart';
 import 'package:munin/widgets/user/notification/NotificationsWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 /// A unified app bar that's displayed on the top of each munin home page
 /// TODO: change avatar to actual user avatar and change fixed constants to
@@ -110,18 +111,21 @@ class OneMuninBarState extends State<OneMuninBar> {
         leading: widget.addNotificationWidget
             ? NotificationIcon(
           child: IconButton(
-            icon: Icon(OMIcons.notifications),
-            onPressed: () {
-              _navigateToNotification();
-            },
-          ),
-          position: BadgePosition.topRight(top: 10, right: 10),
-          countWidgetBuilder: _buildCountWidget,
-        )
+                  icon: Icon(isCupertinoPlatform()
+                      ? CupertinoIcons.bell
+                      : Icons.notifications_none_rounded),
+                  onPressed: () {
+                    _navigateToNotification();
+                  },
+                ),
+                position: BadgePosition.topEnd(top: 10, end: 10),
+                countWidgetBuilder: _buildCountWidget,
+              )
             : null,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(isCupertinoPlatform() ? CupertinoIcons.search : Icons
+                .search_rounded),
             tooltip: '搜索',
             onPressed: () {
               showSearch(context: context, delegate: searchHomeDelegate);

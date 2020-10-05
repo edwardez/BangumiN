@@ -8,7 +8,6 @@ import 'package:munin/models/bangumi/setting/theme/ThemeSetting.dart';
 import 'package:munin/redux/setting/Common.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/selection/MuninExpansionSelection.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:screen/screen.dart';
 
 class FollowScreenBrightnessThemeOptions extends StatefulWidget {
@@ -153,7 +152,7 @@ class _FollowScreenBrightnessThemeOptionsState
           child: Row(
             children: <Widget>[
               Icon(
-                OMIcons.wbSunny,
+                Icons.wb_sunny_rounded,
                 size: 16.0,
               ),
               Expanded(
@@ -205,7 +204,7 @@ class _FollowScreenBrightnessThemeOptionsState
                 ),
               ),
               Icon(
-                OMIcons.wbSunny,
+                Icons.wb_sunny_rounded,
                 size: 24.0,
               ),
             ],
@@ -280,6 +279,8 @@ class _CustomThumbShape extends SliderComponentShape {
     SliderThemeData sliderTheme,
     TextDirection textDirection,
     double value,
+    double textScaleFactor,
+    Size sizeWithOverflow,
   }) {
     final Canvas canvas = context.canvas;
     final ColorTween colorTween = ColorTween(

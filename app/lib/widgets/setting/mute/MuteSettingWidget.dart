@@ -16,7 +16,7 @@ import 'package:munin/widgets/setting/mute/HowToAdd.dart';
 import 'package:munin/widgets/setting/mute/MutedGroupListTile.dart';
 import 'package:munin/widgets/setting/mute/MutedUserListTile.dart';
 import 'package:munin/widgets/shared/common/ScrollViewWithSliverAppBar.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:redux/redux.dart';
 
 class MuteSettingWidget extends StatelessWidget {
@@ -51,7 +51,7 @@ class MuteSettingWidget extends StatelessWidget {
                   ),
                   subtitle: Text('除通知外都会被屏蔽'),
                   trailing: IconButton(
-                    icon: Icon(OMIcons.helpOutline),
+                    icon: Icon(AdaptiveIcons.questionCircleIconData),
                     onPressed: () {
                       showHowToAddUserDialog(context);
                     },
@@ -93,7 +93,7 @@ class MuteSettingWidget extends StatelessWidget {
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
                   trailing: IconButton(
-                    icon: Icon(OMIcons.helpOutline),
+                    icon: Icon(AdaptiveIcons.questionCircleIconData),
                     onPressed: () {
                       showHowToAddGroupDialog(context);
                     },

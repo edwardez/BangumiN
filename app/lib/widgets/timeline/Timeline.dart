@@ -7,7 +7,6 @@ import 'package:munin/widgets/home/HomePageAppBarTitle.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/button/FlatButtonWithTrailingIcon.dart';
 import 'package:munin/widgets/timeline/TimelineBodyWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class TimelineBody {
   final GetTimelineRequest getTimelineRequest;
@@ -139,7 +138,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
               _filterModalBottomSheet();
             },
             label: Text(request.chineseName),
-            icon: Icon(OMIcons.expandMore),
+            icon: Icon(Icons.expand_more_rounded),
           ),
         );
       } else {

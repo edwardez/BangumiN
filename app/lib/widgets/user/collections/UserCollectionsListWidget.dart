@@ -19,7 +19,6 @@ import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/shared/text/MuninTextSpans.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/user/collections/CollectionOnUserListWidget.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:quiver/core.dart';
 import 'package:redux/redux.dart';
 
@@ -117,7 +116,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
               child: InkWell(
                 child: Row(
                   children: <Widget>[
-                    Icon(OMIcons.sort),
+                    Icon(Icons.sort_rounded),
                     WrappableText(
                         '${currentRequest.orderCollectionBy.chineseName}'),
                   ],
@@ -134,7 +133,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
               child: InkWell(
                 child: Row(
                   children: <Widget>[
-                    Icon(OMIcons.filterList),
+                    Icon(Icons.filter_alt_outlined),
                     WrappableText(
                       '标签${maybeCurrentTagName.or('')}',
                       maxLines: tagsFilterMaxLines,

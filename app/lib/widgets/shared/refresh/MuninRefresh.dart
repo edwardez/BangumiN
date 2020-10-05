@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/redux/shared/RequestStatus.dart';
 import 'package:munin/shared/exceptions/utils.dart';
+import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/async.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/common/Divider.dart';
@@ -18,10 +18,10 @@ import 'package:munin/widgets/shared/refresh/workaround/refresh_indicator.dart';
 /// finished.
 typedef RefreshCallback = Future<void> Function();
 
-/// If it's [RefreshWidgetStyle.Material], [RefreshIndicator] will always be used
+/// If it's [RefreshWidgetStyle.Material], [MuninRefreshIndicator] will always be used
 /// If it's [RefreshWidgetStyle.Cupertino], [CupertinoSliverRefreshControl] will always be used
 /// If it's [RefreshWidgetStyle.Adaptive], [MuninRefresh] will try to match platform standard
-/// By default, [RefreshIndicator] will be used
+/// By default, [MuninRefreshIndicator] will be used
 enum RefreshWidgetStyle {
   Material,
   Cupertino,
@@ -33,8 +33,8 @@ enum RefreshWidgetStyle {
 
 /// A refresh widget that supports infinite scroll and pull to refresh
 /// For pull to refresh: on iOS [CupertinoSliverRefreshControl] is used
-/// on Android [RefreshIndicator] is used
-/// Note: [CupertinoSliverRefreshControl] works differently from [RefreshIndicator]
+/// on Android [MuninRefreshIndicator] is used
+/// Note: [CupertinoSliverRefreshControl] works differently from [MuninRefreshIndicator]
 /// instead of being an overlay on top of the scrollable, the
 /// [CupertinoSliverRefreshControl] is part of the scrollable and actively occupies
 ///  scrollable space.
@@ -99,15 +99,15 @@ class MuninRefresh extends StatefulWidget {
   final List<Widget> topWidgets;
 
   /// Displacement value for [RefreshWidgetStyle.Material]
-  /// see [displacement] in [RefreshIndicator]
+  /// see [displacement] in [MuninRefreshIndicator]
   final double materialRefreshIndicatorDisplacement;
 
   /// refreshTriggerPullDistance for [RefreshWidgetStyle.Cupertino]
   /// see [refreshTriggerPullDistance] in [CupertinoSliverRefreshControl]
   final double cupertinoRefreshTriggerPullDistance;
 
-  /// refreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
-  /// see [refreshIndicatorExtent] in [CupertinoSliverRefreshControl]
+  /// MuninRefreshIndicatorExtent for [RefreshWidgetStyle.Cupertino]
+  /// see [MuninRefreshIndicatorExtent] in [CupertinoSliverRefreshControl]
   final double cupertinoRefreshIndicatorExtent;
 
   /// Padding between appBar and underneath items
@@ -313,7 +313,7 @@ class MuninRefreshState extends State<MuninRefresh> {
       return refreshWidgetStyle;
     }
 
-    if (Platform.isIOS) {
+    if (isCupertinoPlatform()) {
       return RefreshWidgetStyle.Cupertino;
     }
 
@@ -454,7 +454,7 @@ class MuninRefreshState extends State<MuninRefresh> {
           onRefresh: _generateOnRefreshCallBack(),
           refreshIndicatorExtent: widget.cupertinoRefreshIndicatorExtent,
           refreshTriggerPullDistance:
-              widget.cupertinoRefreshTriggerPullDistance,
+          widget.cupertinoRefreshTriggerPullDistance,
         ));
       }
     }

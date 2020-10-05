@@ -1,6 +1,6 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/common.dart';
 
 class SubjectCollectionIsPrivateFormField extends FormField<bool> {
   SubjectCollectionIsPrivateFormField({
@@ -32,7 +32,7 @@ class SubjectCollectionIsPrivateFormField extends FormField<bool> {
   /// on iOS, set secondary theme color as target color
   /// on other platforms, returns null(use widget default)
   static _getSwitchActiveColor(BuildContext context) {
-    if (Platform.isIOS) {
+    if (isCupertinoPlatform()) {
       return Theme.of(context).colorScheme.primary;
     }
 

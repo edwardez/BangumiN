@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/config/development.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/router/routes.dart';
+import 'package:munin/widgets/initial/Common.dart';
 import 'package:munin/widgets/initial/MainMaterialApp.dart';
 import 'package:redux/redux.dart';
 
@@ -31,9 +34,12 @@ class _MuninAppState extends State<MuninApp> {
   @override
   void initState() {
     super.initState();
-    final router = Router();
+    final router = fluro.Router();
     Routes.configureRoutes(router);
     Application.router = router;
+    if (Platform.isAndroid) {
+      changeAndroidSystemUIOverlay();
+    }
   }
 
   @override

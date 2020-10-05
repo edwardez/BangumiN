@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +64,7 @@ const upgradeInfoUrl =
 
 abstract class Application {
   static Application environmentValue;
-  static Router router;
+  static fluro.Router router;
 
   static final String bangumiOauthAuthorizationEndpoint =
       'https://bgm.tv/oauth/authorize';
@@ -92,8 +93,12 @@ abstract class Application {
   bool shouldCheckUpdate = false;
 
   Application() {
-    WidgetsFlutterBinding.ensureInitialized();
-    _initialize();
+    try {
+      WidgetsFlutterBinding.ensureInitialized();
+      _initialize();
+    } on Exception catch (e, s) {
+      print('Exception occurred while trying to initialize app:$e($s)');
+    }
   }
 
   _initialize() async {
@@ -133,7 +138,12 @@ abstract class Application {
     bangumiOauthService?.client?.currentUser =
         appState.currentAuthenticatedUserBasicInfo;
 
-    _initializeTelemetry(appState.settingState.privacySetting);
+    try {
+      await _initializeTelemetry(appState.settingState.privacySetting);
+    } on Exception catch (e, s) {
+      print(
+          'Exception occurred while trying to initialize telemetry components:$e($s)');
+    }
 
     // redux initialization
     Epic<AppState> epics = combineEpics<AppState>([
@@ -180,12 +190,13 @@ abstract class Application {
   }
 
   /// Initializes analytics and crashlytics.
-  _initializeTelemetry(PrivacySetting privacySetting) {
-    if (environmentType != EnvironmentType.Development &&
-        privacySetting.optInAutoSendCrashReport) {
-      FlutterError.onError = (FlutterErrorDetails details) {
-        Crashlytics.instance.recordFlutterError(details);
-      };
+  _initializeTelemetry(PrivacySetting privacySetting) async {
+    await Firebase.initializeApp();
+
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        privacySetting.optInAutoSendCrashReport);
+    if (environmentType != EnvironmentType.Development) {
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     }
 
     // If user has chosen to opt out analytics, disable it here.

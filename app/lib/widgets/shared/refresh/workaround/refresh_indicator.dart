@@ -1,6 +1,8 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
+// Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
+// @dart = 2.8
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -52,18 +54,22 @@ enum _RefreshIndicatorMode {
 /// scrollable's contents and then complete the [Future] it returns. The refresh
 /// indicator disappears after the callback's [Future] has completed.
 ///
-/// If the [Scrollable] might not have enough content to overscroll, consider
-/// settings its `physics` property to [AlwaysScrollableScrollPhysics]:
+/// ## Troubleshooting
+///
+/// ### Refresh indicator does not show up
+///
+/// The [MuninRefreshIndicator] will appear if its scrollable descendant can be
+/// overscrolled, i.e. if the scrollable's content is bigger than its viewport.
+/// To ensure that the [MuninRefreshIndicator] will always appear, even if the
+/// scrollable's content fits within its viewport, set the scrollable's
+/// [Scrollable.physics] property to [AlwaysScrollableScrollPhysics]:
 ///
 /// ```dart
 /// ListView(
 ///   physics: const AlwaysScrollableScrollPhysics(),
 ///   children: ...
-//  )
+/// )
 /// ```
-///
-/// Using [AlwaysScrollableScrollPhysics] will ensure that the scroll view is
-/// always scrollable and, therefore, can trigger the [MuninRefreshIndicator].
 ///
 /// A [MuninRefreshIndicator] can only be used with a vertical scroll view.
 ///
@@ -98,10 +104,12 @@ class MuninRefreshIndicator extends StatefulWidget {
     this.notificationPredicate = defaultScrollNotificationPredicate,
     this.semanticsLabel,
     this.semanticsValue,
+    this.strokeWidth = 2.0
   })
       : assert(child != null),
         assert(onRefresh != null),
         assert(notificationPredicate != null),
+        assert(strokeWidth != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -146,6 +154,11 @@ class MuninRefreshIndicator extends StatefulWidget {
   /// {@macro flutter.material.progressIndicator.semanticsValue}
   final String semanticsValue;
 
+  /// Defines `strokeWidth` for `RefreshIndicator`.
+  ///
+  /// By default, the value of `strokeWidth` is 2.0 pixels.
+  final double strokeWidth;
+
   @override
   MuninRefreshIndicatorState createState() => MuninRefreshIndicatorState();
 }
@@ -166,12 +179,12 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   bool _isIndicatorAtTop;
   double _dragOffset;
 
-  static final Animatable<double> _threeQuarterTween =
-  Tween<double>(begin: 0.0, end: 0.75);
-  static final Animatable<double> _kDragSizeFactorLimitTween =
-  Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
-  static final Animatable<double> _oneToZeroTween =
-  Tween<double>(begin: 1.0, end: 0.0);
+  static final Animatable<double> _threeQuarterTween = Tween<double>(
+      begin: 0.0, end: 0.75);
+  static final Animatable<double> _kDragSizeFactorLimitTween = Tween<double>(
+      begin: 0.0, end: _kDragSizeFactorLimit);
+  static final Animatable<double> _oneToZeroTween = Tween<double>(
+      begin: 1.0, end: 0.0);
 
   @override
   void initState() {
@@ -192,8 +205,9 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
       ColorTween(
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
         end: (widget.color ?? theme.accentColor).withOpacity(1.0),
-      ).chain(
-          CurveTween(curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
+      ).chain(CurveTween(
+          curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit)
+      )),
     );
     super.didChangeDependencies();
   }
@@ -206,11 +220,11 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
-    if (!widget.notificationPredicate(notification)) return false;
+    if (!widget.notificationPredicate(notification))
+      return false;
     if (notification is ScrollStartNotification &&
         notification.metrics.extentBefore == 0.0 &&
-        _mode == null &&
-        _start(notification.metrics.axisDirection)) {
+        _mode == null && _start(notification.metrics.axisDirection)) {
       setState(() {
         _mode = _RefreshIndicatorMode.drag;
       });
@@ -273,7 +287,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   }
 
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
-    if (notification.depth != 0 || !notification.leading) return false;
+    if (notification.depth != 0 || !notification.leading)
+      return false;
     if (_mode == _RefreshIndicatorMode.drag) {
       notification.disallowGlow();
       return true;
@@ -307,12 +322,12 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _RefreshIndicatorMode.drag ||
         _mode == _RefreshIndicatorMode.armed);
-    double newValue =
-        _dragOffset / (containerExtent * _kDragContainerExtentPercentage);
+    double newValue = _dragOffset /
+        (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
-        newValue.clamp(0.0, 1.0); // this triggers various rebuilds
+    newValue.clamp(0.0, 1.0) as double; // this triggers various rebuilds
     if (_mode == _RefreshIndicatorMode.drag && _valueColor.value.alpha == 0xFF)
       _mode = _RefreshIndicatorMode.armed;
   }
@@ -330,12 +345,12 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
     });
     switch (_mode) {
       case _RefreshIndicatorMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        await _scaleController.animateTo(
+            1.0, duration: _kIndicatorScaleDuration);
         break;
       case _RefreshIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        await _positionController.animateTo(
+            0.0, duration: _kIndicatorScaleDuration);
         break;
       default:
         assert(false);
@@ -356,8 +371,8 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
-        .animateTo(1.0 / _kDragSizeFactorLimit,
-        duration: _kIndicatorSnapDuration)
+        .animateTo(
+        1.0 / _kDragSizeFactorLimit, duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
         assert(widget.onRefresh != null);
@@ -370,14 +385,17 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
         assert(() {
           if (refreshResult == null)
             FlutterError.reportError(FlutterErrorDetails(
-              exception: FlutterError('The onRefresh callback returned null.\n'
-                  'The RefreshIndicator onRefresh callback must return a Future.'),
+              exception: FlutterError(
+                  'The onRefresh callback returned null.\n'
+                      'The RefreshIndicator onRefresh callback must return a Future.'
+              ),
               context: ErrorDescription('when calling onRefresh'),
               library: 'material library',
             ));
           return true;
         }());
-        if (refreshResult == null) return;
+        if (refreshResult == null)
+          return;
         refreshResult.whenComplete(() {
           if (mounted && _mode == _RefreshIndicatorMode.refresh) {
             completer.complete();
@@ -404,35 +422,36 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
   /// When initiated in this manner, the refresh indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
+  Future<void> show({ bool atTop = true }) {
     if (_mode != _RefreshIndicatorMode.refresh &&
         _mode != _RefreshIndicatorMode.snap) {
-      if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
+      if (_mode == null)
+        _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
     return _pendingRefreshFuture;
   }
 
-  final GlobalKey _key = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     final Widget child = NotificationListener<ScrollNotification>(
-      key: _key,
       onNotification: _handleScrollNotification,
       child: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: _handleGlowNotification,
         child: widget.child,
       ),
     );
-    if (_mode == null) {
-      assert(_dragOffset == null);
-      assert(_isIndicatorAtTop == null);
-      return child;
-    }
-    assert(_dragOffset != null);
-    assert(_isIndicatorAtTop != null);
+    assert(() {
+      if (_mode == null) {
+        assert(_dragOffset == null);
+        assert(_isIndicatorAtTop == null);
+      } else {
+        assert(_dragOffset != null);
+        assert(_isIndicatorAtTop != null);
+      }
+      return true;
+    }());
 
     final bool showIndeterminateIndicator =
         _mode == _RefreshIndicatorMode.refresh ||
@@ -441,7 +460,7 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
     return Stack(
       children: <Widget>[
         child,
-        Positioned(
+        if (_mode != null) Positioned(
           top: _isIndicatorAtTop ? 0.0 : null,
           bottom: !_isIndicatorAtTop ? 0.0 : null,
           left: 0.0,
@@ -470,6 +489,7 @@ class MuninRefreshIndicatorState extends State<MuninRefreshIndicator>
                       value: showIndeterminateIndicator ? null : _value.value,
                       valueColor: _valueColor,
                       backgroundColor: widget.backgroundColor,
+                      strokeWidth: widget.strokeWidth,
                     );
                   },
                 ),

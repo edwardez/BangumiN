@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' show min, max;
 
 import 'package:html/dom.dart';
@@ -15,11 +16,10 @@ String upgradeToHttps(String link) {
 /// [fallbackValue] if [input] is null.
 /// [trailingOverflowText] will be added to the end of firstNChars
 /// and be counted as part of [firstN] chars, it's default to '...'
-String firstNChars(
-  String input,
-  int firstN, {
-  String fallbackValue,
-  String trailingOverflowText = '...',
+String firstNChars(String input,
+    int firstN, {
+      String fallbackValue,
+      String trailingOverflowText = '...',
 }) {
   assert(firstN >= 0);
   if (input == null) return fallbackValue;
@@ -59,8 +59,7 @@ int tryParseInt(String intStr, {defaultValue = 0}) {
 }
 
 /// Parses bool in string format, returns  [defaultValue] if input is invalid.
-bool tryParseBool(
-  String inputStr, {
+bool tryParseBool(String inputStr, {
   bool defaultValue,
 }) {
   if (inputStr == null) return null;
@@ -139,4 +138,9 @@ class MuninCustomHtmlClasses {
 
   static bool hasSpoilerClass(Element element) =>
       element.classes.contains(muninSpoiler);
+}
+
+/// Whether current platform belongs to apple(iOS or macOS).
+bool isCupertinoPlatform() {
+  return Platform.isIOS || Platform.isMacOS;
 }

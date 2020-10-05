@@ -17,9 +17,9 @@ import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.d
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/dialog/common.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/services/Clipboard.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class PostWidget extends StatelessWidget {
   /// Parent thread id that this post belongs to.
@@ -76,7 +76,7 @@ class PostWidget extends StatelessWidget {
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
     return ListTile(
-      leading: Icon(OMIcons.edit),
+      leading: Icon(AdaptiveIcons.editIconData),
       title: Text(
         '编辑此回复',
       ),
@@ -110,7 +110,7 @@ class PostWidget extends StatelessWidget {
         post is MainPostReply && (post as MainPostReply).subReplies.isNotEmpty;
 
     return ListTile(
-      leading: Icon(OMIcons.delete),
+      leading: Icon(AdaptiveIcons.deleteIconData),
       title: Text(
         '删除此回复',
       ),
@@ -147,7 +147,7 @@ class PostWidget extends StatelessWidget {
           .avatar
           .isUsingDefaultAvatar) {
         return ListTile(
-          leading: Icon(OMIcons.reply),
+          leading: Icon(AdaptiveIcons.replyIconData),
           title: Text(
             replyLabel,
           ),
@@ -159,7 +159,7 @@ class PostWidget extends StatelessWidget {
       }
 
       return ListTile(
-        leading: Icon(OMIcons.reply),
+        leading: Icon(AdaptiveIcons.replyIconData),
         title: Text(replyLabel),
         onTap: () async {
           Navigator.pop(context);
@@ -193,14 +193,14 @@ class PostWidget extends StatelessWidget {
         ),
         if (post is! OriginalPost)
           ListTile(
-            leading: Icon(Icons.content_copy),
+            leading: Icon(AdaptiveIcons.clipBoardIconData),
             title: Text('复制楼层链接'),
             onTap: () {
               Navigator.pop(context);
               String postContent;
 
               generateWebPageUrlByContentType(
-                  parentBangumiContentType, threadId.toString())
+                      parentBangumiContentType, threadId.toString())
                   .ifPresent((pageUrl) {
                 // Bangumi url format to navigate to a specific post.
                 // [InitialGroupPost] cannot be navigated like this.

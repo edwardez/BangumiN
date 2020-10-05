@@ -1,4 +1,5 @@
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munin/config/application.dart';
 import 'package:munin/models/bangumi/user/UserProfile.dart';
@@ -8,7 +9,6 @@ import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/text/WrappableText.dart';
 import 'package:munin/widgets/timeline/Timeline.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class TimelinePreviewWidget extends StatelessWidget {
   final UserProfile profile;
@@ -40,7 +40,7 @@ class TimelinePreviewWidget extends StatelessWidget {
 
     return FloatingActionButton(
       tooltip: '发表新吐槽',
-      child: Icon(OMIcons.add),
+      child: Icon(AdaptiveIcons.addIconData),
       onPressed: () {
         Application.router.navigateTo(
             context,

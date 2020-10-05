@@ -9,8 +9,8 @@ import 'package:munin/widgets/discussion/rakuen/AdaptiveReplyCountIndicator.dart
 import 'package:munin/widgets/shared/common/MuninPadding.dart';
 import 'package:munin/widgets/shared/common/SnackBar.dart';
 import 'package:munin/widgets/shared/cover/CachedRoundedCover.dart';
+import 'package:munin/widgets/shared/icons/AdaptiveIcons.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class DiscussionItemWidget extends StatelessWidget {
   static const titleMaxLines = 3;
@@ -59,7 +59,7 @@ class DiscussionItemWidget extends StatelessWidget {
     Widget muteOptionWidget;
     if (isMuted(discussionItem)) {
       muteOptionWidget = ListTile(
-        leading: Icon(OMIcons.clear),
+        leading: Icon(AdaptiveIcons.unmuteIconData),
         title: Text('解除屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onUnmute(discussionItem);
@@ -70,7 +70,7 @@ class DiscussionItemWidget extends StatelessWidget {
       );
     } else {
       muteOptionWidget = ListTile(
-        leading: Icon(OMIcons.block),
+        leading: Icon(AdaptiveIcons.muteIconData),
         title: Text('屏蔽小组 ${discussionItem.subTitle}'),
         onTap: () {
           onMute(discussionItem);

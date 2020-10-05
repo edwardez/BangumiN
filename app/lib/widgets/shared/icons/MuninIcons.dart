@@ -60,5 +60,9 @@ class MuninIcons {
       const IconData(0xe801, fontFamily: _kFontFam);
 
   static const IconData muninRoundedTriangle =
-  const IconData(0xe802, fontFamily: _kFontFam);
+      const IconData(0xe802, fontFamily: _kFontFam);
+
+  /// A old version of chat bubble in `cupertino_icons` package(0.1.3)
+  static const IconData muninCupertinoChatBubble =
+      const IconData(0xe803, fontFamily: _kFontFam);
 }

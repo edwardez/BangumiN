@@ -11,7 +11,7 @@ certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
 constantly==15.1.0
-cryptography==2.3.1
+cryptography==3.2
 cryptography-vectors==2.3
 cssselect==1.0.3
 dictdiffer==0.7.1

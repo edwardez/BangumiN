@@ -25,12 +25,22 @@ img {
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
 }
 
-mat-toolbar {
+.top-bar{
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 2;
+
+  .deprecation-header{
+    background-color: red;
+    text-align: center;
+  }
+}
+
+.deprecation-notice{
+  cursor: pointer;
+  text-decoration: underline !important;
 }
 
 :host {

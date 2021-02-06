@@ -11,11 +11,12 @@ import {DeviceWidth} from '../../shared/enums/device-width.enum';
 import {LayoutService} from '../../shared/services/layout/layout.service';
 import {environment} from '../../../environments/environment';
 import {NavBarService} from '../../shared/services/navbar/nav-bar.service';
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
@@ -33,7 +34,8 @@ export class NavComponent implements OnInit, OnDestroy {
               private navBarService: NavBarService,
               private route: ActivatedRoute,
               private router: Router,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -107,7 +109,17 @@ export class NavComponent implements OnInit, OnDestroy {
     this.authenticationService.logout();
   }
 
+  openDeprecationExplainDialog(){
+    const dialogRef = this.dialog.open(DeprecationNoticeDialog);
+  }
+
   get LayoutService() {
     return LayoutService;
   }
 }
+
+@Component({
+  selector: 'deprecation-notice-dialog',
+  templateUrl: 'deprecation-notice-dialog.html',
+})
+export class DeprecationNoticeDialog {}

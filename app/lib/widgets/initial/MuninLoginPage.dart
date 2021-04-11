@@ -298,7 +298,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         ),
       );
 
-      final bangumiCookies = cookieJar.loadForRequest(bangumiAuthWebUri);
+      final bangumiCookies = await cookieJar.loadForRequest(bangumiAuthWebUri);
       for (var cookie in bangumiCookies) {
         switch (cookie.name) {
           case 'chii_auth':
@@ -419,7 +419,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       final userInfo = await _userService.getUserBasicInfo(userId.toString());
       saveBangumiCookieToCookieJar(
           cookieJar,
-          cookieJar.loadForRequest(bangumiAuthWebUri),
+          await cookieJar.loadForRequest(bangumiAuthWebUri),
           Application.environmentValue.bangumiHostForDio);
       findStore(context).dispatch(
           UpdateLoginDataAction(context: context, userInfo: userInfo));

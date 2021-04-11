@@ -34,7 +34,7 @@ class _MuninAppState extends State<MuninApp> {
   @override
   void initState() {
     super.initState();
-    final router = fluro.Router();
+    final router = fluro.FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
     if (Platform.isAndroid) {

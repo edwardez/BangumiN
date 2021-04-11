@@ -58,7 +58,7 @@ class BangumiOauthClient extends Client {
   /// Validates user info to make sure we are receiving info of current app user
   Future<bool> refreshTokenMatchesAppUser() async {
     http.Response response = await this.post(
-        'https://$bangumiMainHost/oauth/token_status');
+        Uri.parse('https://$bangumiMainHost/oauth/token_status'));
 
     /// If code returns non-200, always returns false
     if (response.statusCode != 200) {

@@ -76,7 +76,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
   /// Checks and requests permission on Android
   Future<PermissionStatus> checkAndRequestPermissionOnAndroid() async {
     if (!Platform.isAndroid) {
-      return PermissionStatus.undetermined;
+      return PermissionStatus.denied;
     }
 
     var status = await Permission.storage.status;

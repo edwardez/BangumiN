@@ -15,70 +15,70 @@ version: 0.6.0+19
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
-  flutter: ^1.22.0
+  flutter: ^2.0.0
 
 dependencies:
   flutter:
     sdk: flutter
   badges: ^1.1.3
   bbob_dart: ^0.1.0
-  built_collection: ^4.3.2
-  built_value: ^7.1.0
+  built_collection: ^5.0.0
+  built_value: ^8.0.4
   #  please pay extra attention while upgrading cached_network_image as there is no test for this dep
-  cached_network_image: 2.3.2+1
-  cookie_jar: ^1.0.1
-  device_info: ^0.4.2+8
-  expandable: ^3.0.0+1
-  dio: ^3.0.10
-  dio_cookie_manager: ^1.0.0
-  firebase_analytics: ^6.0.1
-  firebase_core: ^0.5.0
-  firebase_crashlytics: ^0.2.1
-  fluro: ^1.6.3
-  flutter_redux: ^0.6.0
-  flutter_secure_storage: ^3.3.4
-  flutter_svg: ^0.19.0
-  flutter_widget_from_html: ^0.5.0+7
-  get_it: ^5.0.1
-  html: ^0.14.0+2
-  http: ^0.12.2
-  intl: ^0.16.1
+  cached_network_image: ^3.0.0
+  cookie_jar: ^3.0.1
+  device_info: ^2.0.0
+  expandable: ^5.0.1
+  dio: ^4.0.0
+  dio_cookie_manager: ^2.0.0
+  firebase_analytics: ^7.0.1
+  firebase_core: ^1.0.3
+  firebase_crashlytics: ^2.0.0
+  fluro: ^2.0.3
+  flutter_redux: ^0.8.2
+  flutter_secure_storage: ^4.1.0
+  flutter_svg: ^0.21.0+1
+  flutter_widget_from_html: ^0.6.0
+  get_it: ^6.0.0
+  html: ^0.15.0
+  http: ^0.13.1
+  intl: ^0.17.0
   image_gallery_saver: ^1.5.0
   material_design_icons_flutter: ^4.0.5655
-  markdown: ^2.1.8
+  markdown: ^4.0.0
   #  Wait for https://github.com/flutter/packages/pull/22 to be resolved to switch back to offcial.
-  palette_generator: ^0.2.3
-  permission_handler: ^5.0.1+1
+  palette_generator: ^0.3.0
+  permission_handler: ^6.1.1
   screen: ^0.0.5
-  transparent_image: ^1.0.0
-  timeago: ^2.0.27
-  oauth2: ^1.6.1
-  package_info: ^0.4.3
-  pub_semver: ^1.4.2
-  redux_epics: ^0.14.0
-  redux_logging: ^0.4.0
-  rxdart: ^0.24.1
-  share: ^0.6.5+2
-  shared_preferences: ^0.5.12
-  tuple: ^1.0.2
-  quiver: ^2.0.2
-  url_launcher: ^5.7.2
-  upgrader: ^2.6.0
+  transparent_image: ^2.0.0
+  timeago: ^3.0.2
+  oauth2: ^2.0.0
+  package_info: ^2.0.0
+  pub_semver: ^2.0.0
+  redux_epics: ^0.15.0
+  redux_logging: ^0.5.0
+  rxdart: ^0.26.0
+  share: ^2.0.1
+  shared_preferences: ^2.0.3
+  tuple: ^2.0.0
+  quiver: ^3.0.1
+  url_launcher: ^6.0.2
+  upgrader: ^3.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.7.2
+  flutter_launcher_icons: ^0.9.0
   flutter_test:
     sdk: flutter
   build_runner: ^1.7.2
-  built_value_generator: ^7.0.0
-  dio_retry: ^0.1.8-beta
-  logging: ^0.11.3+2
+  built_value_generator: ^8.0.4
+#  dio_retry: ^0.1.9-beta
+  logging: ^1.0.1
   test: ^1.6.1
-  mockito: ^4.1.0
+  mockito: ^5.0.3
 
 #　Run `flutter pub run flutter_launcher_icons:main` to generate new icons.
 flutter_icons:

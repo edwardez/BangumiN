@@ -358,11 +358,16 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         Application.environmentValue.bangumiOauthClientIdentifier;
     final authorizationUrl =
         'https://${Application.environmentValue.bangumiHostForDio}'
-        '/oauth/authorize?response_type=code&client_id=$clientId';
+        '/oauth/authorize';
 
+    Map<String, String> authParams = {
+      'response_type': 'code',
+      'client_id': '$clientId',
+      'redirect_uri': Application.environmentValue.bangumiRedirectUrl,
+    };
     Response oauthResponse;
     try {
-      final authorizationPage = (await dio.get(authorizationUrl)).data;
+      final authorizationPage = (await dio.get('$authorizationUrl', queryParameters: authParam)).data;
       final oauthXsrf = attributesValueOrNull(
           parseFragment(authorizationPage)
               .querySelector('input[name=formhash]'),
@@ -379,6 +384,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       };
       oauthResponse = await dio.post(
         authorizationUrl,
+        queryParameters: authParams,
         data: oauthBody,
         options: Options(
             contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,

@@ -1,8 +1,8 @@
 import 'package:munin/config/application.dart';
 
-void main() => ExampleEnvironment();
+void main() => EnvironmentExample();
 
-class ExampleEnvironment extends Application {
+class EnvironmentExample extends Application {
   final environmentType = EnvironmentType.Development;
   final bangumiOauthClientIdentifier = '1';
   final bangumiOauthClientSecret = '2';

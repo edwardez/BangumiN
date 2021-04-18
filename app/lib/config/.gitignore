@@ -1,6 +1,6 @@
 *.dart
 !application.dart
-!ExampleEnvironment.dart
-!ExampleProductionWithUpdateDetector.dart
+!environment_example.dart
+!production_with_update_detector_example.dart
 !/upgrader/
 !/upgrader/Utils.dart

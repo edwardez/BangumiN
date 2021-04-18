@@ -1,5 +1,6 @@
 *.dart
 !application.dart
 !ExampleEnvironment.dart
+!ExampleProductionWithUpdateDetector.dart
 !/upgrader/
 !/upgrader/Utils.dart

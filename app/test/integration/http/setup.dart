@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio_retry/dio_retry.dart';
+// TODO: add retry back after the compatibility issue is resovled
+//   https://github.com/aloisdeniel/dio_retry/issues/10
+//import 'package:dio_retry/dio_retry.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:mockito/mockito.dart';
@@ -35,7 +37,7 @@ Future<HttpTestHelper> initializeHttpTestHelper() async {
       bangumiCookieCredentials, CookieJar(),
       bangumiHostForDio: 'bangumi.tv');
 
-  dio.interceptors.add(RetryInterceptor(dio: dio, logger: Logger('dio')));
+ // dio.interceptors.add(RetryInterceptor(dio: dio, logger: Logger('dio')));
 
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');

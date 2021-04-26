@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     lintOptions {
         disable 'InvalidPackage'
@@ -40,30 +40,34 @@ android {
     defaultConfig {
         applicationId "com.bangumin.munin"
         minSdkVersion 23
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
     buildTypes {
-        release {
-            signingConfig signingConfigs.release
+        if (keystorePropertiesFile.exists()) {
+            release {
+                signingConfig signingConfigs.release
+            }
         }
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
         profile {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -73,17 +77,14 @@ android {
             dimension "flavors"
             applicationIdSuffix ".development"
             versionNameSuffix "-development"
-            signingConfig signingConfigs.release
         }
         uat {
             dimension "flavors"
             applicationIdSuffix ".uat"
             versionNameSuffix "-uat"
-            signingConfig signingConfigs.release
         }
         production {
             dimension "flavors"
-            signingConfig signingConfigs.release
         }
     }
 }

@@ -154,7 +154,7 @@ class BangumiCookieService {
       return false;
     } catch (error) {
       if (error is DioError &&
-          error.type == DioErrorType.RESPONSE &&
+          error.type == DioErrorType.response &&
           error.response.statusCode == HttpStatus.movedTemporarily) {
         return true;
       }

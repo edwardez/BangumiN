@@ -88,7 +88,7 @@ class Routes {
   static const blogThreadRoute =
       '/blog/${RoutesVariable.threadIdParam}/${RoutesVariable.postIdParam}';
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(handlerFunc:
         (flutter.BuildContext context, Map<String, List<String>> params) {
       return flutter.Text('Route is not found!');

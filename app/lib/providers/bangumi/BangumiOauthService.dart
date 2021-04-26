@@ -64,7 +64,7 @@ class BangumiOauthService {
   }
 
   Future<int> verifyUser() async {
-    Response tokenStatus = await http.post('https://bgm.tv/oauth/token_status',
+    Response tokenStatus = await http.post(Uri.parse('https://bgm.tv/oauth/token_status'),
         body: {'access_token': client.credentials.accessToken});
     return BangumiUserIdentity.fromJson(tokenStatus.body).id;
   }

@@ -16,7 +16,7 @@ class MuninWidgetFactory extends WidgetFactory {
   MuninWidgetFactory() : super();
 
   @override
-  Widget buildImage(BuildMetadata meta, Object provider, ImageMetadata image) {
+  Widget buildImage(BuildMetadata meta, ImageMetadata image) {
     if (image?.sources == null || image.sources.isEmpty) return null;
     if (image.sources.length > 1) {
       print('More than one url in this image, this is not expected: $image');
@@ -25,7 +25,7 @@ class MuninWidgetFactory extends WidgetFactory {
     final url = image.sources.first.url;
 
     if (_assetOrDataImageUriPattern.hasMatch(image.sources.first.url))
-      return super.buildImage(meta, provider, image);
+      return super.buildImage(meta, image);
 
     return _InkWellHtmlWrapper(url: url);
   }

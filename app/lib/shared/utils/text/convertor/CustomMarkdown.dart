@@ -14,9 +14,9 @@ class SpoilerInlineSyntax extends TagSyntax {
         );
 
   @override
-  bool onMatchEnd(InlineParser parser, Match match, TagState state) {
-    parser.addNode(Element(BangumiHtmlTag.inlineSpoiler, state.children));
-    return true;
+  Node close(InlineParser parser, Delimiter opener, Delimiter closer,
+      {required List<Node> Function() getChildren}) {
+    return Element(BangumiHtmlTag.inlineSpoiler, getChildren());
   }
 }
 

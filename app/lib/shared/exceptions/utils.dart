@@ -11,13 +11,13 @@ const _networkErrorLabel = '网络连接错误';
 /// Formats Dio error, or returns [Optional.absent()] if the formatted message
 /// cannot be understood.
 Optional<String> formatDioErrorMessage(DioError dioError) {
-  if (dioError.type == DioErrorType.CONNECT_TIMEOUT ||
-      dioError.type == DioErrorType.RECEIVE_TIMEOUT ||
-      dioError.type == DioErrorType.SEND_TIMEOUT) {
+  if (dioError.type == DioErrorType.connectTimeout ||
+      dioError.type == DioErrorType.receiveTimeout ||
+      dioError.type == DioErrorType.sendTimeout) {
     return Optional.of('请求超时');
   }
 
-  if (dioError.type == DioErrorType.DEFAULT &&
+  if (dioError.type == DioErrorType.other &&
       dioError.error is SocketException) {
     return Optional.of(_networkErrorLabel);
   }

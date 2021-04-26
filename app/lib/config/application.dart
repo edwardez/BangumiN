@@ -64,7 +64,7 @@ const upgradeInfoUrl =
 
 abstract class Application {
   static Application environmentValue;
-  static fluro.Router router;
+  static fluro.FluroRouter router;
 
   static final String bangumiOauthAuthorizationEndpoint =
       'https://bgm.tv/oauth/authorize';
@@ -283,14 +283,14 @@ abstract class Application {
       delay: (_) => Duration(),
     );
     try {
-      await retryableClient.get('https://$bangumiNonCdnHost/json/notify');
+      await retryableClient.get(Uri.parse('https://$bangumiNonCdnHost/json/notify'));
       return bangumiNonCdnHost;
     } catch (error, stack) {
       reportError(error, stack: stack);
     }
 
     try {
-      await retryableClient.get('https://$bangumiMainHost/json/notify');
+      await retryableClient.get(Uri.parse('https://$bangumiMainHost/json/notify'));
       return bangumiMainHost;
     } catch (error, stack) {
       reportError(error, stack: stack);

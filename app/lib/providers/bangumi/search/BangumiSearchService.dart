@@ -47,15 +47,15 @@ class BangumiSearchService {
     /// does exist some results, so we need to set [chii_searchDateLine] cookie
     /// header here
     /// see https://github.com/bangumi/api/issues/43
-    String requestUrl =
+    String requestUrlConst =
         'https://${Application.bangumiApiHost}/search/subject/'
         '$query?responseGroup=$responseGroup&start=$start&max_results=$maxResults';
     if (searchType.isConcreteSubjectType && searchType.wiredName != null) {
-      requestUrl += '&type=${searchType.wiredName}';
+      requestUrlConst += '&type=${searchType.wiredName}';
     }
 
     Http.Response response = await oauthClient.client
-        .get(requestUrl, headers: {'Cookie': 'chii_searchDateLine=0}'});
+        .get(Uri.parse(requestUrlConst), headers: {'Cookie': 'chii_searchDateLine=0}'});
 
     if (response.statusCode != 200) {
       print('Non 200 response ${response.body}');

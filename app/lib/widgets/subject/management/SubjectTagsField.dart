@@ -269,7 +269,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
     List<Widget> children = [];
     children.add(ExpandablePanel(
       controller: expandableController,
-      hasIcon: false,
+      theme: ExpandableThemeData(hasIcon: false),
       // Icon is right after text label(we add it manually)
       header: Center(
         child: Row(

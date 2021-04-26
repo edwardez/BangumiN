@@ -298,7 +298,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         ),
       );
 
-      final bangumiCookies = cookieJar.loadForRequest(bangumiAuthWebUri);
+      final bangumiCookies = await cookieJar.loadForRequest(bangumiAuthWebUri);
       for (var cookie in bangumiCookies) {
         switch (cookie.name) {
           case 'chii_auth':
@@ -358,11 +358,16 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         Application.environmentValue.bangumiOauthClientIdentifier;
     final authorizationUrl =
         'https://${Application.environmentValue.bangumiHostForDio}'
-        '/oauth/authorize?response_type=code&client_id=$clientId';
+        '/oauth/authorize';
 
+    Map<String, String> authParams = {
+      'response_type': 'code',
+      'client_id': '$clientId',
+      'redirect_uri': Application.environmentValue.bangumiRedirectUrl,
+    };
     Response oauthResponse;
     try {
-      final authorizationPage = (await dio.get(authorizationUrl)).data;
+      final authorizationPage = (await dio.get('$authorizationUrl', queryParameters: authParam)).data;
       final oauthXsrf = attributesValueOrNull(
           parseFragment(authorizationPage)
               .querySelector('input[name=formhash]'),
@@ -379,6 +384,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       };
       oauthResponse = await dio.post(
         authorizationUrl,
+        queryParameters: authParams,
         data: oauthBody,
         options: Options(
             contentType: ExtraContentType.xWwwFormUrlencoded.mimeType,
@@ -419,7 +425,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       final userInfo = await _userService.getUserBasicInfo(userId.toString());
       saveBangumiCookieToCookieJar(
           cookieJar,
-          cookieJar.loadForRequest(bangumiAuthWebUri),
+          await cookieJar.loadForRequest(bangumiAuthWebUri),
           Application.environmentValue.bangumiHostForDio);
       findStore(context).dispatch(
           UpdateLoginDataAction(context: context, userInfo: userInfo));

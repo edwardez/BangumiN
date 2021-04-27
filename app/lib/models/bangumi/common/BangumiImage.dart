@@ -3,15 +3,19 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:munin/models/bangumi/BangumiUserAvatar.dart';
+import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/serializers.dart';
 import 'package:quiver/strings.dart';
 
 part 'BangumiImage.g.dart';
 
+part 'CustomBangumiImageSerializer.dart';
+
 enum ImageSize { Large, Common, Medium, Small, Grid, Unknown }
 
 enum ImageType { UserAvatar, MonoAvatar, SubjectCover, GroupIcon }
 
+@BuiltValueSerializer(custom: true)
 abstract class BangumiImage
     implements Built<BangumiImage, BangumiImageBuilder> {
   static const String defaultCoverImage =
@@ -53,12 +57,13 @@ abstract class BangumiImage
   /// for [ImageType.MonoAvatar], [ImageSize.Common] is not available
   /// for [ImageType.UserAvatar], [ImageSize.Common] and [ImageSize.Grid] is not available
   /// Image from the larger size tier is used instead
-  factory BangumiImage.fromImageUrl(
-      String imageUrl, ImageSize imageSize, ImageType imageType) {
+  factory BangumiImage.fromImageUrl(String imageUrl, ImageSize imageSize, ImageType imageType) {
     if (isEmpty(imageUrl)) {
       imageUrl = defaultCoverImage;
       return BangumiImage.useSameImageUrlForAll(imageUrl);
     }
+
+    imageUrl = upgradeHttpToHttps(imageUrl);
 
     String replacePattern;
 
@@ -83,7 +88,7 @@ abstract class BangumiImage
       }
     } else {
       Match urlMatcher =
-          RegExp(r'\/l\/|\/c\/|\/m\/|\/s\/|\/g\/').firstMatch(imageUrl);
+      RegExp(r'\/l\/|\/c\/|\/m\/|\/s\/|\/g\/').firstMatch(imageUrl);
 
       /// `urlMatcher == null` means something like a default subject cover image
       /// is used, in that case, use original imageUrl for  all sizes
@@ -137,6 +142,8 @@ abstract class BangumiImage
       imageUrl = defaultCoverImage;
     }
 
+    imageUrl = upgradeHttpToHttps(imageUrl);
+
     return BangumiImage((b) => b
       ..large = imageUrl
       ..common = imageUrl
@@ -151,9 +158,16 @@ abstract class BangumiImage
   }
 
   static BangumiImage fromJson(String jsonString) {
-    return serializers.deserializeWith(
-        BangumiImage.serializer, json.decode(jsonString));
+    return serializers
+        .deserializeWith(BangumiImage.serializer, json.decode(jsonString))
+        .rebuild((b) => b
+          ..grid = upgradeHttpToHttps(b.grid)
+          ..common = upgradeHttpToHttps(b.common)
+          ..small = upgradeHttpToHttps(b.small)
+          ..medium = upgradeHttpToHttps(b.medium)
+          ..large = upgradeHttpToHttps(b.large));
   }
 
-  static Serializer<BangumiImage> get serializer => _$bangumiImageSerializer;
+  static Serializer<BangumiImage> get serializer =>
+      _$customBangumiImageSerializer;
 }

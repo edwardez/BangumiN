@@ -43,3 +43,5 @@ final RegExp userAgentDummyStringRegex = RegExp(r'^"|"$');
 
 /// Cloudflare related
 final RegExp cloudFlareNoScriptTagRegex = RegExp(r'<noscript>|</noscript>');
+
+final RegExp httpSchemeUrlRegex = RegExp(r'^http://');

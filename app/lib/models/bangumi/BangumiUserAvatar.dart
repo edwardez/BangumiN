@@ -2,10 +2,14 @@ import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:munin/providers/bangumi/util/utils.dart';
 import 'package:munin/shared/utils/serializers.dart';
 
 part 'BangumiUserAvatar.g.dart';
 
+part 'CustomBangumiUserAvatarSerializer.dart';
+
+@BuiltValueSerializer(custom: true)
 abstract class BangumiUserAvatar
     implements Built<BangumiUserAvatar, BangumiUserAvatarBuilder> {
   static const _defaultLargeIconProtocolLessUrl =
@@ -39,10 +43,14 @@ abstract class BangumiUserAvatar
   }
 
   static BangumiUserAvatar fromJson(String jsonString) {
-    return serializers.deserializeWith(
-        BangumiUserAvatar.serializer, json.decode(jsonString));
+    return serializers
+        .deserializeWith(BangumiUserAvatar.serializer, json.decode(jsonString))
+        .rebuild((b) => b
+          ..small = upgradeHttpToHttps(b.large)
+          ..medium = upgradeHttpToHttps(b.large)
+          ..large = upgradeHttpToHttps(b.large));
   }
 
   static Serializer<BangumiUserAvatar> get serializer =>
-      _$bangumiUserAvatarSerializer;
+      _$customBangumiUserAvatarSerializer;
 }

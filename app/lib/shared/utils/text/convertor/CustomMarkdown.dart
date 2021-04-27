@@ -15,7 +15,7 @@ class SpoilerInlineSyntax extends TagSyntax {
 
   @override
   Node close(InlineParser parser, Delimiter opener, Delimiter closer,
-      {required List<Node> Function() getChildren}) {
+      {List<Node> Function() getChildren}) {
     return Element(BangumiHtmlTag.inlineSpoiler, getChildren());
   }
 }

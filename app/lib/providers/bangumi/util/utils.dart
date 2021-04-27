@@ -402,3 +402,9 @@ String toCssRGBAString(Color color) {
   final rgba = '${argb.substring(2)}${argb.substring(0, 2)}';
   return '#$rgba';
 }
+
+String upgradeHttpToHttps(String url) {
+  if (url == null) return null;
+
+  return url.replaceFirst(httpSchemeUrlRegex, 'https://');
+}

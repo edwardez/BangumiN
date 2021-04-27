@@ -31,9 +31,9 @@ dependencies:
   expandable: ^5.0.1
   dio: ^4.0.0
   dio_cookie_manager: ^2.0.0
-  firebase_analytics: ^7.0.1
-  firebase_core: ^1.0.3
-  firebase_crashlytics: ^2.0.0
+  firebase_analytics: ^8.0.2
+  firebase_core: ^1.1.0
+  firebase_crashlytics: ^2.0.2
   fluro: ^2.0.3
   flutter_redux: ^0.8.2
   flutter_secure_storage: ^4.1.0
@@ -46,7 +46,6 @@ dependencies:
   image_gallery_saver: ^1.5.0
   material_design_icons_flutter: ^4.0.5655
   markdown: ^4.0.0
-  #  Wait for https://github.com/flutter/packages/pull/22 to be resolved to switch back to offcial.
   palette_generator: ^0.3.0
   permission_handler: ^6.1.1
   screen: ^0.0.5

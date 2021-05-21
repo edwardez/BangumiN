@@ -24,5 +24,5 @@ const String appOrBangumiHasAnErrorLabel = '应用或bangumi出错';
 const String openInBrowserLabel = '在浏览器中打开';
 const String hasSuccessfullyUpdatedCollectionLabel = '收藏更新成功';
 
-final double avatarSize = 48.0;
-
+const double avatarSize = 48.0;
+const double defaultSliverAppBarElevation = 4.0;

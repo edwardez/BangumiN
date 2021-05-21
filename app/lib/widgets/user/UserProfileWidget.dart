@@ -338,6 +338,7 @@ class UserProfileWidget extends StatelessWidget {
           appBar = SliverAppBar(
             pinned: true,
             title: Text('${vm.userProfile.basicInfo.nickname}的主页'),
+            elevation: defaultSliverAppBarElevation,
           );
         } else {
           appBar = providedAppBar;

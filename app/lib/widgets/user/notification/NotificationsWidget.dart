@@ -5,6 +5,7 @@ import 'package:munin/models/bangumi/user/notification/BaseNotificationItem.dart
 import 'package:munin/models/bangumi/user/notification/NotificationState.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/refresh/MuninRefresh.dart';
 import 'package:munin/widgets/user/notification/NotificationItemWidget.dart';
@@ -92,6 +93,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
           appBar: SliverAppBar(
             title: Text('通知'),
             pinned: true,
+            elevation: defaultSliverAppBarElevation,
           ),
           onLoadMore: null,
           itemBuilder: (BuildContext context, int index) {

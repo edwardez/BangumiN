@@ -16,6 +16,7 @@ import 'package:munin/redux/discussion/DiscussionActions.dart';
 import 'package:munin/redux/shared/utils.dart';
 import 'package:munin/shared/exceptions/utils.dart';
 import 'package:munin/shared/utils/common.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/discussion/common/DiscussionReplyWidgetComposer.dart';
 import 'package:munin/widgets/discussion/thread/blog/BlogContentWidget.dart';
@@ -439,6 +440,7 @@ class _GenericThreadWidgetState extends State<GenericThreadWidget> {
             },
             separatorBuilder: null,
             appBar: SliverAppBar(
+              elevation: defaultSliverAppBarElevation,
               pinned: true,
               actions: _appBarActions(vm.thread, parentBangumiContentType),
               title: _buildAppBarTitle(

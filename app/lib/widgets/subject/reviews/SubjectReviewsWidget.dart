@@ -9,6 +9,7 @@ import 'package:munin/models/bangumi/subject/review/enum/SubjectReviewMainFilter
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/subject/SubjectActions.dart';
 import 'package:munin/shared/utils/bangumi/common.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/shared/utils/time/TimeUtils.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/appbar/AppBarTitleForSubject.dart';
@@ -131,6 +132,7 @@ class _SubjectReviewsWidgetState extends State<SubjectReviewsWidget> {
           appBar: SliverAppBar(
             title: _buildAppBarTitle(vm),
             pinned: true,
+            elevation: defaultSliverAppBarElevation,
           ),
           topWidgets: <Widget>[
             FilterChipsGroup<SubjectReviewMainFilter>(

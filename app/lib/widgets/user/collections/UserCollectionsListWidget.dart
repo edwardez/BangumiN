@@ -9,6 +9,7 @@ import 'package:munin/models/bangumi/user/collection/full/OrderCollectionBy.dart
 import 'package:munin/models/bangumi/user/collection/full/UserCollectionTag.dart';
 import 'package:munin/redux/app/AppState.dart';
 import 'package:munin/redux/user/UserActions.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/avatar/CachedCircleAvatar.dart';
 import 'package:munin/widgets/shared/bottomsheet/showMinHeightModalBottomSheet.dart';
@@ -268,6 +269,7 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
           appBar: SliverAppBar(
             title: appBarTitle(vm.user),
             pinned: true,
+            elevation: defaultSliverAppBarElevation,
           ),
           topWidgets: <Widget>[
             FilterChipsGroup<CollectionStatus>(

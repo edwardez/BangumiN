@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/styles/theme/Common.dart';
 
 /// uses [NestedScrollView] to implement a [SliverAppBar]
@@ -82,6 +83,7 @@ class ScrollViewWithSliverAppBar extends StatelessWidget {
             SliverAppBar(
               automaticallyImplyLeading: appBarAutomaticallyImplyLeading,
               pinned: appBarAutomaticallyImplyLeading,
+              elevation: defaultSliverAppBarElevation,
               actions: appBarActions,
               title: _buildAppBarTitle(context, changeAppBarTitleOnScroll,
                   innerBoxIsScrolled, appBarMainTitle, appBarSecondaryTitle),

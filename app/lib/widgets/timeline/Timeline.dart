@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:munin/models/bangumi/timeline/common/GetTimelineRequest.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineCategoryFilter.dart';
 import 'package:munin/models/bangumi/timeline/common/TimelineSource.dart';
+import 'package:munin/shared/utils/misc/constants.dart';
 import 'package:munin/widgets/home/HomePageAppBarTitle.dart';
 import 'package:munin/widgets/shared/appbar/OneMuninBar.dart';
 import 'package:munin/widgets/shared/button/FlatButtonWithTrailingIcon.dart';
@@ -133,6 +134,7 @@ class _MuninTimelineState extends State<MuninTimeline> {
       if (request.timelineSource == TimelineSource.UserProfile) {
         appBar = SliverAppBar(
           pinned: true,
+          elevation: defaultSliverAppBarElevation,
           title: FlatButtonWithTrailingIcon(
             onPressed: () {
               _filterModalBottomSheet();

@@ -1,5 +1,5 @@
 adal==1.0.2
-aiohttp==3.4.0
+aiohttp==3.7.4
 appdirs==1.4.3
 asn1crypto==0.24.0
 async-timeout==3.0.0
@@ -11,7 +11,7 @@ certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
 constantly==15.1.0
-cryptography==2.3.1
+cryptography==3.3.2
 cryptography-vectors==2.3
 cssselect==1.0.3
 dictdiffer==0.7.1
@@ -20,7 +20,7 @@ hyperlink==18.0.0
 idna==2.7
 incremental==17.5.0
 isodate==0.6.0
-lxml==4.2.4
+lxml==4.6.3
 more-itertools==4.2.0
 msrest==0.5.4
 msrestazure==0.5.0
@@ -29,7 +29,7 @@ oauthlib==2.1.0
 parsel==1.5.0
 pluggy==0.7.1
 psycopg2-binary==2.7.5
-py==1.6.0
+py==1.10.0
 pyasn1==0.4.4
 pyasn1-modules==0.2.2
 pycparser==2.18

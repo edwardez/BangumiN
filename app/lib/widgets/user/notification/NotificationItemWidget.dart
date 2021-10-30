@@ -70,7 +70,7 @@ class NotificationItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     item.initiator.nickname,
-                    style: textTheme(context).subhead,
+                    style: textTheme(context).subtitle1,
                   ),
                   BangumiHtml(
                     html: item.bodyContentHtml,

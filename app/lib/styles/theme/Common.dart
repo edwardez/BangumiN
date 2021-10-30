@@ -39,15 +39,14 @@ TextTheme textTheme(BuildContext context) {
 TextStyle body1TextWithLightPrimaryDarkAccentColor(BuildContext context) {
   return Theme.of(context)
       .textTheme
-      .body1
+      .bodyText1
       .copyWith(color: lightPrimaryDarkAccentColor(context));
 }
 
 TextStyle body1ErrorText(BuildContext context) {
-  return Theme
-      .of(context)
+  return Theme.of(context)
       .textTheme
-      .body1
+      .bodyText1
       .copyWith(color: Theme
       .of(context)
       .errorColor);
@@ -95,7 +94,7 @@ TextStyle captionTextWithBody1Size(BuildContext context) {
 TextStyle scoreStyle(BuildContext context, {fontSize = 18.0}) {
   return Theme.of(context)
       .textTheme
-      .body1
+      .bodyText1
       .copyWith(fontSize: fontSize, color: MuninColor.score);
 }
 

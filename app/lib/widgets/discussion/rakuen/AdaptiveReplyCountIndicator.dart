@@ -77,7 +77,7 @@ class AdaptiveReplyCountIndicator extends StatelessWidget {
           clippedReplyCountText,
           style: Theme.of(context)
               .textTheme
-              .body1
+              .bodyText1
               .copyWith(fontSize: Theme.of(context).textTheme.caption.fontSize),
           textScaleFactor:
               replyCountTextScaleFactor(textScaleFactor, clippedReplyCountText),

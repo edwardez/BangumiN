@@ -46,7 +46,7 @@ class MuteSettingWidget extends StatelessWidget {
                     '屏蔽用户',
                     style: Theme.of(context)
                         .textTheme
-                        .body2
+                        .bodyText2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
                   subtitle: Text('除通知外都会被屏蔽'),
@@ -89,7 +89,7 @@ class MuteSettingWidget extends StatelessWidget {
                     '屏蔽超展开小组',
                     style: Theme.of(context)
                         .textTheme
-                        .body2
+                        .bodyText2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
                   trailing: IconButton(
@@ -113,7 +113,7 @@ class MuteSettingWidget extends StatelessWidget {
                     '杂项',
                     style: Theme.of(context)
                         .textTheme
-                        .body2
+                        .bodyText2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
                 ),

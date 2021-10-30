@@ -175,17 +175,14 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                     '切换方式',
                     style: Theme.of(context)
                         .textTheme
-                        .body2
+                        .bodyText2
                         .copyWith(color: lightPrimaryDarkAccentColor(context)),
                   ),
                 ),
                 ListTile(
                   title: Text(
                     '手动',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body2,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   subtitle: Text(
                     '只在手动更改设置后切换',
@@ -205,10 +202,7 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                 ListTile(
                   title: Text(
                     '跟随屏幕亮度',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body2,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   subtitle: Text(
                     '跟随屏幕亮度自动切换',
@@ -234,10 +228,7 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
                   title: Text(
                     '跟随系统',
                     style: darkModeSupportInfo != null
-                        ? Theme
-                        .of(context)
-                        .textTheme
-                        .body2
+                        ? Theme.of(context).textTheme.bodyText2
                         : null,
                   ),
                   subtitle: _systemMultiThemeSupportText,

@@ -28,7 +28,7 @@ class ManualThemeOptions extends StatelessWidget {
             '当前主题',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText2
                 .copyWith(color: lightPrimaryDarkAccentColor(context)),
           ),
         ),

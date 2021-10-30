@@ -82,10 +82,9 @@ class SubjectWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               '条目已锁定',
-              style: Theme
-                  .of(context)
+              style: Theme.of(context)
                   .textTheme
-                  .title
+                  .subtitle2
                   .copyWith(color: Theme
                   .of(context)
                   .errorColor),
@@ -134,10 +133,7 @@ class SubjectWidget extends StatelessWidget {
       _buildAppBarMainTitle(context, requestStatusFuture, subject.type),
       appBarSecondaryTitle: Text(
         preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
-        style: Theme
-            .of(context)
-            .textTheme
-            .body2,
+        style: Theme.of(context).textTheme.bodyText2,
       ),
       changeAppBarTitleOnScroll: true,
       nestedScrollViewBody: ListView.separated(

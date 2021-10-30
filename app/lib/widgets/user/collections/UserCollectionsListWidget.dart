@@ -77,11 +77,8 @@ class _UserCollectionsListWidgetState extends State<UserCollectionsListWidget> {
         ),
         WrappableText(
           '${user.basicInfo.nickname}$actionName'
-              '的${currentRequest.subjectType.chineseName}',
-          textStyle: Theme
-              .of(context)
-              .textTheme
-              .body2,
+          '的${currentRequest.subjectType.chineseName}',
+          textStyle: Theme.of(context).textTheme.bodyText2,
         )
       ],
     );

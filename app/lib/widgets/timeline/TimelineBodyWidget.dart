@@ -133,6 +133,17 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
       builder: (BuildContext context, _ViewModel vm) {
         bool hasFilterAllFeeds = userHasFilterAllFeeds(vm.feedChunks);
 
+        // return MuninRefresh2(
+        //   itemCount: hasFilterAllFeeds ? 1 : vm.feedChunks.filteredFeeds.length,
+        //   itemBuilder: _createItemBuilder(vm, hasFilterAllFeeds),
+        //   appBar: widget.appBar,
+        //   onRefresh: () {
+        //     return vm.fetchLatestFeed(context);
+        //   },
+        //   onLoadMore: () {
+        //     return vm.fetchOlderFeed(context);
+        //   },
+        // );
         /// Build timeline refresh list
         /// If user has filtered all available feeds, attach an empty `Container()`
         /// to the timeline to ensure load more button will show up

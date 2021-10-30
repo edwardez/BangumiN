@@ -39,7 +39,7 @@ class _FollowSystemThemeOptionsState extends State<FollowSystemThemeOptions> {
             '主题偏好',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText2
                 .copyWith(color: lightPrimaryDarkAccentColor(context)),
           ),
         ),

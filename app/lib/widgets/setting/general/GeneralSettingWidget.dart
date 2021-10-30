@@ -25,10 +25,9 @@ class GeneralSettingWidget extends StatelessWidget {
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       distinct: true,
       builder: (BuildContext context, _ViewModel vm) {
-        final settingTitleStyle = Theme
-            .of(context)
+        final settingTitleStyle = Theme.of(context)
             .textTheme
-            .body2
+            .bodyText2
             .copyWith(color: lightPrimaryDarkAccentColor(context));
 
         return ScrollViewWithSliverAppBar(

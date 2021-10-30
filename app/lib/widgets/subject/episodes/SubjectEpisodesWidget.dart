@@ -279,7 +279,7 @@ class SubjectEpisodesWidget extends StatelessWidget {
                   fit: FlexFit.tight,
                   textStyle: Theme.of(context)
                       .textTheme
-                      .subhead
+                      .subtitle1
                       .copyWith(decoration: episodeAndStatusTitleDecoration),
                 ),
                 if (statusChip != null) statusChip

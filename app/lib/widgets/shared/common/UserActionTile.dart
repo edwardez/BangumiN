@@ -59,10 +59,7 @@ class UserActionTile extends StatelessWidget {
                 nickName,
                 maxLines: titleMaxLines,
                 overflow: TextOverflow.ellipsis,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .subhead,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               fit: FlexFit.tight,
             ),

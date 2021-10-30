@@ -31,7 +31,7 @@ class SubjectCoverAndBasicInfo extends StatelessWidget {
     List<Widget> widgets = [];
     widgets.add(WrappableText(
       preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
-      textStyle: Theme.of(context).textTheme.subtitle,
+      textStyle: Theme.of(context).textTheme.subtitle2,
       fit: FlexFit.tight,
       outerWrapper: OuterWrapper.Row,
       isSelectable: true,

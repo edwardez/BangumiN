@@ -96,13 +96,10 @@ class WrappableText extends StatelessWidget {
         )
             : Text(
           text,
-          maxLines: maxLines,
-          overflow: maxLines == null ? null : overflow,
-          style: textStyle ?? Theme
-              .of(context)
-              .textTheme
-              .body1,
-        ),
+                maxLines: maxLines,
+                overflow: maxLines == null ? null : overflow,
+                style: textStyle ?? Theme.of(context).textTheme.bodyText1,
+              ),
       ),
     );
 

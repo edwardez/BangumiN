@@ -5,7 +5,6 @@ import 'package:munin/shared/utils/bangumi/RedirectableUrlResolver.dart';
 import 'package:munin/shared/utils/common.dart';
 import 'package:munin/shared/utils/misc/Launch.dart';
 import 'package:munin/shared/utils/misc/constants.dart';
-import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/html/MuninWidgetFactory.dart';
 import 'package:munin/widgets/shared/text/SpoilerText.dart';
 import 'package:munin/widgets/shared/utils/common.dart';
@@ -38,7 +37,6 @@ class BangumiHtml extends StatelessWidget {
         }
         return null;
       },
-      hyperlinkColor: lightPrimaryDarkAccentColor(context),
       onTapUrl: (String url) {
         final maybeRedirectableContent = resolveRedirectableUrl(url);
         if (maybeRedirectableContent.isNotPresent) {

@@ -31,7 +31,7 @@ class NetworkServiceTagWidget extends StatelessWidget {
               tag.type.name,
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText1
                   .copyWith(color: Colors.white),
             ),
           ),

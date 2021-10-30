@@ -105,7 +105,7 @@ class _FollowScreenBrightnessThemeOptionsState
             '主题偏好',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText2
                 .copyWith(color: lightPrimaryDarkAccentColor(context)),
           ),
         ),
@@ -143,7 +143,7 @@ class _FollowScreenBrightnessThemeOptionsState
             '主题切换阈值',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText2
                 .copyWith(color: lightPrimaryDarkAccentColor(context)),
           ),
         ),

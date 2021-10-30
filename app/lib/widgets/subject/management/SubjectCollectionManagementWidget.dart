@@ -562,12 +562,9 @@ class _SubjectCollectionManagementWidgetState
             title: vm.subject != null
                 ? Text(
               preferredNameFromSubjectBase(
-                  vm.subject, vm.preferredSubjectInfoLanguage),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body2,
-            )
+                        vm.subject, vm.preferredSubjectInfoLanguage),
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
                 : Text('-'),
             actions: <Widget>[
               Builder(

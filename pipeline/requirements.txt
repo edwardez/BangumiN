@@ -20,7 +20,7 @@ hyperlink==18.0.0
 idna==2.7
 incremental==17.5.0
 isodate==0.6.0
-lxml==4.6.3
+lxml==4.6.5
 more-itertools==4.2.0
 msrest==0.5.4
 msrestazure==0.5.0

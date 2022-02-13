@@ -8,12 +8,12 @@ class StarRatingFormField extends FormField<int> {
       FormFieldValidator<int> validator,
       int initialValue = 0,
       double horizontalPadding = defaultPortraitHorizontalOffset,
-      bool autovalidate = false})
+      AutovalidateMode autovalidate = AutovalidateMode.disabled})
       : super(
-            onSaved: onSaved,
+      onSaved: onSaved,
             validator: validator,
             initialValue: initialValue,
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidate,
             builder: (FormFieldState<int> state) {
               return StarRating(
                   rating: state.value.toDouble(),

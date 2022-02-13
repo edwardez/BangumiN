@@ -87,6 +87,7 @@ class ScrollViewWithSliverAppBar extends StatelessWidget {
               actions: appBarActions,
               title: _buildAppBarTitle(context, changeAppBarTitleOnScroll,
                   innerBoxIsScrolled, appBarMainTitle, appBarSecondaryTitle),
+              titleTextStyle: Theme.of(context).textTheme.bodyText1,
             )
           ];
         },

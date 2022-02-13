@@ -202,7 +202,7 @@ abstract class Application {
     // If user has chosen to opt out analytics, disable it here.
     // This setting is persisted through app session so we just need to set it
     // once on app startup.
-    FirebaseAnalytics()
+    FirebaseAnalytics.instance
         .setAnalyticsCollectionEnabled(privacySetting.optInAnalytics);
   }
 

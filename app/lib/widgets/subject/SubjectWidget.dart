@@ -71,7 +71,9 @@ class SubjectWidget extends StatelessWidget {
         '刷新中',
         style: defaultCaptionText(context),
       ),
-      child: Text('关于这${subjectType.quantifiedChineseNameByType}'),
+      child: Text(
+        '关于这${subjectType.quantifiedChineseNameByType}',
+      ),
     );
   }
 
@@ -85,9 +87,7 @@ class SubjectWidget extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .subtitle2
-                  .copyWith(color: Theme
-                  .of(context)
-                  .errorColor),
+                  .copyWith(color: Theme.of(context).errorColor),
             ),
             Text(
               '条目显示可能不正常，条目及相关收藏、讨论、关联等内容将会随时被移除。',
@@ -99,7 +99,8 @@ class SubjectWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSubjectMainPage(BuildContext context,
+  Widget _buildSubjectMainPage(
+      BuildContext context,
       Future<void> requestStatusFuture,
       BangumiSubject subject,
       PreferredSubjectInfoLanguage preferredSubjectInfoLanguage) {
@@ -130,7 +131,7 @@ class SubjectWidget extends StatelessWidget {
 
     return ScrollViewWithSliverAppBar(
       appBarMainTitle:
-      _buildAppBarMainTitle(context, requestStatusFuture, subject.type),
+          _buildAppBarMainTitle(context, requestStatusFuture, subject.type),
       appBarSecondaryTitle: Text(
         preferredNameFromSubjectBase(subject, preferredSubjectInfoLanguage),
         style: Theme.of(context).textTheme.bodyText2,

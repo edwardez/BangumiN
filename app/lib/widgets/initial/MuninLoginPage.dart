@@ -246,7 +246,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
       _resetDioAndRefreshCaptcha(popContext: true);
       errorText ??= '未知错误';
       reportError(error, stack: stack);
-      FirebaseAnalytics().logEvent(name: LoginErrorEvent.name);
+      FirebaseAnalytics.instance.logEvent(name: LoginErrorEvent.name);
       showErrorDialog(title: errorText);
     }
   }
@@ -441,7 +441,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
         loginStopWatch.elapsed.inMilliseconds;
     loginMetrics[LoginElapsedTimeEvent.totalMilliSeconds] =
     loginMetrics[LoginElapsedTimeEvent.afterGetUserProfile];
-    FirebaseAnalytics()
+    FirebaseAnalytics.instance
         .logEvent(name: LoginElapsedTimeEvent.name, parameters: loginMetrics);
   }
 
@@ -496,7 +496,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
               ),
               inputFormatters: [
                 LengthLimitingTextInputFormatter(captchaLength),
-                WhitelistingTextInputFormatter(validCaptchaRegex),
+                FilteringTextInputFormatter.allow(validCaptchaRegex),
               ],
               validator: (input) {
                 final inputLength = input?.length ?? 0;

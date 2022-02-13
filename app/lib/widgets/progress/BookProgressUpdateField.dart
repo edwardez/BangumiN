@@ -60,7 +60,7 @@ class BookProgressUpdateField extends StatelessWidget {
       autocorrect: false,
       textAlign: TextAlign.end,
       inputFormatters: [
-        WhitelistingTextInputFormatter.digitsOnly,
+        FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(BookProgressUpdateField.maxInputLength)
       ],
       decoration: InputDecoration(

@@ -247,13 +247,13 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
                     // Latest version must be older or equal to best item.
                     // hence set to bestItem so user is harder to get notified.
                     updatedMutedVersion = bestItem.versionString;
-                    FirebaseAnalytics().logEvent(
+                    FirebaseAnalytics.instance.logEvent(
                         name: InstallUpdatePromptEvent.name,
                         parameters: {
                           InstallUpdatePromptEvent.refuseToInstall: 1,
                           InstallUpdatePromptEvent.agreeToInstall: 0,
                           InstallUpdatePromptEvent.criticalUpdateVersion:
-                          availableCriticalUpdate.versionString
+                              availableCriticalUpdate.versionString
                         });
                   },
                 ),
@@ -262,13 +262,13 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
                   onPressed: () {
                     launchWithExternalBrowser(innerContext, bestItem.fileURL,
                         popContext: true);
-                    FirebaseAnalytics().logEvent(
+                    FirebaseAnalytics.instance.logEvent(
                         name: InstallUpdatePromptEvent.name,
                         parameters: {
                           InstallUpdatePromptEvent.refuseToInstall: 0,
                           InstallUpdatePromptEvent.agreeToInstall: 1,
                           InstallUpdatePromptEvent.criticalUpdateVersion:
-                          availableCriticalUpdate.versionString
+                              availableCriticalUpdate.versionString
                         });
                   },
                 ),

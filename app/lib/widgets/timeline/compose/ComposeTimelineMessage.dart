@@ -117,7 +117,7 @@ class _ComposeTimelineMessageState extends State<ComposeTimelineMessage> {
             ),
             safeAreaChild: Form(
               key: _formKey,
-              autovalidate: true,
+              autovalidateMode: AutovalidateMode.always,
               onWillPop: _onWillPop,
               child: ListView(
                 children: <Widget>[

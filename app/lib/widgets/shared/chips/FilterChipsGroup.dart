@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/chips/StrokeChoiceChip.dart';
 
 typedef ToChipStringName<T> = String Function(T chip);
@@ -110,8 +109,6 @@ class _FilterChipsGroupState<T> extends State<FilterChipsGroup<T>> {
               }
             }
           },
-          labelStyle: Theme.of(context).chipTheme.labelStyle.copyWith(
-              color: isSelected ? lightPrimaryDarkAccentColor(context) : null),
         ),
       ));
     }

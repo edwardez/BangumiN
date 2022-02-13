@@ -81,7 +81,10 @@ class FullPublicMessageWidget extends StatelessWidget {
         indicatorText,
         style: defaultCaptionText(context),
       ),
-      child: Text('正文'),
+      child: Text(
+        '正文',
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
     );
   }
 

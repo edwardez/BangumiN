@@ -8,12 +8,12 @@ class SubjectCollectionIsPrivateFormField extends FormField<bool> {
     FormFieldValidator<bool> validator,
     ValueChanged<bool> onChanged,
     bool initialValue = false,
-    bool autovalidate = false,
+    AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   }) : super(
-            onSaved: onSaved,
+      onSaved: onSaved,
             validator: validator,
             initialValue: initialValue,
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidateMode,
             builder: (FormFieldState<bool> state) {
               return Container(
                 child: SwitchListTile.adaptive(

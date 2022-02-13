@@ -4,7 +4,6 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munin/shared/utils/collections/common.dart';
-import 'package:munin/styles/theme/Common.dart';
 import 'package:munin/widgets/shared/chips/StrokeChoiceChip.dart';
 import 'package:munin/widgets/subject/management/MuninExpandIcon.dart';
 import 'package:quiver/strings.dart';
@@ -205,8 +204,6 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
         label: Text(tagName),
         selected: isSelected,
         onSelected: _onSelectedCallBackForExistingTag(tags, tagsType, tagName),
-        labelStyle: Theme.of(context).chipTheme.labelStyle.copyWith(
-            color: isSelected ? lightPrimaryDarkAccentColor(context) : null),
       );
       chips.add(_maxTagsAlertWrapper(context, choiceChip, wrapAlertDialog));
     });

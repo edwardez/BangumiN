@@ -240,7 +240,7 @@ class _SubjectCollectionManagementWidgetState
   Widget _buildSubjectCollectionStatusFormField(SubjectType subjectType) {
     return SubjectCollectionStatusFormField(
       subjectType: subjectType,
-      autovalidate: true,
+      autovalidateMode: AutovalidateMode.always,
       initialStatus: localSubjectCollectionInfo.status.type,
       validator: (CollectionStatus status) {
         if (collectionStatusHasError(status: status)) {
@@ -579,7 +579,7 @@ class _SubjectCollectionManagementWidgetState
           ),
           safeAreaChild: Form(
             key: _formKey,
-            autovalidate: true,
+            autovalidateMode: AutovalidateMode.always,
             onWillPop: _onDiscardCollectionEdit,
             child: ListView(
               children: <Widget>[

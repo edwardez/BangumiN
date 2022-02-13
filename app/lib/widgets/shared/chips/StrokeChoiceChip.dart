@@ -68,9 +68,6 @@ class StrokeChoiceChip extends StatelessWidget {
         key: key,
         avatar: avatar,
         label: label,
-        labelStyle: labelStyle ??
-            (Theme.of(context).chipTheme.labelStyle.copyWith(
-                color: selected ? lightPrimaryDarkAccentColor(context) : null)),
         labelPadding: labelPadding,
         onSelected: onSelected,
         pressElevation: pressElevation,

@@ -14,7 +14,10 @@ class SettingHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollViewWithSliverAppBar(
-      appBarMainTitle: Text("设置"),
+      appBarMainTitle: Text(
+        "设置",
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
       enableBottomSafeArea: false,
       safeAreaChildPadding:
           const EdgeInsets.only(left: 0, right: 0, top: largeOffset),

@@ -15,7 +15,7 @@ version: 0.6.0+19
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
-  flutter: ^2.2.0
+  flutter: ^2.10.1
 
 dependencies:
   flutter:
@@ -31,9 +31,9 @@ dependencies:
   expandable: ^5.0.1
   dio: ^4.0.0
   dio_cookie_manager: ^2.0.0
-  firebase_analytics: ^8.3.4
-  firebase_core: ^1.8.0
-  firebase_crashlytics: ^2.2.4
+  firebase_analytics: ^9.1.0
+  firebase_core: ^1.12.0
+  firebase_crashlytics: ^2.5.1
   fluro: ^2.0.3
   flutter_redux: ^0.8.2
   flutter_secure_storage: ^4.1.0
@@ -72,12 +72,12 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_test:
     sdk: flutter
-  build_runner: ^1.7.2
+  build_runner: ^2.1.7
   built_value_generator: ^8.0.4
-#  dio_retry: ^0.1.9-beta
+  #  dio_retry: ^0.1.9-beta
   logging: ^1.0.1
-  test: ^1.6.1
-  mockito: ^5.0.3
+  test: ^1.19.5
+  mockito: ^5.1.0
   pull_to_refresh: ^2.0.0
 
 #　Run `flutter pub run flutter_launcher_icons:main` to generate new icons.

@@ -29,7 +29,7 @@ class MuninApp extends StatefulWidget {
 }
 
 class _MuninAppState extends State<MuninApp> {
-  FirebaseAnalytics analytics = FirebaseAnalytics();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {

@@ -61,17 +61,17 @@ class SubjectCollectionStatusFormField extends FormField<CollectionStatus> {
     FormFieldValidator<CollectionStatus> validator,
     ChipSelectedCallBack onChipSelected,
     CollectionStatus initialStatus = CollectionStatus.Pristine,
-    bool autovalidate = false,
+    AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   })  : assert(subjectType != null),
 
         /// selectableCollectionStatus must not contain duplicates
         assert(Set.from(selectableCollectionStatus).length ==
             selectableCollectionStatus.length),
         super(
-            onSaved: onSaved,
+          onSaved: onSaved,
             validator: validator,
             initialValue: initialStatus,
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidateMode,
             builder: (FormFieldState<CollectionStatus> state) {
               return Wrap(
                 alignment: WrapAlignment.spaceAround,

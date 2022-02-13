@@ -12,13 +12,13 @@ class SubjectTagsFormField extends FormField<Set<String>> {
     @required LinkedHashMap<String, bool> headerTags,
     @required LinkedHashMap<String, bool> candidateTags,
     double horizontalPadding = defaultPortraitHorizontalOffset,
-    bool autovalidate = false,
+    AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
     int maxTags = 10,
   }) : super(
-            onSaved: onSaved,
+      onSaved: onSaved,
             validator: validator,
             initialValue: headerTags.keys.toSet(),
-            autovalidate: autovalidate,
+            autovalidateMode: autovalidateMode,
             builder: (FormFieldState<Set<String>> state) {
               return SubjectTagsField(
                 headerTags: headerTags,

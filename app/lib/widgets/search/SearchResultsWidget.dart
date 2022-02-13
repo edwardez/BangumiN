@@ -63,7 +63,10 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
     return FilterChipsGroup<SearchType>(
       filterChips: filterTags,
       selectedChip: searchType,
-      chipLabelBuilder: (SearchType searchType) => Text(searchType.chineseName),
+      chipLabelBuilder: (SearchType searchType) => Text(
+        searchType.chineseName,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
       onChipSelected: (SearchType selectedSearchType) {
         setState(() {
           currentSearchRequest = currentSearchRequest

@@ -47,7 +47,7 @@ Scrapy==1.7.3
 service-identity==17.0.0
 six==1.11.0
 SQLAlchemy==1.3.0
-Twisted==19.7.0
+Twisted==22.2.0
 urllib3==1.24.2
 w3lib==1.19.0
 yarl==1.2.6

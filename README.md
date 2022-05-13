@@ -1,25 +1,14 @@
-# BangumiN
+# BangumiN 
 
-BangumiN - Bangumi Cross-platform Experience.
 
-BangumiN comes with three flavors
+<a href="https://bangumin.github.io/" align="center" target="_blank" rel="noopener" aria-label="website"><img src="https://raw.githubusercontent.com/edwardez/BangumiN/develop/app/assets/logo/munin_logo_rounded.svg" height="100" width="100" ></a>
 
-1. App(munin): Native client, written in Flutter, a Bangumi app that aims to provide most Bangumi features, 
-munin runs on modern iOS/Android/(+?) systems
+BangumiN - Yet another Bangumi app. 
 
-2. Web Client(thor): Web Client, written in AngularTS, a Bangumi web client(PWA) that aims to provide 
-supplemental features to bgm.tv (statistics, spoiler...etc), thor runs on all major browsers
+BangumiN is native client written in Flutter, a Bangumi app that aims to provide essential Bangumi features,
+munin runs on modern iOS/Android/(+?) systems.
 
-3. Server(forseti): Server, written in Node.js(+typescript) and deeply integrates with AWS, 
-forseti serves thor and munin
-
-![name](./documents/en-US/images/name.png)
-
-# Notice☠
-
-This project is still under heavy development and features may be changed without notice.
-
-If you find any bugs, security flaws or any other exceptions, feel free to report them!
+<a href="https://bangumin.github.io/"  target="_blank" rel="noopener" aria-label="download from appstore"><img src="https://raw.githubusercontent.com/edwardez/BangumiN/develop/documents/assets/download_from_appstore.png" width="320" height="108"></a><a href="https://bangumin.github.io/" target="_blank" rel="noopener" aria-label="download from google play"><img src="https://raw.githubusercontent.com/edwardez/BangumiN/develop/documents/assets/download_from_google_play.png" width="360"></a>
 
 
 # Install

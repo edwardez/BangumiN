@@ -5,7 +5,7 @@
 
 BangumiN - Yet another Bangumi app. 
 
-BangumiN is native client written in Flutter, an app that aims to provide essential Bangumi features,
+BangumiN is a native client written in Flutter, an app that aims to provide essential Bangumi features,
 munin runs on modern iOS/Android/(+?) systems.
 
 Disclaimer: this is a third-party app, we are not affiliated with the Bangumi officials.

@@ -22,13 +22,3 @@ Disclaimer: this is a third-party app, we are not affiliated with the Bangumi of
 * For app
 
   See instructions in app folder
-   
-* For client
-    * `npm install`
-    * `npm run start-dev`
-* For server
-    * `npm install`
-    * `npm run start-dev`
-
-
-

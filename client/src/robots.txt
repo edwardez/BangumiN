@@ -1,6 +1,0 @@
-user-agent: *
-Allow: /$
-Allow: /about
-Allow: /tos
-Allow: /privacy
-Disallow: /

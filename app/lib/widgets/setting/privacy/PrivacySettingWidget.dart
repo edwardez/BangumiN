@@ -117,9 +117,11 @@ List<TextSpan> tosAndPrivacyLinks(BuildContext context) {
   final linkStyle = TextStyle(color: lightPrimaryDarkAccentColor(context));
   return [
     LinkTextSpan(
-        text: '服务条款', style: linkStyle, url: "https://bangumin.app/tos"),
+        text: '服务条款', style: linkStyle, url: "https://bangumin.github.io/tos"),
     TextSpan(text: '和'),
     LinkTextSpan(
-        text: '隐私政策', style: linkStyle, url: "https://bangumin.app/privacy"),
+        text: '隐私政策',
+        style: linkStyle,
+        url: "https://bangumin.github.io/privacy"),
   ];
 }

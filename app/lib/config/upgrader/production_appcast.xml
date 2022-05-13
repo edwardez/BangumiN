@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--WARNING: CHANGES MADE HERE IN STABLE BRANCH WILL BE PUSHED TO PRODUCTION USERS IMMEDIATELY-->
-<rss version="2.0" xmlns:sparkle="https://bangumin.app">
+<rss version="2.0" xmlns:sparkle="https://bangumin.github.io">
     <channel>
         <title>BangumiN Changelog</title>
         <item>

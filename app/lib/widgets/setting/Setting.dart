@@ -77,7 +77,7 @@ class SettingHome extends StatelessWidget {
             ListTile(
               title: Text('反馈'),
               onTap: () {
-                launchByPreference(context, 'https://bangumin.app/help');
+                launchByPreference(context, 'https://bangumin.github.io/help');
               },
             ),
             if (Application.environmentValue.shouldCheckUpdate) ...[

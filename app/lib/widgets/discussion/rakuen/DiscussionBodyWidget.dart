@@ -47,7 +47,7 @@ class _DiscussionBodyWidgetState extends State<DiscussionBodyWidget> {
       child: Column(
         children: <Widget>[
           Text('讨论列表为空，可能因为$appOrBangumiHasAnErrorLabel，下拉可重试'),
-          FlatButton(
+          TextButton(
             child: Text(checkWebVersionLabel),
             onPressed: () {
               launchByPreference(context, rakuenMobileUrl);

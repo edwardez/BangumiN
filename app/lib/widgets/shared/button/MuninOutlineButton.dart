@@ -21,11 +21,12 @@ class MuninOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color mainColor = lightPrimaryDarkAccentColor(context);
-    return OutlineButton(
+    return OutlinedButton(
       child: child,
-      textColor: mainColor,
-      borderSide: BorderSide(color: mainColor, width: 1.0),
-      highlightedBorderColor: mainColor,
+      // style: ,
+      // textColor: mainColor,
+      // borderSide: BorderSide(color: mainColor, width: 1.0),
+      // highlightedBorderColor: mainColor,
       onPressed: onPressed,
     );
   }

@@ -225,7 +225,7 @@ class _SubjectCollectionManagementWidgetState
           content: Text(_buildErrorMessages(formErrors, subjectType)),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            FlatButton(
+            TextButton(
               child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();

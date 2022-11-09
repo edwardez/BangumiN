@@ -83,15 +83,15 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
     });
   }
 
-  FlatButton _buildUpdateButton() {
+  TextButton _buildUpdateButton() {
     if (updateInProgress) {
-      return FlatButton(
+      return TextButton(
         onPressed: null,
         child: Text('更新中...'),
       );
     } else {
       if (isDirtyOrTouched) {
-        return FlatButton(
+        return TextButton(
           onPressed: () {
             Future<void> future = widget.onUpdateBookProgress(
                 tryParseInt(episodeEditController.text, defaultValue: 0),
@@ -112,7 +112,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
         );
       }
 
-      return FlatButton(
+      return TextButton(
         onPressed: null,
         child: Text('更新'),
       );
@@ -149,7 +149,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                 ),
                 ButtonTheme.fromButtonThemeData(
                   data: smallButtonTheme(context),
-                  child: OutlineButton(
+                  child: OutlinedButton(
                     onPressed: () {
                       showSnackBarOnSuccess(
                           context,
@@ -157,7 +157,7 @@ class _InProgressBookWidgetState extends State<InProgressBookWidget> {
                               context,
                               Routes.subjectCollectionManagementRoute
                                   .replaceFirst(RoutesVariable.subjectIdParam,
-                                  widget.collection.subject.id.toString()),
+                                      widget.collection.subject.id.toString()),
                               transition: TransitionType.nativeModal),
                           hasSuccessfullyUpdatedCollectionLabel);
                     },

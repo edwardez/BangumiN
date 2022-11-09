@@ -71,7 +71,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
           Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
           Text(
               '2. 用户未发表任何${widget.getTimelineRequest.timelineCategoryFilter.chineseName}分类下的动态'),
-          FlatButton(
+          TextButton(
             child: Text(checkWebVersionLabel),
             onPressed: () {
               String username = widget.getTimelineRequest.username;
@@ -90,7 +90,7 @@ class _TimelineBodyWidgetState extends State<TimelineBodyWidget> {
           Text('时间线为空，可能因为：'),
           Text('1. $appOrBangumiHasAnErrorLabel，下拉可重试'),
           Text('2. 您尚未关注任何已发表动态的用户'),
-          FlatButton(
+          TextButton(
             child: Text(checkWebVersionLabel),
             onPressed: () {
               return launchByPreference(context, bangumiTimelineUrl);

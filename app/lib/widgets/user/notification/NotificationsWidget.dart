@@ -38,7 +38,7 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
       return ListTile(
         title: Text('收到$unreadCount条新通知'),
         subtitle: Text('暂不支持收件箱提醒'),
-        trailing: OutlineButton(
+        trailing: OutlinedButton(
           child: Text('全部标为已读'),
           onPressed: () async {
             clearNotification(context, () {

@@ -5,30 +5,17 @@ import 'package:flutter/material.dart';
 ///
 /// This class only exists to give FlatButtons created with [FlatButton.icon]
 /// a distinct class for the sake of [ButtonTheme]. It can not be instantiated.
-class FlatButtonWithTrailingIcon extends FlatButton
-    with MaterialButtonWithIconMixin {
+class FlatButtonWithTrailingIcon extends TextButton {
   FlatButtonWithTrailingIcon({
     Key key,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
-    ValueChanged<bool> onHighlightChanged,
-    ButtonTextTheme textTheme,
-    Color textColor,
-    Color disabledTextColor,
-    Color color,
-    Color disabledColor,
-    Color focusColor,
-    Color hoverColor,
-    Color highlightColor,
-    Color splashColor,
-    Brightness colorBrightness,
-    EdgeInsetsGeometry padding,
-    ShapeBorder shape,
-    Clip clipBehavior = Clip.none,
+    ValueChanged<bool> onHover,
+    ValueChanged<bool> onFocusChange,
+    ButtonStyle style,
     FocusNode focusNode,
-    bool autofocus = false,
-    MaterialTapTargetSize materialTapTargetSize,
-    @required Widget child,
+    bool autofocus,
+    Clip clipBehavior,
     @required Widget icon,
     @required Widget label,
   })  : assert(icon != null),
@@ -36,19 +23,13 @@ class FlatButtonWithTrailingIcon extends FlatButton
         super(
           key: key,
           onPressed: onPressed,
-          onHighlightChanged: onHighlightChanged,
-          textTheme: textTheme,
-          textColor: textColor,
-          disabledTextColor: disabledTextColor,
-          color: color,
-          disabledColor: disabledColor,
-          highlightColor: highlightColor,
-          splashColor: splashColor,
-          colorBrightness: colorBrightness,
-          padding: padding,
-          shape: shape,
-          clipBehavior: clipBehavior,
-          materialTapTargetSize: materialTapTargetSize,
+          onLongPress: onLongPress,
+          onHover: onHover,
+          onFocusChange: onFocusChange,
+          style: style,
+          focusNode: focusNode,
+          autofocus: autofocus ?? false,
+          clipBehavior: clipBehavior ?? Clip.none,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

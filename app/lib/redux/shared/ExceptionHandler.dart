@@ -58,14 +58,14 @@ Future<GeneralExceptionHandlerResult> generalExceptionHandler(
               ],
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('暂不认证'),
                 onPressed: () {
                   Navigator.of(context)
                       .pop(GeneralExceptionHandlerResult.Skipped);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text('重新认证'),
                 onPressed: () {
                   Navigator.of(context).pop(

@@ -155,7 +155,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                 ),
                 ButtonTheme.fromButtonThemeData(
                   data: smallButtonTheme(context),
-                  child: OutlineButton(
+                  child: OutlinedButton(
                     onPressed: () {
                       showSnackBarOnSuccess(
                           context,
@@ -163,7 +163,7 @@ class InProgressAnimeOrRealWidget extends StatelessWidget {
                               context,
                               Routes.subjectCollectionManagementRoute
                                   .replaceFirst(RoutesVariable.subjectIdParam,
-                                  collection.subject.id.toString()),
+                                      collection.subject.id.toString()),
                               transition: TransitionType.nativeModal),
                           hasSuccessfullyUpdatedCollectionLabel);
                     },

@@ -152,7 +152,7 @@ class UserProfileWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 if (!vm.isCurrentAppUser)
-                  OutlineButton(
+                  OutlinedButton(
                     child: Row(
                       children: <Widget>[
                         Text(Relationship.relationshipText(

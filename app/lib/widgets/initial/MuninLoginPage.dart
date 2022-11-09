@@ -156,7 +156,7 @@ class _MuninLoginPageState extends State<MuninLoginPage> {
           return AlertDialog(
             title: Text(title),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(actionLabel ?? retryCallback == null ? 'OK' : '重试'),
                 onPressed: () {
                   Navigator.pop(context);

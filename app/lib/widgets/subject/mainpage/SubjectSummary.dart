@@ -27,9 +27,11 @@ class SubjectSummary extends StatelessWidget {
         Row(
           children: <Widget>[
             Expanded(
-              child: FlatButton(
+              child: TextButton(
                 child: Text('简介与制作人员'),
-                textColor: lightPrimaryDarkAccentColor(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: lightPrimaryDarkAccentColor(context),
+                ),
                 onPressed: () {
                   /// opens [SubjectDetailInfoWidget]
                   Application.router.navigateTo(

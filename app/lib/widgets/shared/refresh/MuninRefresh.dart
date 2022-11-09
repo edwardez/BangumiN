@@ -337,7 +337,7 @@ class MuninRefreshState extends State<MuninRefresh> {
         }
       } else {
         /// Show a load more button to let user load more contents
-        coreWidget = FlatButton(
+        coreWidget = TextButton(
           child: Text(loadMoreText),
           onPressed: () {
             callOnLoadMore();
@@ -345,7 +345,7 @@ class MuninRefreshState extends State<MuninRefresh> {
         );
       }
     } else if (loadMoreStatus.isException) {
-      coreWidget = FlatButton(
+      coreWidget = TextButton(
         child: Text(retryableLoadErrorText),
         onPressed: () {
           callOnLoadMore();

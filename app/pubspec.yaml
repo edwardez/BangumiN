@@ -14,8 +14,8 @@ description: Flutter + BangumiN == Munin (a new Bangumi App)
 version: 0.6.0+19
 
 environment:
-  sdk: ">=2.8.0 <3.0.0"
-  flutter: ^2.10.1
+  sdk: ">=2.11.0 <3.0.0"
+  flutter: ^3.3.7
 
 dependencies:
   flutter:
@@ -38,12 +38,15 @@ dependencies:
   flutter_redux: ^0.8.2
   flutter_secure_storage: ^4.1.0
   flutter_svg: ^0.23.0+1
-  flutter_widget_from_html: ^0.8.1+1
+  flutter_widget_from_html: ^0.9.0
   get_it: ^6.0.0
   html: ^0.15.0
   http: ^0.13.1
   intl: ^0.17.0
-  image_gallery_saver: ^1.5.0
+  image_gallery_saver:
+    git:
+      url: https://github.com/hui-z/image_gallery_saver
+      ref: 6676c04a858761736dc6b166ef14887578c6218f
   material_design_icons_flutter: ^4.0.5655
   markdown: ^4.0.0
   palette_generator: ^0.3.0
@@ -67,6 +70,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+
+dependency_overrides:
+  wakelock: '0.6.2'
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0

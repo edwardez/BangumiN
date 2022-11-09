@@ -102,7 +102,7 @@ class _ExpandableChildState extends State<ExpandableChild>
               : Row(
                   children: <Widget>[
                     Expanded(
-                      child: FlatButton(
+                      child: TextButton(
                           child: Text(widget.expandButtonText),
                           onPressed: _handleTap),
                     )

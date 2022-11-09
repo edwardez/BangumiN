@@ -30,13 +30,15 @@ class SimpleFormSubmitWidget extends StatelessWidget {
       );
     }
 
-    return FlatButton(
+    return TextButton(
         onPressed: canSubmit
             ? () {
                 onSubmitPressed(context);
               }
             : null,
-        textColor: lightPrimaryDarkAccentColor(context),
+        style: TextButton.styleFrom(
+          foregroundColor: lightPrimaryDarkAccentColor(context),
+        ),
         child: Text(submitButtonText));
   }
 }

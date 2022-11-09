@@ -14,10 +14,13 @@ class FilledFlatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: lightPrimaryDarkAccentColor(context),
-      disabledColor: lightPrimaryDarkAccentColor(context).withOpacity(0.1),
-      textColor: Colors.white,
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: lightPrimaryDarkAccentColor(context),
+        disabledBackgroundColor:
+            lightPrimaryDarkAccentColor(context).withOpacity(0.1),
+      ),
       onPressed: this.onPressed,
       child: child,
     );

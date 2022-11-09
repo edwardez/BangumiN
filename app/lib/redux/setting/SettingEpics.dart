@@ -240,7 +240,7 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('不再提醒此版本'),
                   onPressed: () {
                     Navigator.pop(innerContext);
@@ -257,7 +257,7 @@ Stream<dynamic> _getLatestVersionEpic(Appcast appcast,
                         });
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('下载安装包'),
                   onPressed: () {
                     launchWithExternalBrowser(innerContext, bestItem.fileURL,

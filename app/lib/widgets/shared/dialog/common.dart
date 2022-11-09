@@ -25,14 +25,14 @@ Future<bool> showMuninYesNoDialog(
         title: title,
         content: content,
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: cancelAction,
             onPressed: () {
               Navigator.of(context)
                   .pop(false); // Returning true to _onWillPop will pop again.
             },
           ),
-          FlatButton(
+          TextButton(
             child: confirmAction,
             onPressed: () {
               Navigator.of(context)
@@ -61,7 +61,7 @@ Future<bool> showMuninSingleActionDialog(BuildContext context, {
         title: title,
         content: content,
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: action,
             onPressed: () {
               Navigator.of(context).pop(true);

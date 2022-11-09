@@ -170,7 +170,7 @@ class _SubjectReviewShareState extends State<SubjectReviewShare> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Flexible(
-          child: OutlineButton(
+          child: OutlinedButton(
             child: Text(
               '保存到相册',
             ),

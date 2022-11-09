@@ -110,13 +110,13 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("取消"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text("添加"),
                 onPressed: () {
                   _newTagController.text =
@@ -156,7 +156,7 @@ class _SubjectTagsFieldState extends State<SubjectTagsField> {
           content: Text("取消选择一个已有标签即可再次选择"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            FlatButton(
+            TextButton(
               child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();

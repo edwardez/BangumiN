@@ -45,13 +45,13 @@ class _ThemeSettingWidgetState extends State<ThemeSettingWidget> {
         return AlertDialog(
           content: Text('iuz iyon =tagl-du igur-ea?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("gee"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("hau"),
               onPressed: () {
                 setState(() {

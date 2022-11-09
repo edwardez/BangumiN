@@ -147,13 +147,13 @@ class SubjectEpisodesWidget extends StatelessWidget {
             ],
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('否，取消修改'),
               onPressed: () {
                 Navigator.pop(context, false);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('是'),
               onPressed: () {
                 Navigator.pop(context, true);

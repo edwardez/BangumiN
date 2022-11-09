@@ -12,13 +12,13 @@ class Logout extends StatelessWidget {
             title: Text('确定要退出登录吗？'),
             content: Text('退出登录后所有设置和登陆信息都将被清空'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('不退出'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text('退出登录'),
                 onPressed: () {
                   Navigator.pop(context);

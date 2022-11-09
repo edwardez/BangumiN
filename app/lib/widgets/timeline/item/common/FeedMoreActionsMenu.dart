@@ -41,13 +41,13 @@ class FeedMoreActionsMenu extends StatelessWidget {
                 return AlertDialog(
                   title: Text('要删除这条时间线吗？'),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text('不删除'),
                     ),
-                    FlatButton(
+                    TextButton(
                       onPressed: () {
                         onDeleteFeed(context, feed);
                         Navigator.of(context).pop();

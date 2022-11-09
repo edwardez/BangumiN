@@ -33,7 +33,7 @@ class _SubjectCollectionDeletionWaitingDialogState
         if (showSwitchDeletionTaskToBackgroundButton)
           MuninPadding.noVerticalOffset(
             denseHorizontal: true,
-            child: OutlineButton(
+            child: OutlinedButton(
               onPressed: () {
                 Navigator.pop(context);
               },

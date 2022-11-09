@@ -58,7 +58,7 @@ class ImportBlockedBangumiUsersWidget extends StatelessWidget {
           appBar: AppBar(
             title: Text('导入已绝交用户'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: enableSubmitButton(vm.importedBangumiBlockedUsers)
                     ? () {
                         vm.confirmImport();

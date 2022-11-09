@@ -148,7 +148,7 @@ class _RequestInProgressIndicatorWidgetState
           widget.requestErrorMessage ?? errorMessageOnPage));
 
       if (widget.retryCallback != null) {
-        errorWidgets.add(RaisedButton(
+        errorWidgets.add(ElevatedButton(
           child: Text(widget.retryButtonMessage),
           onPressed: () {
             listenOnRequestFuture(widget.retryCallback(context));

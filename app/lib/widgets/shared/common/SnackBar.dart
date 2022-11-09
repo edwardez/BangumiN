@@ -20,7 +20,7 @@ void showSnackBarOnSuccess(
 /// will be ignored and [shortSnackBarDisplayDuration] will always be used.
 void showTextOnSnackBar(BuildContext context, String text,
     {duration = snackBarDisplayDuration, shortDuration = false,}) async {
-  Scaffold.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(text),
     duration: shortDuration ? shortSnackBarDisplayDuration : duration,
     behavior: SnackBarBehavior.floating,

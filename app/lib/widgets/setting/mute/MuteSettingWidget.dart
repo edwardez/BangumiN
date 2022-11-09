@@ -71,7 +71,7 @@ class MuteSettingWidget extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             Application.router.navigateTo(context,
                                 Routes.muteSettingBatchImportUsersRoute,

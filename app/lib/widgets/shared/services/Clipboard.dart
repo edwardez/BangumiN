@@ -39,13 +39,13 @@ class ClipboardService {
           title: Text(dialogTitle),
           content: dialogContent,
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("取消"),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("复制"),
               onPressed: () {
                 copyAsPlainText(context, textToCopy, popContext: true);

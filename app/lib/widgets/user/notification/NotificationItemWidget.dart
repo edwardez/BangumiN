@@ -79,7 +79,7 @@ class NotificationItemWidget extends StatelessWidget {
                       onlyUnreadMode)
                     Row(
                       children: <Widget>[
-                        OutlineButton(
+                        OutlinedButton(
                           child: Text('忽略'),
                           onPressed: () {
                             clearNotification(context, () {
